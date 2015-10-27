@@ -340,7 +340,14 @@ class Main {
 		var pack = module.split(".");
 		var hxName = switch (fullname) {
 			case "":
-				hxName(pack.pop());
+				switch (pack.length) {
+				 	case 0:
+				 		throw "top-level?";
+				 	case 1:
+				 		hxName(pack[0]);
+				 	case _:
+				 		hxName(pack.pop());
+				}
 			case _:
 				hxName(fullname);
 		}

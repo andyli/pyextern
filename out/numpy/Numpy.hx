@@ -1,4 +1,5 @@
 /* This file is generated, do not edit! */
+package numpy;
 @:native("numpy") extern class Numpy {
 	static public function absolute(x:Dynamic, out:Dynamic):Dynamic;
 	static public function add(x1:Dynamic, x2:Dynamic, out:Dynamic):Dynamic;

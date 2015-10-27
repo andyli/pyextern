@@ -1,4 +1,5 @@
 /* This file is generated, do not edit! */
+package matplotlib;
 @:native("matplotlib") extern class Matplotlib {
 	static public function use(arg:Dynamic, ?warn:Dynamic = true, ?force:Dynamic = false):Void;
 	static public function get_backend():Void;

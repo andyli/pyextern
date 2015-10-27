@@ -1,4 +1,5 @@
 /* This file is generated, do not edit! */
+package pandas;
 @:native("pandas") extern class Pandas {
 	static public function bdate_range(?start:Dynamic = null, ?end:Dynamic = null, ?periods:Dynamic = null, ?freq:Dynamic, ?tz:Dynamic = null, ?normalize:Dynamic = true, ?name:Dynamic = null, ?closed:Dynamic = null):Dynamic;
 	static public function concat(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic = null, ?ignore_index:Dynamic = false, ?keys:Dynamic = null, ?levels:Dynamic = null, ?names:Dynamic = null, ?verify_integrity:Dynamic = false, ?copy:Dynamic = true):Dynamic;

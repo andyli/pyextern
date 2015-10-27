@@ -1,4 +1,5 @@
 /* This file is generated, do not edit! */
+package seaborn;
 @:native("seaborn") extern class Seaborn {
 	static public function axes_style(?style:Dynamic = null, ?rc:Dynamic = null):Void;
 	static public function axlabel(args:haxe.extern.Rest<Dynamic>):Void;
