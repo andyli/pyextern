@@ -1,0 +1,6 @@
+-cp src
+-cp out
+Numpy
+--macro include("numpy")
+-python Test.py
+--no-output

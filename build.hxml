@@ -1,0 +1,5 @@
+-cp src
+-lib selecthxml
+-main pyextern.Main
+-neko Main.n
+# -cmd neko Main.n /Users/andy/Documents/workspace/numpy/doc/build/xml out
