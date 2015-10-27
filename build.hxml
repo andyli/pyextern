@@ -2,7 +2,8 @@
 -lib selecthxml
 -main pyextern.Main
 -neko Main.n
-# -cmd neko Main.n /Users/andy/Documents/workspace/numpy/doc/build/xml/reference out
-# -cmd neko Main.n /Users/andy/Documents/workspace/scipy/doc/build/xml out
-# -cmd neko Main.n /Users/andy/Documents/workspace/pandas/doc/build/xml out
-# -cmd neko Main.n /Users/andy/Documents/workspace/seaborn/doc/_build/xml out
+# -cmd neko Main.n /Users/andy/Documents/workspace/numpy/doc/build/xml/reference/generated out
+# -cmd neko Main.n /Users/andy/Documents/workspace/scipy/doc/build/xml/generated out
+# -cmd neko Main.n /Users/andy/Documents/workspace/pandas/doc/build/xml/generated out
+# -cmd neko Main.n /Users/andy/Documents/workspace/matplotlib/doc/build/xml/api out
+# -cmd neko Main.n /Users/andy/Documents/workspace/seaborn/doc/_build/xml/generated out

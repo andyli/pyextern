@@ -367,7 +367,7 @@ class Main {
 			case [docPath, outPath]:
 				var args = args();
 				var main = new Main();
-				main.process(absolutePath(Path.join([args[0], "generated"])));
+				main.process(absolutePath(args[0]));
 				main.write(absolutePath(args[1]));
 			case _:
 				throw "There should be exactly 2 arguments: docPath outPath";

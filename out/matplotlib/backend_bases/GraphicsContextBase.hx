@@ -1,0 +1,40 @@
+/* This file is generated, do not edit! */
+package matplotlib.backend_bases;
+@:native("matplotlib.backend_bases.GraphicsContextBase") extern class GraphicsContextBase {
+	public function copy_properties(gc:Dynamic):Void;
+	public var dashd : Dynamic;
+	public function get_alpha():Void;
+	public function get_antialiased():Void;
+	public function get_capstyle():Void;
+	public function get_clip_path():Void;
+	public function get_clip_rectangle():Void;
+	public function get_dashes():Void;
+	public function get_forced_alpha():Void;
+	public function get_gid():Void;
+	public function get_hatch():Void;
+	public function get_hatch_path(?density:Dynamic):Void;
+	public function get_joinstyle():Void;
+	public function get_linestyle(style:Dynamic):Void;
+	public function get_linewidth():Void;
+	public function get_rgb():Void;
+	public function get_sketch_params():Dynamic;
+	public function get_snap():Void;
+	public function get_url():Void;
+	public function restore():Void;
+	public function set_alpha(alpha:Dynamic):Void;
+	public function set_antialiased(b:Dynamic):Void;
+	public function set_capstyle(cs:Dynamic):Void;
+	public function set_clip_path(path:Dynamic):Void;
+	public function set_clip_rectangle(rectangle:Dynamic):Void;
+	public function set_dashes(dash_offset:Dynamic, dash_list:Dynamic):Void;
+	public function set_foreground(fg:Dynamic, ?isRGBA:Dynamic = false):Void;
+	public function set_gid(id:Dynamic):Void;
+	public function set_graylevel(frac:Dynamic):Void;
+	public function set_hatch(hatch:Dynamic):Void;
+	public function set_joinstyle(js:Dynamic):Void;
+	public function set_linestyle(style:Dynamic):Void;
+	public function set_linewidth(w:Dynamic):Void;
+	public function set_sketch_params(?scale:Dynamic = null, ?length:Dynamic = null, ?randomness:Dynamic = null):Void;
+	public function set_snap(snap:Dynamic):Void;
+	public function set_url(url:Dynamic):Void;
+}
