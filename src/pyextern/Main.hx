@@ -93,7 +93,11 @@ class Main {
 							pos:null
 						});
 					}
-					td.fields.push(field);
+					if (td.fields.exists(function(f) return f.name == field.name)) {
+						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+					} else {
+						td.fields.push(field);
+					}
 				case "attribute":
 					var cls = desc_signature.get("class");
 					var td = getTd(desc_signature.get("module"), cls);
@@ -115,7 +119,11 @@ class Main {
 							pos:null
 						});
 					}
-					td.fields.push(field);
+					if (td.fields.exists(function(f) return f.name == field.name)) {
+						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+					} else {
+						td.fields.push(field);
+					}
 				case "method":
 					if (desc_signature.get("class") == "") throw desc_signature;
 					var td = getTd(desc_signature.get("module"), desc_signature.get("class"));
@@ -148,7 +156,11 @@ class Main {
 							pos:null
 						});
 					}
-					td.fields.push(field);
+					if (td.fields.exists(function(f) return f.name == field.name)) {
+						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+					} else {
+						td.fields.push(field);
+					}
 				case desctype:
 					throw desctype;
 			}
@@ -156,10 +168,13 @@ class Main {
 	}
 
 	static function hxName(name:String):String {
-		return if (name.length > 0)
-			name.charAt(0).toUpperCase() + name.substr(1);
-		else
-			"";
+		if (name == "") return "";
+		
+		name = name.charAt(0).toUpperCase() + name.substr(1);
+
+		name = name.replace(".", "_");
+
+		return name;
 	}
 
 	static function isHxKeyword(name:String):Bool {

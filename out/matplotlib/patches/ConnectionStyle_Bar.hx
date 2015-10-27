@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.patches;
-@:native("matplotlib.patches.ConnectionStyle.Arc3") extern class ConnectionStyle.Arc3 {
+@:native("matplotlib.patches.ConnectionStyle.Bar") extern class ConnectionStyle_Bar {
 	public function connect(posA:Dynamic, posB:Dynamic):Void;
 }

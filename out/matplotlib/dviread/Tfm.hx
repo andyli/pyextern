@@ -6,9 +6,4 @@ package matplotlib.dviread;
 	public var width : Dynamic;
 	public var height : Dynamic;
 	public var depth : Dynamic;
-	public var checksum : Dynamic;
-	public var depth : Dynamic;
-	public var design_size : Dynamic;
-	public var height : Dynamic;
-	public var width : Dynamic;
 }

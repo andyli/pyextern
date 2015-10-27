@@ -4,7 +4,4 @@ package matplotlib.dviread;
 	public var texname : Dynamic;
 	public var size : Dynamic;
 	public var widths : Dynamic;
-	public var size : Dynamic;
-	public var texname : Dynamic;
-	public var widths : Dynamic;
 }

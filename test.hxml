@@ -5,6 +5,8 @@ Numpy
 --macro include("scipy")
 Pandas
 --macro include("pandas")
+Matplotlib
+--macro include("matplotlib")
 Seaborn
 --macro include("seaborn")
 -python Test.py
