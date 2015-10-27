@@ -1,0 +1,43 @@
+/* This file is generated, do not edit! */
+package scipy.sparse;
+@:native("scipy.sparse.lil_matrix") extern class Lil_matrix {
+	public function asformat(format:Dynamic):Void;
+	public function asfptype():Void;
+	public function astype(t:Dynamic):Void;
+	public function conj():Void;
+	public function conjugate():Void;
+	public function copy():Void;
+	public function diagonal():Void;
+	public function dot(other:Dynamic):Void;
+	public function get_shape():Void;
+	public function getcol(j:Dynamic):Void;
+	public function getformat():Void;
+	public function getH():Void;
+	public function getmaxprint():Void;
+	public function getnnz(?axis:Dynamic = null):Void;
+	public function getrow(i:Dynamic):Void;
+	public function getrowview(i:Dynamic):Void;
+	public function maximum(other:Dynamic):Void;
+	public function mean(?axis:Dynamic = null):Void;
+	public function minimum(other:Dynamic):Void;
+	public function multiply(other:Dynamic):Void;
+	public var ndim : Dynamic;
+	public var nnz : Dynamic;
+	public function nonzero():Void;
+	public function power(n:Dynamic, ?dtype:Dynamic = null):Void;
+	public function reshape(shape:Dynamic):Void;
+	public function set_shape(shape:Dynamic):Void;
+	public function setdiag(values:Dynamic, ?k:Dynamic):Void;
+	public var shape : Dynamic;
+	public function sum(?axis:Dynamic = null):Void;
+	public function toarray(?order:Dynamic = null, ?out:Dynamic = null):Void;
+	public function tobsr(?blocksize:Dynamic = null):Void;
+	public function tocoo():Void;
+	public function tocsc():Void;
+	public function tocsr():Void;
+	public function todense(?order:Dynamic = null, ?out:Dynamic = null):Dynamic;
+	public function todia():Void;
+	public function todok():Void;
+	public function tolil(?copy:Dynamic = false):Void;
+	public function transpose():Void;
+}

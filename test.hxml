@@ -2,6 +2,7 @@
 -cp out
 Numpy
 --macro include("numpy")
+--macro include("scipy")
 Pandas
 --macro include("pandas")
 -python Test.py

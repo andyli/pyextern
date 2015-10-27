@@ -37,18 +37,21 @@ class Main {
 	public function process(path:String):Void {
 		if (isDirectory(path)) {
 			for (item in readDirectory(path)) {
-				process(Path.join([path, item]));
+				if (!item.endsWith(".xml")) continue;
+				var itemPath = Path.join([path, item]);
+				process(itemPath);
 			}
 			return;
 		}
 
-		if (!path.endsWith(".xml")) return;
-
-		trace(path);
+		// trace(path);
 		
+		var contentStr = getContent(path);
 		var content = try {
-			Xml.parse(getContent(path));
-		} catch (e:Dynamic) {
+			Xml.parse(contentStr);
+		} catch (e:Dynamic) try {
+			Xml.parse(contentStr.replace(" label latex=", " latex=").replace(" number>", ">"));
+		} catch(e:Dynamic) {
 			trace("!!! invalid xml");
 			throw path;
 		}
