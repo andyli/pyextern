@@ -20,7 +20,7 @@ class Main {
 	public function new():Void {}
 
 	public function write(outPath:String):Void {
-		command("rm", ["-rf", outPath]);
+		//command("rm", ["-rf", outPath]);
 		createDirectory(outPath);
 		setCwd(outPath);
 
@@ -45,6 +45,7 @@ class Main {
 		if (!path.endsWith(".xml")) return;
 
 		trace(path);
+		
 		var content = try {
 			Xml.parse(getContent(path));
 		} catch (e:Dynamic) {
@@ -56,17 +57,13 @@ class Main {
 			if (desc.get("objtype") != desc.get("desctype")) throw "!!!";
 			var desc_signature = desc.select("desc_signature")[0];
 			// trace([for (att in desc_signature.attributes()) att + ": " + desc_signature.get(att)]);
+			var name = new Fast(desc_signature.select("desc_name")[0]).innerData;
 			switch (desc.get("objtype")) {
 				case "class" | "exception":
 					var td = getTd(desc_signature.get("module"), desc_signature.get("fullname"));
-				case "data", "function", "staticmethod":
+				case "data", "function", "staticmethod", "classmethod":
 					var td = getTd(desc_signature.get("module"), desc_signature.get("class"));
-					var name = desc_signature.get("fullname");
-					switch (name) {
-					 	case "MaskedArray.__new__":
-					 		name = "__new__";
-					}
-					if (!re_ident.match(name)) throw name;
+					if (!re_ident.match(name)) throw desc_signature;
 					var field:Field = {
 						meta: [],
 						access: [AStatic, APublic],
@@ -97,13 +94,6 @@ class Main {
 				case "attribute":
 					var cls = desc_signature.get("class");
 					var td = getTd(desc_signature.get("module"), cls);
-					var name = desc_signature.get("fullname");
-					if (cls != "")
-						if (name.startsWith(cls+"."))
-							name = name.substr(desc_signature.get("class").length+1);
-						else
-							throw name;
-
 					var field:Field = {
 						meta: [],
 						access: [name.startsWith("_") ? APrivate : APublic],
@@ -126,11 +116,6 @@ class Main {
 				case "method":
 					if (desc_signature.get("class") == "") throw desc_signature;
 					var td = getTd(desc_signature.get("module"), desc_signature.get("class"));
-					var name = desc_signature.get("fullname");
-					if (name.startsWith(desc_signature.get("class")+"."))
-						name = name.substr(desc_signature.get("class").length+1);
-					else
-						throw name;
 					var field:Field = {
 						meta: [],
 						access: [name.startsWith("_") ? APrivate : APublic],
@@ -374,7 +359,7 @@ class Main {
 			case [docPath, outPath]:
 				var args = args();
 				var main = new Main();
-				main.process(absolutePath(Path.join([args[0], "reference", "generated"])));
+				main.process(absolutePath(Path.join([args[0], "generated"])));
 				main.write(absolutePath(args[1]));
 			case _:
 				throw "There should be exactly 2 arguments: docPath outPath";
