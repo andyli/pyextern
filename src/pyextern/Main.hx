@@ -134,7 +134,10 @@ class Main {
 						}),
 						pos: null
 					};
-					if (isHxKeyword(name)) {
+					if (
+						isHxKeyword(name) || 
+						name == "__init__" //haxe 3.2.1 has issue with this... but 3.3 seems to be fine...
+					) {
 						field.name = "_" + name;
 						field.meta.push({
 							name:":native",
