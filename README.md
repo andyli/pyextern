@@ -1,14 +1,10 @@
-# pyextern
-
-[![TravisCI Build Status](https://travis-ci.org/andyli/pyextern.svg?branch=master)](https://travis-ci.org/andyli/pyextern)
+# pyextern [![TravisCI Build Status](https://travis-ci.org/andyli/pyextern.svg?branch=master)](https://travis-ci.org/andyli/pyextern)
 
 Extern generator for the Haxe Python target.
 
 ## List of generated externs
 
-Python libraries versions: [![Requirements Status](https://requires.io/github/andyli/pyextern/requirements.svg?branch=master)](https://requires.io/github/andyli/pyextern/requirements/?branch=master)
-
- * numpy 1.10.1
+[![Requirements Status](https://requires.io/github/andyli/pyextern/requirements.svg?branch=master)](https://requires.io/github/andyli/pyextern/requirements/?branch=master)
 
 ## How to generate extern for a Python lib
 
