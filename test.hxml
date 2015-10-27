@@ -5,5 +5,7 @@ Numpy
 --macro include("scipy")
 Pandas
 --macro include("pandas")
+Seaborn
+--macro include("seaborn")
 -python Test.py
 --no-output

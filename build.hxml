@@ -5,3 +5,4 @@
 # -cmd neko Main.n /Users/andy/Documents/workspace/numpy/doc/build/xml/reference out
 # -cmd neko Main.n /Users/andy/Documents/workspace/scipy/doc/build/xml out
 # -cmd neko Main.n /Users/andy/Documents/workspace/pandas/doc/build/xml out
+# -cmd neko Main.n /Users/andy/Documents/workspace/seaborn/doc/_build/xml out

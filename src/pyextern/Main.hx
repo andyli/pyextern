@@ -303,9 +303,14 @@ class Main {
 					expr: EConst(CString(v)),
 					pos: null
 				});
+			case v if (Std.parseInt(v) != null):
+				Some({
+					expr: EConst(CInt(v)),
+					pos: null
+				});
 			case v if (!Math.isNaN(Std.parseFloat(v))):
 				Some({
-					expr: EConst(CFloat("")),
+					expr: EConst(CFloat(v)),
 					pos: null
 				});
 			case v:
