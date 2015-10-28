@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.dates;
-@:native("matplotlib.dates.rrule") extern class Rrule {
+@:pythonImport("matplotlib.dates", "rrule") extern class Rrule {
 
 }

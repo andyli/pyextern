@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.dviread;
-@:native("matplotlib.dviread.Tfm") extern class Tfm {
+@:pythonImport("matplotlib.dviread", "Tfm") extern class Tfm {
 	public var checksum : Dynamic;
 	public var design_size : Dynamic;
 	public var width : Dynamic;

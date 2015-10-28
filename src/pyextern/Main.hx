@@ -103,7 +103,7 @@ class Main {
 					var td = getTd(desc_signature.get("module"), cls);
 					var field:Field = {
 						meta: [],
-						access: [name.startsWith("_") ? APrivate : APublic],
+						access: [APublic],
 						name: name,
 						kind: FVar(macro:Dynamic),
 						pos: null
@@ -191,7 +191,8 @@ class Main {
 
 	static function hxRet(fieldReturns:Xml):ComplexType {
 		if (fieldReturns == null) {
-			return macro:Void;
+			// return macro:Void;
+			return macro:Dynamic;
 		}
 		var retStr = new Fast(fieldReturns.select("field_body > paragraph")[0]).innerHTML;
 		var ret = retStr.split(":");
@@ -292,12 +293,21 @@ class Main {
 						throw name;
 				}
 			}
+			args.push({
+				opt: true,
+				name: "kwargs",
+				type: macro:python.KwArgs<Dynamic>
+			});
 			return args;
 		} catch (e:Dynamic) {
 			return [{
-				opt: false,
-				name: "args",
-				type: macro:haxe.extern.Rest<Dynamic>
+				opt: true,
+				name: "varargs",
+				type: macro:python.VarArgs<Dynamic>
+			},{
+				opt: true,
+				name: "kwargs",
+				type: macro:python.KwArgs<Dynamic>
 			}];
 		}
 	}
@@ -352,7 +362,17 @@ class Main {
 				hxName(fullname);
 		}
 		var hxFullName = pack.concat([hxName]).join(".");
-		var native = fullname == "" ? module : module + "." + fullname;
+		// var native = fullname == "" ? module : module + "." + fullname;
+		var pythonImportParams = if (fullname == "") {
+			[
+				{ expr: EConst(CString(module)), pos: null },
+			];
+		} else {
+			[
+				{ expr: EConst(CString(module)), pos: null },
+				{ expr: EConst(CString(fullname)), pos: null },
+			];
+		}
 		return switch (tds[hxFullName]) {
 			case null:
 				tds[hxFullName] = {
@@ -360,11 +380,8 @@ class Main {
 					name : hxName,
 					pos : null,
 					meta : [{
-						name: ":native",
-						params: [{
-							expr: EConst(CString(native)),
-							pos: null
-						}],
+						name: ":pythonImport",
+						params: pythonImportParams,
 						pos: null
 					}],
 					params : [],
@@ -375,10 +392,17 @@ class Main {
 			case td:
 				switch (td.meta[0]) {
 					case {
-						name: ":native",
-						params: [{
-							expr: EConst(CString(native))
-						}]
+						name: ":pythonImport",
+						params: [
+							{ expr: EConst(CString(module)) }
+						]
+					} if (fullname == ""): //pass
+					case {
+						name: ":pythonImport",
+						params: [
+							{ expr: EConst(CString(module)) },
+							{ expr: EConst(CString(fullname)) }
+						]
 					}: //pass
 					case nativeMeta:
 						throw nativeMeta;

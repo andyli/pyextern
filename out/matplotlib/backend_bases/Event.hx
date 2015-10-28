@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
-@:native("matplotlib.backend_bases.Event") extern class Event {
+@:pythonImport("matplotlib.backend_bases", "Event") extern class Event {
 
 }

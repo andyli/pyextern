@@ -1,15 +1,15 @@
 /* This file is generated, do not edit! */
 package scipy.optimize;
-@:native("scipy.optimize.OptimizeResult") extern class OptimizeResult {
-	public function clear():Void;
-	public function copy():Void;
-	public function fromkeys():Void;
-	public function get(k:Dynamic, d:Dynamic):Void;
-	public function items():Void;
-	public function keys():Void;
-	public function pop(k:Dynamic, d:Dynamic):Void;
-	public function popitem():Void;
-	public function setdefault(k:Dynamic, d:Dynamic):Void;
-	public function update(args:haxe.extern.Rest<Dynamic>):Void;
-	public function values():Void;
+@:pythonImport("scipy.optimize", "OptimizeResult") extern class OptimizeResult {
+	public function clear(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function copy(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fromkeys(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get(k:Dynamic, d:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function items(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function keys(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function pop(k:Dynamic, d:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function popitem(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function setdefault(k:Dynamic, d:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function update(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function values(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

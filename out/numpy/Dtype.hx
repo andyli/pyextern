@@ -1,8 +1,8 @@
 /* This file is generated, do not edit! */
 package numpy;
-@:native("numpy.dtype") extern class Dtype {
-	private function __reduce__():Void;
-	private function __setstate__():Void;
+@:pythonImport("numpy", "dtype") extern class Dtype {
+	private function __reduce__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	private function __setstate__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var alignment : Dynamic;
 	public var base : Dynamic;
 	public var byteorder : Dynamic;
@@ -19,7 +19,7 @@ package numpy;
 	public var metadata : Dynamic;
 	public var name : Dynamic;
 	public var names : Dynamic;
-	public function newbyteorder(?new_order:Dynamic):Dynamic;
+	public function newbyteorder(?new_order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var num : Dynamic;
 	public var shape : Dynamic;
 	public var str : Dynamic;

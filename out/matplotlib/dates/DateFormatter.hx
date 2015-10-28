@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.dates;
-@:native("matplotlib.dates.DateFormatter") extern class DateFormatter {
+@:pythonImport("matplotlib.dates", "DateFormatter") extern class DateFormatter {
 	public var illegal_s : Dynamic;
-	public function set_tzinfo(tz:Dynamic):Void;
-	public function strftime(dt:Dynamic, fmt:Dynamic):Void;
+	public function set_tzinfo(tz:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function strftime(dt:Dynamic, fmt:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -1,14 +1,14 @@
 /* This file is generated, do not edit! */
 package scipy.interpolate;
-@:native("scipy.interpolate.UnivariateSpline") extern class UnivariateSpline {
-	private function __call__(x:Dynamic, ?nu:Dynamic, ?ext:Dynamic = null):Void;
-	public function antiderivative(?n:Dynamic):Dynamic;
-	public function derivative(?n:Dynamic):Dynamic;
-	public function derivatives(x:Dynamic):Dynamic;
-	public function get_coeffs():Void;
-	public function get_knots():Void;
-	public function get_residual():Void;
-	public function integral(a:Dynamic, b:Dynamic):Dynamic;
-	public function roots():Void;
-	public function set_smoothing_factor(s:Dynamic):Void;
+@:pythonImport("scipy.interpolate", "UnivariateSpline") extern class UnivariateSpline {
+	private function __call__(x:Dynamic, ?nu:Dynamic, ?ext:Dynamic = null, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function antiderivative(?n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function derivative(?n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function derivatives(x:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_coeffs(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_knots(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function get_residual(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function integral(a:Dynamic, b:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function roots(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_smoothing_factor(s:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

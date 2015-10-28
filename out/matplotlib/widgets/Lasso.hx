@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.widgets;
-@:native("matplotlib.widgets.Lasso") extern class Lasso {
-	public function onmove(event:Dynamic):Void;
-	public function onrelease(event:Dynamic):Void;
+@:pythonImport("matplotlib.widgets", "Lasso") extern class Lasso {
+	public function onmove(event:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function onrelease(event:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

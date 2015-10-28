@@ -1,10 +1,10 @@
 /* This file is generated, do not edit! */
 package numpy;
-@:native("numpy.nditer") extern class Nditer {
-	public function copy():Void;
-	public function debug_print():Void;
+@:pythonImport("numpy", "nditer") extern class Nditer {
+	public function copy(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function debug_print(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var dtypes : Dynamic;
-	public function enable_external_loop():Void;
+	public function enable_external_loop(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var finished : Dynamic;
 	public var has_delayed_bufalloc : Dynamic;
 	public var has_index : Dynamic;
@@ -12,7 +12,7 @@ package numpy;
 	public var index : Dynamic;
 	public var iterationneedsapi : Dynamic;
 	public var iterindex : Dynamic;
-	public function iternext():Dynamic;
+	public function iternext(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var iterrange : Dynamic;
 	public var itersize : Dynamic;
 	public var itviews : Dynamic;
@@ -20,9 +20,9 @@ package numpy;
 	public var ndim : Dynamic;
 	public var nop : Dynamic;
 	public var operands : Dynamic;
-	public function remove_axis(i:Dynamic):Void;
-	public function remove_multi_index():Void;
-	public function reset():Void;
+	public function remove_axis(i:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function remove_multi_index(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function reset(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var shape : Dynamic;
 	public var value : Dynamic;
 }

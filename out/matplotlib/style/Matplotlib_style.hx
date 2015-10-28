@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.style;
-@:native("matplotlib.style.matplotlib.style") extern class Matplotlib_style {
-	static public function library(args:haxe.extern.Rest<Dynamic>):Void;
-	static public function available(args:haxe.extern.Rest<Dynamic>):Void;
+@:pythonImport("matplotlib.style", "matplotlib.style") extern class Matplotlib_style {
+	static public function library(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function available(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

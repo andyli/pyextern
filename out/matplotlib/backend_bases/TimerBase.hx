@@ -1,10 +1,10 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
-@:native("matplotlib.backend_bases.TimerBase") extern class TimerBase {
-	public function add_callback(args:haxe.extern.Rest<Dynamic>):Void;
+@:pythonImport("matplotlib.backend_bases", "TimerBase") extern class TimerBase {
+	public function add_callback(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var interval : Dynamic;
-	public function remove_callback(args:haxe.extern.Rest<Dynamic>):Void;
+	public function remove_callback(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var single_shot : Dynamic;
-	public function start(?interval:Dynamic = null):Void;
-	public function stop():Void;
+	public function start(?interval:Dynamic = null, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function stop(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

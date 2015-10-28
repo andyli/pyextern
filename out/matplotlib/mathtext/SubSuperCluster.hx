@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
-@:native("matplotlib.mathtext.SubSuperCluster") extern class SubSuperCluster {
+@:pythonImport("matplotlib.mathtext", "SubSuperCluster") extern class SubSuperCluster {
 
 }

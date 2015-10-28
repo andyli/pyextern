@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
-@:native("matplotlib.mathtext.StixSansFonts") extern class StixSansFonts {
+@:pythonImport("matplotlib.mathtext", "StixSansFonts") extern class StixSansFonts {
 
 }

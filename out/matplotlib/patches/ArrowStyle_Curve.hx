@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package matplotlib.patches;
-@:native("matplotlib.patches.ArrowStyle.Curve") extern class ArrowStyle_Curve {
+@:pythonImport("matplotlib.patches", "ArrowStyle.Curve") extern class ArrowStyle_Curve {
 
 }

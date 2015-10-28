@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.backend_bases;
-@:native("matplotlib.backend_bases.MouseEvent") extern class MouseEvent {
+@:pythonImport("matplotlib.backend_bases", "MouseEvent") extern class MouseEvent {
 	public var button : Dynamic;
 	public var dblclick : Dynamic;
 	public var inaxes : Dynamic;

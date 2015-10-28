@@ -1,12 +1,12 @@
 /* This file is generated, do not edit! */
 package matplotlib.animation;
-@:native("matplotlib.animation.MovieWriter") extern class MovieWriter {
-	static public function bin_path():Void;
-	public function cleanup():Void;
-	public function finish():Void;
+@:pythonImport("matplotlib.animation", "MovieWriter") extern class MovieWriter {
+	static public function bin_path(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cleanup(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function finish(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var frame_size : Dynamic;
-	public function grab_frame(args:haxe.extern.Rest<Dynamic>):Void;
-	static public function isAvailable():Void;
-	public function saving(args:haxe.extern.Rest<Dynamic>):Void;
-	public function setup(args:haxe.extern.Rest<Dynamic>):Void;
+	public function grab_frame(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function isAvailable(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function saving(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function setup(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

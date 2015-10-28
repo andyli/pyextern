@@ -1,12 +1,12 @@
 /* This file is generated, do not edit! */
 package matplotlib.cbook;
-@:native("matplotlib.cbook.Stack") extern class Stack {
-	public function back():Void;
-	public function bubble(o:Dynamic):Void;
-	public function clear():Void;
-	public function empty():Void;
-	public function forward():Void;
-	public function home():Void;
-	public function push(o:Dynamic):Void;
-	public function remove(o:Dynamic):Void;
+@:pythonImport("matplotlib.cbook", "Stack") extern class Stack {
+	public function back(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function bubble(o:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function clear(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function empty(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function forward(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function home(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function push(o:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function remove(o:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

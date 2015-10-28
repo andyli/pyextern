@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
 package numpy;
-@:native("numpy.RankWarning") extern class RankWarning {
+@:pythonImport("numpy", "RankWarning") extern class RankWarning {
 
 }

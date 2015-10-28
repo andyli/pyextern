@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.mathtext;
-@:native("matplotlib.mathtext.Hlist") extern class Hlist {
-	public function hpack(?w:Dynamic, ?m:Dynamic):Void;
-	public function kern():Void;
+@:pythonImport("matplotlib.mathtext", "Hlist") extern class Hlist {
+	public function hpack(?w:Dynamic, ?m:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function kern(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }
