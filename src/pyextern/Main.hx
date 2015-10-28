@@ -34,12 +34,16 @@ class Main {
 		}
 	}
 
-	public function process(path:String):Void {
+	public function processModule(module:String):Void {
+		
+	}
+
+	public function processXmls(path:String):Void {
 		if (isDirectory(path)) {
 			for (item in readDirectory(path)) {
 				if (!item.endsWith(".xml")) continue;
 				var itemPath = Path.join([path, item]);
-				process(itemPath);
+				processXmls(itemPath);
 			}
 			return;
 		}
@@ -416,7 +420,7 @@ class Main {
 			case [docPath, outPath]:
 				var args = args();
 				var main = new Main();
-				main.process(absolutePath(args[0]));
+				main.processXmls(absolutePath(args[0]));
 				main.write(absolutePath(args[1]));
 			case _:
 				throw "There should be exactly 2 arguments: docPath outPath";
