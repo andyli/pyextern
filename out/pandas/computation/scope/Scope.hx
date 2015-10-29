@@ -47,7 +47,8 @@ package pandas.computation.scope;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

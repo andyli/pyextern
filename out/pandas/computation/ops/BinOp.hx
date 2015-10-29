@@ -60,7 +60,8 @@ package pandas.computation.ops;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(op:Dynamic, lhs:Dynamic, rhs:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(op:Dynamic, lhs:Dynamic, rhs:Dynamic, kwargs:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

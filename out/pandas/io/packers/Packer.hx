@@ -40,7 +40,8 @@ package pandas.io.packers;
 	/**
 		        
 	**/
-	public function __init__(?_default:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?use_single_float:Dynamic, ?autoreset:Dynamic, ?use_bin_type:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?_default:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?use_single_float:Dynamic, ?autoreset:Dynamic, ?use_bin_type:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

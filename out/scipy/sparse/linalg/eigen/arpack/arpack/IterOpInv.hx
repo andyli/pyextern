@@ -70,7 +70,8 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		To be called by subclasses. ``dtype`` may be None; ``shape`` should
 		be convertible to a length-2 tuple.
 	**/
-	public function __init__(A:Dynamic, M:Dynamic, sigma:Dynamic, ?ifunc:Dynamic, ?tol:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(A:Dynamic, M:Dynamic, sigma:Dynamic, ?ifunc:Dynamic, ?tol:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

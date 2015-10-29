@@ -40,7 +40,8 @@ package pandas.io.sas;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(filepath_or_buffer:Dynamic, ?index:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(filepath_or_buffer:Dynamic, ?index:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

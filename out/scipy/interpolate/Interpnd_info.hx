@@ -2971,7 +2971,7 @@ package scipy.interpolate;
 		>>> from sympy import sin, cos, E
 		>>> from sympy.abc import x, y, z, t
 		
-		>>> path = "/*/[0]/Symbol"
+		>>> path = "/* /[0]/Symbol"
 		>>> expr = [((x, 1), 2), ((3, y), z)]
 		
 		>>> epath(path, expr)
@@ -2979,7 +2979,7 @@ package scipy.interpolate;
 		>>> epath(path, expr, lambda expr: expr**2)
 		[((x**2, 1), 2), ((3, y**2), z)]
 		
-		>>> path = "/*/*/Symbol"
+		>>> path = "/* /* /Symbol"
 		>>> expr = t + sin(x + 1) + cos(x + y + E)
 		
 		>>> epath(path, expr)

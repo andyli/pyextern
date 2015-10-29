@@ -44,7 +44,8 @@ package matplotlib.cbook;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?nmax:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?nmax:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

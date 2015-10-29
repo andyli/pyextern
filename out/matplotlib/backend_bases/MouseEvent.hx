@@ -41,7 +41,8 @@ package matplotlib.backend_bases;
 		x, y in figure coords, 0,0 = bottom, left
 		button pressed None, 1, 2, 3, 'up', 'down'
 	**/
-	public function __init__(name:Dynamic, canvas:Dynamic, x:Dynamic, y:Dynamic, ?button:Dynamic, ?key:Dynamic, ?step:Dynamic, ?dblclick:Dynamic, ?guiEvent:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, canvas:Dynamic, x:Dynamic, y:Dynamic, ?button:Dynamic, ?key:Dynamic, ?step:Dynamic, ?dblclick:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

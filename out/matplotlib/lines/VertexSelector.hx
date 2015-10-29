@@ -43,7 +43,8 @@ package matplotlib.lines;
 		:class:`matplotlib.axes.Axes` instance and should have the
 		picker property set.
 	**/
-	public function __init__(line:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(line:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

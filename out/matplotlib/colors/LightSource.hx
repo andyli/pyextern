@@ -51,7 +51,8 @@ package matplotlib.colors;
 		are nearly black (s = 1, v = 0) and completely illuminated points
 		are nearly white (s = 0, v = 1).
 	**/
-	public function __init__(?azdeg:Dynamic, ?altdeg:Dynamic, ?hsv_min_val:Dynamic, ?hsv_max_val:Dynamic, ?hsv_min_sat:Dynamic, ?hsv_max_sat:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?azdeg:Dynamic, ?altdeg:Dynamic, ?hsv_min_val:Dynamic, ?hsv_max_val:Dynamic, ?hsv_min_sat:Dynamic, ?hsv_max_sat:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

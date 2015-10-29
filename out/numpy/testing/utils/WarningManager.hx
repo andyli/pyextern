@@ -42,7 +42,8 @@ package numpy.testing.utils;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?record:Dynamic, ?module:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?record:Dynamic, ?module:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

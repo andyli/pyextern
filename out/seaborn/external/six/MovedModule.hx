@@ -42,7 +42,8 @@ package seaborn.external.six;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(name:Dynamic, old:Dynamic, ?_new:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, old:Dynamic, ?_new:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -42,7 +42,8 @@ package scipy.io._fortran;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(filename:Dynamic, ?mode:Dynamic, ?header_dtype:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(filename:Dynamic, ?mode:Dynamic, ?header_dtype:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

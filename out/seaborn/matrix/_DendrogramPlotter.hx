@@ -45,7 +45,8 @@ package seaborn.matrix;
 		data : pandas.DataFrame
 		    Rectangular data
 	**/
-	public function __init__(data:Dynamic, linkage:Dynamic, metric:Dynamic, method:Dynamic, axis:Dynamic, label:Dynamic, rotate:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, linkage:Dynamic, metric:Dynamic, method:Dynamic, axis:Dynamic, label:Dynamic, rotate:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

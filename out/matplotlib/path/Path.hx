@@ -83,7 +83,8 @@ package matplotlib.path;
 		    Makes the path behave in an immutable way and sets the vertices
 		    and codes as read-only arrays.
 	**/
-	public function __init__(vertices:Dynamic, ?codes:Dynamic, ?_interpolation_steps:Dynamic, ?closed:Dynamic, ?readonly:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(vertices:Dynamic, ?codes:Dynamic, ?_interpolation_steps:Dynamic, ?closed:Dynamic, ?readonly:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

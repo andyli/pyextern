@@ -52,7 +52,8 @@ package matplotlib.image;
 		
 		kwargs are an optional list of Artist keyword args
 	**/
-	public function __init__(bbox:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?interp_at_native:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(bbox:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?interp_at_native:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -46,7 +46,8 @@ package scipy.sparse.data;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;

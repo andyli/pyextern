@@ -40,7 +40,8 @@ package numpy.lib.index_tricks;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(arr:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(arr:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

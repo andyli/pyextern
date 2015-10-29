@@ -60,7 +60,8 @@ package matplotlib.animation;
 		    output file. Some keys that may be of use include:
 		    title, artist, genre, subject, copyright, srcform, comment.
 	**/
-	public function __init__(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

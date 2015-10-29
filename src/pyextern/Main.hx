@@ -31,6 +31,7 @@ class Main {
 
 		var printer = new Printer();
 		for (td in tds) {
+			trace('write: ${td.pack.join(".")}.${td.name}');
 			var clsStr = "/* This file is generated, do not edit! */\n" + printer.printTypeDefinition(td);
 			var packDir = Path.join(td.pack);
 			if (packDir != "")
@@ -40,22 +41,26 @@ class Main {
 	}
 
 	var modules = new Map<String,Dynamic>();
-	public function processModule(module:Dynamic):Void {
-		if (!Inspect.ismodule(module)) {
-			var mod = try {
-				Importlib.import_module(module);
+	public function processModule(module:Dynamic, ?moduleName:String):Void {
+		if (Std.is(module,String)) {
+			moduleName = module;
+			module = try {
+				Importlib.import_module(moduleName);
 			} catch (e:Dynamic) {
-				trace('cannot import $module');
+				trace('cannot import $moduleName');
 				return;
 			}
-			module = mod;
 		}
-		var moduleName = module.__name__;
+		if (!Inspect.ismodule(module))
+			throw "not module: " + module;
+
+		if (moduleName == null) {
+			moduleName = module.__spec__.name;
+		}
 		if (modules.exists(moduleName)) {
 			return;
 		}
 		modules[moduleName] = module;
-
 
 		var members = try {
 			(Inspect.getmembers(module):Array<Tuple2<String,Dynamic>>);
@@ -67,10 +72,19 @@ class Main {
 			var memName = mem._1;
 			var memObj = mem._2;
 			if (Inspect.ismodule(memObj)) {
-				if ((memObj.__name__:String).startsWith(moduleName + ".")) // it is indeed a submodule
-					processModule(memObj);
-				else {
-					// trace('not a submodule of $moduleName: $memName (${memObj.__name__})');
+				function isSubmodule(m:String) {
+					return m.startsWith(moduleName + ".");
+				}
+				var mName = memObj.__name__;
+				if (!isSubmodule(mName) && memObj.__spec__ != null)
+					mName = memObj.__spec__.name;
+				if (!isSubmodule(mName))
+					mName = null;
+
+				if (mName != null) {
+					processModule(memObj, mName);
+				} else {
+					// trace('not a submodule of $moduleName: $memName (${memObj.__spec__.name;})');
 				}
 			} else if (Inspect.isclass(memObj)) {
 				if (memObj.__module__ == moduleName && memObj.__name__ == memName) {
@@ -297,19 +311,31 @@ class Main {
 
 	function getdoc(obj:Dynamic):Null<String> {
 		var doc = Inspect.getdoc(obj);
-		return if (doc != Inspect.getdoc(type(obj)))
-			doc;
-		else
+		return if (doc == null) {
 			null;
+		} else if (doc != Inspect.getdoc(type(obj))) {
+			doc.replace("*/", "* /"); //TODO: Not sure what is the right way to handle it. `*/` usually comes from example with regexp
+		} else {
+			null;
+		}
+	}
+
+	static function upperCaseFirstLetter(str:String):String {
+		var re_letter = ~/[A-Za-z]/;
+		if (!re_letter.match(str)) throw "no letter in " + str;
+		return re_letter.matchedLeft() + re_letter.matched(0).toUpperCase() + re_letter.matchedRight();
+	}
+
+	static function lowerCaseFirstLetter(str:String):String {
+		var re_letter = ~/[A-Za-z]/;
+		if (!re_letter.match(str)) throw "no letter in " + str;
+		return re_letter.matchedLeft() + re_letter.matched(0).toLowerCase() + re_letter.matchedRight();
 	}
 
 	static function hxName(name:String):String {
 		if (name == "") return "";
 		
-		var re_alpha = ~/[A-Za-z]/;
-		if (!re_alpha.match(name)) throw "no alphabet in " + name;
-		name = re_alpha.matchedLeft() + re_alpha.matched(0).toUpperCase() + re_alpha.matchedRight();
-
+		name = upperCaseFirstLetter(name);
 		name = name.replace(".", "_");
 
 		if (!re_type.match(name)) throw "invalid class name: " + name;
@@ -325,7 +351,8 @@ class Main {
 			"switch","case","default","public","private","try","untyped",
 			"catch","new","this","throw","extern","enum","in","interface",
 			"cast","override","dynamic","typedef","package",
-			"inline","using","null","true","false","abstract","macro"
+			"inline","using","null","true","false","abstract","macro",
+			"__init__" //haxe 3.2.1 has issue with this..
 		].indexOf(name) >= 0;
 	}
 
@@ -333,7 +360,7 @@ class Main {
 		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
 			// trace(Reflect.field(p, "default") == Inspect.Parameter.empty);
 			var arg:FunctionArg = {
-				opt: Reflect.field(p, "default") != inspect.Parameter.empty,
+				opt: if (python.Syntax.binop(Reflect.field(p, "default"), "is", inspect.Parameter.empty)) false else true,
 				name: if (isHxKeyword(p.name)) "_" + p.name else p.name,
 				type: macro:Dynamic,
 				// value: null
@@ -384,7 +411,14 @@ class Main {
 	}
 
 	function getTd(module:String, fullname:String):TypeDefinition {
-		var pack = module.split(".");
+		var pack = [
+			for (p in module.split(".")) {
+				p = lowerCaseFirstLetter(p);
+				if (isHxKeyword(p))
+					p = "_" + p;
+				p;
+			}
+		];
 		var hxName = switch (fullname) {
 			case "":
 				switch (pack.length) {
@@ -454,7 +488,11 @@ class Main {
 				var main = new Main();
 				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
 					var modname:String = pkg[1];
-					if (modname == moduleName || modname.startsWith(moduleName + ".")) {
+					if (
+						modname == moduleName ||
+						modname.startsWith(moduleName + ".") &&
+						!["numpy.f2py.__main__", "numpy.testing"].exists(function(skip) return modname == skip || modname.startsWith(skip + "."))
+					) {
 						trace('process module: $modname');
 						main.processModule(modname);
 					}

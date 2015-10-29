@@ -56,7 +56,8 @@ package scipy.signal.ltisys;
 	/**
 		Initialize the zeros, poles, gain LTI system.
 	**/
-	public function __init__(system:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(system:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

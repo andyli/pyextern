@@ -29,7 +29,8 @@ package pandas.algos;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function __le__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __lt__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;

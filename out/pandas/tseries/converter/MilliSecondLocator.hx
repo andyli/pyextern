@@ -46,7 +46,8 @@ package pandas.tseries.converter;
 	/**
 		*tz* is a :class:`tzinfo` instance.
 	**/
-	public function __init__(tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

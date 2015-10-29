@@ -57,7 +57,8 @@ package matplotlib.transforms;
 		                     other than to improve the readability of
 		                     ``str(transform)`` when DEBUG=True.
 	**/
-	public function __init__(xt:Dynamic, yt:Dynamic, scale_trans:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xt:Dynamic, yt:Dynamic, scale_trans:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

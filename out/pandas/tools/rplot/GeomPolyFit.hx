@@ -46,7 +46,8 @@ package pandas.tools.rplot;
 		lw: line width
 		colour: matplotlib colour
 	**/
-	public function __init__(degree:Dynamic, ?lw:Dynamic, ?colour:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(degree:Dynamic, ?lw:Dynamic, ?colour:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

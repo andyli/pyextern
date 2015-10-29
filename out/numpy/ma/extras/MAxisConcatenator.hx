@@ -42,7 +42,8 @@ package numpy.ma.extras;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?axis:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?axis:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

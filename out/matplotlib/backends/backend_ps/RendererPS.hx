@@ -42,7 +42,8 @@ package matplotlib.backends.backend_ps;
 		imform the image code about a requested dpi to generate high
 		res images and them scale them before embeddin them
 	**/
-	public function __init__(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

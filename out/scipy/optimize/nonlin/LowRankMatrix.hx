@@ -41,7 +41,8 @@ package scipy.optimize.nonlin;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(alpha:Dynamic, n:Dynamic, dtype:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(alpha:Dynamic, n:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

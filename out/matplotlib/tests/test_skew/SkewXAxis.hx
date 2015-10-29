@@ -42,7 +42,8 @@ package matplotlib.tests.test_skew;
 	/**
 		Init the axis with the parent Axes instance
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -51,7 +51,8 @@ package scipy.interpolate.ndgriddata;
 		(npoints, nvalues).  Ensure the `points` and values arrays are
 		C-contiguous, and of correct type.
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

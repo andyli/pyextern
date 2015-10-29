@@ -47,7 +47,8 @@ package matplotlib.transforms;
 		Create a new :class:`TransformedPath` from the given
 		:class:`~matplotlib.path.Path` and :class:`Transform`.
 	**/
-	public function __init__(path:Dynamic, transform:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(path:Dynamic, transform:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

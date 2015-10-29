@@ -58,7 +58,8 @@ package matplotlib.transforms;
 		
 		If *matrix* is None, initialize with the identity transform.
 	**/
-	public function __init__(?matrix:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?matrix:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

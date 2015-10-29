@@ -41,7 +41,8 @@ package pandas.core.strings;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(series:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(series:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

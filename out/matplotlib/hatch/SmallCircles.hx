@@ -40,7 +40,8 @@ package matplotlib.hatch;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(hatch:Dynamic, density:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(hatch:Dynamic, density:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

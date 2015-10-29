@@ -46,7 +46,8 @@ package matplotlib.dates;
 		*interval* is the interval between each iteration.  For
 		example, if ``interval=2``, mark every second microsecond.
 	**/
-	public function __init__(?interval:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

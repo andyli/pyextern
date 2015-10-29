@@ -40,7 +40,8 @@ package pandas.computation.engines;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(expr:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(expr:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

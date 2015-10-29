@@ -58,7 +58,8 @@ package scipy.signal.ltisys;
 		
 		The heavy lifting is done by the subclasses.
 	**/
-	public function __init__(system:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(system:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

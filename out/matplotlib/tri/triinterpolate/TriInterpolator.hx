@@ -40,7 +40,8 @@ package matplotlib.tri.triinterpolate;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(triangulation:Dynamic, z:Dynamic, ?trifinder:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(triangulation:Dynamic, z:Dynamic, ?trifinder:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

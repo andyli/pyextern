@@ -40,7 +40,8 @@ package scipy._lib.decorator;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?func:Dynamic, ?name:Dynamic, ?signature:Dynamic, ?defaults:Dynamic, ?doc:Dynamic, ?module:Dynamic, ?funcdict:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?func:Dynamic, ?name:Dynamic, ?signature:Dynamic, ?defaults:Dynamic, ?doc:Dynamic, ?module:Dynamic, ?funcdict:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

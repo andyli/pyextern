@@ -46,7 +46,8 @@ package numpy.lib.polynomial;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(c_or_r:Dynamic, ?r:Dynamic, ?variable:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(c_or_r:Dynamic, ?r:Dynamic, ?variable:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

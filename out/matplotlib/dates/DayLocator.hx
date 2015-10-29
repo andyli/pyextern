@@ -48,7 +48,8 @@ package matplotlib.dates;
 		
 		Default is to tick every day of the month: ``bymonthday=range(1,32)``
 	**/
-	public function __init__(?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -49,7 +49,8 @@ package matplotlib.ticker;
 		
 		If *n* is omitted or None, it will be set to 5 or 4.
 	**/
-	public function __init__(?n:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?n:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

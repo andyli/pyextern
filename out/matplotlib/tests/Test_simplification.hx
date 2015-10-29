@@ -929,7 +929,7 @@ package matplotlib.tests;
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  x: float         
@@ -3679,7 +3679,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -4949,7 +4949,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -10009,7 +10009,7 @@ package matplotlib.tests;
 		
 		Optional keyword arguments:
 		
-		  *xerr*/*yerr*: [ scalar | N, Nx1, or 2xN array-like ]
+		  *xerr* /*yerr*: [ scalar | N, Nx1, or 2xN array-like ]
 		    If a scalar number, len(N) array-like object, or an Nx1
 		    array-like object, errorbars are drawn at +/-value relative
 		    to the data.
@@ -10210,7 +10210,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -11180,7 +11180,7 @@ package matplotlib.tests;
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  x: float         
@@ -11365,7 +11365,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -11445,7 +11445,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -13966,7 +13966,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -15378,7 +15378,7 @@ package matplotlib.tests;
 		  *arr*:
 		    An MxN (luminance), MxNx3 (RGB) or MxNx4 (RGBA) array.
 		Keyword arguments:
-		  *vmin*/*vmax*: [ None | scalar ]
+		  *vmin* /*vmax*: [ None | scalar ]
 		    *vmin* and *vmax* set the color scaling for the image by fixing the
 		    values that map to the colormap color limits. If either *vmin*
 		    or *vmax* is None, that limit is determined from the *arr*
@@ -18712,16 +18712,16 @@ package matplotlib.tests;
 		
 		Notable keyword arguments:
 		
-		  *basex*/*basey*: scalar > 1
-		    Base of the *x*/*y* logarithm
+		  *basex* /*basey*: scalar > 1
+		    Base of the *x* /*y* logarithm
 		
-		  *subsx*/*subsy*: [ *None* | sequence ]
-		    The location of the minor *x*/*y* ticks; *None* defaults
+		  *subsx* /*subsy*: [ *None* | sequence ]
+		    The location of the minor *x* /*y* ticks; *None* defaults
 		    to autosubs, which depend on the number of decades in the
 		    plot; see :meth:`matplotlib.axes.Axes.set_xscale` /
 		    :meth:`matplotlib.axes.Axes.set_yscale` for details
 		
-		  *nonposx*/*nonposy*: ['mask' | 'clip' ]
+		  *nonposx* /*nonposy*: ['mask' | 'clip' ]
 		    Non-positive values in *x* or *y* can be masked as
 		    invalid, or clipped to a very small positive number
 		
@@ -23043,7 +23043,7 @@ package matplotlib.tests;
 		    to scale luminance data to 0,1. If *None*, defaults to
 		    :func:`normalize`.
 		
-		  *vmin*/*vmax*: [ *None* | scalar ]
+		  *vmin* /*vmax*: [ *None* | scalar ]
 		    *vmin* and *vmax* are used in conjunction with *norm* to
 		    normalize luminance data.  If either is *None*, it
 		    is autoscaled to the respective min or max
@@ -23141,7 +23141,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -23215,7 +23215,7 @@ package matplotlib.tests;
 		    scale luminance data to 0,1. If *None*, defaults to
 		    :func:`normalize`.
 		
-		  *vmin*/*vmax*: [ *None* | scalar ]
+		  *vmin* /*vmax*: [ *None* | scalar ]
 		    *vmin* and *vmax* are used in conjunction with *norm* to
 		    normalize luminance data.  If either is *None*, it
 		    is autoscaled to the respective min or max
@@ -23268,7 +23268,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -26068,7 +26068,7 @@ package matplotlib.tests;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -35056,14 +35056,14 @@ package matplotlib.tests;
 		
 		    'log'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *nonposx*/*nonposy*: ['mask' | 'clip' ]
+		        *nonposx* /*nonposy*: ['mask' | 'clip' ]
 		          non-positive values in *x* or *y* can be masked as
 		          invalid, or clipped to a very small positive number
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -35074,14 +35074,14 @@ package matplotlib.tests;
 		
 		    'symlog'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *linthreshx*/*linthreshy*:
+		        *linthreshx* /*linthreshy*:
 		          The range (-*x*, *x*) within which the plot is linear (to
 		          avoid having the plot go to infinity around zero).
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -35089,7 +35089,7 @@ package matplotlib.tests;
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
 		        
-		        *linscalex*/*linscaley*:
+		        *linscalex* /*linscaley*:
 		           This allows the linear range (-*linthresh* to *linthresh*)
 		           to be stretched relative to the logarithmic range.  Its
 		           value is the number of decades to use for each half of the
@@ -35176,14 +35176,14 @@ package matplotlib.tests;
 		
 		    'log'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *nonposx*/*nonposy*: ['mask' | 'clip' ]
+		        *nonposx* /*nonposy*: ['mask' | 'clip' ]
 		          non-positive values in *x* or *y* can be masked as
 		          invalid, or clipped to a very small positive number
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -35194,14 +35194,14 @@ package matplotlib.tests;
 		
 		    'symlog'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *linthreshx*/*linthreshy*:
+		        *linthreshx* /*linthreshy*:
 		          The range (-*x*, *x*) within which the plot is linear (to
 		          avoid having the plot go to infinity around zero).
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -35209,7 +35209,7 @@ package matplotlib.tests;
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
 		        
-		        *linscalex*/*linscaley*:
+		        *linscalex* /*linscaley*:
 		           This allows the linear range (-*linthresh* to *linthresh*)
 		           to be stretched relative to the logarithmic range.  Its
 		           value is the number of decades to use for each half of the

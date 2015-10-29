@@ -40,7 +40,8 @@ package matplotlib.text;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(xy:Dynamic, ?xycoords:Dynamic, ?annotation_clip:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xy:Dynamic, ?xycoords:Dynamic, ?annotation_clip:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

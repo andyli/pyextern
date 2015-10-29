@@ -40,7 +40,8 @@ package pandas.tseries.resample;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

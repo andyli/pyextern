@@ -49,7 +49,8 @@ package matplotlib.widgets;
 		*activecolor*
 		    The color of the button when clicked
 	**/
-	public function __init__(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

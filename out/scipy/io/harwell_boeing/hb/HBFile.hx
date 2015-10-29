@@ -48,7 +48,8 @@ package scipy.io.harwell_boeing.hb;
 		    Should be given as an argument for writing, in which case the file
 		    should be writable.
 	**/
-	public function __init__(file:Dynamic, ?hb_info:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file:Dynamic, ?hb_info:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

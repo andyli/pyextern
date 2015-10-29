@@ -98,7 +98,8 @@ package matplotlib.quiver;
 		tail; in either of these two cases, *X*, *Y* is somewhere in the
 		middle of the arrow+label key object.
 	**/
-	public function __init__(Q:Dynamic, X:Dynamic, Y:Dynamic, U:Dynamic, label:Dynamic, kw:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(Q:Dynamic, X:Dynamic, Y:Dynamic, U:Dynamic, label:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

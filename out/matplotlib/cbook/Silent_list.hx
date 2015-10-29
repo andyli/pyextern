@@ -62,7 +62,8 @@ package matplotlib.cbook;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(type:Dynamic, ?seq:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(type:Dynamic, ?seq:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

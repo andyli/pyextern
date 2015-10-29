@@ -41,7 +41,8 @@ package matplotlib.backends.backend_agg;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(width:Dynamic, height:Dynamic, dpi:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(width:Dynamic, height:Dynamic, dpi:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

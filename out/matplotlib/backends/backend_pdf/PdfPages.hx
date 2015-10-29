@@ -52,7 +52,8 @@ package matplotlib.backends.backend_pdf;
 		    If set to False, then empty pdf files will be deleted automatically
 		    when closed.
 	**/
-	public function __init__(filename:Dynamic, ?keep_empty:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(filename:Dynamic, ?keep_empty:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

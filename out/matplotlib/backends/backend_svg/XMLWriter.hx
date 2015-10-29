@@ -41,7 +41,8 @@ package matplotlib.backends.backend_svg;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(file:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

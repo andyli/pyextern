@@ -62,7 +62,8 @@ package matplotlib.collections;
 		    are None, they default to their :data:`matplotlib.rcParams` patch
 		    setting, in sequence form.
 	**/
-	public function __init__(paths:Dynamic, ?sizes:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(paths:Dynamic, ?sizes:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

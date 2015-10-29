@@ -40,7 +40,8 @@ package numpy.ma.core;
 	/**
 		Create the masked_print_option object.
 	**/
-	public function __init__(display:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(display:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

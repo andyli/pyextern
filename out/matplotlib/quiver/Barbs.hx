@@ -196,7 +196,7 @@ package matplotlib.quiver;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -215,7 +215,8 @@ package matplotlib.quiver;
 		
 		        
 	**/
-	public function __init__(ax:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

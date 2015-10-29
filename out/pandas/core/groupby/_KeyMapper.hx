@@ -40,7 +40,8 @@ package pandas.core.groupby;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(comp_ids:Dynamic, ngroups:Dynamic, labels:Dynamic, levels:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(comp_ids:Dynamic, ngroups:Dynamic, labels:Dynamic, levels:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

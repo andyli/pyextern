@@ -40,7 +40,8 @@ package numpy.testing.nosetester;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?_package:Dynamic, ?raise_warnings:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?_package:Dynamic, ?raise_warnings:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

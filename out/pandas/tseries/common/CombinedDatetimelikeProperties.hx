@@ -47,7 +47,8 @@ package pandas.tseries.common;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(values:Dynamic, index:Dynamic, name:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(values:Dynamic, index:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

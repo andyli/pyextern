@@ -48,7 +48,8 @@ package matplotlib.backends.backend_pgf;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(message:Dynamic, ?latex_output:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(message:Dynamic, ?latex_output:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

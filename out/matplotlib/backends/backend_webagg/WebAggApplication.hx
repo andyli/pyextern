@@ -146,7 +146,8 @@ package matplotlib.backends.backend_webagg;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?url_prefix:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?url_prefix:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

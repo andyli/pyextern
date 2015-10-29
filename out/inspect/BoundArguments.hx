@@ -37,7 +37,8 @@ package inspect;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(signature:Dynamic, arguments:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(signature:Dynamic, arguments:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

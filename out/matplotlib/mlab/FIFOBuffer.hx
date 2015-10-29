@@ -43,7 +43,8 @@ package matplotlib.mlab;
 		
 		Buffer up to *nmax* points.
 	**/
-	public function __init__(nmax:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(nmax:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

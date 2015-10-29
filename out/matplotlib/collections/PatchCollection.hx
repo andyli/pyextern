@@ -58,7 +58,8 @@ package matplotlib.collections;
 		None (i.e., a call to set_array has been made), at draw time a
 		call to scalar mappable will be made to set the face colors.
 	**/
-	public function __init__(patches:Dynamic, ?match_original:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(patches:Dynamic, ?match_original:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -49,7 +49,8 @@ package matplotlib.transforms;
 		
 		*transform*: a 2D :class:`Transform`
 	**/
-	public function __init__(bbox:Dynamic, transform:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(bbox:Dynamic, transform:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

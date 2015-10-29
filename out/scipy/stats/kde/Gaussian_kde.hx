@@ -60,7 +60,8 @@ package scipy.stats.kde;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(dataset:Dynamic, ?bw_method:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(dataset:Dynamic, ?bw_method:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

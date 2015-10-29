@@ -44,7 +44,8 @@ package matplotlib.cbook;
 	/**
 		use a :func:`time.strptime` format string for conversion
 	**/
-	public function __init__(?fmt:Dynamic, ?missing:Dynamic, ?missingval:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?fmt:Dynamic, ?missing:Dynamic, ?missingval:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

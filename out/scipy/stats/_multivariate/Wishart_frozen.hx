@@ -40,7 +40,8 @@ package scipy.stats._multivariate;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

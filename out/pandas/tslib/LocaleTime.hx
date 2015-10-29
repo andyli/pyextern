@@ -62,7 +62,8 @@ package pandas.tslib;
 		not call tz.tzset .  That is an issue for the programmer, though,
 		since changing the timezone is worthless without that call.
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/

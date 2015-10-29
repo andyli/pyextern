@@ -55,7 +55,8 @@ package scipy.interpolate.interpolate;
 	/**
 		Initialize a 1D linear interpolation class.
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, ?kind:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic, ?assume_sorted:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, ?kind:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic, ?assume_sorted:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

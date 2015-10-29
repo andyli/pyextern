@@ -49,7 +49,8 @@ package scipy.sparse.linalg._expm_multiply;
 		ell : int, optional
 		    A technical parameter controlling norm estimation quality.
 	**/
-	public function __init__(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

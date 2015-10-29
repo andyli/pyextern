@@ -57,7 +57,8 @@ package scipy.io.idl;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?init:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?init:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

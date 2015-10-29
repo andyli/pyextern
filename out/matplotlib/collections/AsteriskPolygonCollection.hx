@@ -87,7 +87,8 @@ package matplotlib.collections;
 		        transOffset = ax.transData,
 		        )
 	**/
-	public function __init__(numsides:Dynamic, ?rotation:Dynamic, ?sizes:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(numsides:Dynamic, ?rotation:Dynamic, ?sizes:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

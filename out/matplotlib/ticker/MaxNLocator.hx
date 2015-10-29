@@ -69,7 +69,8 @@ package matplotlib.ticker;
 		    removed.  If prune=='both', the largest and smallest ticks
 		    will be removed.  If prune==None, no ticks will be removed.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

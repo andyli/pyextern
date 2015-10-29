@@ -73,7 +73,8 @@ package matplotlib.patches;
 		visible: [True | False]         
 		zorder: any number         
 	**/
-	public function __init__(?edgecolor:Dynamic, ?facecolor:Dynamic, ?color:Dynamic, ?linewidth:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, ?hatch:Dynamic, ?fill:Dynamic, ?capstyle:Dynamic, ?joinstyle:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?edgecolor:Dynamic, ?facecolor:Dynamic, ?color:Dynamic, ?linewidth:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, ?hatch:Dynamic, ?fill:Dynamic, ?capstyle:Dynamic, ?joinstyle:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

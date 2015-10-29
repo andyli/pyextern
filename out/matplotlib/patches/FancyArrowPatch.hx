@@ -134,7 +134,8 @@ package matplotlib.patches;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(?posA:Dynamic, ?posB:Dynamic, ?path:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?dpi_cor:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?posA:Dynamic, ?posB:Dynamic, ?path:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?dpi_cor:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

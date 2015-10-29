@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
-package matplotlib.testing.jpl_units.UnitDbl;
+package matplotlib.testing.jpl_units.unitDbl;
 @:pythonImport("matplotlib.testing.jpl_units.UnitDbl", "UnitDbl") extern class UnitDbl {
 	/**
 		Return the absolute value of this UnitDbl.
@@ -102,7 +102,8 @@ package matplotlib.testing.jpl_units.UnitDbl;
 		- value    The numeric value of the UnitDbl.
 		- units    The string name of the units the value is in.
 	**/
-	public function __init__(value:Dynamic, units:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(value:Dynamic, units:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

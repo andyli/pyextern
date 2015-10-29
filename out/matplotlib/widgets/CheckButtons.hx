@@ -47,7 +47,8 @@ package matplotlib.widgets;
 		    A len(buttons) list of booleans indicating whether
 		     the button is active
 	**/
-	public function __init__(ax:Dynamic, labels:Dynamic, actives:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, labels:Dynamic, actives:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

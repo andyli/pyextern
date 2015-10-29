@@ -91,7 +91,8 @@ package pandas.core.panel;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?data:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?copy:Dynamic, ?dtype:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?data:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?copy:Dynamic, ?dtype:Dynamic):Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;

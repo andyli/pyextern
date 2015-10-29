@@ -48,7 +48,8 @@ package matplotlib.gridspec;
 		and hspace of the layout can be optionally specified or the
 		default values (from the figure or rcParams) will be used.
 	**/
-	public function __init__(nrows:Dynamic, ncols:Dynamic, subplot_spec:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(nrows:Dynamic, ncols:Dynamic, subplot_spec:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

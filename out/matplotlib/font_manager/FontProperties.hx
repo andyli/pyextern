@@ -40,7 +40,8 @@ package matplotlib.font_manager;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic, ?_init:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?family:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic, ?fname:Dynamic, ?_init:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

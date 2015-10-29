@@ -52,7 +52,8 @@ package pandas.core.groupby;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(groupby:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(groupby:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

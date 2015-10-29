@@ -45,7 +45,8 @@ package matplotlib.ticker;
 	/**
 		place ticks on the i-th data points where (i-offset)%base==0
 	**/
-	public function __init__(base:Dynamic, offset:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(base:Dynamic, offset:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

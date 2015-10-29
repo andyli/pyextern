@@ -45,7 +45,8 @@ package scipy.sparse.csgraph._shortest_path;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	public function __init__(?message:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?message:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

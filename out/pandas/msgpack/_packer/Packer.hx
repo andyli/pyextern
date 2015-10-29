@@ -39,7 +39,8 @@ package pandas.msgpack._packer;
 	/**
 		        
 	**/
-	public function __init__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/

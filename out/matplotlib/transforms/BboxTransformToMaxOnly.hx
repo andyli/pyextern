@@ -53,7 +53,8 @@ package matplotlib.transforms;
 		Create a new :class:`BboxTransformTo` that linearly transforms
 		points from the unit bounding box to *boxout*.
 	**/
-	public function __init__(boxout:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(boxout:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

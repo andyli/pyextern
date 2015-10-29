@@ -46,7 +46,8 @@ package pandas.io.tests.test_json.test_ujson;
 		method when executed. Raises a ValueError if the instance does
 		not have a method with the specified name.
 	**/
-	public function __init__(?methodName:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?methodName:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

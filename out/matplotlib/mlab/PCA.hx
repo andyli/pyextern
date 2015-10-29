@@ -71,7 +71,8 @@ package matplotlib.mlab;
 		loadings for the 1st principal component are given by Wt[0].
 		This row is also the 1st eigenvector.
 	**/
-	public function __init__(a:Dynamic, ?standardize:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(a:Dynamic, ?standardize:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

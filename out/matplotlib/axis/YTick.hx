@@ -43,7 +43,8 @@ package matplotlib.axis;
 		loc is the tick location in data coords
 		size is the tick size in points
 	**/
-	public function __init__(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

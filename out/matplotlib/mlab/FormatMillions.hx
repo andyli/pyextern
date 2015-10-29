@@ -40,7 +40,8 @@ package matplotlib.mlab;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?precision:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?precision:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

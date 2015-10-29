@@ -63,7 +63,8 @@ package pandas.compat;
 		regular dictionaries, but keyword arguments are not recommended
 		because their insertion order is arbitrary.
 	**/
-	public function __init__(args:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		od.__iter__() <==> iter(od)
 	**/

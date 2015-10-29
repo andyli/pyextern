@@ -46,7 +46,8 @@ package matplotlib.ticker;
 		which will be the only one to be labeled if *labelOnlyBase*
 		is ``False``
 	**/
-	public function __init__(?base:Dynamic, ?labelOnlyBase:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?base:Dynamic, ?labelOnlyBase:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

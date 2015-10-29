@@ -57,7 +57,8 @@ package matplotlib.sphinxext.mathmpl;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?rawsource:Dynamic, children:Dynamic, attributes:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?rawsource:Dynamic, children:Dynamic, attributes:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

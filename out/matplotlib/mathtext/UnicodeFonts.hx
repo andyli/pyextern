@@ -47,7 +47,8 @@ package matplotlib.mathtext;
 		*mathtext_backend*: A subclass of :class:`MathTextBackend`
 		used to delegate the actual rendering.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

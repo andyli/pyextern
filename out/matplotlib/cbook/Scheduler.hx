@@ -58,7 +58,8 @@ package matplotlib.cbook;
 		the base class constructor (Thread.__init__()) before doing anything
 		else to the thread.
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/

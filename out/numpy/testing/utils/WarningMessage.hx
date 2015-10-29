@@ -41,7 +41,8 @@ package numpy.testing.utils;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(message:Dynamic, category:Dynamic, filename:Dynamic, lineno:Dynamic, ?file:Dynamic, ?line:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(message:Dynamic, category:Dynamic, filename:Dynamic, lineno:Dynamic, ?file:Dynamic, ?line:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

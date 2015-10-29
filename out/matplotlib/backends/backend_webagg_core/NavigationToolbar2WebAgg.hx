@@ -40,7 +40,8 @@ package matplotlib.backends.backend_webagg_core;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(canvas:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(canvas:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

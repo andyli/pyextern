@@ -48,7 +48,8 @@ package pandas.core.common;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(class_instance:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(class_instance:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

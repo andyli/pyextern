@@ -41,7 +41,8 @@ package numpy.lib._datasource;
 	/**
 		Create a Repository with a shared url or directory of baseurl.
 	**/
-	public function __init__(baseurl:Dynamic, ?destpath:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(baseurl:Dynamic, ?destpath:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

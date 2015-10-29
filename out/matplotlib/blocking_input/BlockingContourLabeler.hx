@@ -45,7 +45,8 @@ package matplotlib.blocking_input;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(cs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(cs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

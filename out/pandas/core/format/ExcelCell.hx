@@ -40,7 +40,8 @@ package pandas.core.format;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(row:Dynamic, col:Dynamic, val:Dynamic, ?style:Dynamic, ?mergestart:Dynamic, ?mergeend:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(row:Dynamic, col:Dynamic, val:Dynamic, ?style:Dynamic, ?mergestart:Dynamic, ?mergeend:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

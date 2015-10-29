@@ -57,7 +57,8 @@ package pandas.tools.rplot;
 		-----------
 		value: any Python value to be returned when called
 	**/
-	public function __init__(value:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(value:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

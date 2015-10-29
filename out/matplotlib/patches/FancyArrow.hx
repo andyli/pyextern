@@ -96,7 +96,8 @@ package matplotlib.patches;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?length_includes_head:Dynamic, ?head_width:Dynamic, ?head_length:Dynamic, ?shape:Dynamic, ?overhang:Dynamic, ?head_starts_at_zero:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?length_includes_head:Dynamic, ?head_width:Dynamic, ?head_length:Dynamic, ?shape:Dynamic, ?overhang:Dynamic, ?head_starts_at_zero:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

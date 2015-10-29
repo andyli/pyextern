@@ -46,7 +46,8 @@ package numpy.ma.core;
 		
 		abfunc(x, filly) = x for all x to enable reduce.
 	**/
-	public function __init__(mbfunc:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(mbfunc:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

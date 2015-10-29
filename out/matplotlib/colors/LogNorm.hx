@@ -56,7 +56,8 @@ package matplotlib.colors;
 		likely to lead to surprises; therefore the default is
 		*clip* = *False*.
 	**/
-	public function __init__(?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

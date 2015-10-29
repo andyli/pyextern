@@ -40,7 +40,8 @@ package matplotlib.afm;
 	/**
 		Parse the AFM file in file object *fh*
 	**/
-	public function __init__(fh:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fh:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -55,7 +55,8 @@ package scipy.interpolate.polyint;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(xi:Dynamic, yi:Dynamic, ?orders:Dynamic, ?direction:Dynamic, ?axis:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xi:Dynamic, yi:Dynamic, ?orders:Dynamic, ?direction:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

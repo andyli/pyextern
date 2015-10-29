@@ -61,7 +61,8 @@ package matplotlib.figure;
 		*hspace* : 0.2
 		    The amount of height reserved for white space between subplots
 	**/
-	public function __init__(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

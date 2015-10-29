@@ -57,7 +57,8 @@ package matplotlib.backends.backend_tkagg;
 		colormap, container, cursor, height, highlightbackground,
 		highlightcolor, highlightthickness, relief, takefocus, visual, width.
 	**/
-	public function __init__(canvas:Dynamic, window:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(canvas:Dynamic, window:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

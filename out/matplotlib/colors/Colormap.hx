@@ -67,7 +67,8 @@ package matplotlib.colors;
 		N : int
 		    The number of rgb quantization levels.
 	**/
-	public function __init__(name:Dynamic, ?N:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, ?N:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

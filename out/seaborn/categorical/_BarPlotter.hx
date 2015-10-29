@@ -40,7 +40,8 @@ package seaborn.categorical;
 	/**
 		Initialize the plotter.
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

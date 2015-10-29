@@ -48,7 +48,8 @@ package scipy.stats._continuous_distns;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(mesg:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(mesg:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

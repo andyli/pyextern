@@ -40,7 +40,8 @@ package inspect;
 		Constructs Signature from the given list of Parameter
 		objects and 'return_annotation'.  All arguments are optional.
 	**/
-	public function __init__(?parameters:Dynamic, return_annotation:Dynamic, ?__validate_parameters__:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?parameters:Dynamic, return_annotation:Dynamic, ?__validate_parameters__:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

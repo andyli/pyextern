@@ -92,7 +92,8 @@ package pandas.core.index;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __le__(other:Dynamic):Dynamic;

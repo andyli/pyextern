@@ -46,7 +46,8 @@ package matplotlib.image;
 		
 		Additional kwargs are matplotlib.artist properties
 	**/
-	public function __init__(ax:Dynamic, ?x:Dynamic, ?y:Dynamic, ?A:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, ?x:Dynamic, ?y:Dynamic, ?A:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -46,7 +46,8 @@ package matplotlib.colorbar;
 		cmap : str or :class:`~matplotlib.colors.Colormap` instance
 		    The colormap used to map normalized data values to RGBA colors.
 	**/
-	public function __init__(ax:Dynamic, mappable:Dynamic, kw:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, mappable:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

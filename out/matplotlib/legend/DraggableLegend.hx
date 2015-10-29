@@ -42,7 +42,8 @@ package matplotlib.legend;
 		         legend upon finalizing. If "bbox", update
 		         *bbox_to_anchor* parameter.
 	**/
-	public function __init__(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

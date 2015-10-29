@@ -40,7 +40,8 @@ package matplotlib.mathtext;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(c:Dynamic, width:Dynamic, state:Dynamic, ?always:Dynamic, ?char_class:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(c:Dynamic, width:Dynamic, state:Dynamic, ?always:Dynamic, ?char_class:Dynamic):Dynamic;
 	public function __internal_repr__():Dynamic;
 	/**
 		Return self<=value.

@@ -40,7 +40,8 @@ package matplotlib.mathtext;
 	/**
 		Create a MathTextParser for the given backend *output*.
 	**/
-	public function __init__(output:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(output:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -40,7 +40,8 @@ package pandas.io.stata;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -64,7 +64,8 @@ package scipy.sparse.linalg.matfuncs;
 		To be called by subclasses. ``dtype`` may be None; ``shape`` should
 		be convertible to a length-2 tuple.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

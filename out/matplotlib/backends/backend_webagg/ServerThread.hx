@@ -58,7 +58,8 @@ package matplotlib.backends.backend_webagg;
 		the base class constructor (Thread.__init__()) before doing anything
 		else to the thread.
 	**/
-	public function __init__(?group:Dynamic, ?target:Dynamic, ?name:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?daemon:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?group:Dynamic, ?target:Dynamic, ?name:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?daemon:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -55,7 +55,8 @@ package matplotlib.colors;
 		halves of the linear range will be equal to one decade in
 		the logarithmic range. Defaults to 1.
 	**/
-	public function __init__(linthresh:Dynamic, ?linscale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(linthresh:Dynamic, ?linscale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

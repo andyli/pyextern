@@ -44,7 +44,8 @@ package matplotlib.gridspec;
 		
 		The index stars from 0.
 	**/
-	public function __init__(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

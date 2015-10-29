@@ -40,7 +40,8 @@ package pandas.io.stata;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(catarray:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(catarray:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

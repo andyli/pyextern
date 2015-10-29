@@ -78,7 +78,8 @@ package matplotlib.widgets;
 		 2 = center mouse button (scroll wheel)
 		 3 = right mouse button
 	**/
-	public function __init__(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

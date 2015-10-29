@@ -48,7 +48,8 @@ package matplotlib.patheffects;
 		    properties which cannot be overridden are "path", "clip_box"
 		    "transform" and "clip_path".
 	**/
-	public function __init__(?offset:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?offset:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

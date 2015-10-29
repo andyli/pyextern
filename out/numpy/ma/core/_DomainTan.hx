@@ -44,7 +44,8 @@ package numpy.ma.core;
 	/**
 		domain_tan(eps) = true where abs(cos(x)) < eps)
 	**/
-	public function __init__(eps:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(eps:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

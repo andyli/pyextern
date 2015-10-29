@@ -88,7 +88,8 @@ package matplotlib.dates;
 		  locator = AutoDateLocator()
 		  locator.intervald[HOURLY] = [3] # only show every 3 hours
 	**/
-	public function __init__(?tz:Dynamic, ?minticks:Dynamic, ?maxticks:Dynamic, ?interval_multiples:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?tz:Dynamic, ?minticks:Dynamic, ?maxticks:Dynamic, ?interval_multiples:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

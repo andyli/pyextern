@@ -76,7 +76,8 @@ package matplotlib.spines;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(axes:Dynamic, spine_type:Dynamic, path:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(axes:Dynamic, spine_type:Dynamic, path:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

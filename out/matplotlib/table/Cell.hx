@@ -79,7 +79,8 @@ package matplotlib.table;
 		zorder: any number         
 		      
 	**/
-	public function __init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?fill:Dynamic, ?text:Dynamic, ?loc:Dynamic, ?fontproperties:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?edgecolor:Dynamic, ?facecolor:Dynamic, ?fill:Dynamic, ?text:Dynamic, ?loc:Dynamic, ?fontproperties:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

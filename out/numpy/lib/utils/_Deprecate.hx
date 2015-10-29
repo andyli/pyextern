@@ -44,7 +44,8 @@ package numpy.lib.utils;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?old_name:Dynamic, ?new_name:Dynamic, ?message:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?old_name:Dynamic, ?new_name:Dynamic, ?message:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

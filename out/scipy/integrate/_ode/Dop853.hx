@@ -40,7 +40,8 @@ package scipy.integrate._ode;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?rtol:Dynamic, ?atol:Dynamic, ?nsteps:Dynamic, ?max_step:Dynamic, ?first_step:Dynamic, ?safety:Dynamic, ?ifactor:Dynamic, ?dfactor:Dynamic, ?beta:Dynamic, ?method:Dynamic, ?verbosity:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?rtol:Dynamic, ?atol:Dynamic, ?nsteps:Dynamic, ?max_step:Dynamic, ?first_step:Dynamic, ?safety:Dynamic, ?ifactor:Dynamic, ?dfactor:Dynamic, ?beta:Dynamic, ?method:Dynamic, ?verbosity:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

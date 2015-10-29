@@ -53,7 +53,8 @@ package scipy.interpolate.interpnd;
 		(npoints, nvalues).  Ensure the `points` and values arrays are
 		C-contiguous, and of correct type.
 	**/
-	public function __init__(points:Dynamic, values:Dynamic, ?fill_value:Dynamic, ?ndim:Dynamic, ?rescale:Dynamic, ?need_contiguous:Dynamic, ?need_values:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(points:Dynamic, values:Dynamic, ?fill_value:Dynamic, ?ndim:Dynamic, ?rescale:Dynamic, ?need_contiguous:Dynamic, ?need_values:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

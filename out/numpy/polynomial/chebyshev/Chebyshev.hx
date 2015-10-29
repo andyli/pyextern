@@ -47,7 +47,8 @@ package numpy.polynomial.chebyshev;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(coef:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(coef:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

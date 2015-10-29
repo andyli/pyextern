@@ -40,7 +40,8 @@ package scipy.io.matlab.mio4;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(file_stream:Dynamic, ?oned_as:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file_stream:Dynamic, ?oned_as:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

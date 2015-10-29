@@ -47,7 +47,8 @@ package pandas.tseries.converter;
 		if none of the values in ``self.scaled`` are greater than the unit
 		returned by ``locator._get_unit()``.
 	**/
-	public function __init__(locator:Dynamic, ?tz:Dynamic, ?defaultfmt:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(locator:Dynamic, ?tz:Dynamic, ?defaultfmt:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

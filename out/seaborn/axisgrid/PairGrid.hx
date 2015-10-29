@@ -159,7 +159,8 @@ package seaborn.axisgrid;
 		    >>> g = g.map(plt.scatter, linewidths=1, edgecolor="w", s=40)
 		    >>> g = g.add_legend()
 	**/
-	public function __init__(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

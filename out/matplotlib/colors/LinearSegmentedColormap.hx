@@ -106,7 +106,8 @@ package matplotlib.colors;
 		       :func:`makeMappingArray`
 		       For information about making a mapping array.
 	**/
-	public function __init__(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

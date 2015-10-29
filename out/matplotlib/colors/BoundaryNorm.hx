@@ -59,7 +59,8 @@ package matplotlib.colors;
 		if high; these are converted to valid indices by
 		:meth:`Colormap.__call__` .
 	**/
-	public function __init__(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

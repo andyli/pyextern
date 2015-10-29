@@ -53,7 +53,8 @@ package scipy.stats._multivariate;
 		    If integer, it is used to seed the local RandomState instance
 		    Default is None.
 	**/
-	public function __init__(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

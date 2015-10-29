@@ -48,7 +48,8 @@ package scipy.interpolate.interpnd;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	public function __init__(points:Dynamic, values:Dynamic, ?fill_value:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?rescale:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(points:Dynamic, values:Dynamic, ?fill_value:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?rescale:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

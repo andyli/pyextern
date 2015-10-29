@@ -40,7 +40,8 @@ package pandas.core.common;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(f:Dynamic, encoding:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(f:Dynamic, encoding:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

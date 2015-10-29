@@ -40,7 +40,8 @@ package pandas.tools.merge;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -62,7 +62,8 @@ package matplotlib.transforms;
 		can determine automatically which kind of blended transform to
 		create.
 	**/
-	public function __init__(x_transform:Dynamic, y_transform:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x_transform:Dynamic, y_transform:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

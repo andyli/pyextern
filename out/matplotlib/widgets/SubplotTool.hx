@@ -46,7 +46,8 @@ package matplotlib.widgets;
 		    None, a default figure will be created. If you are using
 		    this from the GUI
 	**/
-	public function __init__(targetfig:Dynamic, toolfig:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(targetfig:Dynamic, toolfig:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

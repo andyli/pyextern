@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
-package matplotlib.testing.jpl_units.Duration;
+package matplotlib.testing.jpl_units.duration;
 @:pythonImport("matplotlib.testing.jpl_units.Duration", "Duration") extern class Duration {
 	/**
 		Return the absolute value of the duration.
@@ -97,7 +97,8 @@ package matplotlib.testing.jpl_units.Duration;
 		- frame    The frame of the duration.  Must be 'ET' or 'UTC'
 		- seconds  The number of seconds in the Duration.
 	**/
-	public function __init__(frame:Dynamic, seconds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(frame:Dynamic, seconds:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

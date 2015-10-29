@@ -40,7 +40,8 @@ package matplotlib.offsetbox;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(annotation:Dynamic, ?use_blit:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(annotation:Dynamic, ?use_blit:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

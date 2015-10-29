@@ -44,7 +44,8 @@ package matplotlib.rcsetup;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(n:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(n:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

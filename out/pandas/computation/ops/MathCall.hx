@@ -51,7 +51,8 @@ package pandas.computation.ops;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(func:Dynamic, args:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(func:Dynamic, args:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
-package matplotlib.testing.jpl_units.UnitDblConverter;
+package matplotlib.testing.jpl_units.unitDblConverter;
 @:pythonImport("matplotlib.testing.jpl_units.UnitDblConverter", "UnitDblConverter") extern class UnitDblConverter {
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -40,7 +40,8 @@ package matplotlib.testing.jpl_units.UnitDblConverter;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

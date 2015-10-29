@@ -40,7 +40,8 @@ package pandas.tseries.frequencies;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(index:Dynamic, ?warn:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(index:Dynamic, ?warn:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

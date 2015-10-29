@@ -47,7 +47,8 @@ package pandas.computation.pytables;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?queryables:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?queryables:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

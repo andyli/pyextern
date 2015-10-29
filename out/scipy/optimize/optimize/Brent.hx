@@ -40,7 +40,8 @@ package scipy.optimize.optimize;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(func:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(func:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

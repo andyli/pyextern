@@ -44,7 +44,8 @@ package matplotlib.artist;
 		:class:`Artists` are of the same type) and it is your responsibility
 		to make sure this is so.
 	**/
-	public function __init__(o:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(o:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

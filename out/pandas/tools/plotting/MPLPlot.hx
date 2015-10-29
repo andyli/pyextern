@@ -40,7 +40,8 @@ package pandas.tools.plotting;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(data:Dynamic, ?kind:Dynamic, ?by:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?use_index:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?rot:Dynamic, ?ax:Dynamic, ?fig:Dynamic, ?title:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?sort_columns:Dynamic, ?fontsize:Dynamic, ?secondary_y:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?layout:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, ?kind:Dynamic, ?by:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?use_index:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?rot:Dynamic, ?ax:Dynamic, ?fig:Dynamic, ?title:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?sort_columns:Dynamic, ?fontsize:Dynamic, ?secondary_y:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?layout:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

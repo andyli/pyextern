@@ -40,7 +40,8 @@ package scipy.special._testutils;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(func:Dynamic, data:Dynamic, param_columns:Dynamic, ?result_columns:Dynamic, ?result_func:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?param_filter:Dynamic, ?knownfailure:Dynamic, ?dataname:Dynamic, ?nan_ok:Dynamic, ?vectorized:Dynamic, ?ignore_inf_sign:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(func:Dynamic, data:Dynamic, param_columns:Dynamic, ?result_columns:Dynamic, ?result_func:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?param_filter:Dynamic, ?knownfailure:Dynamic, ?dataname:Dynamic, ?nan_ok:Dynamic, ?vectorized:Dynamic, ?ignore_inf_sign:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

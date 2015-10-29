@@ -54,7 +54,8 @@ package matplotlib.offsetbox;
 		
 		other parameters are identical to that of Annotation.
 	**/
-	public function __init__(offsetbox:Dynamic, xy:Dynamic, ?xybox:Dynamic, ?xycoords:Dynamic, ?boxcoords:Dynamic, ?frameon:Dynamic, ?pad:Dynamic, ?annotation_clip:Dynamic, ?box_alignment:Dynamic, ?bboxprops:Dynamic, ?arrowprops:Dynamic, ?fontsize:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(offsetbox:Dynamic, xy:Dynamic, ?xybox:Dynamic, ?xycoords:Dynamic, ?boxcoords:Dynamic, ?frameon:Dynamic, ?pad:Dynamic, ?annotation_clip:Dynamic, ?box_alignment:Dynamic, ?bboxprops:Dynamic, ?arrowprops:Dynamic, ?fontsize:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

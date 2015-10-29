@@ -40,7 +40,8 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(dpi:Dynamic, width:Dynamic, height:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(dpi:Dynamic, width:Dynamic, height:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

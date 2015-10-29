@@ -40,7 +40,8 @@ package pkgutil;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(fullname:Dynamic, file:Dynamic, filename:Dynamic, etc:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fullname:Dynamic, file:Dynamic, filename:Dynamic, etc:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

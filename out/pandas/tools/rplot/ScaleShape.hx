@@ -57,7 +57,8 @@ package pandas.tools.rplot;
 		-----------
 		column: string, pandas DataFrame column name
 	**/
-	public function __init__(column:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(column:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

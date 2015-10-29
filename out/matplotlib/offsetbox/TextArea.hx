@@ -54,7 +54,8 @@ package matplotlib.offsetbox;
 		minimumdescent : bool, optional
 		    If `True`, the box has a minimum descent of "p".
 	**/
-	public function __init__(s:Dynamic, ?textprops:Dynamic, ?multilinebaseline:Dynamic, ?minimumdescent:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(s:Dynamic, ?textprops:Dynamic, ?multilinebaseline:Dynamic, ?minimumdescent:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

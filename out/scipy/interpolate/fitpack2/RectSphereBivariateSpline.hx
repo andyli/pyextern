@@ -70,7 +70,8 @@ package scipy.interpolate.fitpack2;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(u:Dynamic, v:Dynamic, r:Dynamic, ?s:Dynamic, ?pole_continuity:Dynamic, ?pole_values:Dynamic, ?pole_exact:Dynamic, ?pole_flat:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(u:Dynamic, v:Dynamic, r:Dynamic, ?s:Dynamic, ?pole_continuity:Dynamic, ?pole_values:Dynamic, ?pole_exact:Dynamic, ?pole_flat:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

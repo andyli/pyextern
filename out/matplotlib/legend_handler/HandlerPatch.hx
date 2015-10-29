@@ -49,7 +49,8 @@ package matplotlib.legend_handler;
 		Subsequently the created artist will have its ``update_prop`` method
 		called and the appropriate transform will be applied.
 	**/
-	public function __init__(?patch_func:Dynamic, kw:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?patch_func:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

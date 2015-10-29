@@ -95,7 +95,8 @@ package matplotlib.collections;
 		:meth:`~matplotlib.cm.ScalarMappable.set_array` has been made), at
 		draw time a call to scalar mappable will be made to set the colors.
 	**/
-	public function __init__(segments:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?antialiaseds:Dynamic, ?linestyles:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?zorder:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(segments:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?antialiaseds:Dynamic, ?linestyles:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?zorder:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

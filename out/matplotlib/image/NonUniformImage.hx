@@ -43,7 +43,8 @@ package matplotlib.image;
 		that 'interpolation' defaults to 'nearest', and 'bilinear'
 		is the only alternative.
 	**/
-	public function __init__(ax:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -68,7 +68,8 @@ package scipy.stats._multivariate;
 		>>> r.cov
 		array([[1.]])
 	**/
-	public function __init__(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -87,7 +87,8 @@ package matplotlib.collections;
 		
 		.. plot:: mpl_examples/pylab_examples/eventcollection_demo.py
 	**/
-	public function __init__(positions:Dynamic, ?orientation:Dynamic, ?lineoffset:Dynamic, ?linelength:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(positions:Dynamic, ?orientation:Dynamic, ?lineoffset:Dynamic, ?linelength:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

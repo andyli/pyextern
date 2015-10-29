@@ -40,7 +40,8 @@ package pandas.io.parsers;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

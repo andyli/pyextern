@@ -57,7 +57,8 @@ package scipy.io.matlab.mio5;
 		   If 'column', write 1-D numpy arrays as column vectors.
 		   If 'row', write 1D numpy arrays as row vectors.
 	**/
-	public function __init__(file_stream:Dynamic, ?do_compression:Dynamic, ?unicode_strings:Dynamic, ?global_vars:Dynamic, ?long_field_names:Dynamic, ?oned_as:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file_stream:Dynamic, ?do_compression:Dynamic, ?unicode_strings:Dynamic, ?global_vars:Dynamic, ?long_field_names:Dynamic, ?oned_as:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

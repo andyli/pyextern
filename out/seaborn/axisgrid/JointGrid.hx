@@ -162,7 +162,8 @@ package seaborn.axisgrid;
 		    >>> g = g.plot_joint(sns.kdeplot, cmap="Purples_d")
 		    >>> g = g.plot_marginals(sns.kdeplot, color="m", shade=True)
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, ?data:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, ?data:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

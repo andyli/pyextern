@@ -42,7 +42,8 @@ package matplotlib.offsetbox;
 		*width*, *height* : width and height of the container box.
 		*xdescent*, *ydescent* : descent of the box in x- and y-direction.
 	**/
-	public function __init__(width:Dynamic, height:Dynamic, ?xdescent:Dynamic, ?ydescent:Dynamic, ?clip:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(width:Dynamic, height:Dynamic, ?xdescent:Dynamic, ?ydescent:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

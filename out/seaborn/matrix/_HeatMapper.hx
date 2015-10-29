@@ -40,7 +40,8 @@ package seaborn.matrix;
 	/**
 		Initialize the plotting object.
 	**/
-	public function __init__(data:Dynamic, vmin:Dynamic, vmax:Dynamic, cmap:Dynamic, center:Dynamic, robust:Dynamic, annot:Dynamic, fmt:Dynamic, annot_kws:Dynamic, cbar:Dynamic, cbar_kws:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, vmin:Dynamic, vmax:Dynamic, cmap:Dynamic, center:Dynamic, robust:Dynamic, annot:Dynamic, fmt:Dynamic, annot_kws:Dynamic, cbar:Dynamic, cbar_kws:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

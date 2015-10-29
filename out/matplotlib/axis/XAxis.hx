@@ -42,7 +42,8 @@ package matplotlib.axis;
 	/**
 		Init the axis with the parent Axes instance
 	**/
-	public function __init__(axes:Dynamic, ?pickradius:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(axes:Dynamic, ?pickradius:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

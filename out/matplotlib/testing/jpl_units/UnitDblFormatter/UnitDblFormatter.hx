@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
-package matplotlib.testing.jpl_units.UnitDblFormatter;
+package matplotlib.testing.jpl_units.unitDblFormatter;
 @:pythonImport("matplotlib.testing.jpl_units.UnitDblFormatter", "UnitDblFormatter") extern class UnitDblFormatter {
 	/**
 		Return the format for tick val x at position pos
@@ -44,7 +44,8 @@ package matplotlib.testing.jpl_units.UnitDblFormatter;
 	/**
 		The arguments are identical to matplotlib.ticker.ScalarFormatter.
 	**/
-	public function __init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

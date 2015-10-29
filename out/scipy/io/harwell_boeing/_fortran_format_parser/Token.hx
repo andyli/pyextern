@@ -40,7 +40,8 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(type:Dynamic, value:Dynamic, pos:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(type:Dynamic, value:Dynamic, pos:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

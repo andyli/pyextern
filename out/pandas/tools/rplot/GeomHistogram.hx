@@ -45,7 +45,8 @@ package pandas.tools.rplot;
 		bins: integer, number of histogram bins
 		colour: matplotlib colour
 	**/
-	public function __init__(?bins:Dynamic, ?colour:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?bins:Dynamic, ?colour:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

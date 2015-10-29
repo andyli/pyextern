@@ -51,7 +51,8 @@ package matplotlib.transforms;
 		of data, consider the static methods :meth:`unit`,
 		:meth:`from_bounds` and :meth:`from_extents`.
 	**/
-	public function __init__(points:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(points:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

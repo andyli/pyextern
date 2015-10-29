@@ -20,50 +20,29 @@ package scipy.sparse;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsinh(x[, out])
+		rint(x[, out])
 		
-		Inverse hyperbolic sine element-wise.
+		Round elements of the array to the nearest integer.
 		
 		Parameters
 		----------
 		x : array_like
 		    Input array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of of the same shape as `x`.
+		out : ndarray or scalar
+		    Output array is same shape and type as `x`.
 		
-		Notes
-		-----
-		`arcsinh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `sinh(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi/2, pi/2]`.
-		
-		For real-valued input data types, `arcsinh` always returns real output.
-		For each value that cannot be expressed as a real number or infinity, it
-		returns ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `arccos` is a complex analytical function that
-		has branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from
-		the right on the former and from the left on the latter.
-		
-		The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``.
-		
-		References
-		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		See Also
+		--------
+		ceil, floor, trunc
 		
 		Examples
 		--------
-		>>> np.arcsinh(np.array([np.e, 10.0]))
-		array([ 1.72538256,  2.99822295])
+		>>> a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
+		>>> np.rint(a)
+		array([-2., -2., -0.,  0.,  2.,  2.,  2.])
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

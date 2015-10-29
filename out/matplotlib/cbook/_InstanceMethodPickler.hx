@@ -40,7 +40,8 @@ package matplotlib.cbook;
 	/**
 		Takes an instancemethod as its only argument.
 	**/
-	public function __init__(instancemethod:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(instancemethod:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

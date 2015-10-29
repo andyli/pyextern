@@ -44,7 +44,8 @@ package matplotlib.docstring;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(addendum:Dynamic, ?join:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(addendum:Dynamic, ?join:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

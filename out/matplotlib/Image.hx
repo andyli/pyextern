@@ -91,7 +91,7 @@ package matplotlib;
 		  *arr*:
 		    An MxN (luminance), MxNx3 (RGB) or MxNx4 (RGBA) array.
 		Keyword arguments:
-		  *vmin*/*vmax*: [ None | scalar ]
+		  *vmin* /*vmax*: [ None | scalar ]
 		    *vmin* and *vmax* set the color scaling for the image by fixing the
 		    values that map to the colormap color limits. If either *vmin*
 		    or *vmax* is None, that limit is determined from the *arr*

@@ -1,0 +1,19 @@
+/* This file is generated, do not edit! */
+package numpy.distutils.fcompiler;
+@:pythonImport("numpy.distutils.fcompiler.absoft") extern class Absoft {
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var compilers : Dynamic;
+	static public var cpu : Dynamic;
+	static public function cyg2win32(path:Dynamic):Dynamic;
+	static public var division : Dynamic;
+	static public function dummy_fortran_file():Dynamic;
+	static public var print_function : Dynamic;
+}

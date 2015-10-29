@@ -65,7 +65,8 @@ package pandas.compat.pickle_compat;
 		default to 'ASCII' and 'strict', respectively. *encoding* can be
 		'bytes' to read theses 8-bit string instances as bytes objects.
 	**/
-	public function __init__(file:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file:Dynamic, ?fix_imports:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

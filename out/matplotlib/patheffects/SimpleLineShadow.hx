@@ -56,7 +56,8 @@ package matplotlib.patheffects;
 		    Extra keywords are stored and passed through to
 		    :meth:`AbstractPathEffect._update_gc`.
 	**/
-	public function __init__(?offset:Dynamic, ?shadow_color:Dynamic, ?alpha:Dynamic, ?rho:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?offset:Dynamic, ?shadow_color:Dynamic, ?alpha:Dynamic, ?rho:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

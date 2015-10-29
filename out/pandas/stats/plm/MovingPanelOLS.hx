@@ -48,7 +48,8 @@ package pandas.stats.plm;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(y:Dynamic, x:Dynamic, ?weights:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?min_obs:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_overlap:Dynamic, ?entity_effects:Dynamic, ?time_effects:Dynamic, ?x_effects:Dynamic, ?cluster:Dynamic, ?dropped_dummies:Dynamic, ?verbose:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(y:Dynamic, x:Dynamic, ?weights:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?min_obs:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_overlap:Dynamic, ?entity_effects:Dynamic, ?time_effects:Dynamic, ?x_effects:Dynamic, ?cluster:Dynamic, ?dropped_dummies:Dynamic, ?verbose:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

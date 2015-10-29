@@ -79,7 +79,8 @@ package matplotlib.patches;
 		    :class:`Patch`
 		        For additional kwargs
 	**/
-	public function __init__(path:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(path:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

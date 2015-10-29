@@ -40,7 +40,8 @@ package matplotlib.sphinxext.plot_directive;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(basename:Dynamic, dirname:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(basename:Dynamic, dirname:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

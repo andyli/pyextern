@@ -43,7 +43,8 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 		width : int
 		    number of characters taken by the string (includes space).
 	**/
-	public function __init__(width:Dynamic, significand:Dynamic, ?min:Dynamic, ?repeat:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(width:Dynamic, significand:Dynamic, ?min:Dynamic, ?repeat:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

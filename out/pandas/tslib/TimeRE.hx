@@ -60,7 +60,8 @@ package pandas.tslib;
 		
 		Order of execution is important for dependency reasons.
 	**/
-	public function __init__(?locale_time:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?locale_time:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

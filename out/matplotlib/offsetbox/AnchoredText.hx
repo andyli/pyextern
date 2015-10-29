@@ -62,7 +62,8 @@ package matplotlib.offsetbox;
 		Other keyword parameters of `AnchoredOffsetbox` are also
 		allowed.
 	**/
-	public function __init__(s:Dynamic, loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?prop:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(s:Dynamic, loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?prop:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

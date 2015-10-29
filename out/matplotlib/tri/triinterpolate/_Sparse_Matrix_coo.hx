@@ -44,7 +44,8 @@ package matplotlib.tri.triinterpolate;
 		*cols*: int arrays of cols of non-null entries of the matrix
 		*shape*: 2-tuple (n,m) of matrix shape
 	**/
-	public function __init__(vals:Dynamic, rows:Dynamic, cols:Dynamic, shape:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(vals:Dynamic, rows:Dynamic, cols:Dynamic, shape:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

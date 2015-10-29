@@ -66,7 +66,8 @@ package pandas.tseries.holiday;
 		>>> July3rd = Holiday('July 3rd', month=7, day=3,
 		                      days_of_week=(0, 1, 2, 3))
 	**/
-	public function __init__(name:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?offset:Dynamic, ?observance:Dynamic, ?start_date:Dynamic, ?end_date:Dynamic, ?days_of_week:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?offset:Dynamic, ?observance:Dynamic, ?start_date:Dynamic, ?end_date:Dynamic, ?days_of_week:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

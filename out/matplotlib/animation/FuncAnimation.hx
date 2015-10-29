@@ -40,7 +40,8 @@ package matplotlib.animation;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(fig:Dynamic, func:Dynamic, ?frames:Dynamic, ?init_func:Dynamic, ?fargs:Dynamic, ?save_count:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fig:Dynamic, func:Dynamic, ?frames:Dynamic, ?init_func:Dynamic, ?fargs:Dynamic, ?save_count:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

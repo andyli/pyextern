@@ -42,7 +42,8 @@ package matplotlib.patheffects;
 		keyword arguments, i.e., the keyword arguments should be valid
 		gc parameter values.
 	**/
-	public function __init__(?offset:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?offset:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

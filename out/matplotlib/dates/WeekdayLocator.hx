@@ -53,7 +53,8 @@ package matplotlib.dates;
 		*interval* specifies the number of weeks to skip.  For example,
 		``interval=2`` plots every second week.
 	**/
-	public function __init__(?byweekday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?byweekday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

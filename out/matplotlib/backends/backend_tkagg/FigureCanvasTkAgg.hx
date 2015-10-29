@@ -40,7 +40,8 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(figure:Dynamic, ?master:Dynamic, ?resize_callback:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(figure:Dynamic, ?master:Dynamic, ?resize_callback:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

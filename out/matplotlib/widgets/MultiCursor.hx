@@ -40,7 +40,8 @@ package matplotlib.widgets;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(canvas:Dynamic, axes:Dynamic, ?useblit:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, lineprops:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(canvas:Dynamic, axes:Dynamic, ?useblit:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, lineprops:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

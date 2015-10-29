@@ -41,7 +41,8 @@ package pandas.sparse.panel;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(cache_field:Dynamic, frame_attr:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(cache_field:Dynamic, frame_attr:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -54,7 +54,8 @@ package matplotlib.container;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(kl:Dynamic, ?label:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(kl:Dynamic, ?label:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

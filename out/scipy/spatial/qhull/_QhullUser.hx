@@ -38,7 +38,8 @@ package scipy.spatial.qhull;
 		Return hash(self).
 	**/
 	public function __hash__():Dynamic;
-	public function __init__(qhull:Dynamic, ?incremental:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(qhull:Dynamic, ?incremental:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

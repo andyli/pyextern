@@ -43,7 +43,8 @@ package matplotlib.collections;
 		
 		%(Collection)s
 	**/
-	public function __init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -42,7 +42,8 @@ package matplotlib.backends.backend_pdf;
 		a PdfFile; extra: a dictionary of extra key-value pairs to
 		include in the stream header 
 	**/
-	public function __init__(id:Dynamic, len:Dynamic, file:Dynamic, ?extra:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(id:Dynamic, len:Dynamic, file:Dynamic, ?extra:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

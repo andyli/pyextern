@@ -56,7 +56,8 @@ package pandas.io.excel;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, engine_kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, engine_kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

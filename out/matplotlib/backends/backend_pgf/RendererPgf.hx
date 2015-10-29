@@ -45,7 +45,8 @@ package matplotlib.backends.backend_pgf;
 		* figure: Matplotlib figure to initialize height, width and dpi from.
 		* fh: File handle for the output of the drawing commands.
 	**/
-	public function __init__(figure:Dynamic, fh:Dynamic, ?dummy:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(figure:Dynamic, fh:Dynamic, ?dummy:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

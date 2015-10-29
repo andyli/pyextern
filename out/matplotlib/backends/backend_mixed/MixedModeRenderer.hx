@@ -53,7 +53,8 @@ package matplotlib.backends.backend_mixed;
 		raster drawing.  If not provided, this will use the Agg
 		backend (which is currently the only viable option anyway.)
 	**/
-	public function __init__(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

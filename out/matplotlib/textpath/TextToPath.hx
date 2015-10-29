@@ -42,7 +42,8 @@ package matplotlib.textpath;
 	/**
 		Initialization
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/

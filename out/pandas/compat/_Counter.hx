@@ -71,7 +71,8 @@ package pandas.compat;
 		>>> c = Counter({'a': 4, 'b': 2})    # a new counter from a mapping
 		>>> c = Counter(a=4, b=2)            # a new counter from keyword args
 	**/
-	public function __init__(?iterable:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?iterable:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

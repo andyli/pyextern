@@ -44,7 +44,8 @@ package numpy.ma.core;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(mufunc:Dynamic, ?fill:Dynamic, ?domain:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(mufunc:Dynamic, ?fill:Dynamic, ?domain:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

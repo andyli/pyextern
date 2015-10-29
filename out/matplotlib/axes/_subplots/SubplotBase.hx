@@ -50,7 +50,8 @@ package matplotlib.axes._subplots;
 		If *numRows* <= *numCols* <= *plotNum* < 10, *args* can be the
 		decimal integer *numRows* * 100 + *numCols* * 10 + *plotNum*.
 	**/
-	public function __init__(fig:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fig:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

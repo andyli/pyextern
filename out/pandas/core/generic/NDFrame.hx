@@ -77,7 +77,8 @@ package pandas.core.generic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(data:Dynamic, ?axes:Dynamic, ?copy:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, ?axes:Dynamic, ?copy:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	public function __invert__():Dynamic;
 	/**
 		Iterate over infor axis

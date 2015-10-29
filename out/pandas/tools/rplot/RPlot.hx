@@ -46,7 +46,8 @@ package pandas.tools.rplot;
 		x: string, DataFrame column name
 		y: string, DataFrame column name
 	**/
-	public function __init__(data:Dynamic, ?x:Dynamic, ?y:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, ?x:Dynamic, ?y:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

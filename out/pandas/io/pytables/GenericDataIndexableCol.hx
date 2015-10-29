@@ -44,7 +44,8 @@ package pandas.io.pytables;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, kwargs:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -85,7 +85,8 @@ package matplotlib.patches;
 		                    system.
 		=================   ===================================================
 	**/
-	public function __init__(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

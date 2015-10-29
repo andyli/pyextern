@@ -55,7 +55,8 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?momtype:Dynamic, ?a:Dynamic, ?b:Dynamic, ?xtol:Dynamic, ?badvalue:Dynamic, ?name:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?momtype:Dynamic, ?a:Dynamic, ?b:Dynamic, ?xtol:Dynamic, ?badvalue:Dynamic, ?name:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

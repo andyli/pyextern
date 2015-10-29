@@ -40,7 +40,8 @@ package matplotlib.delaunay.testfuncs;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?xrange:Dynamic, ?yrange:Dynamic, ?nrange:Dynamic, ?npoints:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?xrange:Dynamic, ?yrange:Dynamic, ?nrange:Dynamic, ?npoints:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

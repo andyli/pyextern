@@ -57,7 +57,8 @@ package scipy.sparse.linalg.matfuncs;
 		    will be used. Otherwise, the one-norm of powers and products
 		    may initially be estimated.
 	**/
-	public function __init__(A:Dynamic, ?structure:Dynamic, ?use_exact_onenorm:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(A:Dynamic, ?structure:Dynamic, ?use_exact_onenorm:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

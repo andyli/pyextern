@@ -45,7 +45,8 @@ package numpy.ma.core;
 		maximum(a, b) or maximum(a)
 		In one argument case returns the scalar maximum.
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/

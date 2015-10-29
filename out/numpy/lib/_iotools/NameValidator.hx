@@ -44,7 +44,8 @@ package numpy.lib._iotools;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?excludelist:Dynamic, ?deletechars:Dynamic, ?case_sensitive:Dynamic, ?replace_space:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?excludelist:Dynamic, ?deletechars:Dynamic, ?case_sensitive:Dynamic, ?replace_space:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

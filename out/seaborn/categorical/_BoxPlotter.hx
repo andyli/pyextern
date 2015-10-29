@@ -40,7 +40,8 @@ package seaborn.categorical;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, width:Dynamic, fliersize:Dynamic, linewidth:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, width:Dynamic, fliersize:Dynamic, linewidth:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

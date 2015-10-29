@@ -45,7 +45,8 @@ package numpy.ma.core;
 		abfunc(fillx, filly) must be defined.
 		abfunc(x, filly) = x for all x to enable reduce.
 	**/
-	public function __init__(dbfunc:Dynamic, domain:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(dbfunc:Dynamic, domain:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

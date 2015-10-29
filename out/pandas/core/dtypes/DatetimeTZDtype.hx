@@ -50,7 +50,8 @@ package pandas.core.dtypes;
 		unit : string unit that this represents, currently must be 'ns'
 		tz : string tz that this represents
 	**/
-	public function __init__(unit:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(unit:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

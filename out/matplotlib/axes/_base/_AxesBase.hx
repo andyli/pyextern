@@ -41,7 +41,8 @@ package matplotlib.axes._base;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -1586,14 +1587,14 @@ package matplotlib.axes._base;
 		
 		    'log'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *nonposx*/*nonposy*: ['mask' | 'clip' ]
+		        *nonposx* /*nonposy*: ['mask' | 'clip' ]
 		          non-positive values in *x* or *y* can be masked as
 		          invalid, or clipped to a very small positive number
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -1604,14 +1605,14 @@ package matplotlib.axes._base;
 		
 		    'symlog'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *linthreshx*/*linthreshy*:
+		        *linthreshx* /*linthreshy*:
 		          The range (-*x*, *x*) within which the plot is linear (to
 		          avoid having the plot go to infinity around zero).
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -1619,7 +1620,7 @@ package matplotlib.axes._base;
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
 		        
-		        *linscalex*/*linscaley*:
+		        *linscalex* /*linscaley*:
 		           This allows the linear range (-*linthresh* to *linthresh*)
 		           to be stretched relative to the logarithmic range.  Its
 		           value is the number of decades to use for each half of the
@@ -1674,7 +1675,7 @@ package matplotlib.axes._base;
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  x: float         
@@ -1766,14 +1767,14 @@ package matplotlib.axes._base;
 		
 		    'log'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *nonposx*/*nonposy*: ['mask' | 'clip' ]
+		        *nonposx* /*nonposy*: ['mask' | 'clip' ]
 		          non-positive values in *x* or *y* can be masked as
 		          invalid, or clipped to a very small positive number
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -1784,14 +1785,14 @@ package matplotlib.axes._base;
 		
 		    'symlog'
 		
-		        *basex*/*basey*:
+		        *basex* /*basey*:
 		           The base of the logarithm
 		        
-		        *linthreshx*/*linthreshy*:
+		        *linthreshx* /*linthreshy*:
 		          The range (-*x*, *x*) within which the plot is linear (to
 		          avoid having the plot go to infinity around zero).
 		        
-		        *subsx*/*subsy*:
+		        *subsx* /*subsy*:
 		           Where to place the subticks between each major tick.
 		           Should be a sequence of integers.  For example, in a log10
 		           scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -1799,7 +1800,7 @@ package matplotlib.axes._base;
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
 		        
-		        *linscalex*/*linscaley*:
+		        *linscalex* /*linscaley*:
 		           This allows the linear range (-*linthresh* to *linthresh*)
 		           to be stretched relative to the logarithmic range.  Its
 		           value is the number of decades to use for each half of the
@@ -1854,7 +1855,7 @@ package matplotlib.axes._base;
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  x: float         

@@ -46,7 +46,8 @@ package numpy.testing.utils;
 		For compatibility with Python 3.0, please consider all arguments to be
 		keyword-only.
 	**/
-	public function __init__(?record:Dynamic, ?modules:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?record:Dynamic, ?modules:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

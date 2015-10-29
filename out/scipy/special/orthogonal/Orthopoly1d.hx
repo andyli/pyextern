@@ -46,7 +46,8 @@ package scipy.special.orthogonal;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(roots:Dynamic, ?weights:Dynamic, ?hn:Dynamic, ?kn:Dynamic, ?wfunc:Dynamic, ?limits:Dynamic, ?monic:Dynamic, ?eval_func:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(roots:Dynamic, ?weights:Dynamic, ?hn:Dynamic, ?kn:Dynamic, ?wfunc:Dynamic, ?limits:Dynamic, ?monic:Dynamic, ?eval_func:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

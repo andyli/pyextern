@@ -59,7 +59,8 @@ package scipy.io.matlab.miobase;
 		   struct_as_record=True).
 		    
 	**/
-	public function __init__(mat_stream:Dynamic, ?byte_order:Dynamic, ?mat_dtype:Dynamic, ?squeeze_me:Dynamic, ?chars_as_strings:Dynamic, ?matlab_compatible:Dynamic, ?struct_as_record:Dynamic, ?verify_compressed_data_integrity:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(mat_stream:Dynamic, ?byte_order:Dynamic, ?mat_dtype:Dynamic, ?squeeze_me:Dynamic, ?chars_as_strings:Dynamic, ?matlab_compatible:Dynamic, ?struct_as_record:Dynamic, ?verify_compressed_data_integrity:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

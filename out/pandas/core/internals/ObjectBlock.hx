@@ -48,7 +48,8 @@ package pandas.core.internals;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(values:Dynamic, ?ndim:Dynamic, ?fastpath:Dynamic, ?placement:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(values:Dynamic, ?ndim:Dynamic, ?fastpath:Dynamic, ?placement:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -40,7 +40,8 @@ package matplotlib.legend_handler;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?xpad:Dynamic, ?ypad:Dynamic, ?update_func:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?xpad:Dynamic, ?ypad:Dynamic, ?update_func:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

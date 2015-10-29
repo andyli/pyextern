@@ -40,7 +40,8 @@ package scipy.spatial.kdtree;
 	/**
 		Construct a hyperrectangle.
 	**/
-	public function __init__(maxes:Dynamic, mins:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(maxes:Dynamic, mins:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

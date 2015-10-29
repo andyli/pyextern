@@ -44,7 +44,8 @@ package matplotlib.units;
 		default_limits: the default min, max of the axis if no data is present
 		If any of the above are None, the axis will simply use the default
 	**/
-	public function __init__(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

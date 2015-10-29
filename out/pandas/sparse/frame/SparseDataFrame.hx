@@ -194,7 +194,8 @@ package pandas.sparse.frame;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?default_kind:Dynamic, ?default_fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?default_kind:Dynamic, ?default_fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;

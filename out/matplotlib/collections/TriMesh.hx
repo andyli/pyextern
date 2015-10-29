@@ -43,7 +43,8 @@ package matplotlib.collections;
 		
 		%(Collection)s
 	**/
-	public function __init__(triangulation:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(triangulation:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

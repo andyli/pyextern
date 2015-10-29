@@ -305,7 +305,8 @@ package seaborn.axisgrid;
 		    ...            xticks=[10, 30, 50], yticks=[2, 6, 10])
 		    ...       .fig.subplots_adjust(wspace=.05, hspace=.05))
 	**/
-	public function __init__(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?hue:Dynamic, ?col_wrap:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?palette:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?hue_order:Dynamic, ?hue_kws:Dynamic, ?dropna:Dynamic, ?legend_out:Dynamic, ?despine:Dynamic, ?margin_titles:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?subplot_kws:Dynamic, ?gridspec_kws:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

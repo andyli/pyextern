@@ -58,7 +58,8 @@ package matplotlib.widgets;
 		hovercolor : color
 		    The color of the button when the mouse is over it
 	**/
-	public function __init__(ax:Dynamic, label:Dynamic, ?image:Dynamic, ?color:Dynamic, ?hovercolor:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, label:Dynamic, ?image:Dynamic, ?color:Dynamic, ?hovercolor:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

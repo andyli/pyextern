@@ -56,7 +56,8 @@ package pandas.tools.rplot;
 		max_size: float, maximum point size
 		transform: a one argument function of form float -> float (e.g. lambda x: log(x))
 	**/
-	public function __init__(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -42,7 +42,8 @@ package pandas.io.parsers;
 		
 		Should be replaced by np.genfromtxt eventually?
 	**/
-	public function __init__(f:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(f:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

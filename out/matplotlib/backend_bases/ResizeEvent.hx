@@ -40,7 +40,8 @@ package matplotlib.backend_bases;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(name:Dynamic, canvas:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, canvas:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

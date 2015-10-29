@@ -45,7 +45,8 @@ package matplotlib.dates;
 		*t* is a sequence of dates (floating point days).  *fmt* is a
 		:func:`strftime` format string.
 	**/
-	public function __init__(t:Dynamic, fmt:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(t:Dynamic, fmt:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

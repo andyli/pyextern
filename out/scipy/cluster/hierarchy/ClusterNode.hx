@@ -40,7 +40,8 @@ package scipy.cluster.hierarchy;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(id:Dynamic, ?left:Dynamic, ?right:Dynamic, ?dist:Dynamic, ?count:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(id:Dynamic, ?left:Dynamic, ?right:Dynamic, ?dist:Dynamic, ?count:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

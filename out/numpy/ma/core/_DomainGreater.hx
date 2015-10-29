@@ -44,7 +44,8 @@ package numpy.ma.core;
 	/**
 		DomainGreater(v)(x) = true where x <= v
 	**/
-	public function __init__(critical_value:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(critical_value:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -40,7 +40,8 @@ package matplotlib.type1font;
 		Initialize a Type-1 font. *input* can be either the file name of
 		a pfb file or a 3-tuple of already-decoded Type-1 font parts.
 	**/
-	public function __init__(input:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(input:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

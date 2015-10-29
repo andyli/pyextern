@@ -103,7 +103,8 @@ package matplotlib.patches;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

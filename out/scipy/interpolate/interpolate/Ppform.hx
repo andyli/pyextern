@@ -68,7 +68,8 @@ package scipy.interpolate.interpolate;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(coeffs:Dynamic, breaks:Dynamic, ?fill:Dynamic, ?sort:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(coeffs:Dynamic, breaks:Dynamic, ?fill:Dynamic, ?sort:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

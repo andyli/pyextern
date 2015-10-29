@@ -44,7 +44,8 @@ package matplotlib.patheffects;
 		    The path effects which this renderer represents.
 		renderer : :class:`matplotlib.backend_bases.RendererBase` instance
 	**/
-	public function __init__(path_effects:Dynamic, renderer:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(path_effects:Dynamic, renderer:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

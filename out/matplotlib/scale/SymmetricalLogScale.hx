@@ -88,14 +88,14 @@ package matplotlib.scale;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*basex*/*basey*:
+		*basex* /*basey*:
 		   The base of the logarithm
 		
-		*linthreshx*/*linthreshy*:
+		*linthreshx* /*linthreshy*:
 		  The range (-*x*, *x*) within which the plot is linear (to
 		  avoid having the plot go to infinity around zero).
 		
-		*subsx*/*subsy*:
+		*subsx* /*subsy*:
 		   Where to place the subticks between each major tick.
 		   Should be a sequence of integers.  For example, in a log10
 		   scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
@@ -103,7 +103,7 @@ package matplotlib.scale;
 		   will place 8 logarithmically spaced minor ticks between
 		   each major tick.
 		
-		*linscalex*/*linscaley*:
+		*linscalex* /*linscaley*:
 		   This allows the linear range (-*linthresh* to *linthresh*)
 		   to be stretched relative to the logarithmic range.  Its
 		   value is the number of decades to use for each half of the
@@ -112,7 +112,8 @@ package matplotlib.scale;
 		   halves of the linear range will be equal to one decade in
 		   the logarithmic range.
 	**/
-	public function __init__(axis:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(axis:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

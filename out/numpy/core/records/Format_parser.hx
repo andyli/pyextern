@@ -40,7 +40,8 @@ package numpy.core.records;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(formats:Dynamic, names:Dynamic, titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(formats:Dynamic, names:Dynamic, titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -51,7 +51,8 @@ package pandas.computation.expr;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(expr:Dynamic, ?engine:Dynamic, ?parser:Dynamic, ?env:Dynamic, ?truediv:Dynamic, ?level:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(expr:Dynamic, ?engine:Dynamic, ?parser:Dynamic, ?env:Dynamic, ?truediv:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

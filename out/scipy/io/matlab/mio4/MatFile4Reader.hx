@@ -59,7 +59,8 @@ package scipy.io.matlab.mio4;
 		   struct_as_record=True).
 		    
 	**/
-	public function __init__(mat_stream:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(mat_stream:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -40,7 +40,8 @@ package matplotlib.backend_bases;
 	/**
 		*x*, *y* in figure coords, 0,0 = bottom, left
 	**/
-	public function __init__(name:Dynamic, canvas:Dynamic, key:Dynamic, ?x:Dynamic, ?y:Dynamic, ?guiEvent:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(name:Dynamic, canvas:Dynamic, key:Dynamic, ?x:Dynamic, ?y:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

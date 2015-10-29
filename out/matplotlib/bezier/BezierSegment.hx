@@ -42,7 +42,8 @@ package matplotlib.bezier;
 		 shpae of n * 2, where n is the order of the bezier line. 1<=
 		 n <= 3 is supported.
 	**/
-	public function __init__(control_points:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(control_points:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -42,7 +42,8 @@ package matplotlib;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?rc:Dynamic, ?fname:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?rc:Dynamic, ?fname:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

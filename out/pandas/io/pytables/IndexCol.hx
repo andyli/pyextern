@@ -44,7 +44,8 @@ package pandas.io.pytables;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?itemsize:Dynamic, ?name:Dynamic, ?axis:Dynamic, ?kind_attr:Dynamic, ?pos:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?index_name:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?itemsize:Dynamic, ?name:Dynamic, ?axis:Dynamic, ?kind_attr:Dynamic, ?pos:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?index_name:Dynamic, kwargs:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

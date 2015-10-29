@@ -46,7 +46,8 @@ package matplotlib.gridspec;
 		be set. Optionally, the ratio of heights and widths of rows and
 		columns can be specified.
 	**/
-	public function __init__(nrows:Dynamic, ncols:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(nrows:Dynamic, ncols:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

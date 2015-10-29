@@ -44,7 +44,8 @@ package pandas.tools.rplot;
 		-----------
 		by: column names to group by
 	**/
-	public function __init__(by:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(by:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -40,7 +40,8 @@ package pandas.io.packers;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?file_like:Dynamic, ?read_size:Dynamic, ?use_list:Dynamic, ?object_hook:Dynamic, ?object_pairs_hook:Dynamic, ?list_hook:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?max_buffer_size:Dynamic, ?ext_hook:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?file_like:Dynamic, ?read_size:Dynamic, ?use_list:Dynamic, ?object_hook:Dynamic, ?object_pairs_hook:Dynamic, ?list_hook:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?max_buffer_size:Dynamic, ?ext_hook:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

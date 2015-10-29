@@ -68,7 +68,8 @@ package matplotlib.offsetbox;
 		
 		bbox_transform : with which the bbox_to_anchor will be transformed.
 	**/
-	public function __init__(loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?child:Dynamic, ?prop:Dynamic, ?frameon:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?child:Dynamic, ?prop:Dynamic, ?frameon:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

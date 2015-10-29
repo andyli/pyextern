@@ -46,7 +46,8 @@ package matplotlib.offsetbox;
 		  scale with the renderer dpi, while *width* and *height*
 		  need to be in pixels.
 	**/
-	public function __init__(child:Dynamic, ?pad:Dynamic, ?draw_frame:Dynamic, ?patch_attrs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(child:Dynamic, ?pad:Dynamic, ?draw_frame:Dynamic, ?patch_attrs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

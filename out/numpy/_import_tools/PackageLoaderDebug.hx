@@ -79,7 +79,8 @@ package numpy._import_tools;
 		Manages loading packages.
 		        
 	**/
-	public function __init__(?verbose:Dynamic, ?infunc:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?verbose:Dynamic, ?infunc:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

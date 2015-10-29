@@ -44,7 +44,8 @@ package matplotlib.rcsetup;
 	/**
 		valid is a list of legal strings
 	**/
-	public function __init__(key:Dynamic, valid:Dynamic, ?ignorecase:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(key:Dynamic, valid:Dynamic, ?ignorecase:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

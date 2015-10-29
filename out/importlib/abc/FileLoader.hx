@@ -55,7 +55,8 @@ package importlib.abc;
 		Cache the module name and the path to the file found by the
 		finder.
 	**/
-	public function __init__(fullname:Dynamic, path:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fullname:Dynamic, path:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

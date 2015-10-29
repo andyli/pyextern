@@ -40,7 +40,8 @@ package scipy.optimize._basinhopping;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(x:Dynamic, f:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, f:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

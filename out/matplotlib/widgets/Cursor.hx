@@ -44,7 +44,8 @@ package matplotlib.widgets;
 		
 		.. plot :: mpl_examples/widgets/cursor.py
 	**/
-	public function __init__(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, lineprops:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, lineprops:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

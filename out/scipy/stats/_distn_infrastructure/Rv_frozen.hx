@@ -40,7 +40,8 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(dist:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(dist:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

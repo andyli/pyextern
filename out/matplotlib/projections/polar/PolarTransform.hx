@@ -57,7 +57,8 @@ package matplotlib.projections.polar;
 		                     other than to improve the readability of
 		                     ``str(transform)`` when DEBUG=True.
 	**/
-	public function __init__(?axis:Dynamic, ?use_rmin:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?axis:Dynamic, ?use_rmin:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -61,7 +61,8 @@ package pandas.tools.rplot;
 		colour2: tuple, 3 element tuple with float values representing an RGB colour
 		colour3: tuple, 3 element tuple with float values representing an RGB colour
 	**/
-	public function __init__(column:Dynamic, colour1:Dynamic, colour2:Dynamic, colour3:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(column:Dynamic, colour1:Dynamic, colour2:Dynamic, colour3:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

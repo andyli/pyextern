@@ -42,7 +42,8 @@ package pandas.core.base;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(accessor_cls:Dynamic, construct_accessor:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(accessor_cls:Dynamic, construct_accessor:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

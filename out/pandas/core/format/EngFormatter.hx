@@ -63,7 +63,8 @@ package pandas.core.format;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?accuracy:Dynamic, ?use_eng_prefix:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?accuracy:Dynamic, ?use_eng_prefix:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

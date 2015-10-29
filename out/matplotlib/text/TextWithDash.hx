@@ -78,14 +78,15 @@ package matplotlib.text;
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  x: float         
 		  y: float         
 		  zorder: any number         
 	**/
-	public function __init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?dashlength:Dynamic, ?dashdirection:Dynamic, ?dashrotation:Dynamic, ?dashpad:Dynamic, ?dashpush:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?dashlength:Dynamic, ?dashdirection:Dynamic, ?dashrotation:Dynamic, ?dashpad:Dynamic, ?dashpush:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

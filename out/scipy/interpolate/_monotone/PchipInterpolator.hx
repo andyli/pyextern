@@ -68,7 +68,8 @@ package scipy.interpolate._monotone;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(x:Dynamic, y:Dynamic, ?axis:Dynamic, ?extrapolate:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(x:Dynamic, y:Dynamic, ?axis:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

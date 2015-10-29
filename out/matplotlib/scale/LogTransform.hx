@@ -57,7 +57,8 @@ package matplotlib.scale;
 		                     other than to improve the readability of
 		                     ``str(transform)`` when DEBUG=True.
 	**/
-	public function __init__(base:Dynamic, nonpos:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(base:Dynamic, nonpos:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

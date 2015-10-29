@@ -61,7 +61,8 @@ package pandas.compat.chainmap;
 		Initialize a ChainMap by setting *maps* to the given mappings.
 		If no mappings are provided, a single empty dictionary is used.
 	**/
-	public function __init__(maps:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(maps:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

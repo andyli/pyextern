@@ -1,5 +1,5 @@
 /* This file is generated, do not edit! */
-package matplotlib.testing.jpl_units.Epoch;
+package matplotlib.testing.jpl_units.epoch;
 @:pythonImport("matplotlib.testing.jpl_units.Epoch", "Epoch") extern class Epoch {
 	/**
 		Add a duration to an Epoch.
@@ -79,7 +79,8 @@ package matplotlib.testing.jpl_units.Epoch;
 		- daynum   The matplotlib day number of the epoch.
 		- dt       A python datetime instance.
 	**/
-	public function __init__(frame:Dynamic, ?sec:Dynamic, ?jd:Dynamic, ?daynum:Dynamic, ?dt:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(frame:Dynamic, ?sec:Dynamic, ?jd:Dynamic, ?daynum:Dynamic, ?dt:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -58,7 +58,8 @@ package matplotlib.transforms;
 		which can automatically choose the best kind of composite
 		transform instance to create.
 	**/
-	public function __init__(a:Dynamic, b:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(a:Dynamic, b:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

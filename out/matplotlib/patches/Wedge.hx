@@ -78,7 +78,8 @@ package matplotlib.patches;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(center:Dynamic, r:Dynamic, theta1:Dynamic, theta2:Dynamic, ?width:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(center:Dynamic, r:Dynamic, theta1:Dynamic, theta2:Dynamic, ?width:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

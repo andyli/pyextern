@@ -41,7 +41,8 @@ package pandas.core.config;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(d:Dynamic, ?prefix:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(d:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

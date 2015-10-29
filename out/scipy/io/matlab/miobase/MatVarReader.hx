@@ -40,7 +40,8 @@ package scipy.io.matlab.miobase;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(file_reader:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(file_reader:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

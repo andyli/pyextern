@@ -40,7 +40,8 @@ package pandas.tseries.tests.test_timezones;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(offset:Dynamic, name:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(offset:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

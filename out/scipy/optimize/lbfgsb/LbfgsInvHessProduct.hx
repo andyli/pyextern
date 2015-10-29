@@ -67,7 +67,8 @@ package scipy.optimize.lbfgsb;
 	/**
 		Construct the operator.
 	**/
-	public function __init__(sk:Dynamic, yk:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(sk:Dynamic, yk:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

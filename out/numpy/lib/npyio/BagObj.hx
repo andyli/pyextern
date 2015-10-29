@@ -41,7 +41,8 @@ package numpy.lib.npyio;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(obj:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(obj:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

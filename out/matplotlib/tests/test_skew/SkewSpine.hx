@@ -76,7 +76,8 @@ package matplotlib.tests.test_skew;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function __init__(axes:Dynamic, spine_type:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(axes:Dynamic, spine_type:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

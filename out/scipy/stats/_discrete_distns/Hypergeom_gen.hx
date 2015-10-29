@@ -55,7 +55,8 @@ package scipy.stats._discrete_distns;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?a:Dynamic, ?b:Dynamic, ?name:Dynamic, ?badvalue:Dynamic, ?moment_tol:Dynamic, ?values:Dynamic, ?inc:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?a:Dynamic, ?b:Dynamic, ?name:Dynamic, ?badvalue:Dynamic, ?moment_tol:Dynamic, ?values:Dynamic, ?inc:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

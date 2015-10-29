@@ -44,7 +44,8 @@ package matplotlib.text;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

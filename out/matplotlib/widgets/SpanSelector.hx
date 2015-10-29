@@ -58,7 +58,8 @@ package matplotlib.widgets;
 		If *span_stays* is True, the span stays visble after making
 		a valid selection.
 	**/
-	public function __init__(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

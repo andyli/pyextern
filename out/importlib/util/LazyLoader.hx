@@ -55,7 +55,8 @@ package importlib.util;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(loader:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(loader:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

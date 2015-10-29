@@ -40,7 +40,8 @@ package pandas.util.doctools;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?cell_width:Dynamic, ?cell_height:Dynamic, ?font_size:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?cell_width:Dynamic, ?cell_height:Dynamic, ?font_size:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

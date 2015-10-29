@@ -47,7 +47,8 @@ package pandas.io.sql;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(con:Dynamic, flavor:Dynamic, ?is_cursor:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(con:Dynamic, flavor:Dynamic, ?is_cursor:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -42,7 +42,8 @@ package matplotlib.dviread;
 		opens the file; actually reading the file happens when
 		iterating through the pages of the file.
 	**/
-	public function __init__(filename:Dynamic, dpi:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(filename:Dynamic, dpi:Dynamic):Dynamic;
 	/**
 		Iterate through the pages of the file.
 		

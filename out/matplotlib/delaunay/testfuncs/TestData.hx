@@ -49,7 +49,8 @@ package matplotlib.delaunay.testfuncs;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(args:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Implement iter(self).
 	**/

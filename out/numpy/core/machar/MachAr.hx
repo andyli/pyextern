@@ -44,7 +44,8 @@ package numpy.core.machar;
 		float_to_str - convert array float to str
 		title        - description of used floating point numbers
 	**/
-	public function __init__(?float_conv:Dynamic, ?int_conv:Dynamic, ?float_to_float:Dynamic, ?float_to_str:Dynamic, ?title:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?float_conv:Dynamic, ?int_conv:Dynamic, ?float_to_float:Dynamic, ?float_to_str:Dynamic, ?title:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

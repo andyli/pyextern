@@ -46,7 +46,8 @@ package pandas.tests.test_config;
 		method when executed. Raises a ValueError if the instance does
 		not have a method with the specified name.
 	**/
-	public function __init__(args:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(args:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

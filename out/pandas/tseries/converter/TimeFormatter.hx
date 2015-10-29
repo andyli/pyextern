@@ -45,7 +45,8 @@ package pandas.tseries.converter;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(locs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(locs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

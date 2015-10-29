@@ -40,7 +40,8 @@ package pandas.io.json;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(obj:Dynamic, orient:Dynamic, date_format:Dynamic, double_precision:Dynamic, ensure_ascii:Dynamic, date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(obj:Dynamic, orient:Dynamic, date_format:Dynamic, double_precision:Dynamic, ensure_ascii:Dynamic, date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

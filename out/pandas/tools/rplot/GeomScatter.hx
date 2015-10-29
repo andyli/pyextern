@@ -46,7 +46,8 @@ package pandas.tools.rplot;
 		colour: matplotlib colour
 		alpha: matplotlib alpha
 	**/
-	public function __init__(?marker:Dynamic, ?colour:Dynamic, ?alpha:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?marker:Dynamic, ?colour:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -43,7 +43,8 @@ package pandas.io.data;
 	/**
 		Instantiates options_data with a ticker saved as symbol 
 	**/
-	public function __init__(symbol:Dynamic, ?data_source:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(symbol:Dynamic, ?data_source:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -41,7 +41,8 @@ package matplotlib.delaunay.interpolate;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(triangulation:Dynamic, z:Dynamic, ?default_value:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(triangulation:Dynamic, z:Dynamic, ?default_value:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

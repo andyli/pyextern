@@ -46,7 +46,8 @@ package numpy.ma.core;
 		In one argument case, returns the scalar minimum.
 		        
 	**/
-	public function __init__():Dynamic;
+	@:native("__init__")
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -45,7 +45,8 @@ package matplotlib.ticker;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(locs:Dynamic, ?nbins:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(locs:Dynamic, ?nbins:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

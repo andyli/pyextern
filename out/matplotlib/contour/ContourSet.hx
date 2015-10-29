@@ -81,7 +81,8 @@ package matplotlib.contour;
 		
 		.. plot:: mpl_examples/misc/contour_manual.py
 	**/
-	public function __init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

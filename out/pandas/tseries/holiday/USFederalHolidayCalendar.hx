@@ -48,7 +48,8 @@ package pandas.tseries.holiday;
 		rules : array of Holiday objects
 		    A set of rules used to create the holidays.
 	**/
-	public function __init__(?name:Dynamic, ?rules:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?name:Dynamic, ?rules:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

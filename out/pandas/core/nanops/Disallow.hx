@@ -44,7 +44,8 @@ package pandas.core.nanops;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(dtypes:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(dtypes:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

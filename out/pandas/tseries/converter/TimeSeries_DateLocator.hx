@@ -45,7 +45,8 @@ package pandas.tseries.converter;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(freq:Dynamic, ?minor_locator:Dynamic, ?dynamic_mode:Dynamic, ?base:Dynamic, ?quarter:Dynamic, ?month:Dynamic, ?day:Dynamic, ?plot_obj:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(freq:Dynamic, ?minor_locator:Dynamic, ?dynamic_mode:Dynamic, ?base:Dynamic, ?quarter:Dynamic, ?month:Dynamic, ?day:Dynamic, ?plot_obj:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

@@ -46,7 +46,8 @@ package matplotlib.dates;
 		*fmt* is an :func:`strftime` format string; *tz* is the
 		 :class:`tzinfo` instance.
 	**/
-	public function __init__(fmt:Dynamic, ?tz:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(fmt:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

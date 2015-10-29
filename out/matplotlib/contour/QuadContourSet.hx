@@ -46,7 +46,8 @@ package matplotlib.contour;
 		object.  The remaining arguments and keyword arguments
 		are described in QuadContourSet.contour_doc.
 	**/
-	public function __init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

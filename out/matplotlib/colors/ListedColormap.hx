@@ -81,7 +81,8 @@ package matplotlib.colors;
 		
 		    the list will be extended by repetition.
 	**/
-	public function __init__(colors:Dynamic, ?name:Dynamic, ?N:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(colors:Dynamic, ?name:Dynamic, ?N:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

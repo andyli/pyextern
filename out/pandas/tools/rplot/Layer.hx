@@ -45,7 +45,8 @@ package pandas.tools.rplot;
 		data: pandas DataFrame instance
 		aes: aesthetics dictionary with bindings
 	**/
-	public function __init__(?data:Dynamic, kwds:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?data:Dynamic, kwds:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/

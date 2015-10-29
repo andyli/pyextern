@@ -106,7 +106,8 @@ package pandas.sparse.series;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(?data:Dynamic, ?index:Dynamic, ?sparse_index:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(?data:Dynamic, ?index:Dynamic, ?sparse_index:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic):Dynamic;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;

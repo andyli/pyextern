@@ -40,7 +40,8 @@ package scipy.optimize.zeros;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function __init__(root:Dynamic, iterations:Dynamic, function_calls:Dynamic, flag:Dynamic):Dynamic;
+	@:native("__init__")
+	public function ___init__(root:Dynamic, iterations:Dynamic, function_calls:Dynamic, flag:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
