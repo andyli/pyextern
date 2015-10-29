@@ -1,6 +1,5 @@
 package pyextern;
 
-import haxe.xml.*;
 import Sys.*;
 import sys.FileSystem.*;
 import sys.io.File.*;
@@ -8,14 +7,20 @@ import haxe.ds.*;
 import haxe.io.*;
 import haxe.macro.*;
 import haxe.macro.Expr;
+import python.lib.Builtins.*;
 using StringTools;
-using selecthxml.SelectDom;
 using Lambda;
+
+import python.Tuple;
+
+import inspect.*;
+import importlib.*;
 
 class Main {
 	static var re_ident = ~/^[A-Za-z_][A-Za-z0-9_]*$/;
 	static var re_type = ~/^[A-Z_][A-Za-z0-9_]*$/;
 	public var tds = new Map<String, TypeDefinition>();
+	public var descs = new Map<String, Xml>();
 
 	public function new():Void {}
 
@@ -34,64 +39,222 @@ class Main {
 		}
 	}
 
-	public function processModule(module:String):Void {
-		
-	}
-
-	public function processXmls(path:String):Void {
-		if (isDirectory(path)) {
-			for (item in readDirectory(path)) {
-				if (!item.endsWith(".xml")) continue;
-				var itemPath = Path.join([path, item]);
-				processXmls(itemPath);
+	var modules = new Map<String,Dynamic>();
+	public function processModule(module:Dynamic):Void {
+		if (!Inspect.ismodule(module)) {
+			var mod = try {
+				Importlib.import_module(module);
+			} catch (e:Dynamic) {
+				trace('cannot import $module');
+				return;
 			}
+			module = mod;
+		}
+		var moduleName = module.__name__;
+		if (modules.exists(moduleName)) {
 			return;
 		}
+		modules[moduleName] = module;
 
-		// trace(path);
-		
-		var contentStr = getContent(path);
-		var content = try {
-			Xml.parse(contentStr);
-		} catch (e:Dynamic) try {
-			Xml.parse(contentStr.replace(" label latex=", " latex=").replace(" number>", ">"));
-		} catch(e:Dynamic) {
-			trace("!!! invalid xml");
-			throw path;
+
+		var members = try {
+			(Inspect.getmembers(module):Array<Tuple2<String,Dynamic>>);
+		} catch (e:Dynamic){
+			trace('cannot getmembers of $moduleName');
+			return;
 		}
+		for (mem in members) {
+			var memName = mem._1;
+			var memObj = mem._2;
+			if (Inspect.ismodule(memObj)) {
+				if ((memObj.__name__:String).startsWith(moduleName + ".")) // it is indeed a submodule
+					processModule(memObj);
+				else {
+					// trace('not a submodule of $moduleName: $memName (${memObj.__name__})');
+				}
+			} else if (Inspect.isclass(memObj)) {
+				if (memObj.__module__ == moduleName && memObj.__name__ == memName) {
+					var td = getTd(memObj.__module__, memObj.__name__);
+					var members = try {
+						(Inspect.getmembers(memObj):Array<Tuple2<String,Dynamic>>);
+					} catch (e:Dynamic){
+						trace('cannot getmembers of $moduleName $memName');
+						continue;
+					}
+					for (clsMem in members) {
+						var clsMemName = clsMem._1;
+						var clsMemObj = clsMem._2;
 
-		for (desc in content.select("desc[domain=py]")) {
-			if (desc.get("objtype") != desc.get("desctype")) throw "!!!";
-			var desc_signature = desc.select("desc_signature")[0];
-			// trace([for (att in desc_signature.attributes()) att + ": " + desc_signature.get(att)]);
-			var name = new Fast(desc_signature.select("desc_name")[0]).innerData;
-			switch (desc.get("objtype")) {
-				case "class" | "exception":
-					var td = getTd(desc_signature.get("module"), desc_signature.get("fullname"));
-				case "data", "function", "staticmethod", "classmethod":
-					var td = getTd(desc_signature.get("module"), desc_signature.get("class"));
-					if (!re_ident.match(name)) throw desc_signature;
+						if (callable(clsMemObj)) {
+							var sig = try {
+								Inspect.signature(clsMemObj);
+							} catch(e:Dynamic) {
+								null;
+							}
+
+							var nonInstanceMethods = [
+								"__new__"
+							];
+
+							function baseFunction(cls:Dynamic, funcName:String):Dynamic {
+								var dict:python.Dict<String,Dynamic> = cls.__dict__;
+								return if (dict.hasKey(funcName))
+									dict.get(funcName);
+								else {
+									var mro:python.Tuple<Dynamic> = cls.__mro__;
+									if (mro.length > 1)
+										baseFunction(mro[1], funcName);
+									else {
+										// throw "what?";
+										null;
+									}
+								}
+							}
+
+							var typeName = type(baseFunction(memObj,clsMemName)).__name__;
+							var isInstanceMethod = 
+								nonInstanceMethods.indexOf(clsMemName) == -1 &&
+								typeName != "staticmethod" &&
+								(
+									Inspect.isfunction(clsMemObj) ||
+									Inspect.ismethoddescriptor(clsMemObj)
+								)
+							;
+							var fun = if (sig != null) {
+								var fun = sigToFun(sig);
+								if (isInstanceMethod) {
+									if (fun.args.length < 1) {
+										trace(moduleName + " " + memName + " " + clsMemName);
+										trace(typeName);
+										trace(sig);
+										throw "isInstanceMethod but no argument?";
+									} else if (fun.args[0].name != "self") {
+										// fun.args.shift();
+										// trace(moduleName + " " + memName + " " + clsMemName);
+										// trace(clsMemObj);
+										// trace(sig);
+										// throw fun;
+									}
+									fun.args.shift(); //remove `self` argument
+								} else {
+									if (
+										nonInstanceMethods.indexOf(clsMemName) == -1 &&
+										typeName != "staticmethod" &&
+										fun.args.length > 0 && fun.args[0].name == "self"
+									) {
+										trace(clsMemName);
+										trace(typeName);
+										throw "not isInstanceMethod but has self arguement?";
+									}
+								}
+								fun;
+							} else {
+								{
+									params:[],
+									args: [{
+										opt: false,
+										name: "args",
+										type: macro:haxe.extern.Rest<Dynamic>
+									}],
+									ret: macro:Dynamic,
+									expr: null
+								}
+							}
+							var field:Field = {
+								doc: getdoc(clsMemObj),
+								meta: [],
+								access: isInstanceMethod ? [APublic] : [AStatic, APublic],
+								name: clsMemName,
+								kind: FFun(fun),
+								pos: null
+							};
+							if (isHxKeyword(clsMemName)) {
+								field.name = "_" + clsMemName;
+								field.meta.push({
+									name:":native",
+									params: [{
+										expr: EConst(CString(clsMemName)),
+										pos: null
+									}],
+									pos:null
+								});
+							}
+							if (td.fields.exists(function(f) return f.name == field.name)) {
+								trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+							} else {
+								td.fields.push(field);
+							}
+						} else { //not callable
+							var field:Field = {
+								doc: getdoc(clsMemObj),
+								meta: [],
+								access: [AStatic, APublic],
+								name: clsMemName,
+								kind: FVar(macro:Dynamic),
+								pos: null
+							};
+							if (isHxKeyword(clsMemName)) {
+								field.name = "_" + clsMemName;
+								field.meta.push({
+									name:":native",
+									params: [{
+										expr: EConst(CString(clsMemName)),
+										pos: null
+									}],
+									pos:null
+								});
+							}
+							if (td.fields.exists(function(f) return f.name == field.name)) {
+								trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
+							} else {
+								td.fields.push(field);
+							}
+						}
+					}
+				} else {
+					//TODO probably a typedef
+					// trace('probably a typedef in $moduleName $memName: ${memObj.__module__} ${memObj.__name__}');
+				}
+			} else { // is a module member but is not a mobule/class
+				var td = getTd(moduleName, "");
+
+				if (!re_ident.match(memName)) throw memName;
+
+				if (callable(memObj)) {
+					var sig = try {
+						Inspect.signature(memObj);
+					} catch(e:Dynamic) {
+						null;
+					}
+
+					var fun = if (sig != null) {
+						sigToFun(sig);
+					} else {
+						{
+							params:[],
+							args: [{
+								opt: false,
+								name: "args",
+								type: macro:haxe.extern.Rest<Dynamic>
+							}],
+							ret: macro:Dynamic,
+							expr: null
+						}
+					}
 					var field:Field = {
+						doc: getdoc(memObj),
 						meta: [],
 						access: [AStatic, APublic],
-						name: name,
-						kind: FFun({
-							params: [],
-							args: hxArgs(desc_signature.select("desc_parameterlist")[0]),
-							ret: try hxRet(desc
-								.select("desc_content > field_list > field")
-								.find(function(field:Xml) return new Fast(field.select("field_name")[0]).innerData == "Returns")
-							) catch (e:Dynamic) throw desc,
-							expr: null
-						}),
+						name: memName,
+						kind: FFun(fun),
 						pos: null
 					};
-					if (isHxKeyword(name)) {
-						field.name = "_" + name;
+					if (isHxKeyword(memName)) {
+						field.name = "_" + memName;
 						field.meta.push({
 							name:":native",
 							params: [{
-								expr: EConst(CString(name)),
+								expr: EConst(CString(memName)),
 								pos: null
 							}],
 							pos:null
@@ -102,22 +265,21 @@ class Main {
 					} else {
 						td.fields.push(field);
 					}
-				case "attribute":
-					var cls = desc_signature.get("class");
-					var td = getTd(desc_signature.get("module"), cls);
+				} else {
 					var field:Field = {
+						doc: getdoc(memObj),
 						meta: [],
-						access: [APublic],
-						name: name,
+						access: [AStatic, APublic],
+						name: memName,
 						kind: FVar(macro:Dynamic),
 						pos: null
 					};
-					if (isHxKeyword(name)) {
-						field.name = "_" + name;
+					if (isHxKeyword(memName)) {
+						field.name = "_" + memName;
 						field.meta.push({
 							name:":native",
 							params: [{
-								expr: EConst(CString(name)),
+								expr: EConst(CString(memName)),
 								pos: null
 							}],
 							pos:null
@@ -128,55 +290,29 @@ class Main {
 					} else {
 						td.fields.push(field);
 					}
-				case "method":
-					if (desc_signature.get("class") == "") throw desc_signature;
-					var td = getTd(desc_signature.get("module"), desc_signature.get("class"));
-					var field:Field = {
-						meta: [],
-						access: [name.startsWith("_") ? APrivate : APublic],
-						name: name,
-						kind: FFun({
-							params: [],
-							args: hxArgs(desc_signature.select("desc_parameterlist")[0]),
-							ret: try hxRet(desc
-								.select("desc_content > field_list > field")
-								.find(function(field:Xml) return new Fast(field.select("field_name")[0]).innerData == "Returns")
-							) catch (e:Dynamic) throw desc,
-							expr: null
-						}),
-						pos: null
-					};
-					if (
-						isHxKeyword(name) || 
-						name == "__init__" //haxe 3.2.1 has issue with this... but 3.3 seems to be fine...
-					) {
-						field.name = "_" + name;
-						field.meta.push({
-							name:":native",
-							params: [{
-								expr: EConst(CString(name)),
-								pos: null
-							}],
-							pos:null
-						});
-					}
-					if (td.fields.exists(function(f) return f.name == field.name)) {
-						trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
-					} else {
-						td.fields.push(field);
-					}
-				case desctype:
-					throw desctype;
+				}
 			}
 		}
+	}
+
+	function getdoc(obj:Dynamic):Null<String> {
+		var doc = Inspect.getdoc(obj);
+		return if (doc != Inspect.getdoc(type(obj)))
+			doc;
+		else
+			null;
 	}
 
 	static function hxName(name:String):String {
 		if (name == "") return "";
 		
-		name = name.charAt(0).toUpperCase() + name.substr(1);
+		var re_alpha = ~/[A-Za-z]/;
+		if (!re_alpha.match(name)) throw "no alphabet in " + name;
+		name = re_alpha.matchedLeft() + re_alpha.matched(0).toUpperCase() + re_alpha.matchedRight();
 
 		name = name.replace(".", "_");
+
+		if (!re_type.match(name)) throw "invalid class name: " + name;
 
 		return name;
 	}
@@ -193,126 +329,23 @@ class Main {
 		].indexOf(name) >= 0;
 	}
 
-	static function hxRet(fieldReturns:Xml):ComplexType {
-		if (fieldReturns == null) {
-			// return macro:Void;
-			return macro:Dynamic;
-		}
-		var retStr = new Fast(fieldReturns.select("field_body > paragraph")[0]).innerHTML;
-		var ret = retStr.split(":");
-		if (ret.indexOf(",") >= 0) {
-			return macro:Array<Dynamic>;
-		} else {
-			return macro:Dynamic;
-		}
-	}
+	static function sigToFun(sig:Dynamic):Function {
+		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
+			// trace(Reflect.field(p, "default") == Inspect.Parameter.empty);
+			var arg:FunctionArg = {
+				opt: Reflect.field(p, "default") != inspect.Parameter.empty,
+				name: if (isHxKeyword(p.name)) "_" + p.name else p.name,
+				type: macro:Dynamic,
+				// value: null
+			};
+			arg;
+		}];
 
-	static function hxArgs(desc_parameterlist:Xml):Array<FunctionArg> {
-		try {
-			var args:Array<FunctionArg> = [];
-			var brackets = 0;
-			var bracketedParams = [];
-			for (desc_parameter in desc_parameterlist.select("desc_parameter")) {
-				var paramStr = new Fast(desc_parameter).innerData;
-				if (bracketedParams.length > 0) {
-					bracketedParams.push(paramStr);
-					if ((paramStr.indexOf(")") >= 0) && (--brackets == 0)) {
-						paramStr = bracketedParams.join(",");
-						bracketedParams = [];
-					} else {
-						continue;
-					}
-				} else if (paramStr.indexOf("(") >= 0) {
-					bracketedParams.push(paramStr);
-					continue;
-				}
-				var param = ~/\s*=\s*/.split(paramStr);
-				if (param.length < 1 || param.length > 2) throw param;
-				var re_args = ~/^\*(.+)$/;
-				var re_kwargs = ~/^\*\*(.+)$/;
-				switch (param[0]) {
-					case "...":
-						throw "rest args";
-					case v if (re_kwargs.match(v)):
-						throw "kwargs";
-						args.push({
-							opt: true,
-							name: re_kwargs.matched(1),
-							type: macro:python.KwArgs<Dynamic>
-						});
-					case v if (re_args.match(v)):
-						throw "varargs";
-						args.push({
-							opt: true,
-							name: re_args.matched(1),
-							type: macro:python.VarArgs<Dynamic>
-						});
-					case v if (~/^\(.*\.\.\.\)$/.match(v)):
-						var arg:FunctionArg = {
-							opt: false,
-							name: "sequence",
-							type: macro:Dynamic,
-							value: null
-						};
-						switch (hxVal(param[1])) {
-							case Some(val):
-								arg.opt = true;
-								arg.value = val;
-							case None:
-								arg.opt = false;
-						}
-						args.push(arg);
-					case name if (re_ident.match(name)):
-						var arg:FunctionArg = {
-							opt: false,
-							name: if (isHxKeyword(name)) "_" + name else name,
-							type: macro:Dynamic,
-							value: null
-						};
-						switch (hxVal(param[1])) {
-							case Some(val):
-								arg.opt = true;
-								arg.value = val;
-							case None:
-								arg.opt = false;
-						}
-						args.push(arg);
-					case "|dtype":
-						var arg:FunctionArg = {
-							opt: false,
-							name: "dtype",
-							type: macro:Dynamic,
-							value: null
-						};
-						switch (hxVal(param[1])) {
-							case Some(val):
-								arg.opt = true;
-								arg.value = val;
-							case None:
-								arg.opt = false;
-						}
-						args.push(arg);
-					case name:
-						trace(name);
-						throw name;
-				}
-			}
-			args.push({
-				opt: true,
-				name: "kwargs",
-				type: macro:python.KwArgs<Dynamic>
-			});
-			return args;
-		} catch (e:Dynamic) {
-			return [{
-				opt: true,
-				name: "varargs",
-				type: macro:python.VarArgs<Dynamic>
-			},{
-				opt: true,
-				name: "kwargs",
-				type: macro:python.KwArgs<Dynamic>
-			}];
+		return {
+			params:[],
+			args: args,
+			ret: macro:Dynamic,
+			expr: null
 		}
 	}
 
@@ -417,13 +450,18 @@ class Main {
 
 	static function main():Void {
 		switch (args()) {
-			case [docPath, outPath]:
-				var args = args();
+			case [moduleName, outPath]:
 				var main = new Main();
-				main.processXmls(absolutePath(args[0]));
-				main.write(absolutePath(args[1]));
+				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
+					var modname:String = pkg[1];
+					if (modname == moduleName || modname.startsWith(moduleName + ".")) {
+						trace('process module: $modname');
+						main.processModule(modname);
+					}
+				}
+				main.write(absolutePath(outPath));
 			case _:
-				throw "There should be exactly 2 arguments: docPath outPath";
+				throw "There should be exactly 2 arguments: moduleName, outPath";
 		}
 	}
 }

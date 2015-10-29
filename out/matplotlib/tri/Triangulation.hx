@@ -1,11 +1,16 @@
 /* This file is generated, do not edit! */
 package matplotlib.tri;
-@:pythonImport("matplotlib.tri", "Triangulation") extern class Triangulation {
-	public function calculate_plane_coefficients(z:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public var edges : Dynamic;
-	static public function get_from_args_and_kwargs(?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function get_masked_triangles(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function get_trifinder(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public var neighbors : Dynamic;
-	public function set_mask(mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+@:pythonImport("matplotlib.tri.triangulation") extern class Triangulation {
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
+	static public var division : Dynamic;
+	static public var print_function : Dynamic;
+	static public var unicode_literals : Dynamic;
 }

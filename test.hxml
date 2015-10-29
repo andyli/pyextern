@@ -1,5 +1,7 @@
 -cp src
 -cp out
+--macro include("importlib")
+--macro include("inspect")
 --macro include("numpy")
 --macro include("scipy")
 --macro include("pandas")

@@ -10,6 +10,5 @@ Libraries and their versions of the generated externs can be found in [requireme
 
  1. Install the lib, probably using `pip3`.
  2. Clone the source of the lib and checkout the tag of the installed version.
- 3. Use Sphinx to build its documentation in xml format, by something like `sphinx-build -b xml source docs/xml`.
- 4. `haxe build.hxml`
- 5. `python3 Main.py path/to/docs/xml path/to/output_dir`
+ 3. `haxe build.hxml`
+ 4. `python3 Main.py moduleName path/to/output_dir`

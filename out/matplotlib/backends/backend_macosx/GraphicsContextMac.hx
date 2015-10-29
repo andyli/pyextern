@@ -1,0 +1,356 @@
+/* This file is generated, do not edit! */
+package matplotlib.backends.backend_macosx;
+@:pythonImport("matplotlib.backends.backend_macosx", "GraphicsContextMac") extern class GraphicsContextMac {
+	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Implement delattr(self, name).
+	**/
+	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
+	/**
+		__dir__() -> list
+		default dir() implementation
+	**/
+	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __doc__ : Dynamic;
+	/**
+		Return self==value.
+	**/
+	public function __eq__(value:Dynamic):Dynamic;
+	/**
+		default object formatter
+	**/
+	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self>=value.
+	**/
+	public function __ge__(value:Dynamic):Dynamic;
+	/**
+		Return getattr(self, name).
+	**/
+	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		Return self>value.
+	**/
+	public function __gt__(value:Dynamic):Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function __init__():Dynamic;
+	/**
+		Return self<=value.
+	**/
+	public function __le__(value:Dynamic):Dynamic;
+	/**
+		Return self<value.
+	**/
+	public function __lt__(value:Dynamic):Dynamic;
+	static public var __module__ : Dynamic;
+	/**
+		Return self!=value.
+	**/
+	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		Create and return a new object.  See help(type) for accurate signature.
+	**/
+	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		helper for pickle
+	**/
+	public function __reduce__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		helper for pickle
+	**/
+	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
+	public function __repr__():Dynamic;
+	/**
+		Implement setattr(self, name, value).
+	**/
+	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	/**
+		__sizeof__() -> int
+		size of object in memory, in bytes
+	**/
+	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return str(self).
+	**/
+	public function __str__():Dynamic;
+	/**
+		Abstract classes can override this to customize issubclass().
+		
+		This is invoked early on by abc.ABCMeta.__subclasscheck__().
+		It should return True, False or NotImplemented.  If it returns
+		NotImplemented, the normal algorithm is used.  Otherwise, it
+		overrides the normal algorithm (and the outcome is cached).
+	**/
+	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		list of weak references to the object (if defined)
+	**/
+	static public var __weakref__ : Dynamic;
+	/**
+		Copy properties from gc to self
+	**/
+	public function copy_properties(gc:Dynamic):Dynamic;
+	static public var dashd : Dynamic;
+	/**
+		Draws a Gouraud-shaded triangle in the graphics context.
+	**/
+	public function draw_gouraud_triangle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draw an image at (x,y) in the graphics context.
+	**/
+	public function draw_image(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draws a marker in the graphics context at each of the vertices in path.
+	**/
+	public function draw_markers(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draw a TeX string at (x,y) as a bitmap in the graphics context.
+	**/
+	public function draw_mathtext(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draw a path in the graphics context and strokes and (if rgbFace is not None) fills it.
+	**/
+	public function draw_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draw a collection of paths in the graphics context.
+	**/
+	public function draw_path_collection(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draws a mesh in the graphics context.
+	**/
+	public function draw_quad_mesh(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Draw a string at (x,y) with the given properties in the graphics context.
+	**/
+	public function draw_text(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return the alpha value used for blending - not supported on
+		all backends
+	**/
+	public function get_alpha():Dynamic;
+	/**
+		Return true if the object should try to do antialiased rendering
+	**/
+	public function get_antialiased():Dynamic;
+	/**
+		Return the capstyle as a string in ('butt', 'round', 'projecting')
+	**/
+	public function get_capstyle():Dynamic;
+	/**
+		Return the clip path in the form (path, transform), where path
+		is a :class:`~matplotlib.path.Path` instance, and transform is
+		an affine transform to apply to the path before clipping.
+	**/
+	public function get_clip_path():Dynamic;
+	/**
+		Return the clip rectangle as a :class:`~matplotlib.transforms.Bbox`
+		instance
+	**/
+	public function get_clip_rectangle():Dynamic;
+	/**
+		Return the dash information as an offset dashlist tuple.
+		
+		The dash list is a even size list that gives the ink on, ink
+		off in pixels.
+		
+		See p107 of to PostScript `BLUEBOOK
+		<http://www-cdf.fnal.gov/offline/PostScript/BLUEBOOK.PDF>`_
+		for more info.
+		
+		Default value is None
+	**/
+	public function get_dashes():Dynamic;
+	/**
+		Return whether the value given by get_alpha() should be used to
+		override any other alpha-channel values.
+	**/
+	public function get_forced_alpha():Dynamic;
+	/**
+		Return the object identifier if one is set, None otherwise.
+	**/
+	public function get_gid():Dynamic;
+	/**
+		Gets the current hatch style
+	**/
+	public function get_hatch():Dynamic;
+	/**
+		Returns a Path for the current hatch.
+	**/
+	public function get_hatch_path(?density:Dynamic):Dynamic;
+	/**
+		Returns the scale factor between user and device coordinates.
+	**/
+	public function get_image_magnification(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return the line join style as one of ('miter', 'round', 'bevel')
+	**/
+	public function get_joinstyle():Dynamic;
+	/**
+		Return the linestyle: one of ('solid', 'dashed', 'dashdot',
+		'dotted').
+	**/
+	public function get_linestyle(style:Dynamic):Dynamic;
+	/**
+		Return the line width in points as a scalar
+	**/
+	public function get_linewidth():Dynamic;
+	/**
+		returns a tuple of three or four floats from 0-1.
+	**/
+	public function get_rgb():Dynamic;
+	/**
+		Returns the sketch parameters for the artist.
+		
+		Returns
+		-------
+		sketch_params : tuple or `None`
+		
+		A 3-tuple with the following elements:
+		
+		  * `scale`: The amplitude of the wiggle perpendicular to the
+		    source line.
+		
+		  * `length`: The length of the wiggle along the line.
+		
+		  * `randomness`: The scale factor by which the length is
+		    shrunken or expanded.
+		
+		May return `None` if no sketch parameters were set.
+	**/
+	public function get_sketch_params():Dynamic;
+	/**
+		returns the snap setting which may be:
+		
+		  * True: snap vertices to the nearest pixel center
+		
+		  * False: leave vertices as-is
+		
+		  * None: (auto) If the path contains only rectilinear line
+		    segments, round to the nearest pixel center
+	**/
+	public function get_snap():Dynamic;
+	/**
+		Returns the width, height, and descent of the text.
+	**/
+	public function get_text_width_height_descent(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		returns a url if one is set, None otherwise
+	**/
+	public function get_url():Dynamic;
+	/**
+		Restores the current graphics context from the stack.
+	**/
+	public function restore(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Saves the current graphics context onto the stack.
+	**/
+	public function save(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the opacitiy level for objects drawn in a graphics context
+	**/
+	public function set_alpha(alpha:Dynamic):Dynamic;
+	/**
+		Sets anti-aliasing on or off for a graphics context.
+	**/
+	public function set_antialiased(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the style for the endpoints of lines in a graphics context.
+	**/
+	public function set_capstyle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the clipping path.
+	**/
+	public function set_clip_path(path:Dynamic):Dynamic;
+	/**
+		Sets the clipping path to the area defined by the specified rectangle.
+	**/
+	public function set_clip_rectangle(box:Dynamic):Dynamic;
+	/**
+		Sets the pattern for dashed lines in a graphics context.
+	**/
+	public function set_dashes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the dpi for a graphics context.
+	**/
+	public function set_dpi(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the current stroke and fill color to a value in the DeviceRGB color space.
+	**/
+	public function set_foreground(fg:Dynamic, ?isRGBA:Dynamic):Dynamic;
+	/**
+		Sets the id.
+	**/
+	public function set_gid(id:Dynamic):Dynamic;
+	/**
+		Sets the current stroke and fill color to a value in the DeviceGray color space.
+	**/
+	public function set_graylevel(fg:Dynamic):Dynamic;
+	/**
+		Sets the hatch style for filling
+	**/
+	public function set_hatch(hatch:Dynamic):Dynamic;
+	/**
+		Sets the style for the joins of connected lines in a graphics context.
+	**/
+	public function set_joinstyle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Set the linestyle to be one of ('solid', 'dashed', 'dashdot',
+		'dotted'). One may specify customized dash styles by providing
+		a tuple of (offset, dash pairs). For example, the predefiend
+		linestyles have following values.:
+		
+		 'dashed'  : (0, (6.0, 6.0)),
+		 'dashdot' : (0, (3.0, 5.0, 1.0, 5.0)),
+		 'dotted'  : (0, (1.0, 3.0)),
+	**/
+	public function set_linestyle(style:Dynamic):Dynamic;
+	/**
+		Sets the line width for a graphics context.
+	**/
+	public function set_linewidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Sets the the sketch parameters.
+		
+		Parameters
+		----------
+		
+		scale : float, optional
+		    The amplitude of the wiggle perpendicular to the source
+		    line, in pixels.  If scale is `None`, or not provided, no
+		    sketch filter will be provided.
+		
+		length : float, optional
+		     The length of the wiggle along the line, in pixels
+		     (default 128.0)
+		
+		randomness : float, optional
+		    The scale factor by which the length is shrunken or
+		    expanded (default 16.0)
+	**/
+	public function set_sketch_params(?scale:Dynamic, ?length:Dynamic, ?randomness:Dynamic):Dynamic;
+	/**
+		Sets the snap setting which may be:
+		
+		  * True: snap vertices to the nearest pixel center
+		
+		  * False: leave vertices as-is
+		
+		  * None: (auto) If the path contains only rectilinear line
+		    segments, round to the nearest pixel center
+	**/
+	public function set_snap(snap:Dynamic):Dynamic;
+	/**
+		Sets the url for links in compatible backends
+	**/
+	public function set_url(url:Dynamic):Dynamic;
+}
