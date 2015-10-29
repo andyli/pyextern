@@ -1330,7 +1330,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -1668,7 +1668,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -2926,7 +2926,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3077,7 +3077,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3153,7 +3153,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3907,7 +3907,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -5053,7 +5053,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -5257,7 +5257,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -6108,7 +6108,7 @@ package matplotlib.tests.test_skew;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
