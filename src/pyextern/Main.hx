@@ -7,12 +7,12 @@ import haxe.ds.*;
 import haxe.io.*;
 import haxe.macro.*;
 import haxe.macro.Expr;
-import python.lib.Builtins.*;
 using StringTools;
 using Lambda;
 
 import python.Tuple;
 
+import python.lib.Builtins.*;
 import inspect.*;
 import importlib.*;
 
@@ -21,6 +21,10 @@ class Main {
 	static var re_type = ~/^[A-Z_][A-Za-z0-9_]*$/;
 	public var tds = new Map<String, TypeDefinition>();
 	public var descs = new Map<String, Xml>();
+
+	static function type(object:Dynamic):Dynamic {
+		return python.Syntax.callField(python.lib.Builtins, "type", object);
+	}
 
 	public function new():Void {}
 
@@ -141,7 +145,8 @@ class Main {
 										trace(moduleName + " " + memName + " " + clsMemName);
 										trace(typeName);
 										trace(sig);
-										throw "isInstanceMethod but no argument?";
+										trace("isInstanceMethod but no argument?");
+										// throw "isInstanceMethod but no argument?";
 									} else if (fun.args[0].name != "self") {
 										// fun.args.shift();
 										// trace(moduleName + " " + memName + " " + clsMemName);
@@ -486,12 +491,17 @@ class Main {
 		switch (args()) {
 			case [moduleName, outPath]:
 				var main = new Main();
+				trace('process module: $moduleName');
+				main.processModule(moduleName);
 				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
 					var modname:String = pkg[1];
 					if (
-						modname == moduleName ||
 						modname.startsWith(moduleName + ".") &&
-						!["numpy.f2py.__main__", "numpy.testing"].exists(function(skip) return modname == skip || modname.startsWith(skip + "."))
+						![
+							"numpy.distutils",
+							"numpy.f2py.__main__",
+							"numpy.testing"
+						].exists(function(skip) return modname == skip || modname.startsWith(skip + "."))
 					) {
 						trace('process module: $modname');
 						main.processModule(modname);

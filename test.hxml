@@ -2,10 +2,11 @@
 -cp out
 --macro include("importlib")
 --macro include("inspect")
---macro include("numpy")
---macro include("scipy")
---macro include("pandas")
 --macro include("matplotlib")
+--macro include("numpy")
+--macro include("pandas")
+--macro include("pkgutil")
+--macro include("scipy")
 --macro include("seaborn")
 -python Test.py
 --no-output

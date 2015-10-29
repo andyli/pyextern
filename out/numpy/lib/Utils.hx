@@ -10,7 +10,6 @@ package numpy.lib;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _dictlist : Dynamic;
 	static public var _function_signature_re : Dynamic;
 	static public function _getmembers(item:Dynamic):Dynamic;

@@ -20,29 +20,60 @@ package scipy.sparse;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		rint(x[, out])
+		arcsin(x[, out])
 		
-		Round elements of the array to the nearest integer.
+		Inverse sine, element-wise.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
+		    `y`-coordinate on the unit circle.
+		
+		out : ndarray, optional
+		    Array of the same shape as `x`, in which to store the results.
+		    See `doc.ufuncs` (Section "Output arguments") for more details.
 		
 		Returns
 		-------
-		out : ndarray or scalar
-		    Output array is same shape and type as `x`.
+		angle : ndarray
+		    The inverse sine of each element in `x`, in radians and in the
+		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
+		    is returned, otherwise an array.
 		
 		See Also
 		--------
-		ceil, floor, trunc
+		sin, cos, arccos, tan, arctan, arctan2, emath.arcsin
+		
+		Notes
+		-----
+		`arcsin` is a multivalued function: for each `x` there are infinitely
+		many numbers `z` such that :math:`sin(z) = x`.  The convention is to
+		return the angle `z` whose real part lies in [-pi/2, pi/2].
+		
+		For real-valued input data types, *arcsin* always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
+		
+		For complex-valued input, `arcsin` is a complex analytic function that
+		has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is
+		continuous from above on the former and from below on the latter.
+		
+		The inverse sine is also known as `asin` or sin^{-1}.
+		
+		References
+		----------
+		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
+		10th printing, New York: Dover, 1964, pp. 79ff.
+		http://www.math.sfu.ca/~cbm/aands/
 		
 		Examples
 		--------
-		>>> a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
-		>>> np.rint(a)
-		array([-2., -2., -0.,  0.,  2.,  2.,  2.])
+		>>> np.arcsin(1)     # pi/2
+		1.5707963267948966
+		>>> np.arcsin(-1)    # -pi/2
+		-1.5707963267948966
+		>>> np.arcsin(0)
+		0.0
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

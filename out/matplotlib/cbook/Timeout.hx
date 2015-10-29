@@ -151,7 +151,6 @@ package matplotlib.cbook;
 	**/
 	static public var daemon : Dynamic;
 	public function getName():Dynamic;
-	public function get_name():Dynamic;
 	static public var id : Dynamic;
 	/**
 		Thread identifier of this thread or None if it has not been started.
