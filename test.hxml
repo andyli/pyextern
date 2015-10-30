@@ -1,4 +1,5 @@
 -cp src
+-cp coredep
 -cp out
 --macro include("importlib")
 --macro include("inspect")
