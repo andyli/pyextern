@@ -231,8 +231,17 @@ class Main {
 						}
 					}
 				} else {
-					//TODO probably a typedef
-					// trace('probably a typedef in $moduleName $memName: ${memObj.__module__} ${memObj.__name__}');
+					// a typedef
+					var td = getTd(moduleName, memName);
+					if (filterModules(memObj.__module__)) {
+						var real_td = getTd(memObj.__module__, memObj.__name__);
+						td.meta = [];
+						td.isExtern = false;
+						td.kind = TDAlias(TPath({
+							pack: real_td.pack,
+							name: real_td.name
+						}));
+					}
 				}
 			} else { // is a module member but is not a mobule/class
 				var td = getTd(moduleName, "");
@@ -466,7 +475,7 @@ class Main {
 					fields : []
 				};
 			case td:
-				switch (td.meta[0]) {
+				if (td.isExtern) switch (td.meta[0]) {
 					case {
 						name: ":pythonImport",
 						params: [
@@ -487,22 +496,26 @@ class Main {
 		}
 	}
 
+	var filterModules:String->Bool;
+
 	static function main():Void {
 		switch (args()) {
 			case [moduleName, outPath]:
 				var main = new Main();
 				trace('process module: $moduleName');
-				main.processModule(moduleName);
-				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
-					var modname:String = pkg[1];
-					if (
+				main.filterModules = function(modname:String):Bool {
+					return 
 						modname.startsWith(moduleName + ".") &&
 						![
 							"numpy.distutils",
 							"numpy.f2py.__main__",
 							"numpy.testing"
-						].exists(function(skip) return modname == skip || modname.startsWith(skip + "."))
-					) {
+						].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
+				}
+				main.processModule(moduleName);
+				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
+					var modname:String = pkg[1];
+					if (main.filterModules(modname)) {
 						trace('process module: $modname');
 						main.processModule(modname);
 					}
