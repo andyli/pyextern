@@ -40,7 +40,8 @@ class Main {
 			var packDir = Path.join(td.pack);
 			if (packDir != "")
 				createDirectory(packDir);
-			saveContent(Path.join([packDir, td.name + ".hx"]), clsStr);
+			var path = Path.join([packDir, td.name + ".hx"]);
+			saveContent(path, clsStr);
 		}
 	}
 
@@ -85,7 +86,7 @@ class Main {
 				if (!isSubmodule(mName))
 					mName = null;
 
-				if (mName != null) {
+				if (mName != null && filterModules(mName)) {
 					processModule(memObj, mName);
 				} else {
 					// trace('not a submodule of $moduleName: $memName (${memObj.__spec__.name;})');
@@ -232,15 +233,19 @@ class Main {
 					}
 				} else {
 					// a typedef
-					var td = getTd(moduleName, memName);
-					if (filterModules(memObj.__module__)) {
-						var real_td = getTd(memObj.__module__, memObj.__name__);
-						td.meta = [];
-						td.isExtern = false;
-						td.kind = TDAlias(TPath({
-							pack: real_td.pack,
-							name: real_td.name
-						}));
+					try {
+						var td = getTd(moduleName, memName);
+						if (filterModules(memObj.__module__)) {
+							var real_td = getTd(memObj.__module__, memObj.__name__);
+							td.meta = [];
+							td.isExtern = false;
+							td.kind = TDAlias(TPath({
+								pack: real_td.pack,
+								name: real_td.name
+							}));
+						}
+					} catch (e:Dynamic) {
+
 					}
 				}
 			} else { // is a module member but is not a mobule/class
@@ -439,9 +444,10 @@ class Main {
 				 	case 0:
 				 		throw "top-level?";
 				 	case 1:
-				 		hxName(pack[0]);
+				 		hxName(pack[0] + "_Module");
 				 	case _:
-				 		hxName(pack.pop());
+				 		// hxName(pack.pop());
+				 		hxName(pack[pack.length-1] + "_Module");
 				}
 			case _:
 				hxName(fullname);
@@ -458,8 +464,23 @@ class Main {
 				{ expr: EConst(CString(fullname)), pos: null },
 			];
 		}
+
 		return switch (tds[hxFullName]) {
 			case null:
+				// find td of same package and same name (with different cases)
+				var td = tds.find(function(td){
+					return td.name.toLowerCase() == hxName.toLowerCase() && td.pack.join(".").toLowerCase() == pack.join(".").toLowerCase();
+				});
+
+				if (td != null) {
+					var hxFullName_conflict = td.pack.concat([td.name]).join(".");
+					if (td.kind.match(TDAlias(_))) {
+						tds.remove(hxFullName_conflict);
+					} else {
+						throw 'arghhh: $hxFullName_conflict $hxFullName';
+					}
+				}
+
 				tds[hxFullName] = {
 					pack : pack,
 					name : hxName,
@@ -500,23 +521,25 @@ class Main {
 
 	static function main():Void {
 		switch (args()) {
-			case [moduleName, outPath]:
+			case [moduleNames, outPath]:
 				var main = new Main();
-				trace('process module: $moduleName');
+				var moduleNames = moduleNames.split(",").map(StringTools.trim);
 				main.filterModules = function(modname:String):Bool {
-					return 
-						modname.startsWith(moduleName + ".") &&
-						![
-							"numpy.distutils",
-							"numpy.f2py.__main__",
-							"numpy.testing"
-						].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
+					return moduleNames.exists(function(moduleName){
+						return
+							modname.startsWith(moduleName + ".") &&
+							(modname.toLowerCase().indexOf("test") == -1) &&
+							![
+								"numpy.distutils",
+								"numpy.f2py.__main__",
+							].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
+					});
 				}
-				main.processModule(moduleName);
+				for (moduleName in moduleNames)
+					main.processModule(moduleName);
 				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
 					var modname:String = pkg[1];
 					if (main.filterModules(modname)) {
-						trace('process module: $modname');
 						main.processModule(modname);
 					}
 				}

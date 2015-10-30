@@ -1,12 +1,6 @@
 -cp src
--cp out
+-cp coredep
 -main pyextern.Main
 -python Main.py
-# -cmd python3 Main.py pkgutil    out
-# -cmd python3 Main.py inspect    out
-# -cmd python3 Main.py importlib  out
-# -cmd python3 Main.py numpy      out
-# -cmd python3 Main.py scipy      out
-# -cmd python3 Main.py pandas     out
-# -cmd python3 Main.py matplotlib out
-# -cmd python3 Main.py seaborn    out
+# -cmd python3 Main.py pkgutil,inspect,importlib coredep
+# -cmd python3 Main.py numpy,scipy,pandas,matplotlib,seaborn out

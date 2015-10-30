@@ -619,7 +619,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1377,8 +1377,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -1715,8 +1715,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -2977,8 +2977,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3128,8 +3128,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3204,8 +3204,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -3955,8 +3955,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -5101,8 +5101,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -5305,8 +5305,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -6156,8 +6156,8 @@ package matplotlib.projections.geo;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
@@ -7094,7 +7094,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -7294,7 +7294,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
