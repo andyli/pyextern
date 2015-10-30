@@ -9,6 +9,5 @@ Libraries and their versions of the generated externs can be found in [requireme
 ## How to generate extern for a Python lib
 
  1. Install the lib, probably using `pip3`.
- 2. Clone the source of the lib and checkout the tag of the installed version.
- 3. `haxe build.hxml`
- 4. `python3 Main.py moduleName path/to/output_dir`
+ 2. `haxe build.hxml`
+ 3. `python3 Main.py moduleName path/to/output_dir`
