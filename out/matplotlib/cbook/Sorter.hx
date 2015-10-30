@@ -97,7 +97,7 @@ package matplotlib.cbook;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _helper(data:Dynamic, aux:Dynamic, inplace:Dynamic):Dynamic;
 	public function byAttribute(data:Dynamic, attributename:Dynamic, ?inplace:Dynamic):Dynamic;
 	public function byItem(data:Dynamic, ?itemindex:Dynamic, ?inplace:Dynamic):Dynamic;

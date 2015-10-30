@@ -4,7 +4,7 @@ package pandas.tseries.interval;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	public function __abs__(?other:Dynamic):Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
@@ -169,7 +169,7 @@ package pandas.tseries.interval;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	/**
 		add in comparison methods 
@@ -234,7 +234,7 @@ package pandas.tseries.interval;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
@@ -303,7 +303,7 @@ package pandas.tseries.interval;
 	/**
 		Return the formatted data as a unicode string
 	**/
-	static public var _formatter_func : Dynamic;
+	public var _formatter_func : Dynamic;
 	/**
 		return an attributes dict for my class 
 	**/
@@ -324,7 +324,7 @@ package pandas.tseries.interval;
 	**/
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
 	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _has_complex_internals : Dynamic;
+	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
@@ -458,7 +458,7 @@ package pandas.tseries.interval;
 	/**
 		the internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
 	public function _wrap_union_result(other:Dynamic, result:Dynamic):Dynamic;
 	/**
@@ -542,7 +542,7 @@ package pandas.tseries.interval;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Make a copy of this object.  Name and dtype sets those attributes on
 		the new object.
@@ -565,7 +565,7 @@ package pandas.tseries.interval;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Make new Index with passed location(-s) deleted
 		
@@ -666,7 +666,7 @@ package pandas.tseries.interval;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Render a string representation of the Index
 	**/
@@ -793,7 +793,7 @@ package pandas.tseries.interval;
 		    {group name -> group labels}
 	**/
 	public function groupby(to_groupby:Dynamic):Dynamic;
-	static public var has_duplicates : Dynamic;
+	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
@@ -855,17 +855,17 @@ package pandas.tseries.interval;
 	/**
 		alias for is_monotonic_increasing (deprecated) 
 	**/
-	static public var is_monotonic : Dynamic;
+	public var is_monotonic : Dynamic;
 	/**
 		return if the index is monotonic decreasing (only equal or
 		decreasing) values.
 	**/
-	static public var is_monotonic_decreasing : Dynamic;
+	public var is_monotonic_decreasing : Dynamic;
 	/**
 		return if the index is monotonic increasing (only equal or
 		increasing) values.
 	**/
-	static public var is_monotonic_increasing : Dynamic;
+	public var is_monotonic_increasing : Dynamic;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	public function is_type_compatible(kind:Dynamic):Dynamic;
@@ -901,7 +901,7 @@ package pandas.tseries.interval;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -930,16 +930,16 @@ package pandas.tseries.interval;
 	**/
 	public function min():Dynamic;
 	static public var name : Dynamic;
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	/**
 		return the number of bytes in the underlying data 
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
-	static public var nlevels : Dynamic;
+	public var ndim : Dynamic;
+	public var nlevels : Dynamic;
 	/**
 		Return number of unique elements in the object.
 		
@@ -1063,7 +1063,7 @@ package pandas.tseries.interval;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift Index containing datetime objects by input number of periods and
 		DateOffset
@@ -1076,7 +1076,7 @@ package pandas.tseries.interval;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		For an ordered Index, compute the slice indexer for input labels and
 		step
@@ -1153,7 +1153,7 @@ package pandas.tseries.interval;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	public function summary(?name:Dynamic):Dynamic;
 	/**
 		Compute the sorted symmetric difference of two Index objects.
@@ -1280,6 +1280,6 @@ package pandas.tseries.interval;
 	/**
 		return the underlying data as an ndarray 
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	public function view(?cls:Dynamic):Dynamic;
 }

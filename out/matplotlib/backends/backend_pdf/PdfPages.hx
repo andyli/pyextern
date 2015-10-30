@@ -106,7 +106,7 @@ package matplotlib.backends.backend_pdf;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _file : Dynamic;
+	public var _file : Dynamic;
 	/**
 		Finalize this object, making the underlying file a complete
 		PDF file.
@@ -122,7 +122,7 @@ package matplotlib.backends.backend_pdf;
 		Dictionary').
 	**/
 	public function infodict():Dynamic;
-	static public var keep_empty : Dynamic;
+	public var keep_empty : Dynamic;
 	/**
 		Saves a :class:`~matplotlib.figure.Figure` to this file as a new page.
 		

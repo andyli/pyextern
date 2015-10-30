@@ -96,7 +96,7 @@ package seaborn.categorical;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Group a long-form variable by another with correct order.
 	**/
@@ -126,7 +126,7 @@ package seaborn.categorical;
 	/**
 		A list of center positions for plots when hue nesting is used.
 	**/
-	static public var hue_offsets : Dynamic;
+	public var hue_offsets : Dynamic;
 	/**
 		Determine how the plot should be oriented based on the data.
 	**/
@@ -134,7 +134,7 @@ package seaborn.categorical;
 	/**
 		A float with the width of plot elements when hue nesting is used.
 	**/
-	static public var nested_width : Dynamic;
+	public var nested_width : Dynamic;
 	/**
 		Make the plot.
 	**/

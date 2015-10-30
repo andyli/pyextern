@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.dtypes;
 @:pythonImport("pandas.core.dtypes", "DatetimeTZDtypeType") extern class DatetimeTZDtypeType {
-	static public var __abstractmethods__ : Dynamic;
+	public var __abstractmethods__ : Dynamic;
 	static public function __base__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __bases__ : Dynamic;
 	static public var __basicsize__ : Dynamic;

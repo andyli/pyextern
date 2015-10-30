@@ -102,7 +102,7 @@ package numpy.ma.core;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Accumulate `target` along `axis` after filling with y fill
 		value.

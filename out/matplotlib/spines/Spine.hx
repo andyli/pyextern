@@ -132,7 +132,7 @@ package matplotlib.spines;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		automatically set spine bounds to the view interval
 	**/
@@ -195,7 +195,7 @@ package matplotlib.spines;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		

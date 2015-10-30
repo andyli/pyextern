@@ -135,7 +135,7 @@ package numpy._import_tools;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Execute command in parent_frame.
 	**/

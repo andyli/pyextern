@@ -96,7 +96,7 @@ package pandas.io.gbq;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Create a table in Google BigQuery given a table and schema
 		

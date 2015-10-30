@@ -96,7 +96,7 @@ package matplotlib.texmanager;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _dvipng_hack_alpha : Dynamic;
 	/**
 		On windows, changing directories can be complicated by the presence of

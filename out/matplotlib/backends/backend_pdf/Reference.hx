@@ -96,7 +96,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function pdfRepr():Dynamic;
 	public function write(contents:Dynamic, file:Dynamic):Dynamic;
 }

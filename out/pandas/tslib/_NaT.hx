@@ -126,7 +126,7 @@ package pandas.tslib;
 		Return date object with same year, month and day.
 	**/
 	public function date(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var day : Dynamic;
+	public var day : Dynamic;
 	/**
 		Return self.tzinfo.dst(self).
 	**/
@@ -139,7 +139,7 @@ package pandas.tslib;
 		timestamp[, tz] -> tz's local time from POSIX timestamp.
 	**/
 	static public function fromtimestamp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var hour : Dynamic;
+	public var hour : Dynamic;
 	/**
 		Return a 3-tuple containing ISO year, week number, and weekday.
 	**/
@@ -156,11 +156,11 @@ package pandas.tslib;
 	**/
 	public function isoweekday(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var max : Dynamic;
-	static public var microsecond : Dynamic;
+	public var microsecond : Dynamic;
 	static public var min : Dynamic;
-	static public var minute : Dynamic;
-	static public var month : Dynamic;
-	static public var nanosecond : Dynamic;
+	public var minute : Dynamic;
+	public var month : Dynamic;
+	public var nanosecond : Dynamic;
 	/**
 		Returns new datetime object representing current time local to tz.
 		
@@ -170,13 +170,13 @@ package pandas.tslib;
 		If no tz is specified, uses local timezone.
 	**/
 	static public function now(?tz:Dynamic):Dynamic;
-	static public var offset : Dynamic;
+	public var offset : Dynamic;
 	/**
 		Return datetime with new specified fields.
 	**/
 	public function replace(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
-	static public var second : Dynamic;
+	public var second : Dynamic;
 	/**
 		format -> strftime() style string.
 	**/
@@ -214,7 +214,7 @@ package pandas.tslib;
 		Return proleptic Gregorian ordinal.  January 1 of year 1 is day 1.
 	**/
 	public function toordinal(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var tzinfo : Dynamic;
+	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).
 	**/
@@ -235,11 +235,11 @@ package pandas.tslib;
 		Return UTC time tuple, compatible with time.localtime().
 	**/
 	public function utctimetuple(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var value : Dynamic;
+	public var value : Dynamic;
 	/**
 		Return the day of the week represented by the date.
 		Monday == 0 ... Sunday == 6
 	**/
 	public function weekday(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var year : Dynamic;
+	public var year : Dynamic;
 }

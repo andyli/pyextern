@@ -104,12 +104,12 @@ package scipy.io.harwell_boeing.hb;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var key : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var key : Dynamic;
 	public function read_matrix():Dynamic;
-	static public var storage : Dynamic;
-	static public var structure : Dynamic;
-	static public var title : Dynamic;
-	static public var type : Dynamic;
+	public var storage : Dynamic;
+	public var structure : Dynamic;
+	public var title : Dynamic;
+	public var type : Dynamic;
 	public function write_matrix(m:Dynamic):Dynamic;
 }

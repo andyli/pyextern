@@ -137,7 +137,7 @@ package matplotlib.projections.polar;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Concatenates two transformation matrices (represented as numpy
 		arrays) together.
@@ -189,7 +189,7 @@ package matplotlib.projections.polar;
 		    For the special case of a Composite transform, the maximum depth
 		    of the two is returned.
 	**/
-	static public var depth : Dynamic;
+	public var depth : Dynamic;
 	/**
 		Returns a frozen copy of this transform node.  The frozen copy
 		will not update when its children change.  Useful for storing
@@ -226,7 +226,7 @@ package matplotlib.projections.polar;
 	public function inverted():Dynamic;
 	static public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
-	static public var is_separable : Dynamic;
+	public var is_separable : Dynamic;
 	/**
 		(staticmethod) Create a new transformation matrix as a 3x3
 		numpy array of the form::

@@ -98,13 +98,13 @@ package pandas._sparse;
 	**/
 	public function check_integrity(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function equals(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var indices : Dynamic;
+	public var indices : Dynamic;
 	public function intersect(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var length : Dynamic;
+	public var length : Dynamic;
 	public function lookup(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function make_union(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ngaps : Dynamic;
-	static public var npoints : Dynamic;
+	public var ngaps : Dynamic;
+	public var npoints : Dynamic;
 	public function put(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function reindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function take(args:haxe.extern.Rest<Dynamic>):Dynamic;

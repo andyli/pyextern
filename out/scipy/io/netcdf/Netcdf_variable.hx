@@ -98,7 +98,7 @@ package scipy.io.netcdf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Assign a scalar value to a `netcdf_variable` of length one.
 		
@@ -133,7 +133,7 @@ package scipy.io.netcdf;
 		the data file. This attribute is a read-only property of the
 		`netcdf_variable`.
 	**/
-	static public var isrec : Dynamic;
+	public var isrec : Dynamic;
 	/**
 		Return the itemsize of the variable.
 		
@@ -149,7 +149,7 @@ package scipy.io.netcdf;
 		This is a read-only attribute and can not be modified in the
 		same manner of other numpy arrays.
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Return the typecode of the variable.
 		

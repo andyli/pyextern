@@ -100,7 +100,7 @@ package matplotlib.gridspec;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		get the subplot geometry, e.g., 2,2,3. Unlike SuplorParams,
 		index is 0-based

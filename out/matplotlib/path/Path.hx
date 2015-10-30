@@ -140,7 +140,7 @@ package matplotlib.path;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Creates a Path instance without the expense of calling the constructor
 		
@@ -239,7 +239,7 @@ package matplotlib.path;
 		that the length of `self.vertices` and `self.codes` is always
 		the same.
 	**/
-	static public var codes : Dynamic;
+	public var codes : Dynamic;
 	/**
 		Returns *True* if this path completely contains the given path.
 		
@@ -290,7 +290,7 @@ package matplotlib.path;
 	/**
 		`True` if the vertices array has nonfinite values.
 	**/
-	static public var has_nonfinite : Dynamic;
+	public var has_nonfinite : Dynamic;
 	/**
 		Given a hatch specifier, *hatchpattern*, generates a Path that
 		can be used in a repeated hatching pattern.  *density* is the
@@ -377,16 +377,16 @@ package matplotlib.path;
 	/**
 		`True` if the `Path` is read-only.
 	**/
-	static public var readonly : Dynamic;
+	public var readonly : Dynamic;
 	/**
 		`True` if the vertices array should be simplified.
 	**/
-	static public var should_simplify : Dynamic;
+	public var should_simplify : Dynamic;
 	/**
 		The fraction of a pixel difference below which vertices will
 		be simplified out.
 	**/
-	static public var simplify_threshold : Dynamic;
+	public var simplify_threshold : Dynamic;
 	/**
 		Convert this path to a list of polygons.  Each polygon is an
 		Nx2 array of vertices.  In other words, each polygon has no
@@ -452,7 +452,7 @@ package matplotlib.path;
 	/**
 		The list of vertices in the `Path` as an Nx2 numpy array.
 	**/
-	static public var vertices : Dynamic;
+	public var vertices : Dynamic;
 	/**
 		Return a wedge of the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).

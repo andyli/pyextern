@@ -145,7 +145,7 @@ package numpy.lib.user_array;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	public function _rc(a:Dynamic):Dynamic;
 	public function _scalarfunc(func:Dynamic):Dynamic;

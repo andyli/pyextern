@@ -100,7 +100,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public function clamp(value:Dynamic):Dynamic;
 	public function hlist_out(box:Dynamic):Dynamic;
 	public function vlist_out(box:Dynamic):Dynamic;

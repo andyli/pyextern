@@ -125,7 +125,7 @@ package scipy.interpolate.interpolate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		c and x may be modified by the user. The Cython code expects
 		that they are C contiguous.
@@ -158,8 +158,8 @@ package scipy.interpolate.interpolate;
 		rounding error.
 	**/
 	public function antiderivative(?nu:Dynamic):Dynamic;
-	static public var axis : Dynamic;
-	static public var c : Dynamic;
+	public var axis : Dynamic;
+	public var c : Dynamic;
 	/**
 		Construct the piecewise polynomial without making checks.
 		
@@ -210,7 +210,7 @@ package scipy.interpolate.interpolate;
 		    of the current intervals.
 	**/
 	public function extend(c:Dynamic, x:Dynamic, ?right:Dynamic):Dynamic;
-	static public var extrapolate : Dynamic;
+	public var extrapolate : Dynamic;
 	/**
 		Construct a piecewise polynomial in the power basis
 		from a polynomial in Bernstein basis.
@@ -300,5 +300,5 @@ package scipy.interpolate.interpolate;
 		array([-1.,  1.])
 	**/
 	public function roots(?discontinuity:Dynamic, ?extrapolate:Dynamic):Dynamic;
-	static public var x : Dynamic;
+	public var x : Dynamic;
 }

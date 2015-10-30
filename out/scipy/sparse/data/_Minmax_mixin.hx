@@ -96,7 +96,7 @@ package scipy.sparse.data;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _min_or_max(axis:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
 	/**

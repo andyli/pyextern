@@ -4,7 +4,7 @@ package numpy;
 	/**
 		transpose
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		abs(self)
 	**/
@@ -24,15 +24,15 @@ package numpy;
 	/**
 		Array protocol: Python side
 	**/
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		Array priority.
 	**/
-	static public var __array_priority__ : Dynamic;
+	public var __array_priority__ : Dynamic;
 	/**
 		Array protocol: struct
 	**/
-	static public var __array_struct__ : Dynamic;
+	public var __array_struct__ : Dynamic;
 	/**
 		sc.__array_wrap__(obj) return scalar from array
 	**/
@@ -372,7 +372,7 @@ package numpy;
 	/**
 		base object
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -473,7 +473,7 @@ package numpy;
 	/**
 		pointer to start of data
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -489,7 +489,7 @@ package numpy;
 	/**
 		get array data-descriptor
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -529,11 +529,11 @@ package numpy;
 	/**
 		integer value of flags
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		a 1-d view of scalar
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -581,7 +581,7 @@ package numpy;
 	/**
 		imaginary part of scalar
 	**/
-	static public var imag : Dynamic;
+	public var imag : Dynamic;
 	/**
 		Return True if the float is an integer.
 	**/
@@ -613,7 +613,7 @@ package numpy;
 	/**
 		length of one element in bytes
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -653,11 +653,11 @@ package numpy;
 	/**
 		length of item in bytes
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		number of array dimensions
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		newbyteorder(new_order='S')
 		
@@ -752,7 +752,7 @@ package numpy;
 	/**
 		real part of scalar
 	**/
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -840,11 +840,11 @@ package numpy;
 	/**
 		tuple of array dimensions
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		number of elements in the gentype
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		
@@ -884,7 +884,7 @@ package numpy;
 	/**
 		tuple of bytes steps in each dimension
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Not implemented (virtual attribute)
 		

@@ -15,8 +15,8 @@ package scipy.sparse.linalg.matfuncs;
 		A_H : LinearOperator
 		    Hermitian adjoint of self.
 	**/
-	static public var H : Dynamic;
-	static public var T : Dynamic;
+	public var H : Dynamic;
+	public var T : Dynamic;
 	public function __add__(x:Dynamic):Dynamic;
 	/**
 		Call self as a function.
@@ -125,7 +125,7 @@ package scipy.sparse.linalg.matfuncs;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Default implementation of _adjoint; defers to rmatvec.
 	**/

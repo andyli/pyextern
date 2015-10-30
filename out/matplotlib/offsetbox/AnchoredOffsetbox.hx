@@ -125,7 +125,7 @@ package matplotlib.offsetbox;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		return the position of the bbox anchored at the parentbbox
 		with the loc code, with the borderpad.

@@ -141,7 +141,7 @@ package matplotlib.transforms;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Concatenates two transformation matrices (represented as numpy
 		arrays) together.
@@ -197,7 +197,7 @@ package matplotlib.transforms;
 		    For the special case of a Composite transform, the maximum depth
 		    of the two is returned.
 	**/
-	static public var depth : Dynamic;
+	public var depth : Dynamic;
 	/**
 		(staticmethod) Create a new Affine2D instance from the given
 		values::
@@ -258,7 +258,7 @@ package matplotlib.transforms;
 	public function inverted():Dynamic;
 	static public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
-	static public var is_separable : Dynamic;
+	public var is_separable : Dynamic;
 	/**
 		(staticmethod) Create a new transformation matrix as a 3x3
 		numpy array of the form::

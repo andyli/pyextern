@@ -105,7 +105,7 @@ package pandas.tseries.holiday;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _cache : Dynamic;
 	static public var end_date : Dynamic;
 	/**

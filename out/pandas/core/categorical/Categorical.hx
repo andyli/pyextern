@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.categorical;
 @:pythonImport("pandas.core.categorical", "Categorical") extern class Categorical {
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		The numpy array interface.
 		
@@ -130,13 +130,13 @@ package pandas.core.categorical;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _categories : Dynamic;
 	static public var _codes : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -307,7 +307,7 @@ package pandas.core.categorical;
 	/**
 		compat, we are always our own object 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		The categories of this categorical.
 		
@@ -334,7 +334,7 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	static public var categories : Dynamic;
+	public var categories : Dynamic;
 	/**
 		assert that we are ordered 
 	**/
@@ -348,7 +348,7 @@ package pandas.core.categorical;
 		There is not setter, use the other categorical methods and the normal item setter to change
 		values in the categorical.
 	**/
-	static public var codes : Dynamic;
+	public var codes : Dynamic;
 	/**
 		Copy constructor. 
 	**/
@@ -488,11 +488,11 @@ package pandas.core.categorical;
 		
 		Deprecated, use .codes!
 	**/
-	static public var labels : Dynamic;
+	public var labels : Dynamic;
 	/**
 		Gets the levels (deprecated, use "categories") 
 	**/
-	static public var levels : Dynamic;
+	public var levels : Dynamic;
 	/**
 		The maximum value of the object.
 		
@@ -534,7 +534,7 @@ package pandas.core.categorical;
 		modes : `Categorical` (sorted)
 	**/
 	public function mode():Dynamic;
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	static public var ndim : Dynamic;
 	/**
 		Reverse of isnull
@@ -582,7 +582,7 @@ package pandas.core.categorical;
 	/**
 		Gets the ordered attribute 
 	**/
-	static public var ordered : Dynamic;
+	public var ordered : Dynamic;
 	/**
 		Return a flattened (numpy) array.
 		
@@ -846,7 +846,7 @@ package pandas.core.categorical;
 		-------
 		shape : tuple
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift Categorical by desired number of periods.
 		

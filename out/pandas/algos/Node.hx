@@ -91,7 +91,7 @@ package pandas.algos;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var next : Dynamic;
-	static public var value : Dynamic;
-	static public var width : Dynamic;
+	public var next : Dynamic;
+	public var value : Dynamic;
+	public var width : Dynamic;
 }

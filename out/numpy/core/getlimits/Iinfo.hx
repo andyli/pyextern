@@ -96,15 +96,15 @@ package numpy.core.getlimits;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _max_vals : Dynamic;
 	static public var _min_vals : Dynamic;
 	/**
 		Maximum value of given dtype.
 	**/
-	static public var max : Dynamic;
+	public var max : Dynamic;
 	/**
 		Minimum value of given dtype.
 	**/
-	static public var min : Dynamic;
+	public var min : Dynamic;
 }

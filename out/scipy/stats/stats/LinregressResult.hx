@@ -156,21 +156,21 @@ package scipy.stats.stats;
 	/**
 		Alias for field number 1
 	**/
-	static public var intercept : Dynamic;
+	public var intercept : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var pvalue : Dynamic;
+	public var pvalue : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var rvalue : Dynamic;
+	public var rvalue : Dynamic;
 	/**
 		Alias for field number 0
 	**/
-	static public var slope : Dynamic;
+	public var slope : Dynamic;
 	/**
 		Alias for field number 4
 	**/
-	static public var stderr : Dynamic;
+	public var stderr : Dynamic;
 }

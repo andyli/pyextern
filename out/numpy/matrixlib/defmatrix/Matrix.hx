@@ -26,7 +26,7 @@ package numpy.matrixlib.defmatrix;
 		       [ 4,  5,  6,  7],
 		       [ 8,  9, 10, 11]])
 	**/
-	static public var A : Dynamic;
+	public var A : Dynamic;
 	/**
 		Return `self` as a flattened `ndarray`.
 		
@@ -50,7 +50,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.getA1()
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public var A1 : Dynamic;
+	public var A1 : Dynamic;
 	/**
 		Returns the (complex) conjugate transpose of `self`.
 		
@@ -78,7 +78,7 @@ package numpy.matrixlib.defmatrix;
 		        [  2. +2.j,   6. +6.j,  10.+10.j],
 		        [  3. +3.j,   7. +7.j,  11.+11.j]])
 	**/
-	static public var H : Dynamic;
+	public var H : Dynamic;
 	/**
 		Returns the (multiplicative) inverse of invertible `self`.
 		
@@ -114,7 +114,7 @@ package numpy.matrixlib.defmatrix;
 		matrix([[ 1.,  0.],
 		        [ 0.,  1.]])
 	**/
-	static public var I : Dynamic;
+	public var I : Dynamic;
 	/**
 		Returns the transpose of the matrix.
 		
@@ -143,7 +143,7 @@ package numpy.matrixlib.defmatrix;
 		matrix([[1, 3],
 		        [2, 4]])
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		abs(self)
 	**/
@@ -171,7 +171,7 @@ package numpy.matrixlib.defmatrix;
 	/**
 		Array protocol: Python side.
 	**/
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		a.__array_prepare__(obj) -> Object of same type as ndarray object obj.
 	**/
@@ -180,7 +180,7 @@ package numpy.matrixlib.defmatrix;
 	/**
 		Array protocol: C-struct side.
 	**/
-	static public var __array_struct__ : Dynamic;
+	public var __array_struct__ : Dynamic;
 	/**
 		a.__array_wrap__(obj) -> Object of same type as ndarray object a.
 	**/
@@ -760,7 +760,7 @@ package numpy.matrixlib.defmatrix;
 		>>> y.base is x
 		True
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		a.byteswap(inplace)
 		
@@ -998,7 +998,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.ctypes.strides_as(ctypes.c_longlong)
 		<numpy.core._internal.c_longlong_Array_2 object at 0x01F01300>
 	**/
-	static public var ctypes : Dynamic;
+	public var ctypes : Dynamic;
 	/**
 		a.cumprod(axis=None, dtype=None, out=None)
 		
@@ -1026,7 +1026,7 @@ package numpy.matrixlib.defmatrix;
 	/**
 		Python buffer object pointing to the start of the array's data.
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		a.diagonal(offset=0, axis1=0, axis2=1)
 		
@@ -1092,7 +1092,7 @@ package numpy.matrixlib.defmatrix;
 		>>> type(x.dtype)
 		<type 'numpy.dtype'>
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		a.dump(file)
 		
@@ -1206,7 +1206,7 @@ package numpy.matrixlib.defmatrix;
 		for C-style contiguous arrays or ``self.strides[0] == self.itemsize`` for
 		Fortran-style contiguous arrays is true.
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		A 1-D iterator over the array.
 		
@@ -1245,7 +1245,7 @@ package numpy.matrixlib.defmatrix;
 		array([[3, 1, 3],
 		       [3, 1, 3]])
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		Return a flattened copy of the matrix.
 		
@@ -1471,7 +1471,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.imag.dtype
 		dtype('float64')
 	**/
-	static public var imag : Dynamic;
+	public var imag : Dynamic;
 	/**
 		a.item(*args)
 		
@@ -1582,7 +1582,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.itemsize
 		16
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		Return the maximum value along an axis.
 		
@@ -1694,7 +1694,7 @@ package numpy.matrixlib.defmatrix;
 		>>> np.prod(x.shape) * x.itemsize
 		480
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		Number of array dimensions.
 		
@@ -1707,7 +1707,7 @@ package numpy.matrixlib.defmatrix;
 		>>> y.ndim
 		3
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		arr.newbyteorder(new_order='S')
 		
@@ -1934,7 +1934,7 @@ package numpy.matrixlib.defmatrix;
 		--------
 		numpy.real : equivalent function
 	**/
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		a.repeat(repeats, axis=None)
 		
@@ -2212,7 +2212,7 @@ package numpy.matrixlib.defmatrix;
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Number of elements in the array.
 		
@@ -2227,7 +2227,7 @@ package numpy.matrixlib.defmatrix;
 		>>> np.prod(x.shape)
 		30
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		a.sort(axis=-1, kind='quicksort', order=None)
 		
@@ -2418,7 +2418,7 @@ package numpy.matrixlib.defmatrix;
 		>>> offset / x.itemsize
 		813
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Returns the sum of the matrix elements, along the given axis.
 		

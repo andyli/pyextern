@@ -98,7 +98,7 @@ package scipy.io._fortran;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _read_size():Dynamic;
 	/**
 		Closes the file. It is unsupported to call any other methods off this

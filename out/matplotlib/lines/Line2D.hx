@@ -147,7 +147,7 @@ package matplotlib.lines;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _drawStyles_l : Dynamic;
 	static public var _drawStyles_s : Dynamic;
 	public function _draw_dash_dot(renderer:Dynamic, gc:Dynamic, path:Dynamic, trans:Dynamic):Dynamic;

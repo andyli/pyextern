@@ -94,9 +94,9 @@ package numpy;
 	/**
 		A copy of the holiday array indicating additional invalid days.
 	**/
-	static public var holidays : Dynamic;
+	public var holidays : Dynamic;
 	/**
 		A copy of the seven-element boolean mask indicating valid days.
 	**/
-	static public var weekmask : Dynamic;
+	public var weekmask : Dynamic;
 }

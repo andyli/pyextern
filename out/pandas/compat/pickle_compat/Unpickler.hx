@@ -121,7 +121,7 @@ package pandas.compat.pickle_compat;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _decode_string(value:Dynamic):Dynamic;
 	public function _instantiate(klass:Dynamic, k:Dynamic):Dynamic;
 	static public var dispatch : Dynamic;

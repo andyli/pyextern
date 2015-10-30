@@ -130,7 +130,7 @@ package scipy.sparse.base;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _divide(other:Dynamic, ?true_divide:Dynamic, ?rdivide:Dynamic):Dynamic;
 	public function _imag():Dynamic;
 	public function _mul_multivector(other:Dynamic):Dynamic;
@@ -244,7 +244,7 @@ package scipy.sparse.base;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Sum the matrix over the given axis.  If the axis is None, sum
 		over both rows and columns, returning a scalar.

@@ -96,15 +96,15 @@ package numpy.core._internal;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		_as parameter_
 	**/
-	static public var _as_parameter_ : Dynamic;
+	public var _as_parameter_ : Dynamic;
 	/**
 		c-types data
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	public function data_as(obj:Dynamic):Dynamic;
 	public function get_as_parameter():Dynamic;
 	public function get_data():Dynamic;
@@ -113,11 +113,11 @@ package numpy.core._internal;
 	/**
 		c-types shape
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	public function shape_as(obj:Dynamic):Dynamic;
 	/**
 		c-types strides
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	public function strides_as(obj:Dynamic):Dynamic;
 }

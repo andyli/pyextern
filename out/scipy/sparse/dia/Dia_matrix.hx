@@ -130,7 +130,7 @@ package scipy.sparse.dia;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _divide(other:Dynamic, ?true_divide:Dynamic, ?rdivide:Dynamic):Dynamic;
 	public function _get_dtype():Dynamic;
 	public function _imag():Dynamic;
@@ -224,7 +224,7 @@ package scipy.sparse.dia;
 		array([ 1, -3, -1], dtype=int64)
 	**/
 	public function dot(other:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Element-wise expm1.
 		
@@ -281,7 +281,7 @@ package scipy.sparse.dia;
 		
 		explicit zero values are included in this number
 	**/
-	static public var nnz : Dynamic;
+	public var nnz : Dynamic;
 	/**
 		nonzero indices
 		
@@ -339,7 +339,7 @@ package scipy.sparse.dia;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Element-wise sign.
 		

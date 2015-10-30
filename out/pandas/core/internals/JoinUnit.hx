@@ -96,7 +96,7 @@ package pandas.core.internals;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var dtype : Dynamic;
 	public function get_reindexed_values(empty_dtype:Dynamic, upcasted_na:Dynamic):Dynamic;
 	static public var is_null : Dynamic;

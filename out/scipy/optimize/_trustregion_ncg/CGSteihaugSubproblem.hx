@@ -100,11 +100,11 @@ package scipy.optimize._trustregion_ncg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Value of objective function at current iteration.
 	**/
-	static public var fun : Dynamic;
+	public var fun : Dynamic;
 	/**
 		Solve the scalar quadratic equation ||z + t d|| == trust_radius.
 		This is like a line-sphere intersection.
@@ -114,16 +114,16 @@ package scipy.optimize._trustregion_ncg;
 	/**
 		Value of hessian of objective function at current iteration.
 	**/
-	static public var hess : Dynamic;
+	public var hess : Dynamic;
 	public function hessp(p:Dynamic):Dynamic;
 	/**
 		Value of jacobian of objective function at current iteration.
 	**/
-	static public var jac : Dynamic;
+	public var jac : Dynamic;
 	/**
 		Magniture of jacobian of objective function at current iteration.
 	**/
-	static public var jac_mag : Dynamic;
+	public var jac_mag : Dynamic;
 	/**
 		Solve the subproblem using a conjugate gradient method.
 		

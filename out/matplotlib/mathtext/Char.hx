@@ -97,7 +97,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _update_metrics():Dynamic;
 	/**
 		Return the amount of kerning between this and the given

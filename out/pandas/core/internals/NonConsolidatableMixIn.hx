@@ -96,7 +96,7 @@ package pandas.core.internals;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _can_consolidate : Dynamic;
 	static public var _holder : Dynamic;
 	/**
@@ -113,6 +113,6 @@ package pandas.core.internals;
 	public function get_values(?dtype:Dynamic):Dynamic;
 	public function iget(col:Dynamic):Dynamic;
 	public function set(locs:Dynamic, values:Dynamic, ?check:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	public function should_store(value:Dynamic):Dynamic;
 }

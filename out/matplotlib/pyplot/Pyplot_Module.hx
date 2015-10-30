@@ -467,7 +467,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1325,7 +1325,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -1687,7 +1687,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -3335,7 +3335,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -3505,7 +3505,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -3713,7 +3713,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -3793,7 +3793,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -4212,7 +4212,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -5474,7 +5474,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -5601,7 +5601,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -6673,7 +6673,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown

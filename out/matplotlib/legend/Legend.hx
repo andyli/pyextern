@@ -145,7 +145,7 @@ package matplotlib.legend;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Return the approximate height of the text. This is used to place
 		the legend handle.
@@ -201,7 +201,7 @@ package matplotlib.legend;
 		drawing time.
 	**/
 	public function _init_legend_box(handles:Dynamic, labels:Dynamic):Dynamic;
-	static public var _loc : Dynamic;
+	public var _loc : Dynamic;
 	/**
 		set the boilerplate props for artists added to axes
 	**/

@@ -96,7 +96,7 @@ package scipy.integrate._ode;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _wrap(t:Dynamic, y:Dynamic, f_args:Dynamic):Dynamic;
 	public function _wrap_jac(t:Dynamic, y:Dynamic, jac_args:Dynamic):Dynamic;
 	/**
@@ -143,5 +143,5 @@ package scipy.integrate._ode;
 		Check if integration was successful.
 	**/
 	public function successful():Dynamic;
-	static public var y : Dynamic;
+	public var y : Dynamic;
 }

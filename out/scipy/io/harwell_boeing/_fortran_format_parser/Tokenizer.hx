@@ -96,7 +96,7 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function input(s:Dynamic):Dynamic;
 	public function next_token():Dynamic;
 }

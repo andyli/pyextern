@@ -106,7 +106,7 @@ package matplotlib.axes._subplots;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		make a twinx axes of self. This is used for twinx and twiny.
 	**/

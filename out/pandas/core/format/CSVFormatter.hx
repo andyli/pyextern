@@ -96,7 +96,7 @@ package pandas.core.format;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _helper_csv(writer:Dynamic, ?na_rep:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?float_format:Dynamic, ?date_format:Dynamic):Dynamic;
 	public function _save():Dynamic;
 	public function _save_chunk(start_i:Dynamic, end_i:Dynamic):Dynamic;

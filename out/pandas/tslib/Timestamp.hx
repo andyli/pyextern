@@ -102,8 +102,8 @@ package pandas.tslib;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var _date_repr : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var _date_repr : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -111,9 +111,9 @@ package pandas.tslib;
 		in addition to the date part
 	**/
 	public function _has_time_component():Dynamic;
-	static public var _repr_base : Dynamic;
-	static public var _time_repr : Dynamic;
-	static public var asm8 : Dynamic;
+	public var _repr_base : Dynamic;
+	public var _time_repr : Dynamic;
+	public var asm8 : Dynamic;
 	/**
 		Convert tz-aware Timestamp to another time zone.
 		
@@ -145,17 +145,17 @@ package pandas.tslib;
 		Return date object with same year, month and day.
 	**/
 	public function date(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var day : Dynamic;
-	static public var dayofweek : Dynamic;
-	static public var dayofyear : Dynamic;
-	static public var days_in_month : Dynamic;
-	static public var daysinmonth : Dynamic;
+	public var day : Dynamic;
+	public var dayofweek : Dynamic;
+	public var dayofyear : Dynamic;
+	public var days_in_month : Dynamic;
+	public var daysinmonth : Dynamic;
 	/**
 		Return self.tzinfo.dst(self).
 	**/
 	public function dst(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var freq : Dynamic;
-	static public var freqstr : Dynamic;
+	public var freq : Dynamic;
+	public var freqstr : Dynamic;
 	/**
 		passed an ordinal, translate and convert to a ts
 		note: by definition there cannot be any tz info on the ordinal itself 
@@ -165,13 +165,13 @@ package pandas.tslib;
 		timestamp[, tz] -> tz's local time from POSIX timestamp.
 	**/
 	static public function fromtimestamp(ts:Dynamic):Dynamic;
-	static public var hour : Dynamic;
-	static public var is_month_end : Dynamic;
-	static public var is_month_start : Dynamic;
-	static public var is_quarter_end : Dynamic;
-	static public var is_quarter_start : Dynamic;
-	static public var is_year_end : Dynamic;
-	static public var is_year_start : Dynamic;
+	public var hour : Dynamic;
+	public var is_month_end : Dynamic;
+	public var is_month_start : Dynamic;
+	public var is_quarter_end : Dynamic;
+	public var is_quarter_start : Dynamic;
+	public var is_year_end : Dynamic;
+	public var is_year_start : Dynamic;
 	/**
 		Return a 3-tuple containing ISO year, week number, and weekday.
 	**/
@@ -183,11 +183,11 @@ package pandas.tslib;
 	**/
 	public function isoweekday(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var max : Dynamic;
-	static public var microsecond : Dynamic;
+	public var microsecond : Dynamic;
 	static public var min : Dynamic;
-	static public var minute : Dynamic;
-	static public var month : Dynamic;
-	static public var nanosecond : Dynamic;
+	public var minute : Dynamic;
+	public var month : Dynamic;
+	public var nanosecond : Dynamic;
 	/**
 		Normalize Timestamp to midnight, preserving
 		tz information.
@@ -203,11 +203,11 @@ package pandas.tslib;
 		    Timezone to localize to
 	**/
 	static public function now(?tz:Dynamic):Dynamic;
-	static public var offset : Dynamic;
-	static public var quarter : Dynamic;
+	public var offset : Dynamic;
+	public var quarter : Dynamic;
 	public function replace(kwds:Dynamic):Dynamic;
 	static public var resolution : Dynamic;
-	static public var second : Dynamic;
+	public var second : Dynamic;
 	/**
 		format -> strftime() style string.
 	**/
@@ -268,7 +268,7 @@ package pandas.tslib;
 	/**
 		Alias for tzinfo
 	**/
-	static public var tz : Dynamic;
+	public var tz : Dynamic;
 	/**
 		Convert tz-aware Timestamp to another time zone.
 		
@@ -313,7 +313,7 @@ package pandas.tslib;
 		    If the Timestamp is tz-aware and tz is not None.
 	**/
 	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic):Dynamic;
-	static public var tzinfo : Dynamic;
+	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).
 	**/
@@ -334,13 +334,13 @@ package pandas.tslib;
 		Return UTC time tuple, compatible with time.localtime().
 	**/
 	public function utctimetuple(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var value : Dynamic;
-	static public var week : Dynamic;
+	public var value : Dynamic;
+	public var week : Dynamic;
 	/**
 		Return the day of the week represented by the date.
 		Monday == 0 ... Sunday == 6
 	**/
 	public function weekday(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var weekofyear : Dynamic;
-	static public var year : Dynamic;
+	public var weekofyear : Dynamic;
+	public var year : Dynamic;
 }

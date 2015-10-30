@@ -118,12 +118,12 @@ package pandas.sparse.list;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _consolidate_inplace():Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -167,8 +167,8 @@ package pandas.sparse.list;
 		new_list : SparseList
 	**/
 	public function copy():Dynamic;
-	static public var is_consolidated : Dynamic;
-	static public var nchunks : Dynamic;
+	public var is_consolidated : Dynamic;
+	public var nchunks : Dynamic;
 	/**
 		Return SparseArray from data stored in the SparseList
 		

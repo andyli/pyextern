@@ -108,7 +108,7 @@ package matplotlib.transforms;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_bounds():Dynamic;
 	public function _get_extents():Dynamic;
 	public function _get_height():Dynamic;
@@ -167,7 +167,7 @@ package matplotlib.transforms;
 		:class:`Bbox`.
 	**/
 	public function anchored(c:Dynamic, ?container:Dynamic):Dynamic;
-	static public var bounds : Dynamic;
+	public var bounds : Dynamic;
 	static public var coefs : Dynamic;
 	/**
 		Returns *True* if (*x*, *y*) is a coordinate inside the
@@ -213,7 +213,7 @@ package matplotlib.transforms;
 		(property) Returns (:attr:`x0`, :attr:`y0`, :attr:`x1`,
 		:attr:`y1`).
 	**/
-	static public var extents : Dynamic;
+	public var extents : Dynamic;
 	/**
 		(staticmethod) Create a new :class:`Bbox` from *x0*, *y0*,
 		*width* and *height*.
@@ -265,7 +265,7 @@ package matplotlib.transforms;
 		(property) The height of the bounding box.  It may be negative if
 		:attr:`y1` < :attr:`y0`.
 	**/
-	static public var height : Dynamic;
+	public var height : Dynamic;
 	/**
 		Set whether the existing bounds of the box should be ignored
 		by subsequent calls to :meth:`update_from_data` or
@@ -289,8 +289,8 @@ package matplotlib.transforms;
 		    http://www.tekpool.com/node/2687
 	**/
 	static public function intersection(bbox1:Dynamic, bbox2:Dynamic):Dynamic;
-	static public var intervalx : Dynamic;
-	static public var intervaly : Dynamic;
+	public var intervalx : Dynamic;
+	public var intervaly : Dynamic;
 	/**
 		Invalidate this :class:`TransformNode` and triggers an
 		invalidation of its ancestors.  Should be called any
@@ -312,15 +312,15 @@ package matplotlib.transforms;
 	/**
 		(property) :attr:`max` is the top-right corner of the bounding box.
 	**/
-	static public var max : Dynamic;
+	public var max : Dynamic;
 	/**
 		(property) :attr:`min` is the bottom-left corner of the bounding
 		box.
 	**/
-	static public var min : Dynamic;
-	static public var minpos : Dynamic;
-	static public var minposx : Dynamic;
-	static public var minposy : Dynamic;
+	public var min : Dynamic;
+	public var minpos : Dynamic;
+	public var minposx : Dynamic;
+	public var minposy : Dynamic;
 	/**
 		return whether the bbox has changed since init
 	**/
@@ -344,8 +344,8 @@ package matplotlib.transforms;
 		bounding box *other*.
 	**/
 	public function overlaps(other:Dynamic):Dynamic;
-	static public var p0 : Dynamic;
-	static public var p1 : Dynamic;
+	public var p0 : Dynamic;
+	public var p1 : Dynamic;
 	/**
 		Return a new :class:`Bbox` that is padded on all four sides by
 		the given value.
@@ -397,7 +397,7 @@ package matplotlib.transforms;
 		(property) The width and height of the bounding box.  May be negative,
 		in the same way as :attr:`width` and :attr:`height`.
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		e.g., ``bbox.splitx(f1, f2, ...)``
 		
@@ -486,25 +486,25 @@ package matplotlib.transforms;
 		(property) The width of the bounding box.  It may be negative if
 		:attr:`x1` < :attr:`x0`.
 	**/
-	static public var width : Dynamic;
-	static public var x0 : Dynamic;
-	static public var x1 : Dynamic;
+	public var width : Dynamic;
+	public var x0 : Dynamic;
+	public var x1 : Dynamic;
 	/**
 		(property) :attr:`xmax` is the right edge of the bounding box.
 	**/
-	static public var xmax : Dynamic;
+	public var xmax : Dynamic;
 	/**
 		(property) :attr:`xmin` is the left edge of the bounding box.
 	**/
-	static public var xmin : Dynamic;
-	static public var y0 : Dynamic;
-	static public var y1 : Dynamic;
+	public var xmin : Dynamic;
+	public var y0 : Dynamic;
+	public var y1 : Dynamic;
 	/**
 		(property) :attr:`ymax` is the top edge of the bounding box.
 	**/
-	static public var ymax : Dynamic;
+	public var ymax : Dynamic;
 	/**
 		(property) :attr:`ymin` is the bottom edge of the bounding box.
 	**/
-	static public var ymin : Dynamic;
+	public var ymin : Dynamic;
 }

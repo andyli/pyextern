@@ -147,7 +147,7 @@ package pandas.core.config;
 	/**
 		Alias for field number 4
 	**/
-	static public var cb : Dynamic;
+	public var cb : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -155,11 +155,11 @@ package pandas.core.config;
 	/**
 		Alias for field number 1
 	**/
-	static public var defval : Dynamic;
+	public var defval : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var doc : Dynamic;
+	public var doc : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -168,9 +168,9 @@ package pandas.core.config;
 	/**
 		Alias for field number 0
 	**/
-	static public var key : Dynamic;
+	public var key : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var validator : Dynamic;
+	public var validator : Dynamic;
 }

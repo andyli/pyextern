@@ -135,7 +135,7 @@ package numpy.polynomial.hermite_e;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Add one Hermite series to another.
 		

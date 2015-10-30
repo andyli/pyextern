@@ -122,15 +122,15 @@ package pandas.core.internals;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var _blklocs : Dynamic;
-	static public var _blknos : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var _blklocs : Dynamic;
+	public var _blknos : Dynamic;
 	public function _consolidate_check():Dynamic;
 	public function _consolidate_inplace():Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -149,15 +149,15 @@ package pandas.core.internals;
 		Items must be contained in the blocks
 	**/
 	public function _interleave():Dynamic;
-	static public var _is_consolidated : Dynamic;
+	public var _is_consolidated : Dynamic;
 	/**
 		Check all axes except items
 	**/
 	public function _is_indexed_like(other:Dynamic):Dynamic;
-	static public var _is_single_block : Dynamic;
-	static public var _known_consolidated : Dynamic;
+	public var _is_single_block : Dynamic;
+	public var _known_consolidated : Dynamic;
 	public function _make_na_block(placement:Dynamic, ?fill_value:Dynamic):Dynamic;
-	static public var _ndim : Dynamic;
+	public var _ndim : Dynamic;
 	public function _post_setstate():Dynamic;
 	/**
 		Update mgr._blknos / mgr._blklocs.
@@ -167,7 +167,7 @@ package pandas.core.internals;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
-	static public var _shape : Dynamic;
+	public var _shape : Dynamic;
 	/**
 		Slice/take blocks along axis=0.
 		
@@ -200,8 +200,8 @@ package pandas.core.internals;
 	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, kwargs:Dynamic):Dynamic;
 	public function as_matrix(?items:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var axes : Dynamic;
-	static public var blocks : Dynamic;
+	public var axes : Dynamic;
+	public var blocks : Dynamic;
 	/**
 		return a new manager with the blocks 
 	**/
@@ -296,22 +296,22 @@ package pandas.core.internals;
 		Return True if more than one block with the same dtype
 	**/
 	public function is_consolidated():Dynamic;
-	static public var is_datelike_mixed_type : Dynamic;
-	static public var is_mixed_type : Dynamic;
-	static public var is_numeric_mixed_type : Dynamic;
+	public var is_datelike_mixed_type : Dynamic;
+	public var is_mixed_type : Dynamic;
+	public var is_numeric_mixed_type : Dynamic;
 	/**
 		return a boolean if we are a single block and are a view 
 	**/
-	static public var is_view : Dynamic;
+	public var is_view : Dynamic;
 	public function isnull(kwargs:Dynamic):Dynamic;
-	static public var items : Dynamic;
+	public var items : Dynamic;
 	/**
 		return an empty BlockManager with the items axis of len 0 
 	**/
 	public function make_empty(?axes:Dynamic):Dynamic;
 	public function merge(other:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic):Dynamic;
-	static public var nblocks : Dynamic;
-	static public var ndim : Dynamic;
+	public var nblocks : Dynamic;
+	public var ndim : Dynamic;
 	public function putmask(kwargs:Dynamic):Dynamic;
 	/**
 		Conform block manager to new index.
@@ -356,7 +356,7 @@ package pandas.core.internals;
 	public function set(item:Dynamic, value:Dynamic, ?check:Dynamic):Dynamic;
 	public function set_axis(axis:Dynamic, new_labels:Dynamic):Dynamic;
 	public function setitem(kwargs:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	public function shift(kwargs:Dynamic):Dynamic;
 	/**
 		Take items along any axis.

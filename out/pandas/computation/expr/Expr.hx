@@ -114,12 +114,12 @@ package pandas.computation.expr;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var assigner : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var assigner : Dynamic;
 	/**
 		Get the names in an expression
 	**/
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	/**
 		Parse an expression
 	**/

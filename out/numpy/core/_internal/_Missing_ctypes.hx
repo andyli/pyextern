@@ -96,7 +96,7 @@ package numpy.core._internal;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function c_void_p(num:Dynamic):Dynamic;
 	@:native("cast")
 	public function _cast(num:Dynamic, obj:Dynamic):Dynamic;

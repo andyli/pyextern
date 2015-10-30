@@ -96,7 +96,7 @@ package scipy.stats._multivariate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Compute the differential entropy of the dirichlet distribution.
 		
@@ -153,7 +153,7 @@ package scipy.stats._multivariate;
 		    The probability density function evaluated at `x`.
 	**/
 	public function pdf(x:Dynamic):Dynamic;
-	static public var random_state : Dynamic;
+	public var random_state : Dynamic;
 	/**
 		Draw random samples from a Dirichlet distribution.
 		

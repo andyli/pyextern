@@ -100,7 +100,7 @@ package scipy.interpolate.rbf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _call_norm(x1:Dynamic, x2:Dynamic):Dynamic;
 	public function _euclidean_norm(x1:Dynamic, x2:Dynamic):Dynamic;
 	public function _h_cubic(r:Dynamic):Dynamic;

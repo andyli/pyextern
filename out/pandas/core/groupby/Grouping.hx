@@ -97,13 +97,13 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _group_index : Dynamic;
 	static public var _labels : Dynamic;
 	public function _make_labels():Dynamic;
-	static public var group_index : Dynamic;
+	public var group_index : Dynamic;
 	static public var groups : Dynamic;
 	static public var indices : Dynamic;
-	static public var labels : Dynamic;
-	static public var ngroups : Dynamic;
+	public var labels : Dynamic;
+	public var ngroups : Dynamic;
 }

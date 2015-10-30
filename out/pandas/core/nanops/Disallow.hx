@@ -100,6 +100,6 @@ package pandas.core.nanops;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function check(obj:Dynamic):Dynamic;
 }

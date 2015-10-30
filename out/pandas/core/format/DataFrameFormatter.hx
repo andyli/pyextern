@@ -96,7 +96,7 @@ package pandas.core.format;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Checks whether the frame should be truncated. If so, slices
 		the frame up.
@@ -112,10 +112,10 @@ package pandas.core.format;
 		Render a DataFrame to a list of columns (as lists of strings).
 	**/
 	public function _to_str_columns():Dynamic;
-	static public var has_column_names : Dynamic;
-	static public var has_index_names : Dynamic;
+	public var has_column_names : Dynamic;
+	public var has_index_names : Dynamic;
 	static public var is_truncated : Dynamic;
-	static public var should_show_dimensions : Dynamic;
+	public var should_show_dimensions : Dynamic;
 	static public var show_dimensions : Dynamic;
 	/**
 		Render a DataFrame to a html table.

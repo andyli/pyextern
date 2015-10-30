@@ -142,7 +142,7 @@ package matplotlib.cbook;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		L.append(object) -> None -- append object to end
 	**/

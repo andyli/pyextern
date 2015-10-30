@@ -108,7 +108,7 @@ package pandas.io.stata;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var b : Dynamic;
 	static public var bases : Dynamic;
 	static public var float32_base : Dynamic;
@@ -120,9 +120,9 @@ package pandas.io.stata;
 	/**
 		The Stata representation of the missing value: '.', '.a'..'.z'
 	**/
-	static public var string : Dynamic;
+	public var string : Dynamic;
 	/**
 		The binary representation of the missing value.
 	**/
-	static public var value : Dynamic;
+	public var value : Dynamic;
 }

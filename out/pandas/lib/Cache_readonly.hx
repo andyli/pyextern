@@ -107,7 +107,7 @@ package pandas.lib;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var allow_setting : Dynamic;
-	static public var func : Dynamic;
-	static public var name : Dynamic;
+	public var allow_setting : Dynamic;
+	public var func : Dynamic;
+	public var name : Dynamic;
 }

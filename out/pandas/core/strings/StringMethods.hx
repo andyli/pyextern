@@ -98,7 +98,7 @@ package pandas.core.strings;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _wrap_result(result:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _wrap_result_expand(result:Dynamic, ?expand:Dynamic):Dynamic;
 	/**

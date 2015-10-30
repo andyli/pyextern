@@ -4,7 +4,7 @@ package pandas.core.series;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	static public var _AXIS_ALIASES : Dynamic;
 	static public var _AXIS_IALIASES : Dynamic;
 	static public var _AXIS_LEN : Dynamic;
@@ -194,7 +194,7 @@ package pandas.core.series;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	static public var _accessors : Dynamic;
 	/**
@@ -226,7 +226,7 @@ package pandas.core.series;
 	**/
 	public function _binop(other:Dynamic, func:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
 	public function _box_item_values(key:Dynamic, values:Dynamic):Dynamic;
-	static public var _can_hold_na : Dynamic;
+	public var _can_hold_na : Dynamic;
 	/**
 		check whether we allow in-place setting with this type of value 
 	**/
@@ -296,13 +296,13 @@ package pandas.core.series;
 		return a tuple of (axes, kwargs) 
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
-	static public var _constructor : Dynamic;
-	static public var _constructor_expanddim : Dynamic;
+	public var _constructor : Dynamic;
+	public var _constructor_expanddim : Dynamic;
 	/**
 		Used when a manipulation result has one lower dimension(s) as the
 		original, such as DataFrame single columns slicing.
 	**/
-	static public var _constructor_sliced : Dynamic;
+	public var _constructor_sliced : Dynamic;
 	/**
 		Attempt to infer better dtype for object columns
 		
@@ -380,7 +380,7 @@ package pandas.core.series;
 	static public var _iloc : Dynamic;
 	static public var _index : Dynamic;
 	public function _indexed_same(other:Dynamic):Dynamic;
-	static public var _info_axis : Dynamic;
+	public var _info_axis : Dynamic;
 	static public var _info_axis_name : Dynamic;
 	static public var _info_axis_number : Dynamic;
 	/**
@@ -392,14 +392,14 @@ package pandas.core.series;
 	/**
 		boolean : return if I am cached 
 	**/
-	static public var _is_cached : Dynamic;
-	static public var _is_datelike_mixed_type : Dynamic;
-	static public var _is_mixed_type : Dynamic;
-	static public var _is_numeric_mixed_type : Dynamic;
+	public var _is_cached : Dynamic;
+	public var _is_datelike_mixed_type : Dynamic;
+	public var _is_mixed_type : Dynamic;
+	public var _is_numeric_mixed_type : Dynamic;
 	/**
 		boolean : return if I am a view of another array 
 	**/
-	static public var _is_view : Dynamic;
+	public var _is_view : Dynamic;
 	static public var _ix : Dynamic;
 	/**
 		Return the i-th value or values in the Series by location
@@ -517,7 +517,7 @@ package pandas.core.series;
 		kind parameter is maintained for compatibility with Series slicing.
 	**/
 	public function _slice(slobj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
-	static public var _stat_axis : Dynamic;
+	public var _stat_axis : Dynamic;
 	static public var _stat_axis_name : Dynamic;
 	static public var _stat_axis_number : Dynamic;
 	static public var _typ : Dynamic;
@@ -538,7 +538,7 @@ package pandas.core.series;
 	/**
 		return the internal repr of this data 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	/**
 		Returns a cross-section (row(s) or column(s)) from the Series/DataFrame.
 		Defaults to cross-section on the rows (axis=0).
@@ -1030,7 +1030,7 @@ package pandas.core.series;
 		Similarly to ``loc``, ``at`` provides **label** based scalar lookups.
 		You can also set using these indexers.
 	**/
-	static public var at : Dynamic;
+	public var at : Dynamic;
 	/**
 		Select values at particular time of day (e.g. 9:30AM)
 		
@@ -1059,11 +1059,11 @@ package pandas.core.series;
 	/**
 		Return a list of the row axis labels
 	**/
-	static public var axes : Dynamic;
+	public var axes : Dynamic;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Return boolean Series equivalent to left <= series <= right. NA values
 		will be treated as False
@@ -1102,7 +1102,7 @@ package pandas.core.series;
 	/**
 		Internal property, property synonym for as_blocks()
 	**/
-	static public var blocks : Dynamic;
+	public var blocks : Dynamic;
 	/**
 		Return the bool of a single element PandasObject
 		This must be a boolean scalar value, either True or False
@@ -1435,7 +1435,7 @@ package pandas.core.series;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -1630,11 +1630,11 @@ package pandas.core.series;
 	/**
 		return the dtype object of the underlying data 
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		return the dtype object of the underlying data 
 	**/
-	static public var dtypes : Dynamic;
+	public var dtypes : Dynamic;
 	/**
 		Return boolean Series denoting duplicate values
 		
@@ -1654,7 +1654,7 @@ package pandas.core.series;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
-	static public var empty : Dynamic;
+	public var empty : Dynamic;
 	public function eq(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Determines if two NDFrame objects contain the same elements. NaNs in the
@@ -1767,7 +1767,7 @@ package pandas.core.series;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Integer division of series and other, element-wise (binary operator `floordiv`).
 		
@@ -1846,11 +1846,11 @@ package pandas.core.series;
 	/**
 		return if the data is sparse|dense 
 	**/
-	static public var ftype : Dynamic;
+	public var ftype : Dynamic;
 	/**
 		return if the data is sparse|dense 
 	**/
-	static public var ftypes : Dynamic;
+	public var ftypes : Dynamic;
 	public function ge(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Get item from object for given key (DataFrame column, Panel slice,
@@ -1978,7 +1978,7 @@ package pandas.core.series;
 		Similarly to ``iloc``, ``iat`` provides **integer** based lookups.
 		You can also set using these indexers.
 	**/
-	static public var iat : Dynamic;
+	public var iat : Dynamic;
 	/**
 		Index of first occurrence of maximum of values.
 		
@@ -2051,9 +2051,9 @@ package pandas.core.series;
 		
 		See more at :ref:`Selection by Position <indexing.integer>`
 	**/
-	static public var iloc : Dynamic;
-	static public var imag : Dynamic;
-	static public var index : Dynamic;
+	public var iloc : Dynamic;
+	public var imag : Dynamic;
+	public var index : Dynamic;
 	/**
 		Interpolate values according to different methods.
 		
@@ -2129,7 +2129,7 @@ package pandas.core.series;
 	**/
 	public function irow(i:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var is_copy : Dynamic;
-	static public var is_time_series : Dynamic;
+	public var is_time_series : Dynamic;
 	/**
 		Return a boolean :class:`~pandas.Series` showing whether each element
 		in the :class:`~pandas.Series` is exactly contained in the passed
@@ -2194,7 +2194,7 @@ package pandas.core.series;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		Lazily iterate over (index, value) tuples
 	**/
@@ -2222,7 +2222,7 @@ package pandas.core.series;
 		
 		See more at :ref:`Advanced Indexing <advanced>`.
 	**/
-	static public var ix : Dynamic;
+	public var ix : Dynamic;
 	/**
 		Alias for index
 	**/
@@ -2315,7 +2315,7 @@ package pandas.core.series;
 		
 		See more at :ref:`Selection by Label <indexing.label>`
 	**/
-	static public var loc : Dynamic;
+	public var loc : Dynamic;
 	public function lt(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return the mean absolute deviation of the values for the requested axis
@@ -2577,11 +2577,11 @@ package pandas.core.series;
 	/**
 		return the number of bytes in the underlying data 
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	public function ne(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return the largest `n` elements.
@@ -3011,7 +3011,7 @@ package pandas.core.series;
 		Series.truediv
 	**/
 	public function rdiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		Conform Series to new index with optional filling logic, placing
 		NA/NaN in locations having no value in the previous index. A new object
@@ -3725,7 +3725,7 @@ package pandas.core.series;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift index by desired number of periods with an optional time freq
 		
@@ -3752,7 +3752,7 @@ package pandas.core.series;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Return unbiased skew over requested axis
 		Normalized by N-1
@@ -3933,7 +3933,7 @@ package pandas.core.series;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Subtraction of series and other, element-wise (binary operator `sub`).
 		
@@ -4584,7 +4584,7 @@ package pandas.core.series;
 		       '2013-01-02T00:00:00.000000000-0500',
 		       '2013-01-03T00:00:00.000000000-0500'], dtype='datetime64[ns]')
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		Return unbiased variance over requested axis.
 		

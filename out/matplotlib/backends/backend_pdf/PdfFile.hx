@@ -96,7 +96,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_xobject_symbol_name(filename:Dynamic, symbol_name:Dynamic):Dynamic;
 	public function _gray(im:Dynamic, ?rc:Dynamic, ?gc:Dynamic, ?bc:Dynamic):Dynamic;
 	static public var _identityToUnicodeCMap : Dynamic;

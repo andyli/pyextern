@@ -109,7 +109,7 @@ package matplotlib.transforms;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_bounds():Dynamic;
 	public function _get_extents():Dynamic;
 	public function _get_height():Dynamic;
@@ -160,7 +160,7 @@ package matplotlib.transforms;
 		(property) Returns (:attr:`x0`, :attr:`y0`, :attr:`width`,
 		:attr:`height`).
 	**/
-	static public var bounds : Dynamic;
+	public var bounds : Dynamic;
 	static public var coefs : Dynamic;
 	/**
 		Returns *True* if (*x*, *y*) is a coordinate inside the
@@ -206,7 +206,7 @@ package matplotlib.transforms;
 		(property) Returns (:attr:`x0`, :attr:`y0`, :attr:`x1`,
 		:attr:`y1`).
 	**/
-	static public var extents : Dynamic;
+	public var extents : Dynamic;
 	/**
 		:class:`TransformNode` is the base class for anything that
 		participates in the transform tree and needs to invalidate its
@@ -240,7 +240,7 @@ package matplotlib.transforms;
 		(property) The height of the bounding box.  It may be negative if
 		:attr:`y1` < :attr:`y0`.
 	**/
-	static public var height : Dynamic;
+	public var height : Dynamic;
 	/**
 		Return the intersection of the two bboxes or None
 		if they do not intersect.
@@ -255,13 +255,13 @@ package matplotlib.transforms;
 		the bounding box. It is not guaranteed to be sorted from left to
 		right.
 	**/
-	static public var intervalx : Dynamic;
+	public var intervalx : Dynamic;
 	/**
 		(property) :attr:`intervaly` is the pair of *y* coordinates that define
 		the bounding box.  It is not guaranteed to be sorted from bottom to
 		top.
 	**/
-	static public var intervaly : Dynamic;
+	public var intervaly : Dynamic;
 	/**
 		Invalidate this :class:`TransformNode` and triggers an
 		invalidation of its ancestors.  Should be called any
@@ -283,12 +283,12 @@ package matplotlib.transforms;
 	/**
 		(property) :attr:`max` is the top-right corner of the bounding box.
 	**/
-	static public var max : Dynamic;
+	public var max : Dynamic;
 	/**
 		(property) :attr:`min` is the bottom-left corner of the bounding
 		box.
 	**/
-	static public var min : Dynamic;
+	public var min : Dynamic;
 	/**
 		Returns True if this bounding box overlaps with the given
 		bounding box *other*.
@@ -299,13 +299,13 @@ package matplotlib.transforms;
 		that define the bounding box.  It is not guaranteed to be the
 		bottom-left corner.  For that, use :attr:`min`.
 	**/
-	static public var p0 : Dynamic;
+	public var p0 : Dynamic;
 	/**
 		(property) :attr:`p1` is the second pair of (*x*, *y*) coordinates
 		that define the bounding box.  It is not guaranteed to be the
 		top-right corner.  For that, use :attr:`max`.
 	**/
-	static public var p1 : Dynamic;
+	public var p1 : Dynamic;
 	/**
 		Return a new :class:`Bbox` that is padded on all four sides by
 		the given value.
@@ -346,7 +346,7 @@ package matplotlib.transforms;
 		(property) The width and height of the bounding box.  May be negative,
 		in the same way as :attr:`width` and :attr:`height`.
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		e.g., ``bbox.splitx(f1, f2, ...)``
 		
@@ -381,45 +381,45 @@ package matplotlib.transforms;
 		(property) The width of the bounding box.  It may be negative if
 		:attr:`x1` < :attr:`x0`.
 	**/
-	static public var width : Dynamic;
+	public var width : Dynamic;
 	/**
 		(property) :attr:`x0` is the first of the pair of *x* coordinates that
 		define the bounding box.  :attr:`x0` is not guaranteed to be
 		less than :attr:`x1`.  If you require that, use :attr:`xmin`.
 	**/
-	static public var x0 : Dynamic;
+	public var x0 : Dynamic;
 	/**
 		(property) :attr:`x1` is the second of the pair of *x* coordinates
 		that define the bounding box.  :attr:`x1` is not guaranteed to be
 		greater than :attr:`x0`.  If you require that, use :attr:`xmax`.
 	**/
-	static public var x1 : Dynamic;
+	public var x1 : Dynamic;
 	/**
 		(property) :attr:`xmax` is the right edge of the bounding box.
 	**/
-	static public var xmax : Dynamic;
+	public var xmax : Dynamic;
 	/**
 		(property) :attr:`xmin` is the left edge of the bounding box.
 	**/
-	static public var xmin : Dynamic;
+	public var xmin : Dynamic;
 	/**
 		(property) :attr:`y0` is the first of the pair of *y* coordinates that
 		define the bounding box.  :attr:`y0` is not guaranteed to be
 		less than :attr:`y1`.  If you require that, use :attr:`ymin`.
 	**/
-	static public var y0 : Dynamic;
+	public var y0 : Dynamic;
 	/**
 		(property) :attr:`y1` is the second of the pair of *y* coordinates
 		that define the bounding box.  :attr:`y1` is not guaranteed to be
 		greater than :attr:`y0`.  If you require that, use :attr:`ymax`.
 	**/
-	static public var y1 : Dynamic;
+	public var y1 : Dynamic;
 	/**
 		(property) :attr:`ymax` is the top edge of the bounding box.
 	**/
-	static public var ymax : Dynamic;
+	public var ymax : Dynamic;
 	/**
 		(property) :attr:`ymin` is the bottom edge of the bounding box.
 	**/
-	static public var ymin : Dynamic;
+	public var ymin : Dynamic;
 }

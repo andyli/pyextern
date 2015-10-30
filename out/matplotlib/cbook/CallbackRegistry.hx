@@ -98,7 +98,7 @@ package matplotlib.cbook;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		register *func* to be called when a signal *s* is generated
 		func will be called

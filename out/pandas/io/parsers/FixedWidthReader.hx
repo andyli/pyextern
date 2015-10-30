@@ -97,7 +97,7 @@ package pandas.io.parsers;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function detect_colspecs(?n:Dynamic):Dynamic;
 	public function get_rows(n:Dynamic):Dynamic;
 	public function next():Dynamic;

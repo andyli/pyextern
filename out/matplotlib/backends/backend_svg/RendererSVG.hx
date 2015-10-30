@@ -97,7 +97,7 @@ package matplotlib.backends.backend_svg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _adjust_char_id(char_id:Dynamic):Dynamic;
 	public function _convert_path(path:Dynamic, ?transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic):Dynamic;
 	/**

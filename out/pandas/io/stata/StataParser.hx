@@ -96,7 +96,7 @@ package pandas.io.stata;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _decode_bytes(str:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var _default_encoding : Dynamic;
 }

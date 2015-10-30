@@ -193,7 +193,7 @@ package pandas.sparse.panel;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	static public var _accessors : Dynamic;
 	/**
@@ -294,12 +294,12 @@ package pandas.sparse.panel;
 		return the type for the ndim of the result 
 	**/
 	public function _construct_return_type(result:Dynamic, ?axes:Dynamic):Dynamic;
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		Used when a manipulation result has one higher dimension as the
 		original, such as Series.to_frame() and DataFrame.to_panel()
 	**/
-	static public var _constructor_expanddim : Dynamic;
+	public var _constructor_expanddim : Dynamic;
 	/**
 		Two-dimensional size-mutable, potentially heterogeneous tabular data
 		structure with labeled axes (rows and columns). Arithmetic operations
@@ -418,7 +418,7 @@ package pandas.sparse.panel;
 		as we are returning a DataFrame axes indexes
 	**/
 	public function _get_plane_axes_index(axis:Dynamic):Dynamic;
-	static public var _get_values : Dynamic;
+	public var _get_values : Dynamic;
 	public function _getitem_multilevel(key:Dynamic):Dynamic;
 	/**
 		Conform set of _constructor_sliced-like objects to either
@@ -441,7 +441,7 @@ package pandas.sparse.panel;
 	public function _iget_item_cache(item:Dynamic):Dynamic;
 	static public var _iloc : Dynamic;
 	public function _indexed_same(other:Dynamic):Dynamic;
-	static public var _info_axis : Dynamic;
+	public var _info_axis : Dynamic;
 	static public var _info_axis_name : Dynamic;
 	static public var _info_axis_number : Dynamic;
 	public function _init_arrays(arrays:Dynamic, arr_names:Dynamic, axes:Dynamic):Dynamic;
@@ -461,14 +461,14 @@ package pandas.sparse.panel;
 	/**
 		boolean : return if I am cached 
 	**/
-	static public var _is_cached : Dynamic;
-	static public var _is_datelike_mixed_type : Dynamic;
-	static public var _is_mixed_type : Dynamic;
-	static public var _is_numeric_mixed_type : Dynamic;
+	public var _is_cached : Dynamic;
+	public var _is_datelike_mixed_type : Dynamic;
+	public var _is_mixed_type : Dynamic;
+	public var _is_numeric_mixed_type : Dynamic;
 	/**
 		boolean : return if I am a view of another array 
 	**/
-	static public var _is_view : Dynamic;
+	public var _is_view : Dynamic;
 	static public var _items : Dynamic;
 	static public var _ix : Dynamic;
 	/**
@@ -554,7 +554,7 @@ package pandas.sparse.panel;
 		for compat as we don't support Block Manager here
 	**/
 	public function _slice(slobj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
-	static public var _stat_axis : Dynamic;
+	public var _stat_axis : Dynamic;
 	static public var _stat_axis_name : Dynamic;
 	static public var _stat_axis_number : Dynamic;
 	static public var _subtyp : Dynamic;
@@ -579,7 +579,7 @@ package pandas.sparse.panel;
 	/**
 		internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	public function _wrap_result(result:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Return slice of panel along selected axis
@@ -853,7 +853,7 @@ package pandas.sparse.panel;
 		Similarly to ``loc``, ``at`` provides **label** based scalar lookups.
 		You can also set using these indexers.
 	**/
-	static public var at : Dynamic;
+	public var at : Dynamic;
 	/**
 		Select values at particular time of day (e.g. 9:30AM)
 		
@@ -869,7 +869,7 @@ package pandas.sparse.panel;
 	/**
 		Return index label(s) of the internal NDFrame
 	**/
-	static public var axes : Dynamic;
+	public var axes : Dynamic;
 	/**
 		Select values between particular times of the day (e.g., 9:00-9:30 AM)
 		
@@ -892,7 +892,7 @@ package pandas.sparse.panel;
 	/**
 		Internal property, property synonym for as_blocks()
 	**/
-	static public var blocks : Dynamic;
+	public var blocks : Dynamic;
 	/**
 		Return the bool of a single element PandasObject
 		This must be a boolean scalar value, either True or False
@@ -1273,11 +1273,11 @@ package pandas.sparse.panel;
 	/**
 		Return the dtypes in this object 
 	**/
-	static public var dtypes : Dynamic;
+	public var dtypes : Dynamic;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
-	static public var empty : Dynamic;
+	public var empty : Dynamic;
 	/**
 		Wrapper for comparison method eq
 	**/
@@ -1420,7 +1420,7 @@ package pandas.sparse.panel;
 		Return the ftypes (indication of sparse/dense and dtype)
 		in this object.
 	**/
-	static public var ftypes : Dynamic;
+	public var ftypes : Dynamic;
 	/**
 		Wrapper for comparison method ge
 	**/
@@ -1493,7 +1493,7 @@ package pandas.sparse.panel;
 		Similarly to ``iloc``, ``iat`` provides **integer** based lookups.
 		You can also set using these indexers.
 	**/
-	static public var iat : Dynamic;
+	public var iat : Dynamic;
 	/**
 		Purely integer-location based indexing for selection by position.
 		
@@ -1514,7 +1514,7 @@ package pandas.sparse.panel;
 		
 		See more at :ref:`Selection by Position <indexing.integer>`
 	**/
-	static public var iloc : Dynamic;
+	public var iloc : Dynamic;
 	/**
 		Interpolate values according to different methods.
 		
@@ -1594,7 +1594,7 @@ package pandas.sparse.panel;
 		notnull : boolean inverse of isnull
 	**/
 	public function isnull():Dynamic;
-	static public var items : Dynamic;
+	public var items : Dynamic;
 	/**
 		Iterate over (label, values) on info axis
 		
@@ -1625,7 +1625,7 @@ package pandas.sparse.panel;
 		
 		See more at :ref:`Advanced Indexing <advanced>`.
 	**/
-	static public var ix : Dynamic;
+	public var ix : Dynamic;
 	/**
 		Join items with other Panel either on major and minor axes column
 		
@@ -1744,7 +1744,7 @@ package pandas.sparse.panel;
 		
 		See more at :ref:`Selection by Label <indexing.label>`
 	**/
-	static public var loc : Dynamic;
+	public var loc : Dynamic;
 	/**
 		Wrapper for comparison method lt
 	**/
@@ -2703,7 +2703,7 @@ package pandas.sparse.panel;
 	/**
 		Return a tuple of axis dimensions
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift index by desired number of periods with an optional time freq.
 		The shifted data will not include the dropped periods and the
@@ -2725,7 +2725,7 @@ package pandas.sparse.panel;
 	/**
 		number of elements in the NDFrame
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Return unbiased skew over requested axis
 		Normalized by N-1
@@ -3321,7 +3321,7 @@ package pandas.sparse.panel;
 		    contain data in the same place.
 	**/
 	public function update(other:Dynamic, ?join:Dynamic, ?overwrite:Dynamic, ?filter_func:Dynamic, ?raise_conflict:Dynamic):Dynamic;
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		Return unbiased variance over requested axis.
 		

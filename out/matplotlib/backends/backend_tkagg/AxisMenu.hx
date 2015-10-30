@@ -96,7 +96,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function adjust(naxes:Dynamic):Dynamic;
 	public function get_indices():Dynamic;
 	public function invert_all():Dynamic;

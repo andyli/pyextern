@@ -4,19 +4,19 @@ package scipy.signal.ltisys;
 	/**
 		A matrix of the `StateSpace` system.
 	**/
-	static public var A : Dynamic;
+	public var A : Dynamic;
 	/**
 		B matrix of the `StateSpace` system.
 	**/
-	static public var B : Dynamic;
+	public var B : Dynamic;
 	/**
 		C matrix of the `StateSpace` system.
 	**/
-	static public var C : Dynamic;
+	public var C : Dynamic;
 	/**
 		D matrix of the `StateSpace` system.
 	**/
-	static public var D : Dynamic;
+	public var D : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -112,7 +112,7 @@ package scipy.signal.ltisys;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Copy the parameters of another `TransferFunction` object
 		
@@ -148,7 +148,7 @@ package scipy.signal.ltisys;
 		>>> plt.show()
 	**/
 	public function bode(?w:Dynamic, ?n:Dynamic):Dynamic;
-	static public var den : Dynamic;
+	public var den : Dynamic;
 	/**
 		Calculate the frequency response of a continuous-time system.
 		
@@ -160,13 +160,13 @@ package scipy.signal.ltisys;
 	/**
 		Gain of the `ZerosPolesGain` system.
 	**/
-	static public var gain : Dynamic;
+	public var gain : Dynamic;
 	/**
 		Return the impulse response of a continuous-time system.
 		See `scipy.signal.impulse` for details.
 	**/
 	public function impulse(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
-	static public var num : Dynamic;
+	public var num : Dynamic;
 	/**
 		Return the response of a continuous-time system to input `U`.
 		See `scipy.signal.lsim` for details.
@@ -175,7 +175,7 @@ package scipy.signal.ltisys;
 	/**
 		Poles of the `ZerosPolesGain` system.
 	**/
-	static public var poles : Dynamic;
+	public var poles : Dynamic;
 	/**
 		Return the step response of a continuous-time system.
 		See `scipy.signal.step` for details.
@@ -211,5 +211,5 @@ package scipy.signal.ltisys;
 	/**
 		Zeros of the `ZerosPolesGain` system.
 	**/
-	static public var zeros : Dynamic;
+	public var zeros : Dynamic;
 }

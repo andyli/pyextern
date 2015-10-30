@@ -115,7 +115,7 @@ package pandas.core.base;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -132,7 +132,7 @@ package pandas.core.base;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_get(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;

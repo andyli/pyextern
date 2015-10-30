@@ -96,7 +96,7 @@ package matplotlib.backends.backend_pgf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public function add(tmpdir:Dynamic):Dynamic;
 	static public function cleanup_remaining_tmpdirs():Dynamic;
 	static public var remaining_tmpdirs : Dynamic;

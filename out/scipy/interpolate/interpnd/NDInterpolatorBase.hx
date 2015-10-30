@@ -109,7 +109,7 @@ package scipy.interpolate.interpnd;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _check_call_shape(xi:Dynamic):Dynamic;
 	/**
 		Check shape of points and values arrays

@@ -103,7 +103,7 @@ package pandas.core.indexing;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _align_frame(indexer:Dynamic, df:Dynamic):Dynamic;
 	public function _align_panel(indexer:Dynamic, df:Dynamic):Dynamic;
 	public function _align_series(indexer:Dynamic, ser:Dynamic):Dynamic;

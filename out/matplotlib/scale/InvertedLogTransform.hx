@@ -140,7 +140,7 @@ package matplotlib.scale;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _gid : Dynamic;
 	/**
 		Called by :meth:`invalidate` and subsequently ascends the transform
@@ -186,7 +186,7 @@ package matplotlib.scale;
 		    For the special case of a Composite transform, the maximum depth
 		    of the two is returned.
 	**/
-	static public var depth : Dynamic;
+	public var depth : Dynamic;
 	/**
 		Returns a frozen copy of this transform node.  The frozen copy
 		will not update when its children change.  Useful for storing

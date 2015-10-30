@@ -96,7 +96,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public function createToolTip(widget:Dynamic, text:Dynamic):Dynamic;
 	public function hidetip():Dynamic;
 	/**

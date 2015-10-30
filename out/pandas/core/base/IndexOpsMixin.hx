@@ -4,7 +4,7 @@ package pandas.core.base;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	static public var __array_priority__ : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -101,7 +101,7 @@ package pandas.core.base;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _dir_additions():Dynamic;
 	public function _dir_deletions():Dynamic;
 	public function _make_str_accessor():Dynamic;
@@ -113,7 +113,7 @@ package pandas.core.base;
 	/**
 		the internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	/**
 		return a ndarray of the maximum argument indexer
 		
@@ -133,11 +133,11 @@ package pandas.core.base;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Return IndexOpsMixin with duplicate values removed
 		
@@ -191,7 +191,7 @@ package pandas.core.base;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	static public var hasnans : Dynamic;
 	/**
 		return the first element of the underlying data as a python scalar 
@@ -200,7 +200,7 @@ package pandas.core.base;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		The maximum value of the object 
 	**/
@@ -212,11 +212,11 @@ package pandas.core.base;
 	/**
 		return the number of bytes in the underlying data 
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		Return number of unique elements in the object.
 		
@@ -239,11 +239,11 @@ package pandas.core.base;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Vectorized string functions for Series and Index. NAs stay NA unless
 		handled otherwise by a particular method. Patterned after Python's string
@@ -258,7 +258,7 @@ package pandas.core.base;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		return the transpose, which is by definition self 
 	**/

@@ -147,7 +147,7 @@ package scipy.stats.mstats_basic;
 	/**
 		Alias for field number 0
 	**/
-	static public var correlation : Dynamic;
+	public var correlation : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -160,5 +160,5 @@ package scipy.stats.mstats_basic;
 	/**
 		Alias for field number 1
 	**/
-	static public var pvalue : Dynamic;
+	public var pvalue : Dynamic;
 }

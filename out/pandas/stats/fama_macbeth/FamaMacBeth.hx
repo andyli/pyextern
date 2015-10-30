@@ -109,7 +109,7 @@ package pandas.stats.fama_macbeth;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _beta_raw : Dynamic;
 	static public var _coef_table : Dynamic;
 	public function _make_result(result:Dynamic):Dynamic;

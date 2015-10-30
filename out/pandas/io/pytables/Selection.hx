@@ -96,7 +96,7 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		where can be a : dict,list,tuple,string 
 	**/

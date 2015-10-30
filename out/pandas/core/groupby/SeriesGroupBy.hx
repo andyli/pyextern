@@ -127,7 +127,7 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
 	public function _aggregate_named(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
@@ -140,7 +140,7 @@ package pandas.core.groupby;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		arr is where cumcount gets its values from
 		
@@ -182,7 +182,7 @@ package pandas.core.groupby;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	static public var _selected_obj : Dynamic;
-	static public var _selection_list : Dynamic;
+	public var _selection_list : Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		we may need create a selection if we have non-level groupers 
@@ -296,7 +296,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var all : Dynamic;
+	public var all : Dynamic;
 	/**
 		    
 		
@@ -321,7 +321,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var any : Dynamic;
+	public var any : Dynamic;
 	/**
 		Apply function and combine results together in an intelligent way. The
 		split-apply-combine combination rules attempt to be as common sense
@@ -369,7 +369,7 @@ package pandas.core.groupby;
 	/**
 		Synonym for NDFrame.fillna(method='bfill')
 	**/
-	static public var bfill : Dynamic;
+	public var bfill : Dynamic;
 	/**
 		Compute correlation with `other` Series, excluding missing values
 		
@@ -388,7 +388,7 @@ package pandas.core.groupby;
 		-------
 		correlation : float
 	**/
-	static public var corr : Dynamic;
+	public var corr : Dynamic;
 	/**
 		Compute count of group, excluding missing values 
 	**/
@@ -408,7 +408,7 @@ package pandas.core.groupby;
 		
 		Normalized by N-1 (unbiased estimator).
 	**/
-	static public var cov : Dynamic;
+	public var cov : Dynamic;
 	/**
 		Number each item in each group from 0 to the length of that group - 1.
 		
@@ -468,7 +468,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var cummax : Dynamic;
+	public var cummax : Dynamic;
 	/**
 		    Return cumulative min over requested axis.
 		
@@ -485,7 +485,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var cummin : Dynamic;
+	public var cummin : Dynamic;
 	/**
 		    Return cumulative prod over requested axis.
 		
@@ -502,7 +502,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var cumprod : Dynamic;
+	public var cumprod : Dynamic;
 	/**
 		    Return cumulative sum over requested axis.
 		
@@ -519,7 +519,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var cumsum : Dynamic;
+	public var cumsum : Dynamic;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -571,7 +571,7 @@ package pandas.core.groupby;
 		--------
 		DataFrame.select_dtypes
 	**/
-	static public var describe : Dynamic;
+	public var describe : Dynamic;
 	/**
 		1st discrete difference of object
 		
@@ -584,15 +584,15 @@ package pandas.core.groupby;
 		-------
 		diffed : Series
 	**/
-	static public var diff : Dynamic;
+	public var diff : Dynamic;
 	/**
 		return the dtype object of the underlying data 
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Synonym for NDFrame.fillna(method='ffill')
 	**/
-	static public var ffill : Dynamic;
+	public var ffill : Dynamic;
 	/**
 		Fill NA/NaN values using the specified method
 		
@@ -632,7 +632,7 @@ package pandas.core.groupby;
 		-------
 		filled : Series
 	**/
-	static public var fillna : Dynamic;
+	public var fillna : Dynamic;
 	/**
 		Return a copy of a Series excluding elements from groups that
 		do not satisfy the boolean criterion specified by func.
@@ -677,7 +677,7 @@ package pandas.core.groupby;
 	/**
 		dict {group name -> group labels} 
 	**/
-	static public var groups : Dynamic;
+	public var groups : Dynamic;
 	/**
 		Returns first n rows of each group.
 		
@@ -729,7 +729,7 @@ package pandas.core.groupby;
 		-----
 		See matplotlib documentation online for more on this
 	**/
-	static public var hist : Dynamic;
+	public var hist : Dynamic;
 	/**
 		Index of first occurrence of maximum of values.
 		
@@ -751,7 +751,7 @@ package pandas.core.groupby;
 		DataFrame.idxmax
 		numpy.ndarray.argmax
 	**/
-	static public var idxmax : Dynamic;
+	public var idxmax : Dynamic;
 	/**
 		Index of first occurrence of minimum of values.
 		
@@ -773,11 +773,11 @@ package pandas.core.groupby;
 		DataFrame.idxmin
 		numpy.ndarray.argmin
 	**/
-	static public var idxmin : Dynamic;
+	public var idxmin : Dynamic;
 	/**
 		dict {group name -> group indices} 
 	**/
-	static public var indices : Dynamic;
+	public var indices : Dynamic;
 	/**
 		DEPRECATED. Use ``.nth(i)`` instead
 	**/
@@ -810,7 +810,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var mad : Dynamic;
+	public var mad : Dynamic;
 	/**
 		Compute max of group values
 	**/
@@ -831,8 +831,8 @@ package pandas.core.groupby;
 		Compute min of group values
 	**/
 	public function min():Dynamic;
-	static public var name : Dynamic;
-	static public var ngroups : Dynamic;
+	public var name : Dynamic;
+	public var ngroups : Dynamic;
 	/**
 		Return the largest `n` elements.
 		
@@ -977,11 +977,11 @@ package pandas.core.groupby;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	static public var pct_change : Dynamic;
+	public var pct_change : Dynamic;
 	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
-	static public var plot : Dynamic;
+	public var plot : Dynamic;
 	/**
 		Compute prod of group values
 	**/
@@ -1012,7 +1012,7 @@ package pandas.core.groupby;
 		0.75    3.25
 		dtype: float64
 	**/
-	static public var quantile : Dynamic;
+	public var quantile : Dynamic;
 	/**
 		Compute data ranks (1 through n). Equal values are assigned a rank that
 		is the average of the ranks of those values
@@ -1036,7 +1036,7 @@ package pandas.core.groupby;
 		-------
 		ranks : Series
 	**/
-	static public var rank : Dynamic;
+	public var rank : Dynamic;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -1164,7 +1164,7 @@ package pandas.core.groupby;
 		2000-01-01 00:06:00    26
 		Freq: 3T, dtype: int64
 	**/
-	static public var resample : Dynamic;
+	public var resample : Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		
@@ -1193,7 +1193,7 @@ package pandas.core.groupby;
 		-------
 		shifted : Series
 	**/
-	static public var shift : Dynamic;
+	public var shift : Dynamic;
 	/**
 		Compute group sizes
 	**/
@@ -1223,7 +1223,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	static public var skew : Dynamic;
+	public var skew : Dynamic;
 	/**
 		Compute standard deviation of groups, excluding missing values
 		
@@ -1271,7 +1271,7 @@ package pandas.core.groupby;
 		--------
 		numpy.ndarray.take
 	**/
-	static public var take : Dynamic;
+	public var take : Dynamic;
 	/**
 		Call function producing a like-indexed Series on each group and return
 		a Series with the transformed values
@@ -1312,7 +1312,7 @@ package pandas.core.groupby;
 		-------
 		shifted : NDFrame
 	**/
-	static public var tshift : Dynamic;
+	public var tshift : Dynamic;
 	/**
 		Return array of unique values in the object. Significantly faster than
 		numpy.unique. Includes NA values.
@@ -1321,7 +1321,7 @@ package pandas.core.groupby;
 		-------
 		uniques : ndarray
 	**/
-	static public var unique : Dynamic;
+	public var unique : Dynamic;
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Compute variance of groups, excluding missing values

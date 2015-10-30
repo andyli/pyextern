@@ -95,5 +95,5 @@ package matplotlib.dviread;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _parse(file:Dynamic):Dynamic;
-	static public var encoding : Dynamic;
+	public var encoding : Dynamic;
 }

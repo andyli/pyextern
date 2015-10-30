@@ -115,7 +115,7 @@ package pandas.tseries.common;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -132,7 +132,7 @@ package pandas.tseries.common;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
@@ -156,24 +156,24 @@ package pandas.tseries.common;
 		-------
 		a DataFrame
 	**/
-	static public var components : Dynamic;
+	public var components : Dynamic;
 	/**
 		Number of days for each element. 
 	**/
-	static public var days : Dynamic;
-	static public var freq : Dynamic;
+	public var days : Dynamic;
+	public var freq : Dynamic;
 	/**
 		Number of microseconds (>= 0 and less than 1 second) for each element. 
 	**/
-	static public var microseconds : Dynamic;
+	public var microseconds : Dynamic;
 	/**
 		Number of nanoseconds (>= 0 and less than 1 microsecond) for each element. 
 	**/
-	static public var nanoseconds : Dynamic;
+	public var nanoseconds : Dynamic;
 	/**
 		Number of seconds (>= 0 and less than 1 day) for each element. 
 	**/
-	static public var seconds : Dynamic;
+	public var seconds : Dynamic;
 	public function to_pytimedelta():Dynamic;
 	/**
 		Total duration of each element expressed in seconds.

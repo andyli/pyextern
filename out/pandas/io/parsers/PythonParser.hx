@@ -98,7 +98,7 @@ package pandas.io.parsers;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _agg_index(index:Dynamic, ?try_parse_dates:Dynamic):Dynamic;
 	/**
 		Return a line from buffer, filling buffer if required.
@@ -140,7 +140,7 @@ package pandas.io.parsers;
 		usecols_key is used if there are string usecols.
 	**/
 	public function _handle_usecols(columns:Dynamic, usecols_key:Dynamic):Dynamic;
-	static public var _has_complex_date_col : Dynamic;
+	public var _has_complex_date_col : Dynamic;
 	static public var _implicit_index : Dynamic;
 	public function _infer_columns():Dynamic;
 	public function _make_index(data:Dynamic, alldata:Dynamic, columns:Dynamic, ?indexnamerow:Dynamic):Dynamic;

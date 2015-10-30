@@ -115,7 +115,7 @@ package pandas.core.categorical;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -132,7 +132,7 @@ package pandas.core.categorical;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, new_values:Dynamic):Dynamic;
@@ -226,12 +226,12 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	static public var categories : Dynamic;
-	static public var codes : Dynamic;
+	public var categories : Dynamic;
+	public var codes : Dynamic;
 	/**
 		Gets the ordered attribute 
 	**/
-	static public var ordered : Dynamic;
+	public var ordered : Dynamic;
 	/**
 		Removes the specified categories.
 		

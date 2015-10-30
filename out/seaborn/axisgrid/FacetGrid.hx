@@ -361,11 +361,11 @@ package seaborn.axisgrid;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Return a flat array of the bottom row of axes.
 	**/
-	static public var _bottom_axes : Dynamic;
+	public var _bottom_axes : Dynamic;
 	/**
 		Turn off axis labels and legend.
 	**/
@@ -383,21 +383,21 @@ package seaborn.axisgrid;
 	/**
 		Return a flat array of the inner axes.
 	**/
-	static public var _inner_axes : Dynamic;
+	public var _inner_axes : Dynamic;
 	/**
 		Return a flat array of the left column of axes.
 	**/
-	static public var _left_axes : Dynamic;
+	public var _left_axes : Dynamic;
 	static public var _legend_out : Dynamic;
 	static public var _margin_titles : Dynamic;
 	/**
 		Return a flat array of axes that aren't on the bottom row.
 	**/
-	static public var _not_bottom_axes : Dynamic;
+	public var _not_bottom_axes : Dynamic;
 	/**
 		Return a flat array of axes that aren't on the left column.
 	**/
-	static public var _not_left_axes : Dynamic;
+	public var _not_left_axes : Dynamic;
 	/**
 		Extract the legend data from an axes object and save it.
 	**/
@@ -428,7 +428,7 @@ package seaborn.axisgrid;
 	/**
 		Easy access to single axes.
 	**/
-	static public var ax : Dynamic;
+	public var ax : Dynamic;
 	/**
 		Remove axis spines from the facets.
 	**/

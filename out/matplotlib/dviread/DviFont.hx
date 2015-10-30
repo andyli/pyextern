@@ -94,14 +94,14 @@ package matplotlib.dviread;
 		Height and depth of char in dvi units. For internal use by dviread.py.
 	**/
 	public function _height_depth_of(char:Dynamic):Dynamic;
-	static public var _scale : Dynamic;
-	static public var _tfm : Dynamic;
-	static public var _vf : Dynamic;
+	public var _scale : Dynamic;
+	public var _tfm : Dynamic;
+	public var _vf : Dynamic;
 	/**
 		Width of char in dvi units. For internal use by dviread.py.
 	**/
 	public function _width_of(char:Dynamic):Dynamic;
-	static public var size : Dynamic;
-	static public var texname : Dynamic;
-	static public var widths : Dynamic;
+	public var size : Dynamic;
+	public var texname : Dynamic;
+	public var widths : Dynamic;
 }

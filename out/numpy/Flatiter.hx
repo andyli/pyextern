@@ -126,7 +126,7 @@ package numpy;
 		>>> fl.base is x
 		True
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		An N-dimensional tuple of current coordinates.
 		
@@ -141,7 +141,7 @@ package numpy;
 		>>> fl.coords
 		(0, 1)
 	**/
-	static public var coords : Dynamic;
+	public var coords : Dynamic;
 	/**
 		copy()
 		
@@ -172,5 +172,5 @@ package numpy;
 		>>> fl.index
 		1
 	**/
-	static public var index : Dynamic;
+	public var index : Dynamic;
 }

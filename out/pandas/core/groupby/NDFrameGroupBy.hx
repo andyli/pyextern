@@ -127,7 +127,7 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _aggregate_generic(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _aggregate_item_by_item(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
@@ -139,7 +139,7 @@ package pandas.core.groupby;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		arr is where cumcount gets its values from
 		
@@ -186,7 +186,7 @@ package pandas.core.groupby;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	static public var _selected_obj : Dynamic;
-	static public var _selection_list : Dynamic;
+	public var _selection_list : Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		we may need create a selection if we have non-level groupers 
@@ -383,7 +383,7 @@ package pandas.core.groupby;
 	/**
 		dict {group name -> group labels} 
 	**/
-	static public var groups : Dynamic;
+	public var groups : Dynamic;
 	/**
 		Returns first n rows of each group.
 		
@@ -408,7 +408,7 @@ package pandas.core.groupby;
 	/**
 		dict {group name -> group indices} 
 	**/
-	static public var indices : Dynamic;
+	public var indices : Dynamic;
 	/**
 		DEPRECATED. Use ``.nth(i)`` instead
 	**/
@@ -437,8 +437,8 @@ package pandas.core.groupby;
 		Compute min of group values
 	**/
 	public function min():Dynamic;
-	static public var name : Dynamic;
-	static public var ngroups : Dynamic;
+	public var name : Dynamic;
+	public var ngroups : Dynamic;
 	/**
 		Take the nth row from each group if n is an int, or a subset of rows
 		if n is a list of ints.
@@ -490,7 +490,7 @@ package pandas.core.groupby;
 	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
-	static public var plot : Dynamic;
+	public var plot : Dynamic;
 	/**
 		Compute prod of group values
 	**/

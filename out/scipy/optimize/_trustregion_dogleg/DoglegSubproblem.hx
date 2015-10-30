@@ -100,7 +100,7 @@ package scipy.optimize._trustregion_dogleg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		The Cauchy point is minimal along the direction of steepest descent.
 	**/
@@ -108,7 +108,7 @@ package scipy.optimize._trustregion_dogleg;
 	/**
 		Value of objective function at current iteration.
 	**/
-	static public var fun : Dynamic;
+	public var fun : Dynamic;
 	/**
 		Solve the scalar quadratic equation ||z + t d|| == trust_radius.
 		This is like a line-sphere intersection.
@@ -118,16 +118,16 @@ package scipy.optimize._trustregion_dogleg;
 	/**
 		Value of hessian of objective function at current iteration.
 	**/
-	static public var hess : Dynamic;
+	public var hess : Dynamic;
 	public function hessp(p:Dynamic):Dynamic;
 	/**
 		Value of jacobian of objective function at current iteration.
 	**/
-	static public var jac : Dynamic;
+	public var jac : Dynamic;
 	/**
 		Magniture of jacobian of objective function at current iteration.
 	**/
-	static public var jac_mag : Dynamic;
+	public var jac_mag : Dynamic;
 	/**
 		The Newton point is a global minimum of the approximate function.
 	**/

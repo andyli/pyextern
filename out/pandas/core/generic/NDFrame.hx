@@ -158,7 +158,7 @@ package pandas.core.generic;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _accessors : Dynamic;
 	/**
 		add the operations to the cls; evaluate the doc strings again 
@@ -242,17 +242,17 @@ package pandas.core.generic;
 		Used when a manipulation result has the same dimesions as the
 		original.
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		Used when a manipulation result has one higher dimension as the
 		original, such as Series.to_frame() and DataFrame.to_panel()
 	**/
-	static public var _constructor_expanddim : Dynamic;
+	public var _constructor_expanddim : Dynamic;
 	/**
 		Used when a manipulation result has one lower dimension(s) as the
 		original, such as DataFrame single columns slicing.
 	**/
-	static public var _constructor_sliced : Dynamic;
+	public var _constructor_sliced : Dynamic;
 	/**
 		Attempt to infer better dtype for object columns
 		
@@ -311,7 +311,7 @@ package pandas.core.generic;
 	**/
 	public function _get_item_cache(item:Dynamic):Dynamic;
 	public function _get_numeric_data():Dynamic;
-	static public var _get_values : Dynamic;
+	public var _get_values : Dynamic;
 	static public var _iat : Dynamic;
 	/**
 		return the cached item, item represents a positional indexer 
@@ -319,7 +319,7 @@ package pandas.core.generic;
 	public function _iget_item_cache(item:Dynamic):Dynamic;
 	static public var _iloc : Dynamic;
 	public function _indexed_same(other:Dynamic):Dynamic;
-	static public var _info_axis : Dynamic;
+	public var _info_axis : Dynamic;
 	/**
 		passed a manager and a axes dict 
 	**/
@@ -329,14 +329,14 @@ package pandas.core.generic;
 	/**
 		boolean : return if I am cached 
 	**/
-	static public var _is_cached : Dynamic;
-	static public var _is_datelike_mixed_type : Dynamic;
-	static public var _is_mixed_type : Dynamic;
-	static public var _is_numeric_mixed_type : Dynamic;
+	public var _is_cached : Dynamic;
+	public var _is_datelike_mixed_type : Dynamic;
+	public var _is_mixed_type : Dynamic;
+	public var _is_numeric_mixed_type : Dynamic;
 	/**
 		boolean : return if I am a view of another array 
 	**/
-	static public var _is_view : Dynamic;
+	public var _is_view : Dynamic;
 	static public var _ix : Dynamic;
 	static public var _loc : Dynamic;
 	/**
@@ -413,7 +413,7 @@ package pandas.core.generic;
 		kind parameter is maintained for compatibility with Series slicing.
 	**/
 	public function _slice(slobj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
-	static public var _stat_axis : Dynamic;
+	public var _stat_axis : Dynamic;
 	/**
 		replace self internals with result.
 		
@@ -430,7 +430,7 @@ package pandas.core.generic;
 	/**
 		internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	/**
 		Returns a cross-section (row(s) or column(s)) from the Series/DataFrame.
 		Defaults to cross-section on the rows (axis=0).
@@ -664,7 +664,7 @@ package pandas.core.generic;
 		Similarly to ``loc``, ``at`` provides **label** based scalar lookups.
 		You can also set using these indexers.
 	**/
-	static public var at : Dynamic;
+	public var at : Dynamic;
 	/**
 		Select values at particular time of day (e.g. 9:30AM)
 		
@@ -680,7 +680,7 @@ package pandas.core.generic;
 	/**
 		Return index label(s) of the internal NDFrame
 	**/
-	static public var axes : Dynamic;
+	public var axes : Dynamic;
 	/**
 		Select values between particular times of the day (e.g., 9:00-9:30 AM)
 		
@@ -703,7 +703,7 @@ package pandas.core.generic;
 	/**
 		Internal property, property synonym for as_blocks()
 	**/
-	static public var blocks : Dynamic;
+	public var blocks : Dynamic;
 	/**
 		Return the bool of a single element PandasObject
 		This must be a boolean scalar value, either True or False
@@ -922,11 +922,11 @@ package pandas.core.generic;
 	/**
 		Return the dtypes in this object 
 	**/
-	static public var dtypes : Dynamic;
+	public var dtypes : Dynamic;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
-	static public var empty : Dynamic;
+	public var empty : Dynamic;
 	/**
 		Determines if two NDFrame objects contain the same elements. NaNs in the
 		same location are considered equal.
@@ -1019,7 +1019,7 @@ package pandas.core.generic;
 		Return the ftypes (indication of sparse/dense and dtype)
 		in this object.
 	**/
-	static public var ftypes : Dynamic;
+	public var ftypes : Dynamic;
 	/**
 		Get item from object for given key (DataFrame column, Panel slice,
 		etc.). Returns default value if not found
@@ -1100,7 +1100,7 @@ package pandas.core.generic;
 		Similarly to ``iloc``, ``iat`` provides **integer** based lookups.
 		You can also set using these indexers.
 	**/
-	static public var iat : Dynamic;
+	public var iat : Dynamic;
 	/**
 		Purely integer-location based indexing for selection by position.
 		
@@ -1121,7 +1121,7 @@ package pandas.core.generic;
 		
 		See more at :ref:`Selection by Position <indexing.integer>`
 	**/
-	static public var iloc : Dynamic;
+	public var iloc : Dynamic;
 	/**
 		Interpolate values according to different methods.
 		
@@ -1231,7 +1231,7 @@ package pandas.core.generic;
 		
 		See more at :ref:`Advanced Indexing <advanced>`.
 	**/
-	static public var ix : Dynamic;
+	public var ix : Dynamic;
 	/**
 		Get the 'info axis' (see Indexing for more)
 		
@@ -1276,7 +1276,7 @@ package pandas.core.generic;
 		
 		See more at :ref:`Selection by Label <indexing.label>`
 	**/
-	static public var loc : Dynamic;
+	public var loc : Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is False and otherwise are from other.
@@ -1303,7 +1303,7 @@ package pandas.core.generic;
 	/**
 		Number of axes / array dimensions
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are
 		not null
@@ -1836,7 +1836,7 @@ package pandas.core.generic;
 	/**
 		Return a tuple of axis dimensions
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift index by desired number of periods with an optional time freq
 		
@@ -1863,7 +1863,7 @@ package pandas.core.generic;
 	/**
 		number of elements in the NDFrame
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Equivalent to `shift` without copying data. The shifted data will
 		not include the dropped periods and the shifted axis will be smaller
@@ -2265,7 +2265,7 @@ package pandas.core.generic;
 		float32.  If dtypes are int32 and uint8, dtype will be upcase to
 		int32.
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is True and otherwise are from other.

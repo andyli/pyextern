@@ -96,7 +96,7 @@ package pandas.core.format;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function adjoin(space:Dynamic, lists:Dynamic, kwargs:Dynamic):Dynamic;
 	public function justify(texts:Dynamic, max_len:Dynamic, ?mode:Dynamic):Dynamic;
 	public function len(text:Dynamic):Dynamic;

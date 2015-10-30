@@ -96,7 +96,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_key(event:Dynamic):Dynamic;
 	/**
 		Return a canvas that is suitable for saving figures to a specified

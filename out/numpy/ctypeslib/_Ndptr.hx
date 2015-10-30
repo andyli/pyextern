@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.ctypeslib;
 @:pythonImport("numpy.ctypeslib", "_ndptr") extern class _Ndptr {
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		self != 0
 	**/
@@ -106,15 +106,15 @@ package numpy.ctypeslib;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		the base object
 	**/
-	static public var _b_base_ : Dynamic;
+	public var _b_base_ : Dynamic;
 	/**
 		whether the object owns the memory or not
 	**/
-	static public var _b_needsfree_ : Dynamic;
+	public var _b_needsfree_ : Dynamic;
 	/**
 		This method is called when this class is used as the .restype
 		asttribute for a shared-library function.   It constructs a numpy
@@ -124,7 +124,7 @@ package numpy.ctypeslib;
 	/**
 		internal objects tree (NEVER CHANGE THIS OBJECT!)
 	**/
-	static public var _objects : Dynamic;
+	public var _objects : Dynamic;
 	static public var _type_ : Dynamic;
 	/**
 		Convert a Python object into a function call parameter.
@@ -133,5 +133,5 @@ package numpy.ctypeslib;
 	/**
 		current value
 	**/
-	static public var value : Dynamic;
+	public var value : Dynamic;
 }

@@ -96,8 +96,8 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var fortran_format : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var fortran_format : Dynamic;
 	/**
 		Given an integer, returns a "reasonable" IntFormat instance to represent
 		any number between 0 and n if n > 0, -n and n if n < 0
@@ -122,5 +122,5 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 		represented as 1-character strings without loss of information.
 	**/
 	static public function from_number(n:Dynamic, ?min:Dynamic):Dynamic;
-	static public var python_format : Dynamic;
+	public var python_format : Dynamic;
 }

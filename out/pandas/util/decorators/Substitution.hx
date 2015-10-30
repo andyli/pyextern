@@ -100,7 +100,7 @@ package pandas.util.decorators;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		In the case where the params is a mutable sequence (list or dictionary)
 		and it may change before this class is called, one may explicitly use a

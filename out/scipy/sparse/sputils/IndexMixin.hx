@@ -96,7 +96,7 @@ package scipy.sparse.sputils;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _boolean_index_to_array(i:Dynamic):Dynamic;
 	public function _check_boolean(row:Dynamic, col:Dynamic):Dynamic;
 	/**

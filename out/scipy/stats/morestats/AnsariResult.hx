@@ -156,9 +156,9 @@ package scipy.stats.morestats;
 	/**
 		Alias for field number 1
 	**/
-	static public var pvalue : Dynamic;
+	public var pvalue : Dynamic;
 	/**
 		Alias for field number 0
 	**/
-	static public var statistic : Dynamic;
+	public var statistic : Dynamic;
 }

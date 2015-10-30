@@ -124,7 +124,7 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _check_if_open():Dynamic;
 	/**
 		return a suitable class to operate 
@@ -218,7 +218,7 @@ package pandas.io.pytables;
 		raises if the node is not a table
 	**/
 	public function create_table_index(key:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var filename : Dynamic;
+	public var filename : Dynamic;
 	/**
 		Force all buffered modifications to be written to disk.
 		
@@ -263,7 +263,7 @@ package pandas.io.pytables;
 	/**
 		return a boolean indicating whether the file is open
 	**/
-	static public var is_open : Dynamic;
+	public var is_open : Dynamic;
 	/**
 		iterate on key->group
 	**/
@@ -332,7 +332,7 @@ package pandas.io.pytables;
 	/**
 		return the root node 
 	**/
-	static public var root : Dynamic;
+	public var root : Dynamic;
 	/**
 		Retrieve pandas object stored in file, optionally based on where
 		criteria

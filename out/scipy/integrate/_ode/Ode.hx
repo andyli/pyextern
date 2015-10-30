@@ -96,7 +96,7 @@ package scipy.integrate._ode;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Find y=y(t), set y as an initial condition, and return y.
 	**/
@@ -141,5 +141,5 @@ package scipy.integrate._ode;
 		Check if integration was successful.
 	**/
 	public function successful():Dynamic;
-	static public var y : Dynamic;
+	public var y : Dynamic;
 }

@@ -119,7 +119,7 @@ package pandas.compat.chainmap_impl;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _abc_cache : Dynamic;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;
@@ -156,7 +156,7 @@ package pandas.compat.chainmap_impl;
 	/**
 		New ChainMap from maps[1:].
 	**/
-	static public var parents : Dynamic;
+	public var parents : Dynamic;
 	/**
 		Remove *key* from maps[0] and return its value. Raise KeyError if *key* not in maps[0].
 	**/

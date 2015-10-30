@@ -92,15 +92,15 @@ package pandas.lib;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _check_dummy(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var arr : Dynamic;
-	static public var dummy_arr : Dynamic;
-	static public var dummy_index : Dynamic;
-	static public var f : Dynamic;
+	public var arr : Dynamic;
+	public var dummy_arr : Dynamic;
+	public var dummy_index : Dynamic;
+	public var f : Dynamic;
 	public function get_result(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var index : Dynamic;
-	static public var ityp : Dynamic;
-	static public var labels : Dynamic;
-	static public var name : Dynamic;
-	static public var typ : Dynamic;
-	static public var values : Dynamic;
+	public var index : Dynamic;
+	public var ityp : Dynamic;
+	public var labels : Dynamic;
+	public var name : Dynamic;
+	public var typ : Dynamic;
+	public var values : Dynamic;
 }

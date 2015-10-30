@@ -112,19 +112,19 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var _complevel : Dynamic;
-	static public var _complib : Dynamic;
-	static public var _filters : Dynamic;
-	static public var _fletcher32 : Dynamic;
-	static public var _handle : Dynamic;
-	static public var attrs : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var _complevel : Dynamic;
+	public var _complib : Dynamic;
+	public var _filters : Dynamic;
+	public var _fletcher32 : Dynamic;
+	public var _handle : Dynamic;
+	public var attrs : Dynamic;
 	public function copy():Dynamic;
 	/**
 		support fully deleting the node in its entirety (only) - where specification must be None 
 	**/
 	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var format_type : Dynamic;
+	public var format_type : Dynamic;
 	/**
 		get our object attributes 
 	**/
@@ -134,15 +134,15 @@ package pandas.io.pytables;
 		return a boolean indicating if we have a valid storer or not 
 	**/
 	public function infer_axes():Dynamic;
-	static public var is_exists : Dynamic;
-	static public var is_old_version : Dynamic;
+	public var is_exists : Dynamic;
+	public var is_old_version : Dynamic;
 	static public var is_table : Dynamic;
 	static public var ndim : Dynamic;
-	static public var nrows : Dynamic;
+	public var nrows : Dynamic;
 	static public var obj_type : Dynamic;
 	static public var pandas_kind : Dynamic;
-	static public var pandas_type : Dynamic;
-	static public var pathname : Dynamic;
+	public var pandas_type : Dynamic;
+	public var pathname : Dynamic;
 	public function read(kwargs:Dynamic):Dynamic;
 	/**
 		set our object attributes 
@@ -156,12 +156,12 @@ package pandas.io.pytables;
 		compute and set our version 
 	**/
 	public function set_version():Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		return my storable 
 	**/
-	static public var storable : Dynamic;
-	static public var storage_obj_type : Dynamic;
+	public var storable : Dynamic;
+	public var storage_obj_type : Dynamic;
 	/**
 		validate against an existing storable 
 	**/

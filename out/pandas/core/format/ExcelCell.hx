@@ -94,10 +94,10 @@ package pandas.core.format;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var col : Dynamic;
-	static public var mergeend : Dynamic;
-	static public var mergestart : Dynamic;
-	static public var row : Dynamic;
-	static public var style : Dynamic;
-	static public var val : Dynamic;
+	public var col : Dynamic;
+	public var mergeend : Dynamic;
+	public var mergestart : Dynamic;
+	public var row : Dynamic;
+	public var style : Dynamic;
+	public var val : Dynamic;
 }

@@ -114,7 +114,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Internal function.
 	**/
@@ -216,7 +216,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Internal function.
 	**/
-	static public var _windowingsystem : Dynamic;
+	public var _windowingsystem : Dynamic;
 	/**
 		Call function once after given time.
 		

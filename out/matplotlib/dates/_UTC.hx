@@ -96,7 +96,7 @@ package matplotlib.dates;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		datetime -> DST offset in minutes east of UTC.
 	**/

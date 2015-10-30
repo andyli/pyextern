@@ -121,19 +121,19 @@ package pandas.tslib;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _binary_op_method_timedeltalike(name:Dynamic):Dynamic;
-	static public var _d : Dynamic;
+	public var _d : Dynamic;
 	/**
 		compute the components
 	**/
 	public function _ensure_components(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _h : Dynamic;
+	public var _h : Dynamic;
 	public function _has_ns(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _m : Dynamic;
-	static public var _ms : Dynamic;
+	public var _m : Dynamic;
+	public var _ms : Dynamic;
 	public function _not_implemented(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var _ns : Dynamic;
+	public var _ns : Dynamic;
 	public function _op_unary_method(name:Dynamic):Dynamic;
 	/**
 		Parameters
@@ -145,48 +145,48 @@ package pandas.tslib;
 		converted : string of a Timedelta
 	**/
 	public function _repr_base(?format:Dynamic):Dynamic;
-	static public var _s : Dynamic;
-	static public var _sign : Dynamic;
-	static public var _us : Dynamic;
+	public var _s : Dynamic;
+	public var _sign : Dynamic;
+	public var _us : Dynamic;
 	public function _validate_ops_compat(other:Dynamic):Dynamic;
 	/**
 		return a numpy timedelta64 array view of myself 
 	**/
-	static public var asm8 : Dynamic;
+	public var asm8 : Dynamic;
 	/**
 		Return a Components NamedTuple-like 
 	**/
-	static public var components : Dynamic;
+	public var components : Dynamic;
 	/**
 		Number of Days
 		
 		.components will return the shown components
 	**/
-	static public var days : Dynamic;
+	public var days : Dynamic;
 	/**
 		return out delta in ns (for internal compat) 
 	**/
-	static public var delta : Dynamic;
-	static public var freq : Dynamic;
-	static public var is_populated : Dynamic;
+	public var delta : Dynamic;
+	public var freq : Dynamic;
+	public var is_populated : Dynamic;
 	static public var max : Dynamic;
 	/**
 		Number of microseconds (>= 0 and less than 1 second).
 		
 		.components will return the shown components
 	**/
-	static public var microseconds : Dynamic;
+	public var microseconds : Dynamic;
 	static public var min : Dynamic;
 	/**
 		Number of nanoseconds (>= 0 and less than 1 microsecond).
 		
 		.components will return the shown components
 	**/
-	static public var nanoseconds : Dynamic;
+	public var nanoseconds : Dynamic;
 	/**
 		return a string representing the lowest resolution that we have 
 	**/
-	static public var resolution : Dynamic;
+	public var resolution : Dynamic;
 	/**
 		return a new Timedelta rounded to this resolution
 		
@@ -201,7 +201,7 @@ package pandas.tslib;
 		
 		.components will return the shown components
 	**/
-	static public var seconds : Dynamic;
+	public var seconds : Dynamic;
 	/**
 		return an actual datetime.timedelta object
 		note: we lose nanosecond resolution if any
@@ -215,7 +215,7 @@ package pandas.tslib;
 		Total duration of timedelta in seconds (to ns precision)
 	**/
 	public function total_seconds():Dynamic;
-	static public var value : Dynamic;
+	public var value : Dynamic;
 	/**
 		array view compat 
 	**/

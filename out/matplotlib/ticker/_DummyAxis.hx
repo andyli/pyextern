@@ -96,7 +96,7 @@ package matplotlib.ticker;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function get_data_interval():Dynamic;
 	public function get_minpos():Dynamic;
 	public function get_view_interval():Dynamic;

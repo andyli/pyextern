@@ -96,7 +96,7 @@ package seaborn.matrix;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Add textual labels with the value in each cell.
 	**/

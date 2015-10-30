@@ -96,7 +96,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _update_bbox(x1:Dynamic, y1:Dynamic, x2:Dynamic, y2:Dynamic):Dynamic;
 	/**
 		Get the Freetype hinting type to use with this particular

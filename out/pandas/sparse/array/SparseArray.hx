@@ -20,7 +20,7 @@ package pandas.sparse.array;
 		>>> x.T
 		array([ 1.,  2.,  3.,  4.])
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		abs(self)
 	**/
@@ -46,7 +46,7 @@ package pandas.sparse.array;
 	/**
 		Array protocol: Python side.
 	**/
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		a.__array_prepare__(obj) -> Object of same type as ndarray object obj.
 	**/
@@ -55,7 +55,7 @@ package pandas.sparse.array;
 	/**
 		Array protocol: C-struct side.
 	**/
-	static public var __array_struct__ : Dynamic;
+	public var __array_struct__ : Dynamic;
 	/**
 		a.__array_wrap__(obj) -> Object of same type as ndarray object a.
 	**/
@@ -346,12 +346,12 @@ package pandas.sparse.array;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Return self^value.
 	**/
 	public function __xor__(value:Dynamic):Dynamic;
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -361,14 +361,14 @@ package pandas.sparse.array;
 	**/
 	public function _dir_deletions():Dynamic;
 	public function _get_val_at(loc:Dynamic):Dynamic;
-	static public var _null_fill_value : Dynamic;
+	public var _null_fill_value : Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	static public var _subtyp : Dynamic;
 	static public var _typ : Dynamic;
-	static public var _valid_sp_values : Dynamic;
+	public var _valid_sp_values : Dynamic;
 	/**
 		a.all(axis=None, out=None, keepdims=False)
 		
@@ -464,7 +464,7 @@ package pandas.sparse.array;
 		>>> y.base is x
 		True
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		a.byteswap(inplace)
 		
@@ -677,7 +677,7 @@ package pandas.sparse.array;
 		>>> x.ctypes.strides_as(ctypes.c_longlong)
 		<numpy.core._internal.c_longlong_Array_2 object at 0x01F01300>
 	**/
-	static public var ctypes : Dynamic;
+	public var ctypes : Dynamic;
 	/**
 		a.cumprod(axis=None, dtype=None, out=None)
 		
@@ -703,7 +703,7 @@ package pandas.sparse.array;
 	/**
 		Python buffer object pointing to the start of the array's data.
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		a.diagonal(offset=0, axis1=0, axis2=1)
 		
@@ -770,7 +770,7 @@ package pandas.sparse.array;
 		>>> type(x.dtype)
 		<type 'numpy.dtype'>
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		a.dump(file)
 		
@@ -885,7 +885,7 @@ package pandas.sparse.array;
 		for C-style contiguous arrays or ``self.strides[0] == self.itemsize`` for
 		Fortran-style contiguous arrays is true.
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		A 1-D iterator over the array.
 		
@@ -924,7 +924,7 @@ package pandas.sparse.array;
 		array([[3, 1, 3],
 		       [3, 1, 3]])
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		a.flatten(order='C')
 		
@@ -1010,7 +1010,7 @@ package pandas.sparse.array;
 		>>> x.imag.dtype
 		dtype('float64')
 	**/
-	static public var imag : Dynamic;
+	public var imag : Dynamic;
 	/**
 		a.item(*args)
 		
@@ -1121,8 +1121,8 @@ package pandas.sparse.array;
 		>>> x.itemsize
 		16
 	**/
-	static public var itemsize : Dynamic;
-	static public var kind : Dynamic;
+	public var itemsize : Dynamic;
+	public var kind : Dynamic;
 	/**
 		a.max(axis=None, out=None)
 		
@@ -1171,7 +1171,7 @@ package pandas.sparse.array;
 		>>> np.prod(x.shape) * x.itemsize
 		480
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		Number of array dimensions.
 		
@@ -1184,7 +1184,7 @@ package pandas.sparse.array;
 		>>> y.ndim
 		3
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		arr.newbyteorder(new_order='S')
 		
@@ -1354,7 +1354,7 @@ package pandas.sparse.array;
 		--------
 		numpy.real : equivalent function
 	**/
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		a.repeat(repeats, axis=None)
 		
@@ -1632,7 +1632,7 @@ package pandas.sparse.array;
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Number of elements in the array.
 		
@@ -1647,7 +1647,7 @@ package pandas.sparse.array;
 		>>> np.prod(x.shape)
 		30
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		a.sort(axis=-1, kind='quicksort', order=None)
 		
@@ -1702,7 +1702,7 @@ package pandas.sparse.array;
 	**/
 	public function sort(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var sp_index : Dynamic;
-	static public var sp_values : Dynamic;
+	public var sp_values : Dynamic;
 	/**
 		a.squeeze(axis=None)
 		
@@ -1785,7 +1785,7 @@ package pandas.sparse.array;
 		>>> offset / x.itemsize
 		813
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Sum of non-NA/null values
 		
@@ -2019,7 +2019,7 @@ package pandas.sparse.array;
 	/**
 		Dense values
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		a.var(axis=None, dtype=None, out=None, ddof=0, keepdims=False)
 		

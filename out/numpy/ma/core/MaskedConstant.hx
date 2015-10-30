@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.ma.core;
 @:pythonImport("numpy.ma.core", "MaskedConstant") extern class MaskedConstant {
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		abs(self)
 	**/
@@ -29,7 +29,7 @@ package numpy.ma.core;
 	/**
 		Array protocol: Python side.
 	**/
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		a.__array_prepare__(obj) -> Object of same type as ndarray object obj.
 	**/
@@ -38,7 +38,7 @@ package numpy.ma.core;
 	/**
 		Array protocol: C-struct side.
 	**/
-	static public var __array_struct__ : Dynamic;
+	public var __array_struct__ : Dynamic;
 	/**
 		Special hook for ufuncs.
 		
@@ -825,11 +825,11 @@ package numpy.ma.core;
 		>>> y.base is x
 		True
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Class of the underlying data (read-only).
 	**/
-	static public var baseclass : Dynamic;
+	public var baseclass : Dynamic;
 	/**
 		a.byteswap(inplace)
 		
@@ -1175,7 +1175,7 @@ package numpy.ma.core;
 		>>> x.ctypes.strides_as(ctypes.c_longlong)
 		<numpy.core._internal.c_longlong_Array_2 object at 0x01F01300>
 	**/
-	static public var ctypes : Dynamic;
+	public var ctypes : Dynamic;
 	/**
 		Return the cumulative product of the elements along the given axis.
 		The cumulative product is taken over the flattened array by
@@ -1327,7 +1327,7 @@ package numpy.ma.core;
 		>>> type(x.dtype)
 		<type 'numpy.dtype'>
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		a.dump(file)
 		
@@ -1376,7 +1376,7 @@ package numpy.ma.core;
 	/**
 		Filling value.
 	**/
-	static public var fill_value : Dynamic;
+	public var fill_value : Dynamic;
 	/**
 		Return a copy of self, with masked values filled with a given value.
 		
@@ -1481,11 +1481,11 @@ package numpy.ma.core;
 		for C-style contiguous arrays or ``self.strides[0] == self.itemsize`` for
 		Fortran-style contiguous arrays is true.
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Flat version of the array.
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		a.flatten(order='C')
 		
@@ -1649,7 +1649,7 @@ package numpy.ma.core;
 	/**
 		Hardness of the mask
 	**/
-	static public var hardmask : Dynamic;
+	public var hardmask : Dynamic;
 	/**
 		Return the addresses of the data and mask areas.
 		
@@ -1674,7 +1674,7 @@ package numpy.ma.core;
 	/**
 		Imaginary part.
 	**/
-	static public var imag : Dynamic;
+	public var imag : Dynamic;
 	/**
 		Return a boolean indicating whether the data is contiguous.
 		
@@ -1809,7 +1809,7 @@ package numpy.ma.core;
 		>>> x.itemsize
 		16
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	static public var mask : Dynamic;
 	/**
 		Return the maximum along a given axis.
@@ -1961,7 +1961,7 @@ package numpy.ma.core;
 		>>> np.prod(x.shape) * x.itemsize
 		480
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		Number of array dimensions.
 		
@@ -1974,7 +1974,7 @@ package numpy.ma.core;
 		>>> y.ndim
 		3
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		arr.newbyteorder(new_order='S')
 		
@@ -2367,13 +2367,13 @@ package numpy.ma.core;
 	/**
 		Real part
 	**/
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		Return the mask of the records.
 		
 		A record is masked when all the fields are masked.
 	**/
-	static public var recordmask : Dynamic;
+	public var recordmask : Dynamic;
 	/**
 		a.repeat(repeats, axis=None)
 		
@@ -2640,11 +2640,11 @@ package numpy.ma.core;
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Share status of the mask (read-only).
 	**/
-	static public var sharedmask : Dynamic;
+	public var sharedmask : Dynamic;
 	/**
 		Reduce a mask to nomask when possible.
 		
@@ -2681,7 +2681,7 @@ package numpy.ma.core;
 		>>> np.prod(x.shape)
 		30
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Force the mask to soft.
 		
@@ -2922,7 +2922,7 @@ package numpy.ma.core;
 		>>> offset / x.itemsize
 		813
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Return the sum of the array elements over the given axis.
 		Masked elements are set to 0 internally.

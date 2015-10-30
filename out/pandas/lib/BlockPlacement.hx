@@ -106,11 +106,11 @@ package pandas.lib;
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function add(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function append(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var as_array : Dynamic;
-	static public var as_slice : Dynamic;
+	public var as_array : Dynamic;
+	public var as_slice : Dynamic;
 	public function delete(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var indexer : Dynamic;
-	static public var is_slice_like : Dynamic;
+	public var indexer : Dynamic;
+	public var is_slice_like : Dynamic;
 	public function isin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function sub(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

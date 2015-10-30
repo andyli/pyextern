@@ -100,7 +100,7 @@ package matplotlib.tri.triinterpolate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Compress rows, cols, vals / summing duplicates. Sort for csc format.
 	**/
@@ -112,7 +112,7 @@ package matplotlib.tri.triinterpolate;
 	/**
 		Returns the (dense) vector of the diagonal elements.
 	**/
-	static public var diag : Dynamic;
+	public var diag : Dynamic;
 	/**
 		Dot product of self by a vector *V* in sparse-dense to dense format
 		*V* dense vector of shape (self.m,)

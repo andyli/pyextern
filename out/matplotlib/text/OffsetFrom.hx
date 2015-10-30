@@ -100,7 +100,7 @@ package matplotlib.text;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_scale(renderer:Dynamic):Dynamic;
 	public function get_unit():Dynamic;
 	public function set_unit(unit:Dynamic):Dynamic;

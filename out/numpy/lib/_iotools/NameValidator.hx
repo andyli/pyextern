@@ -100,7 +100,7 @@ package numpy.lib._iotools;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var defaultdeletechars : Dynamic;
 	static public var defaultexcludelist : Dynamic;
 	/**

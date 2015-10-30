@@ -133,7 +133,7 @@ package matplotlib.patches;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		NOTE: This cannot be called until after this has been added
 		to an Axes, otherwise unit conversion will fail. This
@@ -182,7 +182,7 @@ package matplotlib.patches;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		
@@ -470,7 +470,7 @@ package matplotlib.patches;
 	/**
 		return the radius of the circle
 	**/
-	static public var radius : Dynamic;
+	public var radius : Dynamic;
 	/**
 		Remove the artist from the figure if possible.  The effect
 		will not be visible until the figure is redrawn, e.g., with

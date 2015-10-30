@@ -96,7 +96,7 @@ package pandas.tools.plotting;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _add_legend_handle(handle:Dynamic, label:Dynamic, ?index:Dynamic):Dynamic;
 	public function _add_table():Dynamic;
 	/**
@@ -170,15 +170,15 @@ package pandas.tools.plotting;
 	public function _validate_color_args():Dynamic;
 	public function draw():Dynamic;
 	public function generate():Dynamic;
-	static public var legend_title : Dynamic;
+	public var legend_title : Dynamic;
 	static public function mpl_ge_1_3_1():Dynamic;
 	static public function mpl_ge_1_5_0():Dynamic;
-	static public var nseries : Dynamic;
+	public var nseries : Dynamic;
 	public function on_right(i:Dynamic):Dynamic;
 	static public var orientation : Dynamic;
 	static public var plt : Dynamic;
 	/**
 		Return result axes
 	**/
-	static public var result : Dynamic;
+	public var result : Dynamic;
 }

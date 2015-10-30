@@ -96,7 +96,7 @@ package pandas.io.parsers;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _agg_index(index:Dynamic, ?try_parse_dates:Dynamic):Dynamic;
 	public function _convert_to_ndarrays(dct:Dynamic, na_values:Dynamic, na_fvalues:Dynamic, ?verbose:Dynamic, ?converters:Dynamic):Dynamic;
 	public function _convert_types(values:Dynamic, na_values:Dynamic, ?try_num_bool:Dynamic):Dynamic;
@@ -110,7 +110,7 @@ package pandas.io.parsers;
 	public function _get_complex_date_index(data:Dynamic, col_names:Dynamic):Dynamic;
 	public function _get_index_names():Dynamic;
 	public function _get_simple_index(data:Dynamic, columns:Dynamic):Dynamic;
-	static public var _has_complex_date_col : Dynamic;
+	public var _has_complex_date_col : Dynamic;
 	static public var _implicit_index : Dynamic;
 	public function _make_index(data:Dynamic, alldata:Dynamic, columns:Dynamic, ?indexnamerow:Dynamic):Dynamic;
 	public function _maybe_make_multi_index_columns(columns:Dynamic, ?col_names:Dynamic):Dynamic;

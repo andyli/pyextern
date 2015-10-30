@@ -110,7 +110,7 @@ package pandas.computation.engines;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Return an evaluated expression.
 		
@@ -125,7 +125,7 @@ package pandas.computation.engines;
 		Must be implemented by subclasses.
 	**/
 	public function _evaluate():Dynamic;
-	static public var _is_aligned : Dynamic;
+	public var _is_aligned : Dynamic;
 	/**
 		Convert an expression for evaluation.
 		

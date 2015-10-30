@@ -106,7 +106,7 @@ package numpy.lib.arrayterator;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		A 1-D flat iterator for Arrayterator objects.
 		
@@ -129,11 +129,11 @@ package numpy.lib.arrayterator;
 		...
 		0 <type 'numpy.int32'>
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		The shape of the array to be iterated over.
 		
 		For an example, see `Arrayterator`.
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 }

@@ -147,7 +147,7 @@ package pandas.msgpack;
 	/**
 		Alias for field number 0
 	**/
-	static public var code : Dynamic;
+	public var code : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -155,7 +155,7 @@ package pandas.msgpack;
 	/**
 		Alias for field number 1
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.

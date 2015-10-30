@@ -109,13 +109,13 @@ package scipy.stats._multivariate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function entropy():Dynamic;
 	public function logpdf(x:Dynamic):Dynamic;
 	public function mean():Dynamic;
 	public function mode():Dynamic;
 	public function pdf(x:Dynamic):Dynamic;
-	static public var random_state : Dynamic;
+	public var random_state : Dynamic;
 	public function rvs(?size:Dynamic, ?random_state:Dynamic):Dynamic;
 	@:native("var")
 	public function _var():Dynamic;

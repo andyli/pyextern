@@ -96,7 +96,7 @@ package matplotlib.offsetbox;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function artist_picker(artist:Dynamic, evt:Dynamic):Dynamic;
 	/**
 		disconnect the callbacks

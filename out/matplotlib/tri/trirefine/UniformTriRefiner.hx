@@ -96,7 +96,7 @@ package matplotlib.tri.trirefine;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		This function refines a matplotlib.tri *triangulation* by splitting
 		each triangle into 4 child-masked_triangles built on the edges midside

@@ -115,11 +115,11 @@ package pandas.io.sql;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _create_sql_schema(frame:Dynamic, table_name:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		add addtional __dir__ for this object 
@@ -269,7 +269,7 @@ package pandas.io.sql;
 	**/
 	public function read_table(table_name:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?parse_dates:Dynamic, ?columns:Dynamic, ?schema:Dynamic, ?chunksize:Dynamic):Dynamic;
 	public function run_transaction():Dynamic;
-	static public var tables : Dynamic;
+	public var tables : Dynamic;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		

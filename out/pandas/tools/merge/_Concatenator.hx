@@ -96,7 +96,7 @@ package pandas.tools.merge;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_comb_axis(i:Dynamic):Dynamic;
 	/**
 		Return index to be used along concatenation axis.

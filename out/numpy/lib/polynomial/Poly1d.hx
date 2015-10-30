@@ -116,7 +116,7 @@ package numpy.lib.polynomial;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var coeffs : Dynamic;
 	/**
 		Return a derivative of this polynomial.

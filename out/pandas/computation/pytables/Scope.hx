@@ -110,7 +110,7 @@ package pandas.computation.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Get specifically scoped variables from a list of stack frames.
 		
@@ -146,7 +146,7 @@ package pandas.computation.pytables;
 		vars : DeepChainMap
 		    All variables in this scope.
 	**/
-	static public var full_scope : Dynamic;
+	public var full_scope : Dynamic;
 	/**
 		Return whether we have any extra scope.
 		
@@ -157,13 +157,13 @@ package pandas.computation.pytables;
 		-------
 		hr : bool
 	**/
-	static public var has_resolvers : Dynamic;
-	static public var level : Dynamic;
+	public var has_resolvers : Dynamic;
+	public var level : Dynamic;
 	/**
 		The number of temporary variables in this scope
 	**/
-	static public var ntemps : Dynamic;
-	static public var queryables : Dynamic;
+	public var ntemps : Dynamic;
+	public var queryables : Dynamic;
 	/**
 		Resolve a variable name in a possibly local context
 		
@@ -181,7 +181,7 @@ package pandas.computation.pytables;
 		    The value of a particular variable
 	**/
 	public function resolve(key:Dynamic, is_local:Dynamic):Dynamic;
-	static public var scope : Dynamic;
+	public var scope : Dynamic;
 	/**
 		Replace a variable name, with a potentially new value.
 		
@@ -195,8 +195,8 @@ package pandas.computation.pytables;
 		    Value to be replaced along with the possible renaming
 	**/
 	public function swapkey(old_key:Dynamic, new_key:Dynamic, ?new_value:Dynamic):Dynamic;
-	static public var target : Dynamic;
-	static public var temps : Dynamic;
+	public var target : Dynamic;
+	public var temps : Dynamic;
 	/**
 		Update the current scope by going back `level` levels.
 		

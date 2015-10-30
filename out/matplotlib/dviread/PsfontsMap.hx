@@ -94,7 +94,7 @@ package matplotlib.dviread;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _font : Dynamic;
+	public var _font : Dynamic;
 	/**
 		Parse each line into words.
 	**/

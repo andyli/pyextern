@@ -105,7 +105,7 @@ package matplotlib.legend_handler;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _create_patch(legend:Dynamic, orig_handle:Dynamic, xdescent:Dynamic, ydescent:Dynamic, width:Dynamic, height:Dynamic, fontsize:Dynamic):Dynamic;
 	public function _default_update_prop(legend_handle:Dynamic, orig_handle:Dynamic):Dynamic;
 	public function _update_prop(legend_handle:Dynamic, orig_handle:Dynamic):Dynamic;

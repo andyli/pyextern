@@ -96,7 +96,7 @@ package pandas.io.stata;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Checks column names to ensure that they are valid Stata column names.
 		This includes checks for:

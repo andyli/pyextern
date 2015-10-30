@@ -97,7 +97,7 @@ package matplotlib.backends.backend_svg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function close(id:Dynamic):Dynamic;
 	public function comment(comment:Dynamic):Dynamic;
 	public function data(text:Dynamic):Dynamic;

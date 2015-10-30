@@ -127,7 +127,7 @@ package matplotlib.mlab;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public function _get_colinear():Dynamic;
 	/**
 		center and optionally standardize the data using the mean and sigma from training set a

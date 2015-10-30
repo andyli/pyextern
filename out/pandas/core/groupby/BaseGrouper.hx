@@ -97,7 +97,7 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _aggregate(result:Dynamic, counts:Dynamic, values:Dynamic, agg_func:Dynamic, is_numeric:Dynamic):Dynamic;
 	public function _aggregate_series_fast(obj:Dynamic, func:Dynamic):Dynamic;
 	public function _aggregate_series_pure_python(obj:Dynamic, func:Dynamic):Dynamic;
@@ -126,14 +126,14 @@ package pandas.core.groupby;
 	static public var groups : Dynamic;
 	static public var indices : Dynamic;
 	static public var is_monotonic : Dynamic;
-	static public var labels : Dynamic;
-	static public var levels : Dynamic;
-	static public var names : Dynamic;
+	public var labels : Dynamic;
+	public var levels : Dynamic;
+	public var names : Dynamic;
 	static public var ngroups : Dynamic;
-	static public var nkeys : Dynamic;
-	static public var recons_labels : Dynamic;
+	public var nkeys : Dynamic;
+	public var recons_labels : Dynamic;
 	static public var result_index : Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Compute group sizes
 	**/

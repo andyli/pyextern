@@ -202,7 +202,7 @@ package matplotlib.backends.backend_webagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_host_handlers(request:Dynamic):Dynamic;
 	public function _load_ui_methods(methods:Dynamic):Dynamic;
 	public function _load_ui_modules(modules:Dynamic):Dynamic;

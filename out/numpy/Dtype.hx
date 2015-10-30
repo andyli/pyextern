@@ -113,8 +113,8 @@ package numpy;
 		
 		More information is available in the C-API section of the manual.
 	**/
-	static public var alignment : Dynamic;
-	static public var base : Dynamic;
+	public var alignment : Dynamic;
+	public var base : Dynamic;
 	/**
 		A character indicating the byte-order of this data-type object.
 		
@@ -155,18 +155,18 @@ package numpy;
 		>>> dt.byteorder == swapped_code
 		True
 	**/
-	static public var byteorder : Dynamic;
+	public var byteorder : Dynamic;
 	/**
 		A unique character code for each of the 21 different built-in types.
 	**/
-	static public var char : Dynamic;
+	public var char : Dynamic;
 	/**
 		Array-interface compliant full description of the data-type.
 		
 		The format is that required by the 'descr' key in the
 		`__array_interface__` attribute.
 	**/
-	static public var descr : Dynamic;
+	public var descr : Dynamic;
 	/**
 		Dictionary of named fields defined for this data type, or ``None``.
 		
@@ -191,7 +191,7 @@ package numpy;
 		>>> print dt.fields
 		{'grades': (dtype(('float64',(2,))), 16), 'name': (dtype('|S16'), 0)}
 	**/
-	static public var fields : Dynamic;
+	public var fields : Dynamic;
 	/**
 		Bit-flags describing how this data type is to be interpreted.
 		
@@ -201,7 +201,7 @@ package numpy;
 		of these flags is in C-API documentation; they are largely useful
 		for user-defined data-types.
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Boolean indicating whether this dtype contains any reference-counted
 		objects in any fields or sub-dtypes.
@@ -212,14 +212,14 @@ package numpy;
 		distinguishing data types that may contain arbitrary Python objects
 		and data-types that won't.
 	**/
-	static public var hasobject : Dynamic;
+	public var hasobject : Dynamic;
 	/**
 		Boolean indicating whether the dtype is a struct which maintains
 		field alignment. This flag is sticky, so when combining multiple
 		structs together, it is preserved and produces new dtypes which
 		are also aligned.
 	**/
-	static public var isalignedstruct : Dynamic;
+	public var isalignedstruct : Dynamic;
 	/**
 		Integer indicating how this dtype relates to the built-in dtypes.
 		
@@ -246,19 +246,19 @@ package numpy;
 		>>> dt.isbuiltin
 		0
 	**/
-	static public var isbuiltin : Dynamic;
+	public var isbuiltin : Dynamic;
 	/**
 		Boolean indicating whether the byte order of this dtype is native
 		to the platform.
 	**/
-	static public var isnative : Dynamic;
+	public var isnative : Dynamic;
 	/**
 		The element size of this data-type object.
 		
 		For 18 of the 21 types this number is fixed by the data-type.
 		For the flexible data-types, this number can be anything.
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		A character code (one of 'biufcOSUV') identifying the general kind of data.
 		
@@ -274,14 +274,14 @@ package numpy;
 		V  void
 		=  ======================
 	**/
-	static public var kind : Dynamic;
-	static public var metadata : Dynamic;
+	public var kind : Dynamic;
+	public var metadata : Dynamic;
 	/**
 		A bit-width name for this data-type.
 		
 		Un-sized flexible data-type objects do not have this attribute.
 	**/
-	static public var name : Dynamic;
+	public var name : Dynamic;
 	/**
 		Ordered list of field names, or ``None`` if there are no fields.
 		
@@ -294,7 +294,7 @@ package numpy;
 		>>> dt.names
 		('name', 'grades')
 	**/
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	/**
 		newbyteorder(new_order='S')
 		
@@ -364,16 +364,16 @@ package numpy;
 		
 		These are roughly ordered from least-to-most precision.
 	**/
-	static public var num : Dynamic;
+	public var num : Dynamic;
 	/**
 		Shape tuple of the sub-array if this data type describes a sub-array,
 		and ``()`` otherwise.
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		The array-protocol typestring of this data-type object.
 	**/
-	static public var str : Dynamic;
+	public var str : Dynamic;
 	/**
 		Tuple ``(item_dtype, shape)`` if this `dtype` describes a sub-array, and
 		None otherwise.
@@ -385,9 +385,9 @@ package numpy;
 		then the extra dimensions implied by *shape* are tacked on to
 		the end of the retrieved array.
 	**/
-	static public var subdtype : Dynamic;
+	public var subdtype : Dynamic;
 	/**
 		The type object used to instantiate a scalar of this data-type.
 	**/
-	static public var type : Dynamic;
+	public var type : Dynamic;
 }

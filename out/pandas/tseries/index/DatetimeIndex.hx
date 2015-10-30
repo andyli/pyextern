@@ -4,7 +4,7 @@ package pandas.tseries.index;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	public function __abs__(?other:Dynamic):Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
@@ -166,7 +166,7 @@ package pandas.tseries.index;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	/**
 		add in comparison methods 
@@ -207,7 +207,7 @@ package pandas.tseries.index;
 	static public var _arrmap : Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _box_func : Dynamic;
+	public var _box_func : Dynamic;
 	static public var _box_scalars : Dynamic;
 	/**
 		apply box func to passed values
@@ -247,7 +247,7 @@ package pandas.tseries.index;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
@@ -312,7 +312,7 @@ package pandas.tseries.index;
 	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _format_space():Dynamic;
 	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var _formatter_func : Dynamic;
+	public var _formatter_func : Dynamic;
 	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?ambiguous:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
 		return an attributes dict for my class 
@@ -337,7 +337,7 @@ package pandas.tseries.index;
 	public function _get_string_slice(key:Dynamic, ?use_lhs:Dynamic, ?use_rhs:Dynamic):Dynamic;
 	public function _get_time_micros():Dynamic;
 	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _has_complex_internals : Dynamic;
+	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	static public function _inner_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
@@ -502,7 +502,7 @@ package pandas.tseries.index;
 	/**
 		the internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
 	public function _wrap_union_result(other:Dynamic, result:Dynamic):Dynamic;
 	public function all(?other:Dynamic):Dynamic;
@@ -543,8 +543,8 @@ package pandas.tseries.index;
 		numpy.ndarray.argsort
 	**/
 	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var asi8 : Dynamic;
-	static public var asobject : Dynamic;
+	public var asi8 : Dynamic;
+	public var asobject : Dynamic;
 	/**
 		For a sorted index, return the most recent label up to and including
 		the passed label. Return NaN if not found.
@@ -563,7 +563,7 @@ package pandas.tseries.index;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Make a copy of this object.  Name and dtype sets those attributes on
 		the new object.
@@ -586,35 +586,35 @@ package pandas.tseries.index;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Returns numpy array of datetime.date. The date part of the Timestamps.
 	**/
-	static public var date : Dynamic;
+	public var date : Dynamic;
 	/**
 		The days of the datetime
 	**/
-	static public var day : Dynamic;
+	public var day : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var dayofweek : Dynamic;
+	public var dayofweek : Dynamic;
 	/**
 		The ordinal day of the year
 	**/
-	static public var dayofyear : Dynamic;
+	public var dayofyear : Dynamic;
 	/**
 		The number of days in the month
 		
 		.. versionadded:: 0.16.0
 	**/
-	static public var days_in_month : Dynamic;
+	public var days_in_month : Dynamic;
 	/**
 		The number of days in the month
 		
 		.. versionadded:: 0.16.0
 	**/
-	static public var daysinmonth : Dynamic;
+	public var daysinmonth : Dynamic;
 	/**
 		Make a new DatetimeIndex with passed location(s) deleted.
 		
@@ -720,7 +720,7 @@ package pandas.tseries.index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Render a string representation of the Index
 	**/
@@ -728,11 +728,11 @@ package pandas.tseries.index;
 	/**
 		get/set the frequncy of the Index
 	**/
-	static public var freq : Dynamic;
+	public var freq : Dynamic;
 	/**
 		return the frequency object as a string if its set, otherwise None 
 	**/
-	static public var freqstr : Dynamic;
+	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -827,13 +827,13 @@ package pandas.tseries.index;
 	**/
 	public function get_values():Dynamic;
 	public function groupby(f:Dynamic):Dynamic;
-	static public var has_duplicates : Dynamic;
+	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
 		The hours of the datetime
 	**/
-	static public var hour : Dynamic;
+	public var hour : Dynamic;
 	/**
 		Similar to equals, but check that other comparable attributes are
 		also equal
@@ -868,7 +868,7 @@ package pandas.tseries.index;
 	**/
 	public function indexer_between_time(start_time:Dynamic, end_time:Dynamic, ?include_start:Dynamic, ?include_end:Dynamic):Dynamic;
 	static public var inferred_freq : Dynamic;
-	static public var inferred_type : Dynamic;
+	public var inferred_type : Dynamic;
 	/**
 		Make new Index inserting new item at location
 		
@@ -913,7 +913,7 @@ package pandas.tseries.index;
 		True if both have same underlying data, False otherwise : bool
 	**/
 	public function is_(other:Dynamic):Dynamic;
-	static public var is_all_dates : Dynamic;
+	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
@@ -923,46 +923,46 @@ package pandas.tseries.index;
 	/**
 		alias for is_monotonic_increasing (deprecated) 
 	**/
-	static public var is_monotonic : Dynamic;
+	public var is_monotonic : Dynamic;
 	/**
 		return if the index is monotonic decreasing (only equal or
 		decreasing) values.
 	**/
-	static public var is_monotonic_decreasing : Dynamic;
+	public var is_monotonic_decreasing : Dynamic;
 	/**
 		return if the index is monotonic increasing (only equal or
 		increasing) values.
 	**/
-	static public var is_monotonic_increasing : Dynamic;
+	public var is_monotonic_increasing : Dynamic;
 	/**
 		Logical indicating if last day of month (defined by frequency)
 	**/
-	static public var is_month_end : Dynamic;
+	public var is_month_end : Dynamic;
 	/**
 		Logical indicating if first day of month (defined by frequency)
 	**/
-	static public var is_month_start : Dynamic;
+	public var is_month_start : Dynamic;
 	static public var is_normalized : Dynamic;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	/**
 		Logical indicating if last day of quarter (defined by frequency)
 	**/
-	static public var is_quarter_end : Dynamic;
+	public var is_quarter_end : Dynamic;
 	/**
 		Logical indicating if first day of quarter (defined by frequency)
 	**/
-	static public var is_quarter_start : Dynamic;
+	public var is_quarter_start : Dynamic;
 	public function is_type_compatible(typ:Dynamic):Dynamic;
 	static public var is_unique : Dynamic;
 	/**
 		Logical indicating if last day of year (defined by frequency)
 	**/
-	static public var is_year_end : Dynamic;
+	public var is_year_end : Dynamic;
 	/**
 		Logical indicating if first day of year (defined by frequency)
 	**/
-	static public var is_year_start : Dynamic;
+	public var is_year_start : Dynamic;
 	/**
 		Compute boolean array of whether each index value is found in the
 		passed set of values
@@ -983,7 +983,7 @@ package pandas.tseries.index;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		See Index.join
 	**/
@@ -1000,11 +1000,11 @@ package pandas.tseries.index;
 	/**
 		The microseconds of the datetime
 	**/
-	static public var microsecond : Dynamic;
+	public var microsecond : Dynamic;
 	/**
 		The milliseconds of the datetime
 	**/
-	static public var millisecond : Dynamic;
+	public var millisecond : Dynamic;
 	/**
 		return the minimum value of the Index
 		
@@ -1016,26 +1016,26 @@ package pandas.tseries.index;
 	/**
 		The minutes of the datetime
 	**/
-	static public var minute : Dynamic;
+	public var minute : Dynamic;
 	/**
 		The month as January=1, December=12
 	**/
-	static public var month : Dynamic;
+	public var month : Dynamic;
 	static public var name : Dynamic;
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	/**
 		The nanoseconds of the datetime
 	**/
-	static public var nanosecond : Dynamic;
+	public var nanosecond : Dynamic;
 	/**
 		return the number of bytes in the underlying data 
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
-	static public var nlevels : Dynamic;
+	public var ndim : Dynamic;
+	public var nlevels : Dynamic;
 	/**
 		Return DatetimeIndex with times to midnight. Length is unaltered
 		
@@ -1077,7 +1077,7 @@ package pandas.tseries.index;
 	/**
 		The quarter of the date
 	**/
-	static public var quarter : Dynamic;
+	public var quarter : Dynamic;
 	/**
 		return an ndarray of the flattened values of the underlying data
 		
@@ -1128,7 +1128,7 @@ package pandas.tseries.index;
 	/**
 		The seconds of the datetime
 	**/
-	static public var second : Dynamic;
+	public var second : Dynamic;
 	/**
 		Set new names on index. Defaults to returning new index.
 		
@@ -1173,7 +1173,7 @@ package pandas.tseries.index;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Specialized shift which produces a DatetimeIndex
 		
@@ -1191,7 +1191,7 @@ package pandas.tseries.index;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Return indexer for specified label slice.
 		Index.slice_indexer, customized to handle time slicing.
@@ -1281,7 +1281,7 @@ package pandas.tseries.index;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		return a summarized representation
 	**/
@@ -1328,7 +1328,7 @@ package pandas.tseries.index;
 	/**
 		Returns numpy array of datetime.time. The time part of the Timestamps.
 	**/
-	static public var time : Dynamic;
+	public var time : Dynamic;
 	/**
 		For an Index containing strings or datetime.datetime objects, attempt
 		conversion to DatetimeIndex
@@ -1460,7 +1460,7 @@ package pandas.tseries.index;
 	/**
 		Alias for tz attribute
 	**/
-	static public var tzinfo : Dynamic;
+	public var tzinfo : Dynamic;
 	/**
 		Specialized union for DatetimeIndex objects. If combine
 		overlapping ranges with the same DateOffset, will be much
@@ -1517,22 +1517,22 @@ package pandas.tseries.index;
 	/**
 		return the underlying data as an ndarray 
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	public function view(?cls:Dynamic):Dynamic;
 	/**
 		The week ordinal of the year
 	**/
-	static public var week : Dynamic;
+	public var week : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var weekday : Dynamic;
+	public var weekday : Dynamic;
 	/**
 		The week ordinal of the year
 	**/
-	static public var weekofyear : Dynamic;
+	public var weekofyear : Dynamic;
 	/**
 		The year of the datetime
 	**/
-	static public var year : Dynamic;
+	public var year : Dynamic;
 }

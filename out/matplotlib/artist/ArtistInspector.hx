@@ -100,7 +100,7 @@ package matplotlib.artist;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Get the attribute strings and a full path to where the setter
 		is defined for all setters in an object.

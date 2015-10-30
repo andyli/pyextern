@@ -139,7 +139,7 @@ package matplotlib.backends.backend_nbagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _create_comm():Dynamic;
 	public function _get_toolbar(canvas:Dynamic):Dynamic;
 	public function _send_event(event_type:Dynamic, kwargs:Dynamic):Dynamic;
@@ -148,7 +148,7 @@ package matplotlib.backends.backend_nbagg;
 		Clear up any closed Comms.
 	**/
 	public function clearup_closed():Dynamic;
-	static public var connected : Dynamic;
+	public var connected : Dynamic;
 	public function destroy():Dynamic;
 	public function display_js():Dynamic;
 	public function full_screen_toggle():Dynamic;

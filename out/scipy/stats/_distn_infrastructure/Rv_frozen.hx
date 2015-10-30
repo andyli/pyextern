@@ -96,7 +96,7 @@ package scipy.stats._distn_infrastructure;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function cdf(x:Dynamic):Dynamic;
 	public function entropy():Dynamic;
 	public function expect(?func:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, kwds:Dynamic):Dynamic;
@@ -112,7 +112,7 @@ package scipy.stats._distn_infrastructure;
 	public function pdf(x:Dynamic):Dynamic;
 	public function pmf(k:Dynamic):Dynamic;
 	public function ppf(q:Dynamic):Dynamic;
-	static public var random_state : Dynamic;
+	public var random_state : Dynamic;
 	public function rvs(?size:Dynamic, ?random_state:Dynamic):Dynamic;
 	public function sf(x:Dynamic):Dynamic;
 	public function stats(?moments:Dynamic):Dynamic;

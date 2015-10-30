@@ -132,7 +132,7 @@ package scipy.sparse.compressed;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		apply the binary operation fn to two sparse matrices.
 	**/
@@ -341,7 +341,7 @@ package scipy.sparse.compressed;
 		array([ 1, -3, -1], dtype=int64)
 	**/
 	public function dot(other:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Remove zero entries from the matrix
 		
@@ -395,7 +395,7 @@ package scipy.sparse.compressed;
 		is False, so will the former be; if the former is found True, the
 		latter flag is also set.
 	**/
-	static public var has_canonical_format : Dynamic;
+	public var has_canonical_format : Dynamic;
 	/**
 		Determine whether the matrix has sorted indices
 		
@@ -403,7 +403,7 @@ package scipy.sparse.compressed;
 		    - True: if the indices of the matrix are in sorted order
 		    - False: otherwise
 	**/
-	static public var has_sorted_indices : Dynamic;
+	public var has_sorted_indices : Dynamic;
 	/**
 		Element-wise log1p.
 		
@@ -454,7 +454,7 @@ package scipy.sparse.compressed;
 		    Select between the number of values across the whole matrix, in
 		    each column, or in each row.
 	**/
-	static public var nnz : Dynamic;
+	public var nnz : Dynamic;
 	/**
 		nonzero indices
 		
@@ -517,7 +517,7 @@ package scipy.sparse.compressed;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Element-wise sign.
 		

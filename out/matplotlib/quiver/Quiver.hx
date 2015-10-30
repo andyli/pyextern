@@ -185,7 +185,7 @@ package matplotlib.quiver;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  lod: [True | False]         
 		  norm: unknown
@@ -261,7 +261,7 @@ package matplotlib.quiver;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _angles_lengths(U:Dynamic, V:Dynamic, ?eps:Dynamic):Dynamic;
 	/**
 		Return a scale factor for converting from units to pixels

@@ -96,7 +96,7 @@ package pandas.tseries.converter;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		return an units.AxisInfo instance for axis with the specified units
 	**/

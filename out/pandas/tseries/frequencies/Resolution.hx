@@ -102,7 +102,7 @@ package pandas.tseries.frequencies;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _freq_reso_map : Dynamic;
 	static public var _reso_freq_map : Dynamic;
 	static public var _reso_str_map : Dynamic;

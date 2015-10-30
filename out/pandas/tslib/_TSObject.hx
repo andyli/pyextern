@@ -91,5 +91,5 @@ package pandas.tslib;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var value : Dynamic;
+	public var value : Dynamic;
 }

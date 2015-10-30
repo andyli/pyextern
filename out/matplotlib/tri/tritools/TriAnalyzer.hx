@@ -96,7 +96,7 @@ package matplotlib.tri.tritools;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Compress (if masked) the encapsulated triangulation.
 		
@@ -249,5 +249,5 @@ package matplotlib.tri.tritools;
 		    ``[triangulation.x * kx, triangulation.y * ky]``
 		    fits exactly inside a unit square.
 	**/
-	static public var scale_factors : Dynamic;
+	public var scale_factors : Dynamic;
 }

@@ -97,7 +97,7 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _chop(sdata:Dynamic, slice_obj:Dynamic):Dynamic;
 	public function _get_sorted_data():Dynamic;
 	public function apply(f:Dynamic):Dynamic;

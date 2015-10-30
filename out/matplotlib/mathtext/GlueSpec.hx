@@ -96,7 +96,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _types : Dynamic;
 	public function copy():Dynamic;
 	static public function factory(glue_type:Dynamic):Dynamic;

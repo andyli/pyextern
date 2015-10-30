@@ -102,7 +102,7 @@ package matplotlib.cm;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Add an entry to a dictionary of boolean flags
 		that are set to True when the mappable is changed.

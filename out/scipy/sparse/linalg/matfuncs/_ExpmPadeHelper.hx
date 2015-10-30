@@ -1,11 +1,11 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.linalg.matfuncs;
 @:pythonImport("scipy.sparse.linalg.matfuncs", "_ExpmPadeHelper") extern class _ExpmPadeHelper {
-	static public var A10 : Dynamic;
-	static public var A2 : Dynamic;
-	static public var A4 : Dynamic;
-	static public var A6 : Dynamic;
-	static public var A8 : Dynamic;
+	public var A10 : Dynamic;
+	public var A2 : Dynamic;
+	public var A4 : Dynamic;
+	public var A6 : Dynamic;
+	public var A8 : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -113,15 +113,15 @@ package scipy.sparse.linalg.matfuncs;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var d10_loose : Dynamic;
-	static public var d10_tight : Dynamic;
-	static public var d4_loose : Dynamic;
-	static public var d4_tight : Dynamic;
-	static public var d6_loose : Dynamic;
-	static public var d6_tight : Dynamic;
-	static public var d8_loose : Dynamic;
-	static public var d8_tight : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var d10_loose : Dynamic;
+	public var d10_tight : Dynamic;
+	public var d4_loose : Dynamic;
+	public var d4_tight : Dynamic;
+	public var d6_loose : Dynamic;
+	public var d6_tight : Dynamic;
+	public var d8_loose : Dynamic;
+	public var d8_tight : Dynamic;
 	public function pade13_scaled(s:Dynamic):Dynamic;
 	public function pade3():Dynamic;
 	public function pade5():Dynamic;

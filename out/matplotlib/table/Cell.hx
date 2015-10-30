@@ -135,7 +135,7 @@ package matplotlib.table;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -191,7 +191,7 @@ package matplotlib.table;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		
@@ -900,6 +900,6 @@ package matplotlib.table;
 	/**
 		Return the left and bottom coords of the rectangle
 	**/
-	static public var xy : Dynamic;
+	public var xy : Dynamic;
 	static public var zorder : Dynamic;
 }

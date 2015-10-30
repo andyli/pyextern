@@ -116,7 +116,7 @@ package matplotlib.animation;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Assemble list of utility-specific command-line arguments.
 	**/
@@ -138,7 +138,7 @@ package matplotlib.animation;
 		Clean-up and collect the process used to write the movie file.
 	**/
 	public function cleanup():Dynamic;
-	static public var delay : Dynamic;
+	public var delay : Dynamic;
 	static public var exec_key : Dynamic;
 	/**
 		Finish any processing for writing the movie.
@@ -148,11 +148,11 @@ package matplotlib.animation;
 		Format (png, jpeg, etc.) to use for saving the frames, which can be
 		decided by the individual subclasses.
 	**/
-	static public var frame_format : Dynamic;
+	public var frame_format : Dynamic;
 	/**
 		A tuple (width,height) in pixels of a movie frame.
 	**/
-	static public var frame_size : Dynamic;
+	public var frame_size : Dynamic;
 	/**
 		Grab the image information from the figure and save as a movie frame.
 		All keyword arguments in savefig_kwargs are passed on to the 'savefig'
@@ -164,7 +164,7 @@ package matplotlib.animation;
 		running the commandline tool.
 	**/
 	static public function isAvailable():Dynamic;
-	static public var output_args : Dynamic;
+	public var output_args : Dynamic;
 	/**
 		Context manager to facilitate writing the movie file.
 		

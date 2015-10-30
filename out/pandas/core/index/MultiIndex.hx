@@ -4,7 +4,7 @@ package pandas.core.index;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	static public var _MultiIndex__bounds : Dynamic;
 	public function _MultiIndex__set_labels(kwargs:Dynamic):Dynamic;
 	public function _MultiIndex__set_levels(kwargs:Dynamic):Dynamic;
@@ -173,7 +173,7 @@ package pandas.core.index;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	/**
 		add in comparison methods 
@@ -209,7 +209,7 @@ package pandas.core.index;
 		Return or compute and return slice points for level 0, assuming
 		sortedness
 	**/
-	static public var _bounds : Dynamic;
+	public var _bounds : Dynamic;
 	static public var _box_scalars : Dynamic;
 	/**
 		*this is an internal non-public method*
@@ -240,7 +240,7 @@ package pandas.core.index;
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
@@ -310,7 +310,7 @@ package pandas.core.index;
 	/**
 		Return the formatted data as a unicode string
 	**/
-	static public var _formatter_func : Dynamic;
+	public var _formatter_func : Dynamic;
 	static public function _from_elements(values:Dynamic, ?labels:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?sortorder:Dynamic):Dynamic;
 	/**
 		return an attributes dict for my class 
@@ -335,7 +335,7 @@ package pandas.core.index;
 	**/
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
 	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _has_complex_internals : Dynamic;
+	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	/**
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
@@ -346,8 +346,8 @@ package pandas.core.index;
 	**/
 	public function _invalid_indexer(form:Dynamic, key:Dynamic):Dynamic;
 	static public var _is_numeric_dtype : Dynamic;
-	static public var _is_v1 : Dynamic;
-	static public var _is_v2 : Dynamic;
+	public var _is_v1 : Dynamic;
+	public var _is_v2 : Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -489,7 +489,7 @@ package pandas.core.index;
 	/**
 		the internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	/**
 		Raises ValueError if length of levels and labels don't match or any
 		label would exceed level bounds
@@ -554,7 +554,7 @@ package pandas.core.index;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Make a copy of this object. Names, dtype, levels and labels can be
 		passed and will be set on new copy.
@@ -580,7 +580,7 @@ package pandas.core.index;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Make new index with passed location deleted
 		
@@ -697,7 +697,7 @@ package pandas.core.index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Render a string representation of the Index
 	**/
@@ -947,7 +947,7 @@ package pandas.core.index;
 		    {group name -> group labels}
 	**/
 	public function groupby(to_groupby:Dynamic):Dynamic;
-	static public var has_duplicates : Dynamic;
+	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
@@ -998,7 +998,7 @@ package pandas.core.index;
 		True if both have same underlying data, False otherwise : bool
 	**/
 	public function is_(other:Dynamic):Dynamic;
-	static public var is_all_dates : Dynamic;
+	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
@@ -1015,17 +1015,17 @@ package pandas.core.index;
 	/**
 		alias for is_monotonic_increasing (deprecated) 
 	**/
-	static public var is_monotonic : Dynamic;
+	public var is_monotonic : Dynamic;
 	/**
 		return if the index is monotonic decreasing (only equal or
 		decreasing) values.
 	**/
-	static public var is_monotonic_decreasing : Dynamic;
+	public var is_monotonic_decreasing : Dynamic;
 	/**
 		return if the index is monotonic increasing (only equal or
 		increasing) values.
 	**/
-	static public var is_monotonic_increasing : Dynamic;
+	public var is_monotonic_increasing : Dynamic;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	public function is_type_compatible(kind:Dynamic):Dynamic;
@@ -1061,7 +1061,7 @@ package pandas.core.index;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -1080,9 +1080,9 @@ package pandas.core.index;
 		join_index, (left_indexer, right_indexer)
 	**/
 	public function join(other:Dynamic, ?how:Dynamic, ?level:Dynamic, ?return_indexers:Dynamic):Dynamic;
-	static public var labels : Dynamic;
-	static public var levels : Dynamic;
-	static public var levshape : Dynamic;
+	public var labels : Dynamic;
+	public var levels : Dynamic;
+	public var levshape : Dynamic;
 	static public var lexsort_depth : Dynamic;
 	public function map(mapper:Dynamic):Dynamic;
 	/**
@@ -1097,13 +1097,13 @@ package pandas.core.index;
 	/**
 		Names of levels in MultiIndex
 	**/
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	static public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
-	static public var nlevels : Dynamic;
+	public var ndim : Dynamic;
+	public var nlevels : Dynamic;
 	/**
 		Return number of unique elements in the object.
 		
@@ -1336,7 +1336,7 @@ package pandas.core.index;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift Index containing datetime objects by input number of periods and
 		DateOffset
@@ -1349,7 +1349,7 @@ package pandas.core.index;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		For an ordered Index, compute the slice indexer for input labels and
 		step
@@ -1435,7 +1435,7 @@ package pandas.core.index;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	public function summary(?name:Dynamic):Dynamic;
 	/**
 		Swap level i with level j. Do not change the ordering of anything
@@ -1620,7 +1620,7 @@ package pandas.core.index;
 		counts : Series
 	**/
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		this is defined as a copy with the same identity 
 	**/

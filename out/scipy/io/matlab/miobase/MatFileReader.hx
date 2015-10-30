@@ -115,7 +115,7 @@ package scipy.io.matlab.miobase;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function end_of_stream():Dynamic;
 	/**
 		As we do not know what file type we have, assume native 

@@ -96,7 +96,7 @@ package scipy.io.matlab.mio5;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _write_items(arr:Dynamic):Dynamic;
 	static public var mat_tag : Dynamic;
 	public function update_matrix_tag(start_pos:Dynamic):Dynamic;

@@ -125,7 +125,7 @@ package matplotlib.figure;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		helper for :func:`~matplotlib.pyplot.gci`;
 		do not use elsewhere.
@@ -365,7 +365,7 @@ package matplotlib.figure;
 	/**
 		Read-only: list of axes in Figure
 	**/
-	static public var axes : Dynamic;
+	public var axes : Dynamic;
 	/**
 		Clear the figure -- synonym for :meth:`clf`.
 	**/
@@ -559,7 +559,7 @@ package matplotlib.figure;
 		remove a from the figure and update the current axes
 	**/
 	public function delaxes(a:Dynamic):Dynamic;
-	static public var dpi : Dynamic;
+	public var dpi : Dynamic;
 	/**
 		Render the figure using :class:`matplotlib.backend_bases.RendererBase`
 		instance *renderer*.
@@ -1508,7 +1508,7 @@ package matplotlib.figure;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         

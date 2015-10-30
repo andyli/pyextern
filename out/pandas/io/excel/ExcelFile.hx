@@ -98,7 +98,7 @@ package pandas.io.excel;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _parse_excel(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?has_index_names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?verbose:Dynamic, kwds:Dynamic):Dynamic;
 	public function _should_parse(i:Dynamic, parse_cols:Dynamic):Dynamic;
 	/**
@@ -112,5 +112,5 @@ package pandas.io.excel;
 		docstring for more info on accepted parameters
 	**/
 	public function parse(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, kwds:Dynamic):Dynamic;
-	static public var sheet_names : Dynamic;
+	public var sheet_names : Dynamic;
 }

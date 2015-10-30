@@ -97,7 +97,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		A helper function to determine the highest order of glue
 		used by the members of this list.  Used by vpack and hpack.

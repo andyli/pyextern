@@ -127,7 +127,7 @@ package pandas.computation.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _disallow_scalar_only_bool_ops():Dynamic;
 	static public var _max_selectors : Dynamic;
 	/**
@@ -170,35 +170,35 @@ package pandas.computation.pytables;
 	**/
 	public function generate(v:Dynamic):Dynamic;
 	public function generate_filter_op(?invert:Dynamic):Dynamic;
-	static public var has_invalid_return_type : Dynamic;
+	public var has_invalid_return_type : Dynamic;
 	/**
 		invert the filter 
 	**/
 	public function invert():Dynamic;
-	static public var is_datetime : Dynamic;
+	public var is_datetime : Dynamic;
 	/**
 		return True if this is a valid column name for generation (e.g. an
 		actual column in the table) 
 	**/
-	static public var is_in_table : Dynamic;
+	public var is_in_table : Dynamic;
 	/**
 		return True if this is a valid field 
 	**/
-	static public var is_valid : Dynamic;
-	static public var isscalar : Dynamic;
+	public var is_valid : Dynamic;
+	public var isscalar : Dynamic;
 	/**
 		the kind of my field 
 	**/
-	static public var kind : Dynamic;
+	public var kind : Dynamic;
 	/**
 		the meta of my field 
 	**/
-	static public var meta : Dynamic;
+	public var meta : Dynamic;
 	/**
 		the metadata of my field 
 	**/
-	static public var metadata : Dynamic;
-	static public var operand_types : Dynamic;
+	public var metadata : Dynamic;
+	public var operand_types : Dynamic;
 	public function prune(klass:Dynamic):Dynamic;
-	static public var return_type : Dynamic;
+	public var return_type : Dynamic;
 }

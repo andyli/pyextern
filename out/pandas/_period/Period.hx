@@ -139,23 +139,23 @@ package pandas._period;
 		resampled : Period
 	**/
 	public function asfreq(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var day : Dynamic;
-	static public var dayofweek : Dynamic;
-	static public var dayofyear : Dynamic;
-	static public var days_in_month : Dynamic;
-	static public var daysinmonth : Dynamic;
-	static public var end_time : Dynamic;
-	static public var freq : Dynamic;
-	static public var freqstr : Dynamic;
-	static public var hour : Dynamic;
-	static public var minute : Dynamic;
-	static public var month : Dynamic;
+	public var day : Dynamic;
+	public var dayofweek : Dynamic;
+	public var dayofyear : Dynamic;
+	public var days_in_month : Dynamic;
+	public var daysinmonth : Dynamic;
+	public var end_time : Dynamic;
+	public var freq : Dynamic;
+	public var freqstr : Dynamic;
+	public var hour : Dynamic;
+	public var minute : Dynamic;
+	public var month : Dynamic;
 	static public function now(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var ordinal : Dynamic;
-	static public var quarter : Dynamic;
-	static public var qyear : Dynamic;
-	static public var second : Dynamic;
-	static public var start_time : Dynamic;
+	public var ordinal : Dynamic;
+	public var quarter : Dynamic;
+	public var qyear : Dynamic;
+	public var second : Dynamic;
+	public var start_time : Dynamic;
 	/**
 		Returns the string representation of the :class:`Period`, depending
 		on the selected :keyword:`format`. :keyword:`format` must be a string
@@ -311,8 +311,8 @@ package pandas._period;
 		Timestamp
 	**/
 	public function to_timestamp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var week : Dynamic;
-	static public var weekday : Dynamic;
-	static public var weekofyear : Dynamic;
-	static public var year : Dynamic;
+	public var week : Dynamic;
+	public var weekday : Dynamic;
+	public var weekofyear : Dynamic;
+	public var year : Dynamic;
 }

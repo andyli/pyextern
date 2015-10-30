@@ -135,7 +135,7 @@ package numpy.polynomial._polybase;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _add():Dynamic;
 	public function _der():Dynamic;
 	public function _div():Dynamic;
@@ -331,7 +331,7 @@ package numpy.polynomial._polybase;
 		    as the domain of the differentiated series.
 	**/
 	public function deriv(?m:Dynamic):Dynamic;
-	static public var domain : Dynamic;
+	public var domain : Dynamic;
 	/**
 		Least squares fit to data.
 		
@@ -590,7 +590,7 @@ package numpy.polynomial._polybase;
 	**/
 	public function mapparms():Dynamic;
 	static public var maxpower : Dynamic;
-	static public var nickname : Dynamic;
+	public var nickname : Dynamic;
 	/**
 		Return the roots of the series polynomial.
 		
@@ -643,5 +643,5 @@ package numpy.polynomial._polybase;
 		    New instance of series with truncated coefficients.
 	**/
 	public function truncate(size:Dynamic):Dynamic;
-	static public var window : Dynamic;
+	public var window : Dynamic;
 }

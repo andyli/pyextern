@@ -107,13 +107,13 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _info_fields : Dynamic;
-	static public var attrs : Dynamic;
+	public var attrs : Dynamic;
 	/**
 		return my current col description 
 	**/
-	static public var col : Dynamic;
+	public var col : Dynamic;
 	/**
 		set the values from this selection: take = take ownership 
 	**/
@@ -122,8 +122,8 @@ package pandas.io.pytables;
 	/**
 		return my cython values 
 	**/
-	static public var cvalues : Dynamic;
-	static public var description : Dynamic;
+	public var cvalues : Dynamic;
+	public var description : Dynamic;
 	/**
 		set the kind for this colummn 
 	**/
@@ -137,7 +137,7 @@ package pandas.io.pytables;
 	/**
 		return whether I am an indexed column 
 	**/
-	static public var is_indexed : Dynamic;
+	public var is_indexed : Dynamic;
 	/**
 		maybe set a string col itemsize:
 		min_itemsize can be an interger or a dict with this columns name

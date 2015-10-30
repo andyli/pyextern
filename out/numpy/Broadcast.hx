@@ -114,7 +114,7 @@ package numpy;
 		>>> b.index
 		3
 	**/
-	static public var index : Dynamic;
+	public var index : Dynamic;
 	/**
 		tuple of iterators along ``self``'s "components."
 		
@@ -134,7 +134,7 @@ package numpy;
 		>>> row.next(), col.next()
 		(1, 4)
 	**/
-	static public var iters : Dynamic;
+	public var iters : Dynamic;
 	/**
 		Number of dimensions of broadcasted result.
 		
@@ -146,7 +146,7 @@ package numpy;
 		>>> b.nd
 		2
 	**/
-	static public var nd : Dynamic;
+	public var nd : Dynamic;
 	/**
 		Number of iterators possessed by the broadcasted result.
 		
@@ -158,7 +158,7 @@ package numpy;
 		>>> b.numiter
 		2
 	**/
-	static public var numiter : Dynamic;
+	public var numiter : Dynamic;
 	/**
 		reset()
 		
@@ -199,7 +199,7 @@ package numpy;
 		>>> b.shape
 		(3, 3)
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Total size of broadcasted result.
 		
@@ -211,5 +211,5 @@ package numpy;
 		>>> b.size
 		9
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 }

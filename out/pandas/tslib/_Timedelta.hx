@@ -164,36 +164,36 @@ package pandas.tslib;
 		Return self/value.
 	**/
 	public function __truediv__(value:Dynamic):Dynamic;
-	static public var _d : Dynamic;
+	public var _d : Dynamic;
 	/**
 		compute the components
 	**/
 	public function _ensure_components(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _h : Dynamic;
+	public var _h : Dynamic;
 	public function _has_ns(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _m : Dynamic;
-	static public var _ms : Dynamic;
-	static public var _ns : Dynamic;
-	static public var _s : Dynamic;
-	static public var _sign : Dynamic;
-	static public var _us : Dynamic;
+	public var _m : Dynamic;
+	public var _ms : Dynamic;
+	public var _ns : Dynamic;
+	public var _s : Dynamic;
+	public var _sign : Dynamic;
+	public var _us : Dynamic;
 	/**
 		Number of days.
 	**/
-	static public var days : Dynamic;
-	static public var freq : Dynamic;
-	static public var is_populated : Dynamic;
+	public var days : Dynamic;
+	public var freq : Dynamic;
+	public var is_populated : Dynamic;
 	static public var max : Dynamic;
 	/**
 		Number of microseconds (>= 0 and less than 1 second).
 	**/
-	static public var microseconds : Dynamic;
+	public var microseconds : Dynamic;
 	static public var min : Dynamic;
 	static public var resolution : Dynamic;
 	/**
 		Number of seconds (>= 0 and less than 1 day).
 	**/
-	static public var seconds : Dynamic;
+	public var seconds : Dynamic;
 	/**
 		return an actual datetime.timedelta object
 		note: we lose nanosecond resolution if any
@@ -203,5 +203,5 @@ package pandas.tslib;
 		Total seconds in the duration.
 	**/
 	public function total_seconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var value : Dynamic;
+	public var value : Dynamic;
 }

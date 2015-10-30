@@ -4,7 +4,7 @@ package pandas.tseries.tdi;
 	/**
 		return the transpose, which is by definition self
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	public function __abs__():Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
@@ -159,7 +159,7 @@ package pandas.tseries.tdi;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function __xor__(other:Dynamic):Dynamic;
 	/**
 		add in comparison methods 
@@ -199,7 +199,7 @@ package pandas.tseries.tdi;
 	static public var _arrmap : Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
-	static public var _box_func : Dynamic;
+	public var _box_func : Dynamic;
 	static public var _box_scalars : Dynamic;
 	/**
 		apply box func to passed values
@@ -238,7 +238,7 @@ package pandas.tseries.tdi;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
@@ -303,7 +303,7 @@ package pandas.tseries.tdi;
 	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _format_space():Dynamic;
 	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var _formatter_func : Dynamic;
+	public var _formatter_func : Dynamic;
 	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
 		return an attributes dict for my class 
@@ -327,7 +327,7 @@ package pandas.tseries.tdi;
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
 	public function _get_string_slice(key:Dynamic, ?use_lhs:Dynamic, ?use_rhs:Dynamic):Dynamic;
 	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _has_complex_internals : Dynamic;
+	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	static public function _inner_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
@@ -472,7 +472,7 @@ package pandas.tseries.tdi;
 	/**
 		the internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	public function _wrap_joined_index(joined:Dynamic, other:Dynamic):Dynamic;
 	public function _wrap_union_result(other:Dynamic, result:Dynamic):Dynamic;
 	public function all(?other:Dynamic):Dynamic;
@@ -513,8 +513,8 @@ package pandas.tseries.tdi;
 		numpy.ndarray.argsort
 	**/
 	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var asi8 : Dynamic;
-	static public var asobject : Dynamic;
+	public var asi8 : Dynamic;
+	public var asobject : Dynamic;
 	/**
 		For a sorted index, return the most recent label up to and including
 		the passed label. Return NaN if not found.
@@ -533,7 +533,7 @@ package pandas.tseries.tdi;
 	/**
 		return the base object if the memory of the underlying data is shared 
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Return a dataframe of the components (days, hours, minutes,
 		seconds, milliseconds, microseconds, nanoseconds) of the Timedeltas.
@@ -542,7 +542,7 @@ package pandas.tseries.tdi;
 		-------
 		a DataFrame
 	**/
-	static public var components : Dynamic;
+	public var components : Dynamic;
 	/**
 		Make a copy of this object.  Name and dtype sets those attributes on
 		the new object.
@@ -565,11 +565,11 @@ package pandas.tseries.tdi;
 	/**
 		return the data pointer of the underlying data 
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		Number of days for each element. 
 	**/
-	static public var days : Dynamic;
+	public var days : Dynamic;
 	/**
 		Make a new DatetimeIndex with passed location(s) deleted.
 		
@@ -634,7 +634,7 @@ package pandas.tseries.tdi;
 		deduplicated : Index
 	**/
 	public function drop_duplicates(?keep:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	static public var dtype_str : Dynamic;
 	/**
 		Return boolean np.array denoting duplicate values
@@ -675,7 +675,7 @@ package pandas.tseries.tdi;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Render a string representation of the Index
 	**/
@@ -684,7 +684,7 @@ package pandas.tseries.tdi;
 	/**
 		return the frequency object as a string if its set, otherwise None 
 	**/
-	static public var freqstr : Dynamic;
+	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -779,7 +779,7 @@ package pandas.tseries.tdi;
 	**/
 	public function get_values():Dynamic;
 	public function groupby(f:Dynamic):Dynamic;
-	static public var has_duplicates : Dynamic;
+	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
 	/**
@@ -788,7 +788,7 @@ package pandas.tseries.tdi;
 	**/
 	public function identical(other:Dynamic):Dynamic;
 	static public var inferred_freq : Dynamic;
-	static public var inferred_type : Dynamic;
+	public var inferred_type : Dynamic;
 	/**
 		Make new Index inserting new item at location
 		
@@ -833,7 +833,7 @@ package pandas.tseries.tdi;
 		True if both have same underlying data, False otherwise : bool
 	**/
 	public function is_(other:Dynamic):Dynamic;
-	static public var is_all_dates : Dynamic;
+	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
 	public function is_categorical():Dynamic;
 	public function is_floating():Dynamic;
@@ -843,17 +843,17 @@ package pandas.tseries.tdi;
 	/**
 		alias for is_monotonic_increasing (deprecated) 
 	**/
-	static public var is_monotonic : Dynamic;
+	public var is_monotonic : Dynamic;
 	/**
 		return if the index is monotonic decreasing (only equal or
 		decreasing) values.
 	**/
-	static public var is_monotonic_decreasing : Dynamic;
+	public var is_monotonic_decreasing : Dynamic;
 	/**
 		return if the index is monotonic increasing (only equal or
 		increasing) values.
 	**/
-	static public var is_monotonic_increasing : Dynamic;
+	public var is_monotonic_increasing : Dynamic;
 	public function is_numeric():Dynamic;
 	public function is_object():Dynamic;
 	public function is_type_compatible(typ:Dynamic):Dynamic;
@@ -878,7 +878,7 @@ package pandas.tseries.tdi;
 	/**
 		return the size of the dtype of the item of the underlying data 
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		See Index.join
 	**/
@@ -895,7 +895,7 @@ package pandas.tseries.tdi;
 	/**
 		Number of microseconds (>= 0 and less than 1 second) for each element. 
 	**/
-	static public var microseconds : Dynamic;
+	public var microseconds : Dynamic;
 	/**
 		return the minimum value of the Index
 		
@@ -905,20 +905,20 @@ package pandas.tseries.tdi;
 	**/
 	public function min(?axis:Dynamic):Dynamic;
 	static public var name : Dynamic;
-	static public var names : Dynamic;
+	public var names : Dynamic;
 	/**
 		Number of nanoseconds (>= 0 and less than 1 microsecond) for each element. 
 	**/
-	static public var nanoseconds : Dynamic;
+	public var nanoseconds : Dynamic;
 	/**
 		return the number of bytes in the underlying data 
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		return the number of dimensions of the underlying data, by definition 1 
 	**/
-	static public var ndim : Dynamic;
-	static public var nlevels : Dynamic;
+	public var ndim : Dynamic;
+	public var nlevels : Dynamic;
 	/**
 		Return number of unique elements in the object.
 		
@@ -998,7 +998,7 @@ package pandas.tseries.tdi;
 	/**
 		Number of seconds (>= 0 and less than 1 day) for each element. 
 	**/
-	static public var seconds : Dynamic;
+	public var seconds : Dynamic;
 	/**
 		Set new names on index. Defaults to returning new index.
 		
@@ -1043,7 +1043,7 @@ package pandas.tseries.tdi;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Specialized shift which produces a DatetimeIndex
 		
@@ -1061,7 +1061,7 @@ package pandas.tseries.tdi;
 	/**
 		return the number of elements in the underlying data 
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		For an ordered Index, compute the slice indexer for input labels and
 		step
@@ -1138,7 +1138,7 @@ package pandas.tseries.tdi;
 	/**
 		return the strides of the underlying data 
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		return a summarized representation
 	**/
@@ -1274,6 +1274,6 @@ package pandas.tseries.tdi;
 	/**
 		return the underlying data as an ndarray 
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	public function view(?cls:Dynamic):Dynamic;
 }

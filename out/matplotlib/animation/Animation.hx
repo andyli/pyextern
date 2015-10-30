@@ -96,7 +96,7 @@ package matplotlib.animation;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _blit_clear(artists:Dynamic, bg_cache:Dynamic):Dynamic;
 	public function _blit_draw(artists:Dynamic, bg_cache:Dynamic):Dynamic;
 	public function _draw_frame(framedata:Dynamic):Dynamic;

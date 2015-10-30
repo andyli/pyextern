@@ -96,7 +96,7 @@ package matplotlib.scale;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		The transform for linear scaling is just the
 		:class:`~matplotlib.transforms.IdentityTransform`.

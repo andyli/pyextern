@@ -110,7 +110,7 @@ package matplotlib.offsetbox;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		given the xy pixel coordinate, check if the annotation need to
 		be drawn.
@@ -145,7 +145,7 @@ package matplotlib.offsetbox;
 	**/
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
-	static public var anncoords : Dynamic;
+	public var anncoords : Dynamic;
 	/**
 		Test whether the artist contains the mouse event.
 		
@@ -634,7 +634,7 @@ package matplotlib.offsetbox;
 		
 		\ 
 	**/
-	static public var textcoords : Dynamic;
+	public var textcoords : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.
@@ -648,13 +648,13 @@ package matplotlib.offsetbox;
 		Update the pixel positions of the annotated point and the text.
 	**/
 	public function update_positions(renderer:Dynamic):Dynamic;
-	static public var xyann : Dynamic;
+	public var xyann : Dynamic;
 	/**
 		.. deprecated:: 1.4
 		    Use `xyann` instead
 		
 		\ 
 	**/
-	static public var xytext : Dynamic;
+	public var xytext : Dynamic;
 	static public var zorder : Dynamic;
 }

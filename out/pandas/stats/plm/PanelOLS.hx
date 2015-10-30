@@ -110,7 +110,7 @@ package pandas.stats.plm;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Add categorical dummies to panel
 		
@@ -146,7 +146,7 @@ package pandas.stats.plm;
 		        
 	**/
 	public function _filter_data():Dynamic;
-	static public var _nobs : Dynamic;
+	public var _nobs : Dynamic;
 	static public var _p_value_raw : Dynamic;
 	static public var _panel_model : Dynamic;
 	/**
@@ -171,7 +171,7 @@ package pandas.stats.plm;
 	static public var _t_stat_raw : Dynamic;
 	static public var _time_has_obs : Dynamic;
 	static public var _time_obs_count : Dynamic;
-	static public var _total_times : Dynamic;
+	public var _total_times : Dynamic;
 	public function _unstack_vector(vec:Dynamic, ?index:Dynamic):Dynamic;
 	public function _unstack_y(vec:Dynamic):Dynamic;
 	/**
@@ -179,8 +179,8 @@ package pandas.stats.plm;
 		effects, completely partitioning the sample would make the X
 		not full rank.
 	**/
-	static public var _use_all_dummies : Dynamic;
-	static public var _use_centered_tss : Dynamic;
+	public var _use_all_dummies : Dynamic;
+	public var _use_centered_tss : Dynamic;
 	static public var _var_beta_raw : Dynamic;
 	static public var _y_fitted_raw : Dynamic;
 	static public var _y_predict_raw : Dynamic;
@@ -208,8 +208,8 @@ package pandas.stats.plm;
 	**/
 	public function f_test(hypothesis:Dynamic):Dynamic;
 	public function log(msg:Dynamic):Dynamic;
-	static public var nobs : Dynamic;
-	static public var nw_lags : Dynamic;
+	public var nobs : Dynamic;
+	public var nw_lags : Dynamic;
 	static public var p_value : Dynamic;
 	/**
 		Parameters
@@ -245,11 +245,11 @@ package pandas.stats.plm;
 	/**
 		Returns the filtered x used in the regression.
 	**/
-	static public var x : Dynamic;
+	public var x : Dynamic;
 	/**
 		Returns the filtered y used in the regression.
 	**/
-	static public var y : Dynamic;
+	public var y : Dynamic;
 	static public var y_fitted : Dynamic;
 	static public var y_predict : Dynamic;
 }

@@ -112,7 +112,7 @@ package pandas.io.excel;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _abc_cache : Dynamic;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;
@@ -132,7 +132,7 @@ package pandas.io.excel;
 	/**
 		name of engine
 	**/
-	static public var engine : Dynamic;
+	public var engine : Dynamic;
 	static public var path : Dynamic;
 	/**
 		Save workbook to disk.
@@ -141,7 +141,7 @@ package pandas.io.excel;
 	/**
 		extensions that writer engine supports
 	**/
-	static public var supported_extensions : Dynamic;
+	public var supported_extensions : Dynamic;
 	/**
 		Write given formated cells into Excel an excel sheet
 		

@@ -97,6 +97,6 @@ package matplotlib.dates;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function set(kwargs:Dynamic):Dynamic;
 }

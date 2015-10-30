@@ -96,9 +96,9 @@ package pandas.core.format;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_formatter(i:Dynamic):Dynamic;
 	static public var is_truncated : Dynamic;
-	static public var should_show_dimensions : Dynamic;
+	public var should_show_dimensions : Dynamic;
 	static public var show_dimensions : Dynamic;
 }

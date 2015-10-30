@@ -95,6 +95,6 @@ package matplotlib.backends.backend_pdf;
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _regex : Dynamic;
 	static public function hexify(match:Dynamic):Dynamic;
-	static public var name : Dynamic;
+	public var name : Dynamic;
 	public function pdfRepr():Dynamic;
 }

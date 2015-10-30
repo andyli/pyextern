@@ -130,7 +130,7 @@ package matplotlib.collections;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _factor : Dynamic;
 	static public function _get_bool(val:Dynamic):Dynamic;
 	static public function _get_value(val:Dynamic):Dynamic;

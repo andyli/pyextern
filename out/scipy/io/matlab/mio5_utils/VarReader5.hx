@@ -108,8 +108,8 @@ package scipy.io.matlab.mio5_utils;
 		   read array
 	**/
 	public function array_from_header(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var is_swapped : Dynamic;
-	static public var little_endian : Dynamic;
+	public var is_swapped : Dynamic;
+	public var little_endian : Dynamic;
 	/**
 		Read cell array from stream 
 	**/

@@ -139,7 +139,7 @@ package numpy;
 		Print the current state of the `nditer` instance and debug info to stdout.
 	**/
 	public function debug_print(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var dtypes : Dynamic;
+	public var dtypes : Dynamic;
 	/**
 		enable_external_loop()
 		
@@ -148,13 +148,13 @@ package numpy;
 		was specified.
 	**/
 	public function enable_external_loop(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var finished : Dynamic;
-	static public var has_delayed_bufalloc : Dynamic;
-	static public var has_index : Dynamic;
-	static public var has_multi_index : Dynamic;
-	static public var index : Dynamic;
-	static public var iterationneedsapi : Dynamic;
-	static public var iterindex : Dynamic;
+	public var finished : Dynamic;
+	public var has_delayed_bufalloc : Dynamic;
+	public var has_index : Dynamic;
+	public var has_multi_index : Dynamic;
+	public var index : Dynamic;
+	public var iterationneedsapi : Dynamic;
+	public var iterindex : Dynamic;
 	/**
 		iternext()
 		
@@ -168,13 +168,13 @@ package numpy;
 		    Whether or not there are iterations left.
 	**/
 	public function iternext(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var iterrange : Dynamic;
-	static public var itersize : Dynamic;
-	static public var itviews : Dynamic;
-	static public var multi_index : Dynamic;
-	static public var ndim : Dynamic;
-	static public var nop : Dynamic;
-	static public var operands : Dynamic;
+	public var iterrange : Dynamic;
+	public var itersize : Dynamic;
+	public var itviews : Dynamic;
+	public var multi_index : Dynamic;
+	public var ndim : Dynamic;
+	public var nop : Dynamic;
+	public var operands : Dynamic;
 	/**
 		remove_axis(i)
 		
@@ -195,6 +195,6 @@ package numpy;
 		Reset the iterator to its initial state.
 	**/
 	public function reset(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var shape : Dynamic;
-	static public var value : Dynamic;
+	public var shape : Dynamic;
+	public var value : Dynamic;
 }

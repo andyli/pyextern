@@ -100,7 +100,7 @@ package matplotlib.ticker;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _formatSciNotation(s:Dynamic):Dynamic;
 	public function _set_format(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function _set_offset(range:Dynamic):Dynamic;
@@ -151,6 +151,6 @@ package matplotlib.ticker;
 	public function set_useLocale(val:Dynamic):Dynamic;
 	public function set_useOffset(val:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
-	static public var useLocale : Dynamic;
-	static public var useOffset : Dynamic;
+	public var useLocale : Dynamic;
+	public var useOffset : Dynamic;
 }

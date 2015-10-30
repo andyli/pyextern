@@ -103,7 +103,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_font(font:Dynamic):Dynamic;
 	public function _get_info(fontname:Dynamic, font_class:Dynamic, sym:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;
 	public function _get_offset(cached_font:Dynamic, glyph:Dynamic, fontsize:Dynamic, dpi:Dynamic):Dynamic;

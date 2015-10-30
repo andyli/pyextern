@@ -113,14 +113,14 @@ package pandas.index;
 		arr : 1-dimensional ndarray
 	**/
 	public function get_value(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var is_monotonic_decreasing : Dynamic;
-	static public var is_monotonic_increasing : Dynamic;
-	static public var is_unique : Dynamic;
-	static public var mapping : Dynamic;
-	static public var over_size_threshold : Dynamic;
+	public var is_monotonic_decreasing : Dynamic;
+	public var is_monotonic_increasing : Dynamic;
+	public var is_unique : Dynamic;
+	public var mapping : Dynamic;
+	public var over_size_threshold : Dynamic;
 	/**
 		arr : 1-dimensional ndarray
 	**/
 	public function set_value(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var vgetter : Dynamic;
+	public var vgetter : Dynamic;
 }

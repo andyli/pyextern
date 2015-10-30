@@ -97,7 +97,7 @@ package pandas.io.parsers;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _clean_options(options:Dynamic, engine:Dynamic):Dynamic;
 	public function _create_index(ret:Dynamic):Dynamic;
 	public function _failover_to_python():Dynamic;

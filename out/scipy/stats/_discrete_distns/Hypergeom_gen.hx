@@ -111,7 +111,7 @@ package scipy.stats._discrete_distns;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Default check for correct values on args and keywords.
 		
@@ -470,7 +470,7 @@ package scipy.stats._discrete_distns;
 		If already a RandomState instance, use it.
 		If an int, use a new RandomState instance seeded with seed.
 	**/
-	static public var random_state : Dynamic;
+	public var random_state : Dynamic;
 	/**
 		Random variates of given type.
 		

@@ -99,7 +99,7 @@ package matplotlib.lines;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		When the line is picked, update the set of selected indicies.
 	**/

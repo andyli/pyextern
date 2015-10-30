@@ -114,7 +114,7 @@ package matplotlib.sphinxext.mathmpl;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Specialized traverse() that doesn't check for a condition.
 	**/

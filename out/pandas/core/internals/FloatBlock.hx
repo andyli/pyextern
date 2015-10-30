@@ -119,7 +119,7 @@ package pandas.core.internals;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Coerce to the new type (if copy=True, return a new copy)
 		raise on an except if raise == True
@@ -129,11 +129,11 @@ package pandas.core.internals;
 	static public var _can_consolidate : Dynamic;
 	public function _can_hold_element(element:Dynamic):Dynamic;
 	static public var _can_hold_na : Dynamic;
-	static public var _consolidate_key : Dynamic;
+	public var _consolidate_key : Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -153,9 +153,9 @@ package pandas.core.internals;
 		fillna but using the interpolate machinery 
 	**/
 	public function _interpolate_with_fill(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic):Dynamic;
-	static public var _is_single_block : Dynamic;
+	public var _is_single_block : Dynamic;
 	public function _maybe_downcast(blocks:Dynamic, ?downcast:Dynamic):Dynamic;
-	static public var _mgr_locs : Dynamic;
+	public var _mgr_locs : Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -193,7 +193,7 @@ package pandas.core.internals;
 	/**
 		the dtype to return if I want to construct this block as an array 
 	**/
-	static public var array_dtype : Dynamic;
+	public var array_dtype : Dynamic;
 	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?values:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		attempt to coerce any object types to better types
@@ -214,7 +214,7 @@ package pandas.core.internals;
 		try to downcast each item to the dict of dtypes if present 
 	**/
 	public function downcast(?dtypes:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	public function equals(other:Dynamic):Dynamic;
 	/**
 		evaluate the block; return result block from the result
@@ -235,9 +235,9 @@ package pandas.core.internals;
 		return an outside world format, currently just the ndarray 
 	**/
 	public function external_values(?dtype:Dynamic):Dynamic;
-	static public var fill_value : Dynamic;
+	public var fill_value : Dynamic;
 	public function fillna(value:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic):Dynamic;
-	static public var ftype : Dynamic;
+	public var ftype : Dynamic;
 	public function get(item:Dynamic):Dynamic;
 	/**
 		return an internal format, currently just the ndarray
@@ -268,7 +268,7 @@ package pandas.core.internals;
 	/**
 		return True if I am a non-datelike 
 	**/
-	static public var is_datelike : Dynamic;
+	public var is_datelike : Dynamic;
 	static public var is_datetime : Dynamic;
 	static public var is_datetimetz : Dynamic;
 	static public var is_float : Dynamic;
@@ -280,8 +280,8 @@ package pandas.core.internals;
 	/**
 		return a boolean if I am possibly a view 
 	**/
-	static public var is_view : Dynamic;
-	static public var itemsize : Dynamic;
+	public var is_view : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		Create a new block, with type inference
 		propogate any values that are not specified
@@ -294,8 +294,8 @@ package pandas.core.internals;
 	**/
 	public function make_block_same_class(values:Dynamic, placement:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic, kwargs:Dynamic):Dynamic;
 	public function merge(other:Dynamic):Dynamic;
-	static public var mgr_locs : Dynamic;
-	static public var ndim : Dynamic;
+	public var mgr_locs : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		putmask the data to the block; it is possible that we may create a
 		new dtype of block
@@ -354,7 +354,7 @@ package pandas.core.internals;
 		compatible shape
 	**/
 	public function setitem(indexer:Dynamic, value:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		shift the block by periods, possibly upcast 
 	**/
@@ -369,7 +369,7 @@ package pandas.core.internals;
 		convert to our native types format, slicing if desired 
 	**/
 	public function to_native_types(?slicer:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?decimal:Dynamic, ?quoting:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		evaluate the block; return result block(s) from the result
 		

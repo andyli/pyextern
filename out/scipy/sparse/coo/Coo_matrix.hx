@@ -130,7 +130,7 @@ package scipy.sparse.coo;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Checks data structure for consistency 
 	**/
@@ -230,7 +230,7 @@ package scipy.sparse.coo;
 		array([ 1, -3, -1], dtype=int64)
 	**/
 	public function dot(other:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Element-wise expm1.
 		
@@ -317,7 +317,7 @@ package scipy.sparse.coo;
 		    Select between the number of values across the whole matrix, in
 		    each column, or in each row.
 	**/
-	static public var nnz : Dynamic;
+	public var nnz : Dynamic;
 	/**
 		nonzero indices
 		
@@ -375,7 +375,7 @@ package scipy.sparse.coo;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Element-wise sign.
 		

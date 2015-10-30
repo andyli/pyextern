@@ -94,7 +94,7 @@ package scipy._lib._version;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _compare(other:Dynamic):Dynamic;
 	/**
 		Compare alpha/beta/rc/final.

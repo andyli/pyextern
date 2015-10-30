@@ -96,7 +96,7 @@ package scipy.io.matlab.mio4;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Write matrix `arr`, with name `name`
 		

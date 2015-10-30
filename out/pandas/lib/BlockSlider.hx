@@ -92,11 +92,11 @@ package pandas.lib;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var blocks : Dynamic;
-	static public var dummy : Dynamic;
-	static public var frame : Dynamic;
-	static public var idx_slider : Dynamic;
-	static public var index : Dynamic;
+	public var blocks : Dynamic;
+	public var dummy : Dynamic;
+	public var frame : Dynamic;
+	public var idx_slider : Dynamic;
+	public var index : Dynamic;
 	public function move(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var nblocks : Dynamic;
+	public var nblocks : Dynamic;
 }

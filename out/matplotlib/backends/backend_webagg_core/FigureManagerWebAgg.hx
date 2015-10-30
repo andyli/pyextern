@@ -139,7 +139,7 @@ package matplotlib.backends.backend_webagg_core;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_toolbar(canvas:Dynamic):Dynamic;
 	public function _send_event(event_type:Dynamic, kwargs:Dynamic):Dynamic;
 	public function add_web_socket(web_socket:Dynamic):Dynamic;

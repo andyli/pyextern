@@ -99,7 +99,7 @@ package pandas.io.data;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public function _expiry_to_string(expiry:Dynamic):Dynamic;
 	public function _get_data_in_date_range(dates:Dynamic, ?call:Dynamic, ?put:Dynamic):Dynamic;
 	/**
@@ -159,7 +159,7 @@ package pandas.io.data;
 	/**
 		Returns a list of available expiry dates
 	**/
-	static public var expiry_dates : Dynamic;
+	public var expiry_dates : Dynamic;
 	/**
 		***Experimental***
 		Gets either call, put, or both data for all available months starting

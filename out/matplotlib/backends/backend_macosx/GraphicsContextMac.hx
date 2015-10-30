@@ -96,7 +96,7 @@ package matplotlib.backends.backend_macosx;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Copy properties from gc to self
 	**/

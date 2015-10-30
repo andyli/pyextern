@@ -141,7 +141,7 @@ package matplotlib.transforms;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_has_inverse():Dynamic;
 	public function _get_is_affine():Dynamic;
 	public function _get_is_separable():Dynamic;
@@ -181,7 +181,7 @@ package matplotlib.transforms;
 		    x_isdata, y_isdata = trans.contains_branch_seperately(ax.transData)
 	**/
 	public function contains_branch_seperately(other_transform:Dynamic):Dynamic;
-	static public var depth : Dynamic;
+	public var depth : Dynamic;
 	/**
 		Returns a frozen copy of this transform node.  The frozen copy
 		will not update when its children change.  Useful for storing
@@ -198,7 +198,7 @@ package matplotlib.transforms;
 		of this transform.
 	**/
 	public function get_matrix():Dynamic;
-	static public var has_inverse : Dynamic;
+	public var has_inverse : Dynamic;
 	static public var input_dims : Dynamic;
 	/**
 		Invalidate this :class:`TransformNode` and triggers an
@@ -216,9 +216,9 @@ package matplotlib.transforms;
 		``x === self.inverted().transform(self.transform(x))``
 	**/
 	public function inverted():Dynamic;
-	static public var is_affine : Dynamic;
+	public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
-	static public var is_separable : Dynamic;
+	public var is_separable : Dynamic;
 	static public var output_dims : Dynamic;
 	static public var pass_through : Dynamic;
 	/**

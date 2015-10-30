@@ -95,7 +95,7 @@ package pandas.tseries.offsets;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _adjust_dst : Dynamic;
 	/**
 		Offsets index to beginning of Period frequency
@@ -133,11 +133,11 @@ package pandas.tseries.offsets;
 	**/
 	public function apply_index(i:Dynamic):Dynamic;
 	public function copy():Dynamic;
-	static public var delta : Dynamic;
-	static public var freqstr : Dynamic;
+	public var delta : Dynamic;
+	public var freqstr : Dynamic;
 	public function isAnchored():Dynamic;
-	static public var name : Dynamic;
-	static public var nanos : Dynamic;
+	public var name : Dynamic;
+	public var nanos : Dynamic;
 	static public var normalize : Dynamic;
 	public function onOffset(dt:Dynamic):Dynamic;
 	/**
@@ -148,5 +148,5 @@ package pandas.tseries.offsets;
 		Roll provided date forward to next offset only if not on offset
 	**/
 	public function rollforward(dt:Dynamic):Dynamic;
-	static public var rule_code : Dynamic;
+	public var rule_code : Dynamic;
 }

@@ -140,7 +140,7 @@ package matplotlib.patches;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		NOTE: This cannot be called until after this has been added
 		to an Axes, otherwise unit conversion will fail. This
@@ -189,7 +189,7 @@ package matplotlib.patches;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		

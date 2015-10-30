@@ -100,7 +100,7 @@ package matplotlib.backend_bases;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_interval():Dynamic;
 	public function _get_single_shot():Dynamic;
 	/**
@@ -126,14 +126,14 @@ package matplotlib.backend_bases;
 		additional arguments provided will be passed to `func`.
 	**/
 	public function add_callback(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var interval : Dynamic;
+	public var interval : Dynamic;
 	/**
 		Remove `func` from list of callbacks. `args` and `kwargs` are optional
 		and used to distinguish between copies of the same function registered
 		to be called with different arguments.
 	**/
 	public function remove_callback(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var single_shot : Dynamic;
+	public var single_shot : Dynamic;
 	/**
 		Start the timer object. `interval` is optional and will be used
 		to reset the timer interval first if provided.

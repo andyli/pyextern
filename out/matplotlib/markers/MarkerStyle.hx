@@ -115,7 +115,7 @@ package matplotlib.markers;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _caret_path : Dynamic;
 	public function _half_fill():Dynamic;
 	static public var _half_fillstyles : Dynamic;

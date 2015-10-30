@@ -96,9 +96,9 @@ package pandas.tseries.resample;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _adjust_bin_edges(binner:Dynamic, ax_values:Dynamic):Dynamic;
-	static public var _agg_method : Dynamic;
+	public var _agg_method : Dynamic;
 	/**
 		default to the standard binner here 
 	**/
@@ -127,7 +127,7 @@ package pandas.tseries.resample;
 		obj : the subject object
 	**/
 	public function _set_grouper(obj:Dynamic, ?sort:Dynamic):Dynamic;
-	static public var ax : Dynamic;
-	static public var groups : Dynamic;
+	public var ax : Dynamic;
+	public var groups : Dynamic;
 	public function resample(obj:Dynamic):Dynamic;
 }

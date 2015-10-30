@@ -103,7 +103,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _accent_map : Dynamic;
 	static public var _ambi_delim : Dynamic;
 	static public var _arrow_symbols : Dynamic;

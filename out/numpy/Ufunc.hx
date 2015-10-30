@@ -239,7 +239,7 @@ package numpy;
 		>>> print np.exp.identity
 		None
 	**/
-	static public var identity : Dynamic;
+	public var identity : Dynamic;
 	/**
 		The number of arguments.
 		
@@ -262,7 +262,7 @@ package numpy;
 		>>> np.exp.nargs
 		2
 	**/
-	static public var nargs : Dynamic;
+	public var nargs : Dynamic;
 	/**
 		The number of inputs.
 		
@@ -279,7 +279,7 @@ package numpy;
 		>>> np.exp.nin
 		1
 	**/
-	static public var nin : Dynamic;
+	public var nin : Dynamic;
 	/**
 		The number of outputs.
 		
@@ -300,7 +300,7 @@ package numpy;
 		>>> np.exp.nout
 		1
 	**/
-	static public var nout : Dynamic;
+	public var nout : Dynamic;
 	/**
 		The number of types.
 		
@@ -324,7 +324,7 @@ package numpy;
 		>>> np.remainder.ntypes
 		14
 	**/
-	static public var ntypes : Dynamic;
+	public var ntypes : Dynamic;
 	/**
 		outer(A, B)
 		
@@ -570,7 +570,7 @@ package numpy;
 		       [ 2184.,    15.]])
 	**/
 	public function reduceat(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var signature : Dynamic;
+	public var signature : Dynamic;
 	/**
 		Returns a list with types grouped input->output.
 		
@@ -605,5 +605,5 @@ package numpy;
 		['bb->b', 'BB->B', 'hh->h', 'HH->H', 'ii->i', 'II->I', 'll->l', 'LL->L',
 		'qq->q', 'QQ->Q', 'ff->f', 'dd->d', 'gg->g', 'OO->O']
 	**/
-	static public var types : Dynamic;
+	public var types : Dynamic;
 }

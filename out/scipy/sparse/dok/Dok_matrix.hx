@@ -150,7 +150,7 @@ package scipy.sparse.dok;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _boolean_index_to_array(i:Dynamic):Dynamic;
 	public function _check_boolean(row:Dynamic, col:Dynamic):Dynamic;
 	/**
@@ -275,7 +275,7 @@ package scipy.sparse.dok;
 	**/
 	public function multiply(other:Dynamic):Dynamic;
 	static public var ndim : Dynamic;
-	static public var nnz : Dynamic;
+	public var nnz : Dynamic;
 	/**
 		nonzero indices
 		
@@ -332,7 +332,7 @@ package scipy.sparse.dok;
 		    Default: 0 (the main diagonal).
 	**/
 	public function setdiag(values:Dynamic, ?k:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Sum the matrix over the given axis.  If the axis is None, sum
 		over both rows and columns, returning a scalar.

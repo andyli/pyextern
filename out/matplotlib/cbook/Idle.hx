@@ -114,7 +114,7 @@ package matplotlib.cbook;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _bootstrap():Dynamic;
 	public function _bootstrap_inner():Dynamic;
 	/**
@@ -149,7 +149,7 @@ package matplotlib.cbook;
 		The entire Python program exits when no alive non-daemon threads are
 		left.
 	**/
-	static public var daemon : Dynamic;
+	public var daemon : Dynamic;
 	public function getName():Dynamic;
 	static public var id : Dynamic;
 	/**
@@ -159,7 +159,7 @@ package matplotlib.cbook;
 		identifiers may be recycled when a thread exits and another thread is
 		created. The identifier is available even after the thread has exited.
 	**/
-	static public var ident : Dynamic;
+	public var ident : Dynamic;
 	static public var idlelock : Dynamic;
 	/**
 		Return whether the thread is alive.
@@ -208,7 +208,7 @@ package matplotlib.cbook;
 		It has no semantics. Multiple threads may be given the same name. The
 		initial name is set by the constructor.
 	**/
-	static public var name : Dynamic;
+	public var name : Dynamic;
 	/**
 		Method representing the thread's activity.
 		

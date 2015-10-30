@@ -96,7 +96,7 @@ package seaborn.linearmodels;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Discretize a predictor by assigning value to closest bin.
 	**/
@@ -112,7 +112,7 @@ package seaborn.linearmodels;
 	/**
 		Data with a point estimate and CI for each discrete x value.
 	**/
-	static public var estimate_data : Dynamic;
+	public var estimate_data : Dynamic;
 	/**
 		Low-level regression and prediction using linear algebra.
 	**/
@@ -152,7 +152,7 @@ package seaborn.linearmodels;
 	/**
 		Data where each observation is a point.
 	**/
-	static public var scatter_data : Dynamic;
+	public var scatter_data : Dynamic;
 	/**
 		Draw the data.
 	**/

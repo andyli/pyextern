@@ -128,8 +128,8 @@ package matplotlib.type1font;
 	static public function _transformer(tokens:Dynamic, slant:Dynamic, extend:Dynamic):Dynamic;
 	static public var _whitespace : Dynamic;
 	static public var _whitespace_re : Dynamic;
-	static public var parts : Dynamic;
-	static public var prop : Dynamic;
+	public var parts : Dynamic;
+	public var prop : Dynamic;
 	/**
 		Transform the font by slanting or extending. *effects* should
 		be a dict where ``effects['slant']`` is the tangent of the

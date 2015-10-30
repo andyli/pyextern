@@ -205,10 +205,11 @@ class Main {
 								td.fields.push(field);
 							}
 						} else { //not callable
+							var isInstanceField = Inspect.isdatadescriptor(clsMemObj) || Inspect.isgetsetdescriptor(clsMemObj);
 							var field:Field = {
 								doc: getdoc(clsMemObj),
 								meta: [],
-								access: [AStatic, APublic],
+								access: isInstanceField ? [APublic] : [AStatic, APublic],
 								name: clsMemName,
 								kind: FVar(macro:Dynamic),
 								pos: null

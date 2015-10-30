@@ -96,7 +96,7 @@ package matplotlib.backends.backend_nbagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		This is where you actually build the GUI widgets (called by
 		__init__).  The icons ``home.xpm``, ``back.xpm``, ``forward.xpm``,

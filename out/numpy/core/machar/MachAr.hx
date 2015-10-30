@@ -100,6 +100,6 @@ package numpy.core.machar;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _do_init(float_conv:Dynamic, int_conv:Dynamic, float_to_float:Dynamic, float_to_str:Dynamic, title:Dynamic):Dynamic;
 }

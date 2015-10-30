@@ -96,7 +96,7 @@ package pandas.core.ops;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _convert_for_datetime(lvalues:Dynamic, rvalues:Dynamic):Dynamic;
 	/**
 		converts values to ndarray

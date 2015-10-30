@@ -100,7 +100,7 @@ package matplotlib.cbook;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function clear():Dynamic;
 	public function plot(?i0:Dynamic, ?isub:Dynamic, ?fig:Dynamic):Dynamic;
 	public function report(?segments:Dynamic):Dynamic;

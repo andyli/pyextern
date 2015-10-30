@@ -93,9 +93,9 @@ package matplotlib.dviread;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var checksum : Dynamic;
-	static public var depth : Dynamic;
-	static public var design_size : Dynamic;
-	static public var height : Dynamic;
-	static public var width : Dynamic;
+	public var checksum : Dynamic;
+	public var depth : Dynamic;
+	public var design_size : Dynamic;
+	public var height : Dynamic;
+	public var width : Dynamic;
 }

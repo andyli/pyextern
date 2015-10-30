@@ -109,7 +109,7 @@ package scipy.interpolate.interpolate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _evaluate_linear(indices:Dynamic, norm_distances:Dynamic, out_of_bounds:Dynamic):Dynamic;
 	public function _evaluate_nearest(indices:Dynamic, norm_distances:Dynamic, out_of_bounds:Dynamic):Dynamic;
 	public function _find_indices(xi:Dynamic):Dynamic;

@@ -97,7 +97,7 @@ package pandas.io.sas;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_row():Dynamic;
 	public function _missing_double(vec:Dynamic):Dynamic;
 	public function _read_header():Dynamic;

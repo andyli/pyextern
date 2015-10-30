@@ -113,17 +113,17 @@ package pandas.computation.ops;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _resolve_name():Dynamic;
 	public function evaluate(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var is_datetime : Dynamic;
-	static public var isscalar : Dynamic;
-	static public var local_name : Dynamic;
-	static public var name : Dynamic;
-	static public var ndim : Dynamic;
-	static public var raw : Dynamic;
-	static public var return_type : Dynamic;
-	static public var type : Dynamic;
+	public var is_datetime : Dynamic;
+	public var isscalar : Dynamic;
+	public var local_name : Dynamic;
+	public var name : Dynamic;
+	public var ndim : Dynamic;
+	public var raw : Dynamic;
+	public var return_type : Dynamic;
+	public var type : Dynamic;
 	/**
 		search order for local (i.e., @variable) variables:
 		
@@ -134,5 +134,5 @@ package pandas.computation.ops;
 		 ('globals', 'key')]
 	**/
 	public function update(value:Dynamic):Dynamic;
-	static public var value : Dynamic;
+	public var value : Dynamic;
 }

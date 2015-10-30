@@ -96,7 +96,7 @@ package pandas.core.format;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_formatter(i:Dynamic):Dynamic;
 	public function _write_body(indent:Dynamic):Dynamic;
 	public function _write_cell(s:Dynamic, ?kind:Dynamic, ?indent:Dynamic, ?tags:Dynamic):Dynamic;
@@ -105,7 +105,7 @@ package pandas.core.format;
 	public function _write_regular_rows(fmt_values:Dynamic, indent:Dynamic):Dynamic;
 	static public var indent_delta : Dynamic;
 	static public var is_truncated : Dynamic;
-	static public var should_show_dimensions : Dynamic;
+	public var should_show_dimensions : Dynamic;
 	static public var show_dimensions : Dynamic;
 	public function write(s:Dynamic, ?indent:Dynamic):Dynamic;
 	public function write_result(buf:Dynamic):Dynamic;

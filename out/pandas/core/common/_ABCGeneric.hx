@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.common;
 @:pythonImport("pandas.core.common", "_ABCGeneric") extern class _ABCGeneric {
-	static public var __abstractmethods__ : Dynamic;
+	public var __abstractmethods__ : Dynamic;
 	static public function __base__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __bases__ : Dynamic;
 	static public var __basicsize__ : Dynamic;

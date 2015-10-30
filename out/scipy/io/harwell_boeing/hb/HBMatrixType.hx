@@ -96,13 +96,13 @@ package scipy.io.harwell_boeing.hb;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _f2q_storage : Dynamic;
 	static public var _f2q_structure : Dynamic;
 	static public var _f2q_type : Dynamic;
 	static public var _q2f_storage : Dynamic;
 	static public var _q2f_structure : Dynamic;
 	static public var _q2f_type : Dynamic;
-	static public var fortran_format : Dynamic;
+	public var fortran_format : Dynamic;
 	static public function from_fortran(fmt:Dynamic):Dynamic;
 }

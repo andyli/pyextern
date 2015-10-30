@@ -96,7 +96,7 @@ package matplotlib.backends.backend_nbagg;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function is_open():Dynamic;
 	public function on_close():Dynamic;
 	public function on_message(message:Dynamic):Dynamic;

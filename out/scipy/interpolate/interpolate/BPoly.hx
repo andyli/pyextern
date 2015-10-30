@@ -125,7 +125,7 @@ package scipy.interpolate.interpolate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Compute the coefficients of a polynomial in the Bernstein basis
 		given the values and derivatives at the edges.
@@ -229,8 +229,8 @@ package scipy.interpolate.interpolate;
 		    antiderivative of this polynomial.
 	**/
 	public function antiderivative(?nu:Dynamic):Dynamic;
-	static public var axis : Dynamic;
-	static public var c : Dynamic;
+	public var axis : Dynamic;
+	public var c : Dynamic;
 	/**
 		Construct the piecewise polynomial without making checks.
 		
@@ -273,7 +273,7 @@ package scipy.interpolate.interpolate;
 		    of the current intervals.
 	**/
 	public function extend(c:Dynamic, x:Dynamic, ?right:Dynamic):Dynamic;
-	static public var extrapolate : Dynamic;
+	public var extrapolate : Dynamic;
 	/**
 		Construct a piecewise polynomial in the Bernstein basis,
 		compatible with the specified values and derivatives at breakpoints.
@@ -368,5 +368,5 @@ package scipy.interpolate.interpolate;
 		    Definite integral of the piecewise polynomial over [a, b]
 	**/
 	public function integrate(a:Dynamic, b:Dynamic, ?extrapolate:Dynamic):Dynamic;
-	static public var x : Dynamic;
+	public var x : Dynamic;
 }

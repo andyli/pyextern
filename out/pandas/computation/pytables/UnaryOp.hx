@@ -118,11 +118,11 @@ package pandas.computation.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var has_invalid_return_type : Dynamic;
-	static public var is_datetime : Dynamic;
-	static public var isscalar : Dynamic;
-	static public var operand_types : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var has_invalid_return_type : Dynamic;
+	public var is_datetime : Dynamic;
+	public var isscalar : Dynamic;
+	public var operand_types : Dynamic;
 	public function prune(klass:Dynamic):Dynamic;
-	static public var return_type : Dynamic;
+	public var return_type : Dynamic;
 }

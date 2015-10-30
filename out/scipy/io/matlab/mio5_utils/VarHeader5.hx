@@ -91,12 +91,12 @@ package scipy.io.matlab.mio5_utils;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var dims : Dynamic;
-	static public var is_global : Dynamic;
-	static public var is_logical : Dynamic;
-	static public var mclass : Dynamic;
-	static public var name : Dynamic;
-	static public var nzmax : Dynamic;
+	public var dims : Dynamic;
+	public var is_global : Dynamic;
+	public var is_logical : Dynamic;
+	public var mclass : Dynamic;
+	public var name : Dynamic;
+	public var nzmax : Dynamic;
 	/**
 		Allow setting of dimensions from python
 		

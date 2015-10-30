@@ -16,7 +16,7 @@ package pandas.core.config;
 		default dir() implementation
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var __doc__ : Dynamic;
+	public var __doc__ : Dynamic;
 	/**
 		Return self==value.
 	**/
@@ -100,5 +100,5 @@ package pandas.core.config;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 }

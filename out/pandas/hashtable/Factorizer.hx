@@ -91,7 +91,7 @@ package pandas.hashtable;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var count : Dynamic;
+	public var count : Dynamic;
 	/**
 		Factorize values with nans replaced by na_sentinel
 		>>> factorize(np.array([1,2,np.nan], dtype='O'), na_sentinel=20)
@@ -99,7 +99,7 @@ package pandas.hashtable;
 	**/
 	public function factorize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_count(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var table : Dynamic;
+	public var table : Dynamic;
 	public function unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var uniques : Dynamic;
+	public var uniques : Dynamic;
 }

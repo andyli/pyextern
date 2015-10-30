@@ -102,7 +102,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_font(font:Dynamic):Dynamic;
 	/**
 		load the cmfont, metrics and glyph with caching

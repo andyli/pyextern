@@ -96,7 +96,7 @@ package pandas.core.reshape;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _make_selectors():Dynamic;
 	public function _make_sorted_values_labels():Dynamic;
 	public function get_new_columns():Dynamic;

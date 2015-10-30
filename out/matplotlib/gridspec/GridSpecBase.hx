@@ -102,7 +102,7 @@ package matplotlib.gridspec;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		get the geometry of the grid, e.g., 2,3
 	**/

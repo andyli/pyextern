@@ -96,7 +96,7 @@ package matplotlib.tri.triangulation;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Calculate plane equation coefficients for all unmasked triangles from
 		the point (x,y) coordinates and specified z-array of shape (npoints).
@@ -112,7 +112,7 @@ package matplotlib.tri.triangulation;
 		Each edge is the start point index and end point index.  Each
 		edge (start,end and end,start) appears only once.
 	**/
-	static public var edges : Dynamic;
+	public var edges : Dynamic;
 	public function get_cpp_triangulation():Dynamic;
 	/**
 		Return a Triangulation object from the args and kwargs, and
@@ -145,7 +145,7 @@ package matplotlib.tri.triangulation;
 		to the edge from point index triangles[i,j] to point index
 		triangles[i,(j+1)%3].
 	**/
-	static public var neighbors : Dynamic;
+	public var neighbors : Dynamic;
 	/**
 		Set or clear the mask array.  This is either None, or a boolean
 		array of shape (ntri).

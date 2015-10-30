@@ -101,17 +101,17 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function _flush():Dynamic;
 	public function _writeHeader():Dynamic;
-	static public var compressobj : Dynamic;
+	public var compressobj : Dynamic;
 	/**
 		Finalize stream.
 	**/
 	public function end():Dynamic;
-	static public var extra : Dynamic;
-	static public var file : Dynamic;
-	static public var id : Dynamic;
-	static public var len : Dynamic;
-	static public var pdfFile : Dynamic;
-	static public var pos : Dynamic;
+	public var extra : Dynamic;
+	public var file : Dynamic;
+	public var id : Dynamic;
+	public var len : Dynamic;
+	public var pdfFile : Dynamic;
+	public var pos : Dynamic;
 	/**
 		Write some data on the stream.
 	**/

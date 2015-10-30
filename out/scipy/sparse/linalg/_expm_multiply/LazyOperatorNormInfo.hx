@@ -105,7 +105,7 @@ package scipy.sparse.linalg._expm_multiply;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Lazily compute max(d(p), d(p+1)).
 	**/

@@ -101,7 +101,7 @@ package matplotlib.blocking_input;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		This add the coordinates of an event to the list of clicks
 	**/

@@ -124,7 +124,7 @@ package scipy.io.matlab.mio5;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function end_of_stream():Dynamic;
 	/**
 		get variables from stream as dictionary

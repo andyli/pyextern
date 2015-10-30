@@ -105,7 +105,7 @@ package matplotlib.widgets;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _clicked(event:Dynamic):Dynamic;
 	/**
 		Connect callback with an event.

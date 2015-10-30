@@ -100,7 +100,7 @@ package numpy.ma.extras;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Retrieve the docstring and signature from the function.
 		

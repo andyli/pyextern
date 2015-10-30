@@ -96,7 +96,7 @@ package matplotlib.backends.backend_ps;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Return a canvas that is suitable for saving figures to a specified
 		file format. If necessary, this function will switch to a registered

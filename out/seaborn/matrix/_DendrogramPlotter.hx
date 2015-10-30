@@ -101,7 +101,7 @@ package seaborn.matrix;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _calculate_linkage_fastcluster():Dynamic;
 	public function _calculate_linkage_scipy():Dynamic;
 	/**
@@ -118,7 +118,7 @@ package seaborn.matrix;
 		    "reordered_ind" which indicates the re-ordering of the matrix
 	**/
 	public function calculate_dendrogram():Dynamic;
-	static public var calculated_linkage : Dynamic;
+	public var calculated_linkage : Dynamic;
 	/**
 		Plots a dendrogram of the similarities between data on the axes
 		
@@ -131,5 +131,5 @@ package seaborn.matrix;
 	/**
 		Indices of the matrix, reordered by the dendrogram
 	**/
-	static public var reordered_ind : Dynamic;
+	public var reordered_ind : Dynamic;
 }

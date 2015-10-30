@@ -96,7 +96,7 @@ package pandas.io.gbq;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function delete_and_recreate_table(dataset_id:Dynamic, table_id:Dynamic, table_schema:Dynamic, verbose:Dynamic):Dynamic;
 	public function get_credentials():Dynamic;
 	static public function get_service(credentials:Dynamic):Dynamic;

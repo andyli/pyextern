@@ -103,7 +103,7 @@ package matplotlib.figure;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _entry_from_axes(e:Dynamic):Dynamic;
 	/**
 		Add Axes *a*, with key *key*, to the stack, and return the stack.

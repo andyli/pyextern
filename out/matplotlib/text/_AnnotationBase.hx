@@ -96,7 +96,7 @@ package matplotlib.text;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		given the xy pixel coordinate, check if the annotation need to
 		be drawn.
@@ -148,12 +148,12 @@ package matplotlib.text;
 		
 		\ 
 	**/
-	static public var textcoords : Dynamic;
+	public var textcoords : Dynamic;
 	/**
 		.. deprecated:: 1.4
 		    Use `xyann` instead
 		
 		\ 
 	**/
-	static public var xytext : Dynamic;
+	public var xytext : Dynamic;
 }

@@ -96,7 +96,7 @@ package scipy.optimize.nonlin;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _update(x:Dynamic, f:Dynamic, dx:Dynamic, df:Dynamic, dx_norm:Dynamic, df_norm:Dynamic):Dynamic;
 	public function aspreconditioner():Dynamic;
 	public function matvec(f:Dynamic):Dynamic;

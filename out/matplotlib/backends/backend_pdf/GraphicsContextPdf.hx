@@ -96,7 +96,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function alpha_cmd(alpha:Dynamic, forced:Dynamic, effective_alphas:Dynamic):Dynamic;
 	public function capstyle_cmd(style:Dynamic):Dynamic;
 	static public var capstyles : Dynamic;

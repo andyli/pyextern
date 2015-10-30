@@ -99,7 +99,7 @@ package pandas.tseries.base;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _add_datelike(other:Dynamic):Dynamic;
 	/**
 		add in the datetimelike methods (as we may have to override the superclass) 
@@ -111,7 +111,7 @@ package pandas.tseries.base;
 	/**
 		box function to get object from internal representation
 	**/
-	static public var _box_func : Dynamic;
+	public var _box_func : Dynamic;
 	/**
 		apply box func to passed values
 	**/
@@ -131,7 +131,7 @@ package pandas.tseries.base;
 	**/
 	public function _format_attrs():Dynamic;
 	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var _formatter_func : Dynamic;
+	public var _formatter_func : Dynamic;
 	/**
 		create the join wrapper methods 
 	**/
@@ -169,11 +169,11 @@ package pandas.tseries.base;
 		numpy.ndarray.argmin
 	**/
 	public function argmin(?axis:Dynamic):Dynamic;
-	static public var asobject : Dynamic;
+	public var asobject : Dynamic;
 	/**
 		return the frequency object as a string if its set, otherwise None 
 	**/
-	static public var freqstr : Dynamic;
+	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;
 	public function groupby(f:Dynamic):Dynamic;
 	static public var hasnans : Dynamic;

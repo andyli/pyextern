@@ -92,8 +92,8 @@ package pandas._sparse;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var blengths : Dynamic;
-	static public var blocs : Dynamic;
+	public var blengths : Dynamic;
+	public var blocs : Dynamic;
 	/**
 		Check:
 		- Locations are in ascending order
@@ -113,7 +113,7 @@ package pandas._sparse;
 		intersection : BlockIndex
 	**/
 	public function intersect(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var length : Dynamic;
+	public var length : Dynamic;
 	/**
 		Returns -1 if not found
 	**/
@@ -135,9 +135,9 @@ package pandas._sparse;
 		union : BlockIndex
 	**/
 	public function make_union(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var nblocks : Dynamic;
-	static public var ngaps : Dynamic;
-	static public var npoints : Dynamic;
+	public var nblocks : Dynamic;
+	public var ngaps : Dynamic;
+	public var npoints : Dynamic;
 	public function put(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function reindex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function take(args:haxe.extern.Rest<Dynamic>):Dynamic;

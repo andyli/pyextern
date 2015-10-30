@@ -115,7 +115,7 @@ package pandas.tseries.common;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -132,7 +132,7 @@ package pandas.tseries.common;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
@@ -151,79 +151,79 @@ package pandas.tseries.common;
 	/**
 		Returns numpy array of datetime.date. The date part of the Timestamps.
 	**/
-	static public var date : Dynamic;
+	public var date : Dynamic;
 	/**
 		The days of the datetime
 	**/
-	static public var day : Dynamic;
+	public var day : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var dayofweek : Dynamic;
+	public var dayofweek : Dynamic;
 	/**
 		The ordinal day of the year
 	**/
-	static public var dayofyear : Dynamic;
+	public var dayofyear : Dynamic;
 	/**
 		The number of days in the month
 		
 		.. versionadded:: 0.16.0
 	**/
-	static public var days_in_month : Dynamic;
+	public var days_in_month : Dynamic;
 	/**
 		The number of days in the month
 		
 		.. versionadded:: 0.16.0
 	**/
-	static public var daysinmonth : Dynamic;
+	public var daysinmonth : Dynamic;
 	/**
 		get/set the frequncy of the Index
 	**/
-	static public var freq : Dynamic;
+	public var freq : Dynamic;
 	/**
 		The hours of the datetime
 	**/
-	static public var hour : Dynamic;
+	public var hour : Dynamic;
 	/**
 		Logical indicating if last day of month (defined by frequency)
 	**/
-	static public var is_month_end : Dynamic;
+	public var is_month_end : Dynamic;
 	/**
 		Logical indicating if first day of month (defined by frequency)
 	**/
-	static public var is_month_start : Dynamic;
+	public var is_month_start : Dynamic;
 	/**
 		Logical indicating if last day of quarter (defined by frequency)
 	**/
-	static public var is_quarter_end : Dynamic;
+	public var is_quarter_end : Dynamic;
 	/**
 		Logical indicating if first day of quarter (defined by frequency)
 	**/
-	static public var is_quarter_start : Dynamic;
+	public var is_quarter_start : Dynamic;
 	/**
 		Logical indicating if last day of year (defined by frequency)
 	**/
-	static public var is_year_end : Dynamic;
+	public var is_year_end : Dynamic;
 	/**
 		Logical indicating if first day of year (defined by frequency)
 	**/
-	static public var is_year_start : Dynamic;
+	public var is_year_start : Dynamic;
 	/**
 		The microseconds of the datetime
 	**/
-	static public var microsecond : Dynamic;
+	public var microsecond : Dynamic;
 	/**
 		The minutes of the datetime
 	**/
-	static public var minute : Dynamic;
+	public var minute : Dynamic;
 	/**
 		The month as January=1, December=12
 	**/
-	static public var month : Dynamic;
+	public var month : Dynamic;
 	/**
 		The nanoseconds of the datetime
 	**/
-	static public var nanosecond : Dynamic;
+	public var nanosecond : Dynamic;
 	/**
 		Return DatetimeIndex with times to midnight. Length is unaltered
 		
@@ -235,11 +235,11 @@ package pandas.tseries.common;
 	/**
 		The quarter of the date
 	**/
-	static public var quarter : Dynamic;
+	public var quarter : Dynamic;
 	/**
 		The seconds of the datetime
 	**/
-	static public var second : Dynamic;
+	public var second : Dynamic;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
@@ -261,13 +261,13 @@ package pandas.tseries.common;
 	/**
 		Returns numpy array of datetime.time. The time part of the Timestamps.
 	**/
-	static public var time : Dynamic;
+	public var time : Dynamic;
 	/**
 		Cast to PeriodIndex at a particular frequency
 	**/
 	public function to_period(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function to_pydatetime():Dynamic;
-	static public var tz : Dynamic;
+	public var tz : Dynamic;
 	/**
 		Convert tz-aware DatetimeIndex from one time zone to another (using pytz/dateutil)
 		
@@ -320,17 +320,17 @@ package pandas.tseries.common;
 	/**
 		The week ordinal of the year
 	**/
-	static public var week : Dynamic;
+	public var week : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var weekday : Dynamic;
+	public var weekday : Dynamic;
 	/**
 		The week ordinal of the year
 	**/
-	static public var weekofyear : Dynamic;
+	public var weekofyear : Dynamic;
 	/**
 		The year of the datetime
 	**/
-	static public var year : Dynamic;
+	public var year : Dynamic;
 }

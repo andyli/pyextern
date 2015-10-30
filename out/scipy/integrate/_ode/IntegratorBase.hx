@@ -96,7 +96,7 @@ package scipy.integrate._ode;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function acquire_new_handle():Dynamic;
 	public function check_handle():Dynamic;
 	static public var integrator_classes : Dynamic;

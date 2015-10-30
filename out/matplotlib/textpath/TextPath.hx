@@ -122,7 +122,7 @@ package matplotlib.textpath;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Creates a Path instance without the expense of calling the constructor
 		
@@ -232,7 +232,7 @@ package matplotlib.textpath;
 	/**
 		Return the codes
 	**/
-	static public var codes : Dynamic;
+	public var codes : Dynamic;
 	/**
 		Returns *True* if this path completely contains the given path.
 		
@@ -287,7 +287,7 @@ package matplotlib.textpath;
 	/**
 		`True` if the vertices array has nonfinite values.
 	**/
-	static public var has_nonfinite : Dynamic;
+	public var has_nonfinite : Dynamic;
 	/**
 		Given a hatch specifier, *hatchpattern*, generates a Path that
 		can be used in a repeated hatching pattern.  *density* is the
@@ -378,7 +378,7 @@ package matplotlib.textpath;
 	/**
 		`True` if the `Path` is read-only.
 	**/
-	static public var readonly : Dynamic;
+	public var readonly : Dynamic;
 	/**
 		set the size of the text
 	**/
@@ -386,12 +386,12 @@ package matplotlib.textpath;
 	/**
 		`True` if the vertices array should be simplified.
 	**/
-	static public var should_simplify : Dynamic;
+	public var should_simplify : Dynamic;
 	/**
 		The fraction of a pixel difference below which vertices will
 		be simplified out.
 	**/
-	static public var simplify_threshold : Dynamic;
+	public var simplify_threshold : Dynamic;
 	/**
 		convert the string *s* to vertices and codes using the
 		provided font property *prop*. Mostly copied from
@@ -463,7 +463,7 @@ package matplotlib.textpath;
 	/**
 		Return the cached path after updating it if necessary.
 	**/
-	static public var vertices : Dynamic;
+	public var vertices : Dynamic;
 	/**
 		Return a wedge of the unit circle from angle
 		*theta1* to angle *theta2* (in degrees).

@@ -98,7 +98,7 @@ package matplotlib.legend;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _update_bbox_to_anchor(loc_in_canvas:Dynamic):Dynamic;
 	public function _update_loc(loc_in_canvas:Dynamic):Dynamic;
 	public function artist_picker(legend:Dynamic, evt:Dynamic):Dynamic;

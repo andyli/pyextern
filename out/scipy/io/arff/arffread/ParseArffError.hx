@@ -4,12 +4,12 @@ package scipy.io.arff.arffread;
 	/**
 		exception cause
 	**/
-	static public var __cause__ : Dynamic;
+	public var __cause__ : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		exception context
 	**/
-	static public var __context__ : Dynamic;
+	public var __context__ : Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -102,30 +102,30 @@ package scipy.io.arff.arffread;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var __suppress_context__ : Dynamic;
-	static public var __traceback__ : Dynamic;
+	public var __suppress_context__ : Dynamic;
+	public var __traceback__ : Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var args : Dynamic;
-	static public var characters_written : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var args : Dynamic;
+	public var characters_written : Dynamic;
 	/**
 		POSIX exception code
 	**/
-	static public var errno : Dynamic;
+	public var errno : Dynamic;
 	/**
 		exception filename
 	**/
-	static public var filename : Dynamic;
+	public var filename : Dynamic;
 	/**
 		second exception filename
 	**/
-	static public var filename2 : Dynamic;
+	public var filename2 : Dynamic;
 	/**
 		exception strerror
 	**/
-	static public var strerror : Dynamic;
+	public var strerror : Dynamic;
 	/**
 		Exception.with_traceback(tb) --
 		set self.__traceback__ to tb and return self.

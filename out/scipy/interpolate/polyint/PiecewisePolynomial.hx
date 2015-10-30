@@ -112,7 +112,7 @@ package scipy.interpolate.polyint;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Actually evaluate the value of the interpolator.
 	**/
@@ -141,8 +141,8 @@ package scipy.interpolate.polyint;
 	public function _reshape_yi(yi:Dynamic, ?check:Dynamic):Dynamic;
 	public function _set_dtype(dtype:Dynamic, ?union:Dynamic):Dynamic;
 	public function _set_yi(yi:Dynamic, ?xi:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var _y_axis : Dynamic;
-	static public var _y_extra_shape : Dynamic;
+	public var _y_axis : Dynamic;
+	public var _y_extra_shape : Dynamic;
 	/**
 		Append a single point with derivatives to the PiecewisePolynomial
 		
@@ -214,7 +214,7 @@ package scipy.interpolate.polyint;
 		       [3.0,3.0]])
 	**/
 	public function derivatives(x:Dynamic, ?der:Dynamic):Dynamic;
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		Extend the PiecewisePolynomial by a list of points
 		

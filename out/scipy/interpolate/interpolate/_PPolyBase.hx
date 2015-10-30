@@ -127,8 +127,8 @@ package scipy.interpolate.interpolate;
 	**/
 	public function _ensure_c_contiguous():Dynamic;
 	public function _get_dtype(dtype:Dynamic):Dynamic;
-	static public var axis : Dynamic;
-	static public var c : Dynamic;
+	public var axis : Dynamic;
+	public var c : Dynamic;
 	/**
 		Construct the piecewise polynomial without making checks.
 		
@@ -155,6 +155,6 @@ package scipy.interpolate.interpolate;
 		    of the current intervals.
 	**/
 	public function extend(c:Dynamic, x:Dynamic, ?right:Dynamic):Dynamic;
-	static public var extrapolate : Dynamic;
-	static public var x : Dynamic;
+	public var extrapolate : Dynamic;
+	public var x : Dynamic;
 }

@@ -143,7 +143,7 @@ package matplotlib.text;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -230,7 +230,7 @@ package matplotlib.text;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _cached : Dynamic;
 	/**
 		given the xy pixel coordinate, check if the annotation need to
@@ -283,7 +283,7 @@ package matplotlib.text;
 	**/
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
-	static public var anncoords : Dynamic;
+	public var anncoords : Dynamic;
 	/**
 		Test whether the mouse event occurred in the patch.
 		
@@ -1085,7 +1085,7 @@ package matplotlib.text;
 		
 		\ 
 	**/
-	static public var textcoords : Dynamic;
+	public var textcoords : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.
@@ -1106,13 +1106,13 @@ package matplotlib.text;
 		text.
 	**/
 	public function update_positions(renderer:Dynamic):Dynamic;
-	static public var xyann : Dynamic;
+	public var xyann : Dynamic;
 	/**
 		.. deprecated:: 1.4
 		    Use `xyann` instead
 		
 		\ 
 	**/
-	static public var xytext : Dynamic;
+	public var xytext : Dynamic;
 	static public var zorder : Dynamic;
 }

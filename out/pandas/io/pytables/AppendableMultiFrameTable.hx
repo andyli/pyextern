@@ -116,20 +116,20 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var _complevel : Dynamic;
-	static public var _complib : Dynamic;
-	static public var _filters : Dynamic;
-	static public var _fletcher32 : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var _complevel : Dynamic;
+	public var _complib : Dynamic;
+	public var _filters : Dynamic;
+	public var _fletcher32 : Dynamic;
 	/**
 		return the metadata pathname for this key 
 	**/
 	public function _get_metadata_path(key:Dynamic):Dynamic;
-	static public var _handle : Dynamic;
+	public var _handle : Dynamic;
 	static public var _indexables : Dynamic;
 	static public var _re_levels : Dynamic;
-	static public var attrs : Dynamic;
-	static public var axes : Dynamic;
+	public var attrs : Dynamic;
+	public var axes : Dynamic;
 	public function copy():Dynamic;
 	/**
 		create and return the axes
@@ -174,14 +174,14 @@ package pandas.io.pytables;
 	/**
 		return a tuple of my permutated axes, non_indexable at the front
 	**/
-	static public var data_orientation : Dynamic;
+	public var data_orientation : Dynamic;
 	/**
 		support fully deleting the node in its entirety (only) - where specification must be None 
 	**/
 	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
-	static public var description : Dynamic;
-	static public var dtype : Dynamic;
-	static public var format_type : Dynamic;
+	public var description : Dynamic;
+	public var dtype : Dynamic;
+	public var format_type : Dynamic;
 	/**
 		retrieve our attributes 
 	**/
@@ -197,7 +197,7 @@ package pandas.io.pytables;
 	/**
 		create/cache the indexables if they don't exist 
 	**/
-	static public var indexables : Dynamic;
+	public var indexables : Dynamic;
 	/**
 		infer the axes of my storer
 		return a boolean indicating if we have a valid storer or not 
@@ -206,26 +206,26 @@ package pandas.io.pytables;
 	/**
 		has this table been created 
 	**/
-	static public var is_exists : Dynamic;
+	public var is_exists : Dynamic;
 	/**
 		the levels attribute is 1 or a list in the case of a multi-index
 	**/
-	static public var is_multi_index : Dynamic;
-	static public var is_old_version : Dynamic;
+	public var is_multi_index : Dynamic;
+	public var is_old_version : Dynamic;
 	static public var is_shape_reversed : Dynamic;
 	static public var is_table : Dynamic;
-	static public var is_transposed : Dynamic;
+	public var is_transposed : Dynamic;
 	static public var levels : Dynamic;
 	/**
 		the number of total columns in the values axes 
 	**/
-	static public var ncols : Dynamic;
+	public var ncols : Dynamic;
 	static public var ndim : Dynamic;
-	static public var nrows : Dynamic;
+	public var nrows : Dynamic;
 	/**
 		based on our axes, compute the expected nrows 
 	**/
-	static public var nrows_expected : Dynamic;
+	public var nrows_expected : Dynamic;
 	/**
 		Two-dimensional size-mutable, potentially heterogeneous tabular data
 		structure with labeled axes (rows and columns). Arithmetic operations
@@ -264,8 +264,8 @@ package pandas.io.pytables;
 	**/
 	static public function obj_type(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var pandas_kind : Dynamic;
-	static public var pandas_type : Dynamic;
-	static public var pathname : Dynamic;
+	public var pandas_type : Dynamic;
+	public var pathname : Dynamic;
 	/**
 		process axes filters 
 	**/
@@ -314,15 +314,15 @@ package pandas.io.pytables;
 		compute and set our version 
 	**/
 	public function set_version():Dynamic;
-	static public var shape : Dynamic;
-	static public var storable : Dynamic;
-	static public var storage_obj_type : Dynamic;
+	public var shape : Dynamic;
+	public var storable : Dynamic;
+	public var storage_obj_type : Dynamic;
 	/**
 		return the table group (this is my storable) 
 	**/
-	static public var table : Dynamic;
+	public var table : Dynamic;
 	static public var table_type : Dynamic;
-	static public var table_type_short : Dynamic;
+	public var table_type_short : Dynamic;
 	/**
 		validate against an existing table 
 	**/

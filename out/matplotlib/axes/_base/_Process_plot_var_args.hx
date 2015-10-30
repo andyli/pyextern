@@ -102,7 +102,7 @@ package matplotlib.axes._base;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _grab_next_args(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _makefill(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _makeline(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;

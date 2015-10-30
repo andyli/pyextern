@@ -98,7 +98,7 @@ package matplotlib.textpath;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_adobe_standard_encoding():Dynamic;
 	/**
 		Return a unique id for the given font and character-code set.

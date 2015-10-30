@@ -96,7 +96,7 @@ package matplotlib.mathtext;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _backend_mapping : Dynamic;
 	static public var _font_type_mapping : Dynamic;
 	static public var _parser : Dynamic;

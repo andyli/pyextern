@@ -107,11 +107,11 @@ package scipy.io.mmio;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _cols : Dynamic;
-	static public var _entries : Dynamic;
-	static public var _field : Dynamic;
+	public var _cols : Dynamic;
+	public var _entries : Dynamic;
+	public var _field : Dynamic;
 	static public function _field_template(field:Dynamic, precision:Dynamic):Dynamic;
-	static public var _format : Dynamic;
+	public var _format : Dynamic;
 	static public function _get_symmetry(a:Dynamic):Dynamic;
 	/**
 		Initialize each attributes with the corresponding keyword arg value
@@ -126,22 +126,22 @@ package scipy.io.mmio;
 	static public function _open(filespec:Dynamic, ?mode:Dynamic):Dynamic;
 	public function _parse_body(stream:Dynamic):Dynamic;
 	public function _parse_header(stream:Dynamic):Dynamic;
-	static public var _rows : Dynamic;
-	static public var _symmetry : Dynamic;
+	public var _rows : Dynamic;
+	public var _symmetry : Dynamic;
 	static public function _validate_field(field:Dynamic):Dynamic;
 	static public function _validate_format(format:Dynamic):Dynamic;
 	static public function _validate_symmetry(symmetry:Dynamic):Dynamic;
 	public function _write(stream:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic):Dynamic;
-	static public var cols : Dynamic;
-	static public var entries : Dynamic;
-	static public var field : Dynamic;
-	static public var format : Dynamic;
-	static public var has_symmetry : Dynamic;
+	public var cols : Dynamic;
+	public var entries : Dynamic;
+	public var field : Dynamic;
+	public var format : Dynamic;
+	public var has_symmetry : Dynamic;
 	static public function info(source:Dynamic):Dynamic;
 	public function read(source:Dynamic):Dynamic;
 	static public function reader():Dynamic;
-	static public var rows : Dynamic;
-	static public var symmetry : Dynamic;
+	public var rows : Dynamic;
+	public var symmetry : Dynamic;
 	public function write(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic):Dynamic;
 	static public function writer():Dynamic;
 }

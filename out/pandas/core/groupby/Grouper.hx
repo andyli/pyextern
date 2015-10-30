@@ -96,7 +96,7 @@ package pandas.core.groupby;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		default to the standard binner here 
 	**/
@@ -119,6 +119,6 @@ package pandas.core.groupby;
 		obj : the subject object
 	**/
 	public function _set_grouper(obj:Dynamic, ?sort:Dynamic):Dynamic;
-	static public var ax : Dynamic;
-	static public var groups : Dynamic;
+	public var ax : Dynamic;
+	public var groups : Dynamic;
 }

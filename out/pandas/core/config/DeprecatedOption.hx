@@ -156,17 +156,17 @@ package pandas.core.config;
 	/**
 		Alias for field number 0
 	**/
-	static public var key : Dynamic;
+	public var key : Dynamic;
 	/**
 		Alias for field number 1
 	**/
-	static public var msg : Dynamic;
+	public var msg : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var removal_ver : Dynamic;
+	public var removal_ver : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var rkey : Dynamic;
+	public var rkey : Dynamic;
 }

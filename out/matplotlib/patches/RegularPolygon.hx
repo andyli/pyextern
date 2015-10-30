@@ -142,7 +142,7 @@ package matplotlib.patches;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_numvertices():Dynamic;
 	public function _get_orientation():Dynamic;
 	public function _get_radius():Dynamic;
@@ -193,7 +193,7 @@ package matplotlib.patches;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		
@@ -452,8 +452,8 @@ package matplotlib.patches;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
-	static public var numvertices : Dynamic;
-	static public var orientation : Dynamic;
+	public var numvertices : Dynamic;
+	public var orientation : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -476,7 +476,7 @@ package matplotlib.patches;
 		return a dictionary mapping property name -> value for all Artist props
 	**/
 	public function properties():Dynamic;
-	static public var radius : Dynamic;
+	public var radius : Dynamic;
 	/**
 		Remove the artist from the figure if possible.  The effect
 		will not be visible until the figure is redrawn, e.g., with
@@ -824,6 +824,6 @@ package matplotlib.patches;
 	public function update_from(other:Dynamic):Dynamic;
 	static public var validCap : Dynamic;
 	static public var validJoin : Dynamic;
-	static public var xy : Dynamic;
+	public var xy : Dynamic;
 	static public var zorder : Dynamic;
 }

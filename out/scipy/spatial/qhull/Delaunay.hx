@@ -94,7 +94,7 @@ package scipy.spatial.qhull;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _qhull : Dynamic;
 	public function _update(qhull:Dynamic):Dynamic;
 	/**
@@ -153,7 +153,7 @@ package scipy.spatial.qhull;
 		   inefficient and subject to increased numerical instability.
 		   Use `ConvexHull` instead.
 	**/
-	static public var convex_hull : Dynamic;
+	public var convex_hull : Dynamic;
 	/**
 		find_simplex(self, xi, bruteforce=False, tol=None)
 		
@@ -213,7 +213,7 @@ package scipy.spatial.qhull;
 		inverse of the matrix ``T``, and ``transform[i,ndim,:]``
 		contains the vector ``r``.
 	**/
-	static public var transform : Dynamic;
+	public var transform : Dynamic;
 	/**
 		Neighboring vertices of vertices.
 		
@@ -221,11 +221,11 @@ package scipy.spatial.qhull;
 		neighboring vertices of vertex `k` are
 		``indptr[indices[k]:indices[k+1]]``.
 	**/
-	static public var vertex_neighbor_vertices : Dynamic;
+	public var vertex_neighbor_vertices : Dynamic;
 	/**
 		Lookup array, from a vertex, to some simplex which it is a part of.
 		
 		:type: ndarray of int, shape (npoints,)
 	**/
-	static public var vertex_to_simplex : Dynamic;
+	public var vertex_to_simplex : Dynamic;
 }

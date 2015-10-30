@@ -112,7 +112,7 @@ package pandas.core.dtypes;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _match : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
@@ -128,7 +128,7 @@ package pandas.core.dtypes;
 	static public var isnative : Dynamic;
 	static public var itemsize : Dynamic;
 	static public var kind : Dynamic;
-	static public var name : Dynamic;
+	public var name : Dynamic;
 	static public var names : Dynamic;
 	static public var num : Dynamic;
 	static public var shape : Dynamic;

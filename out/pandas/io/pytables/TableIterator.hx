@@ -97,7 +97,7 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function close():Dynamic;
 	public function get_result(?coordinates:Dynamic):Dynamic;
 }

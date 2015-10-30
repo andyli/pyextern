@@ -147,7 +147,7 @@ package scipy.stats._binned_statistic;
 	/**
 		Alias for field number 3
 	**/
-	static public var binnumber : Dynamic;
+	public var binnumber : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -160,13 +160,13 @@ package scipy.stats._binned_statistic;
 	/**
 		Alias for field number 0
 	**/
-	static public var statistic : Dynamic;
+	public var statistic : Dynamic;
 	/**
 		Alias for field number 1
 	**/
-	static public var x_edge : Dynamic;
+	public var x_edge : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var y_edge : Dynamic;
+	public var y_edge : Dynamic;
 }

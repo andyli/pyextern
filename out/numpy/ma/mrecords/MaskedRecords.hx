@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.ma.mrecords;
 @:pythonImport("numpy.ma.mrecords", "MaskedRecords") extern class MaskedRecords {
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	/**
 		abs(self)
 	**/
@@ -29,7 +29,7 @@ package numpy.ma.mrecords;
 	/**
 		Array protocol: Python side.
 	**/
-	static public var __array_interface__ : Dynamic;
+	public var __array_interface__ : Dynamic;
 	/**
 		a.__array_prepare__(obj) -> Object of same type as ndarray object obj.
 	**/
@@ -38,7 +38,7 @@ package numpy.ma.mrecords;
 	/**
 		Array protocol: C-struct side.
 	**/
-	static public var __array_struct__ : Dynamic;
+	public var __array_struct__ : Dynamic;
 	/**
 		Special hook for ufuncs.
 		
@@ -535,14 +535,14 @@ package numpy.ma.mrecords;
 	/**
 		Returns the data as a recarray.
 	**/
-	static public var _data : Dynamic;
+	public var _data : Dynamic;
 	static public var _defaulthardmask : Dynamic;
 	static public var _defaultmask : Dynamic;
 	public function _delegate_binop(other:Dynamic):Dynamic;
 	/**
 		Alias to mask.
 	**/
-	static public var _fieldmask : Dynamic;
+	public var _fieldmask : Dynamic;
 	/**
 		Return the current data, as a view of the original
 		underlying data.
@@ -837,11 +837,11 @@ package numpy.ma.mrecords;
 		>>> y.base is x
 		True
 	**/
-	static public var base : Dynamic;
+	public var base : Dynamic;
 	/**
 		Class of the underlying data (read-only).
 	**/
-	static public var baseclass : Dynamic;
+	public var baseclass : Dynamic;
 	/**
 		a.byteswap(inplace)
 		
@@ -1151,7 +1151,7 @@ package numpy.ma.mrecords;
 		>>> x.ctypes.strides_as(ctypes.c_longlong)
 		<numpy.core._internal.c_longlong_Array_2 object at 0x01F01300>
 	**/
-	static public var ctypes : Dynamic;
+	public var ctypes : Dynamic;
 	/**
 		Return the cumulative product of the elements along the given axis.
 		The cumulative product is taken over the flattened array by
@@ -1241,7 +1241,7 @@ package numpy.ma.mrecords;
 		Return the current data, as a view of the original
 		underlying data.
 	**/
-	static public var data : Dynamic;
+	public var data : Dynamic;
 	/**
 		a.diagonal(offset=0, axis1=0, axis2=1)
 		
@@ -1307,7 +1307,7 @@ package numpy.ma.mrecords;
 		>>> type(x.dtype)
 		<type 'numpy.dtype'>
 	**/
-	static public var dtype : Dynamic;
+	public var dtype : Dynamic;
 	/**
 		a.dump(file)
 		
@@ -1356,7 +1356,7 @@ package numpy.ma.mrecords;
 	/**
 		Filling value.
 	**/
-	static public var fill_value : Dynamic;
+	public var fill_value : Dynamic;
 	/**
 		Return a copy of self, with masked values filled with a given value.
 		
@@ -1461,11 +1461,11 @@ package numpy.ma.mrecords;
 		for C-style contiguous arrays or ``self.strides[0] == self.itemsize`` for
 		Fortran-style contiguous arrays is true.
 	**/
-	static public var flags : Dynamic;
+	public var flags : Dynamic;
 	/**
 		Flat version of the array.
 	**/
-	static public var flat : Dynamic;
+	public var flat : Dynamic;
 	/**
 		a.flatten(order='C')
 		
@@ -1622,7 +1622,7 @@ package numpy.ma.mrecords;
 	/**
 		Hardness of the mask
 	**/
-	static public var hardmask : Dynamic;
+	public var hardmask : Dynamic;
 	/**
 		Return the addresses of the data and mask areas.
 		
@@ -1647,7 +1647,7 @@ package numpy.ma.mrecords;
 	/**
 		Imaginary part.
 	**/
-	static public var imag : Dynamic;
+	public var imag : Dynamic;
 	/**
 		Return a boolean indicating whether the data is contiguous.
 		
@@ -1782,11 +1782,11 @@ package numpy.ma.mrecords;
 		>>> x.itemsize
 		16
 	**/
-	static public var itemsize : Dynamic;
+	public var itemsize : Dynamic;
 	/**
 		Mask
 	**/
-	static public var mask : Dynamic;
+	public var mask : Dynamic;
 	/**
 		Return the maximum along a given axis.
 		
@@ -1937,7 +1937,7 @@ package numpy.ma.mrecords;
 		>>> np.prod(x.shape) * x.itemsize
 		480
 	**/
-	static public var nbytes : Dynamic;
+	public var nbytes : Dynamic;
 	/**
 		Number of array dimensions.
 		
@@ -1950,7 +1950,7 @@ package numpy.ma.mrecords;
 		>>> y.ndim
 		3
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		arr.newbyteorder(new_order='S')
 		
@@ -2343,13 +2343,13 @@ package numpy.ma.mrecords;
 	/**
 		Real part
 	**/
-	static public var real : Dynamic;
+	public var real : Dynamic;
 	/**
 		Return the mask of the records.
 		
 		A record is masked when all the fields are masked.
 	**/
-	static public var recordmask : Dynamic;
+	public var recordmask : Dynamic;
 	/**
 		a.repeat(repeats, axis=None)
 		
@@ -2616,11 +2616,11 @@ package numpy.ma.mrecords;
 		  File "<stdin>", line 1, in <module>
 		ValueError: total size of new array must be unchanged
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Share status of the mask (read-only).
 	**/
-	static public var sharedmask : Dynamic;
+	public var sharedmask : Dynamic;
 	/**
 		Reduce a mask to nomask when possible.
 		
@@ -2657,7 +2657,7 @@ package numpy.ma.mrecords;
 		>>> np.prod(x.shape)
 		30
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Forces the mask to soft
 	**/
@@ -2891,7 +2891,7 @@ package numpy.ma.mrecords;
 		>>> offset / x.itemsize
 		813
 	**/
-	static public var strides : Dynamic;
+	public var strides : Dynamic;
 	/**
 		Return the sum of the array elements over the given axis.
 		Masked elements are set to 0 internally.

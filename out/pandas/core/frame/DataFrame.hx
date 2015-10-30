@@ -4,7 +4,7 @@ package pandas.core.frame;
 	/**
 		Transpose index and columns
 	**/
-	static public var T : Dynamic;
+	public var T : Dynamic;
 	static public var _AXIS_ALIASES : Dynamic;
 	static public var _AXIS_IALIASES : Dynamic;
 	static public var _AXIS_LEN : Dynamic;
@@ -701,7 +701,7 @@ package pandas.core.frame;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Binary operator __xor__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -822,8 +822,8 @@ package pandas.core.frame;
 		return a tuple of (axes, kwargs) 
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
-	static public var _constructor : Dynamic;
-	static public var _constructor_expanddim : Dynamic;
+	public var _constructor : Dynamic;
+	public var _constructor_expanddim : Dynamic;
 	/**
 		One-dimensional ndarray with axis labels (including time series).
 		
@@ -923,7 +923,7 @@ package pandas.core.frame;
 	**/
 	public function _get_item_cache(item:Dynamic):Dynamic;
 	public function _get_numeric_data():Dynamic;
-	static public var _get_values : Dynamic;
+	public var _get_values : Dynamic;
 	public function _getitem_array(key:Dynamic):Dynamic;
 	/**
 		return the actual column 
@@ -939,7 +939,7 @@ package pandas.core.frame;
 	public function _iget_item_cache(item:Dynamic):Dynamic;
 	static public var _iloc : Dynamic;
 	public function _indexed_same(other:Dynamic):Dynamic;
-	static public var _info_axis : Dynamic;
+	public var _info_axis : Dynamic;
 	static public var _info_axis_name : Dynamic;
 	static public var _info_axis_number : Dynamic;
 	/**
@@ -961,14 +961,14 @@ package pandas.core.frame;
 	/**
 		boolean : return if I am cached 
 	**/
-	static public var _is_cached : Dynamic;
-	static public var _is_datelike_mixed_type : Dynamic;
-	static public var _is_mixed_type : Dynamic;
-	static public var _is_numeric_mixed_type : Dynamic;
+	public var _is_cached : Dynamic;
+	public var _is_datelike_mixed_type : Dynamic;
+	public var _is_mixed_type : Dynamic;
+	public var _is_numeric_mixed_type : Dynamic;
 	/**
 		boolean : return if I am a view of another array 
 	**/
-	static public var _is_view : Dynamic;
+	public var _is_view : Dynamic;
 	static public var _ix : Dynamic;
 	/**
 		i : int, slice, or sequence of integers
@@ -1051,7 +1051,7 @@ package pandas.core.frame;
 	**/
 	public function _reset_cacher():Dynamic;
 	public function _sanitize_column(key:Dynamic, value:Dynamic):Dynamic;
-	static public var _series : Dynamic;
+	public var _series : Dynamic;
 	/**
 		set the _cacher attribute on the calling object with
 		a weakref to cacher 
@@ -1091,7 +1091,7 @@ package pandas.core.frame;
 		kind parameter is maintained for compatibility with Series slicing.
 	**/
 	public function _slice(slobj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
-	static public var _stat_axis : Dynamic;
+	public var _stat_axis : Dynamic;
 	static public var _stat_axis_name : Dynamic;
 	static public var _stat_axis_number : Dynamic;
 	static public var _typ : Dynamic;
@@ -1113,7 +1113,7 @@ package pandas.core.frame;
 	/**
 		internal implementation 
 	**/
-	static public var _values : Dynamic;
+	public var _values : Dynamic;
 	/**
 		Returns a cross-section (row(s) or column(s)) from the Series/DataFrame.
 		Defaults to cross-section on the rows (axis=0).
@@ -1618,7 +1618,7 @@ package pandas.core.frame;
 		Similarly to ``loc``, ``at`` provides **label** based scalar lookups.
 		You can also set using these indexers.
 	**/
-	static public var at : Dynamic;
+	public var at : Dynamic;
 	/**
 		Select values at particular time of day (e.g. 9:30AM)
 		
@@ -1635,7 +1635,7 @@ package pandas.core.frame;
 		Return a list with the row axis labels and column axis labels as the
 		only members. They are returned in that order.
 	**/
-	static public var axes : Dynamic;
+	public var axes : Dynamic;
 	/**
 		Select values between particular times of the day (e.g., 9:00-9:30 AM)
 		
@@ -1658,7 +1658,7 @@ package pandas.core.frame;
 	/**
 		Internal property, property synonym for as_blocks()
 	**/
-	static public var blocks : Dynamic;
+	public var blocks : Dynamic;
 	/**
 		Return the bool of a single element PandasObject
 		This must be a boolean scalar value, either True or False
@@ -1792,7 +1792,7 @@ package pandas.core.frame;
 		clipped : same type as input
 	**/
 	public function clip_upper(threshold:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var columns : Dynamic;
+	public var columns : Dynamic;
 	/**
 		Add two DataFrame objects and do not propagate NaN values, so if for a
 		(column, time) one frame is missing a value, it will default to the
@@ -2294,7 +2294,7 @@ package pandas.core.frame;
 	/**
 		Return the dtypes in this object 
 	**/
-	static public var dtypes : Dynamic;
+	public var dtypes : Dynamic;
 	/**
 		Return boolean Series denoting duplicate rows, optionally only
 		considering certain columns
@@ -2321,7 +2321,7 @@ package pandas.core.frame;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
-	static public var empty : Dynamic;
+	public var empty : Dynamic;
 	/**
 		Wrapper for flexible comparison methods eq
 	**/
@@ -2605,7 +2605,7 @@ package pandas.core.frame;
 		Return the ftypes (indication of sparse/dense and dtype)
 		in this object.
 	**/
-	static public var ftypes : Dynamic;
+	public var ftypes : Dynamic;
 	/**
 		Wrapper for flexible comparison methods ge
 	**/
@@ -2746,7 +2746,7 @@ package pandas.core.frame;
 		Similarly to ``iloc``, ``iat`` provides **integer** based lookups.
 		You can also set using these indexers.
 	**/
-	static public var iat : Dynamic;
+	public var iat : Dynamic;
 	/**
 		DEPRECATED. Use ``.iloc[:, i]`` instead
 	**/
@@ -2825,8 +2825,8 @@ package pandas.core.frame;
 		
 		See more at :ref:`Selection by Position <indexing.integer>`
 	**/
-	static public var iloc : Dynamic;
-	static public var index : Dynamic;
+	public var iloc : Dynamic;
+	public var index : Dynamic;
 	/**
 		Concise summary of a DataFrame.
 		
@@ -3109,7 +3109,7 @@ package pandas.core.frame;
 		
 		See more at :ref:`Advanced Indexing <advanced>`.
 	**/
-	static public var ix : Dynamic;
+	public var ix : Dynamic;
 	/**
 		Join columns with other DataFrame either on index or on a key
 		column. Efficiently Join multiple DataFrame objects by index at once by
@@ -3250,7 +3250,7 @@ package pandas.core.frame;
 		
 		See more at :ref:`Selection by Label <indexing.label>`
 	**/
-	static public var loc : Dynamic;
+	public var loc : Dynamic;
 	/**
 		Label-based "fancy indexing" function for DataFrame.
 		Given equal-length arrays of row and column labels, return an
@@ -3646,7 +3646,7 @@ package pandas.core.frame;
 	/**
 		Number of axes / array dimensions
 	**/
-	static public var ndim : Dynamic;
+	public var ndim : Dynamic;
 	/**
 		Wrapper for flexible comparison methods ne
 	**/
@@ -5049,7 +5049,7 @@ package pandas.core.frame;
 	/**
 		Return a tuple representing the dimensionality of the DataFrame.
 	**/
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		Shift index by desired number of periods with an optional time freq
 		
@@ -5076,7 +5076,7 @@ package pandas.core.frame;
 	/**
 		number of elements in the NDFrame
 	**/
-	static public var size : Dynamic;
+	public var size : Dynamic;
 	/**
 		Return unbiased skew over requested axis
 		Normalized by N-1
@@ -6231,7 +6231,7 @@ package pandas.core.frame;
 		float32.  If dtypes are int32 and uint8, dtype will be upcase to
 		int32.
 	**/
-	static public var values : Dynamic;
+	public var values : Dynamic;
 	/**
 		Return unbiased variance over requested axis.
 		

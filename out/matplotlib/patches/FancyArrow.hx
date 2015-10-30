@@ -152,7 +152,7 @@ package matplotlib.patches;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Get the vertices of the path
 		
@@ -214,7 +214,7 @@ package matplotlib.patches;
 	/**
 		return whether fill is set
 	**/
-	static public var fill : Dynamic;
+	public var fill : Dynamic;
 	/**
 		Find artist objects.
 		
@@ -893,6 +893,6 @@ package matplotlib.patches;
 		:meth:`~matplotlib.patches.Polygon.get_xy` and
 		:meth:`~matplotlib.patches.Polygon.set_xy` instead.
 	**/
-	static public var xy : Dynamic;
+	public var xy : Dynamic;
 	static public var zorder : Dynamic;
 }

@@ -151,7 +151,7 @@ package scipy.stats.morestats;
 	/**
 		Alias for field number 1
 	**/
-	static public var critical_values : Dynamic;
+	public var critical_values : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -160,9 +160,9 @@ package scipy.stats.morestats;
 	/**
 		Alias for field number 2
 	**/
-	static public var significance_level : Dynamic;
+	public var significance_level : Dynamic;
 	/**
 		Alias for field number 0
 	**/
-	static public var statistic : Dynamic;
+	public var statistic : Dynamic;
 }

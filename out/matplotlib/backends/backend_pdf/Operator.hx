@@ -93,6 +93,6 @@ package matplotlib.backends.backend_pdf;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var op : Dynamic;
+	public var op : Dynamic;
 	public function pdfRepr():Dynamic;
 }

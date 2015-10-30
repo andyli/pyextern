@@ -94,14 +94,14 @@ package scipy.spatial.qhull;
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function add_points(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function close(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var furthest_site : Dynamic;
+	public var furthest_site : Dynamic;
 	public function get_extremes_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_paraboloid_shift_scale(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_points(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_simplex_facet_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_voronoi_diagram(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var mode_option : Dynamic;
-	static public var ndim : Dynamic;
-	static public var options : Dynamic;
+	public var mode_option : Dynamic;
+	public var ndim : Dynamic;
+	public var options : Dynamic;
 	public function triangulate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

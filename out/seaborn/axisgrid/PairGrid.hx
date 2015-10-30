@@ -215,7 +215,7 @@ package seaborn.axisgrid;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Add labels to the left and bottom Axes.
 	**/

@@ -107,7 +107,7 @@ package matplotlib.colors;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Take the input data array, convert to HSV values in the
 		given colormap, then adjust those color values

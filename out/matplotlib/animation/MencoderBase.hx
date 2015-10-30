@@ -96,10 +96,10 @@ package matplotlib.animation;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _remap_metadata():Dynamic;
 	static public var allowed_metadata : Dynamic;
 	static public var args_key : Dynamic;
 	static public var exec_key : Dynamic;
-	static public var output_args : Dynamic;
+	public var output_args : Dynamic;
 }

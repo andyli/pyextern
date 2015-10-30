@@ -96,7 +96,7 @@ package scipy.cluster.hierarchy;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		The number of leaf nodes (original observations) belonging to
 		the cluster node nd. If the target node is a leaf, 1 is

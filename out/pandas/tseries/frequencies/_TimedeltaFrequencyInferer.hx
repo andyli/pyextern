@@ -96,7 +96,7 @@ package pandas.tseries.frequencies;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_annual_rule():Dynamic;
 	public function _get_monthly_rule():Dynamic;
 	public function _get_quarterly_rule():Dynamic;

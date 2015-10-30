@@ -110,14 +110,14 @@ package pandas.stats.ols;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _beta_raw : Dynamic;
 	static public var _coef_table : Dynamic;
 	static public var _df_model_raw : Dynamic;
 	static public var _df_raw : Dynamic;
 	static public var _df_resid_raw : Dynamic;
 	static public var _f_stat_raw : Dynamic;
-	static public var _nobs : Dynamic;
+	public var _nobs : Dynamic;
 	static public var _p_value_raw : Dynamic;
 	static public var _panel_model : Dynamic;
 	/**
@@ -144,8 +144,8 @@ package pandas.stats.ols;
 	static public var _std_err_raw : Dynamic;
 	static public var _t_stat_raw : Dynamic;
 	static public var _time_obs_count : Dynamic;
-	static public var _total_times : Dynamic;
-	static public var _use_centered_tss : Dynamic;
+	public var _total_times : Dynamic;
+	public var _use_centered_tss : Dynamic;
 	static public var _var_beta_raw : Dynamic;
 	static public var _y_fitted_raw : Dynamic;
 	static public var _y_predict_raw : Dynamic;
@@ -172,8 +172,8 @@ package pandas.stats.ols;
 		o.f_test(['1*x1+2*x2=0','1*x3=0'])
 	**/
 	public function f_test(hypothesis:Dynamic):Dynamic;
-	static public var nobs : Dynamic;
-	static public var nw_lags : Dynamic;
+	public var nobs : Dynamic;
+	public var nw_lags : Dynamic;
 	static public var p_value : Dynamic;
 	/**
 		Parameters
@@ -209,11 +209,11 @@ package pandas.stats.ols;
 	/**
 		Returns the filtered x used in the regression.
 	**/
-	static public var x : Dynamic;
+	public var x : Dynamic;
 	/**
 		Returns the filtered y used in the regression.
 	**/
-	static public var y : Dynamic;
+	public var y : Dynamic;
 	static public var y_fitted : Dynamic;
 	static public var y_predict : Dynamic;
 }

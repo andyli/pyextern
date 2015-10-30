@@ -96,7 +96,7 @@ package numpy.core.records;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _createdescr(byteorder:Dynamic):Dynamic;
 	/**
 		Parse the field formats 

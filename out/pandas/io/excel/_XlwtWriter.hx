@@ -112,7 +112,7 @@ package pandas.io.excel;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _abc_cache : Dynamic;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;

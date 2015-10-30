@@ -99,8 +99,8 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var fortran_format : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var fortran_format : Dynamic;
 	/**
 		Given a float number, returns a "reasonable" ExpFormat instance to
 		represent any number between -n and n.
@@ -123,5 +123,5 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 		to avoid losing precision.
 	**/
 	static public function from_number(n:Dynamic, ?min:Dynamic):Dynamic;
-	static public var python_format : Dynamic;
+	public var python_format : Dynamic;
 }

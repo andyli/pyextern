@@ -107,13 +107,13 @@ package pandas.io.pytables;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _info_fields : Dynamic;
-	static public var attrs : Dynamic;
+	public var attrs : Dynamic;
 	/**
 		return my current col description 
 	**/
-	static public var col : Dynamic;
+	public var col : Dynamic;
 	/**
 		set the data from this selection (and convert to the correct dtype
 		if we can)
@@ -128,8 +128,8 @@ package pandas.io.pytables;
 	/**
 		return my cython values 
 	**/
-	static public var cvalues : Dynamic;
-	static public var description : Dynamic;
+	public var cvalues : Dynamic;
+	public var description : Dynamic;
 	/**
 		return the PyTables column class for this column 
 	**/
@@ -151,7 +151,7 @@ package pandas.io.pytables;
 	/**
 		return whether I am an indexed column 
 	**/
-	static public var is_indexed : Dynamic;
+	public var is_indexed : Dynamic;
 	/**
 		maybe set a string col itemsize:
 		min_itemsize can be an interger or a dict with this columns name
@@ -200,7 +200,7 @@ package pandas.io.pytables;
 	**/
 	public function set_pos(pos:Dynamic):Dynamic;
 	public function set_table(table:Dynamic):Dynamic;
-	static public var shape : Dynamic;
+	public var shape : Dynamic;
 	/**
 		return the data & release the memory 
 	**/

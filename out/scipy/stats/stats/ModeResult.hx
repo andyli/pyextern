@@ -147,7 +147,7 @@ package scipy.stats.stats;
 	/**
 		Alias for field number 1
 	**/
-	static public var count : Dynamic;
+	public var count : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -156,5 +156,5 @@ package scipy.stats.stats;
 	/**
 		Alias for field number 0
 	**/
-	static public var mode : Dynamic;
+	public var mode : Dynamic;
 }

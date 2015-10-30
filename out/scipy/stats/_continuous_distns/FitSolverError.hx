@@ -4,12 +4,12 @@ package scipy.stats._continuous_distns;
 	/**
 		exception cause
 	**/
-	static public var __cause__ : Dynamic;
+	public var __cause__ : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		exception context
 	**/
-	static public var __context__ : Dynamic;
+	public var __context__ : Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -102,13 +102,13 @@ package scipy.stats._continuous_distns;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var __suppress_context__ : Dynamic;
-	static public var __traceback__ : Dynamic;
+	public var __suppress_context__ : Dynamic;
+	public var __traceback__ : Dynamic;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
-	static public var args : Dynamic;
+	public var __weakref__ : Dynamic;
+	public var args : Dynamic;
 	/**
 		Exception.with_traceback(tb) --
 		set self.__traceback__ to tb and return self.

@@ -156,25 +156,25 @@ package scipy.stats.mstats_basic;
 	/**
 		Alias for field number 5
 	**/
-	static public var kurtosis : Dynamic;
+	public var kurtosis : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var mean : Dynamic;
+	public var mean : Dynamic;
 	/**
 		Alias for field number 1
 	**/
-	static public var minmax : Dynamic;
+	public var minmax : Dynamic;
 	/**
 		Alias for field number 0
 	**/
-	static public var nobs : Dynamic;
+	public var nobs : Dynamic;
 	/**
 		Alias for field number 4
 	**/
-	static public var skewness : Dynamic;
+	public var skewness : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var variance : Dynamic;
+	public var variance : Dynamic;
 }

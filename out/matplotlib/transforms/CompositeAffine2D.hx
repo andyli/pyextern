@@ -143,7 +143,7 @@ package matplotlib.transforms;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Concatenates two transformation matrices (represented as numpy
 		arrays) together.
@@ -186,7 +186,7 @@ package matplotlib.transforms;
 		    x_isdata, y_isdata = trans.contains_branch_seperately(ax.transData)
 	**/
 	public function contains_branch_seperately(other_transform:Dynamic):Dynamic;
-	static public var depth : Dynamic;
+	public var depth : Dynamic;
 	/**
 		Returns a frozen copy of this transform node.  The frozen copy
 		will not update when its children change.  Useful for storing
@@ -223,7 +223,7 @@ package matplotlib.transforms;
 	public function inverted():Dynamic;
 	static public var is_affine : Dynamic;
 	static public var is_bbox : Dynamic;
-	static public var is_separable : Dynamic;
+	public var is_separable : Dynamic;
 	/**
 		(staticmethod) Create a new transformation matrix as a 3x3
 		numpy array of the form::

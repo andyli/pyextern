@@ -96,7 +96,7 @@ package scipy.optimize._differentialevolution;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		best1bin, best1exp
 	**/
@@ -174,5 +174,5 @@ package scipy.optimize._differentialevolution;
 		x - ndarray
 		    The best solution from the solver.
 	**/
-	static public var x : Dynamic;
+	public var x : Dynamic;
 }

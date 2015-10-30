@@ -147,7 +147,7 @@ package scipy.stats.stats;
 	/**
 		Alias for field number 0
 	**/
-	static public var clipped : Dynamic;
+	public var clipped : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -160,9 +160,9 @@ package scipy.stats.stats;
 	/**
 		Alias for field number 1
 	**/
-	static public var lower : Dynamic;
+	public var lower : Dynamic;
 	/**
 		Alias for field number 2
 	**/
-	static public var upper : Dynamic;
+	public var upper : Dynamic;
 }

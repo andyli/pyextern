@@ -96,7 +96,7 @@ package numpy.ma.timer_comparison;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		Assert that a comparison of two masked arrays is satisfied elementwise.
 	**/

@@ -147,7 +147,7 @@ package scipy._lib._util;
 	/**
 		Alias for field number 0
 	**/
-	static public var args : Dynamic;
+	public var args : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -155,7 +155,7 @@ package scipy._lib._util;
 	/**
 		Alias for field number 3
 	**/
-	static public var defaults : Dynamic;
+	public var defaults : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -164,9 +164,9 @@ package scipy._lib._util;
 	/**
 		Alias for field number 2
 	**/
-	static public var keywords : Dynamic;
+	public var keywords : Dynamic;
 	/**
 		Alias for field number 1
 	**/
-	static public var varargs : Dynamic;
+	public var varargs : Dynamic;
 }

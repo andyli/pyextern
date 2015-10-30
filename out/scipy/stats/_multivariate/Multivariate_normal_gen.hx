@@ -102,7 +102,7 @@ package scipy.stats._multivariate;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function _get_random_state(random_state:Dynamic):Dynamic;
 	/**
 		Parameters
@@ -210,7 +210,7 @@ package scipy.stats._multivariate;
 		If already a RandomState instance, use it.
 		If an int, use a new RandomState instance seeded with seed.
 	**/
-	static public var random_state : Dynamic;
+	public var random_state : Dynamic;
 	/**
 		Draw random samples from a multivariate normal distribution.
 		

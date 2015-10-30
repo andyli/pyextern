@@ -115,7 +115,7 @@ package pandas.tseries.common;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	/**
 		add accessors to cls from the delegate class
 		
@@ -132,7 +132,7 @@ package pandas.tseries.common;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
-	static public var _constructor : Dynamic;
+	public var _constructor : Dynamic;
 	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
@@ -151,45 +151,45 @@ package pandas.tseries.common;
 	/**
 		The days of the period
 	**/
-	static public var day : Dynamic;
+	public var day : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var dayofweek : Dynamic;
+	public var dayofweek : Dynamic;
 	/**
 		The ordinal day of the year
 	**/
-	static public var dayofyear : Dynamic;
+	public var dayofyear : Dynamic;
 	/**
 		The number of days in the month
 	**/
-	static public var days_in_month : Dynamic;
+	public var days_in_month : Dynamic;
 	/**
 		The number of days in the month
 	**/
-	static public var daysinmonth : Dynamic;
-	static public var freq : Dynamic;
+	public var daysinmonth : Dynamic;
+	public var freq : Dynamic;
 	/**
 		The hour of the period
 	**/
-	static public var hour : Dynamic;
+	public var hour : Dynamic;
 	/**
 		The minute of the period
 	**/
-	static public var minute : Dynamic;
+	public var minute : Dynamic;
 	/**
 		The month as January=1, December=12
 	**/
-	static public var month : Dynamic;
+	public var month : Dynamic;
 	/**
 		The quarter of the date
 	**/
-	static public var quarter : Dynamic;
-	static public var qyear : Dynamic;
+	public var quarter : Dynamic;
+	public var qyear : Dynamic;
 	/**
 		The second of the period
 	**/
-	static public var second : Dynamic;
+	public var second : Dynamic;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
@@ -211,17 +211,17 @@ package pandas.tseries.common;
 	/**
 		The week ordinal of the year
 	**/
-	static public var week : Dynamic;
+	public var week : Dynamic;
 	/**
 		The day of the week with Monday=0, Sunday=6
 	**/
-	static public var weekday : Dynamic;
+	public var weekday : Dynamic;
 	/**
 		The week ordinal of the year
 	**/
-	static public var weekofyear : Dynamic;
+	public var weekofyear : Dynamic;
 	/**
 		The year of the period
 	**/
-	static public var year : Dynamic;
+	public var year : Dynamic;
 }
