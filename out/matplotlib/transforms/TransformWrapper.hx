@@ -141,6 +141,7 @@ package matplotlib.transforms;
 	public function _get_is_affine():Dynamic;
 	public function _get_is_separable():Dynamic;
 	static public var _gid : Dynamic;
+	public function _init(child:Dynamic):Dynamic;
 	/**
 		Called by :meth:`invalidate` and subsequently ascends the transform
 		stack calling each TransformNode's _invalidate_internal method.

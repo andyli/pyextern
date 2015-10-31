@@ -143,10 +143,15 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
 	/**
 		update the slider position
 	**/
 	public function _update(event:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -165,6 +170,11 @@ package matplotlib.widgets;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	/**
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
 		Return True if event should be ignored.
 		
 		This method (or a version of it) should be called at the beginning
@@ -182,5 +192,10 @@ package matplotlib.widgets;
 		reset the slider to the initial value if needed
 	**/
 	public function reset():Dynamic;
+	/**
+		Set whether the widget is active.
+		        
+	**/
+	public function set_active(active:Dynamic):Dynamic;
 	public function set_val(val:Dynamic):Dynamic;
 }

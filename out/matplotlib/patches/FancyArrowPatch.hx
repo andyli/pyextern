@@ -41,7 +41,7 @@ package matplotlib.patches;
 	/**
 		If *posA* and *posB* is given, a path connecting two point are
 		created according to the connectionstyle. The path will be
-		clipped with *patchA* and *patchB* and further shirnked by
+		clipped with *patchA* and *patchB* and further shrunken by
 		*shrinkA* and *shrinkB*. An arrow is drawn along this
 		resulting path using the *arrowstyle* parameter. If *path*
 		provided, an arrow is drawn along this path and *patchA*,
@@ -121,9 +121,8 @@ package matplotlib.patches;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -205,6 +204,11 @@ package matplotlib.patches;
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
 	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
+	/**
 		Test whether the mouse event occurred in the patch.
 		
 		Returns T/F, {}
@@ -253,6 +257,10 @@ package matplotlib.patches;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		Returns True if the :class:`Patch` is to be drawn with antialiasing.
 	**/
 	public function get_aa():Dynamic;
@@ -279,7 +287,10 @@ package matplotlib.patches;
 	public function get_arrowstyle():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -311,6 +322,10 @@ package matplotlib.patches;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the :class:`~matplotlib.transforms.Transform` instance which
 		maps data coordinates to physical coordinates.
@@ -518,6 +533,7 @@ package matplotlib.patches;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -564,7 +580,10 @@ package matplotlib.patches;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -612,6 +631,9 @@ package matplotlib.patches;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -674,7 +696,7 @@ package matplotlib.patches;
 		
 		*connectionstyle* can be a string with connectionstyle name with
 		 optional comma-separated attributes. Alternatively, the attrs can be
-		 probided as keywords.
+		 provided as keywords.
 		
 		 set_connectionstyle("arc,angleA=0,armA=30,rad=10")
 		 set_connectionstyle("arc", angleA=0,armA=30,rad=10)
@@ -784,7 +806,31 @@ package matplotlib.patches;
 	/**
 		Set the patch linestyle
 		
-		ACCEPTS: ['solid' | 'dashed' | 'dashdot' | 'dotted']
+		===========================   =================
+		linestyle                     description
+		===========================   =================
+		``'-'`` or ``'solid'``        solid line
+		``'--'`` or  ``'dashed'``     dashed line
+		``'-.'`` or  ``'dash_dot'``   dash-dotted line
+		``':'`` or ``'dotted'``       dotted line
+		===========================   =================
+		
+		Alternatively a dash tuple of the following form can be provided::
+		
+		    (offset, onoffseq),
+		
+		where ``onoffseq`` is an even length tuple of on and off ink
+		in points.
+		
+		ACCEPTS: ['solid' | 'dashed', 'dashdot', 'dotted' |
+		           (offset, on-off-dash-seq) |
+		           ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |
+		           ``' '`` | ``''``]
+		
+		Parameters
+		----------
+		ls : { '-',  '--', '-.', ':'} and more see description
+		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
@@ -793,14 +839,6 @@ package matplotlib.patches;
 		ACCEPTS: float or None for default
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		alias for set_linestyle
 	**/
@@ -882,7 +920,7 @@ package matplotlib.patches;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -940,6 +978,11 @@ package matplotlib.patches;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

@@ -103,7 +103,7 @@ package matplotlib.text;
 	**/
 	public function _check_xy(renderer:Dynamic, xy_pixel:Dynamic):Dynamic;
 	/**
-		Return the pixel position of the the annotated point.
+		Return the pixel position of the annotated point.
 	**/
 	public function _get_position_xy(renderer:Dynamic):Dynamic;
 	/**
@@ -112,7 +112,7 @@ package matplotlib.text;
 	**/
 	public function _get_ref_xy(renderer:Dynamic):Dynamic;
 	public function _get_xy(renderer:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic):Dynamic;
-	public function _get_xy_transform(renderer:Dynamic, xy:Dynamic, s:Dynamic):Dynamic;
+	public function _get_xy_transform(renderer:Dynamic, s:Dynamic):Dynamic;
 	/**
 		Set the draggable state -- if state is
 		
@@ -142,18 +142,4 @@ package matplotlib.text;
 		  * None: the self.xy will be checked only if *xycoords* is "data"
 	**/
 	public function set_annotation_clip(b:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 1.4
-		    Use `anncoords` instead
-		
-		\ 
-	**/
-	public var textcoords : Dynamic;
-	/**
-		.. deprecated:: 1.4
-		    Use `xyann` instead
-		
-		\ 
-	**/
-	public var xytext : Dynamic;
 }

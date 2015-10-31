@@ -137,11 +137,26 @@ package matplotlib.projections.geo;
 	**/
 	public function _gen_axes_spines():Dynamic;
 	public function _get_affine_transform():Dynamic;
+	public function _get_axis_list():Dynamic;
 	/**
 		Return a generator of artists that can be used as handles in
 		a legend.
 	**/
 	public function _get_legend_handles(?legend_handler_map:Dynamic):Dynamic;
+	/**
+		Save information required to reproduce the current view.
+		
+		Called before a view is changed, such as during a pan or zoom
+		initiated by the user. You may return any information you deem
+		necessary to describe the view.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation saves the view limits. You *must* implement
+		    :meth:`_set_view` if you implement this method.
+	**/
+	public function _get_view():Dynamic;
 	/**
 		move this out of __init__ because non-separable axes don't use it
 	**/
@@ -184,6 +199,50 @@ package matplotlib.projections.geo;
 		    example.
 	**/
 	public function _set_lim_and_transforms():Dynamic;
+	/**
+		Apply a previously saved view.
+		
+		Called when restoring a view, such as with the navigation buttons.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation restores the view limits. You *must*
+		    implement :meth:`_get_view` if you implement this method.
+	**/
+	public function _set_view(view:Dynamic):Dynamic;
+	/**
+		Update view from a selection bbox.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation sets the view limits to the bbox directly.
+		
+		Parameters
+		----------
+		
+		bbox : tuple
+		    The selected bounding box limits, in *display* coordinates.
+		
+		direction : str
+		    The direction to apply the bounding box.
+		        * `'in'` - The bounding box describes the view directly, i.e.,
+		                   it zooms in.
+		        * `'out'` - The bounding box describes the size to make the
+		                    existing view, i.e., it zooms out.
+		
+		mode : str or None
+		    The selection mode, whether to apply the bounding box in only the
+		    `'x'` direction, `'y'` direction or both (`None`).
+		
+		twinx : bool
+		    Whether this axis is twinned in the *x*-direction.
+		
+		twiny : bool
+		    Whether this axis is twinned in the *y*-direction.
+	**/
+	public function _set_view_from_bbox(bbox:Dynamic, ?direction:Dynamic, ?mode:Dynamic, ?twinx:Dynamic, ?twiny:Dynamic):Dynamic;
 	static public var _shared_x_axes : Dynamic;
 	static public var _shared_y_axes : Dynamic;
 	/**
@@ -250,8 +309,17 @@ package matplotlib.projections.geo;
 		`~matplotlib.pyplot.acorr` is bottom graph.
 		
 		.. plot:: mpl_examples/pylab_examples/xcorr_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function acorr(x:Dynamic, kwargs:Dynamic):Dynamic;
+	public function acorr(x:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Add any :class:`~matplotlib.artist.Artist` to the axes.
 		
@@ -399,9 +467,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -441,8 +508,17 @@ package matplotlib.projections.geo;
 		    :func:`specgram`
 		        :func:`specgram` can plot the angle spectrum of segments
 		        within the signal in a colormap.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, kwargs:Dynamic):Dynamic;
+	public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Create an annotation: a piece of text referring to a data
 		point.
@@ -583,20 +659,19 @@ package matplotlib.projections.geo;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -612,10 +687,12 @@ package matplotlib.projections.geo;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -695,9 +772,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -753,6 +829,11 @@ package matplotlib.projections.geo;
 	**/
 	public function autoscale_view(?tight:Dynamic, ?scalex:Dynamic, ?scaley:Dynamic):Dynamic;
 	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
+	/**
 		Add a horizontal line across the axis.
 		
 		Parameters
@@ -770,12 +851,12 @@ package matplotlib.projections.geo;
 		
 		Returns
 		-------
-		`~matplotlib.lines.Line2D`
+		:class:`~matplotlib.lines.Line2D`
 		
 		Notes
 		-----
-		kwargs are the same as kwargs to plot, and can be
-		used to control the line properties.  e.g.,
+		kwargs are passed to :class:`~matplotlib.lines.Line2D` and can be used
+		to control the line properties.
 		
 		Examples
 		--------
@@ -788,7 +869,7 @@ package matplotlib.projections.geo;
 		
 		    >>> axhline(y=1)
 		
-		* draw a default hline at 'y' = .5 that spans the the middle half of
+		* draw a default hline at 'y' = .5 that spans the middle half of
 		  the xrange::
 		
 		    >>> axhline(y=.5, xmin=0.25, xmax=0.75)
@@ -814,9 +895,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -893,9 +973,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -912,12 +991,47 @@ package matplotlib.projections.geo;
 	**/
 	public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		Convenience method for manipulating the x and y view limits
-		and the aspect ratio of the plot. For details, see
-		:func:`~matplotlib.pyplot.axis`.
+		Set axis properties.
 		
-		*kwargs* are passed on to :meth:`set_xlim` and
-		:meth:`set_ylim`
+		Valid signatures::
+		
+		  xmin, xmax, ymin, ymax = axis()
+		  xmin, xmax, ymin, ymax = axis(list_arg)
+		  xmin, xmax, ymin, ymax = axis(string_arg)
+		  xmin, xmax, ymin, ymax = axis(**kwargs)
+		
+		Parameters
+		----------
+		v : list of float or {'on', 'off', 'equal', 'tight', 'scaled',            'normal', 'auto', 'image', 'square'}
+		    Optional positional argument
+		
+		    Axis data limits set from a list; or a command relating to axes:
+		
+		        ========== ================================================
+		        Value      Description
+		        ========== ================================================
+		        'on'       Toggle axis lines and labels on
+		        'off'      Toggle axis lines and labels off
+		        'equal'    Equal scaling by changing limits
+		        'scaled'   Equal scaling by changing box dimensions
+		        'tight'    Limits set such that all data is shown
+		        'auto'     Automatic scaling, fill rectangle with data
+		        'normal'   Same as 'auto'; deprecated
+		        'image'    'scaled' with axis limits equal to data limits
+		        'square'   Square plot; similar to 'scaled', but initially                           forcing xmax-xmin = ymax-ymin
+		        ========== ================================================
+		
+		emit : bool, optional
+		    Passed to set_{x,y}lim functions, if observers
+		    are notified of axis limit change
+		
+		xmin, ymin, xmax, ymax : float, optional
+		    The axis limits to be set
+		
+		Returns
+		-------
+		xmin, xmax, ymin, ymax : float
+		    The axis limits
 	**/
 	public function axis(v:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
@@ -929,16 +1043,16 @@ package matplotlib.projections.geo;
 		    x position in data coordinates of the vertical line.
 		
 		ymin : scalar, optional, default: 0
-		    Should be between 0 and 1, 0 being the far left of the plot, 1 the
-		    far right of the plot.
+		    Should be between 0 and 1, 0 being the bottom of the plot, 1 the
+		    top of the plot.
 		
 		ymax : scalar, optional, default: 1
-		    Should be between 0 and 1, 0 being the far left of the plot, 1 the
-		    far right of the plot.
+		    Should be between 0 and 1, 0 being the bottom of the plot, 1 the
+		    top of the plot.
 		
 		Returns
 		-------
-		`~matplotlib.lines.Line2D`
+		:class:`~matplotlib.lines.Line2D`
 		
 		
 		Examples
@@ -951,7 +1065,7 @@ package matplotlib.projections.geo;
 		
 		    >>> axvline(x=1)
 		
-		* draw a default vline at *x* = .5 that spans the the middle half of
+		* draw a default vline at *x* = .5 that spans the middle half of
 		  the yrange::
 		
 		    >>> axvline(x=.5, ymin=0.25, ymax=0.75)
@@ -977,9 +1091,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -1056,9 +1169,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -1091,11 +1203,13 @@ package matplotlib.projections.geo;
 		height : sequence of scalars
 		    the heights of the bars
 		
-		width : scalar or array-like, optional, default: 0.8
+		width : scalar or array-like, optional
 		    the width(s) of the bars
+		    default: 0.8
 		
-		bottom : scalar or array-like, optional, default: None
+		bottom : scalar or array-like, optional
 		    the y coordinate(s) of the bars
+		    default: None
 		
 		color : scalar or array-like, optional
 		    the colors of the bar faces
@@ -1103,40 +1217,54 @@ package matplotlib.projections.geo;
 		edgecolor : scalar or array-like, optional
 		    the colors of the bar edges
 		
-		linewidth : scalar or array-like, optional, default: None
+		linewidth : scalar or array-like, optional
 		    width of bar edge(s). If None, use default
 		    linewidth; If 0, don't draw edges.
+		    default: None
 		
-		xerr : scalar or array-like, optional, default: None
+		tick_label : string or array-like, optional
+		    the tick labels of the bars
+		    default: None
+		
+		xerr : scalar or array-like, optional
 		    if not None, will be used to generate errorbar(s) on the bar chart
+		    default: None
 		
-		yerr : scalar or array-like, optional, default: None
+		yerr : scalar or array-like, optional
 		    if not None, will be used to generate errorbar(s) on the bar chart
+		    default: None
 		
-		ecolor : scalar or array-like, optional, default: None
+		ecolor : scalar or array-like, optional
 		    specifies the color of errorbar(s)
+		    default: None
 		
-		capsize : integer, optional, default: 3
+		capsize : scalar, optional
 		   determines the length in points of the error bar caps
+		   default: None, which will take the value from the
+		   ``errorbar.capsize`` :data:`rcParam<matplotlib.rcParams>`.
 		
-		error_kw :
+		error_kw : dict, optional
 		    dictionary of kwargs to be passed to errorbar method. *ecolor* and
 		    *capsize* may be specified here rather than as independent kwargs.
 		
-		align : ['edge' | 'center'], optional, default: 'edge'
-		    If `edge`, aligns bars by their left edges (for vertical bars) and
-		    by their bottom edges (for horizontal bars). If `center`, interpret
+		align : {'edge',  'center'}, optional
+		    If 'edge', aligns bars by their left edges (for vertical bars) and
+		    by their bottom edges (for horizontal bars). If 'center', interpret
 		    the `left` argument as the coordinates of the centers of the bars.
+		    To align on the align bars on the right edge pass a negative
+		    `width`.
 		
-		orientation : 'vertical' | 'horizontal', optional, default: 'vertical'
+		orientation : {'vertical',  'horizontal'}, optional
 		    The orientation of the bars.
 		
-		log : boolean, optional, default: False
-		    If true, sets the axis to be log scale
+		log : boolean, optional
+		    If true, sets the axis to be log scale.
+		    default: False
 		
 		Returns
 		-------
-		`matplotlib.patches.Rectangle` instances.
+		bars : matplotlib.container.BarContainer
+		    Container with all of the bars + errorbars
 		
 		Notes
 		-----
@@ -1169,9 +1297,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -1192,8 +1319,17 @@ package matplotlib.projections.geo;
 		**Example:** A stacked bar chart.
 		
 		.. plot:: mpl_examples/pylab_examples/bar_stacked.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'linewidth', 'width', 'left', 'bottom', 'edgecolor', 'ecolor', 'yerr', 'height', 'color', 'tick_label', 'xerr'.
 	**/
-	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, kwargs:Dynamic):Dynamic;
+	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot a 2-D field of barbs.
 		
@@ -1341,15 +1477,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -1369,8 +1504,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/barb_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function barbs(args:Dynamic, kw:Dynamic):Dynamic;
+	public function barbs(args:Dynamic, ?data:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Make a horizontal bar plot.
 		
@@ -1412,6 +1556,9 @@ package matplotlib.projections.geo;
 		    width of bar edge(s). If None, use default
 		    linewidth; If 0, don't draw edges.
 		
+		tick_label : string or array-like, optional, default: None
+		    the tick labels of the bars
+		
 		xerr : scalar or array-like, optional, default: None
 		    if not None, will be used to generate errorbar(s) on the bar chart
 		
@@ -1421,8 +1568,10 @@ package matplotlib.projections.geo;
 		ecolor : scalar or array-like, optional, default: None
 		    specifies the color of errorbar(s)
 		
-		capsize : integer, optional, default: 3
+		capsize : scalar, optional
 		   determines the length in points of the error bar caps
+		   default: None, which will take the value from the
+		   ``errorbar.capsize`` :data:`rcParam<matplotlib.rcParams>`.
 		
 		error_kw :
 		    dictionary of kwargs to be passed to errorbar method. `ecolor` and
@@ -1432,9 +1581,6 @@ package matplotlib.projections.geo;
 		    If `edge`, aligns bars by their left edges (for vertical bars) and
 		    by their bottom edges (for horizontal bars). If `center`, interpret
 		    the `left` argument as the coordinates of the centers of the bars.
-		
-		orientation : 'vertical' | 'horizontal', optional, default: 'vertical'
-		    The orientation of the bars.
 		
 		log : boolean, optional, default: False
 		    If true, sets the axis to be log scale
@@ -1470,9 +1616,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -1493,7 +1638,7 @@ package matplotlib.projections.geo;
 		
 		Call signature::
 		
-		  boxplot(self, x, notch=False, sym='b+', vert=True, whis=1.5,
+		  boxplot(self, x, notch=None, sym=None, vert=None, whis=None,
 		          positions=None, widths=None, patch_artist=False,
 		          bootstrap=None, usermedians=None, conf_intervals=None,
 		          meanline=False, showmeans=False, showcaps=True,
@@ -1618,6 +1763,9 @@ package matplotlib.projections.geo;
 		    *meanprops*. Not recommended if *shownotches* is also True.
 		    Otherwise, means will be shown as points.
 		
+		  manage_xticks : bool, default = True
+		    If the function should adjust the xlim and xtick locations.
+		
 		Returns
 		-------
 		
@@ -1641,8 +1789,17 @@ package matplotlib.projections.geo;
 		--------
 		
 		.. plot:: mpl_examples/statistics/boxplot_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic):Dynamic;
+	public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Plot horizontal bars.
 		
@@ -1679,15 +1836,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -1714,8 +1870,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/broken_barh.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function broken_barh(xranges:Dynamic, yrange:Dynamic, kwargs:Dynamic):Dynamic;
+	public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Drawing function for box and whisker plots.
 		
@@ -2077,9 +2242,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -2105,8 +2269,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/cohere_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Test whether the mouse event occured in the axes.
 		
@@ -2151,7 +2324,7 @@ package matplotlib.projections.geo;
 		  contour(Z,N)
 		  contour(X,Y,Z,N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N* automatically-chosen levels.
 		
 		::
 		
@@ -2181,6 +2354,20 @@ package matplotlib.projections.geo;
 		:class:`~matplotlib.contour.QuadContourSet` object.
 		
 		Optional keyword arguments:
+		
+		  *corner_mask*: [ *True* | *False* | 'legacy' ]
+		    Enable/disable corner masking, which only has an effect if *Z* is
+		    a masked array.  If *False*, any quad touching a masked point is
+		    masked out.  If *True*, only the triangular corners of quads
+		    nearest those points are always masked out, other triangular
+		    corners comprising three unmasked points are contoured as usual.
+		    If 'legacy', the old contouring algorithm is used, which is
+		    equivalent to *False* and is deprecated, only remaining whilst the
+		    new algorithm is tested fully.
+		
+		    If not specified, the default is taken from
+		    rcParams['contour.corner_mask'], which is True unless it has
+		    been modified.
 		
 		  *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
@@ -2260,6 +2447,15 @@ package matplotlib.projections.geo;
 		    filled contours, the default is *True*.  For line contours,
 		    it is taken from rcParams['lines.antialiased'].
 		
+		  *nchunk*: [ 0 | integer ]
+		    If 0, no subdivision of the domain.  Specify a positive integer to
+		    divide the domain into subdomains of *nchunk* by *nchunk* quads.
+		    Chunking reduces the maximum length of polygons generated by the
+		    contouring algorithm which reduces the rendering workload passed
+		    on to the backend and also requires slightly less RAM.  It can
+		    however introduce rendering artifacts at chunk boundaries depending
+		    on the backend, the *antialiased* flag and value of *alpha*.
+		
 		contour-only keyword arguments:
 		
 		  *linewidths*: [ *None* | number | tuple of numbers ]
@@ -2284,13 +2480,6 @@ package matplotlib.projections.geo;
 		
 		contourf-only keyword arguments:
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		  *hatches*:
 		    A list of cross hatch patterns to use on the filled areas.
 		    If None, no hatching will be added to the contour.
@@ -2312,8 +2501,10 @@ package matplotlib.projections.geo;
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
+		
+		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 	**/
-	public function contour(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function contour(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot contours.
 		
@@ -2346,7 +2537,7 @@ package matplotlib.projections.geo;
 		  contour(Z,N)
 		  contour(X,Y,Z,N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N* automatically-chosen levels.
 		
 		::
 		
@@ -2376,6 +2567,20 @@ package matplotlib.projections.geo;
 		:class:`~matplotlib.contour.QuadContourSet` object.
 		
 		Optional keyword arguments:
+		
+		  *corner_mask*: [ *True* | *False* | 'legacy' ]
+		    Enable/disable corner masking, which only has an effect if *Z* is
+		    a masked array.  If *False*, any quad touching a masked point is
+		    masked out.  If *True*, only the triangular corners of quads
+		    nearest those points are always masked out, other triangular
+		    corners comprising three unmasked points are contoured as usual.
+		    If 'legacy', the old contouring algorithm is used, which is
+		    equivalent to *False* and is deprecated, only remaining whilst the
+		    new algorithm is tested fully.
+		
+		    If not specified, the default is taken from
+		    rcParams['contour.corner_mask'], which is True unless it has
+		    been modified.
 		
 		  *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
@@ -2455,6 +2660,15 @@ package matplotlib.projections.geo;
 		    filled contours, the default is *True*.  For line contours,
 		    it is taken from rcParams['lines.antialiased'].
 		
+		  *nchunk*: [ 0 | integer ]
+		    If 0, no subdivision of the domain.  Specify a positive integer to
+		    divide the domain into subdomains of *nchunk* by *nchunk* quads.
+		    Chunking reduces the maximum length of polygons generated by the
+		    contouring algorithm which reduces the rendering workload passed
+		    on to the backend and also requires slightly less RAM.  It can
+		    however introduce rendering artifacts at chunk boundaries depending
+		    on the backend, the *antialiased* flag and value of *alpha*.
+		
 		contour-only keyword arguments:
 		
 		  *linewidths*: [ *None* | number | tuple of numbers ]
@@ -2479,13 +2693,6 @@ package matplotlib.projections.geo;
 		
 		contourf-only keyword arguments:
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		  *hatches*:
 		    A list of cross hatch patterns to use on the filled areas.
 		    If None, no hatching will be added to the contour.
@@ -2507,8 +2714,10 @@ package matplotlib.projections.geo;
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
+		
+		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 	**/
-	public function contourf(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function contourf(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		For artists in an axes, if the xaxis has units support,
 		convert *x* using xaxis unit type
@@ -2660,9 +2869,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -2693,8 +2901,17 @@ package matplotlib.projections.geo;
 		
 		    :func:`psd`
 		        :func:`psd` is the equivalent to setting y=x.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, kwargs:Dynamic):Dynamic;
+	public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Called when the mouse moves during a pan operation.
 		
@@ -2738,7 +2955,7 @@ package matplotlib.projections.geo;
 		Call signature::
 		
 		  errorbar(x, y, yerr=None, xerr=None,
-		           fmt='', ecolor=None, elinewidth=None, capsize=3,
+		           fmt='', ecolor=None, elinewidth=None, capsize=None,
 		           barsabove=False, lolims=False, uplims=False,
 		           xlolims=False, xuplims=False, errorevery=1,
 		           capthick=None)
@@ -2775,7 +2992,9 @@ package matplotlib.projections.geo;
 		    The linewidth of the errorbar lines. If *None*, use the linewidth.
 		
 		  *capsize*: scalar
-		    The length of the error bar caps in points
+		    The length of the error bar caps in points; if *None*, it will
+		    take the value from ``errorbar.capsize``
+		    :data:`rcParam<matplotlib.rcParams>`.
 		
 		  *capthick*: scalar
 		    An alias kwarg to *markeredgewidth* (a.k.a. - *mew*). This
@@ -2798,7 +3017,7 @@ package matplotlib.projections.geo;
 		    before :meth:`errorbar`.
 		
 		  *errorevery*: positive integer
-		    subsamples the errorbars. e.g., if everyerror=5, errorbars for
+		    subsamples the errorbars. e.g., if errorevery=5, errorbars for
 		    every 5-th datapoint will be plotted. The data plot itself still
 		    shows all data points.
 		
@@ -2834,9 +3053,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -2873,8 +3091,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/statistics/errorbar_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
 	**/
-	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, kwargs:Dynamic):Dynamic;
+	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot identical parallel lines at specific positions.
 		
@@ -2941,15 +3168,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples         
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -2971,8 +3197,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/eventplot_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'positions', 'linestyles', 'linewidths', 'lineoffsets', 'linelengths', 'colors'.
 	**/
-	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, kwargs:Dynamic):Dynamic;
+	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot filled polygons.
 		
@@ -3024,9 +3259,8 @@ package matplotlib.projections.geo;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -3040,42 +3274,56 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/lines_bars_and_markers/fill_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function fill(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make filled polygons between two curves.
 		
-		Call signature::
-		
-		  fill_between(x, y1, y2=0, where=None, **kwargs)
 		
 		Create a :class:`~matplotlib.collections.PolyCollection`
 		filling the regions between *y1* and *y2* where
 		``where==True``
 		
-		  *x* :
+		Parameters
+		----------
+		x : array
 		    An N-length array of the x data
 		
-		  *y1* :
+		y1 : array
 		    An N-length array (or scalar) of the y data
 		
-		  *y2* :
+		y2 : array
 		    An N-length array (or scalar) of the y data
 		
-		  *where* :
-		    If *None*, default to fill between everywhere.  If not *None*,
+		where : array, optional
+		    If `None`, default to fill between everywhere.  If not `None`,
 		    it is an N-length numpy boolean array and the fill will
 		    only happen over the regions where ``where==True``.
 		
-		  *interpolate* :
-		    If *True*, interpolate between the two lines to find the
+		interpolate : bool, optional
+		    If `True`, interpolate between the two lines to find the
 		    precise point of intersection.  Otherwise, the start and
 		    end points of the filled region will only occur on explicit
 		    values in the *x* array.
 		
-		  *kwargs* :
-		    Keyword args passed on to the
-		    :class:`~matplotlib.collections.PolyCollection`.
+		step : {'pre', 'post', 'mid'}, optional
+		    If not None, fill with step logic.
+		
+		
+		Notes
+		-----
+		
+		Additional Keyword args passed on to the
+		:class:`~matplotlib.collections.PolyCollection`.
 		
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
 		
@@ -3092,15 +3340,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3116,14 +3363,27 @@ package matplotlib.projections.geo;
 		  visible: [True | False]         
 		  zorder: any number         
 		
+		Examples
+		--------
+		
 		.. plot:: mpl_examples/pylab_examples/fill_between_demo.py
 		
-		.. seealso::
+		See Also
+		--------
 		
 		    :meth:`fill_betweenx`
 		        for filling between two sets of x-values
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
 	**/
-	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make filled polygons between two horizontal curves.
 		
@@ -3135,22 +3395,29 @@ package matplotlib.projections.geo;
 		filling the regions between *x1* and *x2* where
 		``where==True``
 		
-		  *y* :
+		Parameters
+		----------
+		y : array
 		    An N-length array of the y data
 		
-		  *x1* :
+		x1 : array
 		    An N-length array (or scalar) of the x data
 		
-		  *x2* :
+		x2 : array, optional
 		    An N-length array (or scalar) of the x data
 		
-		  *where* :
-		     If *None*, default to fill between everywhere.  If not *None*,
-		     it is a N length numpy boolean array and the fill will
-		     only happen over the regions where ``where==True``
+		where : array, optional
+		    If *None*, default to fill between everywhere.  If not *None*,
+		    it is a N length numpy boolean array and the fill will
+		    only happen over the regions where ``where==True``
 		
-		  *kwargs* :
-		    keyword args passed on to the
+		step : {'pre', 'post', 'mid'}, optional
+		    If not None, fill with step logic.
+		
+		Notes
+		-----
+		
+		keyword args passed on to the
 		    :class:`~matplotlib.collections.PolyCollection`
 		
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
@@ -3168,15 +3435,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3192,14 +3458,27 @@ package matplotlib.projections.geo;
 		  visible: [True | False]         
 		  zorder: any number         
 		
+		Examples
+		--------
+		
 		.. plot:: mpl_examples/pylab_examples/fill_betweenx_demo.py
 		
-		.. seealso::
+		See Also
+		--------
 		
 		    :meth:`fill_between`
 		        for filling between two sets of y-values
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x1', 'x2', 'where'.
 	**/
-	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -3223,6 +3502,10 @@ package matplotlib.projections.geo;
 		return a format string formatting the coordinate
 	**/
 	public function format_coord(lon:Dynamic, lat:Dynamic):Dynamic;
+	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
 		Return *x* string formatted.  This function will use the attribute
 		self.fmt_xdata if it is callable, else will fall back on the xaxis
@@ -3265,7 +3548,10 @@ package matplotlib.projections.geo;
 	public function get_autoscaley_on():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -3300,6 +3586,10 @@ package matplotlib.projections.geo;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the cursor propertiess as a (*linewidth*, *color*)
 		tuple, where *linewidth* is a float and *color* is an RGBA
@@ -3560,7 +3850,7 @@ package matplotlib.projections.geo;
 	**/
 	public function get_xminorticklabels():Dynamic;
 	/**
-		Return the xaxis scale string: linear, log, symlog
+		Return the xaxis scale string: linear, log, logit, symlog
 	**/
 	public function get_xscale():Dynamic;
 	/**
@@ -3677,7 +3967,7 @@ package matplotlib.projections.geo;
 	**/
 	public function get_yminorticklabels():Dynamic;
 	/**
-		Return the yaxis scale string: linear, log, symlog
+		Return the yaxis scale string: linear, log, logit, symlog
 	**/
 	public function get_yscale():Dynamic;
 	/**
@@ -3757,9 +4047,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -3919,15 +4208,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3955,8 +4243,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/hexbin_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot a histogram.
 		
@@ -4139,8 +4436,17 @@ package matplotlib.projections.geo;
 		Examples
 		--------
 		.. plot:: mpl_examples/statistics/histogram_demo_features.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'weights', 'x'.
 	**/
-	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make a 2D histogram plot.
 		
@@ -4212,8 +4518,17 @@ package matplotlib.projections.geo;
 		Examples
 		--------
 		.. plot:: mpl_examples/pylab_examples/hist2d_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'weights', 'x'.
 	**/
-	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		List the children of the artist which contain the mouse event *event*.
 	**/
@@ -4251,8 +4566,17 @@ package matplotlib.projections.geo;
 		Examples
 		--------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'xmin', 'xmax'.
 	**/
-	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Call signature::
 		
@@ -4372,12 +4696,27 @@ package matplotlib.projections.geo;
 		--------
 		matshow : Plot a matrix or an array as an image.
 		
+		Notes
+		-----
+		Unless *extent* is used, pixel centers will be located at integer
+		coordinates. In other words: the origin will coincide with the center
+		of pixel (0, 0).
+		
 		Examples
 		--------
 		
 		.. plot:: mpl_examples/pylab_examples/image_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, kwargs:Dynamic):Dynamic;
+	public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return *True* if the given *mouseevent* (in display coords)
 		is in the Axes
@@ -4439,7 +4778,7 @@ package matplotlib.projections.geo;
 		
 		Parameters
 		----------
-		loc : int or string or pair of floats, default: 0
+		loc : int or string or pair of floats, default: 'upper right'
 		    The location of the legend. Possible codes are:
 		
 		        ===============   =============
@@ -4508,6 +4847,11 @@ package matplotlib.projections.geo;
 		    The relative size of legend markers compared with the originally
 		    drawn ones. Default is ``None`` which will take the value from
 		    the ``legend.markerscale`` :data:`rcParam <matplotlib.rcParams>`.
+		
+		*markerfirst*: [ *True* | *False* ]
+		    if *True*, legend marker is placed to the left of the legend label
+		    if *False*, legend marker is placed to the right of the legend
+		    label
 		
 		frameon : None or bool
 		    Control whether a frame should be drawn around the legend.
@@ -4676,9 +5020,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -4796,9 +5139,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -4841,8 +5183,17 @@ package matplotlib.projections.geo;
 		    :func:`specgram`
 		        :func:`specgram` can plot the magnitude spectrum of segments
 		        within the signal in a colormap.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, kwargs:Dynamic):Dynamic;
+	public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Set or retrieve autoscaling margins.
 		
@@ -4915,6 +5266,7 @@ package matplotlib.projections.geo;
 		Add autoscaling minor ticks to the axes.
 	**/
 	public function minorticks_on():Dynamic;
+	public var mouseover : Dynamic;
 	static public var name : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -4950,7 +5302,7 @@ package matplotlib.projections.geo;
 		than those of *C*; if the dimensions are the same, then the
 		last row and column of *C* will be ignored.
 		
-		Note that the the column index corresponds to the
+		Note that the column index corresponds to the
 		*x*-coordinate, and the row index corresponds to *y*; for
 		details, see the :ref:`Grid Orientation
 		<axes-pcolor-grid-orientation>` section below.
@@ -5065,15 +5417,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -5105,8 +5456,17 @@ package matplotlib.projections.geo;
 		    :func:`~matplotlib.pyplot.pcolormesh`
 		        For an explanation of the differences between
 		        pcolor and pcolormesh.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function pcolor(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolor(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		pseudocolor plot of a 2-D array
 		
@@ -5160,7 +5520,7 @@ package matplotlib.projections.geo;
 		produce faster and more compact output using ps, pdf, and
 		svg backends, however.
 		
-		Note that the the column index corresponds to the x-coordinate,
+		Note that the column index corresponds to the x-coordinate,
 		and the row index corresponds to y; for details, see
 		the "Grid Orientation" section below.
 		
@@ -5186,8 +5546,17 @@ package matplotlib.projections.geo;
 		Return value is an image if a regular or rectangular grid
 		is specified, and a :class:`~matplotlib.collections.QuadMesh`
 		collection in the general quadrilateral case.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function pcolorfast(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolorfast(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot a quadrilateral mesh.
 		
@@ -5269,15 +5638,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -5298,8 +5666,17 @@ package matplotlib.projections.geo;
 		    :func:`~matplotlib.pyplot.pcolor`
 		        For an explanation of the grid orientation and the
 		        expansion of 1-D *X* and/or *Y* to 2-D arrays.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function pcolormesh(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolormesh(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot the phase spectrum.
 		
@@ -5384,9 +5761,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -5426,8 +5802,17 @@ package matplotlib.projections.geo;
 		    :func:`specgram`
 		        :func:`specgram` can plot the phase spectrum of segments
 		        within the signal in a colormap.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, kwargs:Dynamic):Dynamic;
+	public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Call signature::
 		
@@ -5450,7 +5835,8 @@ package matplotlib.projections.geo;
 		      colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'),
 		      autopct=None, pctdistance=0.6, shadow=False,
 		      labeldistance=1.1, startangle=None, radius=None,
-		      counterclock=True, wedgeprops=None, textprops=None)
+		      counterclock=True, wedgeprops=None, textprops=None,
+		      center = (0, 0), frame = False )
 		
 		Make a pie chart of array *x*.  The fractional area of each
 		wedge is given by x/sum(x).  If sum(x) <= 1, then the values
@@ -5508,6 +5894,11 @@ package matplotlib.projections.geo;
 		  *textprops*: [ *None* | dict of key value pairs ]
 		    Dict of arguments to pass to the text objects.
 		
+		  *center*: [ (0,0) | sequence of 2 scalars ]
+		  Center position of the chart.
+		
+		  *frame*: [ *False* | *True* ]
+		    Plot axes frame with the chart.
 		
 		The pie chart will probably look best if the figure and axes are
 		square, or the Axes aspect is equal.  e.g.::
@@ -5533,8 +5924,17 @@ package matplotlib.projections.geo;
 		  above, and *autotexts* is a list of
 		  :class:`~matplotlib.text.Text` instances for the numeric
 		  labels.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'explode', 'colors', 'labels', 'x'.
 	**/
-	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic):Dynamic;
+	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Plot lines and/or markers to the
 		:class:`~matplotlib.axes.Axes`.  *args* is a variable length
@@ -5550,16 +5950,22 @@ package matplotlib.projections.geo;
 		If *x* and/or *y* is 2-dimensional, then the corresponding columns
 		will be plotted.
 		
-		An arbitrary number of *x*, *y*, *fmt* groups can be
-		specified, as in::
+		If used with labeled data, make sure that the color spec is not
+		included as an element in data, as otherwise the last case
+		``plot("v","r", data={"v":..., "r":...)``
+		can be interpreted as the first case which would do ``plot(v, r)``
+		using the default line style and color.
+		
+		If not used with labeled data (i.e., without a data argument),
+		an arbitrary number of *x*, *y*, *fmt* groups can be specified, as in::
 		
 		    a.plot(x1, y1, 'g^', x2, y2, 'g-')
 		
 		Return value is a list of lines that were added.
 		
-		By default, each line is assigned a different color specified by a
-		'color cycle'.  To change this behavior, you can edit the
-		axes.color_cycle rcParam.
+		By default, each line is assigned a different style specified by a
+		'style cycle'.  To change this behavior, you can edit the
+		axes.prop_cycle rcParam.
 		
 		The following format string characters are accepted to control
 		the line style or marker:
@@ -5668,9 +6074,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -5697,8 +6102,17 @@ package matplotlib.projections.geo;
 		:meth:`~matplotlib.axes.Axes.autoscale_view` to determine
 		whether the *x* and *y* axes are autoscaled; the default is
 		*True*.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function plot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot with data with dates.
 		
@@ -5761,9 +6175,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -5794,8 +6207,17 @@ package matplotlib.projections.geo;
 		   :func:`~matplotlib.dates.num2date` and
 		   :func:`~matplotlib.dates.drange` for help on creating the required
 		   floating point dates.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		return a dictionary mapping property name -> value for all Artist props
 	**/
@@ -5939,9 +6361,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -5981,8 +6402,17 @@ package matplotlib.projections.geo;
 		
 		    :func:`csd`
 		        :func:`csd` plots the spectral density between two signals.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, kwargs:Dynamic):Dynamic;
+	public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot a 2-D field of arrows.
 		
@@ -6030,7 +6460,7 @@ package matplotlib.projections.geo;
 		    'x' or 'y', the arrows get larger as one zooms in; for other
 		    units, the arrow size is independent of the zoom state.  For
 		    'width or 'height', the arrow size increases with the width and
-		    height of the axes, respectively, when the the window is resized;
+		    height of the axes, respectively, when the window is resized;
 		    for 'dots' or 'inches', resizing does not change the arrows.
 		
 		
@@ -6087,7 +6517,7 @@ package matplotlib.projections.geo;
 		    is less than this, plot a dot (hexagon) of this diameter instead.
 		    Default is 1.
 		
-		  *pivot*: [ 'tail' | 'middle' | 'tip' ]
+		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
 		    The part of the arrow that is at the grid point; the arrow rotates
 		    about this point, hence the name *pivot*.
 		
@@ -6120,15 +6550,14 @@ package matplotlib.projections.geo;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -6144,7 +6573,7 @@ package matplotlib.projections.geo;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function quiver(args:Dynamic, kw:Dynamic):Dynamic;
+	public function quiver(args:Dynamic, ?data:Dynamic, kw:Dynamic):Dynamic;
 	/**
 		Add a key to a quiver plot.
 		
@@ -6267,11 +6696,14 @@ package matplotlib.projections.geo;
 		    (see below). Note that `c` should not be a single numeric RGB or
 		    RGBA sequence because that is indistinguishable from an array of
 		    values to be colormapped.  `c` can be a 2-D array in which the
-		    rows are RGB or RGBA, however.
+		    rows are RGB or RGBA, however, including the case of a single
+		    row to specify the same color for all points.
 		
 		marker : `~matplotlib.markers.MarkerStyle`, optional, default: 'o'
 		    See `~matplotlib.markers` for more information on the different
-		    styles of markers scatter supports.
+		    styles of markers scatter supports. `marker` can be either
+		    an instance of the class or the text shorthand for a particular
+		    marker.
 		
 		cmap : `~matplotlib.colors.Colormap`, optional, default: None
 		    A `~matplotlib.colors.Colormap` instance or registered name.
@@ -6293,10 +6725,14 @@ package matplotlib.projections.geo;
 		    The alpha blending value, between 0 (transparent) and 1 (opaque)
 		
 		linewidths : scalar or array_like, optional, default: None
-		    If None, defaults to (lines.linewidth,).  Note that this is a
-		    tuple, and if you set the linewidths argument you must set it as a
-		    sequence of floats, as required by
-		    `~matplotlib.collections.RegularPolyCollection`.
+		    If None, defaults to (lines.linewidth,).
+		
+		edgecolors : color or sequence of color, optional, default: None
+		    If None, defaults to (patch.edgecolor).
+		    If 'face', the edge color will always be the same as
+		    the face color.  If it is 'none', the patch boundary will not
+		    be drawn.  For non-filled markers, the `edgecolors` kwarg
+		    is ignored; color is determined by `c`.
 		
 		Returns
 		-------
@@ -6312,11 +6748,26 @@ package matplotlib.projections.geo;
 		which case all masks will be combined and only unmasked points
 		will be plotted.
 		
+		Fundamentally, scatter works with 1-D arrays; `x`, `y`, `s`,
+		and `c` may be input as 2-D arrays, but within scatter
+		they will be flattened. The exception is `c`, which
+		will be flattened only if its size matches the size of `x`
+		and `y`.
+		
 		Examples
 		--------
 		.. plot:: mpl_examples/shapes_and_collections/scatter_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'facecolors', 'edgecolors', 'facecolor', 'y', 'linewidths', 'color', 's', 'c', 'x'.
 	**/
-	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, kwargs:Dynamic):Dynamic;
+	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make a plot with log scaling on the *x* axis.
 		
@@ -6364,9 +6815,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -6442,9 +6892,8 @@ package matplotlib.projections.geo;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -6474,7 +6923,10 @@ package matplotlib.projections.geo;
 	**/
 	public function semilogy(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -6582,6 +7034,9 @@ package matplotlib.projections.geo;
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
 		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
+		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
 	public function set_axes(axes:Dynamic):Dynamic;
@@ -6654,6 +7109,8 @@ package matplotlib.projections.geo;
 		Set the color cycle for any future plot commands on this Axes.
 		
 		*clist* is a list of mpl color specifiers.
+		
+		.. deprecated:: 1.5
 	**/
 	public function set_color_cycle(clist:Dynamic):Dynamic;
 	/**
@@ -6710,14 +7167,6 @@ package matplotlib.projections.geo;
 		Set the number of degrees between each longitude grid.
 	**/
 	public function set_latitude_grid(degrees:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		Set the number of degrees between each longitude grid.
 	**/
@@ -6802,6 +7251,43 @@ package matplotlib.projections.geo;
 	**/
 	public function set_position(pos:Dynamic, ?which:Dynamic):Dynamic;
 	/**
+		Set the property cycle for any future plot commands on this Axes.
+		
+		set_prop_cycle(arg)
+		set_prop_cycle(label, itr)
+		set_prop_cycle(label1=itr1[, label2=itr2[, ...]])
+		
+		Form 1 simply sets given `Cycler` object.
+		
+		Form 2 creates and sets  a `Cycler` from a label and an iterable.
+		
+		Form 3 composes and sets  a `Cycler` as an inner product of the
+		pairs of keyword arguments. In other words, all of the
+		iterables are cycled simultaneously, as if through zip().
+		
+		Parameters
+		----------
+		arg : Cycler
+		    Set the given Cycler.
+		    Can also be `None` to reset to the cycle defined by the
+		    current style.
+		
+		label : name
+		    The property key. Must be a valid `Artist` property.
+		    For example, 'color' or 'linestyle'. Aliases are allowed,
+		    such as 'c' for 'color' and 'lw' for 'linewidth'.
+		
+		itr : iterable
+		    Finite-length iterable of the property values. These values
+		    are validated and will raise a ValueError if invalid.
+		
+		See Also
+		--------
+		    :func:`cycler`      Convenience function for creating your
+		                        own cyclers.
+	**/
+	public function set_prop_cycle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
 		Set zorder value below which artists will be rasterized.  Set
 		to `None` to disable rasterizing of artists below a particular
 		zorder.
@@ -6816,7 +7302,7 @@ package matplotlib.projections.geo;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -6988,9 +7474,9 @@ package matplotlib.projections.geo;
 		
 		  set_yscale(value)
 		
-		Set the scaling of the y-axis: 'linear' | 'log' | 'symlog'
+		Set the scaling of the y-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
-		ACCEPTS: ['linear' | 'log' | 'symlog']
+		ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
 		
 		Different kwargs are accepted, depending on the scale:
 		    'linear'
@@ -7014,6 +7500,13 @@ package matplotlib.projections.geo;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'
@@ -7058,20 +7551,19 @@ package matplotlib.projections.geo;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -7087,10 +7579,12 @@ package matplotlib.projections.geo;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -7188,9 +7682,9 @@ package matplotlib.projections.geo;
 		
 		  set_yscale(value)
 		
-		Set the scaling of the y-axis: 'linear' | 'log' | 'symlog'
+		Set the scaling of the y-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
-		ACCEPTS: ['linear' | 'log' | 'symlog']
+		ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
 		
 		Different kwargs are accepted, depending on the scale:
 		    'linear'
@@ -7214,6 +7708,13 @@ package matplotlib.projections.geo;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'
@@ -7258,20 +7759,19 @@ package matplotlib.projections.geo;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -7287,10 +7787,12 @@ package matplotlib.projections.geo;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -7478,8 +7980,17 @@ package matplotlib.projections.geo;
 		    :func:`phase_spectrum`
 		        A single spectrum, similar to having a single segment when
 		        *mode* is 'phase'.  Plots a line instead of a colormap.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
 	**/
-	public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot the sparsity pattern on a 2-D array.
 		
@@ -7562,6 +8073,9 @@ package matplotlib.projections.geo;
 		            can be found at http://www.leebyron.com/else/streamgraph/.
 		
 		
+		*labels* : A list or tuple of labels to assign to each data series.
+		
+		
 		*colors* : A list or tuple of colors. These will be cycled through and
 		           used to colour the stacked areas.
 		           All other keyword arguments are passed to
@@ -7570,13 +8084,13 @@ package matplotlib.projections.geo;
 		Returns *r* : A list of
 		:class:`~matplotlib.collections.PolyCollection`, one for each
 		element in the stacked area plot.
-		
-		Note that :class:`~matplotlib.legend.Legend` does not support
-		:class:`~matplotlib.collections.PolyCollection` objects.  To create a
-		legend on a stackplot, use a proxy artist:
-		http://matplotlib.org/users/legend_guide.html#using-proxy-artist
 	**/
-	public function stackplot(x:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function stackplot(x:Dynamic, args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Called when a pan operation has started.
 		
@@ -7619,8 +8133,17 @@ package matplotlib.projections.geo;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/stem_plot.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
 	**/
-	public function stem(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function stem(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make a step plot.
 		
@@ -7637,14 +8160,26 @@ package matplotlib.projections.geo;
 		Keyword arguments:
 		
 		*where*: [ 'pre' | 'post' | 'mid'  ]
-		  If 'pre', the interval from x[i] to x[i+1] has level y[i+1]
+		  If 'pre' (the default), the interval from x[i] to x[i+1] has level
+		  y[i+1].
 		
-		  If 'post', that interval has level y[i]
+		  If 'post', that interval has level y[i].
 		
 		  If 'mid', the jumps in *y* occur half-way between the
 		  *x*-values.
+		
+		Return value is a list of lines that were added.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function step(x:Dynamic, y:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function step(x:Dynamic, y:Dynamic, args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Draws streamlines of a vector flow.
 		
@@ -7676,6 +8211,9 @@ package matplotlib.projections.geo;
 		    See :class:`~matplotlib.patches.FancyArrowPatch`.
 		*minlength* : float
 		    Minimum length of streamline in axes coordinates.
+		*start_points*: Nx2 array
+		    Coordinates of starting points for the streamlines.
+		    In data coordinates, the same as the ``x`` and ``y`` arrays.
 		*zorder* : int
 		    any number
 		
@@ -7694,7 +8232,7 @@ package matplotlib.projections.geo;
 		        to the colormap, alpha, etc. for both lines and arrows, but these
 		        changes should be backward compatible.
 	**/
-	public function streamplot(x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic):Dynamic;
+	public function streamplot(x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Add a table to the current axes.
 		
@@ -7728,7 +8266,6 @@ package matplotlib.projections.geo;
 		  fontsize: a float in points         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -8050,13 +8587,6 @@ package matplotlib.projections.geo;
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
 		
@@ -8232,13 +8762,6 @@ package matplotlib.projections.geo;
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
 		
@@ -8287,8 +8810,7 @@ package matplotlib.projections.geo;
 		is 'flat' and C values are defined at points, the color values
 		used for each triangle are from the mean C of the triangle's
 		three points. If *shading* is 'gouraud' then color values must be
-		defined at points.  *shading* of 'faceted' is deprecated;
-		please use *edgecolors* instead.
+		defined at points.
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.
@@ -8483,93 +9005,103 @@ package matplotlib.projections.geo;
 	/**
 		Make a violin plot.
 		
-		Call signature::
+		        Call signature::
 		
-		  violinplot(dataset, positions=None, vert=True, widths=0.5,
-		             showmeans=False, showextrema=True, showmedians=False,
-		             points=100, bw_method=None):
+		          violinplot(dataset, positions=None, vert=True, widths=0.5,
+		                     showmeans=False, showextrema=True, showmedians=False,
+		                     points=100, bw_method=None):
 		
-		Make a violin plot for each column of *dataset* or each vector in
-		sequence *dataset*.  Each filled area extends to represent the
-		entire data range, with optional lines at the mean, the median,
-		the minimum, and the maximum.
+		        Make a violin plot for each column of *dataset* or each vector in
+		        sequence *dataset*.  Each filled area extends to represent the
+		        entire data range, with optional lines at the mean, the median,
+		        the minimum, and the maximum.
 		
-		Parameters
-		----------
-		dataset : Array or a sequence of vectors.
-		  The input data.
+		        Parameters
+		        ----------
+		        dataset : Array or a sequence of vectors.
+		          The input data.
 		
-		positions : array-like, default = [1, 2, ..., n]
-		  Sets the positions of the violins. The ticks and limits are
-		  automatically set to match the positions.
+		        positions : array-like, default = [1, 2, ..., n]
+		          Sets the positions of the violins. The ticks and limits are
+		          automatically set to match the positions.
 		
-		vert : bool, default = True.
-		  If true, creates a vertical violin plot.
-		  Otherwise, creates a horizontal violin plot.
+		        vert : bool, default = True.
+		          If true, creates a vertical violin plot.
+		          Otherwise, creates a horizontal violin plot.
 		
-		widths : array-like, default = 0.5
-		  Either a scalar or a vector that sets the maximal width of
-		  each violin. The default is 0.5, which uses about half of the
-		  available horizontal space.
+		        widths : array-like, default = 0.5
+		          Either a scalar or a vector that sets the maximal width of
+		          each violin. The default is 0.5, which uses about half of the
+		          available horizontal space.
 		
-		showmeans : bool, default = False
-		  If `True`, will toggle rendering of the means.
+		        showmeans : bool, default = False
+		          If `True`, will toggle rendering of the means.
 		
-		showextrema : bool, default = True
-		  If `True`, will toggle rendering of the extrema.
+		        showextrema : bool, default = True
+		          If `True`, will toggle rendering of the extrema.
 		
-		showmedians : bool, default = False
-		  If `True`, will toggle rendering of the medians.
+		        showmedians : bool, default = False
+		          If `True`, will toggle rendering of the medians.
 		
-		points : scalar, default = 100
-		  Defines the number of points to evaluate each of the
-		  gaussian kernel density estimations at.
+		        points : scalar, default = 100
+		          Defines the number of points to evaluate each of the
+		          gaussian kernel density estimations at.
 		
-		bw_method : str, scalar or callable, optional
-		  The method used to calculate the estimator bandwidth.  This can be
-		  'scott', 'silverman', a scalar constant or a callable.  If a
-		  scalar, this will be used directly as `kde.factor`.  If a
-		  callable, it should take a `GaussianKDE` instance as its only
-		  parameter and return a scalar. If None (default), 'scott' is used.
+		        bw_method : str, scalar or callable, optional
+		          The method used to calculate the estimator bandwidth.  This can be
+		          'scott', 'silverman', a scalar constant or a callable.  If a
+		          scalar, this will be used directly as `kde.factor`.  If a
+		          callable, it should take a `GaussianKDE` instance as its only
+		          parameter and return a scalar. If None (default), 'scott' is used.
 		
-		Returns
-		-------
+		        Returns
+		        -------
 		
-		result : dict
-		  A dictionary mapping each component of the violinplot to a
-		  list of the corresponding collection instances created. The
-		  dictionary has the following keys:
+		        result : dict
+		          A dictionary mapping each component of the violinplot to a
+		          list of the corresponding collection instances created. The
+		          dictionary has the following keys:
 		
-		    - ``bodies``: A list of the
-		      :class:`matplotlib.collections.PolyCollection` instances
-		      containing the filled area of each violin.
+		            - ``bodies``: A list of the
+		              :class:`matplotlib.collections.PolyCollection` instances
+		              containing the filled area of each violin.
 		
-		    - ``means``: A
-		      :class:`matplotlib.collections.LineCollection` instance
-		      created to identify the mean values of each of the
-		      violin's distribution.
+		            - ``means``: A
+		              :class:`matplotlib.collections.LineCollection` instance
+		              created to identify the mean values of each of the
+		              violin's distribution.
 		
-		    - ``mins``: A
-		      :class:`matplotlib.collections.LineCollection` instance
-		      created to identify the bottom of each violin's
-		      distribution.
+		            - ``mins``: A
+		              :class:`matplotlib.collections.LineCollection` instance
+		              created to identify the bottom of each violin's
+		              distribution.
 		
-		    - ``maxes``: A
-		      :class:`matplotlib.collections.LineCollection` instance
-		      created to identify the top of each violin's
-		      distribution.
+		            - ``maxes``: A
+		              :class:`matplotlib.collections.LineCollection` instance
+		              created to identify the top of each violin's
+		              distribution.
 		
-		    - ``bars``: A
-		      :class:`matplotlib.collections.LineCollection` instance
-		      created to identify the centers of each violin's
-		      distribution.
+		            - ``bars``: A
+		              :class:`matplotlib.collections.LineCollection` instance
+		              created to identify the centers of each violin's
+		              distribution.
 		
-		    - ``medians``: A
-		      :class:`matplotlib.collections.LineCollection` instance
-		      created to identify the median values of each of the
-		      violin's distribution.
+		            - ``medians``: A
+		              :class:`matplotlib.collections.LineCollection` instance
+		              created to identify the median values of each of the
+		              violin's distribution.
+		        
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'dataset'.
 	**/
-	public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic):Dynamic;
+	public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Plot vertical lines.
 		
@@ -8605,8 +9137,17 @@ package matplotlib.projections.geo;
 		Examples
 		---------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'ymax', 'ymin', 'colors', 'x'.
 	**/
-	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, kwargs:Dynamic):Dynamic;
+	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Sets up x-axis ticks and labels that treat the x data as dates.
 		
@@ -8667,8 +9208,17 @@ package matplotlib.projections.geo;
 		-----
 		The cross correlation is performed with :func:`numpy.correlate` with
 		`mode` = 2.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
 	**/
-	public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, kwargs:Dynamic):Dynamic;
+	public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Sets up y-axis ticks and labels that treat the y data as dates.
 		

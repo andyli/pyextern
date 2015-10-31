@@ -14,6 +14,7 @@ package matplotlib.figure;
 		Return an override dict.  See :func:`~pyplot.text' docstring for info
 	**/
 	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _stale_figure_callback(self:Dynamic, val:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines

@@ -30,7 +30,7 @@ package matplotlib.texmanager;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
 	/**
-		read_png(fileobj)
+		read_png(file)
 	**/
 	static public function read_png(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;

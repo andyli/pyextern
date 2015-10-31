@@ -52,7 +52,7 @@ package matplotlib.widgets;
 		The rectangle is drawn with *rectprops*; default::
 		
 		  rectprops = dict(facecolor='red', edgecolor = 'black',
-		                   alpha=0.5, fill=False)
+		                   alpha=0.2, fill=True)
 		
 		The line is drawn with *lineprops*; default::
 		
@@ -77,9 +77,25 @@ package matplotlib.widgets;
 		 1 = left mouse button
 		 2 = center mouse button (scroll wheel)
 		 3 = right mouse button
+		
+		*interactive* will draw a set of handles and allow you interact
+		with the widget after it is drawn.
+		
+		*state_modifier_keys* are keyboard modifiers that affect the behavior
+		of the widget.
+		
+		The defaults are:
+		dict(move=' ', clear='escape', square='shift', center='ctrl')
+		
+		Keyboard modifiers, which:
+		'move': Move the existing shape.
+		'clear': Clear the current shape.
+		'square': Makes the shape square.
+		'center': Make the initial point the center of the shape.
+		'square' and 'center' can be combined.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic, ?maxdist:Dynamic, ?marker_props:Dynamic, ?interactive:Dynamic, ?state_modifier_keys:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -135,6 +151,66 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
+	/**
+		Clean up an event
+		
+		Use prev event if there is no xdata
+		Limit the xdata and ydata to the axes limits
+		Set the prev event
+	**/
+	public function _clean_event(event:Dynamic):Dynamic;
+	/**
+		Get the xdata and ydata for event, with limits
+	**/
+	public function _get_data(event:Dynamic):Dynamic;
+	/**
+		Key press event handler - use for widget-specific key press actions.
+		        
+	**/
+	public function _on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler
+	**/
+	public function _on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler
+	**/
+	public function _on_scroll(event:Dynamic):Dynamic;
+	/**
+		on motion notify event if box/line is wanted
+	**/
+	public function _onmove(event:Dynamic):Dynamic;
+	/**
+		on button press event
+	**/
+	public function _press(event:Dynamic):Dynamic;
+	public var _rect_bbox : Dynamic;
+	/**
+		on button release event
+	**/
+	public function _release(event:Dynamic):Dynamic;
+	/**
+		Set active handle based on the location of the mouse event
+	**/
+	public function _set_active_handle(event:Dynamic):Dynamic;
+	/**
+		Draw a rectangle with lower left at *xy* = (*x*, *y*) with
+		specified *width* and *height*.
+	**/
+	static public function _shape_klass(xy:Dynamic, width:Dynamic, height:Dynamic, ?angle:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
+	/**
+		Center of rectangle
+	**/
+	public var center : Dynamic;
+	/**
+		Connect the major canvas events to methods.
+	**/
+	public function connect_default_events():Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -143,13 +219,28 @@ package matplotlib.widgets;
 	**/
 	public function connect_event(event:Dynamic, callback:Dynamic):Dynamic;
 	/**
+		Corners of rectangle from lower left, moving clockwise.
+	**/
+	public var corners : Dynamic;
+	/**
 		Disconnect all events created by this widget.
 	**/
 	public function disconnect_events():Dynamic;
+	public function draw_shape(extents:Dynamic):Dynamic;
 	static public var drawon : Dynamic;
+	/**
+		Midpoint of rectangle edges from left, moving clockwise.
+	**/
+	public var edge_centers : Dynamic;
 	static public var eventson : Dynamic;
 	/**
-		Get status of active mode (boolean variable)
+		Return (xmin, xmax, ymin, ymax).
+	**/
+	public var extents : Dynamic;
+	public var geometry : Dynamic;
+	/**
+		Get whether the widget is active.
+		        
 	**/
 	public function get_active():Dynamic;
 	/**
@@ -157,22 +248,38 @@ package matplotlib.widgets;
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	/**
-		on motion notify event if box/line is wanted
+		Key press event handler and validator for all selection widgets
+	**/
+	public function on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler and validator
+	**/
+	public function on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler and validator
+	**/
+	public function on_scroll(event:Dynamic):Dynamic;
+	/**
+		Cursor move event handler and validator
 	**/
 	public function onmove(event:Dynamic):Dynamic;
 	/**
-		on button press event
+		Button press handler and validator
 	**/
 	public function press(event:Dynamic):Dynamic;
 	/**
-		on button release event
+		Button release event handler and validator
 	**/
 	public function release(event:Dynamic):Dynamic;
 	/**
-		Use this to activate / deactivate the RectangleSelector
-		from your program with an boolean parameter *active*.
+		Set whether the widget is active.
+		        
 	**/
 	public function set_active(active:Dynamic):Dynamic;
+	/**
+		Set the visibility of our artists 
+	**/
+	public function set_visible(visible:Dynamic):Dynamic;
 	/**
 		draw using newfangled blit or oldfangled draw depending on
 		useblit

@@ -48,20 +48,19 @@ package matplotlib.text;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -77,16 +76,18 @@ package matplotlib.text;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
 	**/
 	@:native("__init__")
-	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -145,16 +146,35 @@ package matplotlib.text;
 	static public var _cached : Dynamic;
 	/**
 		Update the location and the size of the bbox
-		(FancyBoxPatch), and draw
+		(FancyBboxPatch), and draw
 	**/
 	public function _draw_bbox(renderer:Dynamic, posx:Dynamic, posy:Dynamic):Dynamic;
 	/**
+		Returns the distance from the given points, to the boundaries
+		of a rotated box in pixels.
+	**/
+	public function _get_dist_to_box(rotation:Dynamic, x0:Dynamic, y0:Dynamic, figure_box:Dynamic):Dynamic;
+	/**
 		return the extent (bbox) of the text together with
-		multile-alignment information. Note that it returns a extent
+		multiple-alignment information. Note that it returns an extent
 		of a rotated text when necessary.
 	**/
 	public function _get_layout(renderer:Dynamic):Dynamic;
 	public function _get_multialignment():Dynamic;
+	/**
+		Returns the width of a given text string, in pixels.
+	**/
+	public function _get_rendered_text_width(text:Dynamic):Dynamic;
+	/**
+		Returns the maximum line width for wrapping text based on the
+		current orientation.
+	**/
+	public function _get_wrap_line_width():Dynamic;
+	/**
+		Return a copy of the text with new lines added, so that
+		the text is wrapped relative to the parent figure.
+	**/
+	public function _get_wrapped_text():Dynamic;
 	/**
 		get the (possibly unit converted) transformed x, y in display coords
 	**/
@@ -173,6 +193,11 @@ package matplotlib.text;
 	**/
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
+	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
 	/**
 		Test whether the mouse event occurred in the patch.
 		
@@ -216,6 +241,10 @@ package matplotlib.text;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -230,11 +259,14 @@ package matplotlib.text;
 	public function get_animated():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
-		Return the bbox Patch object. Returns None if the the
+		Return the bbox Patch object. Returns None if the
 		FancyBboxPatch is not made.
 	**/
 	public function get_bbox_patch():Dynamic;
@@ -263,6 +295,10 @@ package matplotlib.text;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the list of font families used for font lookup
 	**/
@@ -419,9 +455,20 @@ package matplotlib.text;
 	**/
 	public function get_transformed_clip_path_and_affine():Dynamic;
 	/**
+		Return the unitless position of the text as a tuple (*x*, *y*)
+	**/
+	public function get_unitless_position():Dynamic;
+	/**
 		Returns the url
 	**/
 	public function get_url():Dynamic;
+	/**
+		Return whether this `Text` object will render using TeX.
+		
+		If the user has not manually set this value, it will default to
+		the value of `rcParams['text.usetex']`
+	**/
+	public function get_usetex():Dynamic;
 	/**
 		alias for :meth:`getverticalalignment`
 	**/
@@ -464,6 +511,10 @@ package matplotlib.text;
 	**/
 	public function get_window_extent(?renderer:Dynamic, ?dpi:Dynamic):Dynamic;
 	/**
+		Returns the wrapping state for the text.
+	**/
+	public function get_wrap():Dynamic;
+	/**
 		Return the :class:`Artist`'s zorder.
 	**/
 	public function get_zorder():Dynamic;
@@ -493,6 +544,7 @@ package matplotlib.text;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -539,7 +591,10 @@ package matplotlib.text;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -563,6 +618,9 @@ package matplotlib.text;
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
 		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
+		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
 	public function set_axes(axes:Dynamic):Dynamic;
@@ -579,15 +637,14 @@ package matplotlib.text;
 	public function set_backgroundcolor(color:Dynamic):Dynamic;
 	/**
 		Draw a bounding box around self.  rectprops are any settable
-		properties for a rectangle, e.g., facecolor='red', alpha=0.5.
+		properties for a FancyBboxPatch, e.g., facecolor='red', alpha=0.5.
 		
 		  t.set_bbox(dict(facecolor='red', alpha=0.5))
 		
-		If rectprops has "boxstyle" key. A FancyBboxPatch
-		is initialized with rectprops and will be drawn. The mutation
-		scale of the FancyBboxPath is set to the fontsize.
+		The default boxstyle is 'square'. The mutation
+		scale of the FancyBboxPatch is set to the fontsize.
 		
-		ACCEPTS: rectangle prop dict
+		ACCEPTS: FancyBboxPatch prop dict
 	**/
 	public function set_bbox(rectprops:Dynamic):Dynamic;
 	/**
@@ -729,14 +786,6 @@ package matplotlib.text;
 	**/
 	public function set_linespacing(spacing:Dynamic):Dynamic;
 	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
-	/**
 		alias for set_verticalalignment
 	**/
 	public function set_ma(align:Dynamic):Dynamic;
@@ -827,7 +876,7 @@ package matplotlib.text;
 	**/
 	public function set_size(fontsize:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -896,6 +945,13 @@ package matplotlib.text;
 	**/
 	public function set_url(url:Dynamic):Dynamic;
 	/**
+		Set this `Text` object to render using TeX (or not).
+		
+		If `None` is given, the option will be reset to use the value of
+		`rcParams['text.usetex']`
+	**/
+	public function set_usetex(usetex:Dynamic):Dynamic;
+	/**
 		alias for set_verticalalignment
 	**/
 	public function set_va(align:Dynamic):Dynamic;
@@ -927,6 +983,10 @@ package matplotlib.text;
 	**/
 	public function set_weight(weight:Dynamic):Dynamic;
 	/**
+		Sets the wrapping state for the text.
+	**/
+	public function set_wrap(wrap:Dynamic):Dynamic;
+	/**
 		Set the *x* position of the text
 		
 		ACCEPTS: float
@@ -946,10 +1006,14 @@ package matplotlib.text;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		Update the properties of this :class:`Artist` from the
-		dictionary *prop*.
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
 	**/
-	public function update(props:Dynamic):Dynamic;
+	public var stale : Dynamic;
+	/**
+		Update properties from a dictionary.
+	**/
+	public function update(kwargs:Dynamic):Dynamic;
 	/**
 		Update the location and the size of the bbox. This method
 		should be used when the position and size of the bbox needs to

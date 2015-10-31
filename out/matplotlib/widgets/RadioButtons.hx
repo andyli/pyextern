@@ -106,7 +106,12 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
 	public function _clicked(event:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -125,6 +130,11 @@ package matplotlib.widgets;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	/**
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
 		Return True if event should be ignored.
 		
 		This method (or a version of it) should be called at the beginning
@@ -137,4 +147,14 @@ package matplotlib.widgets;
 		A connection id is returned which can be used to disconnect
 	**/
 	public function on_clicked(func:Dynamic):Dynamic;
+	/**
+		Trigger which radio button to make active.
+		
+		*index* is an index into the original label list
+		    that this object was constructed with.
+		    Raise ValueError if the index is invalid.
+		
+		Callbacks will be triggered if :attr:`eventson` is True.
+	**/
+	public function set_active(index:Dynamic):Dynamic;
 }

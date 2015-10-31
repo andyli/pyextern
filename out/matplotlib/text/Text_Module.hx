@@ -19,6 +19,10 @@ package matplotlib.text;
 		Return an override dict.  See :func:`~pyplot.text' docstring for info
 	**/
 	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Temporarily inserts newlines to the text if the wrap option is enabled.
+	**/
+	static public function _wrap_text(textobj:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
@@ -28,19 +32,10 @@ package matplotlib.text;
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
-	/**
-		This is a debug function to draw a rectangle around the bounding
-		box returned by
-		:meth:`~matplotlib.artist.Artist.get_window_extent` of an artist,
-		to test whether the artist is returning the correct bbox.
-		
-		*props* is a dict of rectangle props with the additional property
-		'pad' that sets the padding around the bbox in points.
-	**/
-	static public function bbox_artist(artist:Dynamic, renderer:Dynamic, ?props:Dynamic, ?fill:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Return the text angle as float.
+		Return the text angle as float. The returned
+		angle is between 0 and 360 deg.
 		
 		*rotation* may be 'horizontal', 'vertical', or a numeric value in degrees.
 	**/

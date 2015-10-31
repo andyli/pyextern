@@ -52,8 +52,95 @@ package matplotlib.lines;
 	static public function iterable(obj:Dynamic):Dynamic;
 	static public var lineMarkers : Dynamic;
 	static public var lineStyles : Dynamic;
-	static public var ls_mapper : Dynamic;
+	static public var ls_mapper_r : Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_midstep(x:Dynamic, args:Dynamic):Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_poststep(x:Dynamic, args:Dynamic):Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_prestep(x:Dynamic, args:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		Determine if any line segments are within radius of a

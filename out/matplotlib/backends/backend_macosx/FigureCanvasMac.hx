@@ -103,6 +103,7 @@ package matplotlib.backends.backend_macosx;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	public function _print_bitmap(filename:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		blit the canvas in bbox (default entire canvas)

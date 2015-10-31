@@ -97,6 +97,8 @@ package matplotlib.backends.backend_tkagg;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _get_toolbar():Dynamic;
+	public function _get_toolmanager():Dynamic;
 	public function destroy(args:Dynamic):Dynamic;
 	public function full_screen_toggle():Dynamic;
 	/**

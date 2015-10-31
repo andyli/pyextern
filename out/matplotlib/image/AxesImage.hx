@@ -124,7 +124,7 @@ package matplotlib.image;
 		
 		It was intended to derive a skew transform that preserve the
 		lower-left corner (x1, y1) and top-right corner(x2,y2), but
-		change the the lower-right-corner(x2, y1) to a new position
+		change the lower-right-corner(x2, y1) to a new position
 		(x3, y3).
 	**/
 	static public function _get_rotate_and_skew_transform(x1:Dynamic, y1:Dynamic, x2:Dynamic, y2:Dynamic, x3:Dynamic, y3:Dynamic):Dynamic;
@@ -165,6 +165,11 @@ package matplotlib.image;
 		current array, changing only limits that are None
 	**/
 	public function autoscale_None():Dynamic;
+	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
 	/**
 		Call this whenever the mappable is changed so observers can
 		update state
@@ -210,6 +215,10 @@ package matplotlib.image;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -228,7 +237,10 @@ package matplotlib.image;
 	public function get_array():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -260,6 +272,10 @@ package matplotlib.image;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Get the image extent: left, right, bottom, top
 	**/
@@ -376,7 +392,7 @@ package matplotlib.image;
 		behavior where interactive figures will look fine on the screen,
 		but will save incorrectly.
 	**/
-	public function get_window_extent(renderer:Dynamic):Dynamic;
+	public function get_window_extent(?renderer:Dynamic):Dynamic;
 	/**
 		Return the :class:`Artist`'s zorder.
 	**/
@@ -389,7 +405,6 @@ package matplotlib.image;
 		List the children of the artist which contain the mouse event *event*.
 	**/
 	public function hitlist(event:Dynamic):Dynamic;
-	static public var interpnames : Dynamic;
 	/**
 		Returns True if the artist is assigned to a
 		:class:`~matplotlib.figure.Figure`.
@@ -400,7 +415,9 @@ package matplotlib.image;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	static public var iterpnames : Dynamic;
 	public function make_image(?magnification:Dynamic):Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -447,7 +464,10 @@ package matplotlib.image;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -476,6 +496,9 @@ package matplotlib.image;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -530,13 +553,6 @@ package matplotlib.image;
 		ACCEPTS: a colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The set_colorbar function was deprecated in version 1.3. Use the colorbar attribute instead.
-		
-		set the colorbar and axes instances associated with mappable
-	**/
-	public function set_colorbar(im:Dynamic, ax:Dynamic):Dynamic;
 	/**
 		Replace the contains test used by this artist. The new picker
 		should be a callable function which determines whether the
@@ -614,14 +630,6 @@ package matplotlib.image;
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
-	/**
 		set the normalization instance
 	**/
 	public function set_norm(norm:Dynamic):Dynamic;
@@ -677,7 +685,7 @@ package matplotlib.image;
 	**/
 	public function set_resample(v:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -735,6 +743,11 @@ package matplotlib.image;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Return a normalized rgba array corresponding to *x*.
 		

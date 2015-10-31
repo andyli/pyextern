@@ -83,23 +83,6 @@ package matplotlib.colors;
 		gives the closest value for values of x between 0 and 1.
 	**/
 	static public function makeMappingArray(N:Dynamic, data:Dynamic, ?gamma:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The no_norm class alias was deprecated in version 1.3. Use NoNorm instead.
-		
-		Dummy replacement for Normalize, for the case where we
-		want to use indices directly in a
-		:class:`~matplotlib.cm.ScalarMappable` .
-	**/
-	static public function no_norm(?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The normalize class alias was deprecated in version 1.3. Use Normalize instead.
-		
-		A class which, when called, can normalize data into
-		the ``[0.0, 1.0]`` interval.
-	**/
-	static public function normalize(?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Given an rgb or rgba sequence of 0-1 floats, return the hex string

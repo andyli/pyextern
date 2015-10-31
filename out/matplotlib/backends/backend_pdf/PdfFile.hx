@@ -98,16 +98,32 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_xobject_symbol_name(filename:Dynamic, symbol_name:Dynamic):Dynamic;
-	public function _gray(im:Dynamic, ?rc:Dynamic, ?gc:Dynamic, ?bc:Dynamic):Dynamic;
 	static public var _identityToUnicodeCMap : Dynamic;
-	public function _rgb(im:Dynamic):Dynamic;
+	/**
+		Unpack the image object im into height, width, data, alpha,
+		where data and alpha are HxWx3 (RGB) or HxWx1 (grayscale or alpha)
+		arrays, except alpha is None if the image is fully opaque.
+	**/
+	public function _unpack(im:Dynamic):Dynamic;
+	/**
+		Write the image *data* of size *height* x *width*, as grayscale
+		if *grayscale* is true and RGB otherwise, as pdf object *id*
+		and with the soft mask (alpha channel) *smask*, which should be
+		either None or a *height* x *width* x 1 array.
+	**/
+	public function _writeImg(data:Dynamic, height:Dynamic, width:Dynamic, grayscale:Dynamic, id:Dynamic, ?smask:Dynamic):Dynamic;
+	/**
+		Write the image *data* into the pdf file using png
+		predictors with Flate compression.
+	**/
+	public function _writePng(data:Dynamic):Dynamic;
 	public function _write_afm_font(filename:Dynamic):Dynamic;
 	public function addGouraudTriangles(points:Dynamic, colors:Dynamic):Dynamic;
 	/**
 		Return name of an ExtGState that sets alpha to the given value
 	**/
 	public function alphaState(alpha:Dynamic):Dynamic;
-	public function beginStream(id:Dynamic, len:Dynamic, ?extra:Dynamic):Dynamic;
+	public function beginStream(id:Dynamic, len:Dynamic, ?extra:Dynamic, ?png:Dynamic):Dynamic;
 	public function close():Dynamic;
 	public function createType1Descriptor(t1font:Dynamic, fontfile:Dynamic):Dynamic;
 	/**
@@ -130,8 +146,9 @@ package matplotlib.backends.backend_pdf;
 	/**
 		Return name of a marker XObject representing the given path.
 	**/
-	public function markerObject(path:Dynamic, trans:Dynamic, fillp:Dynamic, strokep:Dynamic, lw:Dynamic, joinstyle:Dynamic, capstyle:Dynamic):Dynamic;
+	public function markerObject(path:Dynamic, trans:Dynamic, fill:Dynamic, stroke:Dynamic, lw:Dynamic, joinstyle:Dynamic, capstyle:Dynamic):Dynamic;
 	public function newPage(width:Dynamic, height:Dynamic):Dynamic;
+	public function newTextnote(text:Dynamic, ?positionRect:Dynamic):Dynamic;
 	public function output(data:Dynamic):Dynamic;
 	public function pathCollectionObject(gc:Dynamic, path:Dynamic, trans:Dynamic, padding:Dynamic, filled:Dynamic, stroked:Dynamic):Dynamic;
 	static public function pathOperations(path:Dynamic, transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic, ?sketch:Dynamic):Dynamic;

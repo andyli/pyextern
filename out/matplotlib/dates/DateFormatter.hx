@@ -43,7 +43,7 @@ package matplotlib.dates;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*fmt* is an :func:`strftime` format string; *tz* is the
+		*fmt* is a :func:`strftime` format string; *tz* is the
 		 :class:`tzinfo` instance.
 	**/
 	@:native("__init__")
@@ -103,7 +103,14 @@ package matplotlib.dates;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _findall(text:Dynamic, substr:Dynamic):Dynamic;
+	/**
+		Helper function for replacing substrings sub1 and sub2
+		located at the same indexes in strings s1 and s2 respectively,
+		with the string replacement.  It is expected that sub1 and sub2
+		have the same length.  Returns the pair s1, s2 after the
+		substitutions.
+	**/
+	public function _replace_common_substr(s1:Dynamic, s2:Dynamic, sub1:Dynamic, sub2:Dynamic, replacement:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
 	/**
@@ -134,5 +141,27 @@ package matplotlib.dates;
 	public function set_locs(locs:Dynamic):Dynamic;
 	public function set_tzinfo(tz:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
-	public function strftime(dt:Dynamic, fmt:Dynamic):Dynamic;
+	/**
+		Refer to documentation for datetime.strftime.
+		
+		*fmt* is a :func:`strftime` format string.
+		
+		Warning: For years before 1900, depending upon the current
+		locale it is possible that the year displayed with %x might
+		be incorrect. For years before 100, %y and %Y will yield
+		zero-padded strings.
+	**/
+	public function strftime(dt:Dynamic, ?fmt:Dynamic):Dynamic;
+	/**
+		Call time.strftime for years before 1900 by rolling
+		forward a multiple of 28 years.
+		
+		*fmt* is a :func:`strftime` format string.
+		
+		Dalke: I hope I did this math right.  Every 28 years the
+		calendar repeats, except through century leap years excepting
+		the 400 year leap years.  But only if you're using the Gregorian
+		calendar.
+	**/
+	public function strftime_pre_1900(dt:Dynamic, ?fmt:Dynamic):Dynamic;
 }

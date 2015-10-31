@@ -46,8 +46,7 @@ package matplotlib.tri.tripcolor;
 		is 'flat' and C values are defined at points, the color values
 		used for each triangle are from the mean C of the triangle's
 		three points. If *shading* is 'gouraud' then color values must be
-		defined at points.  *shading* of 'faceted' is deprecated;
-		please use *edgecolors* instead.
+		defined at points.
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.

@@ -320,7 +320,7 @@ package matplotlib.backends.backend_macosx;
 	**/
 	public function set_linewidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------

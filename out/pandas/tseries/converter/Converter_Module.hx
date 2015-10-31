@@ -96,8 +96,8 @@ package pandas.tseries.converter;
 		
 		Returns *vmin*, *vmax*, expanded and/or swapped if necessary.
 		
-		If either input is inf or NaN, or if both inputs are 0,
-		returns -*expander*, *expander*.
+		If either input is inf or NaN, or if both inputs are 0 or very
+		close to zero, it returns -*expander*, *expander*.
 	**/
 	static public function nonsingular(vmin:Dynamic, vmax:Dynamic, ?expander:Dynamic, ?tiny:Dynamic, ?increasing:Dynamic):Dynamic;
 	/**

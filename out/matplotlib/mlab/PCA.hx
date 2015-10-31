@@ -44,8 +44,8 @@ package matplotlib.mlab;
 		Inputs:
 		
 		  *a*: a numobservations x numdims array
-		  *standardize*: True if input data are to be standardized. If False, only centering will be
-		  carried out.
+		  *standardize*: True if input data are to be standardized. If False,
+		  only centering will be carried out.
 		
 		Attrs:
 		
@@ -53,18 +53,20 @@ package matplotlib.mlab;
 		
 		  *numrows*, *numcols*: the dimensions of a
 		
-		  *mu* : a numdims array of means of a. This is the vector that points to the
-		  origin of PCA space.
+		  *mu*: a numdims array of means of a. This is the vector that points
+		  to the origin of PCA space.
 		
-		  *sigma* : a numdims array of standard deviation of a
+		  *sigma*: a numdims array of standard deviation of a
 		
-		  *fracs* : the proportion of variance of each of the principal components
+		  *fracs*: the proportion of variance of each of the principal
+		  components
 		
-		  *s* : the actual eigenvalues of the decomposition
+		  *s*: the actual eigenvalues of the decomposition
 		
-		  *Wt* : the weight vector for projecting a numdims point or array into PCA space
+		  *Wt*: the weight vector for projecting a numdims point or array into
+		  PCA space
 		
-		  *Y* : a projected into PCA space
+		  *Y*: a projected into PCA space
 		
 		
 		The factor loadings are in the Wt factor, i.e., the factor
@@ -130,11 +132,13 @@ package matplotlib.mlab;
 	public var __weakref__ : Dynamic;
 	static public function _get_colinear():Dynamic;
 	/**
-		center and optionally standardize the data using the mean and sigma from training set a
+		center and optionally standardize the data using the mean and sigma
+		from training set a
 	**/
 	public function center(x:Dynamic):Dynamic;
 	/**
-		project x onto the principle axes, dropping any axes where fraction of variance<minfrac
+		project x onto the principle axes, dropping any axes where fraction
+		of variance<minfrac
 	**/
 	public function project(x:Dynamic, ?minfrac:Dynamic):Dynamic;
 }

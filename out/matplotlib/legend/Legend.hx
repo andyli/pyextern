@@ -53,6 +53,8 @@ package matplotlib.legend;
 		prop               the font property
 		fontsize           the font size (used only if prop is not specified)
 		markerscale        the relative size of legend markers vs. original
+		markerfirst        If true, place legend marker to left of label
+		                   If false, place legend marker to right of label
 		numpoints          the number of points in the legend for line
 		scatterpoints      the number of points in the legend for scatter plot
 		scatteryoffsets    a list of yoffsets for scatter symbols in legend
@@ -90,7 +92,7 @@ package matplotlib.legend;
 		in the normalized axes coordinate.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
+	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -200,7 +202,7 @@ package matplotlib.legend;
 		texts. Once packed, their location is calculated during the
 		drawing time.
 	**/
-	public function _init_legend_box(handles:Dynamic, labels:Dynamic):Dynamic;
+	public function _init_legend_box(handles:Dynamic, labels:Dynamic, ?markerfirst:Dynamic):Dynamic;
 	public var _loc : Dynamic;
 	/**
 		set the boilerplate props for artists added to axes
@@ -220,6 +222,11 @@ package matplotlib.legend;
 	**/
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
+	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
 	static public var codes : Dynamic;
 	/**
 		Test whether the artist contains the mouse event.
@@ -285,6 +292,10 @@ package matplotlib.legend;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -299,7 +310,10 @@ package matplotlib.legend;
 	public function get_animated():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -326,6 +340,10 @@ package matplotlib.legend;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		A class method that returns the default handler map.
 	**/
@@ -447,7 +465,7 @@ package matplotlib.legend;
 	**/
 	public function get_visible():Dynamic;
 	/**
-		return a extent of the the legend
+		return a extent of the legend
 	**/
 	public function get_window_extent(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
@@ -472,6 +490,7 @@ package matplotlib.legend;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -518,7 +537,10 @@ package matplotlib.legend;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -541,6 +563,9 @@ package matplotlib.legend;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -634,14 +659,6 @@ package matplotlib.legend;
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
-	/**
 		set path_effects, which should be a list of instances of
 		matplotlib.patheffect._Base class or its derivatives.
 	**/
@@ -687,7 +704,7 @@ package matplotlib.legend;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -750,6 +767,11 @@ package matplotlib.legend;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.

@@ -326,8 +326,8 @@ package matplotlib.backends.backend_ps;
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		override this method for renderers that do not necessarily
-		want to rescale and composite raster images. (like SVG)
+		return whether to generate a composite image from multiple images on
+		a set of axes
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**

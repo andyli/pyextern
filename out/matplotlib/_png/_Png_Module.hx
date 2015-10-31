@@ -8,23 +8,19 @@ package matplotlib._png;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		read_png(fileobj)
+		read_png(file)
 	**/
 	static public function read_png(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		read_png_float(fileobj)
+		read_png_float(file)
 	**/
 	static public function read_png_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		read_png_int(fileobj)
+		read_png_int(file)
 	**/
 	static public function read_png_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		read_png_uint8(fileobj)
-	**/
-	static public function read_png_uint8(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		write_png(buffer, width, height, fileobj, dpi=None)
+		write_png(buffer, file, dpi=0)
 	**/
 	static public function write_png(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.textpath;
-@:pythonImport("matplotlib.textpath", "FT2Font") extern class FT2Font {
-
-}
+typedef FT2Font = matplotlib.ft2font.FT2Font;

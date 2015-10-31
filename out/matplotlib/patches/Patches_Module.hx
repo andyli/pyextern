@@ -9,7 +9,6 @@ package matplotlib.patches;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	/**
 		find a point along a line connecting (x0, y0) -- (x1, y1) whose
 		distance from (x0, y0) is d.
@@ -25,6 +24,12 @@ package matplotlib.patches;
 		Given the list of list of strings, return a string of REST table format.
 	**/
 	static public function _pprint_table(_table:Dynamic, ?leadingspace:Dynamic):Dynamic;
+	/**
+		A helper function for the _Style class.  Given the dictionary of
+		(stylename : styleclass), return a string rep of the list of keys.
+		Used to update the documentation.
+	**/
+	static public function _simpleprint_styles(_styles:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines

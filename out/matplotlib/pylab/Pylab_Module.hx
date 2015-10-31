@@ -156,11 +156,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/xcorr_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function acorr(x:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function acorr(x:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		add(x1, x2[, out])
 		
@@ -712,9 +722,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -755,11 +764,21 @@ package matplotlib.pylab;
 		        :func:`specgram` can plot the angle spectrum of segments
 		        within the signal in a colormap.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Create an annotation: a piece of text referring to a data
 		point.
@@ -900,20 +919,19 @@ package matplotlib.pylab;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -929,10 +947,12 @@ package matplotlib.pylab;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -2407,9 +2427,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -3031,12 +3050,12 @@ package matplotlib.pylab;
 		
 		Returns
 		-------
-		`~matplotlib.lines.Line2D`
+		:class:`~matplotlib.lines.Line2D`
 		
 		Notes
 		-----
-		kwargs are the same as kwargs to plot, and can be
-		used to control the line properties.  e.g.,
+		kwargs are passed to :class:`~matplotlib.lines.Line2D` and can be used
+		to control the line properties.
 		
 		Examples
 		--------
@@ -3049,7 +3068,7 @@ package matplotlib.pylab;
 		
 		    >>> axhline(y=1)
 		
-		* draw a default hline at 'y' = .5 that spans the the middle half of
+		* draw a default hline at 'y' = .5 that spans the middle half of
 		  the xrange::
 		
 		    >>> axhline(y=.5, xmin=0.25, xmax=0.75)
@@ -3075,9 +3094,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -3158,9 +3176,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -3232,6 +3249,12 @@ package matplotlib.pylab;
 		as kwargs selectively to alter just those limits without changing
 		the others.
 		
+		  >>> axis('square')
+		
+		changes the limit ranges (*xmax*-*xmin*) and (*ymax*-*ymin*) of
+		the *x* and *y* axes to be the same, and have the same scaling,
+		resulting in a square plot.
+		
 		The xmin, xmax, ymin, ymax tuple is returned
 		
 		.. seealso::
@@ -3249,16 +3272,16 @@ package matplotlib.pylab;
 		    x position in data coordinates of the vertical line.
 		
 		ymin : scalar, optional, default: 0
-		    Should be between 0 and 1, 0 being the far left of the plot, 1 the
-		    far right of the plot.
+		    Should be between 0 and 1, 0 being the bottom of the plot, 1 the
+		    top of the plot.
 		
 		ymax : scalar, optional, default: 1
-		    Should be between 0 and 1, 0 being the far left of the plot, 1 the
-		    far right of the plot.
+		    Should be between 0 and 1, 0 being the bottom of the plot, 1 the
+		    top of the plot.
 		
 		Returns
 		-------
-		`~matplotlib.lines.Line2D`
+		:class:`~matplotlib.lines.Line2D`
 		
 		
 		Examples
@@ -3271,7 +3294,7 @@ package matplotlib.pylab;
 		
 		    >>> axvline(x=1)
 		
-		* draw a default vline at *x* = .5 that spans the the middle half of
+		* draw a default vline at *x* = .5 that spans the middle half of
 		  the yrange::
 		
 		    >>> axvline(x=.5, ymin=0.25, ymax=0.75)
@@ -3297,9 +3320,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -3380,9 +3402,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -3419,11 +3440,13 @@ package matplotlib.pylab;
 		height : sequence of scalars
 		    the heights of the bars
 		
-		width : scalar or array-like, optional, default: 0.8
+		width : scalar or array-like, optional
 		    the width(s) of the bars
+		    default: 0.8
 		
-		bottom : scalar or array-like, optional, default: None
+		bottom : scalar or array-like, optional
 		    the y coordinate(s) of the bars
+		    default: None
 		
 		color : scalar or array-like, optional
 		    the colors of the bar faces
@@ -3431,40 +3454,54 @@ package matplotlib.pylab;
 		edgecolor : scalar or array-like, optional
 		    the colors of the bar edges
 		
-		linewidth : scalar or array-like, optional, default: None
+		linewidth : scalar or array-like, optional
 		    width of bar edge(s). If None, use default
 		    linewidth; If 0, don't draw edges.
+		    default: None
 		
-		xerr : scalar or array-like, optional, default: None
+		tick_label : string or array-like, optional
+		    the tick labels of the bars
+		    default: None
+		
+		xerr : scalar or array-like, optional
 		    if not None, will be used to generate errorbar(s) on the bar chart
+		    default: None
 		
-		yerr : scalar or array-like, optional, default: None
+		yerr : scalar or array-like, optional
 		    if not None, will be used to generate errorbar(s) on the bar chart
+		    default: None
 		
-		ecolor : scalar or array-like, optional, default: None
+		ecolor : scalar or array-like, optional
 		    specifies the color of errorbar(s)
+		    default: None
 		
-		capsize : integer, optional, default: 3
+		capsize : scalar, optional
 		   determines the length in points of the error bar caps
+		   default: None, which will take the value from the
+		   ``errorbar.capsize`` :data:`rcParam<matplotlib.rcParams>`.
 		
-		error_kw :
+		error_kw : dict, optional
 		    dictionary of kwargs to be passed to errorbar method. *ecolor* and
 		    *capsize* may be specified here rather than as independent kwargs.
 		
-		align : ['edge' | 'center'], optional, default: 'edge'
-		    If `edge`, aligns bars by their left edges (for vertical bars) and
-		    by their bottom edges (for horizontal bars). If `center`, interpret
+		align : {'edge',  'center'}, optional
+		    If 'edge', aligns bars by their left edges (for vertical bars) and
+		    by their bottom edges (for horizontal bars). If 'center', interpret
 		    the `left` argument as the coordinates of the centers of the bars.
+		    To align on the align bars on the right edge pass a negative
+		    `width`.
 		
-		orientation : 'vertical' | 'horizontal', optional, default: 'vertical'
+		orientation : {'vertical',  'horizontal'}, optional
 		    The orientation of the bars.
 		
-		log : boolean, optional, default: False
-		    If true, sets the axis to be log scale
+		log : boolean, optional
+		    If true, sets the axis to be log scale.
+		    default: False
 		
 		Returns
 		-------
-		`matplotlib.patches.Rectangle` instances.
+		bars : matplotlib.container.BarContainer
+		    Container with all of the bars + errorbars
 		
 		Notes
 		-----
@@ -3497,9 +3534,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -3521,11 +3557,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/bar_stacked.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'linewidth', 'width', 'left', 'bottom', 'edgecolor', 'ecolor', 'yerr', 'height', 'color', 'tick_label', 'xerr'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot a 2-D field of barbs.
 		
@@ -3673,15 +3719,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3701,6 +3746,16 @@ package matplotlib.pylab;
 		**Example:**
 		
 		.. plot:: mpl_examples/pylab_examples/barb_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
 		
 		
 		
@@ -3748,6 +3803,9 @@ package matplotlib.pylab;
 		    width of bar edge(s). If None, use default
 		    linewidth; If 0, don't draw edges.
 		
+		tick_label : string or array-like, optional, default: None
+		    the tick labels of the bars
+		
 		xerr : scalar or array-like, optional, default: None
 		    if not None, will be used to generate errorbar(s) on the bar chart
 		
@@ -3757,8 +3815,10 @@ package matplotlib.pylab;
 		ecolor : scalar or array-like, optional, default: None
 		    specifies the color of errorbar(s)
 		
-		capsize : integer, optional, default: 3
+		capsize : scalar, optional
 		   determines the length in points of the error bar caps
+		   default: None, which will take the value from the
+		   ``errorbar.capsize`` :data:`rcParam<matplotlib.rcParams>`.
 		
 		error_kw :
 		    dictionary of kwargs to be passed to errorbar method. `ecolor` and
@@ -3768,9 +3828,6 @@ package matplotlib.pylab;
 		    If `edge`, aligns bars by their left edges (for vertical bars) and
 		    by their bottom edges (for horizontal bars). If `center`, interpret
 		    the `left` argument as the coordinates of the centers of the bars.
-		
-		orientation : 'vertical' | 'horizontal', optional, default: 'vertical'
-		    The orientation of the bars.
 		
 		log : boolean, optional, default: False
 		    If true, sets the axis to be log scale
@@ -3806,9 +3863,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -4672,7 +4728,7 @@ package matplotlib.pylab;
 		
 		Call signature::
 		
-		  boxplot(self, x, notch=False, sym='b+', vert=True, whis=1.5,
+		  boxplot(self, x, notch=None, sym=None, vert=None, whis=None,
 		          positions=None, widths=None, patch_artist=False,
 		          bootstrap=None, usermedians=None, conf_intervals=None,
 		          meanline=False, showmeans=False, showcaps=True,
@@ -4797,6 +4853,9 @@ package matplotlib.pylab;
 		    *meanprops*. Not recommended if *shownotches* is also True.
 		    Otherwise, means will be shown as points.
 		
+		  manage_xticks : bool, default = True
+		    If the function should adjust the xlim and xtick locations.
+		
 		Returns
 		-------
 		
@@ -4821,11 +4880,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/statistics/boxplot_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic):Dynamic;
+	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Broadcast any number of arrays against each other.
 		
@@ -4943,15 +5012,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -4979,11 +5047,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/broken_barh.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		busday_count(begindates, enddates, weekmask='1111100', holidays=[], busdaycal=None, out=None)
 		
@@ -5881,9 +5959,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -5910,11 +5987,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/cohere_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Add a colorbar to a plot.
 		
@@ -6127,14 +6214,18 @@ package matplotlib.pylab;
 		              radiation from an object at increasing temperatures
 		  hsv         cyclic red-yellow-green-cyan-blue-magenta-red, formed
 		              by changing the hue component in the HSV color space
+		  inferno     perceptually uniform shades of black-red-yellow
 		  jet         a spectral map with dark endpoints, blue-cyan-yellow-red;
 		              based on a fluid-jet simulation by NCSA [#]_
+		  magma       perceptually uniform shades of black-red-white
 		  pink        sequential increasing pastel black-pink-white, meant
 		              for sepia tone colorization of photographs
+		  plasma      perceptually uniform shades of blue-red-yellow
 		  prism       repetitive red-yellow-green-blue-purple-...-green pattern
 		              (not cyclic at endpoints)
 		  spring      linearly-increasing shades of magenta-yellow
 		  summer      sequential linearly-increasing shades of green-yellow
+		  viridis     perceptually uniform shades of blue-green-yellow
 		  winter      linearly-increasing shades of blue-green
 		  =========   =======================================================
 		
@@ -6146,7 +6237,7 @@ package matplotlib.pylab;
 		  jet()
 		
 		The next set of palettes are from the `Yorick scientific visualisation
-		package <http://yorick.sourceforge.net/index.php>`_, an evolution of
+		package <http://dhmunro.github.io/yorick-doc/>`_, an evolution of
 		the GIST package, both by David H. Munro:
 		
 		  ============  =======================================================
@@ -6760,7 +6851,7 @@ package matplotlib.pylab;
 		  contour(Z,N)
 		  contour(X,Y,Z,N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N* automatically-chosen levels.
 		
 		::
 		
@@ -6790,6 +6881,20 @@ package matplotlib.pylab;
 		:class:`~matplotlib.contour.QuadContourSet` object.
 		
 		Optional keyword arguments:
+		
+		  *corner_mask*: [ *True* | *False* | 'legacy' ]
+		    Enable/disable corner masking, which only has an effect if *Z* is
+		    a masked array.  If *False*, any quad touching a masked point is
+		    masked out.  If *True*, only the triangular corners of quads
+		    nearest those points are always masked out, other triangular
+		    corners comprising three unmasked points are contoured as usual.
+		    If 'legacy', the old contouring algorithm is used, which is
+		    equivalent to *False* and is deprecated, only remaining whilst the
+		    new algorithm is tested fully.
+		
+		    If not specified, the default is taken from
+		    rcParams['contour.corner_mask'], which is True unless it has
+		    been modified.
 		
 		  *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
@@ -6869,6 +6974,15 @@ package matplotlib.pylab;
 		    filled contours, the default is *True*.  For line contours,
 		    it is taken from rcParams['lines.antialiased'].
 		
+		  *nchunk*: [ 0 | integer ]
+		    If 0, no subdivision of the domain.  Specify a positive integer to
+		    divide the domain into subdomains of *nchunk* by *nchunk* quads.
+		    Chunking reduces the maximum length of polygons generated by the
+		    contouring algorithm which reduces the rendering workload passed
+		    on to the backend and also requires slightly less RAM.  It can
+		    however introduce rendering artifacts at chunk boundaries depending
+		    on the backend, the *antialiased* flag and value of *alpha*.
+		
 		contour-only keyword arguments:
 		
 		  *linewidths*: [ *None* | number | tuple of numbers ]
@@ -6893,13 +7007,6 @@ package matplotlib.pylab;
 		
 		contourf-only keyword arguments:
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		  *hatches*:
 		    A list of cross hatch patterns to use on the filled areas.
 		    If None, no hatching will be added to the contour.
@@ -6921,6 +7028,8 @@ package matplotlib.pylab;
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
+		
+		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 		
 		
 		
@@ -6959,7 +7068,7 @@ package matplotlib.pylab;
 		  contour(Z,N)
 		  contour(X,Y,Z,N)
 		
-		contour *N* automatically-chosen levels.
+		contour up to *N* automatically-chosen levels.
 		
 		::
 		
@@ -6989,6 +7098,20 @@ package matplotlib.pylab;
 		:class:`~matplotlib.contour.QuadContourSet` object.
 		
 		Optional keyword arguments:
+		
+		  *corner_mask*: [ *True* | *False* | 'legacy' ]
+		    Enable/disable corner masking, which only has an effect if *Z* is
+		    a masked array.  If *False*, any quad touching a masked point is
+		    masked out.  If *True*, only the triangular corners of quads
+		    nearest those points are always masked out, other triangular
+		    corners comprising three unmasked points are contoured as usual.
+		    If 'legacy', the old contouring algorithm is used, which is
+		    equivalent to *False* and is deprecated, only remaining whilst the
+		    new algorithm is tested fully.
+		
+		    If not specified, the default is taken from
+		    rcParams['contour.corner_mask'], which is True unless it has
+		    been modified.
 		
 		  *colors*: [ *None* | string | (mpl_colors) ]
 		    If *None*, the colormap specified by cmap will be used.
@@ -7068,6 +7191,15 @@ package matplotlib.pylab;
 		    filled contours, the default is *True*.  For line contours,
 		    it is taken from rcParams['lines.antialiased'].
 		
+		  *nchunk*: [ 0 | integer ]
+		    If 0, no subdivision of the domain.  Specify a positive integer to
+		    divide the domain into subdomains of *nchunk* by *nchunk* quads.
+		    Chunking reduces the maximum length of polygons generated by the
+		    contouring algorithm which reduces the rendering workload passed
+		    on to the backend and also requires slightly less RAM.  It can
+		    however introduce rendering artifacts at chunk boundaries depending
+		    on the backend, the *antialiased* flag and value of *alpha*.
+		
 		contour-only keyword arguments:
 		
 		  *linewidths*: [ *None* | number | tuple of numbers ]
@@ -7092,13 +7224,6 @@ package matplotlib.pylab;
 		
 		contourf-only keyword arguments:
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		  *hatches*:
 		    A list of cross hatch patterns to use on the filled areas.
 		    If None, no hatching will be added to the contour.
@@ -7120,6 +7245,8 @@ package matplotlib.pylab;
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 		
 		.. plot:: mpl_examples/pylab_examples/contourf_demo.py
+		
+		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 		
 		
 		
@@ -7919,9 +8046,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -7953,11 +8079,21 @@ package matplotlib.pylab;
 		    :func:`psd`
 		        :func:`psd` is the equivalent to setting y=x.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Load data from comma/space/tab delimited file in *fname* into a
 		numpy record array and return the record array.
@@ -7994,17 +8130,21 @@ package matplotlib.pylab;
 		- *missing*: a string whose value signals a missing field regardless of
 		  the column it appears in
 		
-		- *use_mrecords*: if True, return an mrecords.fromrecords record array if any of the data are missing
+		- *use_mrecords*: if True, return an mrecords.fromrecords record array if
+		  any of the data are missing
 		
 		- *dayfirst*: default is False so that MM-DD-YY has precedence over
-		  DD-MM-YY.  See http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
+		  DD-MM-YY.  See
+		  http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
 		  for further information.
 		
 		- *yearfirst*: default is False so that MM-DD-YY has precedence over
-		  YY-MM-DD.  See http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
+		  YY-MM-DD. See
+		  http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
 		  for further information.
 		
-		  If no rows are found, *None* is returned -- see :file:`examples/loadrec.py`
+		  If no rows are found, *None* is returned -- see
+		  :file:`examples/loadrec.py`
 	**/
 	static public function csv2rec(fname:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?converterd:Dynamic, ?names:Dynamic, ?missing:Dynamic, ?missingd:Dynamic, ?use_mrecords:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
 	/**
@@ -8138,6 +8278,24 @@ package matplotlib.pylab;
 		       [ 4,  9, 15]])
 	**/
 	static public function cumsum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Create a new `Cycler` object from a property name and
+		iterable of values.
+		
+		Parameters
+		----------
+		label : str
+		    The property key.
+		
+		itr : iterable
+		    Finite length iterable of the property values.
+		
+		Returns
+		-------
+		cycler : Cycler
+		    New `Cycler` for the given property
+	**/
+	static public function cycler(label:Dynamic, itr:Dynamic):Dynamic;
 	/**
 		*d* is either a :class:`datetime` instance or a sequence of datetimes.
 		
@@ -9141,21 +9299,23 @@ package matplotlib.pylab;
 	/**
 		Redraw the current figure.
 		
-		This is used in interactive mode to update a figure that
-		has been altered using one or more plot object method calls;
-		it is not needed if figure modification is done entirely
-		with pyplot functions, if a sequence of modifications ends
-		with a pyplot function, or if matplotlib is in non-interactive
-		mode and the sequence of modifications ends with :func:`show` or
-		:func:`savefig`.
+		This is used in interactive mode to update a figure that has been
+		altered, but not automatically re-drawn.  This should be only rarely
+		needed, but there may be ways to modify the state of a figure with
+		out marking it as `stale`.  Please report these cases as bugs.
 		
 		A more object-oriented alternative, given any
 		:class:`~matplotlib.figure.Figure` instance, :attr:`fig`, that
 		was created using a :mod:`~matplotlib.pyplot` function, is::
 		
-		    fig.canvas.draw()
+		    fig.canvas.draw_idle()
 	**/
 	static public function draw():Dynamic;
+	/**
+		Redraw all figures registered with the pyplot
+		state machine.
+	**/
+	static public function draw_all(?force:Dynamic):Dynamic;
 	/**
 		For performance reasons, we don't want to redraw the figure after
 		each draw command. Instead, we mark the figure as invalid, so that
@@ -9995,7 +10155,7 @@ package matplotlib.pylab;
 		Call signature::
 		
 		  errorbar(x, y, yerr=None, xerr=None,
-		           fmt='', ecolor=None, elinewidth=None, capsize=3,
+		           fmt='', ecolor=None, elinewidth=None, capsize=None,
 		           barsabove=False, lolims=False, uplims=False,
 		           xlolims=False, xuplims=False, errorevery=1,
 		           capthick=None)
@@ -10032,7 +10192,9 @@ package matplotlib.pylab;
 		    The linewidth of the errorbar lines. If *None*, use the linewidth.
 		
 		  *capsize*: scalar
-		    The length of the error bar caps in points
+		    The length of the error bar caps in points; if *None*, it will
+		    take the value from ``errorbar.capsize``
+		    :data:`rcParam<matplotlib.rcParams>`.
 		
 		  *capthick*: scalar
 		    An alias kwarg to *markeredgewidth* (a.k.a. - *mew*). This
@@ -10055,7 +10217,7 @@ package matplotlib.pylab;
 		    before :meth:`errorbar`.
 		
 		  *errorevery*: positive integer
-		    subsamples the errorbars. e.g., if everyerror=5, errorbars for
+		    subsamples the errorbars. e.g., if errorevery=5, errorbars for
 		    every 5-th datapoint will be plotted. The data plot itself still
 		    shows all data points.
 		
@@ -10091,9 +10253,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -10131,11 +10292,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/statistics/errorbar_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	static public var euler_gamma : Dynamic;
 	/**
 		Plot identical parallel lines at specific positions.
@@ -10203,15 +10374,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples         
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -10234,11 +10404,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/eventplot_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'positions', 'linestyles', 'linewidths', 'lineoffsets', 'linelengths', 'colors'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function exception_to_str(?s:Dynamic):Dynamic;
 	/**
 		exp(x[, out])
@@ -11069,6 +11249,8 @@ package matplotlib.pylab;
 		  =========   =========================================================
 		  Keyword     Description
 		  =========   =========================================================
+		  resize      a boolean, True or False. If "True", then re-size the
+		              Figure to match the given image size.
 		  xo or yo    An integer, the *x* and *y* image offset in pixels
 		  cmap        a :class:`matplotlib.colors.Colormap` instance, e.g.,
 		              cm.jet. If *None*, default to the rc ``image.cmap``
@@ -11128,9 +11310,6 @@ package matplotlib.pylab;
 		   :func:`~matplotlib.pyplot.legend`
 	**/
 	static public function figlegend(handles:Dynamic, labels:Dynamic, loc:Dynamic, kwargs:Dynamic):Dynamic;
-	/**
-		Return *True* if figure *num* exists.
-	**/
 	static public function fignum_exists(num:Dynamic):Dynamic;
 	/**
 		Add text to figure.
@@ -11150,20 +11329,19 @@ package matplotlib.pylab;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -11179,10 +11357,12 @@ package matplotlib.pylab;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -11286,9 +11466,8 @@ package matplotlib.pylab;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -11303,6 +11482,16 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/lines_bars_and_markers/fill_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
@@ -11311,37 +11500,42 @@ package matplotlib.pylab;
 	/**
 		Make filled polygons between two curves.
 		
-		Call signature::
-		
-		  fill_between(x, y1, y2=0, where=None, **kwargs)
 		
 		Create a :class:`~matplotlib.collections.PolyCollection`
 		filling the regions between *y1* and *y2* where
 		``where==True``
 		
-		  *x* :
+		Parameters
+		----------
+		x : array
 		    An N-length array of the x data
 		
-		  *y1* :
+		y1 : array
 		    An N-length array (or scalar) of the y data
 		
-		  *y2* :
+		y2 : array
 		    An N-length array (or scalar) of the y data
 		
-		  *where* :
-		    If *None*, default to fill between everywhere.  If not *None*,
+		where : array, optional
+		    If `None`, default to fill between everywhere.  If not `None`,
 		    it is an N-length numpy boolean array and the fill will
 		    only happen over the regions where ``where==True``.
 		
-		  *interpolate* :
-		    If *True*, interpolate between the two lines to find the
+		interpolate : bool, optional
+		    If `True`, interpolate between the two lines to find the
 		    precise point of intersection.  Otherwise, the start and
 		    end points of the filled region will only occur on explicit
 		    values in the *x* array.
 		
-		  *kwargs* :
-		    Keyword args passed on to the
-		    :class:`~matplotlib.collections.PolyCollection`.
+		step : {'pre', 'post', 'mid'}, optional
+		    If not None, fill with step logic.
+		
+		
+		Notes
+		-----
+		
+		Additional Keyword args passed on to the
+		:class:`~matplotlib.collections.PolyCollection`.
 		
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
 		
@@ -11358,15 +11552,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -11382,18 +11575,32 @@ package matplotlib.pylab;
 		  visible: [True | False]         
 		  zorder: any number         
 		
+		Examples
+		--------
+		
 		.. plot:: mpl_examples/pylab_examples/fill_between_demo.py
 		
-		.. seealso::
+		See Also
+		--------
 		
 		    :meth:`fill_betweenx`
 		        for filling between two sets of x-values
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
+		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make filled polygons between two horizontal curves.
 		
@@ -11405,22 +11612,29 @@ package matplotlib.pylab;
 		filling the regions between *x1* and *x2* where
 		``where==True``
 		
-		  *y* :
+		Parameters
+		----------
+		y : array
 		    An N-length array of the y data
 		
-		  *x1* :
+		x1 : array
 		    An N-length array (or scalar) of the x data
 		
-		  *x2* :
+		x2 : array, optional
 		    An N-length array (or scalar) of the x data
 		
-		  *where* :
-		     If *None*, default to fill between everywhere.  If not *None*,
-		     it is a N length numpy boolean array and the fill will
-		     only happen over the regions where ``where==True``
+		where : array, optional
+		    If *None*, default to fill between everywhere.  If not *None*,
+		    it is a N length numpy boolean array and the fill will
+		    only happen over the regions where ``where==True``
 		
-		  *kwargs* :
-		    keyword args passed on to the
+		step : {'pre', 'post', 'mid'}, optional
+		    If not None, fill with step logic.
+		
+		Notes
+		-----
+		
+		keyword args passed on to the
 		    :class:`~matplotlib.collections.PolyCollection`
 		
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
@@ -11438,15 +11652,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -11462,18 +11675,32 @@ package matplotlib.pylab;
 		  visible: [True | False]         
 		  zorder: any number         
 		
+		Examples
+		--------
+		
 		.. plot:: mpl_examples/pylab_examples/fill_betweenx_demo.py
 		
-		.. seealso::
+		See Also
+		--------
 		
 		    :meth:`fill_between`
 		        for filling between two sets of y-values
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x1', 'x2', 'where'.
+		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
 		
@@ -13001,9 +13228,8 @@ package matplotlib.pylab;
 		returned.
 		
 		If *lut* is not None it must be an integer giving the number of
-		entries desired in the lookup table, and *name* must be a
-		standard mpl colormap name with a corresponding data dictionary
-		in *datad*.
+		entries desired in the lookup table, and *name* must be a standard
+		mpl colormap name.
 	**/
 	static public function get_cmap(?name:Dynamic, ?lut:Dynamic):Dynamic;
 	static public function get_current_fig_manager():Dynamic;
@@ -13477,9 +13703,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -13959,15 +14184,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -13996,11 +14220,21 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/hexbin_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Compute the FFT of a signal which has Hermitian symmetry (real spectrum).
 		
@@ -14252,11 +14486,21 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/statistics/histogram_demo_features.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'weights', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Make a 2D histogram plot.
 		
@@ -14329,11 +14573,21 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/pylab_examples/hist2d_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'weights', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Compute the histogram of a set of data.
 		
@@ -14623,11 +14877,21 @@ package matplotlib.pylab;
 		--------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'xmin', 'xmax'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Set the hold state.  If *b* is None (default), toggle the
 		hold state, else set the hold state to boolean value *b*::
@@ -15311,8 +15575,9 @@ package matplotlib.pylab;
 	/**
 		Read an image from a file into an array.
 		
-		*fname* may be a string path or a Python file-like object.  If
-		using a file object, it must be opened in binary mode.
+		*fname* may be a string path, a valid URL, or a Python
+		file-like object.  If using a file object, it must be opened in binary
+		mode.
 		
 		If *format* is provided, will try to read file of that type,
 		otherwise the format is deduced from the filename.  If nothing can
@@ -15325,7 +15590,9 @@ package matplotlib.pylab;
 		matplotlib can only read PNGs natively, but if `PIL
 		<http://www.pythonware.com/products/pil/>`_ is installed, it will
 		use it to load the image and return an array (if possible) which
-		can be used with :func:`~matplotlib.pyplot.imshow`.
+		can be used with :func:`~matplotlib.pyplot.imshow`. Note, URL strings
+		may not be compatible with PIL. Check the PIL documentation for more
+		information.
 	**/
 	static public function imread(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
@@ -15456,16 +15723,32 @@ package matplotlib.pylab;
 		--------
 		matshow : Plot a matrix or an array as an image.
 		
+		Notes
+		-----
+		Unless *extent* is used, pixel centers will be located at integer
+		coordinates. In other words: the origin will coincide with the center
+		of pixel (0, 0).
+		
 		Examples
 		--------
 		
 		.. plot:: mpl_examples/pylab_examples/image_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Test whether each element of a 1-D array is also present in a second array.
 		
@@ -15588,6 +15871,11 @@ package matplotlib.pylab;
 	**/
 	static public function indices(dimensions:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public var inf : Dynamic;
+	/**
+		set the default colormap to inferno and apply to current image if any.
+		See help(colormaps) for more information
+	**/
+	static public function inferno():Dynamic;
 	static public var infty : Dynamic;
 	/**
 		inner(a, b)
@@ -15756,6 +16044,13 @@ package matplotlib.pylab;
 		that are inside the polygon.
 	**/
 	static public function inside_poly(points:Dynamic, verts:Dynamic):Dynamic;
+	/**
+		Install a repl display hook so that any stale figure are automatically
+		redrawn when control is returned to the repl.
+		
+		This works with both IPython terminals and vanilla python shells.
+	**/
+	static public function install_repl_displayhook():Dynamic;
 	static public function int_asbuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Set interactive mode to boolean b.
@@ -17562,7 +17857,7 @@ package matplotlib.pylab;
 		
 		Parameters
 		----------
-		loc : int or string or pair of floats, default: 0
+		loc : int or string or pair of floats, default: 'upper right'
 		    The location of the legend. Possible codes are:
 		
 		        ===============   =============
@@ -17631,6 +17926,11 @@ package matplotlib.pylab;
 		    The relative size of legend markers compared with the originally
 		    drawn ones. Default is ``None`` which will take the value from
 		    the ``legend.markerscale`` :data:`rcParam <matplotlib.rcParams>`.
+		
+		*markerfirst*: [ *True* | *False* ]
+		    if *True*, legend marker is placed to the left of the legend label
+		    if *False*, legend marker is placed to the right of the legend
+		    label
 		
 		frameon : None or bool
 		    Control whether a frame should be drawn around the legend.
@@ -18699,9 +18999,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -19135,6 +19434,11 @@ package matplotlib.pylab;
 	**/
 	static public function mafromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
+		set the default colormap to magma and apply to current image if any.
+		See help(colormaps) for more information
+	**/
+	static public function magma():Dynamic;
+	/**
 		Plot the magnitude spectrum.
 		
 		Call signature::
@@ -19224,9 +19528,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -19270,11 +19573,21 @@ package matplotlib.pylab;
 		        :func:`specgram` can plot the magnitude spectrum of segments
 		        within the signal in a colormap.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Set or retrieve autoscaling margins.
 		
@@ -22108,14 +22421,6 @@ package matplotlib.pylab;
 	**/
 	static public function normal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The normalize class alias was deprecated in version 1.3. Use Normalize instead.
-		
-		A class which, when called, can normalize data into
-		the ``[0.0, 1.0]`` interval.
-	**/
-	static public function normalize(?vmin:Dynamic, ?vmax:Dynamic, ?clip:Dynamic):Dynamic;
-	/**
 		Return the normal pdf evaluated at *x*; args provides *mu*, *sigma*
 	**/
 	static public function normpdf(x:Dynamic, args:Dynamic):Dynamic;
@@ -22972,7 +23277,7 @@ package matplotlib.pylab;
 		than those of *C*; if the dimensions are the same, then the
 		last row and column of *C* will be ignored.
 		
-		Note that the the column index corresponds to the
+		Note that the column index corresponds to the
 		*x*-coordinate, and the row index corresponds to *y*; for
 		details, see the :ref:`Grid Orientation
 		<axes-pcolor-grid-orientation>` section below.
@@ -23087,15 +23392,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -23127,6 +23431,16 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pyplot.pcolormesh`
 		        For an explanation of the differences between
 		        pcolor and pcolormesh.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
 		
 		
 		
@@ -23214,15 +23528,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -23243,6 +23556,16 @@ package matplotlib.pylab;
 		    :func:`~matplotlib.pyplot.pcolor`
 		        For an explanation of the grid orientation and the
 		        expansion of 1-D *X* and/or *Y* to 2-D arrays.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
 		
 		
 		
@@ -23470,9 +23793,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -23513,11 +23835,21 @@ package matplotlib.pylab;
 		        :func:`specgram` can plot the phase spectrum of segments
 		        within the signal in a colormap.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		Plot a pie chart.
@@ -23528,7 +23860,8 @@ package matplotlib.pylab;
 		      colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'),
 		      autopct=None, pctdistance=0.6, shadow=False,
 		      labeldistance=1.1, startangle=None, radius=None,
-		      counterclock=True, wedgeprops=None, textprops=None)
+		      counterclock=True, wedgeprops=None, textprops=None,
+		      center = (0, 0), frame = False )
 		
 		Make a pie chart of array *x*.  The fractional area of each
 		wedge is given by x/sum(x).  If sum(x) <= 1, then the values
@@ -23586,6 +23919,11 @@ package matplotlib.pylab;
 		  *textprops*: [ *None* | dict of key value pairs ]
 		    Dict of arguments to pass to the text objects.
 		
+		  *center*: [ (0,0) | sequence of 2 scalars ]
+		  Center position of the chart.
+		
+		  *frame*: [ *False* | *True* ]
+		    Plot axes frame with the chart.
 		
 		The pie chart will probably look best if the figure and axes are
 		square, or the Axes aspect is equal.  e.g.::
@@ -23612,11 +23950,21 @@ package matplotlib.pylab;
 		  :class:`~matplotlib.text.Text` instances for the numeric
 		  labels.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'explode', 'colors', 'labels', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?hold:Dynamic):Dynamic;
+	static public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Evaluate a piecewise-defined function.
 		
@@ -23837,6 +24185,11 @@ package matplotlib.pylab;
 	**/
 	static public function place(arr:Dynamic, mask:Dynamic, vals:Dynamic):Dynamic;
 	/**
+		set the default colormap to plasma and apply to current image if any.
+		See help(colormaps) for more information
+	**/
+	static public function plasma():Dynamic;
+	/**
 		Plot lines and/or markers to the
 		:class:`~matplotlib.axes.Axes`.  *args* is a variable length
 		argument, allowing for multiple *x*, *y* pairs with an
@@ -23851,16 +24204,22 @@ package matplotlib.pylab;
 		If *x* and/or *y* is 2-dimensional, then the corresponding columns
 		will be plotted.
 		
-		An arbitrary number of *x*, *y*, *fmt* groups can be
-		specified, as in::
+		If used with labeled data, make sure that the color spec is not
+		included as an element in data, as otherwise the last case
+		``plot("v","r", data={"v":..., "r":...)``
+		can be interpreted as the first case which would do ``plot(v, r)``
+		using the default line style and color.
+		
+		If not used with labeled data (i.e., without a data argument),
+		an arbitrary number of *x*, *y*, *fmt* groups can be specified, as in::
 		
 		    a.plot(x1, y1, 'g^', x2, y2, 'g-')
 		
 		Return value is a list of lines that were added.
 		
-		By default, each line is assigned a different color specified by a
-		'color cycle'.  To change this behavior, you can edit the
-		axes.color_cycle rcParam.
+		By default, each line is assigned a different style specified by a
+		'style cycle'.  To change this behavior, you can edit the
+		axes.prop_cycle rcParam.
 		
 		The following format string characters are accepted to control
 		the line style or marker:
@@ -23969,9 +24328,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -23998,6 +24356,16 @@ package matplotlib.pylab;
 		:meth:`~matplotlib.axes.Axes.autoscale_view` to determine
 		whether the *x* and *y* axes are autoscaled; the default is
 		*True*.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
 		
 		
 		
@@ -24066,9 +24434,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -24100,11 +24467,21 @@ package matplotlib.pylab;
 		   :func:`~matplotlib.dates.drange` for help on creating the required
 		   floating point dates.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Plot the data in in a file.
 		
@@ -24158,139 +24535,142 @@ package matplotlib.pylab;
 	**/
 	static public function plotfile(fname:Dynamic, ?cols:Dynamic, ?plotfuncs:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?names:Dynamic, ?subplots:Dynamic, ?newfig:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		==================== =================================================================================================================================
-		Function             Description                                                                                                                      
-		==================== =================================================================================================================================
-		`acorr`              Plot the autocorrelation of `x`.                                                                                                 
-		`angle_spectrum`     Plot the angle spectrum.                                                                                                         
-		`annotate`           Create an annotation: a piece of text referring to a data point.                                                                 
-		`arrow`              Add an arrow to the axes.                                                                                                        
-		`autoscale`          Autoscale the axis view to the data (toggle).                                                                                    
-		`axes`               Add an axes to the figure.                                                                                                       
-		`axhline`            Add a horizontal line across the axis.                                                                                           
-		`axhspan`            Add a horizontal span (rectangle) across the axis.                                                                               
-		`axis`               Convenience method to get or set axis properties.                                                                                
-		`axvline`            Add a vertical line across the axes.                                                                                             
-		`axvspan`            Add a vertical span (rectangle) across the axes.                                                                                 
-		`bar`                Make a bar plot.                                                                                                                 
-		`barbs`              Plot a 2-D field of barbs.                                                                                                       
-		`barh`               Make a horizontal bar plot.                                                                                                      
-		`box`                Turn the axes box on or off.                                                                                                     
-		`boxplot`            Make a box and whisker plot.                                                                                                     
-		`broken_barh`        Plot horizontal bars.                                                                                                            
-		`cla`                Clear the current axes.                                                                                                          
-		`clabel`             Label a contour plot.                                                                                                            
-		`clf`                Clear the current figure.                                                                                                        
-		`clim`               Set the color limits of the current image.                                                                                       
-		`close`              Close a figure window.                                                                                                           
-		`cohere`             Plot the coherence between *x* and *y*.                                                                                          
-		`colorbar`           Add a colorbar to a plot.                                                                                                        
-		`contour`            Plot contours.                                                                                                                   
-		`contourf`           Plot contours.                                                                                                                   
-		`csd`                Plot the cross-spectral density.                                                                                                 
-		`delaxes`            Remove an axes from the current figure.                                                                                          
-		`draw`               Redraw the current figure.                                                                                                       
-		`errorbar`           Plot an errorbar graph.                                                                                                          
-		`eventplot`          Plot identical parallel lines at specific positions.                                                                             
-		`figimage`           Adds a non-resampled image to the figure.                                                                                        
-		`figlegend`          Place a legend in the figure.                                                                                                    
-		`figtext`            Add text to figure.                                                                                                              
-		`figure`             Creates a new figure.                                                                                                            
-		`fill`               Plot filled polygons.                                                                                                            
-		`fill_between`       Make filled polygons between two curves.                                                                                         
-		`fill_betweenx`      Make filled polygons between two horizontal curves.                                                                              
-		`findobj`            Find artist objects.                                                                                                             
-		`gca`                Get the current :class:`~matplotlib.axes.Axes` instance on the     current figure matching the given keyword args, or create one.
-		`gcf`                Get a reference to the current figure.                                                                                           
-		`gci`                Get the current colorable artist.                                                                                                
-		`get_figlabels`      Return a list of existing figure labels.                                                                                         
-		`get_fignums`        Return a list of existing figure numbers.                                                                                        
-		`grid`               Turn the axes grids on or off.                                                                                                   
-		`hexbin`             Make a hexagonal binning plot.                                                                                                   
-		`hist`               Plot a histogram.                                                                                                                
-		`hist2d`             Make a 2D histogram plot.                                                                                                        
-		`hlines`             Plot horizontal lines at each `y` from `xmin` to `xmax`.                                                                         
-		`hold`               Set the hold state.                                                                                                              
-		`imread`             Read an image from a file into an array.                                                                                         
-		`imsave`             Save an array as in image file.                                                                                                  
-		`imshow`             Display an image on the axes.                                                                                                    
-		`ioff`               Turn interactive mode off.                                                                                                       
-		`ion`                Turn interactive mode on.                                                                                                        
-		`ishold`             Return the hold status of the current axes.                                                                                      
-		`isinteractive`      Return status of interactive mode.                                                                                               
-		`legend`             Places a legend on the axes.                                                                                                     
-		`locator_params`     Control behavior of tick locators.                                                                                               
-		`loglog`             Make a plot with log scaling on both the *x* and *y* axis.                                                                       
-		`magnitude_spectrum` Plot the magnitude spectrum.                                                                                                     
-		`margins`            Set or retrieve autoscaling margins.                                                                                             
-		`matshow`            Display an array as a matrix in a new figure window.                                                                             
-		`minorticks_off`     Remove minor ticks from the current plot.                                                                                        
-		`minorticks_on`      Display minor ticks on the current plot.                                                                                         
-		`over`               Call a function with hold(True).                                                                                                 
-		`pause`              Pause for *interval* seconds.                                                                                                    
-		`pcolor`             Create a pseudocolor plot of a 2-D array.                                                                                        
-		`pcolormesh`         Plot a quadrilateral mesh.                                                                                                       
-		`phase_spectrum`     Plot the phase spectrum.                                                                                                         
-		`pie`                Plot a pie chart.                                                                                                                
-		`plot`               Plot lines and/or markers to the :class:`~matplotlib.axes.Axes`.                                                                 
-		`plot_date`          Plot with data with dates.                                                                                                       
-		`plotfile`           Plot the data in in a file.                                                                                                      
-		`polar`              Make a polar plot.                                                                                                               
-		`psd`                Plot the power spectral density.                                                                                                 
-		`quiver`             Plot a 2-D field of arrows.                                                                                                      
-		`quiverkey`          Add a key to a quiver plot.                                                                                                      
-		`rc`                 Set the current rc params.                                                                                                       
-		`rc_context`         Return a context manager for managing rc settings.                                                                               
-		`rcdefaults`         Restore the default rc params.                                                                                                   
-		`rgrids`             Get or set the radial gridlines on a polar plot.                                                                                 
-		`savefig`            Save the current figure.                                                                                                         
-		`sca`                Set the current Axes instance to *ax*.                                                                                           
-		`scatter`            Make a scatter plot of x vs y, where x and y are sequence like objects of the same lengths.                                      
-		`sci`                Set the current image.                                                                                                           
-		`semilogx`           Make a plot with log scaling on the *x* axis.                                                                                    
-		`semilogy`           Make a plot with log scaling on the *y* axis.                                                                                    
-		`set_cmap`           Set the default colormap.                                                                                                        
-		`setp`               Set a property on an artist object.                                                                                              
-		`show`               Display a figure.                                                                                                                
-		`specgram`           Plot a spectrogram.                                                                                                              
-		`spy`                Plot the sparsity pattern on a 2-D array.                                                                                        
-		`stackplot`          Draws a stacked area plot.                                                                                                       
-		`stem`               Create a stem plot.                                                                                                              
-		`step`               Make a step plot.                                                                                                                
-		`streamplot`         Draws streamlines of a vector flow.                                                                                              
-		`subplot`            Return a subplot axes positioned by the given grid definition.                                                                   
-		`subplot2grid`       Create a subplot in a grid.                                                                                                      
-		`subplot_tool`       Launch a subplot tool window for a figure.                                                                                       
-		`subplots`           Create a figure with a set of subplots already made.                                                                             
-		`subplots_adjust`    Tune the subplot layout.                                                                                                         
-		`suptitle`           Add a centered title to the figure.                                                                                              
-		`switch_backend`     Switch the default backend.                                                                                                      
-		`table`              Add a table to the current axes.                                                                                                 
-		`text`               Add text to the axes.                                                                                                            
-		`thetagrids`         Get or set the theta locations of the gridlines in a polar plot.                                                                 
-		`tick_params`        Change the appearance of ticks and tick labels.                                                                                  
-		`ticklabel_format`   Change the `~matplotlib.ticker.ScalarFormatter` used by default for linear axes.                                                 
-		`tight_layout`       Automatically adjust subplot parameters to give specified padding.                                                               
-		`title`              Set a title of the current axes.                                                                                                 
-		`tricontour`         Draw contours on an unstructured triangular grid.                                                                                
-		`tricontourf`        Draw contours on an unstructured triangular grid.                                                                                
-		`tripcolor`          Create a pseudocolor plot of an unstructured triangular grid.                                                                    
-		`triplot`            Draw a unstructured triangular grid as lines and/or markers.                                                                     
-		`twinx`              Make a second axes that shares the *x*-axis.                                                                                     
-		`twiny`              Make a second axes that shares the *y*-axis.                                                                                     
-		`violinplot`         Make a violin plot.                                                                                                              
-		`vlines`             Plot vertical lines.                                                                                                             
-		`xcorr`              Plot the cross correlation between *x* and *y*.                                                                                  
-		`xkcd`               Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.                                                                   
-		`xlabel`             Set the *x* axis label of the current axis.                                                                                      
-		`xlim`               Get or set the *x* limits of the current axes.                                                                                   
-		`xscale`             Set the scaling of the *x*-axis.                                                                                                 
-		`xticks`             Get or set the *x*-limits of the current tick locations and labels.                                                              
-		`ylabel`             Set the *y* axis label of the current axis.                                                                                      
-		`ylim`               Get or set the *y*-limits of the current axes.                                                                                   
-		`yscale`             Set the scaling of the *y*-axis.                                                                                                 
-		`yticks`             Get or set the *y*-limits of the current tick locations and labels.                                                              
-		==================== =================================================================================================================================
+		============================ =================================================================================================================================
+		Function                     Description                                                                                                                      
+		============================ =================================================================================================================================
+		`acorr`                      Plot the autocorrelation of `x`.                                                                                                 
+		`angle_spectrum`             Plot the angle spectrum.                                                                                                         
+		`annotate`                   Create an annotation: a piece of text referring to a data point.                                                                 
+		`arrow`                      Add an arrow to the axes.                                                                                                        
+		`autoscale`                  Autoscale the axis view to the data (toggle).                                                                                    
+		`axes`                       Add an axes to the figure.                                                                                                       
+		`axhline`                    Add a horizontal line across the axis.                                                                                           
+		`axhspan`                    Add a horizontal span (rectangle) across the axis.                                                                               
+		`axis`                       Convenience method to get or set axis properties.                                                                                
+		`axvline`                    Add a vertical line across the axes.                                                                                             
+		`axvspan`                    Add a vertical span (rectangle) across the axes.                                                                                 
+		`bar`                        Make a bar plot.                                                                                                                 
+		`barbs`                      Plot a 2-D field of barbs.                                                                                                       
+		`barh`                       Make a horizontal bar plot.                                                                                                      
+		`box`                        Turn the axes box on or off.                                                                                                     
+		`boxplot`                    Make a box and whisker plot.                                                                                                     
+		`broken_barh`                Plot horizontal bars.                                                                                                            
+		`cla`                        Clear the current axes.                                                                                                          
+		`clabel`                     Label a contour plot.                                                                                                            
+		`clf`                        Clear the current figure.                                                                                                        
+		`clim`                       Set the color limits of the current image.                                                                                       
+		`close`                      Close a figure window.                                                                                                           
+		`cohere`                     Plot the coherence between *x* and *y*.                                                                                          
+		`colorbar`                   Add a colorbar to a plot.                                                                                                        
+		`contour`                    Plot contours.                                                                                                                   
+		`contourf`                   Plot contours.                                                                                                                   
+		`csd`                        Plot the cross-spectral density.                                                                                                 
+		`delaxes`                    Remove an axes from the current figure.                                                                                          
+		`draw`                       Redraw the current figure.                                                                                                       
+		`errorbar`                   Plot an errorbar graph.                                                                                                          
+		`eventplot`                  Plot identical parallel lines at specific positions.                                                                             
+		`figimage`                   Adds a non-resampled image to the figure.                                                                                        
+		`figlegend`                  Place a legend in the figure.                                                                                                    
+		`fignum_exists`                                                                                                                                               
+		`figtext`                    Add text to figure.                                                                                                              
+		`figure`                     Creates a new figure.                                                                                                            
+		`fill`                       Plot filled polygons.                                                                                                            
+		`fill_between`               Make filled polygons between two curves.                                                                                         
+		`fill_betweenx`              Make filled polygons between two horizontal curves.                                                                              
+		`findobj`                    Find artist objects.                                                                                                             
+		`gca`                        Get the current :class:`~matplotlib.axes.Axes` instance on the     current figure matching the given keyword args, or create one.
+		`gcf`                        Get a reference to the current figure.                                                                                           
+		`gci`                        Get the current colorable artist.                                                                                                
+		`get_figlabels`              Return a list of existing figure labels.                                                                                         
+		`get_fignums`                Return a list of existing figure numbers.                                                                                        
+		`grid`                       Turn the axes grids on or off.                                                                                                   
+		`hexbin`                     Make a hexagonal binning plot.                                                                                                   
+		`hist`                       Plot a histogram.                                                                                                                
+		`hist2d`                     Make a 2D histogram plot.                                                                                                        
+		`hlines`                     Plot horizontal lines at each `y` from `xmin` to `xmax`.                                                                         
+		`hold`                       Set the hold state.                                                                                                              
+		`imread`                     Read an image from a file into an array.                                                                                         
+		`imsave`                     Save an array as in image file.                                                                                                  
+		`imshow`                     Display an image on the axes.                                                                                                    
+		`install_repl_displayhook`   Install a repl display hook so that any stale figure are automatically     redrawn when control is returned to the repl.         
+		`ioff`                       Turn interactive mode off.                                                                                                       
+		`ion`                        Turn interactive mode on.                                                                                                        
+		`ishold`                     Return the hold status of the current axes.                                                                                      
+		`isinteractive`              Return status of interactive mode.                                                                                               
+		`legend`                     Places a legend on the axes.                                                                                                     
+		`locator_params`             Control behavior of tick locators.                                                                                               
+		`loglog`                     Make a plot with log scaling on both the *x* and *y* axis.                                                                       
+		`magnitude_spectrum`         Plot the magnitude spectrum.                                                                                                     
+		`margins`                    Set or retrieve autoscaling margins.                                                                                             
+		`matshow`                    Display an array as a matrix in a new figure window.                                                                             
+		`minorticks_off`             Remove minor ticks from the current plot.                                                                                        
+		`minorticks_on`              Display minor ticks on the current plot.                                                                                         
+		`over`                       Call a function with hold(True).                                                                                                 
+		`pause`                      Pause for *interval* seconds.                                                                                                    
+		`pcolor`                     Create a pseudocolor plot of a 2-D array.                                                                                        
+		`pcolormesh`                 Plot a quadrilateral mesh.                                                                                                       
+		`phase_spectrum`             Plot the phase spectrum.                                                                                                         
+		`pie`                        Plot a pie chart.                                                                                                                
+		`plot`                       Plot lines and/or markers to the :class:`~matplotlib.axes.Axes`.                                                                 
+		`plot_date`                  Plot with data with dates.                                                                                                       
+		`plotfile`                   Plot the data in in a file.                                                                                                      
+		`polar`                      Make a polar plot.                                                                                                               
+		`psd`                        Plot the power spectral density.                                                                                                 
+		`quiver`                     Plot a 2-D field of arrows.                                                                                                      
+		`quiverkey`                  Add a key to a quiver plot.                                                                                                      
+		`rc`                         Set the current rc params.                                                                                                       
+		`rc_context`                 Return a context manager for managing rc settings.                                                                               
+		`rcdefaults`                 Restore the default rc params.                                                                                                   
+		`rgrids`                     Get or set the radial gridlines on a polar plot.                                                                                 
+		`savefig`                    Save the current figure.                                                                                                         
+		`sca`                        Set the current Axes instance to *ax*.                                                                                           
+		`scatter`                    Make a scatter plot of x vs y, where x and y are sequence like objects of the same lengths.                                      
+		`sci`                        Set the current image.                                                                                                           
+		`semilogx`                   Make a plot with log scaling on the *x* axis.                                                                                    
+		`semilogy`                   Make a plot with log scaling on the *y* axis.                                                                                    
+		`set_cmap`                   Set the default colormap.                                                                                                        
+		`setp`                       Set a property on an artist object.                                                                                              
+		`show`                       Display a figure.                                                                                                                
+		`specgram`                   Plot a spectrogram.                                                                                                              
+		`spy`                        Plot the sparsity pattern on a 2-D array.                                                                                        
+		`stackplot`                  Draws a stacked area plot.                                                                                                       
+		`stem`                       Create a stem plot.                                                                                                              
+		`step`                       Make a step plot.                                                                                                                
+		`streamplot`                 Draws streamlines of a vector flow.                                                                                              
+		`subplot`                    Return a subplot axes positioned by the given grid definition.                                                                   
+		`subplot2grid`               Create a subplot in a grid.                                                                                                      
+		`subplot_tool`               Launch a subplot tool window for a figure.                                                                                       
+		`subplots`                   Create a figure with a set of subplots already made.                                                                             
+		`subplots_adjust`            Tune the subplot layout.                                                                                                         
+		`suptitle`                   Add a centered title to the figure.                                                                                              
+		`switch_backend`             Switch the default backend.                                                                                                      
+		`table`                      Add a table to the current axes.                                                                                                 
+		`text`                       Add text to the axes.                                                                                                            
+		`thetagrids`                 Get or set the theta locations of the gridlines in a polar plot.                                                                 
+		`tick_params`                Change the appearance of ticks and tick labels.                                                                                  
+		`ticklabel_format`           Change the `~matplotlib.ticker.ScalarFormatter` used by default for linear axes.                                                 
+		`tight_layout`               Automatically adjust subplot parameters to give specified padding.                                                               
+		`title`                      Set a title of the current axes.                                                                                                 
+		`tricontour`                 Draw contours on an unstructured triangular grid.                                                                                
+		`tricontourf`                Draw contours on an unstructured triangular grid.                                                                                
+		`tripcolor`                  Create a pseudocolor plot of an unstructured triangular grid.                                                                    
+		`triplot`                    Draw a unstructured triangular grid as lines and/or markers.                                                                     
+		`twinx`                      Make a second axes that shares the *x*-axis.                                                                                     
+		`twiny`                      Make a second axes that shares the *y*-axis.                                                                                     
+		`uninstall_repl_displayhook` Uninstalls the matplotlib display hook.                                                                                          
+		`violinplot`                 Make a violin plot.                                                                                                              
+		`vlines`                     Plot vertical lines.                                                                                                             
+		`xcorr`                      Plot the cross correlation between *x* and *y*.                                                                                  
+		`xkcd`                       Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.                                                                   
+		`xlabel`                     Set the *x* axis label of the current axis.                                                                                      
+		`xlim`                       Get or set the *x* limits of the current axes.                                                                                   
+		`xscale`                     Set the scaling of the *x*-axis.                                                                                                 
+		`xticks`                     Get or set the *x*-limits of the current tick locations and labels.                                                              
+		`ylabel`                     Set the *y* axis label of the current axis.                                                                                      
+		`ylim`                       Get or set the *y*-limits of the current axes.                                                                                   
+		`yscale`                     Set the scaling of the *y*-axis.                                                                                                 
+		`yticks`                     Get or set the *y*-limits of the current tick locations and labels.                                                              
+		============================ =================================================================================================================================
 	**/
 	static public function plotting():Dynamic;
 	/**
@@ -25183,31 +25563,6 @@ package matplotlib.pylab;
 		indicates how many quantiles of data you want ranked.
 	**/
 	static public function prctile_rank(x:Dynamic, p:Dynamic):Dynamic;
-	/**
-		.. warning::
-		
-		    This function is deprecated -- please see class PCA instead
-		
-		Compute the principal components of *P*.  *P* is a (*numVars*,
-		*numObs*) array.  *frac* is the minimum fraction of variance that a
-		component must contain to be included.
-		
-		Return value is a tuple of the form (*Pcomponents*, *Trans*,
-		*fracVar*) where:
-		
-		  - *Pcomponents* : a (numVars, numObs) array
-		
-		  - *Trans* : the weights matrix, i.e., *Pcomponents* = *Trans* *
-		     *P*
-		
-		  - *fracVar* : the fraction of the variance accounted for by each
-		     component returned
-		
-		A similar function of the same name was in the MATLAB
-		R13 Neural Network Toolbox but is not found in later versions;
-		its successor seems to be called "processpcs".
-	**/
-	static public function prepca(P:Dynamic, ?frac:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		set the default colormap to prism and apply to current image if any.
@@ -25500,9 +25855,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -25543,11 +25897,21 @@ package matplotlib.pylab;
 		    :func:`csd`
 		        :func:`csd` plots the spectral density between two signals.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Range of values (maximum - minimum) along an axis.
 		
@@ -25924,7 +26288,7 @@ package matplotlib.pylab;
 		    'x' or 'y', the arrows get larger as one zooms in; for other
 		    units, the arrow size is independent of the zoom state.  For
 		    'width or 'height', the arrow size increases with the width and
-		    height of the axes, respectively, when the the window is resized;
+		    height of the axes, respectively, when the window is resized;
 		    for 'dots' or 'inches', resizing does not change the arrows.
 		
 		
@@ -25981,7 +26345,7 @@ package matplotlib.pylab;
 		    is less than this, plot a dot (hexagon) of this diameter instead.
 		    Default is 1.
 		
-		  *pivot*: [ 'tail' | 'middle' | 'tip' ]
+		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
 		    The part of the arrow that is at the grid point; the arrow rotates
 		    about this point, hence the name *pivot*.
 		
@@ -26014,15 +26378,14 @@ package matplotlib.pylab;
 		  cmap: a colormap or registered colormap name         
 		  color: matplotlib color arg or sequence of rgba tuples
 		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color arg or sequence of rgba tuples         
-		  facecolor or facecolors: matplotlib color arg or sequence of rgba tuples         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |         (offset, on-off-dash-seq) ]         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
-		  lod: [True | False]         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -28244,9 +28607,10 @@ package matplotlib.pylab;
 		
 		Keyword arguments:
 		
-		  *dpi*: [ *None* | ``scalar > 0`` ]
+		  *dpi*: [ *None* | ``scalar > 0`` | 'figure']
 		    The resolution in dots per inch.  If *None* it will default to
-		    the value ``savefig.dpi`` in the matplotlibrc file.
+		    the value ``savefig.dpi`` in the matplotlibrc file. If 'figure'
+		    it will set the dpi to be the value of the figure.
 		
 		  *facecolor*, *edgecolor*:
 		    the colors of the figure rectangle
@@ -28525,11 +28889,14 @@ package matplotlib.pylab;
 		    (see below). Note that `c` should not be a single numeric RGB or
 		    RGBA sequence because that is indistinguishable from an array of
 		    values to be colormapped.  `c` can be a 2-D array in which the
-		    rows are RGB or RGBA, however.
+		    rows are RGB or RGBA, however, including the case of a single
+		    row to specify the same color for all points.
 		
 		marker : `~matplotlib.markers.MarkerStyle`, optional, default: 'o'
 		    See `~matplotlib.markers` for more information on the different
-		    styles of markers scatter supports.
+		    styles of markers scatter supports. `marker` can be either
+		    an instance of the class or the text shorthand for a particular
+		    marker.
 		
 		cmap : `~matplotlib.colors.Colormap`, optional, default: None
 		    A `~matplotlib.colors.Colormap` instance or registered name.
@@ -28551,10 +28918,14 @@ package matplotlib.pylab;
 		    The alpha blending value, between 0 (transparent) and 1 (opaque)
 		
 		linewidths : scalar or array_like, optional, default: None
-		    If None, defaults to (lines.linewidth,).  Note that this is a
-		    tuple, and if you set the linewidths argument you must set it as a
-		    sequence of floats, as required by
-		    `~matplotlib.collections.RegularPolyCollection`.
+		    If None, defaults to (lines.linewidth,).
+		
+		edgecolors : color or sequence of color, optional, default: None
+		    If None, defaults to (patch.edgecolor).
+		    If 'face', the edge color will always be the same as
+		    the face color.  If it is 'none', the patch boundary will not
+		    be drawn.  For non-filled markers, the `edgecolors` kwarg
+		    is ignored; color is determined by `c`.
 		
 		Returns
 		-------
@@ -28570,15 +28941,31 @@ package matplotlib.pylab;
 		which case all masks will be combined and only unmasked points
 		will be plotted.
 		
+		Fundamentally, scatter works with 1-D arrays; `x`, `y`, `s`,
+		and `c` may be input as 2-D arrays, but within scatter
+		they will be flattened. The exception is `c`, which
+		will be flattened only if its size matches the size of `x`
+		and `y`.
+		
 		Examples
 		--------
 		.. plot:: mpl_examples/shapes_and_collections/scatter_demo.py
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'facecolors', 'edgecolors', 'facecolor', 'y', 'linewidths', 'color', 's', 'c', 'x'.
+		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Set the current image.  This image will be the target of colormap
 		commands like :func:`~matplotlib.pyplot.jet`,
@@ -28793,9 +29180,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -28875,9 +29261,8 @@ package matplotlib.pylab;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -30365,11 +30750,21 @@ package matplotlib.pylab;
 		        A single spectrum, similar to having a single segment when
 		        *mode* is 'phase'.  Plots a line instead of a colormap.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		set the default colormap to spectral and apply to current image if any.
 		See help(colormaps) for more information
@@ -30688,6 +31083,9 @@ package matplotlib.pylab;
 		                can be found at http://www.leebyron.com/else/streamgraph/.
 		
 		
+		    *labels* : A list or tuple of labels to assign to each data series.
+		
+		
 		    *colors* : A list or tuple of colors. These will be cycled through and
 		               used to colour the stacked areas.
 		               All other keyword arguments are passed to
@@ -30696,11 +31094,6 @@ package matplotlib.pylab;
 		    Returns *r* : A list of
 		    :class:`~matplotlib.collections.PolyCollection`, one for each
 		    element in the stacked area plot.
-		
-		    Note that :class:`~matplotlib.legend.Legend` does not support
-		    :class:`~matplotlib.collections.PolyCollection` objects.  To create a
-		    legend on a stackplot, use a proxy artist:
-		    http://matplotlib.org/users/legend_guide.html#using-proxy-artist
 		    
 		
 		
@@ -31101,6 +31494,16 @@ package matplotlib.pylab;
 		
 		.. plot:: mpl_examples/pylab_examples/stem_plot.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All positional and all keyword arguments.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
@@ -31122,12 +31525,25 @@ package matplotlib.pylab;
 		Keyword arguments:
 		
 		*where*: [ 'pre' | 'post' | 'mid'  ]
-		  If 'pre', the interval from x[i] to x[i+1] has level y[i+1]
+		  If 'pre' (the default), the interval from x[i] to x[i+1] has level
+		  y[i+1].
 		
-		  If 'post', that interval has level y[i]
+		  If 'post', that interval has level y[i].
 		
 		  If 'mid', the jumps in *y* occur half-way between the
 		  *x*-values.
+		
+		Return value is a list of lines that were added.
+		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
 		
 		
 		
@@ -31206,6 +31622,9 @@ package matplotlib.pylab;
 		        See :class:`~matplotlib.patches.FancyArrowPatch`.
 		    *minlength* : float
 		        Minimum length of streamline in axes coordinates.
+		    *start_points*: Nx2 array
+		        Coordinates of starting points for the streamlines.
+		        In data coordinates, the same as the ``x`` and ``y`` arrays.
 		    *zorder* : int
 		        any number
 		
@@ -31230,7 +31649,7 @@ package matplotlib.pylab;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function streamplot(x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?hold:Dynamic):Dynamic;
+	static public function streamplot(x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Return a subplot axes positioned by the given grid definition.
 		
@@ -31313,7 +31732,7 @@ package matplotlib.pylab;
 		
 		is identical to ::
 		
-		  gridspec=GridSpec(shape[0], shape[2])
+		  gridspec=GridSpec(shape[0], shape[1])
 		  subplotspec=gridspec.new_subplotspec(loc, rowspan, colspan)
 		  subplot(subplotspec)
 	**/
@@ -31767,7 +32186,6 @@ package matplotlib.pylab;
 		  fontsize: a float in points         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -32954,13 +33372,6 @@ package matplotlib.pylab;
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
 		
@@ -33139,13 +33550,6 @@ package matplotlib.pylab;
 		
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
-		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
 		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
@@ -33360,8 +33764,7 @@ package matplotlib.pylab;
 		is 'flat' and C values are defined at points, the color values
 		used for each triangle are from the mean C of the triangle's
 		three points. If *shading* is 'gouraud' then color values must be
-		defined at points.  *shading* of 'faceted' is deprecated;
-		please use *edgecolors* instead.
+		defined at points.
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.
@@ -33765,6 +34168,22 @@ package matplotlib.pylab;
 		>>> plt.show()
 	**/
 	static public function uniform(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Uninstalls the matplotlib display hook.
+		
+		.. warning
+		
+		   Need IPython >= 2 for this to work.  For IPython < 2 will raise a
+		   ``NotImplementedError``
+		
+		.. warning
+		
+		   If you are using vanilla python and have installed another
+		   display hook this will reset ``sys.displayhook`` to what ever
+		   function was there when matplotlib installed it's displayhook,
+		   possibly discarding your changes.
+	**/
+	static public function uninstall_repl_displayhook():Dynamic;
 	/**
 		Find the union of two arrays.
 		
@@ -34319,11 +34738,26 @@ package matplotlib.pylab;
 		              violin's distribution.
 		        
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'dataset'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic, ?hold:Dynamic):Dynamic;
+	static public function violinplot(dataset:Dynamic, ?positions:Dynamic, ?vert:Dynamic, ?widths:Dynamic, ?showmeans:Dynamic, ?showextrema:Dynamic, ?showmedians:Dynamic, ?points:Dynamic, ?bw_method:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
+	/**
+		set the default colormap to viridis and apply to current image if any.
+		See help(colormaps) for more information
+	**/
+	static public function viridis():Dynamic;
 	/**
 		Plot vertical lines.
 		
@@ -34360,11 +34794,21 @@ package matplotlib.pylab;
 		---------
 		.. plot:: mpl_examples/pylab_examples/vline_hline_demo.py
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'ymax', 'ymin', 'colors', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		vonmises(mu, kappa, size=None)
 		
@@ -34894,11 +35338,21 @@ package matplotlib.pylab;
 		The cross correlation is performed with :func:`numpy.correlate` with
 		`mode` = 2.
 		
+		Notes
+		-----
+		
+		In addition to the above described arguments, this function can take a
+		**data** keyword argument. If such a **data** argument is given, the
+		following arguments are replaced by **data[<arg>]**:
+		
+		* All arguments with the following names: 'y', 'x'.
+		
+		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.
 		This will only have effect on things drawn after this function is
@@ -34977,7 +35431,7 @@ package matplotlib.pylab;
 		
 		  xscale(scale, **kwargs)
 		
-		The available scales are: 'linear' | 'log' | 'symlog'
+		The available scales are: 'linear' | 'log' | 'logit' | 'symlog'
 		
 		Different keywords may be accepted, depending on the scale:
 		
@@ -35002,6 +35456,13 @@ package matplotlib.pylab;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'
@@ -35097,7 +35558,7 @@ package matplotlib.pylab;
 		
 		  yscale(scale, **kwargs)
 		
-		The available scales are: 'linear' | 'log' | 'symlog'
+		The available scales are: 'linear' | 'log' | 'logit' | 'symlog'
 		
 		Different keywords may be accepted, depending on the scale:
 		
@@ -35122,6 +35583,13 @@ package matplotlib.pylab;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'

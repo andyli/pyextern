@@ -128,14 +128,6 @@ package matplotlib.backends.backend_ps;
 	**/
 	static public function pstoeps(tmpfile:Dynamic, ?bbox:Dynamic, ?rotated:Dynamic):Dynamic;
 	/**
-		Converts a quadratic Bezier curve to a cubic approximation.
-		
-		The inputs are the *x* and *y* coordinates of the three control
-		points of a quadratic curve, and the output is a tuple of *x* and
-		*y* coordinates of the four control points of the cubic curve.
-	**/
-	static public function quad2cubic(q0x:Dynamic, q0y:Dynamic, q1x:Dynamic, q1y:Dynamic, q2x:Dynamic, q2y:Dynamic):Dynamic;
-	/**
 		Quote dangerous characters of S for use in a PostScript string constant.
 	**/
 	static public function quote_ps_string(s:Dynamic):Dynamic;

@@ -28,34 +28,6 @@ package matplotlib.backends.backend_nbagg;
 	**/
 	static public function connection_info():Dynamic;
 	/**
-		@contextmanager decorator.
-		
-		Typical usage:
-		
-		    @contextmanager
-		    def some_generator(<arguments>):
-		        <setup>
-		        try:
-		            yield <value>
-		        finally:
-		            <cleanup>
-		
-		This makes this:
-		
-		    with some_generator(<arguments>) as <variable>:
-		        <body>
-		
-		equivalent to this:
-		
-		    <setup>
-		    try:
-		        <variable> = <value>
-		        <body>
-		    finally:
-		        <cleanup>
-	**/
-	static public function contextmanager(func:Dynamic):Dynamic;
-	/**
 		Display a Python object in all frontends.
 		
 		By default all representations will be computed and sent to the frontends.
@@ -83,6 +55,10 @@ package matplotlib.backends.backend_nbagg;
 	**/
 	static public function display(objs:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function draw_if_interactive():Dynamic;
+	/**
+		Return true if plot mode is interactive
+	**/
+	static public function is_interactive():Dynamic;
 	/**
 		Create a new figure manager instance
 	**/

@@ -110,6 +110,10 @@ package matplotlib.animation;
 		Clears artists from the last frame.
 	**/
 	public function _pre_draw(framedata:Dynamic, blit:Dynamic):Dynamic;
+	/**
+		IPython display hook for rendering.
+	**/
+	public function _repr_html_():Dynamic;
 	public function _setup_blit():Dynamic;
 	/**
 		Starts interactive animation. Adds the draw frame command to the GUI
@@ -176,4 +180,14 @@ package matplotlib.animation;
 		for example.
 	**/
 	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic):Dynamic;
+	/**
+		Returns animation as an HTML5 video tag.
+		
+		This saves the animation as an h264 video, encoded in base64
+		directly into the HTML5 video tag. This respects the rc parameters
+		for the writer as well as the bitrate. This also makes use of the
+		``interval`` to control the speed, and uses the ``repeat``
+		paramter to decide whether to loop.
+	**/
+	public function to_html5_video():Dynamic;
 }

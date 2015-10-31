@@ -56,7 +56,7 @@ package matplotlib.patheffects;
 		    :meth:`AbstractPathEffect._update_gc`.
 	**/
 	@:native("__init__")
-	public function ___init__(?offset:Dynamic, ?shadow_rgbFace:Dynamic, ?alpha:Dynamic, ?patch_alpha:Dynamic, ?rho:Dynamic, ?offset_xy:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?offset:Dynamic, ?shadow_rgbFace:Dynamic, ?alpha:Dynamic, ?rho:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -127,8 +127,4 @@ package matplotlib.patheffects;
 		necessary color changes for the shadow.
 	**/
 	public function draw_path(renderer:Dynamic, gc:Dynamic, tpath:Dynamic, affine:Dynamic, rgbFace:Dynamic):Dynamic;
-	/**
-		Return a PathEffectRenderer instance for this PathEffect.
-	**/
-	public function get_proxy_renderer(renderer:Dynamic):Dynamic;
 }

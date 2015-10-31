@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.cbook;
 @:pythonImport("matplotlib.cbook") extern class Cbook_Module {
+	static public var STEP_LOOKUP_MAP : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,6 +10,11 @@ package matplotlib.cbook;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Converts a sequence of less than 1 dimension, to an array of 1
+		dimension; leaves everything else untouched.
+	**/
+	static public function _check_1d(x:Dynamic):Dynamic;
 	static public var _dedent_regex : Dynamic;
 	static public var _find_dedent_regex : Dynamic;
 	static public function _generate_deprecation_message(since:Dynamic, ?message:Dynamic, ?name:Dynamic, ?alternative:Dynamic, ?pending:Dynamic, ?obj_type:Dynamic):Dynamic;
@@ -24,6 +30,13 @@ package matplotlib.cbook;
 	**/
 	static public function _reshape_2D(X:Dynamic):Dynamic;
 	static public var _safezip_msg : Dynamic;
+	/**
+		Helper function of `pts_to_*step` functions
+		
+		This function does all of the normalization required to the
+		input and generate the template for output
+	**/
+	static public function _step_validation(x:Dynamic, args:Dynamic):Dynamic;
 	static public function _string_to_bool(s:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -242,6 +255,7 @@ package matplotlib.cbook;
 		and Recipe 1.12 in cookbook
 	**/
 	static public function flatten(seq:Dynamic, ?scalarp:Dynamic):Dynamic;
+	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
 		Recurse all the files and dirs in *args* ignoring symbolic links
@@ -269,6 +283,27 @@ package matplotlib.cbook;
 		.
 	**/
 	static public function get_split_ind(seq:Dynamic, N:Dynamic):Dynamic;
+	/**
+		A helper function to get the index of an input to plot
+		against if x values are not explicitly given.
+		
+		Tries to get `y.index` (works if this is a pd.Series), if that
+		fails, return np.arange(y.shape[0]).
+		
+		This will be extended in the future to deal with more types of
+		labeled data.
+		
+		Parameters
+		----------
+		y : scalar or array-like
+		    The proposed y-value
+		
+		Returns
+		-------
+		x, y : ndarray
+		   The x and y values to plot.
+	**/
+	static public function index_of(y:Dynamic):Dynamic;
 	static public function is_math_text(s:Dynamic):Dynamic;
 	/**
 		return true if *obj* looks like a number
@@ -308,7 +343,43 @@ package matplotlib.cbook;
 		from Parmar and Martelli in the Python Cookbook
 	**/
 	static public function listFiles(root:Dynamic, ?patterns:Dynamic, ?recurse:Dynamic, ?return_folders:Dynamic):Dynamic;
+	/**
+		Enforces the priority of a local variable over potentially conflicting
+		argument(s) from a kwargs dict. The following possible output values are
+		considered in order of priority:
+		
+		    local_var > kwargs[keys[0]] > ... > kwargs[keys[-1]]
+		
+		The first of these whose value is not None will be returned. If all are
+		None then None will be returned. Each key in keys will be removed from the
+		kwargs dict in place.
+		
+		Parameters
+		------------
+		    local_var: any object
+		        The local variable (highest priority)
+		
+		    kwargs: dict
+		        Dictionary of keyword arguments; modified in place
+		
+		    keys: str(s)
+		        Name(s) of keyword arguments to process, in descending order of
+		        priority
+		
+		Returns
+		---------
+		    out: any object
+		        Either local_var or one of kwargs[key] for key in keys
+		
+		Raises
+		--------
+		    IgnoredKeywordWarning
+		        For each key in keys that is removed from kwargs but not used as
+		        the output value
+	**/
+	static public function local_over_kwdict(local_var:Dynamic, kwargs:Dynamic, keys:Dynamic):Dynamic;
 	static public var ls_mapper : Dynamic;
+	static public var ls_mapper_r : Dynamic;
 	/**
 		make directory *newdir* recursively, and set *mode*.  Equivalent to ::
 		
@@ -343,6 +414,93 @@ package matplotlib.cbook;
 	**/
 	static public function print_cycles(objects:Dynamic, ?outstream:Dynamic, ?show_progress:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_midstep(x:Dynamic, args:Dynamic):Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_poststep(x:Dynamic, args:Dynamic):Dynamic;
+	/**
+		Covert continuous line to pre-steps
+		
+		Given a set of N points convert to 2 N -1 points
+		which when connected linearly give a step function
+		which changes values at the begining the intervals.
+		
+		Parameters
+		----------
+		x : array
+		    The x location of the steps
+		
+		y1, y2, ... : array
+		    Any number of y arrays to be turned into steps.
+		    All must be the same length as ``x``
+		
+		Returns
+		-------
+		x, y1, y2, .. : array
+		    The x and y values converted to steps in the same order
+		    as the input.  If the input is length ``N``, each of these arrays
+		    will be length ``2N + 1``
+		
+		
+		Examples
+		--------
+		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
+	**/
+	static public function pts_to_prestep(x:Dynamic, args:Dynamic):Dynamic;
 	static public function recursive_remove(path:Dynamic):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value

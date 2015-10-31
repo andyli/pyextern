@@ -135,9 +135,9 @@ package matplotlib.font_manager;
 		Returns a match score between the list of font families in
 		*families* and the font family name *family2*.
 		
-		An exact match anywhere in the list returns 0.0.
+		An exact match at the head of the list returns 0.0.
 		
-		A match by generic font name will return 0.1.
+		A match further down the list will return between 0 and 1.
 		
 		No match will return 1.0.
 	**/

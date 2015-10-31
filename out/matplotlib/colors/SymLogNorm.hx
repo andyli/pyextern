@@ -2,7 +2,11 @@
 package matplotlib.colors;
 @:pythonImport("matplotlib.colors", "SymLogNorm") extern class SymLogNorm {
 	/**
-		Call self as a function.
+		Normalize *value* data in the ``[vmin, vmax]`` interval into
+		the ``[0.0, 1.0]`` interval and return it.  *clip* defaults
+		to *self.clip* (which defaults to *False*).  If not already
+		initialized, *vmin* and *vmax* are initialized using
+		*autoscale_None(value)*.
 	**/
 	public function __call__(value:Dynamic, ?clip:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;

@@ -129,7 +129,7 @@ package matplotlib.textpath;
 		Parameters
 		----------
 		verts : numpy array
-		codes : numpy array (may not be None)
+		codes : numpy array
 		internals : dict or None
 		    The attributes that the resulting path should have.
 		    Allowed keys are ``readonly``, ``should_simplify``,

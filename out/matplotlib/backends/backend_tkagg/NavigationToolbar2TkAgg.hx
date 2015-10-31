@@ -882,6 +882,10 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function release_zoom(event:Dynamic):Dynamic;
 	/**
+		Remove the rubberband
+	**/
+	public function remove_rubberband():Dynamic;
+	/**
 		Configure row INDEX of a grid.
 		
 		Valid resources are minsize (minimum size of the row),

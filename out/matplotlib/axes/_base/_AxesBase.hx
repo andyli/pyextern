@@ -130,6 +130,21 @@ package matplotlib.axes._base;
 		    Intended to be overridden by new projection types.
 	**/
 	public function _gen_axes_spines(?locations:Dynamic, ?offset:Dynamic, ?units:Dynamic):Dynamic;
+	public function _get_axis_list():Dynamic;
+	/**
+		Save information required to reproduce the current view.
+		
+		Called before a view is changed, such as during a pan or zoom
+		initiated by the user. You may return any information you deem
+		necessary to describe the view.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation saves the view limits. You *must* implement
+		    :meth:`_set_view` if you implement this method.
+	**/
+	public function _get_view():Dynamic;
 	/**
 		move this out of __init__ because non-separable axes don't use it
 	**/
@@ -171,6 +186,50 @@ package matplotlib.axes._base;
 		    example.
 	**/
 	public function _set_lim_and_transforms():Dynamic;
+	/**
+		Apply a previously saved view.
+		
+		Called when restoring a view, such as with the navigation buttons.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation restores the view limits. You *must*
+		    implement :meth:`_get_view` if you implement this method.
+	**/
+	public function _set_view(view:Dynamic):Dynamic;
+	/**
+		Update view from a selection bbox.
+		
+		.. note::
+		
+		    Intended to be overridden by new projection types, but if not, the
+		    default implementation sets the view limits to the bbox directly.
+		
+		Parameters
+		----------
+		
+		bbox : tuple
+		    The selected bounding box limits, in *display* coordinates.
+		
+		direction : str
+		    The direction to apply the bounding box.
+		        * `'in'` - The bounding box describes the view directly, i.e.,
+		                   it zooms in.
+		        * `'out'` - The bounding box describes the size to make the
+		                    existing view, i.e., it zooms out.
+		
+		mode : str or None
+		    The selection mode, whether to apply the bounding box in only the
+		    `'x'` direction, `'y'` direction or both (`None`).
+		
+		twinx : bool
+		    Whether this axis is twinned in the *x*-direction.
+		
+		twiny : bool
+		    Whether this axis is twinned in the *y*-direction.
+	**/
+	public function _set_view_from_bbox(bbox:Dynamic, ?direction:Dynamic, ?mode:Dynamic, ?twinx:Dynamic, ?twiny:Dynamic):Dynamic;
 	static public var _shared_x_axes : Dynamic;
 	static public var _shared_y_axes : Dynamic;
 	/**
@@ -290,12 +349,52 @@ package matplotlib.axes._base;
 	**/
 	public function autoscale_view(?tight:Dynamic, ?scalex:Dynamic, ?scaley:Dynamic):Dynamic;
 	/**
-		Convenience method for manipulating the x and y view limits
-		and the aspect ratio of the plot. For details, see
-		:func:`~matplotlib.pyplot.axis`.
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
+	/**
+		Set axis properties.
 		
-		*kwargs* are passed on to :meth:`set_xlim` and
-		:meth:`set_ylim`
+		Valid signatures::
+		
+		  xmin, xmax, ymin, ymax = axis()
+		  xmin, xmax, ymin, ymax = axis(list_arg)
+		  xmin, xmax, ymin, ymax = axis(string_arg)
+		  xmin, xmax, ymin, ymax = axis(**kwargs)
+		
+		Parameters
+		----------
+		v : list of float or {'on', 'off', 'equal', 'tight', 'scaled',            'normal', 'auto', 'image', 'square'}
+		    Optional positional argument
+		
+		    Axis data limits set from a list; or a command relating to axes:
+		
+		        ========== ================================================
+		        Value      Description
+		        ========== ================================================
+		        'on'       Toggle axis lines and labels on
+		        'off'      Toggle axis lines and labels off
+		        'equal'    Equal scaling by changing limits
+		        'scaled'   Equal scaling by changing box dimensions
+		        'tight'    Limits set such that all data is shown
+		        'auto'     Automatic scaling, fill rectangle with data
+		        'normal'   Same as 'auto'; deprecated
+		        'image'    'scaled' with axis limits equal to data limits
+		        'square'   Square plot; similar to 'scaled', but initially                           forcing xmax-xmin = ymax-ymin
+		        ========== ================================================
+		
+		emit : bool, optional
+		    Passed to set_{x,y}lim functions, if observers
+		    are notified of axis limit change
+		
+		xmin, ymin, xmax, ymax : float, optional
+		    The axis limits to be set
+		
+		Returns
+		-------
+		xmin, xmax, ymin, ymax : float
+		    The axis limits
 	**/
 	public function axis(v:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
@@ -397,6 +496,10 @@ package matplotlib.axes._base;
 	**/
 	public function format_coord(x:Dynamic, y:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		Return *x* string formatted.  This function will use the attribute
 		self.fmt_xdata if it is callable, else will fall back on the xaxis
 		major formatter
@@ -438,7 +541,10 @@ package matplotlib.axes._base;
 	public function get_autoscaley_on():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -473,6 +579,10 @@ package matplotlib.axes._base;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the cursor propertiess as a (*linewidth*, *color*)
 		tuple, where *linewidth* is a float and *color* is an RGBA
@@ -705,7 +815,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_xminorticklabels():Dynamic;
 	/**
-		Return the xaxis scale string: linear, log, symlog
+		Return the xaxis scale string: linear, log, logit, symlog
 	**/
 	public function get_xscale():Dynamic;
 	/**
@@ -818,7 +928,7 @@ package matplotlib.axes._base;
 	**/
 	public function get_yminorticklabels():Dynamic;
 	/**
-		Return the yaxis scale string: linear, log, symlog
+		Return the yaxis scale string: linear, log, logit, symlog
 	**/
 	public function get_yscale():Dynamic;
 	/**
@@ -898,9 +1008,8 @@ package matplotlib.axes._base;
 		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: [``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                   ``' '`` | ``''``]
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float value in points         
-		  lod: [True | False]         
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
 		  markeredgecolor or mec: any matplotlib color         
 		  markeredgewidth or mew: float value in points         
@@ -1064,6 +1173,7 @@ package matplotlib.axes._base;
 		Add autoscaling minor ticks to the axes.
 	**/
 	public function minorticks_on():Dynamic;
+	public var mouseover : Dynamic;
 	static public var name : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -1130,7 +1240,10 @@ package matplotlib.axes._base;
 	**/
 	public function reset_position():Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -1238,6 +1351,9 @@ package matplotlib.axes._base;
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
 		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
+		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
 	public function set_axes(axes:Dynamic):Dynamic;
@@ -1310,6 +1426,8 @@ package matplotlib.axes._base;
 		Set the color cycle for any future plot commands on this Axes.
 		
 		*clist* is a list of mpl color specifiers.
+		
+		.. deprecated:: 1.5
 	**/
 	public function set_color_cycle(clist:Dynamic):Dynamic;
 	/**
@@ -1362,14 +1480,6 @@ package matplotlib.axes._base;
 		ACCEPTS: string or anything printable with '%s' conversion.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		Set whether the axes responds to navigation toolbar commands
 		
@@ -1446,6 +1556,43 @@ package matplotlib.axes._base;
 	**/
 	public function set_position(pos:Dynamic, ?which:Dynamic):Dynamic;
 	/**
+		Set the property cycle for any future plot commands on this Axes.
+		
+		set_prop_cycle(arg)
+		set_prop_cycle(label, itr)
+		set_prop_cycle(label1=itr1[, label2=itr2[, ...]])
+		
+		Form 1 simply sets given `Cycler` object.
+		
+		Form 2 creates and sets  a `Cycler` from a label and an iterable.
+		
+		Form 3 composes and sets  a `Cycler` as an inner product of the
+		pairs of keyword arguments. In other words, all of the
+		iterables are cycled simultaneously, as if through zip().
+		
+		Parameters
+		----------
+		arg : Cycler
+		    Set the given Cycler.
+		    Can also be `None` to reset to the cycle defined by the
+		    current style.
+		
+		label : name
+		    The property key. Must be a valid `Artist` property.
+		    For example, 'color' or 'linestyle'. Aliases are allowed,
+		    such as 'c' for 'color' and 'lw' for 'linewidth'.
+		
+		itr : iterable
+		    Finite-length iterable of the property values. These values
+		    are validated and will raise a ValueError if invalid.
+		
+		See Also
+		--------
+		    :func:`cycler`      Convenience function for creating your
+		                        own cyclers.
+	**/
+	public function set_prop_cycle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
 		Set zorder value below which artists will be rasterized.  Set
 		to `None` to disable rasterizing of artists below a particular
 		zorder.
@@ -1460,7 +1607,7 @@ package matplotlib.axes._base;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -1575,9 +1722,9 @@ package matplotlib.axes._base;
 		
 		  set_xscale(value)
 		
-		Set the scaling of the x-axis: 'linear' | 'log' | 'symlog'
+		Set the scaling of the x-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
-		ACCEPTS: ['linear' | 'log' | 'symlog']
+		ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
 		
 		Different kwargs are accepted, depending on the scale:
 		    'linear'
@@ -1601,6 +1748,13 @@ package matplotlib.axes._base;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'
@@ -1645,20 +1799,19 @@ package matplotlib.axes._base;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -1674,10 +1827,12 @@ package matplotlib.axes._base;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -1755,9 +1910,9 @@ package matplotlib.axes._base;
 		
 		  set_yscale(value)
 		
-		Set the scaling of the y-axis: 'linear' | 'log' | 'symlog'
+		Set the scaling of the y-axis: 'linear' | 'log' | 'logit' | 'symlog'
 		
-		ACCEPTS: ['linear' | 'log' | 'symlog']
+		ACCEPTS: ['linear' | 'log' | 'logit' | 'symlog']
 		
 		Different kwargs are accepted, depending on the scale:
 		    'linear'
@@ -1781,6 +1936,13 @@ package matplotlib.axes._base;
 		        
 		           will place 8 logarithmically spaced minor ticks between
 		           each major tick.
+		
+		
+		    'logit'
+		
+		        *nonpos*: ['mask' | 'clip' ]
+		          values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		          very close to 0 or 1
 		
 		
 		    'symlog'
@@ -1825,20 +1987,19 @@ package matplotlib.axes._base;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -1854,10 +2015,12 @@ package matplotlib.axes._base;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         
@@ -1883,6 +2046,11 @@ package matplotlib.axes._base;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Called when a pan operation has started.
 		

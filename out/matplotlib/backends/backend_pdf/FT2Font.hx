@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends.backend_pdf;
-@:pythonImport("matplotlib.backends.backend_pdf", "FT2Font") extern class FT2Font {
-
-}
+typedef FT2Font = matplotlib.ft2font.FT2Font;

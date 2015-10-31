@@ -128,6 +128,10 @@ package matplotlib.ticker;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Set parameters within this locator.
+	**/
+	public function set_params(?base:Dynamic, ?subs:Dynamic, ?numdecs:Dynamic, ?numticks:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		set the minor ticks the log scaling every base**i*subs[j]

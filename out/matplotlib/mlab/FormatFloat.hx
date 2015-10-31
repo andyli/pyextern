@@ -34,7 +34,8 @@ package matplotlib.mlab;
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
 	/**
-		override the hash function of any of the formatters, so that we don't create duplicate excel format styles
+		override the hash function of any of the formatters, so that we don't
+		create duplicate excel format styles
 	**/
 	public function __hash__():Dynamic;
 	/**

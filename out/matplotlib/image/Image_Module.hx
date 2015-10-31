@@ -28,6 +28,7 @@ package matplotlib.image;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _interpd_ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines
@@ -39,30 +40,45 @@ package matplotlib.image;
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		from_images
+		from_images(numrows, numcols, seq)
+		
+		return an image instance with numrows, numcols from a seq of image
+		instances using alpha blending.  seq is a list of (Image, ox, oy)
 	**/
 	static public function from_images(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fromarray
+		fromarray(A, isoutput)
+		
+		Load the image from a numpy array
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling
 	**/
 	static public function fromarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fromarray2
-	**/
-	static public function fromarray2(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombuffer
+		frombuffer(buffer, width, height, isoutput)
+		
+		Load the image from a character buffer
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling.
 	**/
 	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		frombyte
+		frombyte(A, isoutput)
+		
+		Load the image from a byte array.
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling.
 	**/
 	static public function frombyte(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Read an image from a file into an array.
 		
-		*fname* may be a string path or a Python file-like object.  If
-		using a file object, it must be opened in binary mode.
+		*fname* may be a string path, a valid URL, or a Python
+		file-like object.  If using a file object, it must be opened in binary
+		mode.
 		
 		If *format* is provided, will try to read file of that type,
 		otherwise the format is deduced from the filename.  If nothing can
@@ -75,7 +91,9 @@ package matplotlib.image;
 		matplotlib can only read PNGs natively, but if `PIL
 		<http://www.pythonware.com/products/pil/>`_ is installed, it will
 		use it to load the image and return an array (if possible) which
-		can be used with :func:`~matplotlib.pyplot.imshow`.
+		can be used with :func:`~matplotlib.pyplot.imshow`. Note, URL strings
+		may not be compatible with PIL. Check the PIL documentation for more
+		information.
 	**/
 	static public function imread(fname:Dynamic, ?format:Dynamic):Dynamic;
 	/**
@@ -111,12 +129,23 @@ package matplotlib.image;
 		    resolution of the output image.
 	**/
 	static public function imsave(fname:Dynamic, arr:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?format:Dynamic, ?origin:Dynamic, ?dpi:Dynamic):Dynamic;
+	static public var interpolations_names : Dynamic;
 	/**
-		pcolor
+		pcolor(x, y, data, rows, cols, bounds)
+		
+		Generate a pseudo-color image from data on a non-uniform grid using
+		nearest neighbour or linear interpolation.
+		bounds = (x_min, x_max, y_min, y_max)
+		interpolation = NEAREST or BILINEAR 
 	**/
 	static public function pcolor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pcolor2
+		pcolor2(x, y, data, rows, cols, bounds, bg)
+		
+		Generate a pseudo-color image from data on a non-uniform grid
+		specified by its cell boundaries.
+		bounds = (x_left, x_right, y_bot, y_top)
+		bg = ndarray of 4 uint8 representing background rgba
 	**/
 	static public function pcolor2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -131,8 +160,8 @@ package matplotlib.image;
 		make a thumbnail of image in *infile* with output filename
 		*thumbfile*.
 		
-		  *infile* the image file -- must be PNG or PIL readable if you
-		     have `PIL <http://www.pythonware.com/products/pil/>`_ installed
+		  *infile* the image file -- must be PNG or Pillow-readable if you
+		     have `Pillow <http://python-pillow.github.io/>`_ installed
 		
 		  *thumbfile*
 		    the thumbnail filename
@@ -163,4 +192,13 @@ package matplotlib.image;
 	**/
 	static public function thumbnail(infile:Dynamic, thumbfile:Dynamic, ?scale:Dynamic, ?interpolation:Dynamic, ?preview:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
+	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
+	/**
+		Parse a URL into 6 components:
+		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>
+		Return a 6-tuple: (scheme, netloc, path, params, query, fragment).
+		Note that we don't break the components up in smaller bits
+		(e.g. netloc is a single string) and we don't expand % escapes.
+	**/
+	static public function urlparse(url:Dynamic, ?scheme:Dynamic, ?allow_fragments:Dynamic):Dynamic;
 }

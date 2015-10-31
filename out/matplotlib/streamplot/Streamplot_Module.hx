@@ -85,6 +85,9 @@ package matplotlib.streamplot;
 		    See :class:`~matplotlib.patches.FancyArrowPatch`.
 		*minlength* : float
 		    Minimum length of streamline in axes coordinates.
+		*start_points*: Nx2 array
+		    Coordinates of starting points for the streamlines.
+		    In data coordinates, the same as the ``x`` and ``y`` arrays.
 		*zorder* : int
 		    any number
 		
@@ -103,6 +106,6 @@ package matplotlib.streamplot;
 		        to the colormap, alpha, etc. for both lines and arrows, but these
 		        changes should be backward compatible.
 	**/
-	static public function streamplot(axes:Dynamic, x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic):Dynamic;
+	static public function streamplot(axes:Dynamic, x:Dynamic, y:Dynamic, u:Dynamic, v:Dynamic, ?density:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?arrowsize:Dynamic, ?arrowstyle:Dynamic, ?minlength:Dynamic, ?transform:Dynamic, ?zorder:Dynamic, ?start_points:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

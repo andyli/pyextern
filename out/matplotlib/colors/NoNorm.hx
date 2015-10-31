@@ -2,7 +2,11 @@
 package matplotlib.colors;
 @:pythonImport("matplotlib.colors", "NoNorm") extern class NoNorm {
 	/**
-		Call self as a function.
+		Normalize *value* data in the ``[vmin, vmax]`` interval into
+		the ``[0.0, 1.0]`` interval and return it.  *clip* defaults
+		to *self.clip* (which defaults to *False*).  If not already
+		initialized, *vmin* and *vmax* are initialized using
+		*autoscale_None(value)*.
 	**/
 	public function __call__(value:Dynamic, ?clip:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -42,10 +46,12 @@ package matplotlib.colors;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		If *vmin* or *vmax* is not given, they are taken from the input's
-		minimum and maximum value respectively.  If *clip* is *True* and
-		the given value falls outside the range, the returned value
-		will be 0 or 1, whichever is closer. Returns 0 if::
+		If *vmin* or *vmax* is not given, they are initialized from the
+		minimum and maximum value respectively of the first input
+		processed.  That is, *__call__(A)* calls *autoscale_None(A)*.
+		If *clip* is *True* and the given value falls outside the range,
+		the returned value will be 0 or 1, whichever is closer.
+		Returns 0 if::
 		
 		    vmin==vmax
 		

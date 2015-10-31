@@ -18,11 +18,10 @@ package matplotlib.backends.backend_pdf;
 	static public var __version__ : Dynamic;
 	/**
 		Return the PDF operator to paint a path in the following way:
-		closep:  close the path before painting
-		fillp:   fill the path with the fill color
-		strokep: stroke the outline of the path with the line color
+		fill:   fill the path with the fill color
+		stroke: stroke the outline of the path with the line color
 	**/
-	static public function _paint_path(closep:Dynamic, fillp:Dynamic, strokep:Dynamic):Dynamic;
+	static public function _paint_path(fill:Dynamic, stroke:Dynamic):Dynamic;
 	static public var _pdfops : Dynamic;
 	static public function _string_escape(match:Dynamic):Dynamic;
 	static public var _string_escape_regex : Dynamic;
@@ -84,14 +83,6 @@ package matplotlib.backends.backend_pdf;
 	static public function pdfRepr(obj:Dynamic):Dynamic;
 	static public var pi : Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Converts a quadratic Bezier curve to a cubic approximation.
-		
-		The inputs are the *x* and *y* coordinates of the three control
-		points of a quadratic curve, and the output is a tuple of *x* and
-		*y* coordinates of the four control points of the cubic curve.
-	**/
-	static public function quad2cubic(q0x:Dynamic, q0y:Dynamic, q1x:Dynamic, q1y:Dynamic, q2x:Dynamic, q2y:Dynamic):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		sin(x)

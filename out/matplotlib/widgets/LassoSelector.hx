@@ -41,7 +41,7 @@ package matplotlib.widgets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, ?onselect:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?onselect:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?button:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -97,6 +97,52 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
+	/**
+		Clean up an event
+		
+		Use prev event if there is no xdata
+		Limit the xdata and ydata to the axes limits
+		Set the prev event
+	**/
+	public function _clean_event(event:Dynamic):Dynamic;
+	/**
+		Get the xdata and ydata for event, with limits
+	**/
+	public function _get_data(event:Dynamic):Dynamic;
+	/**
+		Key press event handler - use for widget-specific key press actions.
+		        
+	**/
+	public function _on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler
+	**/
+	public function _on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler
+	**/
+	public function _on_scroll(event:Dynamic):Dynamic;
+	/**
+		Cursor move event handler
+	**/
+	public function _onmove(event:Dynamic):Dynamic;
+	/**
+		Button press handler
+	**/
+	public function _press(event:Dynamic):Dynamic;
+	/**
+		Button release event handler
+	**/
+	public function _release(event:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
+	/**
+		Connect the major canvas events to methods.
+	**/
+	public function connect_default_events():Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -111,14 +157,56 @@ package matplotlib.widgets;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	/**
-		Return True if event should be ignored.
-		
-		This method (or a version of it) should be called at the beginning
-		of any event callback.
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
+		return *True* if *event* should be ignored
 	**/
 	public function ignore(event:Dynamic):Dynamic;
+	/**
+		Key press event handler and validator for all selection widgets
+	**/
+	public function on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler and validator
+	**/
+	public function on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler and validator
+	**/
+	public function on_scroll(event:Dynamic):Dynamic;
+	/**
+		Cursor move event handler and validator
+	**/
 	public function onmove(event:Dynamic):Dynamic;
 	public function onpress(event:Dynamic):Dynamic;
 	public function onrelease(event:Dynamic):Dynamic;
+	/**
+		Button press handler and validator
+	**/
+	public function press(event:Dynamic):Dynamic;
+	/**
+		Button release event handler and validator
+	**/
+	public function release(event:Dynamic):Dynamic;
+	/**
+		Set whether the widget is active.
+		        
+	**/
+	public function set_active(active:Dynamic):Dynamic;
+	/**
+		Set the visibility of our artists 
+	**/
+	public function set_visible(visible:Dynamic):Dynamic;
+	/**
+		draw using newfangled blit or oldfangled draw depending on
+		useblit
+	**/
+	public function update():Dynamic;
+	/**
+		force an update of the background
+	**/
 	public function update_background(event:Dynamic):Dynamic;
 }

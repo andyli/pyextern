@@ -132,6 +132,11 @@ package matplotlib.image;
 	**/
 	public function autoscale_None():Dynamic;
 	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
+	/**
 		Call this whenever the mappable is changed to notify all the
 		callbackSM listeners to the 'changed' signal
 	**/
@@ -180,6 +185,10 @@ package matplotlib.image;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -198,7 +207,10 @@ package matplotlib.image;
 	public function get_array():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -230,6 +242,10 @@ package matplotlib.image;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the :class:`~matplotlib.figure.Figure` instance the
 		artist belongs to.
@@ -342,6 +358,7 @@ package matplotlib.image;
 	**/
 	public function is_transform_set():Dynamic;
 	public function make_image(?magnification:Dynamic):Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -388,7 +405,10 @@ package matplotlib.image;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -415,6 +435,9 @@ package matplotlib.image;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -470,13 +493,6 @@ package matplotlib.image;
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The set_colorbar function was deprecated in version 1.3. Use the colorbar attribute instead.
-		
-		set the colorbar and axes instances associated with mappable
-	**/
-	public function set_colorbar(im:Dynamic, ax:Dynamic):Dynamic;
-	/**
 		Replace the contains test used by this artist. The new picker
 		should be a callable function which determines whether the
 		artist is hit by the mouse event::
@@ -510,14 +526,6 @@ package matplotlib.image;
 		ACCEPTS: string or anything printable with '%s' conversion.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		set the normalization instance
 	**/
@@ -568,7 +576,7 @@ package matplotlib.image;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -626,6 +634,11 @@ package matplotlib.image;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		Return a normalized rgba array corresponding to *x*.
 		

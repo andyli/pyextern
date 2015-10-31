@@ -50,6 +50,7 @@ package matplotlib.widgets;
 		If *minspan* is not *None*, ignore events smaller than *minspan*
 		
 		The span rectangle is drawn with *rectprops*; default::
+		
 		  rectprops = dict(facecolor='red', alpha=0.5)
 		
 		Set the visible attribute to *False* if you want to turn off
@@ -57,9 +58,19 @@ package matplotlib.widgets;
 		
 		If *span_stays* is True, the span stays visble after making
 		a valid selection.
+		
+		*button* is a list of integers indicating which mouse buttons should
+		be used for selection.  You can also specify a single
+		integer if only a single button is desired.  Default is *None*,
+		which does not limit which button can be used.
+		
+		Note, typically:
+		 1 = left mouse button
+		 2 = center mouse button (scroll wheel)
+		 3 = right mouse button
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, onselect:Dynamic, direction:Dynamic, ?minspan:Dynamic, ?useblit:Dynamic, ?rectprops:Dynamic, ?onmove_callback:Dynamic, ?span_stays:Dynamic, ?button:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -115,6 +126,52 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
+	/**
+		Clean up an event
+		
+		Use prev event if there is no xdata
+		Limit the xdata and ydata to the axes limits
+		Set the prev event
+	**/
+	public function _clean_event(event:Dynamic):Dynamic;
+	/**
+		Get the xdata and ydata for event, with limits
+	**/
+	public function _get_data(event:Dynamic):Dynamic;
+	/**
+		Key press event handler - use for widget-specific key press actions.
+		        
+	**/
+	public function _on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler
+	**/
+	public function _on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler
+	**/
+	public function _on_scroll(event:Dynamic):Dynamic;
+	/**
+		on motion notify event
+	**/
+	public function _onmove(event:Dynamic):Dynamic;
+	/**
+		on button press event
+	**/
+	public function _press(event:Dynamic):Dynamic;
+	/**
+		on button release event
+	**/
+	public function _release(event:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
+	/**
+		Connect the major canvas events to methods.
+	**/
+	public function connect_default_events():Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -129,25 +186,51 @@ package matplotlib.widgets;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	/**
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
 		return *True* if *event* should be ignored
 	**/
 	public function ignore(event:Dynamic):Dynamic;
 	public function new_axes(ax:Dynamic):Dynamic;
 	/**
-		on motion notify event
+		Key press event handler and validator for all selection widgets
+	**/
+	public function on_key_press(event:Dynamic):Dynamic;
+	/**
+		Key release event handler and validator
+	**/
+	public function on_key_release(event:Dynamic):Dynamic;
+	/**
+		Mouse scroll event handler and validator
+	**/
+	public function on_scroll(event:Dynamic):Dynamic;
+	/**
+		Cursor move event handler and validator
 	**/
 	public function onmove(event:Dynamic):Dynamic;
 	/**
-		on button press event
+		Button press handler and validator
 	**/
 	public function press(event:Dynamic):Dynamic;
 	/**
-		on button release event
+		Button release event handler and validator
 	**/
 	public function release(event:Dynamic):Dynamic;
 	/**
-		Draw using newfangled blit or oldfangled draw depending
-		on *useblit*
+		Set whether the widget is active.
+		        
+	**/
+	public function set_active(active:Dynamic):Dynamic;
+	/**
+		Set the visibility of our artists 
+	**/
+	public function set_visible(visible:Dynamic):Dynamic;
+	/**
+		draw using newfangled blit or oldfangled draw depending on
+		useblit
 	**/
 	public function update():Dynamic;
 	/**

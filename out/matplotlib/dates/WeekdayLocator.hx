@@ -125,6 +125,9 @@ package matplotlib.dates;
 	public function autoscale():Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	/**
+		Convert axis data interval to datetime objects.
+	**/
 	public function datalim_to_dt():Dynamic;
 	static public function get_unit_generic(freq:Dynamic):Dynamic;
 	static public var hms0d : Dynamic;
@@ -149,6 +152,14 @@ package matplotlib.dates;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Do nothing, and rase a warning. Any locator class not supporting the
+		set_params() function will call this.
+	**/
+	public function set_params(kwargs:Dynamic):Dynamic;
+	/**
+		Set time zone info.
+	**/
 	public function set_tzinfo(tz:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
@@ -172,6 +183,9 @@ package matplotlib.dates;
 		change locator behaviour.
 	**/
 	public function view_limits(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Converts the view interval to datetime objects.
+	**/
 	public function viewlim_to_dt():Dynamic;
 	/**
 		Zoom in/out on axis; if direction is >0 zoom in, else zoom out

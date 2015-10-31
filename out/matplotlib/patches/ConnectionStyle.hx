@@ -34,20 +34,20 @@ package matplotlib.patches;
 	static public function Arc3(?rad:Dynamic):Dynamic;
 	/**
 		A line with *angle* between A and B with *armA* and
-		*armB*. One of the arm is extend so that they are connected in
+		*armB*. One of the arms is extended so that they are connected in
 		a right angle. The length of armA is determined by (*armA*
 		+ *fraction* x AB distance). Same for armB.
 	**/
 	static public function Bar(?armA:Dynamic, ?armB:Dynamic, ?fraction:Dynamic, ?angle:Dynamic):Dynamic;
 	/**
-		A base class for connectionstyle classes. The dervided needs
-		to implement a *connect* methods whose call signature is::
+		A base class for connectionstyle classes. The subclass needs
+		to implement a *connect* method whose call signature is::
 		
 		  connect(posA, posB)
 		
 		where posA and posB are tuples of x, y coordinates to be
-		connected.  The methods needs to return a path connecting two
-		points. This base class defines a __call__ method, and few
+		connected.  The method needs to return a path connecting two
+		points. This base class defines a __call__ method, and a few
 		helper methods.
 	**/
 	static public function _Base():Dynamic;

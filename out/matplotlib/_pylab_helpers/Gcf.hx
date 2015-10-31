@@ -110,6 +110,11 @@ package matplotlib._pylab_helpers;
 		*fig* is a Figure instance
 	**/
 	static public function destroy_fig(fig:Dynamic):Dynamic;
+	/**
+		Redraw all figures registered with the pyplot
+		state machine.
+	**/
+	static public function draw_all(?force:Dynamic):Dynamic;
 	static public var figs : Dynamic;
 	/**
 		Return the manager of the active figure, or *None*.

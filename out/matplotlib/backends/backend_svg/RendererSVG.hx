@@ -99,7 +99,7 @@ package matplotlib.backends.backend_svg;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _adjust_char_id(char_id:Dynamic):Dynamic;
-	public function _convert_path(path:Dynamic, ?transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic):Dynamic;
+	public function _convert_path(path:Dynamic, ?transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic, ?sketch:Dynamic):Dynamic;
 	/**
 		draw the text by converting them to paths using textpath module.
 		
@@ -379,7 +379,8 @@ package matplotlib.backends.backend_svg;
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		if svg.image_noscale is True, compositing multiple images into one is prohibited
+		return whether to generate a composite image from multiple images on
+		a set of axes
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**

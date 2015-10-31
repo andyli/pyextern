@@ -113,8 +113,4 @@ package matplotlib.patheffects;
 		draw the path with updated gc.
 	**/
 	public function draw_path(renderer:Dynamic, gc:Dynamic, tpath:Dynamic, affine:Dynamic, rgbFace:Dynamic):Dynamic;
-	/**
-		Return a PathEffectRenderer instance for this PathEffect.
-	**/
-	public function get_proxy_renderer(renderer:Dynamic):Dynamic;
 }

@@ -475,13 +475,6 @@ package matplotlib.contour;
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The set_colorbar function was deprecated in version 1.3. Use the colorbar attribute instead.
-		
-		set the colorbar and axes instances associated with mappable
-	**/
-	public function set_colorbar(im:Dynamic, ax:Dynamic):Dynamic;
-	/**
 		set the label properties - color, fontsize, text
 	**/
 	public function set_label_props(label:Dynamic, text:Dynamic, color:Dynamic):Dynamic;

@@ -161,7 +161,8 @@ package matplotlib.artist;
 		for a line that begins with ACCEPTS:
 		
 		e.g., for a line linestyle, return
-		"[ ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'steps'`` | ``'None'`` ]"
+		"[ ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'steps'`` | ``'None'``
+		]"
 	**/
 	public function get_valid_values(attr:Dynamic):Dynamic;
 	/**

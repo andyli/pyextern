@@ -8,31 +8,31 @@ package matplotlib._path;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		affine_transform(vertices, transform)
+		affine_transform(points, trans)
 	**/
 	static public function affine_transform(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cleanup_path(path, trans, remove_nans, clip, snap, simplify, curves, sketch_params)
+		cleanup_path(path, trans, remove_nans, clip_rect, snap_mode, stroke_width, simplify, return_curves, sketch)
 	**/
 	static public function cleanup_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		clip_path_to_rect(path, bbox, inside)
+		clip_path_to_rect(path, rect, inside)
 	**/
 	static public function clip_path_to_rect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		convert_path_to_polygons(path, trans, width, height)
+		convert_path_to_polygons(path, trans, width=0, height=0)
 	**/
 	static public function convert_path_to_polygons(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		convert_to_svg(path, trans, clip, simplify, precision)
+		convert_to_string(path, trans, clip_rect, simplify, sketch, precision, codes, postfix)
 	**/
-	static public function convert_to_svg(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function convert_to_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		count_bboxes_overlapping_bbox(bbox, bboxes)
 	**/
 	static public function count_bboxes_overlapping_bbox(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		get_path_collection_extents(trans, paths, transforms, offsets, offsetTrans)
+		get_path_collection_extents(
 	**/
 	static public function get_path_collection_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -40,31 +40,35 @@ package matplotlib._path;
 	**/
 	static public function get_path_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		path_in_path(a, atrans, b, btrans)
+		path_in_path(path_a, trans_a, path_b, trans_b)
 	**/
 	static public function path_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		path_intersects_path(p1, p2)
+		path_intersects_path(path1, path2, filled=False)
 	**/
 	static public function path_intersects_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		point_in_path(x, y, path, trans)
+		point_in_path(x, y, radius, path, trans)
 	**/
 	static public function point_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		point_in_path_collection(x, y, r, trans, paths, transforms, offsets, offsetTrans, filled)
+		point_in_path_collection(x, y, radius, master_transform, paths, transforms, offsets, offset_trans, filled, offset_position)
 	**/
 	static public function point_in_path_collection(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		point_on_path(x, y, r, path, trans)
+		point_on_path(x, y, radius, path, trans)
 	**/
 	static public function point_on_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		points_in_path(points, path, trans)
+		points_in_path(points, radius, path, trans)
 	**/
 	static public function points_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		update_path_extents(path, trans, bbox, minpos)
+		points_on_path(points, radius, path, trans)
+	**/
+	static public function points_on_path(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		update_path_extents(path, trans, rect, minpos, ignore)
 	**/
 	static public function update_path_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

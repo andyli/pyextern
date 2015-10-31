@@ -104,11 +104,6 @@ package matplotlib.backends.backend_pdf;
 		Set clip rectangle. Calls self.pop() and self.push().
 	**/
 	public function clip_cmd(cliprect:Dynamic, clippath:Dynamic):Dynamic;
-	/**
-		Return the appropriate pdf operator to close the path and
-		cause it to be stroked, filled, or both.
-	**/
-	public function close_and_paint():Dynamic;
 	static public var commands : Dynamic;
 	/**
 		Copy properties of other into self.
@@ -121,14 +116,14 @@ package matplotlib.backends.backend_pdf;
 		needed to transform self into other.
 	**/
 	public function delta(other:Dynamic):Dynamic;
-	public function fillcolor_cmd(rgb:Dynamic):Dynamic;
 	/**
 		Predicate: does the path need to be filled?
 		
 		An optional argument can be used to specify an alternative
 		_fillcolor, as needed by RendererPdf.draw_markers.
 	**/
-	public function fillp(args:Dynamic):Dynamic;
+	public function fill(args:Dynamic):Dynamic;
+	public function fillcolor_cmd(rgb:Dynamic):Dynamic;
 	/**
 		Make sure every pushed graphics state is popped.
 	**/
@@ -332,7 +327,7 @@ package matplotlib.backends.backend_pdf;
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -371,5 +366,5 @@ package matplotlib.backends.backend_pdf;
 		This tests for the various conditions that disable stroking
 		the path, in which case it would presumably be filled.
 	**/
-	public function strokep():Dynamic;
+	public function stroke():Dynamic;
 }

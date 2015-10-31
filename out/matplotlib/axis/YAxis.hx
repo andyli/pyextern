@@ -113,8 +113,9 @@ package matplotlib.axis;
 		
 		*perturb* is the amount to perturb the pixel.  Usually +0.5 or -0.5.
 		
-		Implementing this routine for an axis is optional; if present, it will ensure that no
-		ticks are lost due to round-off at the extreme ends of an axis.
+		Implementing this routine for an axis is optional; if present, it will
+		ensure that no ticks are lost due to round-off at the extreme ends of
+		an axis.
 	**/
 	public function _get_pixel_distance_along_axis(where:Dynamic, perturb:Dynamic):Dynamic;
 	/**
@@ -139,8 +140,8 @@ package matplotlib.axis;
 	**/
 	public function _update_axisinfo():Dynamic;
 	/**
-		Update the label position based on the sequence of bounding
-		boxes of all the ticklabels
+		Update the label position based on the bounding box enclosing
+		all the ticklabels and axis spine
 	**/
 	public function _update_label_position(bboxes:Dynamic, bboxes2:Dynamic):Dynamic;
 	/**
@@ -168,6 +169,11 @@ package matplotlib.axis;
 	**/
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
+	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
 	/**
 		Sets up x-axis ticks and labels that treat the x data as dates.
 		*tz* is a :class:`tzinfo` instance or a timezone string.
@@ -220,6 +226,10 @@ package matplotlib.axis;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -234,7 +244,10 @@ package matplotlib.axis;
 	public function get_animated():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -258,6 +271,10 @@ package matplotlib.axis;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		return the Interval instance for this axis data limits
 	**/
@@ -517,6 +534,7 @@ package matplotlib.axis;
 	**/
 	public function iter_ticks():Dynamic;
 	public function limit_range_for_scale(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Pan *numsteps* (can be positive or negative)
 	**/
@@ -568,7 +586,10 @@ package matplotlib.axis;
 	public function remove_callback(oid:Dynamic):Dynamic;
 	public function reset_ticks():Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -591,6 +612,9 @@ package matplotlib.axis;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -698,14 +722,6 @@ package matplotlib.axis;
 	**/
 	public function set_label_text(label:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
-	/**
 		Set the formatter of the major ticker
 		
 		ACCEPTS: A :class:`~matplotlib.ticker.Formatter` instance
@@ -782,14 +798,7 @@ package matplotlib.axis;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The set_scale function was deprecated in version 1.3.
-		
-		This should be a private function (moved to _set_scale)
-	**/
-	public function set_scale(value:Dynamic, kwargs:Dynamic):Dynamic;
-	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -846,7 +855,7 @@ package matplotlib.axis;
 		tick locations, regardless of the state of label1On and
 		label2On.
 		
-		ACCEPTS: sequence of strings
+		ACCEPTS: sequence of strings or Text objects
 	**/
 	public function set_ticklabels(ticklabels:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
@@ -907,6 +916,11 @@ package matplotlib.axis;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		use ticks only on left
 	**/

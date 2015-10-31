@@ -174,13 +174,6 @@ package matplotlib.tri;
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
 		
@@ -356,13 +349,6 @@ package matplotlib.tri;
 		  *antialiased*: [ *True* | *False* ]
 		    enable antialiasing
 		
-		  *nchunk*: [ 0 | integer ]
-		    If 0, no subdivision of the domain. Specify a positive integer to
-		    divide the domain into subdomains of roughly *nchunk* by *nchunk*
-		    points. This may never actually be advantageous, so this option may
-		    be removed. Chunking introduces artifacts at the chunk boundaries
-		    unless *antialiased* is *False*.
-		
 		Note: tricontourf fills intervals that are closed at the top; that
 		is, for boundaries *z1* and *z2*, the filled region is::
 		
@@ -411,8 +397,7 @@ package matplotlib.tri;
 		is 'flat' and C values are defined at points, the color values
 		used for each triangle are from the mean C of the triangle's
 		three points. If *shading* is 'gouraud' then color values must be
-		defined at points.  *shading* of 'faceted' is deprecated;
-		please use *edgecolors* instead.
+		defined at points.
 		
 		The remaining kwargs are the same as for
 		:meth:`~matplotlib.axes.Axes.pcolor`.

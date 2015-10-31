@@ -2,6 +2,7 @@
 package matplotlib.transforms;
 @:pythonImport("matplotlib.transforms") extern class Transforms_Module {
 	static public var DEBUG : Dynamic;
+	static public var MINFLOAT : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -12,7 +13,7 @@ package matplotlib.transforms;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		affine_transform(vertices, transform)
+		affine_transform(points, trans)
 	**/
 	static public function affine_transform(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -122,8 +123,8 @@ package matplotlib.transforms;
 		
 		Returns *vmin*, *vmax*, expanded and/or swapped if necessary.
 		
-		If either input is inf or NaN, or if both inputs are 0,
-		returns -*expander*, *expander*.
+		If either input is inf or NaN, or if both inputs are 0 or very
+		close to zero, it returns -*expander*, *expander*.
 	**/
 	static public function nonsingular(vmin:Dynamic, vmax:Dynamic, ?expander:Dynamic, ?tiny:Dynamic, ?increasing:Dynamic):Dynamic;
 	/**
@@ -139,7 +140,7 @@ package matplotlib.transforms;
 	static public var print_function : Dynamic;
 	static public var unicode_literals : Dynamic;
 	/**
-		update_path_extents(path, trans, bbox, minpos)
+		update_path_extents(path, trans, rect, minpos, ignore)
 	**/
 	static public function update_path_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

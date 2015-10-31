@@ -110,6 +110,7 @@ package matplotlib.cm;
 	static public function bwr_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public var cmap_d : Dynamic;
 	static public var cmapname : Dynamic;
+	static public var cmaps_listed : Dynamic;
 	static public function cool(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function cool_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function coolwarm(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
@@ -132,9 +133,8 @@ package matplotlib.cm;
 		returned.
 		
 		If *lut* is not None it must be an integer giving the number of
-		entries desired in the lookup table, and *name* must be a
-		standard mpl colormap name with a corresponding data dictionary
-		in *datad*.
+		entries desired in the lookup table, and *name* must be a standard
+		mpl colormap name.
 	**/
 	static public function get_cmap(?name:Dynamic, ?lut:Dynamic):Dynamic;
 	static public function gist_earth(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
@@ -161,14 +161,20 @@ package matplotlib.cm;
 	static public function hot_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function hsv(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function hsv_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function inferno(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function inferno_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function jet(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function jet_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function magma(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function magma_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function nipy_spectral(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function nipy_spectral_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function ocean(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function ocean_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function pink(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function pink_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function plasma(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function plasma_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function prism(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function prism_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
@@ -209,6 +215,8 @@ package matplotlib.cm;
 	static public function terrain(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function terrain_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
+	static public function viridis(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
+	static public function viridis_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function winter(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 	static public function winter_r(X:Dynamic, ?alpha:Dynamic, ?bytes:Dynamic):Dynamic;
 }

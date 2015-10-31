@@ -187,7 +187,7 @@ package matplotlib.backends.backend_pgf;
 	public function _iter_collection_uses_per_path(paths:Dynamic, all_transforms:Dynamic, offsets:Dynamic, facecolors:Dynamic, edgecolors:Dynamic):Dynamic;
 	public function _pgf_path_draw(?stroke:Dynamic, ?fill:Dynamic):Dynamic;
 	public function _print_pgf_clip(gc:Dynamic):Dynamic;
-	public function _print_pgf_path(gc:Dynamic, path:Dynamic, transform:Dynamic):Dynamic;
+	public function _print_pgf_path(gc:Dynamic, path:Dynamic, transform:Dynamic, ?rgbFace:Dynamic):Dynamic;
 	public function _print_pgf_path_styles(gc:Dynamic, rgbFace:Dynamic):Dynamic;
 	/**
 		Close a grouping element with label *s*
@@ -365,8 +365,8 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function open_group(s:Dynamic, ?gid:Dynamic):Dynamic;
 	/**
-		override this method for renderers that do not necessarily
-		want to rescale and composite raster images. (like SVG)
+		override this method for renderers that do not necessarily always
+		want to rescale and composite raster images. (like SVG, PDF, or PS)
 	**/
 	public function option_image_nocomposite():Dynamic;
 	/**

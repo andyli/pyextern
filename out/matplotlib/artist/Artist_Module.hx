@@ -9,7 +9,8 @@ package matplotlib.artist;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
+	static public var _get_axes_msg : Dynamic;
+	static public function _stale_axes_callback(self:Dynamic, val:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Decorator for Artist.draw method. Provides routines

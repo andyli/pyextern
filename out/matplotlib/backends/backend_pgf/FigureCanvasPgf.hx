@@ -41,7 +41,7 @@ package matplotlib.backends.backend_pgf;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic):Dynamic;
+	public function ___init__(figure:Dynamic):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,6 +103,7 @@ package matplotlib.backends.backend_pgf;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	public function _print_pdf_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _print_pgf_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _print_png_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;

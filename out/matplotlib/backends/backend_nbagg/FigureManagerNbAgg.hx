@@ -166,6 +166,7 @@ package matplotlib.backends.backend_nbagg;
 	**/
 	public function key_press(event:Dynamic):Dynamic;
 	public function refresh_all():Dynamic;
+	public function remove_comm(comm_id:Dynamic):Dynamic;
 	public function remove_web_socket(web_socket:Dynamic):Dynamic;
 	/**
 		A special method to re-show the figure in the notebook.

@@ -103,6 +103,7 @@ package matplotlib.backends.backend_ps;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	/**
 		Render the figure to hardcopy.  Set the figure patch face and
 		edge colors.  This is useful because some of the GUIs have a

@@ -2,6 +2,7 @@
 package matplotlib;
 @:pythonImport("matplotlib") extern class Matplotlib_Module {
 	static public var URL_REGEX : Dynamic;
+	static public var _DATA_DOC_APPENDIX : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,7 +14,6 @@ package matplotlib;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public var __version__numpy__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _all_deprecated : Dynamic;
 	/**
 		If the config directory can not be created, create a temporary
@@ -22,6 +22,7 @@ package matplotlib;
 		Returns None if a writable temporary directory could not be created.
 	**/
 	static public function _create_tmp_config_dir():Dynamic;
+	static public function _decode_filesystem_path(path:Dynamic):Dynamic;
 	static public var _deprecated_ignore_map : Dynamic;
 	static public var _deprecated_map : Dynamic;
 	static public var _error_details_fmt : Dynamic;
@@ -62,7 +63,8 @@ package matplotlib;
 		Find user's home directory if possible.
 		Otherwise, returns None.
 		
-		:see:  http://mail.python.org/pipermail/python-list/2005-February/325395.html
+		:see:
+		    http://mail.python.org/pipermail/python-list/2005-February/325395.html
 	**/
 	static public function _get_home():Dynamic;
 	/**
@@ -77,7 +79,6 @@ package matplotlib;
 		<http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html>`_.
 	**/
 	static public function _get_xdg_config_dir():Dynamic;
-	static public var _havedate : Dynamic;
 	/**
 		p is a string pointing to a putative writable dir -- return True p
 		is such a string, else False
@@ -85,7 +86,7 @@ package matplotlib;
 	static public function _is_writable_dir(p:Dynamic):Dynamic;
 	static public var _obsolete_set : Dynamic;
 	static public function _open_file_or_url(fname:Dynamic):Dynamic;
-	static public var _python24 : Dynamic;
+	static public var _python26 : Dynamic;
 	/**
 		Return :class:`matplotlib.RcParams` from the contents of the given file.
 		
@@ -93,7 +94,7 @@ package matplotlib;
 		parameters specified in the file (i.e. default values are not filled in).
 	**/
 	static public function _rc_params_in_file(fname:Dynamic, ?fail_on_error:Dynamic):Dynamic;
-	static public var _rcparam_warn_str : Dynamic;
+	static public function _replacer(data:Dynamic, key:Dynamic):Dynamic;
 	static public function _url_lines(f:Dynamic):Dynamic;
 	static public var _use_error_msg : Dynamic;
 	static public var absolute_import : Dynamic;
@@ -110,6 +111,54 @@ package matplotlib;
 		return True if a is greater than or equal to b
 	**/
 	static public function compare_versions(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
+		but includes input validation.
+		
+		cyl(arg)
+		cyl(label, itr)
+		cyl(label1=itr1[, label2=itr2[, ...]])
+		
+		Form 1 simply copies a given `Cycler` object.
+		
+		Form 2 creates a `Cycler` from a label and an iterable.
+		
+		Form 3 composes a `Cycler` as an inner product of the
+		pairs of keyword arguments. In other words, all of the
+		iterables are cycled simultaneously, as if through zip().
+		
+		Parameters
+		----------
+		arg : Cycler
+		    Copy constructor for Cycler.
+		
+		label : name
+		    The property key. Must be a valid `Artist` property.
+		    For example, 'color' or 'linestyle'. Aliases are allowed,
+		    such as 'c' for 'color' and 'lw' for 'linewidth'.
+		
+		itr : iterable
+		    Finite-length iterable of the property values. These values
+		    are validated and will raise a ValueError if invalid.
+		
+		Returns
+		-------
+		cycler : Cycler
+		    New :class:`cycler.Cycler` for the given properties
+	**/
+	static public function cycler(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Remove excess indentation from docstring *s*.
+		
+		Discards any leading blank lines, then removes up to n whitespace
+		characters from each line, where n is the number of leading
+		whitespace characters in the first line. It differs from
+		textwrap.dedent in its deletion of leading blank lines and its use
+		of the first non-blank line to determine the indentation.
+		
+		It is also faster in most cases.
+	**/
+	static public function dedent(s:Dynamic):Dynamic;
 	static public var defaultParams : Dynamic;
 	static public var default_test_modules : Dynamic;
 	static public var division : Dynamic;
@@ -147,16 +196,19 @@ package matplotlib;
 	static public function get_configdir(args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function get_data_path(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
-		get_example_data is deprecated -- use matplotlib.cbook.get_sample_data instead
+		get_example_data is deprecated -- use matplotlib.cbook.get_sample_data
+		                                  instead
 	**/
 	static public function get_example_data(fname:Dynamic):Dynamic;
 	/**
 		Find user's home directory if possible.
 		Otherwise, returns None.
 		
-		:see:  http://mail.python.org/pipermail/python-list/2005-February/325395.html
+		:see:
+		    http://mail.python.org/pipermail/python-list/2005-February/325395.html
 	**/
 	static public function get_home(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public function get_py2exe_datafiles():Dynamic;
 	/**
 		Set interactive mode to boolean b.
@@ -184,9 +236,9 @@ package matplotlib;
 		
 		- `$PWD/matplotlibrc`
 		
-		- environment variable `MATPLOTLIBRC`
+		- `$MATPLOTLIBRC/matplotlibrc`
 		
-		- `$MPLCONFIGDIR/matplotlib`
+		- `$MPLCONFIGDIR/matplotlibrc`
 		
 		- On Linux,
 		
@@ -317,6 +369,40 @@ package matplotlib;
 	static public function tk_window_focus():Dynamic;
 	static public var tmp : Dynamic;
 	static public var unicode_literals : Dynamic;
+	/**
+		A decorator to add a 'data' kwarg to any a function.  The signature
+		of the input function must include the ax argument at the first position ::
+		
+		   def foo(ax, *args, **kwargs)
+		
+		so this is suitable for use with Axes methods.
+		
+		Parameters
+		----------
+		replace_names : list of strings, optional, default: None
+		    The list of parameter names which arguments should be replaced by
+		    `data[name]`. If None, all arguments are replaced if they are
+		    included in `data`.
+		replace_all_args : bool, default: False
+		    If True, all arguments in *args get replaced, even if they are not
+		    in replace_names.
+		label_namer : string, optional, default: None
+		    The name of the parameter which argument should be used as label, if
+		    label is not set. If None, the label keyword argument is not set.
+		positional_parameter_names : list of strings or callable, optional
+		    The full list of positional parameter names (excluding an explicit
+		    `ax`/'self' argument at the first place and including all possible
+		    positional parameter in `*args`), in the right order. Can also include
+		    all other keyword parameter. Only needed if the wrapped function does
+		    contain `*args` and (replace_names is not None or replace_all_args is
+		    False). If it is a callable, it will be called with the actual
+		    tuple of *args and the data and should return a list like
+		    above.
+		    NOTE: callables should only be used when the names and order of *args
+		    can only be determined at runtime. Please use list of names
+		    when the order and names of *args is clear before runtime!
+	**/
+	static public function unpack_labeled_data(?replace_names:Dynamic, ?replace_all_args:Dynamic, ?label_namer:Dynamic, ?positional_parameter_names:Dynamic):Dynamic;
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Set the matplotlib backend to one of the known backends.
@@ -344,4 +430,5 @@ package matplotlib;
 	static public function use(arg:Dynamic, ?warn:Dynamic, ?force:Dynamic):Dynamic;
 	static public function validate_backend(s:Dynamic):Dynamic;
 	static public var verbose : Dynamic;
+	static public function verify_test_dependencies():Dynamic;
 }

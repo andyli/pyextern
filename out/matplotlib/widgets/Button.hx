@@ -47,10 +47,10 @@ package matplotlib.widgets;
 		label : str
 		    The button text. Accepts string.
 		
-		image : array, mpl image, PIL image
+		image : array, mpl image, Pillow Image
 		    The image to place in the button, if not *None*.
 		    Can be any legal arg to imshow (numpy array,
-		    matplotlib Image instance, or PIL image).
+		    matplotlib Image instance, or Pillow Image).
 		
 		color : color
 		    The color of the button when not activated
@@ -115,9 +115,14 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
 	public function _click(event:Dynamic):Dynamic;
 	public function _motion(event:Dynamic):Dynamic;
 	public function _release(event:Dynamic):Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
 	/**
 		Connect callback with an event.
 		
@@ -136,6 +141,11 @@ package matplotlib.widgets;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	/**
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
 		Return True if event should be ignored.
 		
 		This method (or a version of it) should be called at the beginning
@@ -148,4 +158,9 @@ package matplotlib.widgets;
 		A connection id is returned which can be used to disconnect
 	**/
 	public function on_clicked(func:Dynamic):Dynamic;
+	/**
+		Set whether the widget is active.
+		        
+	**/
+	public function set_active(active:Dynamic):Dynamic;
 }

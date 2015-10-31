@@ -5,10 +5,6 @@ package matplotlib.backends.backend_agg;
 	static public var LOAD_FORCE_AUTOHINT : Dynamic;
 	static public var LOAD_NO_AUTOHINT : Dynamic;
 	static public var LOAD_NO_HINTING : Dynamic;
-	/**
-		RendererAgg(width, height, dpi)
-	**/
-	static public function _RendererAgg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

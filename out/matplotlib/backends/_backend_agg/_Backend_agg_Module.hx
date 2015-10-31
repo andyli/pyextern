@@ -1,10 +1,6 @@
 /* This file is generated, do not edit! */
 package matplotlib.backends._backend_agg;
 @:pythonImport("matplotlib.backends._backend_agg") extern class _Backend_agg_Module {
-	/**
-		RendererAgg(width, height, dpi)
-	**/
-	static public function RendererAgg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;

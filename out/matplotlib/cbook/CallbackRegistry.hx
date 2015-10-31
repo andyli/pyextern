@@ -42,7 +42,7 @@ package matplotlib.cbook;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic):Dynamic;
+	public function ___init__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -99,6 +99,7 @@ package matplotlib.cbook;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _remove_proxy(proxy:Dynamic):Dynamic;
 	/**
 		register *func* to be called when a signal *s* is generated
 		func will be called

@@ -2,9 +2,13 @@
 package matplotlib.colors;
 @:pythonImport("matplotlib.colors", "BoundaryNorm") extern class BoundaryNorm {
 	/**
-		Call self as a function.
+		Normalize *value* data in the ``[vmin, vmax]`` interval into
+		the ``[0.0, 1.0]`` interval and return it.  *clip* defaults
+		to *self.clip* (which defaults to *False*).  If not already
+		initialized, *vmin* and *vmax* are initialized using
+		*autoscale_None(value)*.
 	**/
-	public function __call__(x:Dynamic, ?clip:Dynamic):Dynamic;
+	public function __call__(value:Dynamic, ?clip:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -55,9 +59,12 @@ package matplotlib.colors;
 		as i varies from 0 to len(boundaries)-2,
 		j goes from 0 to ncolors-1.
 		
-		Out-of-range values are mapped to -1 if low and ncolors
-		if high; these are converted to valid indices by
+		Out-of-range values are mapped
+		to -1 if low and ncolors if high; these are converted
+		to valid indices by
 		:meth:`Colormap.__call__` .
+		If clip == True, out-of-range values
+		are mapped to 0 if low and ncolors-1 if high.
 	**/
 	@:native("__init__")
 	public function ___init__(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Dynamic;

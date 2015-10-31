@@ -37,6 +37,9 @@ package matplotlib.stackplot;
 		            can be found at http://www.leebyron.com/else/streamgraph/.
 		
 		
+		*labels* : A list or tuple of labels to assign to each data series.
+		
+		
 		*colors* : A list or tuple of colors. These will be cycled through and
 		           used to colour the stacked areas.
 		           All other keyword arguments are passed to
@@ -45,11 +48,6 @@ package matplotlib.stackplot;
 		Returns *r* : A list of
 		:class:`~matplotlib.collections.PolyCollection`, one for each
 		element in the stacked area plot.
-		
-		Note that :class:`~matplotlib.legend.Legend` does not support
-		:class:`~matplotlib.collections.PolyCollection` objects.  To create a
-		legend on a stackplot, use a proxy artist:
-		http://matplotlib.org/users/legend_guide.html#using-proxy-artist
 	**/
 	static public function stackplot(axes:Dynamic, x:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;

@@ -2,21 +2,27 @@
 package matplotlib.dates;
 @:pythonImport("matplotlib.dates") extern class Dates_Module {
 	static public var DAILY : Dynamic;
+	static public var DAYS_PER_MONTH : Dynamic;
+	static public var DAYS_PER_WEEK : Dynamic;
+	static public var DAYS_PER_YEAR : Dynamic;
+	static public var EPOCH_OFFSET : Dynamic;
 	static public function FR(n:Dynamic):Dynamic;
 	static public function FRIDAY(n:Dynamic):Dynamic;
 	static public var HOURLY : Dynamic;
 	static public var HOURS_PER_DAY : Dynamic;
+	static public var JULIAN_OFFSET : Dynamic;
 	static public var MICROSECONDLY : Dynamic;
 	static public var MINUTELY : Dynamic;
 	static public var MINUTES_PER_DAY : Dynamic;
+	static public var MIN_PER_HOUR : Dynamic;
 	static public function MO(n:Dynamic):Dynamic;
 	static public function MONDAY(n:Dynamic):Dynamic;
 	static public var MONTHLY : Dynamic;
+	static public var MONTHS_PER_YEAR : Dynamic;
 	static public var MUSECONDS_PER_DAY : Dynamic;
 	static public function SA(n:Dynamic):Dynamic;
 	static public function SATURDAY(n:Dynamic):Dynamic;
 	static public var SECONDLY : Dynamic;
-	static public var SECONDS_PER_DAY : Dynamic;
 	static public var SEC_PER_DAY : Dynamic;
 	static public var SEC_PER_HOUR : Dynamic;
 	static public var SEC_PER_MIN : Dynamic;
@@ -108,26 +114,43 @@ package matplotlib.dates;
 	/**
 		Convert Gregorian float of the date, preserving hours, minutes,
 		seconds and microseconds.  Return value is a :class:`datetime`.
+		
+		The input date `x` is a float in ordinal days at UTC, and the output will
+		be the specified :class:`datetime` object corresponding to that time in
+		timezone `tz`, or if `tz` is `None`, in the timezone specified in
+		`rcParams['timezone']`.
 	**/
 	static public function _from_ordinalf(x:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		Convert Gregorian float of the date, preserving hours, minutes,
 		seconds and microseconds.  Return value is a :class:`datetime`.
+		
+		The input date `x` is a float in ordinal days at UTC, and the output will
+		be the specified :class:`datetime` object corresponding to that time in
+		timezone `tz`, or if `tz` is `None`, in the timezone specified in
+		`rcParams['timezone']`.
 	**/
 	static public function _from_ordinalf_np_vectorized(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Retrieve the preferred timeszone from the rcParams dictionary.
+	**/
 	static public function _get_rc_timezone():Dynamic;
 	/**
-		Convert :mod:`datetime` to the Gregorian date as UTC float days,
-		preserving hours, minutes, seconds and microseconds.  Return value
+		Convert :mod:`datetime` or :mod:`date` to the Gregorian date as UTC float
+		days, preserving hours, minutes, seconds and microseconds.  Return value
 		is a :func:`float`.
 	**/
 	static public function _to_ordinalf(dt:Dynamic):Dynamic;
 	/**
-		Convert :mod:`datetime` to the Gregorian date as UTC float days,
-		preserving hours, minutes, seconds and microseconds.  Return value
+		Convert :mod:`datetime` or :mod:`date` to the Gregorian date as UTC float
+		days, preserving hours, minutes, seconds and microseconds.  Return value
 		is a :func:`float`.
 	**/
 	static public function _to_ordinalf_np_vectorized(args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Total seconds in the duration.
+	**/
+	static public function _total_seconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		*d* is either a :class:`datetime` instance or a sequence of datetimes.

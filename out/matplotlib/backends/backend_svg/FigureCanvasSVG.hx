@@ -103,6 +103,7 @@ package matplotlib.backends.backend_svg;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	public function _print_svg(filename:Dynamic, svgwriter:Dynamic, ?fh_to_close:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		blit the canvas in bbox (default entire canvas)

@@ -260,6 +260,7 @@ package pandas.tools.plotting;
 		This is the smallest integral value >= x.
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var colors : Dynamic;
 	/**
 		@contextmanager decorator.
 		

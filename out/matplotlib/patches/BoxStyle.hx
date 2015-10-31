@@ -6,6 +6,10 @@ package matplotlib.patches;
 	**/
 	static public function Circle(?pad:Dynamic):Dynamic;
 	/**
+		(Double) Arrow Box
+	**/
+	static public function DArrow(?pad:Dynamic):Dynamic;
+	/**
 		(left) Arrow Box
 	**/
 	static public function LArrow(?pad:Dynamic):Dynamic;

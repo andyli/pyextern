@@ -10,6 +10,11 @@ package matplotlib.axes._base;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Converts a sequence of less than 1 dimension, to an array of 1
+		dimension; leaves everything else untouched.
+	**/
+	static public function _check_1d(x:Dynamic):Dynamic;
+	/**
 		Process a MATLAB style color/line style format string.  Return a
 		(*linestyle*, *color*) tuple as a result of the processing.  Default
 		values are ('-', 'b').  Example format strings include:
@@ -35,7 +40,65 @@ package matplotlib.axes._base;
 		renderer.
 	**/
 	static public function allow_rasterization(draw:Dynamic):Dynamic;
+	/**
+		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
+		but includes input validation.
+		
+		cyl(arg)
+		cyl(label, itr)
+		cyl(label1=itr1[, label2=itr2[, ...]])
+		
+		Form 1 simply copies a given `Cycler` object.
+		
+		Form 2 creates a `Cycler` from a label and an iterable.
+		
+		Form 3 composes a `Cycler` as an inner product of the
+		pairs of keyword arguments. In other words, all of the
+		iterables are cycled simultaneously, as if through zip().
+		
+		Parameters
+		----------
+		arg : Cycler
+		    Copy constructor for Cycler.
+		
+		label : name
+		    The property key. Must be a valid `Artist` property.
+		    For example, 'color' or 'linestyle'. Aliases are allowed,
+		    such as 'c' for 'color' and 'lw' for 'linewidth'.
+		
+		itr : iterable
+		    Finite-length iterable of the property values. These values
+		    are validated and will raise a ValueError if invalid.
+		
+		Returns
+		-------
+		cycler : Cycler
+		    New :class:`cycler.Cycler` for the given properties
+	**/
+	static public function cycler(args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
+	/**
+		A helper function to get the index of an input to plot
+		against if x values are not explicitly given.
+		
+		Tries to get `y.index` (works if this is a pd.Series), if that
+		fails, return np.arange(y.shape[0]).
+		
+		This will be extended in the future to deal with more types of
+		labeled data.
+		
+		Parameters
+		----------
+		y : scalar or array-like
+		    The proposed y-value
+		
+		Returns
+		-------
+		x, y : ndarray
+		   The x and y values to plot.
+	**/
+	static public function index_of(y:Dynamic):Dynamic;
 	/**
 		Returns true if *obj* is iterable and contains strings
 	**/

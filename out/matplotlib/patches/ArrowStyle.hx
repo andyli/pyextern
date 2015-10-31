@@ -55,7 +55,7 @@ package matplotlib.patches;
 	**/
 	static public function Simple(?head_length:Dynamic, ?head_width:Dynamic, ?tail_width:Dynamic):Dynamic;
 	/**
-		Wedge(?) shape. Only wokrs with a quadratic bezier curve.  The
+		Wedge(?) shape. Only works with a quadratic bezier curve.  The
 		begin point has a width of the tail_width and the end point has a
 		width of 0. At the middle, the width is shrink_factor*tail_width.
 	**/

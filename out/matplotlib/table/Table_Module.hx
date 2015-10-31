@@ -29,12 +29,12 @@ package matplotlib.table;
 		      cellLoc='right', colWidths=None,
 		      rowLabels=None, rowColours=None, rowLoc='left',
 		      colLabels=None, colColours=None, colLoc='center',
-		      loc='bottom', bbox=None)
+		      loc='bottom', bbox=None, edges='closed')
 		
 		Factory function to generate a Table instance.
 		
 		Thanks to John Gill for providing the class and table.
 	**/
-	static public function table(ax:Dynamic, ?cellText:Dynamic, ?cellColours:Dynamic, ?cellLoc:Dynamic, ?colWidths:Dynamic, ?rowLabels:Dynamic, ?rowColours:Dynamic, ?rowLoc:Dynamic, ?colLabels:Dynamic, ?colColours:Dynamic, ?colLoc:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function table(ax:Dynamic, ?cellText:Dynamic, ?cellColours:Dynamic, ?cellLoc:Dynamic, ?colWidths:Dynamic, ?rowLabels:Dynamic, ?rowColours:Dynamic, ?rowLoc:Dynamic, ?colLabels:Dynamic, ?colColours:Dynamic, ?colLoc:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, ?edges:Dynamic, kwargs:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

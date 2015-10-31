@@ -289,7 +289,7 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function set_linewidth(w:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------

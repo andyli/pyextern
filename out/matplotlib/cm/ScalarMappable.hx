@@ -43,6 +43,8 @@ package matplotlib.cm;
 		norm : :class:`matplotlib.colors.Normalize` instance
 		    The normalizing object which scales data, typically into the
 		    interval ``[0, 1]``.
+		    If *None*, *norm* defaults to a *colors.Normalize* object which
+		    initializes its scaling based on the first data processed.
 		cmap : str or :class:`~matplotlib.colors.Colormap` instance
 		    The colormap used to map normalized data values to RGBA colors.
 	**/
@@ -158,13 +160,6 @@ package matplotlib.cm;
 		ACCEPTS: a colormap or registered colormap name
 	**/
 	public function set_cmap(cmap:Dynamic):Dynamic;
-	/**
-		.. deprecated:: 1.3
-		    The set_colorbar function was deprecated in version 1.3. Use the colorbar attribute instead.
-		
-		set the colorbar and axes instances associated with mappable
-	**/
-	public function set_colorbar(im:Dynamic, ax:Dynamic):Dynamic;
 	/**
 		set the normalization instance
 	**/

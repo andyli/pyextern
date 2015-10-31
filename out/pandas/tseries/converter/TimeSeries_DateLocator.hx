@@ -129,6 +129,11 @@ package pandas.tseries.converter;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
+	/**
+		Do nothing, and rase a warning. Any locator class not supporting the
+		set_params() function will call this.
+	**/
+	public function set_params(kwargs:Dynamic):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		Return the values of the located ticks given **vmin** and **vmax**.

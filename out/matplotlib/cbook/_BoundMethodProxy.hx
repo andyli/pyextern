@@ -43,7 +43,10 @@ package matplotlib.cbook;
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;
-	static public var __hash__ : Dynamic;
+	/**
+		Return hash(self).
+	**/
+	public function __hash__():Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
@@ -105,4 +108,6 @@ package matplotlib.cbook;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _destroy(wk:Dynamic):Dynamic;
+	public function add_destroy_callback(callback:Dynamic):Dynamic;
 }

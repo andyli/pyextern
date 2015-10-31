@@ -191,6 +191,11 @@ package matplotlib.collections;
 	**/
 	public function autoscale_None():Dynamic;
 	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
+	/**
 		Call this whenever the mappable is changed to notify all the
 		callbackSM listeners to the 'changed' signal
 	**/
@@ -200,15 +205,6 @@ package matplotlib.collections;
 		return True; else return False
 	**/
 	public function check_update(checker:Dynamic):Dynamic;
-	/**
-		Set the color(s) of the line collection.  *c* can be a
-		matplotlib color arg (all patches have same color), or a
-		sequence or rgba tuples; if it is a sequence the patches will
-		cycle through the sequence
-		
-		ACCEPTS: matplotlib color arg or sequence of rgba tuples
-	**/
-	public function color(c:Dynamic):Dynamic;
 	/**
 		Test whether the mouse event occurred in the collection.
 		
@@ -251,6 +247,10 @@ package matplotlib.collections;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -269,7 +269,10 @@ package matplotlib.collections;
 	public function get_array():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -306,6 +309,10 @@ package matplotlib.collections;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	public function get_dashes():Dynamic;
 	public function get_datalim(transData:Dynamic):Dynamic;
 	public function get_edgecolor():Dynamic;
@@ -317,6 +324,10 @@ package matplotlib.collections;
 		artist belongs to.
 	**/
 	public function get_figure():Dynamic;
+	/**
+		return whether fill is set
+	**/
+	public function get_fill():Dynamic;
 	/**
 		Returns the group id
 	**/
@@ -478,6 +489,7 @@ package matplotlib.collections;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -524,7 +536,10 @@ package matplotlib.collections;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -561,6 +576,9 @@ package matplotlib.collections;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -625,13 +643,6 @@ package matplotlib.collections;
 	**/
 	public function set_color(c:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.3
-		    The set_colorbar function was deprecated in version 1.3. Use the colorbar attribute instead.
-		
-		set the colorbar and axes instances associated with mappable
-	**/
-	public function set_colorbar(im:Dynamic, ax:Dynamic):Dynamic;
-	/**
 		Replace the contains test used by this artist. The new picker
 		should be a callable function which determines whether the
 		artist is hit by the mouse event::
@@ -651,15 +662,15 @@ package matplotlib.collections;
 	public function set_dashes(ls:Dynamic):Dynamic;
 	/**
 		Set the edgecolor(s) of the collection. *c* can be a
-		matplotlib color arg (all patches have same color), or a
-		sequence of rgba tuples; if it is a sequence the patches will
+		matplotlib color spec (all patches have same color), or a
+		sequence of specs; if it is a sequence the patches will
 		cycle through the sequence.
 		
 		If *c* is 'face', the edge color will always be the same as
 		the face color.  If it is 'none', the patch boundary will not
 		be drawn.
 		
-		ACCEPTS: matplotlib color arg or sequence of rgba tuples
+		ACCEPTS: matplotlib color spec or sequence of specs
 	**/
 	public function set_edgecolor(c:Dynamic):Dynamic;
 	/**
@@ -668,13 +679,13 @@ package matplotlib.collections;
 	public function set_edgecolors(c:Dynamic):Dynamic;
 	/**
 		Set the facecolor(s) of the collection.  *c* can be a
-		matplotlib color arg (all patches have same color), or a
-		sequence of rgba tuples; if it is a sequence the patches will
+		matplotlib color spec (all patches have same color), or a
+		sequence of specs; if it is a sequence the patches will
 		cycle through the sequence.
 		
 		If *c* is 'none', the patch will not be filled.
 		
-		ACCEPTS: matplotlib color arg or sequence of rgba tuples
+		ACCEPTS: matplotlib color spec or sequence of specs
 	**/
 	public function set_facecolor(c:Dynamic):Dynamic;
 	/**
@@ -741,8 +752,31 @@ package matplotlib.collections;
 	/**
 		Set the linestyle(s) for the collection.
 		
+		===========================   =================
+		linestyle                     description
+		===========================   =================
+		``'-'`` or ``'solid'``        solid line
+		``'--'`` or  ``'dashed'``     dashed line
+		``'-.'`` or  ``'dash_dot'``   dash-dotted line
+		``':'`` or ``'dotted'``       dotted line
+		===========================   =================
+		
+		Alternatively a dash tuple of the following form can be provided::
+		
+		    (offset, onoffseq),
+		
+		where ``onoffseq`` is an even length tuple of on and off ink
+		in points.
+		
 		ACCEPTS: ['solid' | 'dashed', 'dashdot', 'dotted' |
-		(offset, on-off-dash-seq) ]
+		           (offset, on-off-dash-seq) |
+		           ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |
+		           ``' '`` | ``''``]
+		
+		Parameters
+		----------
+		ls : { '-',  '--', '-.', ':'} and more see description
+		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;
 	/**
@@ -761,14 +795,6 @@ package matplotlib.collections;
 		alias for set_linewidth
 	**/
 	public function set_linewidths(lw:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		alias for set_linewidth
 	**/
@@ -851,7 +877,7 @@ package matplotlib.collections;
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	public function set_segments(segments:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -911,6 +937,11 @@ package matplotlib.collections;
 		ACCEPTS: any number
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
+	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
 	/**
 		switch the orientation of the event line, either from vertical to
 		horizontal or vice versus

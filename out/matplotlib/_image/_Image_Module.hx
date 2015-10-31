@@ -27,31 +27,55 @@ package matplotlib._image;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		from_images
+		from_images(numrows, numcols, seq)
+		
+		return an image instance with numrows, numcols from a seq of image
+		instances using alpha blending.  seq is a list of (Image, ox, oy)
 	**/
 	static public function from_images(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fromarray
+		fromarray(A, isoutput)
+		
+		Load the image from a numpy array
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling
 	**/
 	static public function fromarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		fromarray2
-	**/
-	static public function fromarray2(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		frombuffer
+		frombuffer(buffer, width, height, isoutput)
+		
+		Load the image from a character buffer
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling.
 	**/
 	static public function frombuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		frombyte
+		frombyte(A, isoutput)
+		
+		Load the image from a byte array.
+		By default this function fills the input buffer, which can subsequently
+		be resampled using resize.  If isoutput=1, fill the output buffer.
+		This is used to support raw pixel images w/o resampling.
 	**/
 	static public function frombyte(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pcolor
+		pcolor(x, y, data, rows, cols, bounds)
+		
+		Generate a pseudo-color image from data on a non-uniform grid using
+		nearest neighbour or linear interpolation.
+		bounds = (x_min, x_max, y_min, y_max)
+		interpolation = NEAREST or BILINEAR 
 	**/
 	static public function pcolor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		pcolor2
+		pcolor2(x, y, data, rows, cols, bounds, bg)
+		
+		Generate a pseudo-color image from data on a non-uniform grid
+		specified by its cell boundaries.
+		bounds = (x_left, x_right, y_bot, y_top)
+		bg = ndarray of 4 uint8 representing background rgba
 	**/
 	static public function pcolor2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

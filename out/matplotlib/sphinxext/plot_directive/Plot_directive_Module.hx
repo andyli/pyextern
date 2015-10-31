@@ -54,7 +54,7 @@ package matplotlib.sphinxext.plot_directive;
 		
 		          This is the caption for the plot
 		
-		     Additionally, one my specify the name of a function to call (with
+		     Additionally, one may specify the name of a function to call (with
 		     no arguments) immediately after importing the module::
 		
 		       .. plot:: path/to/plot.py plot_function1
@@ -98,8 +98,11 @@ package matplotlib.sphinxext.plot_directive;
 		        If provided, the code will be run in the context of all
 		        previous plot directives for which the `:context:` option was
 		        specified.  This only applies to inline code plot directives,
-		        not those run from files. If the ``:context: reset`` is specified,
-		        the context is reset for this and future plots.
+		        not those run from files. If the ``:context: reset`` option is
+		        specified, the context is reset for this and future plots, and
+		        previous figures are closed prior to running the code.
+		        ``:context:close-figs`` keeps the context but closes previous figures
+		        before running the code.
 		
 		    nofigs : bool
 		        If specified, the code block will be run, but no figures will
@@ -136,7 +139,9 @@ package matplotlib.sphinxext.plot_directive;
 		            [(suffix, dpi), suffix, ...]
 		
 		        that determine the file format and the DPI. For entries whose
-		        DPI was omitted, sensible defaults are chosen.
+		        DPI was omitted, sensible defaults are chosen. When passing from
+		        the command line through sphinx_build the list should be passed as
+		        suffix:dpi,suffix:dpi, ....
 		
 		    plot_html_show_formats
 		        Whether to show links to the files in HTML.
@@ -178,7 +183,7 @@ package matplotlib.sphinxext.plot_directive;
 		Save the images under *output_dir* with file names derived from
 		*output_base*
 	**/
-	static public function render_figures(code:Dynamic, code_path:Dynamic, output_dir:Dynamic, output_base:Dynamic, context:Dynamic, function_name:Dynamic, config:Dynamic, ?context_reset:Dynamic):Dynamic;
+	static public function render_figures(code:Dynamic, code_path:Dynamic, output_dir:Dynamic, output_base:Dynamic, context:Dynamic, function_name:Dynamic, config:Dynamic, ?context_reset:Dynamic, ?close_figs:Dynamic):Dynamic;
 	static public function run(arguments:Dynamic, content:Dynamic, options:Dynamic, state_machine:Dynamic, state:Dynamic, lineno:Dynamic):Dynamic;
 	/**
 		Import a Python module from a path, and run the function given by

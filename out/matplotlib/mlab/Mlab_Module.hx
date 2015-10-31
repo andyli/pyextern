@@ -391,8 +391,6 @@ package matplotlib.mlab;
 	/**
 		return a list of (ind0, ind1) such that mask[ind0:ind1].all() is
 		True and we cover all such regions
-		
-		TODO: this is a pure python implementation which probably has a much faster numpy impl
 	**/
 	static public function contiguous_regions(mask:Dynamic):Dynamic;
 	/**
@@ -582,17 +580,21 @@ package matplotlib.mlab;
 		- *missing*: a string whose value signals a missing field regardless of
 		  the column it appears in
 		
-		- *use_mrecords*: if True, return an mrecords.fromrecords record array if any of the data are missing
+		- *use_mrecords*: if True, return an mrecords.fromrecords record array if
+		  any of the data are missing
 		
 		- *dayfirst*: default is False so that MM-DD-YY has precedence over
-		  DD-MM-YY.  See http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
+		  DD-MM-YY.  See
+		  http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
 		  for further information.
 		
 		- *yearfirst*: default is False so that MM-DD-YY has precedence over
-		  YY-MM-DD.  See http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
+		  YY-MM-DD. See
+		  http://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47
 		  for further information.
 		
-		  If no rows are found, *None* is returned -- see :file:`examples/loadrec.py`
+		  If no rows are found, *None* is returned -- see
+		  :file:`examples/loadrec.py`
 	**/
 	static public function csv2rec(fname:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?converterd:Dynamic, ?names:Dynamic, ?missing:Dynamic, ?missingd:Dynamic, ?use_mrecords:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
 	static public function csvformat_factory(format:Dynamic):Dynamic;
@@ -1089,7 +1091,8 @@ package matplotlib.mlab;
 	**/
 	static public function normpdf(x:Dynamic, args:Dynamic):Dynamic;
 	/**
-		Offsets an array *y* by +/- an error and returns a tuple (y - err, y + err).
+		Offsets an array *y* by +/- an error and returns a tuple
+		(y - err, y + err).
 		
 		The error term can be:
 		
@@ -1224,31 +1227,6 @@ package matplotlib.mlab;
 		indicates how many quantiles of data you want ranked.
 	**/
 	static public function prctile_rank(x:Dynamic, p:Dynamic):Dynamic;
-	/**
-		.. warning::
-		
-		    This function is deprecated -- please see class PCA instead
-		
-		Compute the principal components of *P*.  *P* is a (*numVars*,
-		*numObs*) array.  *frac* is the minimum fraction of variance that a
-		component must contain to be included.
-		
-		Return value is a tuple of the form (*Pcomponents*, *Trans*,
-		*fracVar*) where:
-		
-		  - *Pcomponents* : a (numVars, numObs) array
-		
-		  - *Trans* : the weights matrix, i.e., *Pcomponents* = *Trans* *
-		     *P*
-		
-		  - *fracVar* : the fraction of the variance accounted for by each
-		     component returned
-		
-		A similar function of the same name was in the MATLAB
-		R13 Neural Network Toolbox but is not found in later versions;
-		its successor seems to be called "processpcs".
-	**/
-	static public function prepca(P:Dynamic, ?frac:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute the power spectral density.
@@ -1446,7 +1424,7 @@ package matplotlib.mlab;
 		  stats = ( ('sales', len, 'numsales'), ('sales', np.mean, 'avgsale') )
 		
 		Return record array has *dtype* names for each attribute name in
-		the the *groupby* argument, with the associated group values, and
+		the *groupby* argument, with the associated group values, and
 		for each outname name in the *stats* argument, with the associated
 		stat summary output.
 	**/
@@ -1479,7 +1457,7 @@ package matplotlib.mlab;
 		*r* is a numpy record array
 		
 		*summaryfuncs* is a list of (*attr*, *func*, *outname*) tuples
-		which will apply *func* to the the array *r*[attr] and assign the
+		which will apply *func* to the array *r*[attr] and assign the
 		output to a new attribute name *outname*.  The returned record
 		array is identical to *r*, with extra arrays for each element in
 		*summaryfuncs*.

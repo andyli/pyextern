@@ -20,60 +20,60 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsin(x[, out])
+		sinh(x[, out])
 		
-		Inverse sine, element-wise.
+		Hyperbolic sine, element-wise.
+		
+		Equivalent to ``1/2 * (np.exp(x) - np.exp(-x))`` or
+		``-1j * np.sin(1j*x)``.
 		
 		Parameters
 		----------
 		x : array_like
-		    `y`-coordinate on the unit circle.
-		
+		    Input array.
 		out : ndarray, optional
-		    Array of the same shape as `x`, in which to store the results.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		    Output array of same shape as `x`.
 		
 		Returns
 		-------
-		angle : ndarray
-		    The inverse sine of each element in `x`, in radians and in the
-		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
-		    is returned, otherwise an array.
+		y : ndarray
+		    The corresponding hyperbolic sine values.
 		
-		See Also
-		--------
-		sin, cos, arccos, tan, arctan, arctan2, emath.arcsin
+		Raises
+		------
+		ValueError: invalid return array shape
+		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
 		
 		Notes
 		-----
-		`arcsin` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that :math:`sin(z) = x`.  The convention is to
-		return the angle `z` whose real part lies in [-pi/2, pi/2].
-		
-		For real-valued input data types, *arcsin* always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `arcsin` is a complex analytic function that
-		has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is
-		continuous from above on the former and from below on the latter.
-		
-		The inverse sine is also known as `asin` or sin^{-1}.
+		If `out` is provided, the function writes the result into it,
+		and returns a reference to `out`.  (See Examples)
 		
 		References
 		----------
-		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
-		10th printing, New York: Dover, 1964, pp. 79ff.
-		http://www.math.sfu.ca/~cbm/aands/
+		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
+		New York, NY: Dover, 1972, pg. 83.
 		
 		Examples
 		--------
-		>>> np.arcsin(1)     # pi/2
-		1.5707963267948966
-		>>> np.arcsin(-1)    # -pi/2
-		-1.5707963267948966
-		>>> np.arcsin(0)
+		>>> np.sinh(0)
 		0.0
+		>>> np.sinh(np.pi*1j/2)
+		1j
+		>>> np.sinh(np.pi*1j) # (exact value is 0)
+		1.2246063538223773e-016j
+		>>> # Discrepancy due to vagaries of floating point arithmetic.
+		
+		>>> # Example of providing the optional output parameter
+		>>> out2 = np.sinh([0.1], out1)
+		>>> out2 is out1
+		True
+		
+		>>> # Example of ValueError due to provision of shape mis-matched `out`
+		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
+		Traceback (most recent call last):
+		  File "<stdin>", line 1, in <module>
+		ValueError: invalid return array shape
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

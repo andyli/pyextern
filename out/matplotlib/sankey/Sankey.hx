@@ -278,9 +278,8 @@ package matplotlib.sankey;
 		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
 		  joinstyle: ['miter' | 'round' | 'bevel']         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed' | 'dashdot' | 'dotted']         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or lw: float or None for default         
-		  lod: [True | False]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
 		  rasterized: [True | False | None]         
@@ -302,7 +301,7 @@ package matplotlib.sankey;
 		placed along the sides of the diagram from the top down and along the
 		bottom from the outside in.
 		
-		If the the sum of the inputs and outputs is nonzero, the discrepancy
+		If the sum of the inputs and outputs is nonzero, the discrepancy
 		will appear as a cubic Bezier curve along the top and bottom edges of
 		the trunk.
 		

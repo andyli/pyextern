@@ -104,6 +104,7 @@ package matplotlib.backends.backend_tkagg;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	static public var _keycode_lookup : Dynamic;
 	/**
 		Figure out if we are inside the canvas or not and update the

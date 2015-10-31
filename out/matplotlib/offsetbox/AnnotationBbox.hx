@@ -117,7 +117,7 @@ package matplotlib.offsetbox;
 	**/
 	public function _check_xy(renderer:Dynamic, xy_pixel:Dynamic):Dynamic;
 	/**
-		Return the pixel position of the the annotated point.
+		Return the pixel position of the annotated point.
 	**/
 	public function _get_position_xy(renderer:Dynamic):Dynamic;
 	/**
@@ -126,7 +126,7 @@ package matplotlib.offsetbox;
 	**/
 	public function _get_ref_xy(renderer:Dynamic):Dynamic;
 	public function _get_xy(renderer:Dynamic, x:Dynamic, y:Dynamic, s:Dynamic):Dynamic;
-	public function _get_xy_transform(renderer:Dynamic, xy:Dynamic, s:Dynamic):Dynamic;
+	public function _get_xy_transform(renderer:Dynamic, s:Dynamic):Dynamic;
 	/**
 		Set the clip properly for the gc
 	**/
@@ -146,6 +146,11 @@ package matplotlib.offsetbox;
 	public function add_callback(func:Dynamic):Dynamic;
 	static public var aname : Dynamic;
 	public var anncoords : Dynamic;
+	/**
+		The :class:`~matplotlib.axes.Axes` instance the artist
+		resides in, or *None*.
+	**/
+	public var axes : Dynamic;
 	/**
 		Test whether the artist contains the mouse event.
 		
@@ -202,6 +207,10 @@ package matplotlib.offsetbox;
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
 	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
+	/**
 		return filter function to be used for agg filter
 	**/
 	public function get_agg_filter():Dynamic;
@@ -221,7 +230,10 @@ package matplotlib.offsetbox;
 	public function get_annotation_clip():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -245,6 +257,10 @@ package matplotlib.offsetbox;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	/**
 		Return the :class:`~matplotlib.figure.Figure` instance the
 		artist belongs to.
@@ -360,6 +376,7 @@ package matplotlib.offsetbox;
 		set.
 	**/
 	public function is_transform_set():Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -406,7 +423,10 @@ package matplotlib.offsetbox;
 	**/
 	public function remove_callback(oid:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -439,6 +459,9 @@ package matplotlib.offsetbox;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
@@ -517,14 +540,6 @@ package matplotlib.offsetbox;
 	**/
 	public function set_label(s:Dynamic):Dynamic;
 	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
-	/**
 		set path_effects, which should be a list of instances of
 		matplotlib.patheffect._Base class or its derivatives.
 	**/
@@ -570,7 +585,7 @@ package matplotlib.offsetbox;
 	**/
 	public function set_rasterized(rasterized:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -629,12 +644,10 @@ package matplotlib.offsetbox;
 	**/
 	public function set_zorder(level:Dynamic):Dynamic;
 	/**
-		.. deprecated:: 1.4
-		    Use `anncoords` instead
-		
-		\ 
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
 	**/
-	public var textcoords : Dynamic;
+	public var stale : Dynamic;
 	/**
 		Update the properties of this :class:`Artist` from the
 		dictionary *prop*.
@@ -649,12 +662,5 @@ package matplotlib.offsetbox;
 	**/
 	public function update_positions(renderer:Dynamic):Dynamic;
 	public var xyann : Dynamic;
-	/**
-		.. deprecated:: 1.4
-		    Use `xyann` instead
-		
-		\ 
-	**/
-	public var xytext : Dynamic;
 	static public var zorder : Dynamic;
 }

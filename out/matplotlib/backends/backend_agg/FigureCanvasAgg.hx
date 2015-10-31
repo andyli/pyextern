@@ -103,6 +103,7 @@ package matplotlib.backends.backend_agg;
 		backend that supports the format.
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
+	public function _idle_draw_cntx():Dynamic;
 	/**
 		blit the canvas in bbox (default entire canvas)
 	**/

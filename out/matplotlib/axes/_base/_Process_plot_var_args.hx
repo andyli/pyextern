@@ -103,12 +103,31 @@ package matplotlib.axes._base;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		Only advance the cycler if the cycler has information that
+		is not specified in any of the supplied tuple of dicts.
+		Ignore any keys specified in the `ignore` set.
+		
+		Returns a copy of defaults dictionary if there are any
+		keys that are not found in any of the supplied dictionaries.
+		If the supplied dictionaries have non-None values for
+		everything the property cycler has, then just return
+		an empty dictionary. Ignored keys are excluded from the
+		returned dictionary.
+	**/
+	public function _getdefaults(ignore:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _grab_next_args(args:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _makefill(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _makeline(x:Dynamic, y:Dynamic, kw:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _plot_args(tup:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		Given a defaults dictionary, and any other dictionaries,
+		update those other dictionaries with information in defaults if
+		none of the other dictionaries contains that information.
+	**/
+	public function _setdefaults(defaults:Dynamic, kwargs:Dynamic):Dynamic;
 	public function _xy_from_xy(x:Dynamic, y:Dynamic):Dynamic;
-	public function set_color_cycle(?clist:Dynamic):Dynamic;
 	public function set_lineprops(line:Dynamic, kwargs:Dynamic):Dynamic;
 	public function set_patchprops(fill_poly:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_prop_cycle(args:Dynamic, kwargs:Dynamic):Dynamic;
 }

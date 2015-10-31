@@ -187,6 +187,10 @@ package matplotlib.backends.backend_nbagg;
 	**/
 	public function release_zoom(event:Dynamic):Dynamic;
 	/**
+		Remove the rubberband
+	**/
+	public function remove_rubberband():Dynamic;
+	/**
 		Save the current figure
 	**/
 	public function save_figure(args:Dynamic):Dynamic;

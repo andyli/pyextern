@@ -103,6 +103,11 @@ package matplotlib.widgets;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _active : Dynamic;
+	/**
+		Is the widget active?
+	**/
+	public var active : Dynamic;
 	static public var drawon : Dynamic;
 	static public var eventson : Dynamic;
 	public function funcbottom(val:Dynamic):Dynamic;
@@ -111,4 +116,21 @@ package matplotlib.widgets;
 	public function funcright(val:Dynamic):Dynamic;
 	public function functop(val:Dynamic):Dynamic;
 	public function funcwspace(val:Dynamic):Dynamic;
+	/**
+		Get whether the widget is active.
+		        
+	**/
+	public function get_active():Dynamic;
+	/**
+		Return True if event should be ignored.
+		
+		This method (or a version of it) should be called at the beginning
+		of any event callback.
+	**/
+	public function ignore(event:Dynamic):Dynamic;
+	/**
+		Set whether the widget is active.
+		        
+	**/
+	public function set_active(active:Dynamic):Dynamic;
 }

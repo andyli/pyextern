@@ -26,7 +26,7 @@ package matplotlib.transforms;
 	/**
 		default object formatter
 	**/
-	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __format__(fmt:Dynamic):Dynamic;
 	/**
 		Return self>=value.
 	**/

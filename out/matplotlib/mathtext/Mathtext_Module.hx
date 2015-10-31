@@ -2,6 +2,8 @@
 package matplotlib.mathtext;
 @:pythonImport("matplotlib.mathtext") extern class Mathtext_Module {
 	static public var DELTA : Dynamic;
+	static public var DELTAINTEGRAL : Dynamic;
+	static public var DELTASLANTED : Dynamic;
 	/**
 		Helper class to raise parser errors.
 	**/
@@ -14,6 +16,7 @@ package matplotlib.mathtext;
 	static public var SCRIPT_SPACE : Dynamic;
 	static public var SHRINK_FACTOR : Dynamic;
 	static public var SUB1 : Dynamic;
+	static public var SUB2 : Dynamic;
 	static public var SUBDROP : Dynamic;
 	static public var SUP1 : Dynamic;
 	static public var __builtins__ : Dynamic;

@@ -108,6 +108,13 @@ package matplotlib.backends.backend_pdf;
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _file : Dynamic;
 	/**
+		Add a new text note to the page to be saved next. The optional
+		positionRect specifies the position of the new note on the
+		page. It is outside the page per default to make sure it is
+		invisible on printouts.
+	**/
+	public function attach_note(text:Dynamic, ?positionRect:Dynamic):Dynamic;
+	/**
 		Finalize this object, making the underlying file a complete
 		PDF file.
 	**/

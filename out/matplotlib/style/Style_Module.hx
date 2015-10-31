@@ -17,29 +17,51 @@ package matplotlib.style;
 		
 		Parameters
 		----------
-		name : str or list of str
-		    Name of style or path/URL to a style file. For a list of available
-		    style names, see `style.available`. If given a list, each style is
-		    applied from first to last in the list.
+		style : str, dict, or list
+		    A style specification. Valid options are:
+		
+		    +------+-------------------------------------------------------------+
+		    | str  | The name of a style or a path/URL to a style file. For a    |
+		    |      | list of available style names, see `style.available`.       |
+		    +------+-------------------------------------------------------------+
+		    | dict | Dictionary with valid key/value pairs for                   |
+		    |      | `matplotlib.rcParams`.                                      |
+		    +------+-------------------------------------------------------------+
+		    | list | A list of style specifiers (str or dict) applied from first |
+		    |      | to last in the list.                                        |
+		    +------+-------------------------------------------------------------+
+		
 		after_reset : bool
 		    If True, apply style after resetting settings to their defaults;
 		    otherwise, apply style on top of the current settings.
 	**/
-	static public function context(name:Dynamic, ?after_reset:Dynamic):Dynamic;
+	static public function context(style:Dynamic, ?after_reset:Dynamic):Dynamic;
 	static public var library : Dynamic;
 	/**
 		Reload style library.
 	**/
 	static public function reload_library():Dynamic;
 	/**
-		Use matplotlib style settings from a known style sheet or from a file.
+		Use matplotlib style settings from a style specification.
+		
+		The style name of 'default' is reserved for reverting back to
+		the default style settings.
 		
 		Parameters
 		----------
-		name : str or list of str
-		    Name of style or path/URL to a style file. For a list of available
-		    style names, see `style.available`. If given a list, each style is
-		    applied from first to last in the list.
+		style : str, dict, or list
+		    A style specification. Valid options are:
+		
+		    +------+-------------------------------------------------------------+
+		    | str  | The name of a style or a path/URL to a style file. For a    |
+		    |      | list of available style names, see `style.available`.       |
+		    +------+-------------------------------------------------------------+
+		    | dict | Dictionary with valid key/value pairs for                   |
+		    |      | `matplotlib.rcParams`.                                      |
+		    +------+-------------------------------------------------------------+
+		    | list | A list of style specifiers (str or dict) applied from first |
+		    |      | to last in the list.                                        |
+		    +------+-------------------------------------------------------------+
 	**/
-	static public function use(name:Dynamic):Dynamic;
+	static public function use(style:Dynamic):Dynamic;
 }

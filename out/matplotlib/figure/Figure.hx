@@ -210,7 +210,6 @@ package matplotlib.figure;
 		  frame_on: [ *True* | *False* ]         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  lod: [True | False]         
 		  navigate: [ *True* | *False* ]         
 		  navigate_mode: unknown
 		  path_effects: unknown
@@ -228,14 +227,14 @@ package matplotlib.figure;
 		  xlabel: unknown
 		  xlim: length 2 sequence of floats         
 		  xmargin: unknown
-		  xscale: ['linear' | 'log' | 'symlog']
+		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats         
 		  ybound: unknown
 		  ylabel: unknown
 		  ylim: length 2 sequence of floats         
 		  ymargin: unknown
-		  yscale: ['linear' | 'log' | 'symlog']
+		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
 		  zorder: any number         
@@ -312,7 +311,6 @@ package matplotlib.figure;
 		  frame_on: [ *True* | *False* ]         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  lod: [True | False]         
 		  navigate: [ *True* | *False* ]         
 		  navigate_mode: unknown
 		  path_effects: unknown
@@ -330,14 +328,14 @@ package matplotlib.figure;
 		  xlabel: unknown
 		  xlim: length 2 sequence of floats         
 		  xmargin: unknown
-		  xscale: ['linear' | 'log' | 'symlog']
+		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats         
 		  ybound: unknown
 		  ylabel: unknown
 		  ylim: length 2 sequence of floats         
 		  ymargin: unknown
-		  yscale: ['linear' | 'log' | 'symlog']
+		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
 		  zorder: any number         
@@ -596,6 +594,8 @@ package matplotlib.figure;
 		  =========   =========================================================
 		  Keyword     Description
 		  =========   =========================================================
+		  resize      a boolean, True or False. If "True", then re-size the
+		              Figure to match the given image size.
 		  xo or yo    An integer, the *x* and *y* image offset in pixels
 		  cmap        a :class:`matplotlib.colors.Colormap` instance, e.g.,
 		              cm.jet. If *None*, default to the rc ``image.cmap``
@@ -626,7 +626,7 @@ package matplotlib.figure;
 		Additional kwargs are Artist kwargs passed on to
 		:class:`~matplotlib.image.FigureImage`
 	**/
-	public function figimage(X:Dynamic, ?xo:Dynamic, ?yo:Dynamic, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, kwargs:Dynamic):Dynamic;
+	public function figimage(X:Dynamic, ?xo:Dynamic, ?yo:Dynamic, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?resize:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -646,6 +646,10 @@ package matplotlib.figure;
 		checked for a match.
 	**/
 	public function findobj(?match:Dynamic, ?include_self:Dynamic):Dynamic;
+	/**
+		Return *cursor data* string formatted.
+	**/
+	public function format_cursor_data(data:Dynamic):Dynamic;
 	/**
 		Get the current axes, creating one if necessary
 		
@@ -675,7 +679,6 @@ package matplotlib.figure;
 		  frame_on: [ *True* | *False* ]         
 		  gid: an id string         
 		  label: string or anything printable with '%s' conversion.         
-		  lod: [True | False]         
 		  navigate: [ *True* | *False* ]         
 		  navigate_mode: unknown
 		  path_effects: unknown
@@ -693,14 +696,14 @@ package matplotlib.figure;
 		  xlabel: unknown
 		  xlim: length 2 sequence of floats         
 		  xmargin: unknown
-		  xscale: ['linear' | 'log' | 'symlog']
+		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
 		  xticks: sequence of floats         
 		  ybound: unknown
 		  ylabel: unknown
 		  ylim: length 2 sequence of floats         
 		  ymargin: unknown
-		  yscale: ['linear' | 'log' | 'symlog']
+		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
 		  zorder: any number         
@@ -721,7 +724,10 @@ package matplotlib.figure;
 	public function get_animated():Dynamic;
 	/**
 		Return the :class:`~matplotlib.axes.Axes` instance the artist
-		resides in, or *None*
+		resides in, or *None*.
+		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
 	**/
 	public function get_axes():Dynamic;
 	/**
@@ -744,6 +750,10 @@ package matplotlib.figure;
 		Return the _contains test used by the artist, or *None* for default.
 	**/
 	public function get_contains():Dynamic;
+	/**
+		Get the cursor data for a given event.
+	**/
+	public function get_cursor_data(event:Dynamic):Dynamic;
 	public function get_default_bbox_extra_artists():Dynamic;
 	/**
 		Return the dpi as a float
@@ -989,6 +999,11 @@ package matplotlib.figure;
 		    The relative size of legend markers vs. original. If *None*, use rc
 		    settings.
 		
+		  *markerfirst*: [ *True* | *False* ]
+		    if *True*, legend marker is placed to the left of the legend label
+		    if *False*, legend marker is placed to the right of the legend
+		    label
+		
 		  *fancybox*: [ *None* | *False* | *True* ]
 		    if *True*, draw a frame with a round fancybox.  If *None*, use rc
 		
@@ -1028,6 +1043,7 @@ package matplotlib.figure;
 		.. plot:: mpl_examples/pylab_examples/figlegend_demo.py
 	**/
 	public function legend(handles:Dynamic, labels:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
 		registered callbacks.
@@ -1102,9 +1118,10 @@ package matplotlib.figure;
 		
 		Keyword arguments:
 		
-		  *dpi*: [ *None* | ``scalar > 0`` ]
+		  *dpi*: [ *None* | ``scalar > 0`` | 'figure']
 		    The resolution in dots per inch.  If *None* it will default to
-		    the value ``savefig.dpi`` in the matplotlibrc file.
+		    the value ``savefig.dpi`` in the matplotlibrc file. If 'figure'
+		    it will set the dpi to be the value of the figure.
 		
 		  *facecolor*, *edgecolor*:
 		    the colors of the figure rectangle
@@ -1154,7 +1171,10 @@ package matplotlib.figure;
 	**/
 	public function sca(a:Dynamic):Dynamic;
 	/**
-		A tkstyle set command, pass *kwargs* to set properties
+		A property batch setter. Pass *kwargs* to set properties.
+		Will handle property name collisions (e.g., if both
+		'color' and 'facecolor' are specified, the property
+		with higher priority gets set last).
 	**/
 	public function set(kwargs:Dynamic):Dynamic;
 	/**
@@ -1178,11 +1198,14 @@ package matplotlib.figure;
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
 		
+		This has been deprecated in mpl 1.5, please use the
+		axes property.  Will be removed in 1.7 or 2.0.
+		
 		ACCEPTS: an :class:`~matplotlib.axes.Axes` instance
 	**/
 	public function set_axes(axes:Dynamic):Dynamic;
 	/**
-		Set the canvas the contains the figure
+		Set the canvas that contains the figure
 		
 		ACCEPTS: a FigureCanvas instance
 	**/
@@ -1260,7 +1283,7 @@ package matplotlib.figure;
 		
 		ACCEPTS: float
 	**/
-	public function set_figheight(val:Dynamic):Dynamic;
+	public function set_figheight(val:Dynamic, ?forward:Dynamic):Dynamic;
 	/**
 		Set the :class:`~matplotlib.figure.Figure` instance the artist
 		belongs to.
@@ -1273,7 +1296,7 @@ package matplotlib.figure;
 		
 		ACCEPTS: float
 	**/
-	public function set_figwidth(val:Dynamic):Dynamic;
+	public function set_figwidth(val:Dynamic, ?forward:Dynamic):Dynamic;
 	/**
 		Set whether the figure frame (background) is displayed or invisible
 		
@@ -1292,14 +1315,6 @@ package matplotlib.figure;
 		ACCEPTS: string or anything printable with '%s' conversion.
 	**/
 	public function set_label(s:Dynamic):Dynamic;
-	/**
-		Set Level of Detail on or off.  If on, the artists may examine
-		things like the pixel width of the axes and draw a subset of
-		their contents accordingly
-		
-		ACCEPTS: [True | False]
-	**/
-	public function set_lod(on:Dynamic):Dynamic;
 	/**
 		set path_effects, which should be a list of instances of
 		matplotlib.patheffect._Base class or its derivatives.
@@ -1366,9 +1381,9 @@ package matplotlib.figure;
 		
 		matplotlib.Figure.get_size_inches
 	**/
-	public function set_size_inches(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_size_inches(w:Dynamic, ?h:Dynamic, ?forward:Dynamic):Dynamic;
 	/**
-		Sets the the sketch parameters.
+		Sets the sketch parameters.
 		
 		Parameters
 		----------
@@ -1450,6 +1465,11 @@ package matplotlib.figure;
 	**/
 	public function show(?warn:Dynamic):Dynamic;
 	/**
+		If the artist is 'stale' and needs to be re-drawn for the output to
+		match the internal state of the artist.
+	**/
+	public var stale : Dynamic;
+	/**
 		Call signature::
 		
 		  subplots_adjust(left=None, bottom=None, right=None, top=None,
@@ -1502,20 +1522,19 @@ package matplotlib.figure;
 		  animated: [True | False]         
 		  axes: an :class:`~matplotlib.axes.Axes` instance         
 		  backgroundcolor: any matplotlib color         
-		  bbox: rectangle prop dict         
+		  bbox: FancyBboxPatch prop dict         
 		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
 		  clip_on: [True | False]         
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontname or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
 		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
 		  label: string or anything printable with '%s' conversion.         
 		  linespacing: float (multiple of font size)         
-		  lod: [True | False]         
 		  multialignment: ['left' | 'right' | 'center' ]         
 		  path_effects: unknown
 		  picker: [None|float|boolean|callable]         
@@ -1531,10 +1550,12 @@ package matplotlib.figure;
 		  text: string or anything printable with '%s' conversion.         
 		  transform: :class:`~matplotlib.transforms.Transform` instance         
 		  url: a url string         
+		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  wrap: unknown
 		  x: float         
 		  y: float         
 		  zorder: any number         

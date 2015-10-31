@@ -128,6 +128,10 @@ package matplotlib.colors;
 		Generate the lookup table, self._lut
 	**/
 	public function _init():Dynamic;
+	/**
+		Return a new color map with *lutsize* entries.
+	**/
+	public function _resample(lutsize:Dynamic):Dynamic;
 	public function _set_extremes():Dynamic;
 	public function is_gray():Dynamic;
 	/**
