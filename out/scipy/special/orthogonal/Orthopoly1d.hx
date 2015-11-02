@@ -68,7 +68,7 @@ package scipy.special.orthogonal;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __pos__():Dynamic;
 	public function __pow__(val:Dynamic):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;

@@ -65,7 +65,7 @@ package matplotlib.gridspec;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -147,5 +147,5 @@ package matplotlib.gridspec;
 		Update the current values.  If any kwarg is None, default to
 		the current value, if set, otherwise to rc.
 	**/
-	public function update(kwargs:Dynamic):Dynamic;
+	public function update(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

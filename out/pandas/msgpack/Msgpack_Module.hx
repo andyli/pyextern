@@ -15,13 +15,13 @@ package pandas.msgpack;
 		
 		See :class:`Packer` for options.
 	**/
-	static public function dump(o:Dynamic, stream:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function dump(o:Dynamic, stream:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pack object `o` and return packed bytes
 		
 		See :class:`Packer` for options.
 	**/
-	static public function dumps(o:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function dumps(o:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		unpack(stream, object_hook=None, list_hook=None, bool use_list=1, encoding=None, unicode_errors='strict', object_pairs_hook=None)
 		
@@ -70,13 +70,13 @@ package pandas.msgpack;
 		
 		See :class:`Packer` for options.
 	**/
-	static public function pack(o:Dynamic, stream:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pack(o:Dynamic, stream:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pack object `o` and return packed bytes
 		
 		See :class:`Packer` for options.
 	**/
-	static public function packb(o:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function packb(o:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		unpack(stream, object_hook=None, list_hook=None, bool use_list=1, encoding=None, unicode_errors='strict', object_pairs_hook=None)
 		

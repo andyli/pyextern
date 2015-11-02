@@ -41,7 +41,7 @@ package scipy.optimize.nonlin;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, kw:Dynamic):Dynamic;
+	public function ___init__(?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package scipy.optimize.nonlin;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

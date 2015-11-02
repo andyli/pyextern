@@ -4,7 +4,7 @@ package numpy.ma.core;
 	/**
 		Execute the call behavior.
 	**/
-	public function __call__(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __call__(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -62,7 +62,7 @@ package numpy.ma.core;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

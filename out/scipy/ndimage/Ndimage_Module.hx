@@ -1561,7 +1561,7 @@ package scipy.ndimage;
 		    is 0.0
 		Extra keyword arguments will be passed to gaussian_filter().
 	**/
-	static public function gaussian_gradient_magnitude(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function gaussian_gradient_magnitude(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Multidimensional Laplace filter using gaussian second derivatives.
 		
@@ -1585,7 +1585,7 @@ package scipy.ndimage;
 		    is 0.0
 		Extra keyword arguments will be passed to gaussian_filter().
 	**/
-	static public function gaussian_laplace(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function gaussian_laplace(input:Dynamic, sigma:Dynamic, ?output:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generate a binary structure for binary morphological operations.
 		

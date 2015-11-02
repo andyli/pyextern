@@ -8,7 +8,7 @@ package pandas.tseries.holiday;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -51,7 +51,7 @@ package pandas.tseries.holiday;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		__instancecheck__() -> bool
 		check if an object is an instance

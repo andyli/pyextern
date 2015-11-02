@@ -41,7 +41,7 @@ package matplotlib.ticker;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package matplotlib.ticker;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -98,7 +98,7 @@ package matplotlib.ticker;
 	**/
 	public var __weakref__ : Dynamic;
 	static public var axis : Dynamic;
-	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_axis(axis:Dynamic):Dynamic;
 	public function set_bounds(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	public function set_data_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;

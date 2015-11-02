@@ -44,7 +44,7 @@ package matplotlib.table;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?loc:Dynamic, ?bbox:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -61,7 +61,7 @@ package matplotlib.table;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -139,7 +139,7 @@ package matplotlib.table;
 	/**
 		Add a cell to the table. 
 	**/
-	public function add_cell(row:Dynamic, col:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_cell(row:Dynamic, col:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var aname : Dynamic;
 	public function auto_set_column_width(col:Dynamic):Dynamic;
 	/**
@@ -168,7 +168,7 @@ package matplotlib.table;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var edges : Dynamic;
 	/**
 		Find artist objects.
@@ -402,7 +402,7 @@ package matplotlib.table;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/

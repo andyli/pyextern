@@ -27,7 +27,7 @@ package pandas.tools.util;
 	/**
 		Compose 2 or more callables
 	**/
-	static public function compose(funcs:Dynamic):Dynamic;
+	static public function compose(?funcs:python.VarArgs<Dynamic>):Dynamic;
 	static public function match(needles:Dynamic, haystack:Dynamic):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value

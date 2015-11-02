@@ -46,7 +46,7 @@ package pandas.tools.rplot;
 		aes: aesthetics dictionary with bindings
 	**/
 	@:native("__init__")
-	public function ___init__(?data:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(?data:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -63,7 +63,7 @@ package pandas.tools.rplot;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

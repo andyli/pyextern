@@ -61,7 +61,7 @@ package pandas.io.wb;
 		    
 	**/
 	static public function get_indicators():Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value

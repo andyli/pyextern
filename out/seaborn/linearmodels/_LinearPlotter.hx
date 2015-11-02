@@ -41,7 +41,7 @@ package seaborn.linearmodels;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package seaborn.linearmodels;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -100,10 +100,10 @@ package seaborn.linearmodels;
 	/**
 		Remove observations with missing data.
 	**/
-	public function dropna(vars:Dynamic):Dynamic;
+	public function dropna(?vars:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Extract variables from data or use directly.
 	**/
-	public function establish_variables(data:Dynamic, kws:Dynamic):Dynamic;
+	public function establish_variables(data:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	public function plot(ax:Dynamic):Dynamic;
 }

@@ -58,7 +58,7 @@ package matplotlib.tri.triangulation;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -124,7 +124,7 @@ package matplotlib.tri.triangulation;
 		return.  In the latter case, see Triangulation.__init__ for
 		the possible args and kwargs.
 	**/
-	static public function get_from_args_and_kwargs(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_from_args_and_kwargs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an array of triangles that are not masked.
 	**/

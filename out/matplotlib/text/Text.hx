@@ -54,7 +54,7 @@ package matplotlib.text;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -87,7 +87,7 @@ package matplotlib.text;
 		  zorder: any number         
 	**/
 	@:native("__init__")
-	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,7 +104,7 @@ package matplotlib.text;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -220,7 +220,7 @@ package matplotlib.text;
 	/**
 		Draws the :class:`Text` object to the given *renderer*.
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -596,7 +596,7 @@ package matplotlib.text;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/

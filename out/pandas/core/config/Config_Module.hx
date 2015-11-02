@@ -51,7 +51,7 @@ package pandas.core.config;
 		if pat=="all", returns all registered options
 	**/
 	static public function _select_options(pat:Dynamic):Dynamic;
-	static public function _set_option(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _set_option(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _set_option_tmpl : Dynamic;
 	/**
 		if key id deprecated and a replacement key defined, will return the
@@ -399,7 +399,7 @@ package pandas.core.config;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function describe_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function describe_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_default_val(pat:Dynamic):Dynamic;
 	/**
 		get_option(pat)
@@ -645,7 +645,7 @@ package pandas.core.config;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(x:Dynamic):Dynamic;
 	static public function is_float(x:Dynamic):Dynamic;
 	/**
@@ -675,7 +675,7 @@ package pandas.core.config;
 	**/
 	static public function is_type_factory(_type:Dynamic):Dynamic;
 	static public function is_unicode(x:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		
@@ -969,7 +969,7 @@ package pandas.core.config;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function reset_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function reset_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set_option(pat, value)
 		
@@ -1216,6 +1216,6 @@ package pandas.core.config;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function set_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 }

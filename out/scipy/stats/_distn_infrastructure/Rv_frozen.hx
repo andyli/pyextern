@@ -41,7 +41,7 @@ package scipy.stats._distn_infrastructure;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(dist:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(dist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,7 +99,7 @@ package scipy.stats._distn_infrastructure;
 	public var __weakref__ : Dynamic;
 	public function cdf(x:Dynamic):Dynamic;
 	public function entropy():Dynamic;
-	public function expect(?func:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, kwds:Dynamic):Dynamic;
+	public function expect(?func:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function interval(alpha:Dynamic):Dynamic;
 	public function isf(q:Dynamic):Dynamic;
 	public function logcdf(x:Dynamic):Dynamic;

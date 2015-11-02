@@ -18,7 +18,7 @@ package pandas.core.config;
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	public function __exit__(args:Dynamic):Dynamic;
+	public function __exit__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -43,7 +43,7 @@ package pandas.core.config;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -60,7 +60,7 @@ package pandas.core.config;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

@@ -42,7 +42,7 @@ package matplotlib.axes._base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -59,7 +59,7 @@ package matplotlib.axes._base;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -152,7 +152,7 @@ package matplotlib.axes._base;
 	/**
 		make a twinx axes of self. This is used for twinx and twiny.
 	**/
-	public function _make_twin_axes(kl:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _make_twin_axes(?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Look for unit *kwargs* and update the axis instances as necessary
 	**/
@@ -396,7 +396,7 @@ package matplotlib.axes._base;
 		xmin, xmax, ymin, ymax : float
 		    The axis limits
 	**/
-	public function axis(v:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if this axes supports any pan/zoom button functionality.
 	**/
@@ -456,7 +456,7 @@ package matplotlib.axes._base;
 	/**
 		Draw everything (plot lines, axes, labels)
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method can only be used after an initial draw which
 		caches the renderer.  It is used to efficiently update Axes
@@ -732,7 +732,7 @@ package matplotlib.axes._base;
 		get the axes bounding box in display space; *args* and
 		*kwargs* are empty
 	**/
-	public function get_window_extent(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_window_extent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the XAxis instance
 	**/
@@ -1032,7 +1032,7 @@ package matplotlib.axes._base;
 		  ydata: 1D array         
 		  zorder: any number         
 	**/
-	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if any artists have been added to axes.
 		
@@ -1130,7 +1130,7 @@ package matplotlib.axes._base;
 		:class:`~matplotlib.ticker.MaxNLocator` used
 		by default on linear axes, but it may be generalized.
 	**/
-	public function locator_params(?axis:Dynamic, ?tight:Dynamic, kwargs:Dynamic):Dynamic;
+	public function locator_params(?axis:Dynamic, ?tight:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set or retrieve autoscaling margins.
 		
@@ -1164,7 +1164,7 @@ package matplotlib.axes._base;
 		interval will be added to each end of that interval before
 		it is used in autoscaling.
 	**/
-	public function margins(args:Dynamic, kw:Dynamic):Dynamic;
+	public function margins(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove minor ticks from the axes.
 	**/
@@ -1188,7 +1188,7 @@ package matplotlib.axes._base;
 		each child artist will fire a pick event if mouseevent is over
 		the artist and the artist has picker set
 	**/
-	public function pick(args:Dynamic):Dynamic;
+	public function pick(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if :class:`Artist` is pickable.
 	**/
@@ -1245,7 +1245,7 @@ package matplotlib.axes._base;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ACCEPTS: [ 'box' | 'datalim' | 'box-forced']
 	**/
@@ -1455,7 +1455,7 @@ package matplotlib.axes._base;
 		
 		ACCEPTS: a (*float*, *color*) tuple
 	**/
-	public function set_cursor_props(args:Dynamic):Dynamic;
+	public function set_cursor_props(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the class:`~matplotlib.axes.Axes` figure
 		
@@ -1591,7 +1591,7 @@ package matplotlib.axes._base;
 		    :func:`cycler`      Convenience function for creating your
 		                        own cyclers.
 	**/
-	public function set_prop_cycle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_prop_cycle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set zorder value below which artists will be rasterized.  Set
 		to `None` to disable rasterizing of artists below a particular
@@ -1707,7 +1707,7 @@ package matplotlib.axes._base;
 		
 		ACCEPTS: length 2 sequence of floats
 	**/
-	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, kw:Dynamic):Dynamic;
+	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set padding of X data limits prior to autoscaling.
 		
@@ -1783,7 +1783,7 @@ package matplotlib.axes._base;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	public function set_xscale(value:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -1805,7 +1805,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1839,7 +1839,7 @@ package matplotlib.axes._base;
 		
 		ACCEPTS: sequence of strings
 	**/
-	public function set_xticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the x ticks with list of *ticks*
 		
@@ -1895,7 +1895,7 @@ package matplotlib.axes._base;
 		
 		ACCEPTS: length 2 sequence of floats
 	**/
-	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, kw:Dynamic):Dynamic;
+	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set padding of Y data limits prior to autoscaling.
 		
@@ -1971,7 +1971,7 @@ package matplotlib.axes._base;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	public function set_yscale(value:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_yscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -1993,7 +1993,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -2027,7 +2027,7 @@ package matplotlib.axes._base;
 		
 		ACCEPTS: sequence of strings
 	**/
-	public function set_yticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_yticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the y ticks with list of *ticks*
 		
@@ -2125,7 +2125,7 @@ package matplotlib.axes._base;
 		and with dimensions 6 points by 2 points.  Tick labels will
 		also be red.
 	**/
-	public function tick_params(?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function tick_params(?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change the `~matplotlib.ticker.ScalarFormatter` used by
 		default for linear axes.
@@ -2163,7 +2163,7 @@ package matplotlib.axes._base;
 		:class:`~matplotlib.ticker.Formatter` being used, an
 		:exc:`AttributeError` will be raised.
 	**/
-	public function ticklabel_format(kwargs:Dynamic):Dynamic;
+	public function ticklabel_format(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		

@@ -3050,7 +3050,7 @@ package scipy.sparse.linalg;
 		sure that the matrix fulfills this, pass ``assumeSortedIndices=True``
 		to gain some speed.
 	**/
-	static public function use_solver(kwargs:Dynamic):Dynamic;
+	static public function use_solver(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

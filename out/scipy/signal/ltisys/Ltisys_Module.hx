@@ -44,7 +44,7 @@ package scipy.signal.ltisys;
 		Those can be raised when casting complex to real.
 	**/
 	static public function _cast_to_array_dtype(in1:Dynamic, in2:Dynamic):Dynamic;
-	static public function _choice_not_none(args:Dynamic):Dynamic;
+	static public function _choice_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute a reasonable set of time samples for the response time.
 		
@@ -303,7 +303,7 @@ package scipy.signal.ltisys;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -339,7 +339,7 @@ package scipy.signal.ltisys;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Calculate Bode magnitude and phase data of a continuous-time system.
 		
@@ -749,7 +749,7 @@ package scipy.signal.ltisys;
 		>>> import matplotlib.pyplot as plt
 		>>> plt.plot(t, y)
 	**/
-	static public function impulse2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function impulse2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return evenly spaced numbers over a specified interval.
 		
@@ -920,7 +920,7 @@ package scipy.signal.ltisys;
 		given to `lsim2` are passed on to `odeint`.  See the documentation
 		for `scipy.integrate.odeint` for the full list of arguments.
 	**/
-	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replace nan with zero and inf with finite numbers.
 		
@@ -1560,7 +1560,7 @@ package scipy.signal.ltisys;
 		-----
 		.. versionadded:: 0.8.0
 	**/
-	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Transfer function to state-space representation.
 		

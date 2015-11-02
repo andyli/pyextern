@@ -227,7 +227,7 @@ package scipy.interpolate.interpolate;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -263,7 +263,7 @@ package scipy.interpolate.interpolate;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		The number of combinations of N things taken k at a time.
 		

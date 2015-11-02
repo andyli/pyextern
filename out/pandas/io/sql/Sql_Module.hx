@@ -147,7 +147,7 @@ package pandas.io.sql;
 		read_sql_table : Read SQL database table into a DataFrame
 		read_sql_query : Read SQL query into a DataFrame
 	**/
-	static public function frame_query(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function frame_query(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get the SQL db table schema for the given frame.
 		
@@ -214,7 +214,7 @@ package pandas.io.sql;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience function to return the correct PandasSQL subclass based on the
 		provided parameters
@@ -285,7 +285,7 @@ package pandas.io.sql;
 		read_sql_table : Read SQL database table into a DataFrame
 		read_sql_query : Read SQL query into a DataFrame
 	**/
-	static public function read_frame(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_frame(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read SQL query or database table into a DataFrame.
 		
@@ -678,5 +678,5 @@ package pandas.io.sql;
 		--------
 		pandas.DataFrame.to_sql
 	**/
-	static public function write_frame(frame:Dynamic, name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?if_exists:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function write_frame(frame:Dynamic, name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?if_exists:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

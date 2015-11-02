@@ -63,7 +63,7 @@ package scipy.odr.odrpack;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -110,5 +110,5 @@ package scipy.odr.odrpack;
 		--------
 		set_meta(name="Exponential", equation="y = a exp(b x) + c")
 	**/
-	public function set_meta(kwds:Dynamic):Dynamic;
+	public function set_meta(?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -17,7 +17,7 @@ package matplotlib.backends.backend_agg;
 	static public var absolute_import : Dynamic;
 	static public var backend_version : Dynamic;
 	static public var division : Dynamic;
-	static public function findfont(prop:Dynamic, kw:Dynamic):Dynamic;
+	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_hinting_flag():Dynamic;
 	/**
 		Return True if *obj* looks like a string
@@ -26,7 +26,7 @@ package matplotlib.backends.backend_agg;
 	/**
 		Create a new figure manager instance
 	**/
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
 	**/

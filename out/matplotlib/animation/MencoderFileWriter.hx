@@ -61,7 +61,7 @@ package matplotlib.animation;
 		    title, artist, genre, subject, copyright, srcform, comment.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -78,7 +78,7 @@ package matplotlib.animation;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -159,7 +159,7 @@ package matplotlib.animation;
 		All keyword arguments in savefig_kwargs are passed on to the 'savefig'
 		command that saves the figure.
 	**/
-	public function grab_frame(savefig_kwargs:Dynamic):Dynamic;
+	public function grab_frame(?savefig_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Check to see if a MovieWriter subclass is actually available by
 		running the commandline tool.
@@ -171,7 +171,7 @@ package matplotlib.animation;
 		
 		``*args`` are any parameters that should be passed to `setup`.
 	**/
-	public function saving(args:Dynamic):Dynamic;
+	public function saving(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Perform setup for writing the movie file.
 		

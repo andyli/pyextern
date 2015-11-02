@@ -89,7 +89,7 @@ package pandas.tseries.period;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
@@ -106,7 +106,7 @@ package pandas.tseries.period;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?ordinal:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?ordinal:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
@@ -312,9 +312,9 @@ package pandas.tseries.period;
 	/**
 		actually format my specific types 
 	**/
-	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
-	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
 	static public function _from_arraylike(data:Dynamic, freq:Dynamic, tz:Dynamic):Dynamic;
 	static public function _generate_range(start:Dynamic, end:Dynamic, periods:Dynamic, freq:Dynamic, fields:Dynamic):Dynamic;
@@ -420,7 +420,7 @@ package pandas.tseries.period;
 	/**
 		perform the reduction type operation if we can 
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -454,14 +454,14 @@ package pandas.tseries.period;
 	/**
 		we always want to return a PeriodIndex 
 	**/
-	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we require the we have a dtype compat for the values
 		if we are passed a non-dtype compat, then coerce using the constructor
 		
 		Must be careful not to recurse.
 	**/
-	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
@@ -473,7 +473,7 @@ package pandas.tseries.period;
 		Necessary for making this object picklable
 	**/
 	public function _unpickle_compat(state:Dynamic):Dynamic;
-	public function _update_inplace(result:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -524,7 +524,7 @@ package pandas.tseries.period;
 		--------
 		numpy.ndarray.argsort
 	**/
-	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert the PeriodIndex to the specified frequency `freq`.
 		
@@ -640,7 +640,7 @@ package pandas.tseries.period;
 		new_index : Index
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(kwargs:Dynamic):Dynamic;
+	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sorted set difference of two Index objects
 		
@@ -736,7 +736,7 @@ package pandas.tseries.period;
 	/**
 		Render a string representation of the Index
 	**/
-	public function format(?name:Dynamic, ?formatter:Dynamic, kwargs:Dynamic):Dynamic;
+	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var freq : Dynamic;
 	/**
 		return the frequency object as a string if its set, otherwise None 
@@ -783,7 +783,7 @@ package pandas.tseries.period;
 	/**
 		guaranteed return of an indexer even when non-unique 
 	**/
-	public function get_indexer_for(target:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_indexer_for(target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an indexer suitable for taking from a non unique index
 		return the labels in the same order as the target, and
@@ -1173,7 +1173,7 @@ package pandas.tseries.period;
 		start, end : int
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
-	public function sort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sorted copy of Index
 	**/
@@ -1279,7 +1279,7 @@ package pandas.tseries.period;
 	/**
 		slice and dice then format 
 	**/
-	public function to_native_types(?slicer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a Series with both index and values equal to the index keys
 		useful with map for returning an indexer based on an index
@@ -1288,7 +1288,7 @@ package pandas.tseries.period;
 		-------
 		Series : dtype will be based on the type of the Index values.
 	**/
-	public function to_series(kwargs:Dynamic):Dynamic;
+	public function to_series(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cast to DatetimeIndex
 		

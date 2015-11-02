@@ -18,7 +18,7 @@ package pandas.tseries.util;
 		    A given (list of) year(s).
 	**/
 	static public function isleapyear(year:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Group a series by years, taking leap years into account.
 		

@@ -50,7 +50,7 @@ package matplotlib.legend_handler;
 		called and the appropriate transform will be applied.
 	**/
 	@:native("__init__")
-	public function ___init__(?patch_func:Dynamic, kw:Dynamic):Dynamic;
+	public function ___init__(?patch_func:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -67,7 +67,7 @@ package matplotlib.legend_handler;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

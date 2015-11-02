@@ -44,7 +44,7 @@ package pandas.tseries.tools;
 		ret : datetime formatt string (for `strftime` or `strptime`)
 	**/
 	static public function _guess_datetime_format(dt_str:Dynamic, ?dayfirst:Dynamic, ?dt_str_parse:Dynamic, ?dt_str_split:Dynamic):Dynamic;
-	static public function _guess_datetime_format_for_array(arr:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _guess_datetime_format_for_array(arr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _infer_tzinfo(start:Dynamic, end:Dynamic):Dynamic;
 	static public function _lexer_split_from_str(dt_str:Dynamic):Dynamic;
 	/**

@@ -24,7 +24,7 @@ package pandas.computation.expr;
 	/**
 		Ensure that we are grabbing the correct scope.
 	**/
-	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _expr_context_nodes : Dynamic;
 	static public var _expr_nodes : Dynamic;
 	/**
@@ -150,7 +150,7 @@ package pandas.computation.expr;
 	/**
 		Compose 2 or more callables
 	**/
-	static public function compose(funcs:Dynamic):Dynamic;
+	static public function compose(?funcs:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Decorator to disallow certain nodes from parsing. Raises a
 		NotImplementedError instead.
@@ -161,7 +161,7 @@ package pandas.computation.expr;
 	**/
 	static public function disallow(nodes:Dynamic):Dynamic;
 	static public function is_term(obj:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

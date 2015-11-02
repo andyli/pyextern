@@ -51,7 +51,7 @@ package scipy.optimize.optimize;
 		_LineSearchError
 		    If no suitable step size is found
 	**/
-	static public function _line_search_wolfe12(f:Dynamic, fprime:Dynamic, xk:Dynamic, pk:Dynamic, gfk:Dynamic, old_fval:Dynamic, old_old_fval:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _line_search_wolfe12(f:Dynamic, fprime:Dynamic, xk:Dynamic, pk:Dynamic, gfk:Dynamic, old_fval:Dynamic, old_old_fval:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Line-search algorithm using fminbound.
 		
@@ -76,7 +76,7 @@ package scipy.optimize.optimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_bfgs(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_bfgs(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		conjugate gradient algorithm.
@@ -95,7 +95,7 @@ package scipy.optimize.optimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_cg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_cg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Nelder-Mead algorithm.
@@ -113,7 +113,7 @@ package scipy.optimize.optimize;
 		maxfev : int
 		    Maximum number of function evaluations to make.
 	**/
-	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Newton-CG algorithm.
@@ -132,7 +132,7 @@ package scipy.optimize.optimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_newtoncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_newtoncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		modified Powell algorithm.
@@ -152,7 +152,7 @@ package scipy.optimize.optimize;
 		direc : ndarray
 		    Initial set of direction vectors for the Powell method.
 	**/
-	static public function _minimize_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?direc:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?direc:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -163,7 +163,7 @@ package scipy.optimize.optimize;
 		xatol : float
 		    Absolute error in solution `xopt` acceptable for convergence.
 	**/
-	static public function _minimize_scalar_bounded(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?xatol:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_bounded(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?xatol:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -177,7 +177,7 @@ package scipy.optimize.optimize;
 		Uses inverse parabolic interpolation when possible to speed up
 		convergence of golden section method.
 	**/
-	static public function _minimize_scalar_brent(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_brent(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -186,10 +186,10 @@ package scipy.optimize.optimize;
 		xtol : float
 		    Relative error in solution `xopt` acceptable for convergence.
 	**/
-	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var _status_message : Dynamic;
 	static public var absolute_import : Dynamic;
-	static public function approx_fhess_p(x0:Dynamic, p:Dynamic, fprime:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_fhess_p(x0:Dynamic, p:Dynamic, fprime:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Finite-difference approximation of the gradient of a scalar function.
 		
@@ -244,7 +244,7 @@ package scipy.optimize.optimize;
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
-	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the indices of the minimum values along an axis.
 		
@@ -428,7 +428,7 @@ package scipy.optimize.optimize;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Bracket the minimum of the function.
 		
@@ -701,7 +701,7 @@ package scipy.optimize.optimize;
 		>>> check_grad(func, grad, [1.5, -1.5])
 		2.9802322387695312e-08
 	**/
-	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return a 2-D array with ones on the diagonal and zeros elsewhere.

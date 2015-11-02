@@ -14,7 +14,7 @@ package numpy.lib.stride_tricks;
 		Returns the shape of the ararys that would result from broadcasting the
 		supplied arrays against each other.
 	**/
-	static public function _broadcast_shape(args:Dynamic):Dynamic;
+	static public function _broadcast_shape(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _broadcast_to(array:Dynamic, shape:Dynamic, subok:Dynamic, readonly:Dynamic):Dynamic;
 	static public function _maybe_view_as_subclass(original_array:Dynamic, new_array:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -64,7 +64,7 @@ package numpy.lib.stride_tricks;
 		       [2, 2, 2],
 		       [3, 3, 3]])]
 	**/
-	static public function broadcast_arrays(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Broadcast an array to a new shape.
 		

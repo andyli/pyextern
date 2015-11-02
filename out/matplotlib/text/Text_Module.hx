@@ -18,7 +18,7 @@ package matplotlib.text;
 	/**
 		Return an override dict.  See :func:`~pyplot.text' docstring for info
 	**/
-	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Temporarily inserts newlines to the text if the wrap option is enabled.
 	**/

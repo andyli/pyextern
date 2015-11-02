@@ -38,5 +38,5 @@ package pandas.sparse.scipy_sparse;
 		array([1, 2, 1, 2, 1, 2])]
 	**/
 	static public function cartesian_product(X:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

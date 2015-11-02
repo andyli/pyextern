@@ -62,7 +62,7 @@ package scipy.optimize._basinhopping;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -105,6 +105,6 @@ package scipy.optimize._basinhopping;
 	/**
 		called by basinhopping to report the result of the step
 	**/
-	public function report(accept:Dynamic, kwargs:Dynamic):Dynamic;
+	public function report(accept:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function take_step(x:Dynamic):Dynamic;
 }

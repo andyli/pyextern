@@ -148,7 +148,7 @@ package pandas.core.groupby;
 		>>> grouped = df.unstack(level='lvl1').groupby(level=0, axis=1)
 		>>> boxplot_frame_groupby(grouped, subplots=False)
 	**/
-	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return whether the object is callable (i.e., some kind of function).
 		
@@ -252,7 +252,7 @@ package pandas.core.groupby;
 		labels are equal at all location.
 	**/
 	static public function get_group_index(labels:Dynamic, shape:Dynamic, sort:Dynamic, xnull:Dynamic):Dynamic;
-	static public function get_splitter(data:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_splitter(data:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Class for grouping and aggregating relational data. See aggregate,
 		transform, and apply functions on this object.
@@ -318,7 +318,7 @@ package pandas.core.groupby;
 		len(grouped) : int
 		    Number of groups
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, kwds:Dynamic):Dynamic;
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -345,7 +345,7 @@ package pandas.core.groupby;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
 		Returns a string repr of the arg list of a func call, with any defaults

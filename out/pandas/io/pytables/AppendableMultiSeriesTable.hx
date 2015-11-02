@@ -52,7 +52,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -69,7 +69,7 @@ package pandas.io.pytables;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -148,7 +148,7 @@ package pandas.io.pytables;
 		    data_columns : a list of columns that we want to create separate to
 		        allow indexing (or True will force all columns)
 	**/
-	public function create_axes(axes:Dynamic, obj:Dynamic, ?validate:Dynamic, ?nan_rep:Dynamic, ?data_columns:Dynamic, ?min_itemsize:Dynamic, kwargs:Dynamic):Dynamic;
+	public function create_axes(axes:Dynamic, obj:Dynamic, ?validate:Dynamic, ?nan_rep:Dynamic, ?data_columns:Dynamic, ?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		create the description of the table from the axes & values 
 	**/
@@ -177,7 +177,7 @@ package pandas.io.pytables;
 	/**
 		support fully deleting the node in its entirety (only) - where specification must be None 
 	**/
-	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
+	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var description : Dynamic;
 	public var dtype : Dynamic;
 	public var format_type : Dynamic;
@@ -269,22 +269,22 @@ package pandas.io.pytables;
 		we have n indexable columns, with an arbitrary number of data
 		axes
 	**/
-	public function read(?columns:Dynamic, kwargs:Dynamic):Dynamic;
+	public function read(?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		create and return the axes sniffed from the table: return boolean
 		for success
 	**/
-	public function read_axes(where:Dynamic, kwargs:Dynamic):Dynamic;
+	public function read_axes(where:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a single column from the table, generally only indexables
 		are interesting
 	**/
-	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
+	public function read_column(column:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		select coordinates (row numbers) from a table; return the
 		coordinates object
 	**/
-	public function read_coordinates(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
+	public function read_coordinates(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return the meta data array for this key 
 	**/
@@ -384,7 +384,7 @@ package pandas.io.pytables;
 	/**
 		we are going to write this as a frame table 
 	**/
-	public function write(obj:Dynamic, kwargs:Dynamic):Dynamic;
+	public function write(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we form the data into a 2-d including indexes,values,mask
 		write chunk-by-chunk 

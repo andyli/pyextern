@@ -41,7 +41,7 @@ package matplotlib.tri.triinterpolate;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(interpolator:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(interpolator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package matplotlib.tri.triinterpolate;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -102,7 +102,7 @@ package matplotlib.tri.triinterpolate;
 		gradient.
 	**/
 	public function compute_dof_from_df():Dynamic;
-	public function compute_dz(kwargs:Dynamic):Dynamic;
+	public function compute_dz(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes the dof vector of a triangle, knowing the value of f, df and
 		of the local Jacobian at each node.

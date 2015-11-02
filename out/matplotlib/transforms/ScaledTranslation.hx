@@ -12,10 +12,10 @@ package matplotlib.transforms;
 	/**
 		Array interface to get at this Transform's affine matrix.
 	**/
-	public function __array__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __array__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __copy__(args:Dynamic):Dynamic;
-	public function __deepcopy__(args:Dynamic):Dynamic;
+	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -58,7 +58,7 @@ package matplotlib.transforms;
 		                     ``str(transform)`` when DEBUG=True.
 	**/
 	@:native("__init__")
-	public function ___init__(xt:Dynamic, yt:Dynamic, scale_trans:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(xt:Dynamic, yt:Dynamic, scale_trans:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -75,7 +75,7 @@ package matplotlib.transforms;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Composes two transforms together such that *self* is followed
 		by *other*.
@@ -247,7 +247,7 @@ package matplotlib.transforms;
 		Should be called from the constructor of any transforms that
 		depend on other transforms.
 	**/
-	public function set_children(children:Dynamic):Dynamic;
+	public function set_children(?children:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the values of the matrix as a sequence (a,b,c,d,e,f)
 	**/

@@ -55,7 +55,7 @@ package numpy.ma.extras;
 		       [  3.,   5.,   7.],
 		       [  6.,   8.,  10.]])
 	**/
-	static public function add(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function add(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function to 1-D slices along the given axis.
 		
@@ -111,7 +111,7 @@ package numpy.ma.extras;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -302,7 +302,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_1d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_1d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		atleast_2d(*arys)
 		
@@ -345,7 +345,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_2d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_2d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		atleast_3d(*arys)
 		
@@ -400,7 +400,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_3d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_3d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the weighted average of array over the given axis.
 		
@@ -553,7 +553,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function column_stack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function column_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Suppress whole columns of a 2-D array that contain masked values.
 		
@@ -881,7 +881,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function diagflat(args:Dynamic, params:Dynamic):Dynamic;
+	static public function diagflat(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the dot product of two arrays.
@@ -982,7 +982,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function dstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function dstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the differences between consecutive elements of an array.
 		
@@ -1323,7 +1323,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hsplit(args:Dynamic, params:Dynamic):Dynamic;
+	static public function hsplit(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hstack(tup)
 		
@@ -1372,7 +1372,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function hstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Test whether each element of an array is also present in a second
 		array.
@@ -2006,7 +2006,7 @@ package numpy.ma.extras;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Least squares polynomial fit.
 		
@@ -2215,7 +2215,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function row_stack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function row_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set difference of 1D arrays with unique elements.
 		
@@ -2463,7 +2463,7 @@ package numpy.ma.extras;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function vstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function vstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		
@@ -2514,5 +2514,5 @@ package numpy.ma.extras;
 		array([(0, 0), (0, 0)],
 		      dtype=[('x', '<i4'), ('y', '<i4')])
 	**/
-	static public function zeros(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 }

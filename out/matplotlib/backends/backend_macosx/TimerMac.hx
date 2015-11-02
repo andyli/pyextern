@@ -62,7 +62,7 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -131,14 +131,14 @@ package matplotlib.backends.backend_macosx;
 		Register `func` to be called by timer when the event fires. Any
 		additional arguments provided will be passed to `func`.
 	**/
-	public function add_callback(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_callback(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var interval : Dynamic;
 	/**
 		Remove `func` from list of callbacks. `args` and `kwargs` are optional
 		and used to distinguish between copies of the same function registered
 		to be called with different arguments.
 	**/
-	public function remove_callback(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove_callback(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var single_shot : Dynamic;
 	/**
 		Start the timer object. `interval` is optional and will be used

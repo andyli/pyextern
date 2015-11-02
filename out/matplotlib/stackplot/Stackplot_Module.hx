@@ -49,6 +49,6 @@ package matplotlib.stackplot;
 		:class:`~matplotlib.collections.PolyCollection`, one for each
 		element in the stacked area plot.
 	**/
-	static public function stackplot(axes:Dynamic, x:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function stackplot(axes:Dynamic, x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

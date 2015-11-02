@@ -54,7 +54,7 @@ package pandas.io.excel;
 		    'high' for the high-precision converter, and 'round_trip' for the
 		    round-trip converter.
 	**/
-	static public function TextParser(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function TextParser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -93,7 +93,7 @@ package pandas.io.excel;
 	**/
 	static public function add_metaclass(metaclass:Dynamic):Dynamic;
 	static public function get_writer(engine_name:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.
@@ -202,7 +202,7 @@ package pandas.io.excel;
 		    DataFrame from the passed in Excel file.  See notes in sheetname argument
 		    for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

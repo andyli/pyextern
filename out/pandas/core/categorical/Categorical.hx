@@ -68,7 +68,7 @@ package pandas.core.categorical;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -181,7 +181,7 @@ package pandas.core.categorical;
 	/**
 		perform the reduction type operation 
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return the base repr for the categories 
 	**/
@@ -279,7 +279,7 @@ package pandas.core.categorical;
 		-------
 		argsorted : numpy array
 	**/
-	public function argsort(?ascending:Dynamic, kwargs:Dynamic):Dynamic;
+	public function argsort(?ascending:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be ordered
 		
@@ -422,7 +422,7 @@ package pandas.core.categorical;
 		    Can be an Index or array-like. The categories are assumed to be
 		    the unique values of `data`.
 	**/
-	static public function from_array(data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function from_array(data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a Categorical type from codes and categories arrays.
 		
@@ -507,7 +507,7 @@ package pandas.core.categorical;
 		-------
 		max : the maximum of this `Categorical`
 	**/
-	public function max(?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function max(?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The minimum value of the object.
 		
@@ -522,7 +522,7 @@ package pandas.core.categorical;
 		-------
 		min : the minimum of this `Categorical`
 	**/
-	public function min(?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function min(?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the mode(s) of the Categorical.
 		
@@ -725,7 +725,7 @@ package pandas.core.categorical;
 	/**
 		compat with .reshape 
 	**/
-	public function reshape(new_shape:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reshape(new_shape:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find indices where elements should be inserted to maintain order.
 		

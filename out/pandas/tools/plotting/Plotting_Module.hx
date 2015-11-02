@@ -21,15 +21,15 @@ package pandas.tools.plotting;
 	static public function _get_standard_colors(?num_colors:Dynamic, ?colormap:Dynamic, ?color_type:Dynamic, ?color:Dynamic):Dynamic;
 	static public function _get_standard_kind(kind:Dynamic):Dynamic;
 	static public function _get_xlim(lines:Dynamic):Dynamic;
-	static public function _grouped_plot(plotf:Dynamic, data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?numeric_only:Dynamic, ?figsize:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?rot:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function _grouped_plot_by_column(plotf:Dynamic, data:Dynamic, ?columns:Dynamic, ?by:Dynamic, ?numeric_only:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _grouped_plot(plotf:Dynamic, data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?numeric_only:Dynamic, ?figsize:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?rot:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _grouped_plot_by_column(plotf:Dynamic, data:Dynamic, ?columns:Dynamic, ?by:Dynamic, ?numeric_only:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _handle_shared_axes(axarr:Dynamic, nplots:Dynamic, naxes:Dynamic, nrows:Dynamic, ncols:Dynamic, sharex:Dynamic, sharey:Dynamic):Dynamic;
 	static public var _klasses : Dynamic;
 	static public function _mpl_ge_1_3_1():Dynamic;
 	static public function _mpl_ge_1_4_0():Dynamic;
 	static public function _mpl_ge_1_5_0():Dynamic;
 	static public function _mpl_le_1_2_1():Dynamic;
-	static public function _plot(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?subplots:Dynamic, ?ax:Dynamic, ?kind:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _plot(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?subplots:Dynamic, ?ax:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _plot_klass : Dynamic;
 	static public function _remove_labels_from_axis(axis:Dynamic):Dynamic;
 	static public var _series_kinds : Dynamic;
@@ -112,7 +112,7 @@ package pandas.tools.plotting;
 		# Four polar axes
 		plt.subplots(2, 2, subplot_kw=dict(polar=True))
 	**/
-	static public function _subplots(?naxes:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?layout_type:Dynamic, fig_kw:Dynamic):Dynamic;
+	static public function _subplots(?naxes:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?layout_type:Dynamic, ?fig_kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Parameters:
 		-----------
@@ -133,7 +133,7 @@ package pandas.tools.plotting;
 		--------
 		ax: Matplotlib axis object
 	**/
-	static public function andrews_curves(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?samples:Dynamic, ?color:Dynamic, ?colormap:Dynamic, kwds:Dynamic):Dynamic;
+	static public function andrews_curves(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?samples:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Autocorrelation plot for time series.
 		
@@ -148,7 +148,7 @@ package pandas.tools.plotting;
 		-----------
 		ax: Matplotlib axis object
 	**/
-	static public function autocorrelation_plot(series:Dynamic, ?ax:Dynamic, kwds:Dynamic):Dynamic;
+	static public function autocorrelation_plot(series:Dynamic, ?ax:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Bootstrap plot.
 		
@@ -165,7 +165,7 @@ package pandas.tools.plotting;
 		--------
 		fig: matplotlib figure
 	**/
-	static public function bootstrap_plot(series:Dynamic, ?fig:Dynamic, ?size:Dynamic, ?samples:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bootstrap_plot(series:Dynamic, ?fig:Dynamic, ?size:Dynamic, ?samples:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a box plot from DataFrame column optionally grouped by some columns or
 		other inputs
@@ -208,7 +208,7 @@ package pandas.tools.plotting;
 		of the lines after plotting. In this case a dict containing the Lines
 		making up the boxes, caps, fliers, medians, and whiskers is returned.
 	**/
-	static public function boxplot(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boxplot(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make box plots from DataFrameGroupBy data.
 		
@@ -252,7 +252,7 @@ package pandas.tools.plotting;
 		>>> grouped = df.unstack(level='lvl1').groupby(level=0, axis=1)
 		>>> boxplot_frame_groupby(grouped, subplots=False)
 	**/
-	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boxplot_frame_groupby(grouped:Dynamic, ?subplots:Dynamic, ?column:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ceil(x)
 		
@@ -357,7 +357,7 @@ package pandas.tools.plotting;
 		-------
 		axes: collection of Matplotlib Axes
 	**/
-	static public function grouped_hist(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?bins:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function grouped_hist(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?bins:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw histogram of the DataFrame's series using matplotlib / pylab.
 		
@@ -395,7 +395,7 @@ package pandas.tools.plotting;
 		kwds : other plotting keyword arguments
 		    To be passed to hist function
 	**/
-	static public function hist_frame(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?ax:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?bins:Dynamic, kwds:Dynamic):Dynamic;
+	static public function hist_frame(data:Dynamic, ?column:Dynamic, ?by:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?ax:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw histogram of the input series using matplotlib
 		
@@ -426,7 +426,7 @@ package pandas.tools.plotting;
 		-----
 		See matplotlib documentation online for more on this
 	**/
-	static public function hist_series(self:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?figsize:Dynamic, ?bins:Dynamic, kwds:Dynamic):Dynamic;
+	static public function hist_series(self:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?figsize:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Lag plot for time series.
 		
@@ -441,9 +441,9 @@ package pandas.tools.plotting;
 		--------
 		ax: Matplotlib axis object
 	**/
-	static public function lag_plot(series:Dynamic, ?lag:Dynamic, ?ax:Dynamic, kwds:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lag_plot(series:Dynamic, ?lag:Dynamic, ?ax:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var mpl_stylesheet : Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
@@ -506,7 +506,7 @@ package pandas.tools.plotting;
 		>>> parallel_coordinates(df, 'Name', color=('#556270', '#4ECDC4', '#C7F464'))
 		>>> plt.show()
 	**/
-	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, kwds:Dynamic):Dynamic;
+	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make plots of DataFrame using matplotlib / pylab.
 		
@@ -624,7 +624,7 @@ package pandas.tools.plotting;
 		  is a function of one argument that reduces all the values in a bin to
 		  a single number (e.g. `mean`, `max`, `sum`, `std`).
 	**/
-	static public function plot_frame(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?secondary_y:Dynamic, ?sort_columns:Dynamic, kwds:Dynamic):Dynamic;
+	static public function plot_frame(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?secondary_y:Dynamic, ?sort_columns:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var plot_params : Dynamic;
 	/**
 		Make plots of Series using matplotlib / pylab.
@@ -716,7 +716,7 @@ package pandas.tools.plotting;
 		  for bar plot layout by `position` keyword.
 		  From 0 (left/bottom-end) to 1 (right/top-end). Default is 0.5 (center)
 	**/
-	static public function plot_series(data:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?label:Dynamic, ?secondary_y:Dynamic, kwds:Dynamic):Dynamic;
+	static public function plot_series(data:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?label:Dynamic, ?secondary_y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		RadViz - a multivariate data visualization algorithm
 		
@@ -738,7 +738,7 @@ package pandas.tools.plotting;
 		--------
 		ax: Matplotlib axis object
 	**/
-	static public function radviz(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?colormap:Dynamic, kwds:Dynamic):Dynamic;
+	static public function radviz(frame:Dynamic, class_column:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?colormap:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return series containing only true/non-NaN values, possibly empty.
 	**/
@@ -778,7 +778,7 @@ package pandas.tools.plotting;
 		>>> df = DataFrame(np.random.randn(1000, 4), columns=['A','B','C','D'])
 		>>> scatter_matrix(df, alpha=0.2)
 	**/
-	static public function scatter_matrix(frame:Dynamic, ?alpha:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?diagonal:Dynamic, ?marker:Dynamic, ?density_kwds:Dynamic, ?hist_kwds:Dynamic, ?range_padding:Dynamic, kwds:Dynamic):Dynamic;
+	static public function scatter_matrix(frame:Dynamic, ?alpha:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?diagonal:Dynamic, ?marker:Dynamic, ?density_kwds:Dynamic, ?hist_kwds:Dynamic, ?range_padding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a scatter plot from two DataFrame columns
 		
@@ -797,7 +797,7 @@ package pandas.tools.plotting;
 		-------
 		fig : matplotlib.Figure
 	**/
-	static public function scatter_plot(data:Dynamic, x:Dynamic, y:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function scatter_plot(data:Dynamic, x:Dynamic, y:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var series_ax : Dynamic;
 	static public var series_coord : Dynamic;
 	static public var series_kind : Dynamic;
@@ -820,5 +820,5 @@ package pandas.tools.plotting;
 		-------
 		matplotlib table object
 	**/
-	static public function table(ax:Dynamic, data:Dynamic, ?rowLabels:Dynamic, ?colLabels:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function table(ax:Dynamic, data:Dynamic, ?rowLabels:Dynamic, ?colLabels:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

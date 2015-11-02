@@ -637,7 +637,7 @@ package numpy.lib.index_tricks;
 		array([[2, 4],
 		       [7, 9]])
 	**/
-	static public function ix_(args:Dynamic):Dynamic;
+	static public function ix_(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
 		

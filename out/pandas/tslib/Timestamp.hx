@@ -45,7 +45,7 @@ package pandas.tslib;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -205,7 +205,7 @@ package pandas.tslib;
 	static public function now(?tz:Dynamic):Dynamic;
 	public var offset : Dynamic;
 	public var quarter : Dynamic;
-	public function replace(kwds:Dynamic):Dynamic;
+	public function replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	public var second : Dynamic;
 	/**

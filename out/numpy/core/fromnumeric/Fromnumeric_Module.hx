@@ -59,7 +59,7 @@ package numpy.core.fromnumeric;
 		reject non-numeric types.
 	**/
 	static public function _sum_(iterable:Dynamic, ?start:Dynamic):Dynamic;
-	static public function _wrapit(obj:Dynamic, method:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _wrapit(obj:Dynamic, method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return the length of the first dimension of the input array.

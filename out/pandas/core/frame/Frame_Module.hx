@@ -136,7 +136,7 @@ package pandas.core.frame;
 	**/
 	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var _merge_doc : Dynamic;
-	static public function _not_none(args:Dynamic):Dynamic;
+	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _numeric_only_doc : Dynamic;
 	/**
 		we might have a array (or single object) that is datetime like,
@@ -314,7 +314,7 @@ package pandas.core.frame;
 		of the lines after plotting. In this case a dict containing the Lines
 		making up the boxes, caps, fliers, medians, and whiskers is returned.
 	**/
-	static public function boxplot(self:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boxplot(self:Dynamic, ?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function check_bool_indexer(ax:Dynamic, key:Dynamic):Dynamic;
 	/**
 		if we are index sliceable, then return my slicer, otherwise return None
@@ -610,7 +610,7 @@ package pandas.core.frame;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
@@ -643,9 +643,9 @@ package pandas.core.frame;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use

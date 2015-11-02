@@ -14,8 +14,8 @@ package pandas.core.strings;
 	static public function _length_check(others:Dynamic):Dynamic;
 	static public function _map(f:Dynamic, arr:Dynamic, ?na_mask:Dynamic, ?na_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _na_map(f:Dynamic, arr:Dynamic, ?na_result:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function _noarg_wrapper(f:Dynamic, ?docstring:Dynamic, kargs:Dynamic):Dynamic;
-	static public function _pat_wrapper(f:Dynamic, ?flags:Dynamic, ?na:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _noarg_wrapper(f:Dynamic, ?docstring:Dynamic, ?kargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _pat_wrapper(f:Dynamic, ?flags:Dynamic, ?na:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _shared_docs : Dynamic;
 	/**
 		return my values or the object if we are say an ndarray 
@@ -634,5 +634,5 @@ package pandas.core.strings;
 		0             line to be\nwrapped
 		1    another line\nto be\nwrapped
 	**/
-	static public function str_wrap(arr:Dynamic, width:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function str_wrap(arr:Dynamic, width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

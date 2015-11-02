@@ -20,60 +20,59 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		sinh(x[, out])
+		sin(x[, out])
 		
-		Hyperbolic sine, element-wise.
-		
-		Equivalent to ``1/2 * (np.exp(x) - np.exp(-x))`` or
-		``-1j * np.sin(1j*x)``.
+		Trigonometric sine, element-wise.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
 		
 		Returns
 		-------
-		y : ndarray
-		    The corresponding hyperbolic sine values.
+		y : array_like
+		    The sine of each element of x.
 		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
+		See Also
+		--------
+		arcsin, sinh, cos
 		
 		Notes
 		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
-		
-		References
-		----------
-		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		New York, NY: Dover, 1972, pg. 83.
+		The sine is one of the fundamental functions of trigonometry (the
+		mathematical study of triangles).  Consider a circle of radius 1
+		centered on the origin.  A ray comes in from the :math:`+x` axis, makes
+		an angle at the origin (measured counter-clockwise from that axis), and
+		departs from the origin.  The :math:`y` coordinate of the outgoing
+		ray's intersection with the unit circle is the sine of that angle.  It
+		ranges from -1 for :math:`x=3\pi / 2` to +1 for :math:`\pi / 2.`  The
+		function has zeroes where the angle is a multiple of :math:`\pi`.
+		Sines of angles between :math:`\pi` and :math:`2\pi` are negative.
+		The numerous properties of the sine and related functions are included
+		in any standard trigonometry text.
 		
 		Examples
 		--------
-		>>> np.sinh(0)
-		0.0
-		>>> np.sinh(np.pi*1j/2)
-		1j
-		>>> np.sinh(np.pi*1j) # (exact value is 0)
-		1.2246063538223773e-016j
-		>>> # Discrepancy due to vagaries of floating point arithmetic.
+		Print sine of one angle:
 		
-		>>> # Example of providing the optional output parameter
-		>>> out2 = np.sinh([0.1], out1)
-		>>> out2 is out1
-		True
+		>>> np.sin(np.pi/2.)
+		1.0
 		
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.sinh(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		Print sines of an array of angles given in degrees:
+		
+		>>> np.sin(np.array((0., 30., 45., 60., 90.)) * np.pi / 180. )
+		array([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])
+		
+		Plot the sine function:
+		
+		>>> import matplotlib.pylab as plt
+		>>> x = np.linspace(-np.pi, np.pi, 201)
+		>>> plt.plot(x, np.sin(x))
+		>>> plt.xlabel('Angle [rad]')
+		>>> plt.ylabel('sin(x)')
+		>>> plt.axis('tight')
+		>>> plt.show()
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

@@ -107,7 +107,7 @@ package pandas.io.packers;
 		    "Today is January 1, 2047 at 8:21:00AM" should return
 		    `(datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))`
 	**/
-	static public function parse(timestr:Dynamic, ?parserinfo:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function parse(timestr:Dynamic, ?parserinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load msgpack pandas object from the specified
 		file path
@@ -125,7 +125,7 @@ package pandas.io.packers;
 		-------
 		obj : type of object stored in file
 	**/
-	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		
@@ -142,7 +142,7 @@ package pandas.io.packers;
 		compress : type of compressor (zlib or blosc), default to None (no
 		           compression)
 	**/
-	static public function to_msgpack(path_or_buf:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function to_msgpack(path_or_buf:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	static public function unconvert(values:Dynamic, dtype:Dynamic, ?compress:Dynamic):Dynamic;
 	/**

@@ -253,7 +253,7 @@ package pandas.io.clipboard;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read text from clipboard and pass to read_table. See read_table for the
 		full argument list
@@ -264,7 +264,7 @@ package pandas.io.clipboard;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(kwargs:Dynamic):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		The clipboard can be then pasted into Excel for example.
@@ -287,5 +287,5 @@ package pandas.io.clipboard;
 		  - Windows:
 		  - OS X:
 	**/
-	static public function to_clipboard(obj:Dynamic, ?excel:Dynamic, ?sep:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function to_clipboard(obj:Dynamic, ?excel:Dynamic, ?sep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

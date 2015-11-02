@@ -102,7 +102,7 @@ package matplotlib.path;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -364,7 +364,7 @@ package matplotlib.path;
 	/**
 		Make a compound path from a list of Path objects.
 	**/
-	static public function make_compound_path(args:Dynamic):Dynamic;
+	static public function make_compound_path(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Make a compound path object to draw a number
 		of polygons with equal numbers of sides XY is a (numpolys x

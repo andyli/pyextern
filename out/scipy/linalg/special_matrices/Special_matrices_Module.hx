@@ -60,7 +60,7 @@ package scipy.linalg.special_matrices;
 		       [ 0.,  0.,  0.,  4.,  5.],
 		       [ 0.,  0.,  0.,  6.,  7.]])
 	**/
-	static public function block_diag(arrs:Dynamic):Dynamic;
+	static public function block_diag(?arrs:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Construct a circulant matrix.
 		

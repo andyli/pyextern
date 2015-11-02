@@ -43,7 +43,7 @@ package pandas.io.excel;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(io:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(io:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -60,7 +60,7 @@ package pandas.io.excel;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,7 +99,7 @@ package pandas.io.excel;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _parse_excel(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?has_index_names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?verbose:Dynamic, kwds:Dynamic):Dynamic;
+	public function _parse_excel(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?has_index_names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?verbose:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function _should_parse(i:Dynamic, parse_cols:Dynamic):Dynamic;
 	/**
 		close io if necessary
@@ -111,6 +111,6 @@ package pandas.io.excel;
 		Equivalent to read_excel(ExcelFile, ...)  See the read_excel
 		docstring for more info on accepted parameters
 	**/
-	public function parse(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, kwds:Dynamic):Dynamic;
+	public function parse(?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public var sheet_names : Dynamic;
 }

@@ -131,7 +131,7 @@ package matplotlib.pyplot;
 		  >>> setp(lines, 'linewidth', 2, 'color', 'r')  # MATLAB style
 		  >>> setp(lines, linewidth=2, color='r')        # python style
 	**/
-	static public function _setp(obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _setp(obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates the plotting and docstring.
 		
@@ -213,7 +213,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function acorr(x:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function acorr(x:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the angle spectrum.
 		
@@ -354,7 +354,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create an annotation: a piece of text referring to a data
 		point.
@@ -501,7 +501,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -538,7 +538,7 @@ package matplotlib.pyplot;
 		
 		.. plot:: mpl_examples/pylab_examples/annotation_demo2.py
 	**/
-	static public function annotate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function annotate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add an arrow to the axes.
 		
@@ -623,7 +623,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function arrow(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arrow(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Autoscale the axis view to the data (toggle).
 		
@@ -692,7 +692,7 @@ package matplotlib.pyplot;
 		* :file:`examples/pylab_examples/shared_axis_demo.py` uses
 		  *sharex* and *sharey*.
 	**/
-	static public function axes(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a horizontal line across the axis.
 		
@@ -787,7 +787,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function axhline(?y:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axhline(?y:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a horizontal span (rectangle) across the axis.
 		
@@ -857,7 +857,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience method to get or set axis properties.
 		
@@ -923,7 +923,7 @@ package matplotlib.pyplot;
 		    :func:`xlim`, :func:`ylim`
 		       For setting the x- and y-limits individually.
 	**/
-	static public function axis(v:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a vertical line across the axes.
 		
@@ -1013,7 +1013,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function axvline(?x:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axvline(?x:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a vertical span (rectangle) across the axes.
 		
@@ -1084,7 +1084,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function axvspan(xmin:Dynamic, xmax:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axvspan(xmin:Dynamic, xmax:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a bar plot.
 		
@@ -1225,14 +1225,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidth', 'width', 'left', 'bottom', 'edgecolor', 'ecolor', 'yerr', 'height', 'color', 'tick_label', 'xerr'.
+		* All arguments with the following names: 'yerr', 'height', 'width', 'tick_label', 'ecolor', 'color', 'left', 'edgecolor', 'linewidth', 'xerr', 'bottom'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a 2-D field of barbs.
 		
@@ -1386,7 +1386,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -1422,7 +1422,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function barbs(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function barbs(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a horizontal bar plot.
 		
@@ -1544,7 +1544,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function barh(bottom:Dynamic, width:Dynamic, ?height:Dynamic, ?left:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function barh(bottom:Dynamic, width:Dynamic, ?height:Dynamic, ?left:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to bone and apply to current image if any.
 		See help(colormaps) for more information
@@ -1771,7 +1771,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -1814,7 +1814,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Clear the current axes.
 	**/
@@ -1900,7 +1900,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function clabel(CS:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function clabel(CS:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Clear the current figure.
 	**/
@@ -1935,7 +1935,7 @@ package matplotlib.pyplot;
 		
 		``close('all')`` closes all the figure windows
 	**/
-	static public function close(args:Dynamic):Dynamic;
+	static public function close(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Plot the coherence between *x* and *y*.
 		
@@ -2089,14 +2089,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a colorbar to a plot.
 		
@@ -2253,7 +2253,7 @@ package matplotlib.pyplot;
 		    :meth:`~matplotlib.colorbar.ColorbarBase.set_label` method
 		    to label the colorbar.
 	**/
-	static public function colorbar(?mappable:Dynamic, ?cax:Dynamic, ?ax:Dynamic, kw:Dynamic):Dynamic;
+	static public function colorbar(?mappable:Dynamic, ?cax:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Matplotlib provides a number of colormaps, and others can be added using
 		:func:`~matplotlib.cm.register_cmap`.  This function documents the built-in
@@ -2794,7 +2794,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function contour(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function contour(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot contours.
 		
@@ -3011,7 +3011,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function contourf(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function contourf(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to cool and apply to current image if any.
 		See help(colormaps) for more information
@@ -3203,14 +3203,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new `Cycler` object from a property name and
 		iterable of values.
@@ -3247,7 +3247,7 @@ package matplotlib.pyplot;
 		
 		``delaxes()``: delete the current axes
 	**/
-	static public function delaxes(args:Dynamic):Dynamic;
+	static public function delaxes(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Disconnect callback id cid
 		
@@ -3437,14 +3437,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
+		* All arguments with the following names: 'yerr', 'x', 'xerr', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot identical parallel lines at specific positions.
 		
@@ -3517,7 +3517,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -3548,14 +3548,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'positions', 'linestyles', 'linewidths', 'lineoffsets', 'linelengths', 'colors'.
+		* All arguments with the following names: 'lineoffsets', 'linestyles', 'linewidths', 'colors', 'linelengths', 'positions'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a figure with specified aspect ratio.  If *arg* is a number,
 		use that aspect ratio.  If *arg* is an array, figaspect will
@@ -3642,7 +3642,7 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.image.FigureImage`
 		Addition kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function figimage(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function figimage(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Place a legend in the figure.
 		
@@ -3669,7 +3669,7 @@ package matplotlib.pyplot;
 		
 		   :func:`~matplotlib.pyplot.legend`
 	**/
-	static public function figlegend(handles:Dynamic, labels:Dynamic, loc:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function figlegend(handles:Dynamic, labels:Dynamic, loc:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function fignum_exists(num:Dynamic):Dynamic;
 	/**
 		Add text to figure.
@@ -3695,7 +3695,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -3727,7 +3727,7 @@ package matplotlib.pyplot;
 		  y: float         
 		  zorder: any number         
 	**/
-	static public function figtext(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function figtext(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates a new figure.
 		
@@ -3774,7 +3774,7 @@ package matplotlib.pyplot;
 		rcParams defines the default values, which can be modified in the
 		matplotlibrc file
 	**/
-	static public function figure(?num:Dynamic, ?figsize:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?frameon:Dynamic, ?FigureClass:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function figure(?num:Dynamic, ?figsize:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?frameon:Dynamic, ?FigureClass:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot filled polygons.
 		
@@ -3849,14 +3849,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function fill(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fill(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make filled polygons between two curves.
 		
@@ -3918,7 +3918,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -3953,14 +3953,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
+		* All arguments with the following names: 'y1', 'where', 'x', 'y2'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make filled polygons between two horizontal curves.
 		
@@ -4018,7 +4018,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -4053,14 +4053,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x1', 'x2', 'where'.
+		* All arguments with the following names: 'where', 'x1', 'x2', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -4102,7 +4102,7 @@ package matplotlib.pyplot;
 		--------
 		matplotlib.figure.Figure.gca : The figure's gca method.
 	**/
-	static public function gca(kwargs:Dynamic):Dynamic;
+	static public function gca(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a reference to the current figure.
 	**/
@@ -4243,7 +4243,7 @@ package matplotlib.pyplot;
 		terminates input and any other key (not already used by the window
 		manager) selects a point.
 	**/
-	static public function ginput(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ginput(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to gray and apply to current image if any.
 		See help(colormaps) for more information
@@ -4317,7 +4317,7 @@ package matplotlib.pyplot;
 		  ydata: 1D array         
 		  zorder: any number         
 	**/
-	static public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a hexagonal binning plot.
 		
@@ -4448,7 +4448,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -4485,14 +4485,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a histogram.
 		
@@ -4690,7 +4690,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a 2D histogram plot.
 		
@@ -4770,14 +4770,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'weights', 'x'.
+		* All arguments with the following names: 'weights', 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot horizontal lines at each `y` from `xmin` to `xmax`.
 		
@@ -4819,14 +4819,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xmin', 'xmax'.
+		* All arguments with the following names: 'xmax', 'xmin', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the hold state.  If *b* is None (default), toggle the
 		hold state, else set the hold state to boolean value *b*::
@@ -4872,7 +4872,7 @@ package matplotlib.pyplot;
 		may not be compatible with PIL. Check the PIL documentation for more
 		information.
 	**/
-	static public function imread(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function imread(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save an array as in image file.
 		
@@ -4905,7 +4905,7 @@ package matplotlib.pyplot;
 		    The DPI to store in the metadata of the file.  This does not affect the
 		    resolution of the output image.
 	**/
-	static public function imsave(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function imsave(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Display an image on the axes.
 		
@@ -5026,7 +5026,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to inferno and apply to current image if any.
 		See help(colormaps) for more information
@@ -5270,7 +5270,7 @@ package matplotlib.pyplot;
 		
 		.. plot:: mpl_examples/api/legend_demo.py
 	**/
-	static public function legend(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function legend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Control behavior of tick locators.
 		
@@ -5301,7 +5301,7 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.ticker.MaxNLocator` used
 		by default on linear axes, but it may be generalized.
 	**/
-	static public function locator_params(?axis:Dynamic, ?tight:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function locator_params(?axis:Dynamic, ?tight:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on both the *x* and *y* axis.
 		
@@ -5382,7 +5382,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function loglog(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function loglog(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to magma and apply to current image if any.
 		See help(colormaps) for more information
@@ -5537,7 +5537,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set or retrieve autoscaling margins.
 		
@@ -5571,7 +5571,7 @@ package matplotlib.pyplot;
 		interval will be added to each end of that interval before
 		it is used in autoscaling.
 	**/
-	static public function margins(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function margins(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Display an array as a matrix in a new figure window.
 		
@@ -5598,7 +5598,7 @@ package matplotlib.pyplot;
 		
 		  If *fignum* is *False* or 0, a new figure window will **NOT** be created.
 	**/
-	static public function matshow(A:Dynamic, ?fignum:Dynamic, kw:Dynamic):Dynamic;
+	static public function matshow(A:Dynamic, ?fignum:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove minor ticks from the current plot.
 	**/
@@ -5613,7 +5613,7 @@ package matplotlib.pyplot;
 	/**
 		Create a new figure manager instance
 	**/
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call a function with hold(True).
 		
@@ -5623,7 +5623,7 @@ package matplotlib.pyplot;
 		
 		with ``hold(True)`` and then restores the hold state.
 	**/
-	static public function over(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function over(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pause for *interval* seconds.
 		
@@ -5790,7 +5790,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -5838,7 +5838,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function pcolor(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pcolor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a quadrilateral mesh.
 		
@@ -5926,7 +5926,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -5963,7 +5963,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function pcolormesh(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pcolormesh(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the phase spectrum.
 		
@@ -6104,7 +6104,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a pie chart.
 		
@@ -6211,7 +6211,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'explode', 'colors', 'labels', 'x'.
+		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
 		
 		
 		
@@ -6404,14 +6404,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function plot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with data with dates.
 		
@@ -6514,14 +6514,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the data in in a file.
 		
@@ -6573,7 +6573,7 @@ package matplotlib.pyplot;
 		data from flat files; it is not intended as an alternative
 		interface to general plotting with pyplot or matplotlib.
 	**/
-	static public function plotfile(fname:Dynamic, ?cols:Dynamic, ?plotfuncs:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?names:Dynamic, ?subplots:Dynamic, ?newfig:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plotfile(fname:Dynamic, ?cols:Dynamic, ?plotfuncs:Dynamic, ?comments:Dynamic, ?skiprows:Dynamic, ?checkrows:Dynamic, ?delimiter:Dynamic, ?names:Dynamic, ?subplots:Dynamic, ?newfig:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		============================ =================================================================================================================================
 		Function                     Description                                                                                                                      
@@ -6723,7 +6723,7 @@ package matplotlib.pyplot;
 		Multiple *theta*, *r* arguments are supported, with format
 		strings, as in :func:`~matplotlib.pyplot.plot`.
 	**/
-	static public function polar(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function polar(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		set the default colormap to prism and apply to current image if any.
@@ -6925,7 +6925,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return new_figure_manager, draw_if_interactive and show for pylab
 	**/
@@ -7073,7 +7073,7 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -7095,7 +7095,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function quiver(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function quiver(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a key to a quiver plot.
 		
@@ -7161,7 +7161,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function quiverkey(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function quiverkey(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the current rc params.  Group is the grouping for the rc, e.g.,
 		for ``lines.linewidth`` the group is ``lines``, for
@@ -7210,7 +7210,7 @@ package matplotlib.pyplot;
 		Use :func:`~matplotlib.pyplot.rcdefaults` to restore the default
 		rc params after changes.
 	**/
-	static public function rc(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rc(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
 	static public var rcParamsDefault : Dynamic;
 	/**
@@ -7290,7 +7290,7 @@ package matplotlib.pyplot;
 		  # set the locations and labels of the radial gridlines and labels
 		  lines, labels = rgrids( (0.25, 0.5, 1.0), ('Tom', 'Dick', 'Harry' )
 	**/
-	static public function rgrids(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rgrids(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save the current figure.
 		
@@ -7367,7 +7367,7 @@ package matplotlib.pyplot;
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	static public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the current Axes instance to *ax*.
 		
@@ -7462,14 +7462,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'facecolors', 'edgecolors', 'facecolor', 'y', 'linewidths', 'color', 's', 'c', 'x'.
+		* All arguments with the following names: 's', 'linewidths', 'x', 'facecolors', 'c', 'edgecolors', 'facecolor', 'color', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the current image.  This image will be the target of colormap
 		commands like :func:`~matplotlib.pyplot.jet`,
@@ -7558,7 +7558,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function semilogx(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function semilogx(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on the *y* axis.
 		
@@ -7639,7 +7639,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function semilogy(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function semilogy(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the default colormap.  Applies to the current image if any.
 		See help(colormaps) for more information.
@@ -7693,7 +7693,7 @@ package matplotlib.pyplot;
 		  >>> setp(lines, 'linewidth', 2, 'color', 'r')  # MATLAB style
 		  >>> setp(lines, linewidth=2, color='r')        # python style
 	**/
-	static public function setp(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function setp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Display a figure.
 		When running in ipython with its pylab mode, display all
@@ -7709,7 +7709,7 @@ package matplotlib.pyplot;
 		set to True or False to override the blocking behavior
 		described above.
 	**/
-	static public function show(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function show(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a spectrogram.
 		
@@ -7887,7 +7887,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to spectral and apply to current image if any.
 		See help(colormaps) for more information
@@ -7959,7 +7959,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?hold:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?hold:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draws a stacked area plot.
 		
@@ -8001,7 +8001,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function stackplot(x:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function stackplot(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a stem plot.
 		
@@ -8044,7 +8044,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function stem(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function stem(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a step plot.
 		
@@ -8078,14 +8078,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function step(x:Dynamic, y:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function step(x:Dynamic, y:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draws streamlines of a vector flow.
 		
@@ -8217,7 +8217,7 @@ package matplotlib.pyplot;
 		
 		.. plot:: mpl_examples/subplots_axes_and_figures/subplot_demo.py
 	**/
-	static public function subplot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function subplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a subplot in a grid.  The grid is specified by *shape*, at
 		location of *loc*, spanning *rowspan*, *colspan* cells in each
@@ -8231,7 +8231,7 @@ package matplotlib.pyplot;
 		  subplotspec=gridspec.new_subplotspec(loc, rowspan, colspan)
 		  subplot(subplotspec)
 	**/
-	static public function subplot2grid(shape:Dynamic, loc:Dynamic, ?rowspan:Dynamic, ?colspan:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function subplot2grid(shape:Dynamic, loc:Dynamic, ?rowspan:Dynamic, ?colspan:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Launch a subplot tool window for a figure.
 		
@@ -8347,7 +8347,7 @@ package matplotlib.pyplot;
 		    # same as
 		    plt.subplots(2, 2, sharex=True, sharey=True)
 	**/
-	static public function subplots(?nrows:Dynamic, ?ncols:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?gridspec_kw:Dynamic, fig_kw:Dynamic):Dynamic;
+	static public function subplots(?nrows:Dynamic, ?ncols:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?gridspec_kw:Dynamic, ?fig_kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Tune the subplot layout.
 		
@@ -8367,7 +8367,7 @@ package matplotlib.pyplot;
 		
 		The actual defaults are controlled by the rc file
 	**/
-	static public function subplots_adjust(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function subplots_adjust(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to summer and apply to current image if any.
 		See help(colormaps) for more information
@@ -8397,7 +8397,7 @@ package matplotlib.pyplot;
 		
 		  fig.suptitle('this is the figure title', fontsize=12)
 	**/
-	static public function suptitle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function suptitle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Switch the default backend.  This feature is **experimental**, and
 		is only expected to work switching to an image backend.  e.g., if
@@ -8453,7 +8453,7 @@ package matplotlib.pyplot;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	static public function table(kwargs:Dynamic):Dynamic;
+	static public function table(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add text to the axes.
 		
@@ -8504,7 +8504,7 @@ package matplotlib.pyplot;
 		
 		    >>> text(x, y, s, bbox=dict(facecolor='red', alpha=0.5))
 	**/
-	static public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?fontdict:Dynamic, ?withdash:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?fontdict:Dynamic, ?withdash:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the theta locations of the gridlines in a polar plot.
 		
@@ -8551,7 +8551,7 @@ package matplotlib.pyplot;
 		  # set the locations and labels of the radial gridlines and labels
 		  lines, labels = thetagrids( range(45,360,90), ('NE', 'NW', 'SW','SE') )
 	**/
-	static public function thetagrids(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function thetagrids(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change the appearance of ticks and tick labels.
 		
@@ -8611,7 +8611,7 @@ package matplotlib.pyplot;
 		and with dimensions 6 points by 2 points.  Tick labels will
 		also be red.
 	**/
-	static public function tick_params(?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tick_params(?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change the `~matplotlib.ticker.ScalarFormatter` used by
 		default for linear axes.
@@ -8649,7 +8649,7 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.ticker.Formatter` being used, an
 		:exc:`AttributeError` will be raised.
 	**/
-	static public function ticklabel_format(kwargs:Dynamic):Dynamic;
+	static public function ticklabel_format(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Automatically adjust subplot parameters to give specified padding.
 		
@@ -8706,7 +8706,7 @@ package matplotlib.pyplot;
 		    :class:`~matplotlib.text.Text` for a list of valid text
 		    properties.
 	**/
-	static public function title(s:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function title(s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -8885,7 +8885,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function tricontour(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontour(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -9064,7 +9064,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function tricontourf(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontourf(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a pseudocolor plot of an unstructured triangular grid.
 		
@@ -9112,7 +9112,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function tripcolor(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tripcolor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a unstructured triangular grid as lines and/or markers.
 		
@@ -9153,7 +9153,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function triplot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function triplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a second axes that shares the *x*-axis.  The new axes will
 		overlay *ax* (or the current axes if *ax* is *None*).  The ticks
@@ -9343,14 +9343,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymax', 'ymin', 'colors', 'x'.
+		* All arguments with the following names: 'ymin', 'x', 'colors', 'ymax'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -9364,7 +9364,7 @@ package matplotlib.pyplot;
 		
 		If *timeout* is negative, does not timeout.
 	**/
-	static public function waitforbuttonpress(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function waitforbuttonpress(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the default colormap to winter and apply to current image if any.
 		See help(colormaps) for more information
@@ -9427,14 +9427,14 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?hold:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?hold:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Turns on `xkcd <http://xkcd.com/>`_ sketch-style drawing mode.
 		This will only have effect on things drawn after this function is
@@ -9485,7 +9485,7 @@ package matplotlib.pyplot;
 		    :func:`~matplotlib.pyplot.text`
 		        For information on how override and the optional args work
 	**/
-	static public function xlabel(s:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xlabel(s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the *x* limits of the current axes.
 		
@@ -9505,7 +9505,7 @@ package matplotlib.pyplot;
 		
 		The new axis limits are returned as a length 2 tuple.
 	**/
-	static public function xlim(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xlim(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the scaling of the *x*-axis.
 		
@@ -9573,7 +9573,7 @@ package matplotlib.pyplot;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	static public function xscale(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xscale(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the *x*-limits of the current tick locations and labels.
 		
@@ -9594,7 +9594,7 @@ package matplotlib.pyplot;
 		
 		  xticks( arange(12), calendar.month_name[1:13], rotation=17 )
 	**/
-	static public function xticks(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function xticks(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the *y* axis label of the current axis.
 		
@@ -9612,7 +9612,7 @@ package matplotlib.pyplot;
 		        For information on how override and the optional args
 		        work.
 	**/
-	static public function ylabel(s:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ylabel(s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the *y*-limits of the current axes.
 		
@@ -9632,7 +9632,7 @@ package matplotlib.pyplot;
 		
 		The new axis limits are returned as a length 2 tuple.
 	**/
-	static public function ylim(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ylim(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the scaling of the *y*-axis.
 		
@@ -9700,7 +9700,7 @@ package matplotlib.pyplot;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	static public function yscale(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function yscale(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the *y*-limits of the current tick locations and labels.
 		
@@ -9721,5 +9721,5 @@ package matplotlib.pyplot;
 		
 		  yticks( arange(12), calendar.month_name[1:13], rotation=45 )
 	**/
-	static public function yticks(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function yticks(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

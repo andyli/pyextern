@@ -58,7 +58,7 @@ package matplotlib.backends.backend_pgf;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -104,9 +104,9 @@ package matplotlib.backends.backend_pgf;
 	**/
 	public function _get_output_canvas(format:Dynamic):Dynamic;
 	public function _idle_draw_cntx():Dynamic;
-	public function _print_pdf_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _print_pgf_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _print_png_to_fh(fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _print_pdf_to_fh(fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _print_pgf_to_fh(fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _print_png_to_fh(fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		blit the canvas in bbox (default entire canvas)
 	**/
@@ -146,7 +146,7 @@ package matplotlib.backends.backend_pgf;
 	/**
 		Render the :class:`~matplotlib.figure.Figure`
 	**/
-	public function draw(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a cursor in the event.axes if inaxes is not None.  Use
 		native GUI drawing for efficiency if possible
@@ -160,7 +160,7 @@ package matplotlib.backends.backend_pgf;
 	/**
 		:meth:`draw` only if idle; defaults to draw but backends can overrride
 	**/
-	public function draw_idle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw_idle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backend derived classes should call this function when entering
 		canvas
@@ -332,7 +332,7 @@ package matplotlib.backends.backend_pgf;
 		  Sequence of (func, args, kwargs) where func(*args, **kwargs) will
 		  be executed by the timer every *interval*.
 	**/
-	public function new_timer(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Mouse event processor which highlights the artists
 		under the cursor.  Connect this to the 'motion_notify_event'
@@ -354,7 +354,7 @@ package matplotlib.backends.backend_pgf;
 		This method will be called by artists who are picked and will
 		fire off :class:`PickEvent` callbacks registered listeners
 	**/
-	public function pick_event(mouseevent:Dynamic, artist:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pick_event(mouseevent:Dynamic, artist:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Render the figure to hardcopy. Set the figure patch face and edge
 		colors.  This is useful because some of the GUIs have a gray figure
@@ -397,20 +397,20 @@ package matplotlib.backends.backend_pgf;
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use LaTeX to compile a Pgf generated figure to PDF.
 	**/
-	public function print_pdf(fname_or_fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_pdf(fname_or_fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Output pgf commands for drawing the figure so it can be included and
 		rendered in latex documents.
 	**/
-	public function print_pgf(fname_or_fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_pgf(fname_or_fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use LaTeX to compile a pgf figure to pdf and convert it to png.
 	**/
-	public function print_png(fname_or_fh:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_png(fname_or_fh:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Release the mouse grab held by the axes, ax.
 		Usually called by the widgets.

@@ -69,7 +69,7 @@ package pandas.core.internals;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	/**
 		helper for pickle
@@ -200,10 +200,10 @@ package pandas.core.internals;
 		-------
 		Block Manager (new object)
 	**/
-	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, kwargs:Dynamic):Dynamic;
+	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var array_dtype : Dynamic;
 	public function as_matrix(?items:Dynamic):Dynamic;
-	public function astype(dtype:Dynamic, kwargs:Dynamic):Dynamic;
+	public function astype(dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var axes : Dynamic;
 	public var blocks : Dynamic;
 	/**
@@ -221,7 +221,7 @@ package pandas.core.internals;
 	/**
 		convert the whole block as one 
 	**/
-	public function convert(kwargs:Dynamic):Dynamic;
+	public function convert(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make deep or shallow copy of BlockManager
 		
@@ -242,18 +242,18 @@ package pandas.core.internals;
 		Ensures that self.blocks doesn't become empty.
 	**/
 	public function delete(item:Dynamic):Dynamic;
-	public function diff(kwargs:Dynamic):Dynamic;
-	public function downcast(kwargs:Dynamic):Dynamic;
+	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function downcast(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var dtype : Dynamic;
 	public function equals(other:Dynamic):Dynamic;
-	public function eval(kwargs:Dynamic):Dynamic;
+	public function eval(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function external_values():Dynamic;
 	/**
 		fast path for getting a cross-section
 		return a view of the data
 	**/
 	public function fast_xs(loc:Dynamic):Dynamic;
-	public function fillna(kwargs:Dynamic):Dynamic;
+	public function fillna(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var ftype : Dynamic;
 	/**
 		Return values for selected item (ndarray or BlockManager).
@@ -306,7 +306,7 @@ package pandas.core.internals;
 	**/
 	public function insert(loc:Dynamic, item:Dynamic, value:Dynamic, ?allow_duplicates:Dynamic):Dynamic;
 	public function internal_values():Dynamic;
-	public function interpolate(kwargs:Dynamic):Dynamic;
+	public function interpolate(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return True if more than one block with the same dtype
 	**/
@@ -318,7 +318,7 @@ package pandas.core.internals;
 		return a boolean if we are a single block and are a view 
 	**/
 	public var is_view : Dynamic;
-	public function isnull(kwargs:Dynamic):Dynamic;
+	public function isnull(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var items : Dynamic;
 	public var itemsize : Dynamic;
 	/**
@@ -328,7 +328,7 @@ package pandas.core.internals;
 	public function merge(other:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic):Dynamic;
 	public var nblocks : Dynamic;
 	static public var ndim : Dynamic;
-	public function putmask(kwargs:Dynamic):Dynamic;
+	public function putmask(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function reindex(new_axis:Dynamic, ?indexer:Dynamic, ?method:Dynamic, ?fill_value:Dynamic, ?limit:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Conform block manager to new index.
@@ -356,7 +356,7 @@ package pandas.core.internals;
 		copy : boolean, default True
 	**/
 	public function rename_axis(mapper:Dynamic, axis:Dynamic, ?copy:Dynamic):Dynamic;
-	public function replace(kwargs:Dynamic):Dynamic;
+	public function replace(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		do a list replace 
 	**/
@@ -364,7 +364,7 @@ package pandas.core.internals;
 	/**
 		a 2d-nd reshape operation on a BlockManager 
 	**/
-	public function reshape_nd(axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reshape_nd(axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set new item in-place. Does not consolidate. Adds new Block if not
 		contained in the current set of items
@@ -372,13 +372,13 @@ package pandas.core.internals;
 	**/
 	public function set(item:Dynamic, value:Dynamic, ?check:Dynamic):Dynamic;
 	public function set_axis(axis:Dynamic, new_labels:Dynamic):Dynamic;
-	public function setitem(kwargs:Dynamic):Dynamic;
+	public function setitem(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var shape : Dynamic;
-	public function shift(kwargs:Dynamic):Dynamic;
+	public function shift(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Take items along any axis.
 	**/
 	public function take(indexer:Dynamic, ?axis:Dynamic, ?verify:Dynamic, ?convert:Dynamic):Dynamic;
-	public function where(kwargs:Dynamic):Dynamic;
+	public function where(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function xs(key:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?takeable:Dynamic):Dynamic;
 }

@@ -112,7 +112,7 @@ package matplotlib.widgets;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -197,7 +197,7 @@ package matplotlib.widgets;
 	/**
 		A scale-free ellipse.
 	**/
-	static public function _shape_klass(xy:Dynamic, width:Dynamic, height:Dynamic, ?angle:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _shape_klass(xy:Dynamic, width:Dynamic, height:Dynamic, ?angle:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Is the widget active?
 	**/

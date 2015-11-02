@@ -70,7 +70,7 @@ package matplotlib.rcsetup;
 		cycler : Cycler
 		    New :class:`cycler.Cycler` for the given properties
 	**/
-	static public function cycler(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var defaultParams : Dynamic;
 	static public function deprecate_axes_colorcycle(value:Dynamic):Dynamic;
 	static public function deprecate_savefig_extension(value:Dynamic):Dynamic;

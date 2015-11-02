@@ -70,7 +70,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -145,5 +145,5 @@ package matplotlib.backends.backend_pdf;
 		    instance is provided, this figure is saved. If an int is specified,
 		    the figure instance to save is looked up by number.
 	**/
-	public function savefig(?figure:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?figure:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

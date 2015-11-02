@@ -23,12 +23,12 @@ package pandas.computation.expressions;
 	/**
 		standard evaluation 
 	**/
-	static public function _evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, eval_kwargs:Dynamic):Dynamic;
-	static public function _evaluate_numexpr(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?truediv:Dynamic, ?reversed:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _evaluate_numexpr(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?truediv:Dynamic, ?reversed:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		standard evaluation 
 	**/
-	static public function _evaluate_standard(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _evaluate_standard(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _has_bool_dtype(x:Dynamic):Dynamic;
 	static public function _store_test_result(used_numexpr:Dynamic):Dynamic;
 	/**
@@ -53,7 +53,7 @@ package pandas.computation.expressions;
 		                 return the results
 		use_numexpr : whether to try to use numexpr (default True)
 	**/
-	static public function evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?use_numexpr:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function evaluate(op:Dynamic, op_str:Dynamic, a:Dynamic, b:Dynamic, ?raise_on_error:Dynamic, ?use_numexpr:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		get test result and reset test_results
 	**/

@@ -323,7 +323,7 @@ package seaborn.axisgrid;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -424,7 +424,7 @@ package seaborn.axisgrid;
 		self : Grid instance
 		    Returns self for easy chaining.
 	**/
-	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Easy access to single axes.
 	**/
@@ -432,7 +432,7 @@ package seaborn.axisgrid;
 	/**
 		Remove axis spines from the facets.
 	**/
-	public function despine(kwargs:Dynamic):Dynamic;
+	public function despine(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make the axis identified by these indices active and return it.
 	**/
@@ -472,7 +472,7 @@ package seaborn.axisgrid;
 		self : object
 		    Returns self.
 	**/
-	public function map(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Like `map` but passes args as strings and inserts data in kwargs.
 		
@@ -500,15 +500,15 @@ package seaborn.axisgrid;
 		self : object
 		    Returns self.
 	**/
-	public function map_dataframe(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map_dataframe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save the figure.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set attributes on each subplot Axes.
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set axis labels on the left column and bottom row of the grid.
 	**/
@@ -534,21 +534,21 @@ package seaborn.axisgrid;
 		self: object
 		    Returns self.
 	**/
-	public function set_titles(?template:Dynamic, ?row_template:Dynamic, ?col_template:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_titles(?template:Dynamic, ?row_template:Dynamic, ?col_template:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Label the x axis on the bottom row of the grid.
 	**/
-	public function set_xlabels(?label:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xlabels(?label:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set x axis tick labels on the bottom row of the grid.
 	**/
-	public function set_xticklabels(?labels:Dynamic, ?step:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xticklabels(?labels:Dynamic, ?step:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Label the y axis on the left column of the grid.
 	**/
-	public function set_ylabels(?label:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_ylabels(?label:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set y axis tick labels on the left column of the grid.
 	**/
-	public function set_yticklabels(?labels:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_yticklabels(?labels:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -320,7 +320,7 @@ package scipy.cluster.vq;
 		>>> np.common_type(np.arange(4), np.array([45, 6.j]), np.array([45.0]))
 		<type 'numpy.complex128'>
 	**/
-	static public function common_type(arrays:Dynamic):Dynamic;
+	static public function common_type(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Performs k-means on a set of observation vectors forming k clusters.

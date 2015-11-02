@@ -75,7 +75,7 @@ package matplotlib.axes._base;
 		cycler : Cycler
 		    New :class:`cycler.Cycler` for the given properties
 	**/
-	static public function cycler(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	/**

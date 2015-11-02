@@ -91,7 +91,7 @@ package matplotlib.lines;
 		:meth:`set_drawstyle` for a description of the draw styles.
 	**/
 	@:native("__init__")
-	public function ___init__(xdata:Dynamic, ydata:Dynamic, ?linewidth:Dynamic, ?linestyle:Dynamic, ?color:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?markeredgewidth:Dynamic, ?markeredgecolor:Dynamic, ?markerfacecolor:Dynamic, ?markerfacecoloralt:Dynamic, ?fillstyle:Dynamic, ?antialiased:Dynamic, ?dash_capstyle:Dynamic, ?solid_capstyle:Dynamic, ?dash_joinstyle:Dynamic, ?solid_joinstyle:Dynamic, ?pickradius:Dynamic, ?drawstyle:Dynamic, ?markevery:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(xdata:Dynamic, ydata:Dynamic, ?linewidth:Dynamic, ?linestyle:Dynamic, ?color:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?markeredgewidth:Dynamic, ?markeredgecolor:Dynamic, ?markerfacecolor:Dynamic, ?markerfacecoloralt:Dynamic, ?fillstyle:Dynamic, ?antialiased:Dynamic, ?dash_capstyle:Dynamic, ?solid_capstyle:Dynamic, ?dash_joinstyle:Dynamic, ?solid_joinstyle:Dynamic, ?pickradius:Dynamic, ?drawstyle:Dynamic, ?markevery:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -108,7 +108,7 @@ package matplotlib.lines;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -223,7 +223,7 @@ package matplotlib.lines;
 	/**
 		draw the Line with `renderer` unless visibility is False
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var drawStyleKeys : Dynamic;
 	static public var drawStyles : Dynamic;
 	static public var fillStyles : Dynamic;
@@ -572,7 +572,7 @@ package matplotlib.lines;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/
@@ -694,7 +694,7 @@ package matplotlib.lines;
 		
 		ACCEPTS: 2D array (rows are x, y) or two 1D arrays
 	**/
-	public function set_data(args:Dynamic):Dynamic;
+	public function set_data(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the drawstyle of the plot
 		

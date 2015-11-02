@@ -90,7 +90,7 @@ package scipy.sparse.dok;
 		>>> upcast('bool',complex,float)
 		<type 'numpy.complex128'>
 	**/
-	static public function upcast(args:Dynamic):Dynamic;
+	static public function upcast(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Determine data type for binary operation between an array of
 		type `dtype` and a scalar.

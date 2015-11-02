@@ -54,7 +54,7 @@ package pandas.io.parsers;
 		    'high' for the high-precision converter, and 'round_trip' for the
 		    round-trip converter.
 	**/
-	static public function TextParser(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function TextParser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _NA_VALUES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -105,7 +105,7 @@ package pandas.io.parsers;
 	**/
 	static public function _wrap_compressed(f:Dynamic, compression:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public function count_empty_vals(vals:Dynamic):Dynamic;
-	static public function generic_parser(parse_func:Dynamic, cols:Dynamic):Dynamic;
+	static public function generic_parser(parse_func:Dynamic, ?cols:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		If the filepath_or_buffer is a url, translate and return the buffer
 		passthru otherwise.
@@ -364,9 +364,9 @@ package pandas.io.parsers;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Read CSV (comma-separated) file into DataFrame
@@ -693,7 +693,7 @@ package pandas.io.parsers;
 		Also, 'delimiter' is used to specify the filler character of the
 		fields if it is not spaces (e.g., '~').
 	**/
-	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read general delimited file into DataFrame
 		

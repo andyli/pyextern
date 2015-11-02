@@ -47,7 +47,7 @@ package matplotlib.contour;
 		are described in QuadContourSet.contour_doc.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -64,7 +64,7 @@ package matplotlib.contour;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -156,7 +156,7 @@ package matplotlib.contour;
 	/**
 		Process args and kwargs.
 	**/
-	public function _process_args(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _process_args(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Color argument processing for contouring.
 		
@@ -336,7 +336,7 @@ package matplotlib.contour;
 		
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 	**/
-	public function clabel(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function clabel(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var contour_doc : Dynamic;
 	/**
 		Finds contour that is closest to a point.  Defaults to

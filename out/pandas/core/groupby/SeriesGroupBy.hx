@@ -77,7 +77,7 @@ package pandas.core.groupby;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -129,7 +129,7 @@ package pandas.core.groupby;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
-	public function _aggregate_named(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _aggregate_named(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	/**
 		return a pass thru 
@@ -175,7 +175,7 @@ package pandas.core.groupby;
 	static public var _internal_names_set : Dynamic;
 	public function _iterate_slices():Dynamic;
 	public function _make_wrapper(name:Dynamic):Dynamic;
-	public function _python_agg_general(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _python_agg_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _python_apply_general(f:Dynamic):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
@@ -220,7 +220,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : DataFrame
 	**/
-	public function agg(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply aggregation function or functions to groups, yielding most likely
 		Series but in some cases DataFrame depending on the output of the
@@ -271,7 +271,7 @@ package pandas.core.groupby;
 		-------
 		Series or DataFrame
 	**/
-	public function aggregate(func_or_funcs:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function aggregate(func_or_funcs:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		    
 		
@@ -365,7 +365,7 @@ package pandas.core.groupby;
 		-------
 		applied : type depending on grouped object and function
 	**/
-	public function apply(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Synonym for NDFrame.fillna(method='bfill')
 	**/
@@ -652,7 +652,7 @@ package pandas.core.groupby;
 		-------
 		filtered : Series
 	**/
-	public function filter(func:Dynamic, ?dropna:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute first of group values
 	**/
@@ -1289,7 +1289,7 @@ package pandas.core.groupby;
 		-------
 		transformed : Series
 	**/
-	public function transform(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Shift the time index, using the index's frequency if available
 		

@@ -58,7 +58,7 @@ package matplotlib.backend_managers;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -148,7 +148,7 @@ package matplotlib.backend_managers;
 		--------
 		matplotlib.backend_tools.ToolBase : The base class for tools.
 	**/
-	public function add_tool(name:Dynamic, tool:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_tool(name:Dynamic, tool:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the tool object, also accepts the actual tool for convenience
 		
@@ -249,5 +249,5 @@ package matplotlib.backend_managers;
 		    Name of the Tool
 		keys : keys to associate with the Tool
 	**/
-	public function update_keymap(name:Dynamic, keys:Dynamic):Dynamic;
+	public function update_keymap(name:Dynamic, ?keys:python.VarArgs<Dynamic>):Dynamic;
 }

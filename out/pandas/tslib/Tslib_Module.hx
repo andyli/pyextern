@@ -161,7 +161,7 @@ package pandas.tslib;
 		
 		Passes kwargs to method.
 	**/
-	static public function iteritems(obj:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		(Maybe) Construct a timezone object from a string. If tz is a string, use it to construct a timezone object.
 		Otherwise, just return tz.
@@ -231,7 +231,7 @@ package pandas.tslib;
 		    "Today is January 1, 2047 at 8:21:00AM" should return
 		    `(datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))`
 	**/
-	static public function parse_date(timestr:Dynamic, ?parserinfo:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function parse_date(timestr:Dynamic, ?parserinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		parse datetime string, only returns datetime.
 		Also cares special handling matching time patterns.

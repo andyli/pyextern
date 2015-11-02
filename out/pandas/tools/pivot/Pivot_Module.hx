@@ -168,7 +168,7 @@ package pandas.tools.pivot;
 		yes!
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the
 		pivot table will be stored in MultiIndex objects (hierarchical indexes) on

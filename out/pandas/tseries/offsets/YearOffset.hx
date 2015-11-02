@@ -46,7 +46,7 @@ package pandas.tseries.offsets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?n:Dynamic, ?normalize:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(?n:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -65,7 +65,7 @@ package pandas.tseries.offsets;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle

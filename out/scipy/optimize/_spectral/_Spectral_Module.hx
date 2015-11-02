@@ -139,7 +139,7 @@ package scipy.optimize._spectral;
 		.. [2] W. La Cruz, Opt. Meth. Software, 29, 24 (2014).
 		.. [3] W. Cheng, D.-H. Li. IMA J. Numer. Anal. **29**, 814 (2009).
 	**/
-	static public function _root_df_sane(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?maxfev:Dynamic, ?fnorm:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?M:Dynamic, ?eta_strategy:Dynamic, ?sigma_eps:Dynamic, ?sigma_0:Dynamic, ?line_search:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_df_sane(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?maxfev:Dynamic, ?fnorm:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?M:Dynamic, ?eta_strategy:Dynamic, ?sigma_eps:Dynamic, ?sigma_0:Dynamic, ?line_search:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrap a function and an initial value so that (i) complex values
 		are wrapped to reals, and (ii) value for a merit function

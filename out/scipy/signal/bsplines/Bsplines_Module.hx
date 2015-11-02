@@ -854,7 +854,7 @@ package scipy.signal.bsplines;
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
 	**/
-	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute quadratic spline coefficients for rank-1 array.

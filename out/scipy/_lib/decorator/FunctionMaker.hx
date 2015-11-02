@@ -58,7 +58,7 @@ package scipy._lib.decorator;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -103,13 +103,13 @@ package scipy._lib.decorator;
 		__source__ is added to the result. The attributes attrs are added,
 		if any.
 	**/
-	static public function create(obj:Dynamic, body:Dynamic, evaldict:Dynamic, ?defaults:Dynamic, ?doc:Dynamic, ?module:Dynamic, ?addsource:Dynamic, attrs:Dynamic):Dynamic;
+	static public function create(obj:Dynamic, body:Dynamic, evaldict:Dynamic, ?defaults:Dynamic, ?doc:Dynamic, ?module:Dynamic, ?addsource:Dynamic, ?attrs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a new function from a given template and update the signature
 	**/
-	public function make(src_templ:Dynamic, ?evaldict:Dynamic, ?addsource:Dynamic, attrs:Dynamic):Dynamic;
+	public function make(src_templ:Dynamic, ?evaldict:Dynamic, ?addsource:Dynamic, ?attrs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Update the signature of func with the data in self
 	**/
-	public function update(func:Dynamic, kw:Dynamic):Dynamic;
+	public function update(func:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 }

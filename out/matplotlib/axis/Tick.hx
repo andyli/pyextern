@@ -61,7 +61,7 @@ package matplotlib.axis;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -100,7 +100,7 @@ package matplotlib.axis;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _apply_params(kw:Dynamic):Dynamic;
+	public function _apply_params(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get the default grid Line2d instance for this tick
 	**/
@@ -161,7 +161,7 @@ package matplotlib.axis;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -407,7 +407,7 @@ package matplotlib.axis;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/

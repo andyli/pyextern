@@ -151,7 +151,7 @@ package scipy.optimize._linprog;
 		.. [3] Bland, Robert G. New finite pivoting rules for the simplex method.
 		       Mathematics of Operations Research (2), 1977: pp. 103-107.
 	**/
-	static public function _linprog_simplex(c:Dynamic, ?A_ub:Dynamic, ?b_ub:Dynamic, ?A_eq:Dynamic, ?b_eq:Dynamic, ?bounds:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?tol:Dynamic, ?bland:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _linprog_simplex(c:Dynamic, ?A_ub:Dynamic, ?b_ub:Dynamic, ?A_eq:Dynamic, ?b_eq:Dynamic, ?bounds:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?tol:Dynamic, ?bland:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Given a linear programming simplex tableau, determine the column
 		of the variable to enter the basis.
@@ -494,7 +494,7 @@ package scipy.optimize._linprog;
 		        True if the simplex algorithm has completed
 		        (and this is the final call to callback), otherwise False.
 	**/
-	static public function linprog_terse_callback(xk:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function linprog_terse_callback(xk:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A sample callback function demonstrating the linprog callback interface.
 		This callback produces detailed output to sys.stdout before each iteration
@@ -524,6 +524,6 @@ package scipy.optimize._linprog;
 		        True if the simplex algorithm has completed
 		        (and this is the final call to callback), otherwise False.
 	**/
-	static public function linprog_verbose_callback(xk:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function linprog_verbose_callback(xk:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

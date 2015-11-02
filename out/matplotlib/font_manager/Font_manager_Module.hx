@@ -46,7 +46,7 @@ package matplotlib.font_manager;
 		AFM fonts as an option.
 	**/
 	static public function findSystemFonts(?fontpaths:Dynamic, ?fontext:Dynamic):Dynamic;
-	static public function findfont(prop:Dynamic, kw:Dynamic):Dynamic;
+	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var fontManager : Dynamic;
 	static public var font_family_aliases : Dynamic;
 	static public var font_scalings : Dynamic;
@@ -61,7 +61,7 @@ package matplotlib.font_manager;
 		The procedure used to find the directory is the same as for
 		_get_config_dir, except using `$XDG_CACHE_HOME`/`~/.cache` instead.
 	**/
-	static public function get_cachedir(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_cachedir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Grab a list of all the fonts that are being tracked by fontconfig
 		by making a system call to ``fc-list``.  This is an easy way to

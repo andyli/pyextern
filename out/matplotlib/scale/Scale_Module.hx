@@ -55,6 +55,6 @@ package matplotlib.scale;
 		
 		ACCEPTS: [ linear | log | logit | symlog ]
 	**/
-	static public function scale_factory(scale:Dynamic, axis:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function scale_factory(scale:Dynamic, axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

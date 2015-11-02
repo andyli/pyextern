@@ -18,7 +18,7 @@ package scipy.linalg.calc_lwork;
 		that perform the lwork calculation (from Scipy >= 0.15.0), or
 		allow passing in LWORK=-1 argument to perform the computation.
 	**/
-	static public function _deprecated(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _deprecated(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Issues a DeprecationWarning, adds warning to `old_name`'s
@@ -60,7 +60,7 @@ package scipy.linalg.calc_lwork;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		minwrk,maxwrk = gees(prefix,n,[compute_v])

@@ -65,7 +65,7 @@ package pandas.io.sql;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -139,11 +139,11 @@ package pandas.io.sql;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	public function drop_table(name:Dynamic, ?schema:Dynamic):Dynamic;
-	public function execute(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function execute(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_table(table_name:Dynamic, ?schema:Dynamic):Dynamic;
 	public function has_table(name:Dynamic, ?schema:Dynamic):Dynamic;
 	public function read_query(sql:Dynamic, ?index_col:Dynamic, ?coerce_float:Dynamic, ?params:Dynamic, ?parse_dates:Dynamic, ?chunksize:Dynamic):Dynamic;
-	public function read_sql(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function read_sql(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function run_transaction():Dynamic;
 	/**
 		Write records stored in a DataFrame to a SQL database.

@@ -47,7 +47,7 @@ package scipy.optimize.minpack;
 		    N positive entries that serve as a scale factors for the
 		    variables.
 	**/
-	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?full_output:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?full_output:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public function _weighted_general_function(params:Dynamic, xdata:Dynamic, ydata:Dynamic, _function:Dynamic, weights:Dynamic):Dynamic;
 	/**
 		absolute(x[, out])
@@ -350,7 +350,7 @@ package scipy.optimize.minpack;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Perform a simple check on the gradient for correctness.
 		
@@ -443,7 +443,7 @@ package scipy.optimize.minpack;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, kw:Dynamic):Dynamic;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)

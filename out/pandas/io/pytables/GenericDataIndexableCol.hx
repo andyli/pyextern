@@ -45,7 +45,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -63,7 +63,7 @@ package pandas.io.pytables;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -124,7 +124,7 @@ package pandas.io.pytables;
 	/**
 		return a new datacol with the block i 
 	**/
-	static public function create_for_block(?i:Dynamic, ?name:Dynamic, ?cname:Dynamic, ?version:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function create_for_block(?i:Dynamic, ?name:Dynamic, ?cname:Dynamic, ?version:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return my cython values 
 	**/
@@ -157,7 +157,7 @@ package pandas.io.pytables;
 		min_itemsize can be an interger or a dict with this columns name
 		with an integer size 
 	**/
-	public function maybe_set_size(?min_itemsize:Dynamic, kwargs:Dynamic):Dynamic;
+	public function maybe_set_size(?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		retrieve the metadata for this columns 
 	**/
@@ -165,7 +165,7 @@ package pandas.io.pytables;
 	/**
 		create and setup my atom from the block b 
 	**/
-	public function set_atom(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, info:Dynamic, ?encoding:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_atom(block:Dynamic, block_items:Dynamic, existing_col:Dynamic, min_itemsize:Dynamic, nan_rep:Dynamic, info:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_atom_categorical(block:Dynamic, items:Dynamic, ?info:Dynamic, ?values:Dynamic):Dynamic;
 	public function set_atom_complex(block:Dynamic):Dynamic;
 	public function set_atom_data(block:Dynamic):Dynamic;
@@ -210,8 +210,8 @@ package pandas.io.pytables;
 		if there is a conflict raise/warn as needed 
 	**/
 	public function update_info(info:Dynamic):Dynamic;
-	public function validate(handler:Dynamic, append:Dynamic, kwargs:Dynamic):Dynamic;
-	public function validate_and_set(handler:Dynamic, append:Dynamic, kwargs:Dynamic):Dynamic;
+	public function validate(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function validate_and_set(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		validate that we have the same order as the existing & same dtype
 	**/

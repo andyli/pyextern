@@ -65,7 +65,7 @@ package matplotlib.cbook;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -116,7 +116,7 @@ package matplotlib.cbook;
 		Join given arguments into the same set.  Accepts one or more
 		arguments.
 	**/
-	public function join(a:Dynamic, args:Dynamic):Dynamic;
+	public function join(a:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns True if *a* and *b* are members of the same set.
 	**/

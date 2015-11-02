@@ -58,7 +58,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,7 +99,7 @@ package matplotlib.backends.backend_tkagg;
 	public var __weakref__ : Dynamic;
 	public function _get_toolbar():Dynamic;
 	public function _get_toolmanager():Dynamic;
-	public function destroy(args:Dynamic):Dynamic;
+	public function destroy(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function full_screen_toggle():Dynamic;
 	/**
 		Get the title text of the window containing the figure.

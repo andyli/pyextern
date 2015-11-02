@@ -184,7 +184,7 @@ package numpy.ma.core;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert to int.
 	**/
@@ -265,7 +265,7 @@ package numpy.ma.core;
 		-----
 		A masked array can also be created by taking a .view(MaskedArray).
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?mask:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?subok:Dynamic, ?ndmin:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?hard_mask:Dynamic, ?shrink:Dynamic, options:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?mask:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?subok:Dynamic, ?ndmin:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?hard_mask:Dynamic, ?shrink:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self|value.
 	**/
@@ -2443,7 +2443,7 @@ package numpy.ma.core;
 		 [3]
 		 [--]]
 	**/
-	public function reshape(s:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reshape(?s:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		.. warning::
 		

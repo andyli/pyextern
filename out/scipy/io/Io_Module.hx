@@ -125,7 +125,7 @@ package scipy.io;
 		files.  Because scipy does not supply one, we do not implement the
 		HDF5 / 7.3 interface here.
 	**/
-	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Queries the contents of the Matrix Market file 'filename' to
 		extract size and storage information.
@@ -371,5 +371,5 @@ package scipy.io;
 		
 		.. versionadded:: 0.12.0
 	**/
-	static public function whosmat(file_name:Dynamic, ?appendmat:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function whosmat(file_name:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

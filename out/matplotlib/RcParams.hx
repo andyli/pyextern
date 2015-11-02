@@ -50,7 +50,7 @@ package matplotlib;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -75,7 +75,7 @@ package matplotlib;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -173,7 +173,7 @@ package matplotlib;
 		If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 		In either case, this is followed by: for k in F:  D[k] = F[k]
 	**/
-	public function update(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function update(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var validate : Dynamic;
 	/**
 		Return values in order of sorted keys.

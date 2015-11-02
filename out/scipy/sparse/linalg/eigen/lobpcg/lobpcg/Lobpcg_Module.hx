@@ -482,5 +482,5 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 	/**
 		`symeig` is deprecated, use `eigh` instead!
 	**/
-	static public function symeig(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function symeig(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

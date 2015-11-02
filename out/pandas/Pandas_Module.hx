@@ -493,7 +493,7 @@ package pandas;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function describe_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function describe_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Evaluate a Python expression as a string using various backends.
 		
@@ -1250,7 +1250,7 @@ package pandas;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function expanding_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding sum.
 		
@@ -1325,7 +1325,7 @@ package pandas;
 		nw_lags_beta: int
 		   Newey-West adjusts the betas by the given lags
 	**/
-	static public function fama_macbeth(kwargs:Dynamic):Dynamic;
+	static public function fama_macbeth(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert categorical variable into dummy/indicator variables
 		
@@ -1639,12 +1639,12 @@ package pandas;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backwards compatible alias for ``HDFStore``
 		    
 	**/
-	static public function get_store(path:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Class for grouping and aggregating relational data. See aggregate,
 		transform, and apply functions on this object.
@@ -1710,7 +1710,7 @@ package pandas;
 		len(grouped) : int
 		    Number of groups
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, kwds:Dynamic):Dynamic;
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Infer the most likely frequency given the input index. If the frequency is
 		uncertain, a warning will be printed.
@@ -2070,7 +2070,7 @@ package pandas;
 		The appropriate OLS object, which allows you to obtain betas and various
 		statistics, such as std err, t-stat, etc.
 	**/
-	static public function ols(kwargs:Dynamic):Dynamic;
+	static public function ols(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var options : Dynamic;
 	/**
 		Perform merge with optional filling/interpolation designed for ordered
@@ -2290,7 +2290,7 @@ package pandas;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(kwargs:Dynamic):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		
@@ -2532,7 +2532,7 @@ package pandas;
 		    DataFrame from the passed in Excel file.  See notes in sheetname argument
 		    for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read a table of fixed-width formatted lines into DataFrame
 		
@@ -2699,7 +2699,7 @@ package pandas;
 		Also, 'delimiter' is used to specify the filler character of the
 		fields if it is not spaces (e.g., '~').
 	**/
-	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load data from Google BigQuery.
 		
@@ -2759,7 +2759,7 @@ package pandas;
 		-------
 		The selected object
 	**/
-	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read HTML tables into a ``list`` of ``DataFrame`` objects.
 		
@@ -2966,7 +2966,7 @@ package pandas;
 		-------
 		obj : type of object stored in file
 	**/
-	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load pickled pandas object (or any other pickled object) from the specified
 		file path
@@ -3633,7 +3633,7 @@ package pandas;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function reset_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function reset_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generic moving function application.
 		
@@ -4108,7 +4108,7 @@ package pandas;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function rolling_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving sum.
 		
@@ -4238,7 +4238,7 @@ package pandas;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a matrix of scatter plots.
 		
@@ -4274,7 +4274,7 @@ package pandas;
 		>>> df = DataFrame(np.random.randn(1000, 4), columns=['A','B','C','D'])
 		>>> scatter_matrix(df, alpha=0.2)
 	**/
-	static public function scatter_matrix(frame:Dynamic, ?alpha:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?diagonal:Dynamic, ?marker:Dynamic, ?density_kwds:Dynamic, ?hist_kwds:Dynamic, ?range_padding:Dynamic, kwds:Dynamic):Dynamic;
+	static public function scatter_matrix(frame:Dynamic, ?alpha:Dynamic, ?figsize:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?diagonal:Dynamic, ?marker:Dynamic, ?density_kwds:Dynamic, ?hist_kwds:Dynamic, ?range_padding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter default behavior on how float is formatted in DataFrame.
 		Format float in engineering format. By accuracy, we mean the number of
@@ -4529,7 +4529,7 @@ package pandas;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function set_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function show_versions(?as_json:Dynamic):Dynamic;
 	/**
 		Return a fixed frequency timedelta index, with day as the default
@@ -4665,7 +4665,7 @@ package pandas;
 		compress : type of compressor (zlib or blosc), default to None (no
 		           compression)
 	**/
-	static public function to_msgpack(path_or_buf:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function to_msgpack(path_or_buf:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert argument to a numeric type.
 		

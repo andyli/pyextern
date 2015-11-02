@@ -119,7 +119,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function alpha(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function alpha(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An anglit continuous random variable.
 		
@@ -226,7 +226,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function anglit(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function anglit(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An arcsine continuous random variable.
 		
@@ -333,7 +333,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function arcsine(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function arcsine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Bernoulli discrete random variable.
 		
@@ -434,7 +434,7 @@ package scipy.stats.distributions;
 		
 		>>> r = bernoulli.rvs(p, size=1000)
 	**/
-	static public function bernoulli(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bernoulli(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A beta continuous random variable.
 		
@@ -546,7 +546,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function beta(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function beta(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A beta prime continuous random variable.
 		
@@ -656,7 +656,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function betaprime(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function betaprime(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A binomial discrete random variable.
 		
@@ -756,7 +756,7 @@ package scipy.stats.distributions;
 		
 		>>> r = binom.rvs(n, p, size=1000)
 	**/
-	static public function binom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function binom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Boltzmann (Truncated Discrete Exponential) random variable.
 		
@@ -856,7 +856,7 @@ package scipy.stats.distributions;
 		
 		>>> r = boltzmann.rvs(lambda_, N, size=1000)
 	**/
-	static public function boltzmann(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boltzmann(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Bradford continuous random variable.
 		
@@ -965,7 +965,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function bradford(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bradford(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Burr continuous random variable.
 		
@@ -1078,7 +1078,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function burr(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function burr(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Cauchy continuous random variable.
 		
@@ -1183,7 +1183,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function cauchy(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function cauchy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A chi continuous random variable.
 		
@@ -1298,7 +1298,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function chi(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function chi(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A chi-squared continuous random variable.
 		
@@ -1405,7 +1405,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function chi2(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function chi2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A cosine continuous random variable.
 		
@@ -1513,7 +1513,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function cosine(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function cosine(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A double gamma continuous random variable.
 		
@@ -1622,7 +1622,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function dgamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function dgamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		A  Laplacian discrete random variable.
@@ -1723,7 +1723,7 @@ package scipy.stats.distributions;
 		
 		>>> r = dlaplace.rvs(a, size=1000)
 	**/
-	static public function dlaplace(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function dlaplace(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A double Weibull continuous random variable.
 		
@@ -1830,7 +1830,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function dweibull(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function dweibull(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate the entropy of a distribution for given probability values.
 		
@@ -1920,7 +1920,7 @@ package scipy.stats.distributions;
 		
 		Refer to `gamma` for examples.
 	**/
-	static public function erlang(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function erlang(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An exponential continuous random variable.
 		
@@ -2031,7 +2031,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function expon(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function expon(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An exponentially modified Normal continuous random variable.
 		
@@ -2152,7 +2152,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function exponnorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function exponnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An exponential power continuous random variable.
 		
@@ -2267,7 +2267,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function exponpow(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function exponpow(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An exponentiated Weibull continuous random variable.
 		
@@ -2377,7 +2377,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function exponweib(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function exponweib(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An F continuous random variable.
 		
@@ -2488,7 +2488,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function f(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function f(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A fatigue-life (Birnbaum-Saunders) continuous random variable.
 		
@@ -2603,7 +2603,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function fatiguelife(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function fatiguelife(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Fisk continuous random variable.
 		
@@ -2721,7 +2721,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function fisk(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function fisk(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A folded Cauchy continuous random variable.
 		
@@ -2823,7 +2823,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function foldcauchy(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function foldcauchy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A folded normal continuous random variable.
 		
@@ -2932,7 +2932,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function foldnorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function foldnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Frechet left (or Weibull maximum) continuous random variable.
 		
@@ -3046,7 +3046,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function frechet_l(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function frechet_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Frechet right (or Weibull minimum) continuous random variable.
 		
@@ -3160,7 +3160,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function frechet_r(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function frechet_r(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A gamma continuous random variable.
 		
@@ -3276,7 +3276,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Gauss hypergeometric continuous random variable.
 		
@@ -3387,7 +3387,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gausshyper(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gausshyper(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized exponential continuous random variable.
 		
@@ -3504,7 +3504,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function genexpon(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function genexpon(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized extreme value continuous random variable.
 		
@@ -3621,7 +3621,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function genextreme(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function genextreme(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized gamma continuous random variable.
 		
@@ -3730,7 +3730,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gengamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gengamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized half-logistic continuous random variable.
 		
@@ -3839,7 +3839,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function genhalflogistic(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function genhalflogistic(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized logistic continuous random variable.
 		
@@ -3948,7 +3948,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function genlogistic(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function genlogistic(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized normal continuous random variable.
 		
@@ -4064,7 +4064,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gennorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gennorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A generalized Pareto continuous random variable.
 		
@@ -4183,7 +4183,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function genpareto(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function genpareto(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A geometric discrete random variable.
 		
@@ -4283,7 +4283,7 @@ package scipy.stats.distributions;
 		
 		>>> r = geom.rvs(p, size=1000)
 	**/
-	static public function geom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function geom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Gilbrat continuous random variable.
 		
@@ -4390,7 +4390,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gilbrat(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gilbrat(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Gompertz (or truncated Gumbel) continuous random variable.
 		
@@ -4499,7 +4499,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gompertz(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gompertz(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A left-skewed Gumbel continuous random variable.
 		
@@ -4612,7 +4612,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gumbel_l(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gumbel_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A right-skewed Gumbel continuous random variable.
 		
@@ -4725,7 +4725,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function gumbel_r(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function gumbel_r(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Half-Cauchy continuous random variable.
 		
@@ -4832,7 +4832,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function halfcauchy(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function halfcauchy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The upper half of a generalized normal continuous random variable.
 		
@@ -4949,7 +4949,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function halfgennorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function halfgennorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A half-logistic continuous random variable.
 		
@@ -5056,7 +5056,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function halflogistic(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function halflogistic(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A half-normal continuous random variable.
 		
@@ -5165,7 +5165,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function halfnorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function halfnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A hypergeometric discrete random variable.
 		
@@ -5260,7 +5260,7 @@ package scipy.stats.distributions;
 		
 		>>> R = hypergeom.rvs(M, n, N, size=10)
 	**/
-	static public function hypergeom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function hypergeom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A hyperbolic secant continuous random variable.
 		
@@ -5365,7 +5365,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function hypsecant(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function hypsecant(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An inverted gamma continuous random variable.
 		
@@ -5476,7 +5476,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function invgamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function invgamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An inverse Gaussian continuous random variable.
 		
@@ -5589,7 +5589,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function invgauss(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function invgauss(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An inverted Weibull continuous random variable.
 		
@@ -5703,7 +5703,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function invweibull(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function invweibull(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Johnson SB continuous random variable.
 		
@@ -5816,7 +5816,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function johnsonsb(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function johnsonsb(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Johnson SU continuous random variable.
 		
@@ -5930,7 +5930,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function johnsonsu(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function johnsonsu(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		General Kolmogorov-Smirnov one-sided test.
 		
@@ -6021,7 +6021,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function ksone(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function ksone(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Kolmogorov-Smirnov two-sided test for large N.
 		
@@ -6112,7 +6112,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function kstwobign(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function kstwobign(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Laplace continuous random variable.
 		
@@ -6217,7 +6217,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function laplace(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function laplace(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Levy continuous random variable.
 		
@@ -6330,7 +6330,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function levy(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function levy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A left-skewed Levy continuous random variable.
 		
@@ -6443,7 +6443,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function levy_l(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function levy_l(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Levy-stable continuous random variable.
 		
@@ -6551,7 +6551,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function levy_stable(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function levy_stable(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A log gamma continuous random variable.
 		
@@ -6660,7 +6660,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function loggamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function loggamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A logistic (or Sech-squared) continuous random variable.
 		
@@ -6767,7 +6767,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function logistic(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function logistic(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A log-Laplace continuous random variable.
 		
@@ -6882,7 +6882,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function loglaplace(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function loglaplace(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A lognormal continuous random variable.
 		
@@ -6995,7 +6995,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function lognorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function lognorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Logarithmic (Log-Series, Series) discrete random variable.
 		
@@ -7095,7 +7095,7 @@ package scipy.stats.distributions;
 		
 		>>> r = logser.rvs(p, size=1000)
 	**/
-	static public function logser(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function logser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Lomax (Pareto of the second kind) continuous random variable.
 		
@@ -7207,7 +7207,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function lomax(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function lomax(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Maxwell continuous random variable.
 		
@@ -7322,7 +7322,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function maxwell(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function maxwell(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Mielke's Beta-Kappa continuous random variable.
 		
@@ -7431,7 +7431,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function mielke(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function mielke(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Nakagami continuous random variable.
 		
@@ -7541,7 +7541,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function nakagami(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nakagami(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A negative binomial discrete random variable.
 		
@@ -7641,7 +7641,7 @@ package scipy.stats.distributions;
 		
 		>>> r = nbinom.rvs(n, p, size=1000)
 	**/
-	static public function nbinom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nbinom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A non-central F distribution continuous random variable.
 		
@@ -7755,7 +7755,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function ncf(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function ncf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A non-central Student's T continuous random variable.
 		
@@ -7866,7 +7866,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function nct(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nct(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A non-central chi-squared continuous random variable.
 		
@@ -7976,7 +7976,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function ncx2(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function ncx2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A normal continuous random variable.
 		
@@ -8084,7 +8084,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function norm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function norm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Pareto continuous random variable.
 		
@@ -8193,7 +8193,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function pareto(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function pareto(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A pearson type III continuous random variable.
 		
@@ -8320,7 +8320,7 @@ package scipy.stats.distributions;
 		"Using Modern Computing Tools to Fit the Pearson Type III Distribution to
 		Aviation Loads Data", Office of Aviation Research (2003).
 	**/
-	static public function pearson3(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function pearson3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Planck discrete exponential random variable.
 		
@@ -8420,7 +8420,7 @@ package scipy.stats.distributions;
 		
 		>>> r = planck.rvs(lambda_, size=1000)
 	**/
-	static public function planck(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function planck(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Poisson discrete random variable.
 		
@@ -8520,7 +8520,7 @@ package scipy.stats.distributions;
 		
 		>>> r = poisson.rvs(mu, size=1000)
 	**/
-	static public function poisson(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function poisson(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A power-function continuous random variable.
 		
@@ -8631,7 +8631,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function powerlaw(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function powerlaw(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A power log-normal continuous random variable.
 		
@@ -8742,7 +8742,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function powerlognorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function powerlognorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A power normal continuous random variable.
 		
@@ -8852,7 +8852,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function powernorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function powernorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		A uniform discrete random variable.
@@ -8956,7 +8956,7 @@ package scipy.stats.distributions;
 		
 		>>> r = randint.rvs(low, high, size=1000)
 	**/
-	static public function randint(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function randint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Rayleigh continuous random variable.
 		
@@ -9065,7 +9065,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function rayleigh(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function rayleigh(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An R-distributed continuous random variable.
 		
@@ -9174,7 +9174,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function rdist(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function rdist(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A reciprocal inverse Gaussian continuous random variable.
 		
@@ -9283,7 +9283,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function recipinvgauss(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function recipinvgauss(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A reciprocal continuous random variable.
 		
@@ -9392,7 +9392,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function reciprocal(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function reciprocal(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Rice continuous random variable.
 		
@@ -9507,7 +9507,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function rice(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function rice(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A semicircular continuous random variable.
 		
@@ -9614,7 +9614,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function semicircular(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function semicircular(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A  Skellam discrete random variable.
 		
@@ -9722,7 +9722,7 @@ package scipy.stats.distributions;
 		
 		>>> r = skellam.rvs(mu1, mu2, size=1000)
 	**/
-	static public function skellam(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function skellam(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Student's T continuous random variable.
 		
@@ -9833,7 +9833,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function t(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function t(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A triangular continuous random variable.
 		
@@ -9944,7 +9944,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function triang(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function triang(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A truncated exponential continuous random variable.
 		
@@ -10053,7 +10053,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function truncexpon(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function truncexpon(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A truncated normal continuous random variable.
 		
@@ -10163,7 +10163,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function truncnorm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function truncnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Tukey-Lamdba continuous random variable.
 		
@@ -10275,7 +10275,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function tukeylambda(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function tukeylambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A uniform continuous random variable.
 		
@@ -10369,7 +10369,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function uniform(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function uniform(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Von Mises continuous random variable.
 		
@@ -10486,7 +10486,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function vonmises(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function vonmises(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Von Mises continuous random variable.
 		
@@ -10603,7 +10603,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function vonmises_line(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function vonmises_line(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Wald continuous random variable.
 		
@@ -10712,7 +10712,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function wald(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function wald(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Frechet left (or Weibull maximum) continuous random variable.
 		
@@ -10826,7 +10826,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function weibull_max(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function weibull_max(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Frechet right (or Weibull minimum) continuous random variable.
 		
@@ -10940,7 +10940,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function weibull_min(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function weibull_min(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A wrapped Cauchy continuous random variable.
 		
@@ -11049,7 +11049,7 @@ package scipy.stats.distributions;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function wrapcauchy(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function wrapcauchy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Zipf discrete random variable.
 		
@@ -11149,5 +11149,5 @@ package scipy.stats.distributions;
 		
 		>>> r = zipf.rvs(a, size=1000)
 	**/
-	static public function zipf(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function zipf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

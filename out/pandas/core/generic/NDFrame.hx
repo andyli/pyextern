@@ -46,7 +46,7 @@ package pandas.core.generic;
 		method : optional, a passed method name ; possibly to take different
 		    types of propagation actions based on this
 	**/
-	public function __finalize__(other:Dynamic, ?method:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __finalize__(other:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -105,7 +105,7 @@ package pandas.core.generic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	/**
 		helper for pickle
@@ -164,7 +164,7 @@ package pandas.core.generic;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
-	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	static public var _at : Dynamic;
@@ -223,15 +223,15 @@ package pandas.core.generic;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict_for_slice(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict_for_slice(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for the passed axes 
 	**/
-	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		construct and returns axes if supplied in args/kwargs
 		if require_all, raise if all axis arguments are not supplied
@@ -291,7 +291,7 @@ package pandas.core.generic;
 	**/
 	public function _dir_deletions():Dynamic;
 	public function _expand_axes(key:Dynamic):Dynamic;
-	static public function _from_axes(data:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _from_axes(data:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _get_axis(axis:Dynamic):Dynamic;
 	public function _get_axis_name(axis:Dynamic):Dynamic;
 	public function _get_axis_number(axis:Dynamic):Dynamic;
@@ -657,7 +657,7 @@ package pandas.core.generic;
 		-------
 		casted : type of caller
 	**/
-	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, kwargs:Dynamic):Dynamic;
+	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fast label-based scalar accessor
 		
@@ -1191,7 +1191,7 @@ package pandas.core.generic;
 		3    3
 		dtype: float64
 	**/
-	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, kwargs:Dynamic):Dynamic;
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var is_copy : Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are null
@@ -1211,7 +1211,7 @@ package pandas.core.generic;
 	/**
 		iteritems alias used to get around 2to3. Deprecated
 	**/
-	public function iterkv(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function iterkv(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A primarily label-location based indexer, with integer position
 		fallback.
@@ -1338,7 +1338,7 @@ package pandas.core.generic;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -1389,7 +1389,7 @@ package pandas.core.generic;
 		pandas.DataFrame.applymap
 		pandas.Series.map
 	**/
-	public function pipe(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return item and drop from frame. Raise KeyError if not found.
 	**/
@@ -1437,7 +1437,7 @@ package pandas.core.generic;
 		-------
 		reindexed : NDFrame
 	**/
-	public function reindex(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reindex(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conform input object to new index with optional filling logic,
 		placing NA/NaN in locations having no value in the previous index. A
@@ -1529,7 +1529,7 @@ package pandas.core.generic;
 		-------
 		renamed : %(klass)s (new object)
 	**/
-	public function rename(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rename(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter index and / or columns using input function or functions.
 		Function / dict values must be unique (1-to-1). Labels not contained in
@@ -1977,7 +1977,7 @@ package pandas.core.generic;
 		  - Windows: none
 		  - OS X: none
 	**/
-	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return dense representation of NDFrame (as opposed to sparse)
 	**/
@@ -2022,7 +2022,7 @@ package pandas.core.generic;
 		dropna : boolean, default False.
 		    If true, ALL nan rows will not be written to store.
 	**/
-	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert the object to a JSON string.
 		
@@ -2091,7 +2091,7 @@ package pandas.core.generic;
 		compress : type of compressor (zlib or blosc), default to None (no
 		    compression)
 	**/
-	public function to_msgpack(?path_or_buf:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_msgpack(?path_or_buf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pickle (serialize) object to input file path
 		
@@ -2156,7 +2156,7 @@ package pandas.core.generic;
 		-------
 		y : same as input
 	**/
-	public function transpose(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Truncates a sorted NDFrame before and/or after some particular
 		dates.

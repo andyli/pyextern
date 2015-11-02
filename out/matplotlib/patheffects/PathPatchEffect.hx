@@ -49,7 +49,7 @@ package matplotlib.patheffects;
 		    "transform" and "clip_path".
 	**/
 	@:native("__init__")
-	public function ___init__(?offset:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?offset:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -66,7 +66,7 @@ package matplotlib.patheffects;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

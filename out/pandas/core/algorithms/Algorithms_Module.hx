@@ -55,7 +55,7 @@ package pandas.core.algorithms;
 	/**
 		Get group position
 	**/
-	static public function group_position(args:Dynamic):Dynamic;
+	static public function group_position(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the isin boolean array
 		

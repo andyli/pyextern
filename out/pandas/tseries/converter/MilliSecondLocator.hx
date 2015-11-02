@@ -64,7 +64,7 @@ package pandas.tseries.converter;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -117,7 +117,7 @@ package pandas.tseries.converter;
 	**/
 	public function autoscale():Dynamic;
 	static public var axis : Dynamic;
-	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert axis data interval to datetime objects.
 	**/
@@ -149,7 +149,7 @@ package pandas.tseries.converter;
 		Do nothing, and rase a warning. Any locator class not supporting the
 		set_params() function will call this.
 	**/
-	public function set_params(kwargs:Dynamic):Dynamic;
+	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set time zone info.
 	**/

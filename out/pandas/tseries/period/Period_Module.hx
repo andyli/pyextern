@@ -37,7 +37,7 @@ package pandas.tseries.period;
 		(6000, 3)
 	**/
 	static public function _gfc(freqstr:Dynamic):Dynamic;
-	static public function _make_field_arrays(fields:Dynamic):Dynamic;
+	static public function _make_field_arrays(?fields:python.VarArgs<Dynamic>):Dynamic;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	/**
 		Wrap comparison operations to convert datetime-like to datetime64

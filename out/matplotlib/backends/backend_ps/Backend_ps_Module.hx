@@ -15,7 +15,7 @@ package matplotlib.backends.backend_ps;
 	static public function _fn_name():Dynamic;
 	static public function _get_papertype(w:Dynamic, h:Dynamic):Dynamic;
 	static public function _num_to_str(val:Dynamic):Dynamic;
-	static public function _nums_to_str(args:Dynamic):Dynamic;
+	static public function _nums_to_str(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var backend_version : Dynamic;
 	static public function checkdep_ghostscript():Dynamic;
@@ -46,7 +46,7 @@ package matplotlib.backends.backend_ps;
 		to be written to it.
 	**/
 	static public function file_requires_unicode(x:Dynamic):Dynamic;
-	static public function findfont(prop:Dynamic, kw:Dynamic):Dynamic;
+	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use ghostscript's bbox device to find the center of the bounding box. Return
 		an appropriately sized bbox centered around that point. A bit of a hack.
@@ -112,7 +112,7 @@ package matplotlib.backends.backend_ps;
 		Caller is responsible for deleting the file when done with it.
 	**/
 	static public function mkstemp(?suffix:Dynamic, ?prefix:Dynamic, ?dir:Dynamic, ?text:Dynamic):Dynamic;
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
 	**/

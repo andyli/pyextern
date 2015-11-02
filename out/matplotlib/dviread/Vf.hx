@@ -75,7 +75,7 @@ package matplotlib.dviread;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -131,7 +131,7 @@ package matplotlib.dviread;
 	public function _down_z(new_z:Dynamic):Dynamic;
 	public function _eop():Dynamic;
 	public function _finalize_packet():Dynamic;
-	public function _fnt_def(k:Dynamic, args:Dynamic):Dynamic;
+	public function _fnt_def(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _fnt_num(k:Dynamic):Dynamic;
 	public function _get_baseline(filename:Dynamic):Dynamic;
 	public function _init_packet(pl:Dynamic, cc:Dynamic, tfm:Dynamic):Dynamic;

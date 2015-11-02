@@ -58,7 +58,7 @@ package matplotlib.backends.backend_ps;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -117,14 +117,14 @@ package matplotlib.backends.backend_ps;
 		If outfile is a file object, a stand-alone PostScript file is
 		written into this file object.
 	**/
-	public function _print_figure(outfile:Dynamic, format:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?isLandscape:Dynamic, ?papertype:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _print_figure(outfile:Dynamic, format:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?isLandscape:Dynamic, ?papertype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		If text.usetex is True in rc, a temporary pair of tex/eps files
 		are created to allow tex to manage the text layout via the PSFrags
 		package. These files are processed to yield the final ps or eps file.
 	**/
-	public function _print_figure_tex(outfile:Dynamic, format:Dynamic, dpi:Dynamic, facecolor:Dynamic, edgecolor:Dynamic, orientation:Dynamic, isLandscape:Dynamic, papertype:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _print_ps(outfile:Dynamic, format:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _print_figure_tex(outfile:Dynamic, format:Dynamic, dpi:Dynamic, facecolor:Dynamic, edgecolor:Dynamic, orientation:Dynamic, isLandscape:Dynamic, papertype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _print_ps(outfile:Dynamic, format:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The renderer handles all the drawing primitives using a graphics
 		context instance that controls the colors/styles.
@@ -183,7 +183,7 @@ package matplotlib.backends.backend_ps;
 	/**
 		:meth:`draw` only if idle; defaults to draw but backends can overrride
 	**/
-	public function draw_idle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw_idle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backend derived classes should call this function when entering
 		canvas
@@ -354,7 +354,7 @@ package matplotlib.backends.backend_ps;
 		  Sequence of (func, args, kwargs) where func(*args, **kwargs) will
 		  be executed by the timer every *interval*.
 	**/
-	public function new_timer(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Mouse event processor which highlights the artists
 		under the cursor.  Connect this to the 'motion_notify_event'
@@ -376,8 +376,8 @@ package matplotlib.backends.backend_ps;
 		This method will be called by artists who are picked and will
 		fire off :class:`PickEvent` callbacks registered listeners
 	**/
-	public function pick_event(mouseevent:Dynamic, artist:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_eps(outfile:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pick_event(mouseevent:Dynamic, artist:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_eps(outfile:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Render the figure to hardcopy. Set the figure patch face and edge
 		colors.  This is useful because some of the GUIs have a gray figure
@@ -420,8 +420,8 @@ package matplotlib.backends.backend_ps;
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_ps(outfile:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_ps(outfile:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Release the mouse grab held by the axes, ax.
 		Usually called by the widgets.

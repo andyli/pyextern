@@ -21,7 +21,7 @@ package matplotlib.sphinxext.plot_directive;
 	static public function contains_doctest(text:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var exception_template : Dynamic;
-	static public function format_template(template:Dynamic, kw:Dynamic):Dynamic;
+	static public function format_template(template:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		To make plots referenceable, we need to move the reference from
 		the "htmlonly" (or "latexonly") node to the actual figure node

@@ -4204,7 +4204,7 @@ package scipy.signal;
 		>>> import matplotlib.pyplot as plt
 		>>> plt.plot(t, y)
 	**/
-	static public function impulse2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function impulse2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute b(s) and a(s) from partial fraction expansion.
 		
@@ -4871,7 +4871,7 @@ package scipy.signal;
 		given to `lsim2` are passed on to `odeint`.  See the documentation
 		for `scipy.integrate.odeint` for the full list of arguments.
 	**/
-	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		max_len_seq(nbits, state=None, length=None, taps=None)
 		
@@ -6439,7 +6439,7 @@ package scipy.signal;
 		-----
 		.. versionadded:: 0.8.0
 	**/
-	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Frequency-swept cosine generator, with a time-dependent frequency.
 		

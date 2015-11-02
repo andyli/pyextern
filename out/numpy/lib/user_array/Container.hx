@@ -5,7 +5,7 @@ package numpy.lib.user_array;
 	public function __add__(other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
 	public function __array__(?t:Dynamic):Dynamic;
-	public function __array_wrap__(args:Dynamic):Dynamic;
+	public function __array_wrap__(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __complex__():Dynamic;
 	/**
@@ -87,7 +87,7 @@ package numpy.lib.user_array;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __oct__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__():Dynamic;

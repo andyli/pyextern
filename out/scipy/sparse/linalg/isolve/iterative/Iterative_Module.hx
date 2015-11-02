@@ -334,7 +334,7 @@ package scipy.sparse.linalg.isolve.iterative;
 		        type and dimensions (e.g. (N,1) matrix)
 	**/
 	static public function make_system(A:Dynamic, M:Dynamic, x0:Dynamic, b:Dynamic, ?xtype:Dynamic):Dynamic;
-	static public function non_reentrant(func:Dynamic, a:Dynamic, kw:Dynamic):Dynamic;
+	static public function non_reentrant(func:Dynamic, ?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Use Quasi-Minimal Residual iteration to solve A x = b

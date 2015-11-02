@@ -51,7 +51,7 @@ package matplotlib.image;
 		Additional kwargs are matplotlib.artist properties
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -68,7 +68,7 @@ package matplotlib.image;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -195,7 +195,7 @@ package matplotlib.image;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -466,7 +466,7 @@ package matplotlib.image;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/

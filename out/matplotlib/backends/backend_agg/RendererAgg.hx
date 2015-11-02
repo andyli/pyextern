@@ -59,7 +59,7 @@ package matplotlib.backends.backend_agg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -257,7 +257,7 @@ package matplotlib.backends.backend_agg;
 		want to override this method in order to draw the marker only
 		once and reuse it multiple times.
 	**/
-	public function draw_markers(kl:Dynamic, kw:Dynamic):Dynamic;
+	public function draw_markers(?kl:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw the math text using matplotlib.mathtext
 	**/
@@ -287,7 +287,7 @@ package matplotlib.backends.backend_agg;
 		recommended to use those generators, so that changes to the
 		behavior of :meth:`draw_path_collection` can be made globally.
 	**/
-	public function draw_path_collection(kl:Dynamic, kw:Dynamic):Dynamic;
+	public function draw_path_collection(?kl:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This provides a fallback implementation of
 		:meth:`draw_quad_mesh` that generates paths and then calls

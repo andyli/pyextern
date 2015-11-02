@@ -28,7 +28,7 @@ package matplotlib.backends.backend_svg;
 		strings; each key will be replaced with its corresponding value.
 	**/
 	static public function escape_xml_text(data:Dynamic, ?entities:Dynamic):Dynamic;
-	static public function findfont(prop:Dynamic, kw:Dynamic):Dynamic;
+	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function generate_css(?attrib:Dynamic):Dynamic;
 	static public function generate_transform(?transform_list:Dynamic):Dynamic;
 	/**
@@ -43,7 +43,7 @@ package matplotlib.backends.backend_svg;
 		Returns a md5 hash object; optionally initialized with a string
 	**/
 	static public function md5(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
 	**/

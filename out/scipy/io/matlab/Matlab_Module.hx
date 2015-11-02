@@ -128,7 +128,7 @@ package scipy.io.matlab;
 		files.  Because scipy does not supply one, we do not implement the
 		HDF5 / 7.3 interface here.
 	**/
-	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Save a dictionary of names and arrays into a MATLAB-style .mat file.
@@ -279,5 +279,5 @@ package scipy.io.matlab;
 		
 		.. versionadded:: 0.12.0
 	**/
-	static public function whosmat(file_name:Dynamic, ?appendmat:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function whosmat(file_name:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

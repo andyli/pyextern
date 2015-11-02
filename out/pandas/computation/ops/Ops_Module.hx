@@ -55,7 +55,7 @@ package pandas.computation.ops;
 		wrapper around numpy.result_type which overcomes the NPY_MAXARGS (32)
 		argument limit 
 	**/
-	static public function _result_type_many(arrays_and_dtypes:Dynamic):Dynamic;
+	static public function _result_type_many(?arrays_and_dtypes:python.VarArgs<Dynamic>):Dynamic;
 	static public var _special_case_arith_ops_dict : Dynamic;
 	static public var _special_case_arith_ops_funcs : Dynamic;
 	static public var _special_case_arith_ops_syms : Dynamic;

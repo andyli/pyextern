@@ -43,5 +43,5 @@ package pandas.tseries.plotting;
 		_____
 		Supports same kwargs as Axes.plot
 	**/
-	static public function tsplot(series:Dynamic, plotf:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tsplot(series:Dynamic, plotf:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

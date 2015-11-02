@@ -24,11 +24,11 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __delitem__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __delitem__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __delslice__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __delslice__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
 		Provide method name lookup and completion
@@ -77,7 +77,7 @@ package pandas.core.base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -106,7 +106,7 @@ package pandas.core.base;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
@@ -141,11 +141,11 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __setitem__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __setitem__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __setslice__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __setslice__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		L.__sizeof__() -- size of L in memory, in bytes
 	**/
@@ -192,7 +192,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function _disabled(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _disabled(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -200,7 +200,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function append(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function append(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		L.clear() -> None -- remove all items from L
 	**/
@@ -216,7 +216,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function extend(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function extend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		L.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -225,15 +225,15 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function insert(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function insert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function pop(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pop(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function remove(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		L.reverse() -- reverse *IN PLACE*
 	**/
@@ -241,5 +241,5 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function sort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -76,7 +76,7 @@ package matplotlib.spines;
 		  zorder: any number         
 	**/
 	@:native("__init__")
-	public function ___init__(axes:Dynamic, spine_type:Dynamic, path:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(axes:Dynamic, spine_type:Dynamic, path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -93,7 +93,7 @@ package matplotlib.spines;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -169,7 +169,7 @@ package matplotlib.spines;
 	/**
 		(staticmethod) Returns a circular :class:`Spine`.
 	**/
-	static public function circular_spine(axes:Dynamic, center:Dynamic, radius:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function circular_spine(axes:Dynamic, center:Dynamic, radius:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Clear the current spine
 	**/
@@ -195,7 +195,7 @@ package matplotlib.spines;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return whether fill is set
 	**/
@@ -495,7 +495,7 @@ package matplotlib.spines;
 	/**
 		(staticmethod) Returns a linear :class:`Spine`.
 	**/
-	static public function linear_spine(axes:Dynamic, spine_type:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function linear_spine(axes:Dynamic, spine_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -556,7 +556,7 @@ package matplotlib.spines;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/

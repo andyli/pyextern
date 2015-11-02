@@ -28,7 +28,7 @@ package scipy.optimize._minimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_bfgs(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_bfgs(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		conjugate gradient algorithm.
@@ -47,7 +47,7 @@ package scipy.optimize._minimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_cg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_cg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?callback:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a scalar function of one or more variables using the
 		Constrained Optimization BY Linear Approximation (COBYLA) algorithm.
@@ -67,7 +67,7 @@ package scipy.optimize._minimize;
 		catol : float
 		    Tolerance (absolute) for constraint violations
 	**/
-	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?iprint:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?iprint:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using
 		the dog-leg trust-region algorithm.
@@ -85,7 +85,7 @@ package scipy.optimize._minimize;
 		    Gradient norm must be less than `gtol` before successful
 		    termination.
 	**/
-	static public function _minimize_dogleg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, trust_region_options:Dynamic):Dynamic;
+	static public function _minimize_dogleg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?trust_region_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a scalar function of one or more variables using the L-BFGS-B
 		algorithm.
@@ -122,7 +122,7 @@ package scipy.optimize._minimize;
 		maxiter : int
 		    Maximum number of iterations.
 	**/
-	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Nelder-Mead algorithm.
@@ -140,7 +140,7 @@ package scipy.optimize._minimize;
 		maxfev : int
 		    Maximum number of function evaluations to make.
 	**/
-	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Newton-CG algorithm.
@@ -159,7 +159,7 @@ package scipy.optimize._minimize;
 		eps : float or ndarray
 		    If `jac` is approximated, use this value for the step size.
 	**/
-	static public function _minimize_newtoncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_newtoncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?eps:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		modified Powell algorithm.
@@ -179,7 +179,7 @@ package scipy.optimize._minimize;
 		direc : ndarray
 		    Initial set of direction vectors for the Powell method.
 	**/
-	static public function _minimize_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?direc:Dynamic, ?return_all:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_powell(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?direc:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -190,7 +190,7 @@ package scipy.optimize._minimize;
 		xatol : float
 		    Absolute error in solution `xopt` acceptable for convergence.
 	**/
-	static public function _minimize_scalar_bounded(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?xatol:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_bounded(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?xatol:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -204,7 +204,7 @@ package scipy.optimize._minimize;
 		Uses inverse parabolic interpolation when possible to speed up
 		convergence of golden section method.
 	**/
-	static public function _minimize_scalar_brent(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_brent(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -213,7 +213,7 @@ package scipy.optimize._minimize;
 		xtol : float
 		    Relative error in solution `xopt` acceptable for convergence.
 	**/
-	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_scalar_golden(func:Dynamic, ?brack:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a scalar function of one or more variables using Sequential
 		Least SQuares Programming (SLSQP).
@@ -230,7 +230,7 @@ package scipy.optimize._minimize;
 		maxiter : int
 		    Maximum number of iterations.
 	**/
-	static public function _minimize_slsqp(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?iprint:Dynamic, ?disp:Dynamic, ?eps:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_slsqp(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?iprint:Dynamic, ?disp:Dynamic, ?eps:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a scalar function of one or more variables using a truncated
 		Newton (TNC) algorithm.
@@ -287,7 +287,7 @@ package scipy.optimize._minimize;
 		    rescaling.  If 0, rescale at each iteration.  If a large
 		    value, never rescale.  If < 0, rescale is set to 1.3.
 	**/
-	static public function _minimize_tnc(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?eps:Dynamic, ?scale:Dynamic, ?offset:Dynamic, ?mesg_num:Dynamic, ?maxCGit:Dynamic, ?maxiter:Dynamic, ?eta:Dynamic, ?stepmx:Dynamic, ?accuracy:Dynamic, ?minfev:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?rescale:Dynamic, ?disp:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_tnc(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?eps:Dynamic, ?scale:Dynamic, ?offset:Dynamic, ?mesg_num:Dynamic, ?maxCGit:Dynamic, ?maxiter:Dynamic, ?eta:Dynamic, ?stepmx:Dynamic, ?accuracy:Dynamic, ?minfev:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?rescale:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using
 		the Newton conjugate gradient trust-region algorithm.
@@ -305,7 +305,7 @@ package scipy.optimize._minimize;
 		    Gradient norm must be less than `gtol` before successful
 		    termination.
 	**/
-	static public function _minimize_trust_ncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, trust_region_options:Dynamic):Dynamic;
+	static public function _minimize_trust_ncg(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic, ?trust_region_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	static public var division : Dynamic;

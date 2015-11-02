@@ -9,7 +9,7 @@ package matplotlib.colorbar;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _set_ticks_on_axis_warn(args:Dynamic, kw:Dynamic):Dynamic;
+	static public function _set_ticks_on_axis_warn(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var colorbar_doc : Dynamic;
 	/**
@@ -18,7 +18,7 @@ package matplotlib.colorbar;
 		Typically, for automatic colorbar placement given only a mappable use
 		:meth:`~matplotlib.figure.Figure.colorbar`.
 	**/
-	static public function colorbar_factory(cax:Dynamic, mappable:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function colorbar_factory(cax:Dynamic, mappable:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var colormap_kw_doc : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -61,7 +61,7 @@ package matplotlib.colorbar;
 		Returns (cax, kw), the child axes and the reduced kw dictionary to be
 		passed when creating the colorbar instance.
 	**/
-	static public function make_axes(parents:Dynamic, ?location:Dynamic, ?orientation:Dynamic, ?fraction:Dynamic, ?shrink:Dynamic, ?aspect:Dynamic, kw:Dynamic):Dynamic;
+	static public function make_axes(parents:Dynamic, ?location:Dynamic, ?orientation:Dynamic, ?fraction:Dynamic, ?shrink:Dynamic, ?aspect:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Resize and reposition a parent axes, and return a child axes
 		suitable for a colorbar. This function is similar to
@@ -114,7 +114,7 @@ package matplotlib.colorbar;
 		Returns (cax, kw), the child axes and the reduced kw dictionary to be
 		passed when creating the colorbar instance.
 	**/
-	static public function make_axes_gridspec(parent:Dynamic, kw:Dynamic):Dynamic;
+	static public function make_axes_gridspec(parent:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var make_axes_kw_doc : Dynamic;
 	static public var print_function : Dynamic;
 	static public var unicode_literals : Dynamic;

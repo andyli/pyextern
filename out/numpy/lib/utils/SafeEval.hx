@@ -58,7 +58,7 @@ package numpy.lib.utils;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -101,7 +101,7 @@ package numpy.lib.utils;
 	public function _default(node:Dynamic):Dynamic;
 	public function visit(node:Dynamic):Dynamic;
 	public function visitBytes(node:Dynamic):Dynamic;
-	public function visitDict(node:Dynamic, kw:Dynamic):Dynamic;
+	public function visitDict(node:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	public function visitExpression(node:Dynamic):Dynamic;
 	public function visitList(node:Dynamic):Dynamic;
 	public function visitName(node:Dynamic):Dynamic;

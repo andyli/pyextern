@@ -62,8 +62,8 @@ package pandas.stats.moments;
 		-------
 		y : type of input
 	**/
-	static public function _rolling_moment(arg:Dynamic, window:Dynamic, func:Dynamic, minp:Dynamic, ?axis:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?how:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, kwds:Dynamic):Dynamic;
-	static public function _ts_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function _rolling_moment(arg:Dynamic, window:Dynamic, func:Dynamic, minp:Dynamic, ?axis:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?how:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function _ts_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var _type_of_input_retval : Dynamic;
 	static public var _unary_arg : Dynamic;
 	static public function _use_window(minp:Dynamic, window:Dynamic):Dynamic;
@@ -749,7 +749,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function expanding_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding sum.
 		
@@ -1285,7 +1285,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function rolling_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving sum.
 		
@@ -1415,7 +1415,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

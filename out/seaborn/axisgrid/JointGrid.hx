@@ -180,7 +180,7 @@ package seaborn.axisgrid;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -244,7 +244,7 @@ package seaborn.axisgrid;
 		self : JointGrid instance.
 		    Returns `self`.
 	**/
-	public function annotate(func:Dynamic, ?template:Dynamic, ?stat:Dynamic, ?loc:Dynamic, kwargs:Dynamic):Dynamic;
+	public function annotate(func:Dynamic, ?template:Dynamic, ?stat:Dynamic, ?loc:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Shortcut to draw the full plot.
 		
@@ -277,7 +277,7 @@ package seaborn.axisgrid;
 		self : JointGrid instance
 		    Returns `self`.
 	**/
-	public function plot_joint(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot_joint(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw univariate plots for `x` and `y` separately.
 		
@@ -296,11 +296,11 @@ package seaborn.axisgrid;
 		self : JointGrid instance
 		    Returns `self`.
 	**/
-	public function plot_marginals(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot_marginals(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrap figure.savefig defaulting to tight bounding box.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the axis labels on the bivariate axes.
 		
@@ -317,5 +317,5 @@ package seaborn.axisgrid;
 		self : JointGrid instance
 		    returns `self`
 	**/
-	public function set_axis_labels(?xlabel:Dynamic, ?ylabel:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_axis_labels(?xlabel:Dynamic, ?ylabel:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

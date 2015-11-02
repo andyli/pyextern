@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.common;
 @:pythonImport("pandas.io.common") extern class Common_Module {
-	static public function ZipFile(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ZipFile(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _VALID_URLS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

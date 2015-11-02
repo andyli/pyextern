@@ -20,5 +20,5 @@ package pandas.stats.fama_macbeth;
 		nw_lags_beta: int
 		   Newey-West adjusts the betas by the given lags
 	**/
-	static public function fama_macbeth(kwargs:Dynamic):Dynamic;
+	static public function fama_macbeth(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

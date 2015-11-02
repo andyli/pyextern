@@ -195,7 +195,7 @@ package numpy.lib.utils;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**

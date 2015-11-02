@@ -49,7 +49,7 @@ package matplotlib.colorbar;
 		    The colormap used to map normalized data values to RGBA colors.
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, mappable:Dynamic, kw:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, mappable:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -66,7 +66,7 @@ package matplotlib.colorbar;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -273,7 +273,7 @@ package matplotlib.colorbar;
 	/**
 		Label the long axis of the colorbar
 	**/
-	public function set_label(label:Dynamic, kw:Dynamic):Dynamic;
+	public function set_label(label:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set the normalization instance
 	**/

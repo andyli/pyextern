@@ -58,7 +58,7 @@ package matplotlib.backend_tools;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,7 +111,7 @@ package matplotlib.backend_tools;
 		
 		This method must get implemented per backend
 	**/
-	public function draw_rubberband(data:Dynamic):Dynamic;
+	public function draw_rubberband(?data:python.VarArgs<Dynamic>):Dynamic;
 	public var figure : Dynamic;
 	static public var image : Dynamic;
 	/**

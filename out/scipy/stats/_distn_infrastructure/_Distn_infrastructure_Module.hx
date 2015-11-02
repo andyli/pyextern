@@ -15,14 +15,14 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Non-central moment of discrete distribution.
 	**/
-	static public function _drv2_moment(self:Dynamic, n:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv2_ppfsingle(self:Dynamic, q:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_cdf(self:Dynamic, xk:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_moment(self:Dynamic, n:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_moment_gen(self:Dynamic, t:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_nonzero(self:Dynamic, k:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_pmf(self:Dynamic, xk:Dynamic, args:Dynamic):Dynamic;
-	static public function _drv_ppf(self:Dynamic, q:Dynamic, args:Dynamic):Dynamic;
+	static public function _drv2_moment(self:Dynamic, n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv2_ppfsingle(self:Dynamic, q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_cdf(self:Dynamic, xk:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_moment(self:Dynamic, n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_moment_gen(self:Dynamic, t:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_nonzero(self:Dynamic, k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_pmf(self:Dynamic, xk:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _drv_ppf(self:Dynamic, q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		inspect.getargspec replacement using inspect.signature.
 		
@@ -356,7 +356,7 @@ package scipy.stats._distn_infrastructure;
 		>>> B2.shape
 		(15,)
 	**/
-	static public function argsreduce(cond:Dynamic, args:Dynamic):Dynamic;
+	static public function argsreduce(cond:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Convert the input to an array.
 		

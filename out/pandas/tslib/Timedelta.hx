@@ -28,7 +28,7 @@ package pandas.tslib;
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	public function __floordiv__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __floordiv__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -53,7 +53,7 @@ package pandas.tslib;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __inv__():Dynamic;
 	/**
 		Return self<=value.
@@ -74,7 +74,7 @@ package pandas.tslib;
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
-	static public function __new__(cls:Dynamic, ?value:Dynamic, ?unit:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?value:Dynamic, ?unit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __pos__():Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
@@ -88,7 +88,7 @@ package pandas.tslib;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __repr__():Dynamic;
-	public function __rfloordiv__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __rfloordiv__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return value%self.
 	**/
@@ -132,7 +132,7 @@ package pandas.tslib;
 	public function _has_ns(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _m : Dynamic;
 	public var _ms : Dynamic;
-	public function _not_implemented(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _not_implemented(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _ns : Dynamic;
 	public function _op_unary_method(name:Dynamic):Dynamic;
 	/**

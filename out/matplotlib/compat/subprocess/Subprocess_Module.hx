@@ -34,7 +34,7 @@ package matplotlib.compat.subprocess;
 		...              stderr=STDOUT)
 		'ls: non_existent_file: No such file or directory\n'
 	**/
-	static public function _check_output(popenargs:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _check_output(?popenargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Run command with arguments and return its output.
@@ -68,6 +68,6 @@ package matplotlib.compat.subprocess;
 		If universal_newlines=True is passed, the "input" argument must be a
 		string and the return value will be a string rather than bytes.
 	**/
-	static public function check_output(popenargs:Dynamic, ?timeout:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function check_output(?popenargs:python.VarArgs<Dynamic>, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

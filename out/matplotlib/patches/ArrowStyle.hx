@@ -129,7 +129,7 @@ package matplotlib.patches;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -146,7 +146,7 @@ package matplotlib.patches;
 	/**
 		return the instance of the subclass with the given style name.
 	**/
-	static public function __new__(self:Dynamic, stylename:Dynamic, kw:Dynamic):Dynamic;
+	static public function __new__(self:Dynamic, stylename:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

@@ -72,7 +72,7 @@ package pandas.compat;
 		>>> c = Counter(a=4, b=2)            # a new counter from keyword args
 	**/
 	@:native("__init__")
-	public function ___init__(?iterable:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(?iterable:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -98,7 +98,7 @@ package pandas.compat;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Union is the maximum of value in either of the input counters.
 		
@@ -224,7 +224,7 @@ package pandas.compat;
 		>>> c['h']                      # four 'h' in which, witch, and watch
 		4
 	**/
-	public function update(?iterable:Dynamic, kwds:Dynamic):Dynamic;
+	public function update(?iterable:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		D.values() -> an object providing a view on D's values
 	**/

@@ -47,7 +47,7 @@ package seaborn.algorithms;
 		boot_dist: array
 		    array of bootstrapped statistic values
 	**/
-	static public function bootstrap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bootstrap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Test the significance of set of correlations with permutations.

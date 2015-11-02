@@ -115,7 +115,7 @@ package matplotlib.sankey;
 		    .. plot:: mpl_examples/api/sankey_demo_basics.py
 	**/
 	@:native("__init__")
-	public function ___init__(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -132,7 +132,7 @@ package matplotlib.sankey;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -309,7 +309,7 @@ package matplotlib.sankey;
 		
 		    :meth:`finish`
 	**/
-	public function add(?patchlabel:Dynamic, ?flows:Dynamic, ?orientations:Dynamic, ?labels:Dynamic, ?trunklength:Dynamic, ?pathlengths:Dynamic, ?prior:Dynamic, ?connect:Dynamic, ?rotation:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add(?patchlabel:Dynamic, ?flows:Dynamic, ?orientations:Dynamic, ?labels:Dynamic, ?trunklength:Dynamic, ?pathlengths:Dynamic, ?prior:Dynamic, ?connect:Dynamic, ?rotation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Adjust the axes and return a list of information about the Sankey
 		subdiagram(s).

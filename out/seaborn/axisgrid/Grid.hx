@@ -41,7 +41,7 @@ package seaborn.axisgrid;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package seaborn.axisgrid;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -133,13 +133,13 @@ package seaborn.axisgrid;
 		self : Grid instance
 		    Returns self for easy chaining.
 	**/
-	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save the figure.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set attributes on each subplot Axes.
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

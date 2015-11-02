@@ -4798,7 +4798,7 @@ package numpy.core.numeric;
 		       [1, 2, 3],
 		       [2, 3, 4]])
 	**/
-	static public function fromfunction(_function:Dynamic, shape:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fromfunction(_function:Dynamic, shape:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		fromiter(iterable, dtype, count=-1)
 		

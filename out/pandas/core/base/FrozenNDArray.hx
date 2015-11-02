@@ -108,11 +108,11 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __delitem__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __delitem__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __delslice__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __delslice__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var __dict__ : Dynamic;
 	/**
 		Provide method name lookup and completion
@@ -193,7 +193,7 @@ package pandas.core.base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		int(self)
 	**/
@@ -366,11 +366,11 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __setitem__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __setitem__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function __setslice__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __setslice__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		a.__setstate__(version, shape, dtype, isfortran, rawdata)
 		
@@ -446,7 +446,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function _disabled(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _disabled(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -968,7 +968,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function fill(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Information about the memory layout of the array.
 		
@@ -1217,7 +1217,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function itemset(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function itemset(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Length of one array element in bytes.
 		
@@ -1428,7 +1428,7 @@ package pandas.core.base;
 	/**
 		This method will not function because object is immutable.
 	**/
-	public function put(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function put(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		a.ravel([order])
 		

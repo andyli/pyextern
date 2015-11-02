@@ -303,7 +303,7 @@ package numpy.lib.type_check;
 		>>> np.common_type(np.arange(4), np.array([45, 6.j]), np.array([45.0]))
 		<type 'numpy.complex128'>
 	**/
-	static public function common_type(arrays:Dynamic):Dynamic;
+	static public function common_type(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the imaginary part of the elements of the array.

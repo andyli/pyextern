@@ -58,7 +58,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -127,5 +127,5 @@ package matplotlib.backends.backend_tkagg;
 		data: object
 		    Extra data
 	**/
-	public function trigger(args:Dynamic):Dynamic;
+	public function trigger(?args:python.VarArgs<Dynamic>):Dynamic;
 }

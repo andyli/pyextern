@@ -37,7 +37,7 @@ package matplotlib.mlab;
 		Works like :func:`map`, but it returns an array.  This is just a
 		convenient shorthand for ``numpy.array(map(...))``.
 	**/
-	static public function amap(fn:Dynamic, args:Dynamic):Dynamic;
+	static public function amap(fn:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the angle of the frequency spectrum (wrapped phase spectrum) of
 		*x*.  Data is padded to a length of *pad_to* and the windowing function
@@ -772,7 +772,7 @@ package matplotlib.mlab;
 	**/
 	static public function distances_along_curve(X:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public function donothing_callback(args:Dynamic):Dynamic;
+	static public function donothing_callback(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the entropy of the data in *y* in units of nat.
 		
@@ -846,7 +846,7 @@ package matplotlib.mlab;
 		  >>> frange(1,6.5,npts=5)
 		  array([ 1.   ,  2.375,  3.75 ,  5.125,  6.5  ])
 	**/
-	static public function frange(xini:Dynamic, ?xfin:Dynamic, ?delta:Dynamic, kw:Dynamic):Dynamic;
+	static public function frange(xini:Dynamic, ?xfin:Dynamic, ?delta:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		build a formatd guaranteed to have a key for every dtype name
 	**/
@@ -1089,7 +1089,7 @@ package matplotlib.mlab;
 	/**
 		Return the normal pdf evaluated at *x*; args provides *mu*, *sigma*
 	**/
-	static public function normpdf(x:Dynamic, args:Dynamic):Dynamic;
+	static public function normpdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Offsets an array *y* by +/- an error and returns a tuple
 		(y - err, y + err).

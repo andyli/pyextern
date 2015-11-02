@@ -110,7 +110,7 @@ package matplotlib.dates;
 		    "Today is January 1, 2047 at 8:21:00AM" should return
 		    `(datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))`
 	**/
-	static public function _dateutil_parser_parse_np_vectorized(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _dateutil_parser_parse_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert Gregorian float of the date, preserving hours, minutes,
 		seconds and microseconds.  Return value is a :class:`datetime`.
@@ -130,7 +130,7 @@ package matplotlib.dates;
 		timezone `tz`, or if `tz` is `None`, in the timezone specified in
 		`rcParams['timezone']`.
 	**/
-	static public function _from_ordinalf_np_vectorized(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _from_ordinalf_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Retrieve the preferred timeszone from the rcParams dictionary.
 	**/
@@ -146,7 +146,7 @@ package matplotlib.dates;
 		days, preserving hours, minutes, seconds and microseconds.  Return value
 		is a :func:`float`.
 	**/
-	static public function _to_ordinalf_np_vectorized(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _to_ordinalf_np_vectorized(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Total seconds in the duration.
 	**/

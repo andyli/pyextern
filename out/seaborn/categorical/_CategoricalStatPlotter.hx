@@ -41,7 +41,7 @@ package seaborn.categorical;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package seaborn.categorical;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -109,7 +109,7 @@ package seaborn.categorical;
 		Add descriptive labels to an Axes object.
 	**/
 	public function annotate_axes(ax:Dynamic):Dynamic;
-	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, kws:Dynamic):Dynamic;
+	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a list of colors for the main component of the plots.
 	**/

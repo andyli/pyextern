@@ -4,7 +4,7 @@ package scipy.optimize.optimize;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(x:Dynamic, args:Dynamic):Dynamic;
+	public function __call__(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -62,7 +62,7 @@ package scipy.optimize.optimize;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -101,5 +101,5 @@ package scipy.optimize.optimize;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function derivative(x:Dynamic, args:Dynamic):Dynamic;
+	public function derivative(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 }

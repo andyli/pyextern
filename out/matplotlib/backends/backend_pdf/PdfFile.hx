@@ -58,7 +58,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -149,7 +149,7 @@ package matplotlib.backends.backend_pdf;
 	public function markerObject(path:Dynamic, trans:Dynamic, fill:Dynamic, stroke:Dynamic, lw:Dynamic, joinstyle:Dynamic, capstyle:Dynamic):Dynamic;
 	public function newPage(width:Dynamic, height:Dynamic):Dynamic;
 	public function newTextnote(text:Dynamic, ?positionRect:Dynamic):Dynamic;
-	public function output(data:Dynamic):Dynamic;
+	public function output(?data:python.VarArgs<Dynamic>):Dynamic;
 	public function pathCollectionObject(gc:Dynamic, path:Dynamic, trans:Dynamic, padding:Dynamic, filled:Dynamic, stroked:Dynamic):Dynamic;
 	static public function pathOperations(path:Dynamic, transform:Dynamic, ?clip:Dynamic, ?simplify:Dynamic, ?sketch:Dynamic):Dynamic;
 	public function recordXref(id:Dynamic):Dynamic;

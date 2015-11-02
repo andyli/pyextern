@@ -65,7 +65,7 @@ package pandas.tseries.converter;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -106,7 +106,7 @@ package pandas.tseries.converter;
 	public var __weakref__ : Dynamic;
 	public function _get_fmt(x:Dynamic):Dynamic;
 	static public var axis : Dynamic;
-	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Some classes may want to replace a hyphen for minus with the
 		proper unicode symbol (U+2212) for typographical correctness.

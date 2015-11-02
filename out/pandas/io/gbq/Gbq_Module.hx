@@ -76,7 +76,7 @@ package pandas.io.gbq;
 	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	static public function generate_bq_schema(df:Dynamic, ?default_type:Dynamic):Dynamic;
 	static public var logger : Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load data from Google BigQuery.
 		

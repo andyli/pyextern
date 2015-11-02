@@ -200,7 +200,7 @@ package numpy.lib;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -816,7 +816,7 @@ package numpy.lib;
 		       [2, 2, 2],
 		       [3, 3, 3]])]
 	**/
-	static public function broadcast_arrays(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Broadcast an array to a new shape.
 		
@@ -954,7 +954,7 @@ package numpy.lib;
 		>>> np.common_type(np.arange(4), np.array([45, 6.j]), np.array([45.0]))
 		<type 'numpy.complex128'>
 	**/
-	static public function common_type(arrays:Dynamic):Dynamic;
+	static public function common_type(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return an array copy of the given object.
 		
@@ -1257,7 +1257,7 @@ package numpy.lib;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
 	/**
 		Extract a diagonal or construct a diagonal array.
@@ -2357,7 +2357,7 @@ package numpy.lib;
 		
 		In case of ties, leftmost wins. If no wrapper is found, return None
 	**/
-	static public function get_array_wrap(args:Dynamic):Dynamic;
+	static public function get_array_wrap(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the directory that contains the NumPy \*.h header files.
 		
@@ -2426,7 +2426,7 @@ package numpy.lib;
 		>>> np.gradient(y, dx, edge_order=2)
 		array([-0.,  2.,  4.,  6.,  8.])
 	**/
-	static public function gradient(f:Dynamic, varargs:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function gradient(f:Dynamic, ?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the Hamming window.
 		
@@ -3834,7 +3834,7 @@ package numpy.lib;
 		array([[2, 4],
 		       [7, 9]])
 	**/
-	static public function ix_(args:Dynamic):Dynamic;
+	static public function ix_(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the Kaiser window.
 		
@@ -4282,7 +4282,7 @@ package numpy.lib;
 		--------
 		numpy.genfromtxt : generic function to load ASCII data.
 	**/
-	static public function mafromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function mafromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the indices to access (n, n) arrays, given a masking function.
 		
@@ -4528,7 +4528,7 @@ package numpy.lib;
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
-	static public function meshgrid(xi:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
 		
@@ -5502,7 +5502,7 @@ package numpy.lib;
 		--------
 		numpy.genfromtxt : generic function.
 	**/
-	static public function ndfromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ndfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the number of periodic payments.
 		
@@ -5867,7 +5867,7 @@ package numpy.lib;
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
 	**/
-	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the qth percentile of the data along the specified axis.
 		
@@ -6049,7 +6049,7 @@ package numpy.lib;
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
 	**/
-	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change elements of an array based on conditional and input values.
 		
@@ -7044,7 +7044,7 @@ package numpy.lib;
 		By default, `dtype` is None, which means that the data-type of the output
 		array will be determined from the data.
 	**/
-	static public function recfromcsv(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function recfromcsv(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load ASCII data from a file and return it in a record array.
 		
@@ -7064,7 +7064,7 @@ package numpy.lib;
 		By default, `dtype` is None, which means that the data-type of the output
 		array will be determined from the data.
 	**/
-	static public function recfromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function recfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the roots of a polynomial with coefficients given in p.
 		
@@ -7478,7 +7478,7 @@ package numpy.lib;
 		>>> npzfile['x']
 		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 	**/
-	static public function savez(file:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function savez(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save several arrays into a single file in compressed ``.npz`` format.
 		
@@ -7500,7 +7500,7 @@ package numpy.lib;
 		numpy.savez : Save several arrays into an uncompressed ``.npz`` file format
 		numpy.load : Load the files created by savez_compressed.
 	**/
-	static public function savez_compressed(file:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an array drawn from elements in choicelist, depending on conditions.
 		

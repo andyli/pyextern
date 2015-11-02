@@ -57,7 +57,7 @@ package pandas.io.excel;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, engine_kwargs:Dynamic):Dynamic;
+	public function ___init__(path:Dynamic, ?engine:Dynamic, ?date_format:Dynamic, ?datetime_format:Dynamic, ?engine_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -74,7 +74,7 @@ package pandas.io.excel;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, path:Dynamic, ?engine:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, path:Dynamic, ?engine:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

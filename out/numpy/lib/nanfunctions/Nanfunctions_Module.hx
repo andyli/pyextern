@@ -135,7 +135,7 @@ package numpy.lib.nanfunctions;
 		    which can be used to reshape the result to the same shape a ufunc with
 		    keepdims=True would produce.
 	**/
-	static public function _ureduce(a:Dynamic, func:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**

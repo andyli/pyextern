@@ -61,7 +61,7 @@ package pandas.computation.ops;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(lhs:Dynamic, rhs:Dynamic, truediv:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(lhs:Dynamic, rhs:Dynamic, truediv:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -79,7 +79,7 @@ package pandas.computation.ops;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

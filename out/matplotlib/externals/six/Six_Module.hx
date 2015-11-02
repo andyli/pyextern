@@ -56,9 +56,9 @@ package matplotlib.externals.six;
 		is exhausted, it is returned instead of raising StopIteration.
 	**/
 	static public function advance_iterator(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function assertCountEqual(self:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function assertRaisesRegex(self:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function assertRegex(self:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function assertCountEqual(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function assertRaisesRegex(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function assertRegex(self:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Byte literal
 	**/
@@ -110,19 +110,19 @@ package matplotlib.externals.six;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
-	static public function iteritems(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iteritems(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the keys of a dictionary.
 	**/
-	static public function iterkeys(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iterkeys(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the (key, [values]) pairs of a dictionary.
 	**/
-	static public function iterlists(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iterlists(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the values of a dictionary.
 	**/
-	static public function itervalues(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function itervalues(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		next(iterator[, default])
 		
@@ -173,7 +173,7 @@ package matplotlib.externals.six;
 	/**
 		Create a base class with a metaclass.
 	**/
-	static public function with_metaclass(meta:Dynamic, bases:Dynamic):Dynamic;
+	static public function with_metaclass(meta:Dynamic, ?bases:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

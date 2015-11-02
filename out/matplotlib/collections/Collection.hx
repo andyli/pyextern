@@ -44,7 +44,7 @@ package matplotlib.collections;
 		%(Collection)s
 	**/
 	@:native("__init__")
-	public function ___init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?edgecolors:Dynamic, ?facecolors:Dynamic, ?linewidths:Dynamic, ?linestyles:Dynamic, ?antialiaseds:Dynamic, ?offsets:Dynamic, ?transOffset:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?pickradius:Dynamic, ?hatch:Dynamic, ?urls:Dynamic, ?offset_position:Dynamic, ?zorder:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -61,7 +61,7 @@ package matplotlib.collections;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -169,7 +169,7 @@ package matplotlib.collections;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -450,7 +450,7 @@ package matplotlib.collections;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/

@@ -45,7 +45,7 @@ package matplotlib.backends.backend_pgf;
 		If universal_newlines=True is passed, the "input" argument must be a
 		string and the return value will be a string rather than bytes.
 	**/
-	static public function check_output(popenargs:Dynamic, ?timeout:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function check_output(?popenargs:python.VarArgs<Dynamic>, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Do some necessary and/or useful substitutions for texts to be included in
 		LaTeX documents.
@@ -85,7 +85,7 @@ package matplotlib.backends.backend_pgf;
 	/**
 		Create a new figure manager instance
 	**/
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
 	**/

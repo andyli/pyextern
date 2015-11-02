@@ -15,9 +15,9 @@ package scipy.special._ellip_harm;
 		Internal function, use `ellip_harm` instead.
 	**/
 	static public function _ellip_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _ellip_harm_2_vec(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ellip_harm_2_vec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _ellip_lock : Dynamic;
-	static public function _ellip_normal_vec(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ellip_normal_vec(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _ellipsoid(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ellipsoid_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;

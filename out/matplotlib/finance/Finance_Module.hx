@@ -383,7 +383,7 @@ package matplotlib.finance;
 		The procedure used to find the directory is the same as for
 		_get_config_dir, except using `$XDG_CACHE_HOME`/`~/.cache` instead.
 	**/
-	static public function get_cachedir(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_cachedir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a bar collection graph with height vals (-1 is missing).
 		

@@ -41,7 +41,7 @@ package pandas.core.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package pandas.core.format;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -107,7 +107,7 @@ package pandas.core.format;
 	public function _get_formatted_column_labels(frame:Dynamic):Dynamic;
 	public function _get_formatted_index(frame:Dynamic):Dynamic;
 	public function _get_formatter(i:Dynamic):Dynamic;
-	public function _join_multiline(strcols:Dynamic):Dynamic;
+	public function _join_multiline(?strcols:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Render a DataFrame to a list of columns (as lists of strings).
 	**/

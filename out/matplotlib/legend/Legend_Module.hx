@@ -32,6 +32,6 @@ package matplotlib.legend;
 	/**
 		make sure *args* are equal len before zipping
 	**/
-	static public function safezip(args:Dynamic):Dynamic;
+	static public function safezip(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

@@ -61,7 +61,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(path:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?fletcher32:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(path:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?fletcher32:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -79,7 +79,7 @@ package pandas.io.pytables;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -129,13 +129,13 @@ package pandas.io.pytables;
 	/**
 		return a suitable class to operate 
 	**/
-	public function _create_storer(group:Dynamic, ?format:Dynamic, ?value:Dynamic, ?append:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _read_group(group:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _create_storer(group:Dynamic, ?format:Dynamic, ?value:Dynamic, ?append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _read_group(group:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		validate / deprecate formats; return the new kwargs 
 	**/
 	public function _validate_format(format:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _write_to_group(key:Dynamic, value:Dynamic, format:Dynamic, ?index:Dynamic, ?append:Dynamic, ?complib:Dynamic, ?encoding:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _write_to_group(key:Dynamic, value:Dynamic, format:Dynamic, ?index:Dynamic, ?append:Dynamic, ?complib:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append to Table in file. Node must already exist and be Table
 		format.
@@ -165,7 +165,7 @@ package pandas.io.pytables;
 		Does *not* check if data being appended overlaps with existing
 		data in the table, so be careful
 	**/
-	public function append(key:Dynamic, value:Dynamic, ?format:Dynamic, ?append:Dynamic, ?columns:Dynamic, ?dropna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function append(key:Dynamic, value:Dynamic, ?format:Dynamic, ?append:Dynamic, ?columns:Dynamic, ?dropna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append to multiple tables
 		
@@ -186,7 +186,7 @@ package pandas.io.pytables;
 		-----
 		axes parameter is currently not accepted
 	**/
-	public function append_to_multiple(d:Dynamic, value:Dynamic, selector:Dynamic, ?data_columns:Dynamic, ?axes:Dynamic, ?dropna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function append_to_multiple(d:Dynamic, value:Dynamic, selector:Dynamic, ?data_columns:Dynamic, ?axes:Dynamic, ?dropna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Close the PyTables file handle
 	**/
@@ -217,7 +217,7 @@ package pandas.io.pytables;
 		----------
 		raises if the node is not a table
 	**/
-	public function create_table_index(key:Dynamic, kwargs:Dynamic):Dynamic;
+	public function create_table_index(key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var filename : Dynamic;
 	/**
 		Force all buffered modifications to be written to disk.
@@ -286,7 +286,7 @@ package pandas.io.pytables;
 		mode : {'a', 'w', 'r', 'r+'}, default 'a'
 		    See HDFStore docstring or tables.open_file for info about modes
 	**/
-	public function open(?mode:Dynamic, kwargs:Dynamic):Dynamic;
+	public function open(?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Store object in HDFStore
 		
@@ -308,7 +308,7 @@ package pandas.io.pytables;
 		dropna   : boolean, default False, do not write an ALL nan row to
 		    the store settable by the option 'io.hdf.dropna_table'
 	**/
-	public function put(key:Dynamic, value:Dynamic, ?format:Dynamic, ?append:Dynamic, kwargs:Dynamic):Dynamic;
+	public function put(key:Dynamic, value:Dynamic, ?format:Dynamic, ?append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove pandas object partially by specifying the where condition
 		
@@ -354,7 +354,7 @@ package pandas.io.pytables;
 		-------
 		The selected object
 	**/
-	public function select(key:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?columns:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?auto_close:Dynamic, kwargs:Dynamic):Dynamic;
+	public function select(key:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?columns:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?auto_close:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return the selection as an Index
 		
@@ -365,7 +365,7 @@ package pandas.io.pytables;
 		start : integer (defaults to None), row number to start selection
 		stop  : integer (defaults to None), row number to stop selection
 	**/
-	public function select_as_coordinates(key:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
+	public function select_as_coordinates(key:Dynamic, ?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Retrieve pandas objects from multiple tables
 		
@@ -386,7 +386,7 @@ package pandas.io.pytables;
 		raises TypeError if keys is not a list or tuple
 		raises ValueError if the tables are not ALL THE SAME DIMENSIONS
 	**/
-	public function select_as_multiple(keys:Dynamic, ?where:Dynamic, ?selector:Dynamic, ?columns:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?auto_close:Dynamic, kwargs:Dynamic):Dynamic;
+	public function select_as_multiple(keys:Dynamic, ?where:Dynamic, ?selector:Dynamic, ?columns:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?auto_close:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a single column from the table. This is generally only useful to
 		select an indexable
@@ -403,5 +403,5 @@ package pandas.io.pytables;
 		raises ValueError if the column can not be extracted individually (it
 		    is part of a data block)
 	**/
-	public function select_column(key:Dynamic, column:Dynamic, kwargs:Dynamic):Dynamic;
+	public function select_column(key:Dynamic, column:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

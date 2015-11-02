@@ -77,7 +77,7 @@ package matplotlib.colors;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -282,7 +282,7 @@ package matplotlib.colors;
 		rgba : ndarray
 		    An MxNx4 array of floats ranging between 0-1.
 	**/
-	public function shade(data:Dynamic, cmap:Dynamic, ?norm:Dynamic, ?blend_mode:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?fraction:Dynamic, kwargs:Dynamic):Dynamic;
+	public function shade(data:Dynamic, cmap:Dynamic, ?norm:Dynamic, ?blend_mode:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?fraction:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Take the input RGB array (ny*nx*3) adjust their color values
 		to given the impression of a shaded relief map with a
@@ -329,5 +329,5 @@ package matplotlib.colors;
 		shaded_rgb : ndarray
 		    An MxNx3 array of floats ranging between 0-1.
 	**/
-	public function shade_rgb(rgb:Dynamic, elevation:Dynamic, ?fraction:Dynamic, ?blend_mode:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, kwargs:Dynamic):Dynamic;
+	public function shade_rgb(rgb:Dynamic, elevation:Dynamic, ?fraction:Dynamic, ?blend_mode:Dynamic, ?vert_exag:Dynamic, ?dx:Dynamic, ?dy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

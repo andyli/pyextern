@@ -58,7 +58,7 @@ package matplotlib.sphinxext.only_directives;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?rawsource:Dynamic, children:Dynamic, attributes:Dynamic):Dynamic;
+	public function ___init__(?rawsource:Dynamic, ?children:python.VarArgs<Dynamic>, ?attributes:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -76,7 +76,7 @@ package matplotlib.sphinxext.only_directives;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
@@ -187,7 +187,7 @@ package matplotlib.sphinxext.only_directives;
 	public function deepcopy():Dynamic;
 	public function delattr(attr:Dynamic):Dynamic;
 	static public var document : Dynamic;
-	public function dont_traverse(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function dont_traverse(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function emptytag():Dynamic;
 	public function endtag():Dynamic;
 	public function extend(item:Dynamic):Dynamic;

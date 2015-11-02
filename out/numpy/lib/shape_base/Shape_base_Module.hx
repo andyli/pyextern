@@ -67,7 +67,7 @@ package numpy.lib.shape_base;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -405,7 +405,7 @@ package numpy.lib.shape_base;
 		  [2]]] (1, 2, 1)
 		[[[1 2]]] (1, 1, 2)
 	**/
-	static public function atleast_3d(arys:Dynamic):Dynamic;
+	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Stack 1-D arrays as columns into a 2-D array.
 		
@@ -655,13 +655,13 @@ package numpy.lib.shape_base;
 		
 		In case of ties, leftmost wins. If no wrapper is found, return None
 	**/
-	static public function get_array_prepare(args:Dynamic):Dynamic;
+	static public function get_array_prepare(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
 		In case of ties, leftmost wins. If no wrapper is found, return None
 	**/
-	static public function get_array_wrap(args:Dynamic):Dynamic;
+	static public function get_array_wrap(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Split an array into multiple sub-arrays horizontally (column-wise).
 		

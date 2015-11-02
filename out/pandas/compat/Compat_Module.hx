@@ -66,13 +66,13 @@ package pandas.compat;
 		
 		Passes kwargs to method.
 	**/
-	static public function iteritems(obj:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function iterkeys(obj:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function itervalues(obj:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lfilter(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function iterkeys(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function itervalues(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lfilter(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the n largest elements in a dataset.
 		
@@ -132,7 +132,7 @@ package pandas.compat;
 		    "Today is January 1, 2047 at 8:21:00AM" should return
 		    `(datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))`
 	**/
-	static public function parse_date(timestr:Dynamic, ?parserinfo:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function parse_date(timestr:Dynamic, ?parserinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Raise exception with existing traceback.
 		If traceback is not passed, uses sys.exc_info() to get traceback.

@@ -322,7 +322,7 @@ package pandas.core.api;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function describe_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function describe_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Encode input values as an enumerated type or categorical variable
 		
@@ -659,7 +659,7 @@ package pandas.core.api;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Class for grouping and aggregating relational data. See aggregate,
 		transform, and apply functions on this object.
@@ -725,7 +725,7 @@ package pandas.core.api;
 		len(grouped) : int
 		    Number of groups
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, kwds:Dynamic):Dynamic;
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -1083,7 +1083,7 @@ package pandas.core.api;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function reset_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function reset_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter default behavior on how float is formatted in DataFrame.
 		Format float in engineering format. By accuracy, we mean the number of
@@ -1338,7 +1338,7 @@ package pandas.core.api;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function set_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert argument to datetime.
 		

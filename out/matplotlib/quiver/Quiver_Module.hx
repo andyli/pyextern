@@ -10,7 +10,7 @@ package matplotlib.quiver;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _barbs_doc : Dynamic;
-	static public function _parse_args(args:Dynamic):Dynamic;
+	static public function _parse_args(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _quiver_doc : Dynamic;
 	static public var _quiverkey_doc : Dynamic;
 	static public var absolute_import : Dynamic;
@@ -52,7 +52,7 @@ package matplotlib.quiver;
 		A vastly simpler version of this function was originally
 		written as a helper for Axes.scatter().
 	**/
-	static public function delete_masked_points(args:Dynamic):Dynamic;
+	static public function delete_masked_points(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	static public var unicode_literals : Dynamic;

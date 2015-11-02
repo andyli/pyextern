@@ -13,7 +13,7 @@ package pandas.computation.scope;
 	/**
 		Ensure that we are grabbing the correct scope.
 	**/
-	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a prettier version of obj
 		

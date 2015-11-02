@@ -62,7 +62,7 @@ package matplotlib.patheffects;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -250,7 +250,7 @@ package matplotlib.patheffects;
 		want to override this method in order to draw the marker only
 		once and reuse it multiple times.
 	**/
-	public function draw_markers(gc:Dynamic, marker_path:Dynamic, marker_trans:Dynamic, path:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw_markers(gc:Dynamic, marker_path:Dynamic, marker_trans:Dynamic, path:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draws a :class:`~matplotlib.path.Path` instance using the
 		given affine transform.
@@ -277,7 +277,7 @@ package matplotlib.patheffects;
 		recommended to use those generators, so that changes to the
 		behavior of :meth:`draw_path_collection` can be made globally.
 	**/
-	public function draw_path_collection(gc:Dynamic, master_transform:Dynamic, paths:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw_path_collection(gc:Dynamic, master_transform:Dynamic, paths:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This provides a fallback implementation of
 		:meth:`draw_quad_mesh` that generates paths and then calls

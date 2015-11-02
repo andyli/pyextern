@@ -10,7 +10,7 @@ package pandas.compat;
 		Or if E is an iterable of items, does:for k, v in E: od[k] = v
 		In either case, this is followed by:  for k, v in F.items(): od[k] = v
 	**/
-	public function _OrderedDict__update(kwds:Dynamic):Dynamic;
+	public function _OrderedDict__update(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
@@ -64,7 +64,7 @@ package pandas.compat;
 		because their insertion order is arbitrary.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		od.__iter__() <==> iter(od)
 	**/
@@ -89,7 +89,7 @@ package pandas.compat;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return state information for pickling
 	**/
@@ -198,7 +198,7 @@ package pandas.compat;
 		Or if E is an iterable of items, does:for k, v in E: od[k] = v
 		In either case, this is followed by:  for k, v in F.items(): od[k] = v
 	**/
-	public function update(kwds:Dynamic):Dynamic;
+	public function update(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		od.values() -> list of values in od
 	**/

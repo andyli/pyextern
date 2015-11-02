@@ -36,7 +36,7 @@ package matplotlib.cbook;
 		This function does all of the normalization required to the
 		input and generate the template for output
 	**/
-	static public function _step_validation(x:Dynamic, args:Dynamic):Dynamic;
+	static public function _step_validation(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _string_to_bool(s:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -47,7 +47,7 @@ package matplotlib.cbook;
 		
 		It is used by :func:`matplotlib.mlab.recs_join` to join record arrays
 	**/
-	static public function align_iterators(func:Dynamic, iterables:Dynamic):Dynamic;
+	static public function align_iterators(func:Dynamic, ?iterables:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if all elements of *seq* compare equal.  If *seq* is
 		0 or 1 length, return *True*
@@ -176,7 +176,7 @@ package matplotlib.cbook;
 		A vastly simpler version of this function was originally
 		written as a helper for Axes.scatter().
 	**/
-	static public function delete_masked_points(args:Dynamic):Dynamic;
+	static public function delete_masked_points(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Decorator to mark a function as deprecated.
 		
@@ -377,7 +377,7 @@ package matplotlib.cbook;
 		        For each key in keys that is removed from kwargs but not used as
 		        the output value
 	**/
-	static public function local_over_kwdict(local_var:Dynamic, kwargs:Dynamic, keys:Dynamic):Dynamic;
+	static public function local_over_kwdict(local_var:Dynamic, kwargs:Dynamic, ?keys:python.VarArgs<Dynamic>):Dynamic;
 	static public var ls_mapper : Dynamic;
 	static public var ls_mapper_r : Dynamic;
 	/**
@@ -442,7 +442,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_midstep(x:Dynamic, args:Dynamic):Dynamic;
+	static public function pts_to_midstep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Covert continuous line to pre-steps
 		
@@ -471,7 +471,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_poststep(x:Dynamic, args:Dynamic):Dynamic;
+	static public function pts_to_poststep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Covert continuous line to pre-steps
 		
@@ -500,7 +500,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_prestep(x:Dynamic, args:Dynamic):Dynamic;
+	static public function pts_to_prestep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function recursive_remove(path:Dynamic):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
@@ -530,7 +530,7 @@ package matplotlib.cbook;
 	/**
 		make sure *args* are equal len before zipping
 	**/
-	static public function safezip(args:Dynamic):Dynamic;
+	static public function safezip(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function simple_linear_interpolation(a:Dynamic, steps:Dynamic):Dynamic;
 	/**
 		soundex module conforming to Odell-Russell algorithm 

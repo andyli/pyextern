@@ -567,7 +567,7 @@ package scipy.linalg.matfuncs;
 		expm2 : (N, N) ndarray
 		    Matrix exponential of `A`
 	**/
-	static public function expm2(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function expm2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`expm3` is deprecated, use `expm` instead!
 		
@@ -586,7 +586,7 @@ package scipy.linalg.matfuncs;
 		expm3 : (N, N) ndarray
 		    Matrix exponential of `A`
 	**/
-	static public function expm3(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function expm3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Relative condition number of the matrix exponential in the Frobenius norm.
 		

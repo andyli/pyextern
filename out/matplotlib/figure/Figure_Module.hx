@@ -13,7 +13,7 @@ package matplotlib.figure;
 	/**
 		Return an override dict.  See :func:`~pyplot.text' docstring for info
 	**/
-	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _process_text_args(_override:Dynamic, ?fontdict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _stale_figure_callback(self:Dynamic, val:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -71,7 +71,7 @@ package matplotlib.figure;
 		
 		.. note:: **kwargs** is modified in place.
 	**/
-	static public function process_projection_requirements(figure:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function process_projection_requirements(figure:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
 	static public function subplot_class_factory(?axes_class:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;

@@ -11,7 +11,7 @@ package pandas.computation.pytables;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -115,7 +115,7 @@ package pandas.computation.pytables;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _resolve_name():Dynamic;
-	public function evaluate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function evaluate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var is_datetime : Dynamic;
 	public var isscalar : Dynamic;
 	public var local_name : Dynamic;

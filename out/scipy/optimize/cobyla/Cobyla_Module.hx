@@ -30,7 +30,7 @@ package scipy.optimize.cobyla;
 		catol : float
 		    Tolerance (absolute) for constraint violations
 	**/
-	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?iprint:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_cobyla(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?constraints:Dynamic, ?rhobeg:Dynamic, ?tol:Dynamic, ?iprint:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?catol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	static public var division : Dynamic;

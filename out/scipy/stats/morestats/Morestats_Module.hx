@@ -858,7 +858,7 @@ package scipy.stats.morestats;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Perform Bartlett's test for equal variances
 		
@@ -886,7 +886,7 @@ package scipy.stats.morestats;
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
 	**/
-	static public function bartlett(args:Dynamic):Dynamic;
+	static public function bartlett(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Bayesian confidence intervals for the mean, var, and std.
 		
@@ -1706,7 +1706,7 @@ package scipy.stats.morestats;
 		       tests for scale. 'Journal of the American Statistical Association.'
 		       71(353), 210-213.
 	**/
-	static public function fligner(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		floor(x[, out])
 		
@@ -1878,7 +1878,7 @@ package scipy.stats.morestats;
 		.. [3]  Brown, M. B. and Forsythe, A. B. (1974), Journal of the American
 		          Statistical Association, 69, 364-367
 	**/
-	static public function levene(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		log(x[, out])
 		
@@ -2061,7 +2061,7 @@ package scipy.stats.morestats;
 		are values equal to the median, the p-value can be sensitive to the
 		choice of `ties`.
 	**/
-	static public function median_test(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Perform Mood's test for equal scale parameters.
 		
@@ -2198,7 +2198,7 @@ package scipy.stats.morestats;
 		`pdf_fromgamma` is deprecated!
 		scipy.stats.pdf_fromgamma is deprecated in scipy 0.16.0 in favour of statsmodels.distributions.ExpandedNormal.
 	**/
-	static public function pdf_fromgamma(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function pdf_fromgamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		Returns the shape parameter that maximizes the probability plot

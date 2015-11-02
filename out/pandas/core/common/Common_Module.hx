@@ -1,8 +1,8 @@
 /* This file is generated, do not edit! */
 package pandas.core.common;
 @:pythonImport("pandas.core.common") extern class Common_Module {
-	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, kwds:Dynamic):Dynamic;
-	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, kwds:Dynamic):Dynamic;
+	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _DATELIKE_DTYPES : Dynamic;
 	static public var _INT64_DTYPE : Dynamic;
 	static public var _NS_DTYPE : Dynamic;
@@ -16,9 +16,9 @@ package pandas.core.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _all_none(args:Dynamic):Dynamic;
-	static public function _all_not_none(args:Dynamic):Dynamic;
-	static public function _any_none(args:Dynamic):Dynamic;
+	static public function _all_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _all_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function _any_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		return a view if copy is False, but
@@ -28,7 +28,7 @@ package pandas.core.common;
 	static public function _backfill_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _backfill_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _clean_fill_method(method:Dynamic, ?allow_nearest:Dynamic):Dynamic;
-	static public function _clean_interp_method(method:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _clean_interp_method(method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _clean_reindex_fill_method(method:Dynamic):Dynamic;
 	/**
 		coerce the indexer input array to the smallest dtype possible 
@@ -60,7 +60,7 @@ package pandas.core.common;
 	static public function _concat_compat(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _consensus_name_attr(objs:Dynamic):Dynamic;
 	static public function _convert_wrapper(f:Dynamic, conv_dtype:Dynamic):Dynamic;
-	static public function _count_not_none(args:Dynamic):Dynamic;
+	static public function _count_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	/**
 		Helper function to convert datetimelike-keyed dicts to Timestamp-keyed dict
@@ -140,7 +140,7 @@ package pandas.core.common;
 		Returns an array interpolated at new_x.  Add any new methods to
 		the list in _clean_interp_method
 	**/
-	static public function _interpolate_scipy_wrapper(x:Dynamic, y:Dynamic, new_x:Dynamic, method:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _interpolate_scipy_wrapper(x:Dynamic, y:Dynamic, new_x:Dynamic, method:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change string like dtypes to object for ``DataFrame.select_dtypes()``.
 	**/
@@ -212,8 +212,8 @@ package pandas.core.common;
 		    Set to true if the result array was upcasted
 	**/
 	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
-	static public function _mut_exclusive(kwargs:Dynamic):Dynamic;
-	static public function _not_none(args:Dynamic):Dynamic;
+	static public function _mut_exclusive(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _pad_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _pad_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _pickle_array(arr:Dynamic):Dynamic;
@@ -255,14 +255,14 @@ package pandas.core.common;
 		internal. pprinter for iterables. you should probably use pprint_thing()
 		rather then calling this directly.
 	**/
-	static public function _pprint_dict(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _pprint_dict(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		internal. pprinter for iterables. you should probably use pprint_thing()
 		rather then calling this directly.
 		
 		bounds length of printed sequence, depending on options
 	**/
-	static public function _pprint_seq(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _pprint_seq(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Helper function for processing random_state arguments.
 		
@@ -331,7 +331,7 @@ package pandas.core.common;
 		justfunc : callable
 		    function used to justify str. Needed for unicode handling.
 	**/
-	static public function adjoin(space:Dynamic, lists:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		True if two arrays, left and right, have equal non-NaN elements, and NaNs in
 		corresponding locations.  False otherwise. It is assumed that left and right
@@ -394,7 +394,7 @@ package pandas.core.common;
 		set in display.encoding. Use this everywhere
 		where you output to the console.
 	**/
-	static public function console_encode(object:Dynamic, kwds:Dynamic):Dynamic;
+	static public function console_encode(object:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function create_pandas_abc_type(name:Dynamic, attr:Dynamic, comp:Dynamic):Dynamic;
 	/**
 		difference of n between self,
@@ -674,7 +674,7 @@ package pandas.core.common;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return the scalar boxer for the dtype 
 	**/
@@ -710,13 +710,13 @@ package pandas.core.common;
 		Bounds_error is currently hardcoded to False since non-scipy ones don't
 		take it as an argumnet.
 	**/
-	static public function interpolate_1d(xvalues:Dynamic, yvalues:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function interpolate_1d(xvalues:Dynamic, yvalues:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		perform an actual interpolation of values, values will be make 2-d if
 		needed fills inplace, returns the result
 	**/
 	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function intersection(seqs:Dynamic):Dynamic;
+	static public function intersection(?seqs:python.VarArgs<Dynamic>):Dynamic;
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -834,7 +834,7 @@ package pandas.core.common;
 		
 		Passes kwargs to method.
 	**/
-	static public function iteritems(obj:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Parameters
 		----------
@@ -909,7 +909,7 @@ package pandas.core.common;
 		result - unicode object on py2, str on py3. Always Unicode.
 	**/
 	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
-	static public function pprint_thing_encoded(object:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, kwds:Dynamic):Dynamic;
+	static public function pprint_thing_encoded(object:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read an array from an NPY file.
 		
@@ -1007,7 +1007,7 @@ package pandas.core.common;
 	**/
 	static public function take_nd(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
-	static public function union(seqs:Dynamic):Dynamic;
+	static public function union(?seqs:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Write an array to an NPY file, including a header.
 		

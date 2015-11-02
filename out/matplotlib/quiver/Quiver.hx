@@ -186,7 +186,7 @@ package matplotlib.quiver;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -206,7 +206,7 @@ package matplotlib.quiver;
 		        
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -223,7 +223,7 @@ package matplotlib.quiver;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -352,7 +352,7 @@ package matplotlib.quiver;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -634,7 +634,7 @@ package matplotlib.quiver;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_UVC(U:Dynamic, V:Dynamic, ?C:Dynamic):Dynamic;
 	/**
 		set agg_filter fuction.

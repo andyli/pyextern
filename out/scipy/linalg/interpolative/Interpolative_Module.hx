@@ -208,7 +208,7 @@ package scipy.linalg.interpolative;
 		shape
 		    Shape of output array
 	**/
-	static public function rand(shape:Dynamic):Dynamic;
+	static public function rand(?shape:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Reconstruct interpolation matrix from ID.
 		

@@ -81,7 +81,7 @@ package pandas.computation.eval;
 	/**
 		Ensure that we are grabbing the correct scope.
 	**/
-	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _parsers : Dynamic;
 	/**
 		Evaluate a Python expression as a string using various backends.

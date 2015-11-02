@@ -122,6 +122,6 @@ package matplotlib.artist;
 		  >>> setp(lines, 'linewidth', 2, 'color', 'r')  # MATLAB style
 		  >>> setp(lines, linewidth=2, color='r')        # python style
 	**/
-	static public function setp(obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function setp(obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

@@ -51,7 +51,7 @@ package matplotlib.axes._subplots;
 		decimal integer *numRows* * 100 + *numCols* * 10 + *plotNum*.
 	**/
 	@:native("__init__")
-	public function ___init__(fig:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(fig:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -68,7 +68,7 @@ package matplotlib.axes._subplots;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -110,7 +110,7 @@ package matplotlib.axes._subplots;
 	/**
 		make a twinx axes of self. This is used for twinx and twiny.
 	**/
-	public function _make_twin_axes(kl:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _make_twin_axes(?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		change subplot geometry, e.g., from 1,1,1 to 2,2,3
 	**/

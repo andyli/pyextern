@@ -101,7 +101,7 @@ package matplotlib.backends.backend_nbagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -142,7 +142,7 @@ package matplotlib.backends.backend_nbagg;
 	public var __weakref__ : Dynamic;
 	public function _create_comm():Dynamic;
 	public function _get_toolbar(canvas:Dynamic):Dynamic;
-	public function _send_event(event_type:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _send_event(event_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function add_web_socket(web_socket:Dynamic):Dynamic;
 	/**
 		Clear up any closed Comms.

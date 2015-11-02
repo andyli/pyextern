@@ -29,7 +29,7 @@ package numpy.f2py.f90mod_rules;
 	static public function isprivate(_var:Dynamic):Dynamic;
 	static public function isroutine(rout:Dynamic):Dynamic;
 	static public function isstringarray(_var:Dynamic):Dynamic;
-	static public function l_or(f:Dynamic):Dynamic;
+	static public function l_or(?f:python.VarArgs<Dynamic>):Dynamic;
 	static public var options : Dynamic;
 	static public function outmess(t:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

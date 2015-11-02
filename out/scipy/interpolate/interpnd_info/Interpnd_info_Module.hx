@@ -2,7 +2,7 @@
 package scipy.interpolate.interpnd_info;
 @:pythonImport("scipy.interpolate.interpnd_info") extern class Interpnd_info_Module {
 	static public var C : Dynamic;
-	static public function CC(args:Dynamic):Dynamic;
+	static public function CC(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var Catalan : Dynamic;
 	static public var E : Dynamic;
 	/**
@@ -23,7 +23,7 @@ package scipy.interpolate.interpnd_info;
 		Chi: Hyperbolic cosine integral.
 	**/
 	static public function E1(z:Dynamic):Dynamic;
-	static public function EX(args:Dynamic):Dynamic;
+	static public function EX(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Represent the Levi-Civita symbol.
 		
@@ -34,7 +34,7 @@ package scipy.interpolate.interpnd_info;
 		
 		LeviCivita
 	**/
-	static public function Eijk(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function Eijk(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var EulerGamma : Dynamic;
 	static public var FU : Dynamic;
 	static public var GoldenRatio : Dynamic;
@@ -45,7 +45,7 @@ package scipy.interpolate.interpnd_info;
 	**/
 	static public function GramSchmidt(vlist:Dynamic, ?orthog:Dynamic):Dynamic;
 	static public var I : Dynamic;
-	static public function Id(args:Dynamic):Dynamic;
+	static public function Id(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the leading coefficient of ``f``.
 		
@@ -58,7 +58,7 @@ package scipy.interpolate.interpnd_info;
 		>>> LC(4*x**2 + 2*x*y**2 + x*y + 3*y)
 		4
 	**/
-	static public function LC(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function LC(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the leading monomial of ``f``.
 		
@@ -71,7 +71,7 @@ package scipy.interpolate.interpnd_info;
 		>>> LM(4*x**2 + 2*x*y**2 + x*y + 3*y)
 		x**2
 	**/
-	static public function LM(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function LM(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the leading term of ``f``.
 		
@@ -84,7 +84,7 @@ package scipy.interpolate.interpnd_info;
 		>>> LT(4*x**2 + 2*x*y**2 + x*y + 3*y)
 		4*x**2
 	**/
-	static public function LT(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function LT(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calls x.evalf(n, \*\*options).
 		
@@ -101,7 +101,7 @@ package scipy.interpolate.interpnd_info;
 		>>> N(_, 4)
 		1.291
 	**/
-	static public function N(x:Dynamic, ?n:Dynamic, options:Dynamic):Dynamic;
+	static public function N(x:Dynamic, ?n:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The POSform function uses simplified_pairs and a redundant-group
 		eliminating algorithm to convert the list of all input combinations
@@ -132,8 +132,8 @@ package scipy.interpolate.interpnd_info;
 		.. [1] en.wikipedia.org/wiki/Quine-McCluskey_algorithm
 	**/
 	static public function POSform(variables:Dynamic, minterms:Dynamic, ?dontcares:Dynamic):Dynamic;
-	static public function QQ(args:Dynamic):Dynamic;
-	static public function RR(args:Dynamic):Dynamic;
+	static public function QQ(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function RR(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function S(?locals:Dynamic, ?convert_xor:Dynamic, ?strict:Dynamic, ?rational:Dynamic, ?evaluate:Dynamic):Dynamic;
 	/**
 		The SOPform function uses simplified_pairs and a redundant group-
@@ -169,7 +169,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Deprecated alias for the ImageSet constructor.
 	**/
-	static public function TransformationSet(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function TransformationSet(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conjugate spherical harmonics defined as
 		
@@ -189,7 +189,7 @@ package scipy.interpolate.interpnd_info;
 		.. [3] http://functions.wolfram.com/Polynomials/SphericalHarmonicY/
 	**/
 	static public function Ynm_c(n:Dynamic, m:Dynamic, theta:Dynamic, phi:Dynamic):Dynamic;
-	static public function ZZ(args:Dynamic):Dynamic;
+	static public function ZZ(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -253,7 +253,7 @@ package scipy.interpolate.interpnd_info;
 		
 		apart_list, assemble_partfrac_list
 	**/
-	static public function apart(f:Dynamic, ?x:Dynamic, ?full:Dynamic, options:Dynamic):Dynamic;
+	static public function apart(f:Dynamic, ?x:Dynamic, ?full:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute partial fraction decomposition of a rational function
 		and return the result in structured form.
@@ -356,7 +356,7 @@ package scipy.interpolate.interpnd_info;
 		
 		1. [Bronstein93]_
 	**/
-	static public function apart_list(f:Dynamic, ?x:Dynamic, ?dummies:Dynamic, options:Dynamic):Dynamic;
+	static public function apart_list(f:Dynamic, ?x:Dynamic, ?dummies:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculates the finite difference approximation of
 		the derivative of requested order at x0 from points
@@ -650,7 +650,7 @@ package scipy.interpolate.interpnd_info;
 		...     print(ask(Q.integer(x + y)))
 		True
 	**/
-	static public function assuming(assumptions:Dynamic):Dynamic;
+	static public function assuming(?assumptions:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Simplify bessel-type functions.
 		
@@ -889,7 +889,7 @@ package scipy.interpolate.interpnd_info;
 		>>> cancel((sqrt(3) + sqrt(15)*A)/(sqrt(2) + sqrt(10)*A))
 		sqrt(6)/2
 	**/
-	static public function cancel(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function cancel(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the printed output of func().
 		
@@ -1094,7 +1094,7 @@ package scipy.interpolate.interpnd_info;
 		}
 		A[2] = sin(x);
 	**/
-	static public function ccode(expr:Dynamic, ?assign_to:Dynamic, settings:Dynamic):Dynamic;
+	static public function ccode(expr:Dynamic, ?assign_to:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find the centroid (center of mass) of the collection containing only Points,
 		Segments or Polygons. The centroid is the weighted average of the individual centroid
@@ -1142,15 +1142,15 @@ package scipy.interpolate.interpnd_info;
 		    >>> centroid(p, p.translate(0, 1), p.translate(0, -1), q)
 		    Point(11/10, 1/2)
 	**/
-	static public function centroid(args:Dynamic):Dynamic;
+	static public function centroid(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Generates Chebyshev polynomial of the first kind of degree `n` in `x`. 
 	**/
-	static public function chebyshevt_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function chebyshevt_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates Chebyshev polynomial of the second kind of degree `n` in `x`. 
 	**/
-	static public function chebyshevu_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function chebyshevu_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Substitutes ``sol`` into ``ode`` and checks that the result is ``0``.
 		
@@ -1294,7 +1294,7 @@ package scipy.interpolate.interpnd_info;
 		    'force=True (default is False)'
 		       make positive all symbols without assumptions regarding sign.
 	**/
-	static public function checksol(f:Dynamic, symbol:Dynamic, ?sol:Dynamic, flags:Dynamic):Dynamic;
+	static public function checksol(f:Dynamic, symbol:Dynamic, ?sol:Dynamic, ?flags:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a tuple of possible :py:meth:`~sympy.solvers.ode.dsolve`
 		classifications for an ODE.
@@ -1413,7 +1413,7 @@ package scipy.interpolate.interpnd_info;
 		'nth_linear_constant_coeff_variation_of_parameters',
 		'nth_linear_constant_coeff_variation_of_parameters_Integral')
 	**/
-	static public function classify_ode(eq:Dynamic, ?func:Dynamic, ?dict:Dynamic, ?ics:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function classify_ode(eq:Dynamic, ?func:Dynamic, ?dict:Dynamic, ?ics:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a tuple of possible pdsolve() classifications for a PDE.
 		
@@ -1451,7 +1451,7 @@ package scipy.interpolate.interpnd_info;
 		>>> classify_pde(eq)
 		('1st_linear_constant_coeff_homogeneous',)
 	**/
-	static public function classify_pde(eq:Dynamic, ?func:Dynamic, ?dict:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function classify_pde(eq:Dynamic, ?func:Dynamic, ?dict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute GCD and cofactors of ``f`` and ``g``.
 		
@@ -1468,7 +1468,7 @@ package scipy.interpolate.interpnd_info;
 		>>> cofactors(x**2 - 1, x**2 - 3*x + 2)
 		(x - 1, x + 1, x - 2)
 	**/
-	static public function cofactors(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function cofactors(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Collect additive terms of an expression.
 		
@@ -1645,7 +1645,7 @@ package scipy.interpolate.interpnd_info;
 		========
 		collect, collect_sqrt, rcollect
 	**/
-	static public function collect_const(expr:Dynamic, vars:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function collect_const(expr:Dynamic, ?vars:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Simplify combinatorial expressions.
 		
@@ -1708,11 +1708,11 @@ package scipy.interpolate.interpnd_info;
 		>>> compose(x**2 + x, x - 1)
 		x**2 - x
 	**/
-	static public function compose(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function compose(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a minimal domain for the list of coefficients. 
 	**/
-	static public function construct_domain(obj:Dynamic, args:Dynamic):Dynamic;
+	static public function construct_domain(obj:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute GCD of coefficients of ``f``.
 		
@@ -1725,7 +1725,7 @@ package scipy.interpolate.interpnd_info;
 		>>> content(6*x**2 + 8*x + 12)
 		2
 	**/
-	static public function content(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function content(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the convergents of a continued fraction (cf).
 		
@@ -1936,7 +1936,7 @@ package scipy.interpolate.interpnd_info;
 		>>> convex_hull(*points)
 		Polygon(Point(-5, 2), Point(1, 1), Point(3, 1), Point(15, 4))
 	**/
-	static public function convex_hull(args:Dynamic):Dynamic;
+	static public function convex_hull(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the unitary, ordinary-frequency cosine transform of `f`, defined
 		as
@@ -1966,7 +1966,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function cosine_transform(f:Dynamic, x:Dynamic, k:Dynamic, hints:Dynamic):Dynamic;
+	static public function cosine_transform(f:Dynamic, x:Dynamic, k:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a representation (integer or expression) of the operations in expr.
 		
@@ -2148,7 +2148,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Generates cyclotomic polynomial of order `n` in `x`. 
 	**/
-	static public function cyclotomic_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function cyclotomic_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute functional decomposition of ``f``.
 		
@@ -2161,7 +2161,7 @@ package scipy.interpolate.interpnd_info;
 		>>> decompose(x**4 + 2*x**3 - x - 1)
 		[x**2 - x - 1, x**2 + x]
 	**/
-	static public function decompose(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function decompose(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a key that can be used for sorting.
 		
@@ -2289,7 +2289,7 @@ package scipy.interpolate.interpnd_info;
 		>>> degree(0, x)
 		-oo
 	**/
-	static public function degree(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function degree(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of degrees of ``f`` in all variables.
 		
@@ -2302,7 +2302,7 @@ package scipy.interpolate.interpnd_info;
 		>>> degree_list(x**2 + y*x + 1)
 		(2, 1)
 	**/
-	static public function degree_list(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function degree_list(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public function denom(expr:Dynamic):Dynamic;
 	/**
 		Matrix Determinant
@@ -2414,11 +2414,11 @@ package scipy.interpolate.interpnd_info;
 		
 		eye
 	**/
-	static public function diag(values:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function diag(?values:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Merge dictionaries into a single dictionary. 
 	**/
-	static public function dict_merge(dicts:Dynamic):Dynamic;
+	static public function dict_merge(?dicts:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Differentiate f with respect to symbols.
 		
@@ -2478,7 +2478,7 @@ package scipy.interpolate.interpnd_info;
 		Derivative
 		sympy.geometry.util.idiff: computes the derivative implicitly
 	**/
-	static public function diff(f:Dynamic, symbols:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function diff(f:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The digamma function is the first derivative of the loggamma function i.e,
 		
@@ -2519,7 +2519,7 @@ package scipy.interpolate.interpnd_info;
 		>>> discriminant(x**2 + 2*x + 3)
 		-8
 	**/
-	static public function discriminant(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function discriminant(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute polynomial division of ``f`` and ``g``.
 		
@@ -2534,7 +2534,7 @@ package scipy.interpolate.interpnd_info;
 		>>> div(x**2 + 1, 2*x - 4, domain=QQ)
 		(x/2 + 1, 5)
 	**/
-	static public function div(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function div(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the number of divisors of ``n``. If ``modulus`` is not 1 then only
@@ -2630,7 +2630,7 @@ package scipy.interpolate.interpnd_info;
 		The ``subprocess`` and ``verbose`` options are the same as with the function
 		``test()``.  See the docstring of that function for more information.
 	**/
-	static public function doctest(paths:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function doctest(?paths:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		 Solves any (supported) kind of ordinary differential equation and
 		 system of ordinary differential equations.
@@ -2827,7 +2827,7 @@ package scipy.interpolate.interpnd_info;
 		 set([x(t) == -exp(C1)/(C2*exp(C1) - cos(t)), y(t) == -1/(C1 - cos(t))])
 		 
 	**/
-	static public function dsolve(eq:Dynamic, ?func:Dynamic, ?hint:Dynamic, ?simplify:Dynamic, ?ics:Dynamic, ?xi:Dynamic, ?eta:Dynamic, ?x0:Dynamic, ?n:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function dsolve(eq:Dynamic, ?func:Dynamic, ?hint:Dynamic, ?simplify:Dynamic, ?ics:Dynamic, ?xi:Dynamic, ?eta:Dynamic, ?x0:Dynamic, ?n:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the list of denominators of an Egyptian fraction
 		expansion [1]_ of the said rational `r`.
@@ -3384,7 +3384,7 @@ package scipy.interpolate.interpnd_info;
 		expand_log, expand_mul, expand_multinomial, expand_complex, expand_trig,
 		expand_power_base, expand_power_exp, expand_func, hyperexpand
 	**/
-	static public function expand(e:Dynamic, ?deep:Dynamic, ?modulus:Dynamic, ?power_base:Dynamic, ?power_exp:Dynamic, ?mul:Dynamic, ?log:Dynamic, ?multinomial:Dynamic, ?basic:Dynamic, hints:Dynamic):Dynamic;
+	static public function expand(e:Dynamic, ?deep:Dynamic, ?modulus:Dynamic, ?power_base:Dynamic, ?power_exp:Dynamic, ?mul:Dynamic, ?log:Dynamic, ?multinomial:Dynamic, ?basic:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper around expand that only uses the complex hint.  See the expand
 		docstring for more information.
@@ -3577,7 +3577,7 @@ package scipy.interpolate.interpnd_info;
 		...
 		ExactQuotientFailed: 2*x - 4 does not divide x**2 + 1
 	**/
-	static public function exquo(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function exquo(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create square identity matrix n x n
 		
@@ -3646,7 +3646,7 @@ package scipy.interpolate.interpnd_info;
 		========
 		sympy.ntheory.factor_.factorint
 	**/
-	static public function factor(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function factor(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute a list of irreducible factors of ``f``.
 		
@@ -3659,7 +3659,7 @@ package scipy.interpolate.interpnd_info;
 		>>> factor_list(2*x**5 + 2*x**4*y + 4*x**3 + 4*x**2*y + 2*x + 2*y)
 		(2, [(x + y, 1), (x**2 + 1, 2)])
 	**/
-	static public function factor_list(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function factor_list(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the factored form of ``expr`` while handling non-commutative
 		expressions.
@@ -3987,7 +3987,7 @@ package scipy.interpolate.interpnd_info;
 		         end if
 		      A(3, 1) = sin(x)
 	**/
-	static public function fcode(expr:Dynamic, ?assign_to:Dynamic, settings:Dynamic):Dynamic;
+	static public function fcode(expr:Dynamic, ?assign_to:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct new rational function field returning (field, x1, ..., xn). 
 	**/
@@ -3995,7 +3995,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Construct an isomorphism between two number fields. 
 	**/
-	static public function field_isomorphism(a:Dynamic, b:Dynamic, args:Dynamic):Dynamic;
+	static public function field_isomorphism(a:Dynamic, b:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public function filldedent(s:Dynamic, ?w:Dynamic):Dynamic;
 	/**
 		Calculates the finite difference weights for an arbitrarily
@@ -4170,7 +4170,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function fourier_transform(f:Dynamic, x:Dynamic, k:Dynamic, hints:Dynamic):Dynamic;
+	static public function fourier_transform(f:Dynamic, x:Dynamic, k:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a pair with expression's numerator and denominator.
 		If the given expression is not a fraction then this function
@@ -4301,7 +4301,7 @@ package scipy.interpolate.interpnd_info;
 		>>> gcd(x**2 - 1, x**2 - 3*x + 2)
 		x - 1
 	**/
-	static public function gcd(f:Dynamic, ?g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function gcd(f:Dynamic, ?g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute GCD of a list of polynomials.
 		
@@ -4314,7 +4314,7 @@ package scipy.interpolate.interpnd_info;
 		>>> gcd_list([x**3 - 1, x**2 - 1, x**2 - 3*x + 2])
 		x - 1
 	**/
-	static public function gcd_list(seq:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function gcd_list(seq:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the GCD of ``terms`` and put them together.
 		
@@ -4380,7 +4380,7 @@ package scipy.interpolate.interpnd_info;
 		>>> gcdex(x**4 - 2*x**3 - 6*x**2 + 12*x + 15, x**3 + x**2 - 4*x - 4)
 		(-x/5 + 3/5, x**2/5 - 6*x/5 + 2, x + 1)
 	**/
-	static public function gcdex(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function gcdex(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Determine dummy indices of ``expr`` and describe its structure
 		
@@ -4535,7 +4535,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Compute greatest factorial factorization of ``f``. 
 	**/
-	static public function gff(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function gff(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute a list of greatest factorial factors of ``f``.
 		
@@ -4553,7 +4553,7 @@ package scipy.interpolate.interpnd_info;
 		>>> (ff(x, 1)*ff(x + 2, 4)).expand() == f
 		True
 	**/
-	static public function gff_list(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function gff_list(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public function grevlex(monomial:Dynamic):Dynamic;
 	static public function grlex(monomial:Dynamic):Dynamic;
 	/**
@@ -4604,7 +4604,7 @@ package scipy.interpolate.interpnd_info;
 		1. [Buchberger01]_
 		2. [Cox97]_
 	**/
-	static public function groebner(F:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function groebner(F:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute roots of ``f`` by factorization in the ground domain.
 		
@@ -4617,7 +4617,7 @@ package scipy.interpolate.interpnd_info;
 		>>> ground_roots(x**6 - 4*x**4 + 4*x**3 - x**2)
 		{0: 2, 1: 2}
 	**/
-	static public function ground_roots(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function ground_roots(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Splits a sequence into a list of lists of equal, adjacent elements.
 		
@@ -4667,7 +4667,7 @@ package scipy.interpolate.interpnd_info;
 		>>> hadamard_product(A, B)[0, 1]
 		A[0, 1]*B[0, 1]
 	**/
-	static public function hadamard_product(matrices:Dynamic):Dynamic;
+	static public function hadamard_product(?matrices:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Half extended Euclidean algorithm of ``f`` and ``g``.
 		
@@ -4682,7 +4682,7 @@ package scipy.interpolate.interpnd_info;
 		>>> half_gcdex(x**4 - 2*x**3 - 6*x**2 + 12*x + 15, x**3 + x**2 - 4*x - 4)
 		(-x/5 + 3/5, x + 1)
 	**/
-	static public function half_gcdex(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function half_gcdex(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the Hankel transform of `f`, defined as
 		
@@ -4722,7 +4722,7 @@ package scipy.interpolate.interpnd_info;
 		inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function hankel_transform(f:Dynamic, r:Dynamic, k:Dynamic, nu:Dynamic, hints:Dynamic):Dynamic;
+	static public function hankel_transform(f:Dynamic, r:Dynamic, k:Dynamic, nu:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return True if there are any duplicate elements in ``seq``.
 		
@@ -4757,7 +4757,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Generates Hermite polynomial of degree `n` in `x`. 
 	**/
-	static public function hermite_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function hermite_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute Hessian matrix for a function f wrt parameters in varlist
 		which may be given as a sequence or a row/column vector. A list of
@@ -4841,7 +4841,7 @@ package scipy.interpolate.interpnd_info;
 		>>> homogeneous_order(x**2+f(x), x, f(x)) is None
 		True
 	**/
-	static public function homogeneous_order(eq:Dynamic, symbols:Dynamic):Dynamic;
+	static public function homogeneous_order(eq:Dynamic, ?symbols:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Rewrite a polynomial in Horner form.
 		
@@ -4872,7 +4872,7 @@ package scipy.interpolate.interpnd_info;
 		==========
 		[1] - http://en.wikipedia.org/wiki/Horner_scheme
 	**/
-	static public function horner(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function horner(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expand hypergeometric functions. If allow_hyper is True, allow partial
 		simplification (that is a result different from input,
@@ -4987,7 +4987,7 @@ package scipy.interpolate.interpnd_info;
 		>>> igcd(5, 10, 15)
 		5
 	**/
-	static public function igcd(args:Dynamic):Dynamic;
+	static public function igcd(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function igrevlex(monomial:Dynamic):Dynamic;
 	static public function igrlex(monomial:Dynamic):Dynamic;
 	/**
@@ -5004,7 +5004,7 @@ package scipy.interpolate.interpnd_info;
 		>>> ilcm(5, 10, 15)
 		30
 	**/
-	static public function ilcm(args:Dynamic):Dynamic;
+	static public function ilcm(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function ilex(monomial:Dynamic):Dynamic;
 	/**
 		Image of set under transformation ``f``.
@@ -5035,7 +5035,7 @@ package scipy.interpolate.interpnd_info;
 		
 		sympy.sets.fancysets.ImageSet
 	**/
-	static public function imageset(args:Dynamic):Dynamic;
+	static public function imageset(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Initializes pretty-printer depending on the environment.
 		
@@ -5385,7 +5385,7 @@ package scipy.interpolate.interpnd_info;
 		
 		Integral, Integral.doit
 	**/
-	static public function integrate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function integrate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Traverse a tree asking a user which branch to choose. 
 	**/
@@ -5479,7 +5479,7 @@ package scipy.interpolate.interpnd_info;
 		[Point(-sqrt(5)/5 + 1, 2*sqrt(5)/5 + 1),
 		 Point(sqrt(5)/5 + 1, -2*sqrt(5)/5 + 1)]
 	**/
-	static public function intersection(entities:Dynamic):Dynamic;
+	static public function intersection(?entities:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute isolating intervals for roots of ``f``.
 		
@@ -5530,7 +5530,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function inverse_cosine_transform(F:Dynamic, k:Dynamic, x:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_cosine_transform(F:Dynamic, k:Dynamic, x:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the unitary, ordinary-frequency inverse Fourier transform of `F`,
 		defined as
@@ -5563,7 +5563,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function inverse_fourier_transform(F:Dynamic, k:Dynamic, x:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_fourier_transform(F:Dynamic, k:Dynamic, x:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the inverse Hankel transform of `F` defined as
 		
@@ -5603,7 +5603,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function inverse_hankel_transform(F:Dynamic, k:Dynamic, r:Dynamic, nu:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_hankel_transform(F:Dynamic, k:Dynamic, r:Dynamic, nu:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the inverse Laplace transform of `F(s)`, defined as
 		
@@ -5641,7 +5641,7 @@ package scipy.interpolate.interpnd_info;
 		laplace_transform
 		hankel_transform, inverse_hankel_transform
 	**/
-	static public function inverse_laplace_transform(F:Dynamic, s:Dynamic, t:Dynamic, ?plane:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_laplace_transform(F:Dynamic, s:Dynamic, t:Dynamic, ?plane:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the inverse Mellin transform of `F(s)` over the fundamental
 		strip given by ``strip=(a, b)``.
@@ -5689,7 +5689,7 @@ package scipy.interpolate.interpnd_info;
 		mellin_transform
 		hankel_transform, inverse_hankel_transform
 	**/
-	static public function inverse_mellin_transform(F:Dynamic, s:Dynamic, x:Dynamic, strip:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_mellin_transform(F:Dynamic, s:Dynamic, x:Dynamic, strip:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the unitary, ordinary-frequency inverse sine transform of `F`,
 		defined as
@@ -5720,7 +5720,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function inverse_sine_transform(F:Dynamic, k:Dynamic, x:Dynamic, hints:Dynamic):Dynamic;
+	static public function inverse_sine_transform(F:Dynamic, k:Dynamic, x:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Invert ``f`` modulo ``g`` when possible.
 		
@@ -5738,7 +5738,7 @@ package scipy.interpolate.interpnd_info;
 		...
 		NotInvertible: zero divisor
 	**/
-	static public function invert(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function invert(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns True if ``x**n == a (mod m)`` has solutions.
 		
@@ -5799,7 +5799,7 @@ package scipy.interpolate.interpnd_info;
 		David A. Cox, John B. Little, Donal O'Shea. Ideals, Varieties and
 		Algorithms, 3rd edition, p. 230
 	**/
-	static public function is_zero_dimensional(F:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function is_zero_dimensional(F:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Give a rational isolating interval for an algebraic number. 
 	**/
@@ -5923,7 +5923,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Generates Jacobi polynomial of degree `n` in `x`. 
 	**/
-	static public function jacobi_poly(n:Dynamic, a:Dynamic, b:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function jacobi_poly(n:Dynamic, a:Dynamic, b:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the product of the legendre_symbol(m, p)
 		for all the prime factors, p, of n.
@@ -6110,11 +6110,11 @@ package scipy.interpolate.interpnd_info;
 		}
 		A[2] = Math.sin(x);
 	**/
-	static public function jscode(expr:Dynamic, ?assign_to:Dynamic, settings:Dynamic):Dynamic;
+	static public function jscode(expr:Dynamic, ?assign_to:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates Laguerre polynomial of degree `n` in `x`. 
 	**/
-	static public function laguerre_poly(n:Dynamic, ?x:Dynamic, ?alpha:Dynamic, args:Dynamic):Dynamic;
+	static public function laguerre_poly(n:Dynamic, ?x:Dynamic, ?alpha:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a lambda function for fast calculation of numerical values.
 		
@@ -6288,7 +6288,7 @@ package scipy.interpolate.interpnd_info;
 		inverse_laplace_transform, mellin_transform, fourier_transform
 		hankel_transform, inverse_hankel_transform
 	**/
-	static public function laplace_transform(f:Dynamic, t:Dynamic, s:Dynamic, hints:Dynamic):Dynamic;
+	static public function laplace_transform(f:Dynamic, t:Dynamic, s:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert the given expression to LaTeX representation.
 		
@@ -6405,7 +6405,7 @@ package scipy.interpolate.interpnd_info;
 		>>> print(latex([2/x, y], mode='inline'))
 		$\left [ 2 / x, \quad y\right ]$
 	**/
-	static public function latex(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function latex(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute LCM of ``f`` and ``g``.
 		
@@ -6418,7 +6418,7 @@ package scipy.interpolate.interpnd_info;
 		>>> lcm(x**2 - 1, x**2 - 3*x + 2)
 		x**3 - 2*x**2 - x + 2
 	**/
-	static public function lcm(f:Dynamic, ?g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function lcm(f:Dynamic, ?g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute LCM of a list of polynomials.
 		
@@ -6431,11 +6431,11 @@ package scipy.interpolate.interpnd_info;
 		>>> lcm_list([x**3 - 1, x**2 - 1, x**2 - 3*x + 2])
 		x**5 - x**4 - 2*x**3 - x**2 + x + 2
 	**/
-	static public function lcm_list(seq:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function lcm_list(seq:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates Legendre polynomial of degree `n` in `x`. 
 	**/
-	static public function legendre_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function legendre_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns
 		=======
@@ -6575,7 +6575,7 @@ package scipy.interpolate.interpnd_info;
 		>>> mcode(sin(x).series(x).removeO())
 		'(1/120)*x^5 - 1/6*x^3 + x'
 	**/
-	static public function mathematica_code(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function mathematica_code(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Converts SymPy's matrix to a NumPy array.
 		
@@ -6639,7 +6639,7 @@ package scipy.interpolate.interpnd_info;
 		inverse_mellin_transform, laplace_transform, fourier_transform
 		hankel_transform, inverse_hankel_transform
 	**/
-	static public function mellin_transform(f:Dynamic, x:Dynamic, s:Dynamic, hints:Dynamic):Dynamic;
+	static public function mellin_transform(f:Dynamic, x:Dynamic, s:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes the minimal polynomial of an algebraic element.
 		
@@ -6684,7 +6684,7 @@ package scipy.interpolate.interpnd_info;
 		>>> minimal_polynomial(sqrt(y), x)
 		x**2 - y
 	**/
-	static public function minimal_polynomial(ex:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function minimal_polynomial(ex:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes the minimal polynomial of an algebraic element.
 		
@@ -6729,7 +6729,7 @@ package scipy.interpolate.interpnd_info;
 		>>> minimal_polynomial(sqrt(y), x)
 		x**2 - y
 	**/
-	static public function minpoly(ex:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function minpoly(ex:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Divide all coefficients of ``f`` by ``LC(f)``.
 		
@@ -6742,7 +6742,7 @@ package scipy.interpolate.interpnd_info;
 		>>> monic(3*x**2 + 4*x + 2)
 		x**2 + 4*x/3 + 2/3
 	**/
-	static public function monic(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function monic(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a dictionary containing pairs ``{(k1,k2,..,km) : C_kn}``
 		where ``C_kn`` are multinomial coefficients such that
@@ -6952,7 +6952,7 @@ package scipy.interpolate.interpnd_info;
 		mpmath.findroot is used, you can find there more extensive documentation,
 		especially concerning keyword parameters and available solvers.
 	**/
-	static public function nsolve(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function nsolve(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a polynomial with n-th powers of roots of ``f``.
 		
@@ -6974,7 +6974,7 @@ package scipy.interpolate.interpnd_info;
 		>>> set(R_f) == set(R_g)
 		True
 	**/
-	static public function nth_power_roots_poly(f:Dynamic, n:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function nth_power_roots_poly(f:Dynamic, n:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		find the solutions to ``x**n = a mod p``
 		
@@ -7021,7 +7021,7 @@ package scipy.interpolate.interpnd_info;
 		sym : Symbol
 		    The subscripted symbols.
 	**/
-	static public function numbered_symbols(?prefix:Dynamic, ?cls:Dynamic, ?start:Dynamic, ?exclude:Dynamic, args:Dynamic, assumptions:Dynamic):Dynamic;
+	static public function numbered_symbols(?prefix:Dynamic, ?cls:Dynamic, ?start:Dynamic, ?exclude:Dynamic, ?args:python.VarArgs<Dynamic>, ?assumptions:python.KwArgs<Dynamic>):Dynamic;
 	static public function numer(expr:Dynamic):Dynamic;
 	/**
 		Converts `expr` to a string of Octave (or Matlab) code.
@@ -7158,7 +7158,7 @@ package scipy.interpolate.interpnd_info;
 		>>> octave_code(e.rhs, assign_to=e.lhs, contract=False)
 		'Dy(i) = (y(i + 1) - y(i))./(t(i + 1) - t(i));'
 	**/
-	static public function octave_code(expr:Dynamic, ?assign_to:Dynamic, settings:Dynamic):Dynamic;
+	static public function octave_code(expr:Dynamic, ?assign_to:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the order of a given differential
 		equation with respect to func.
@@ -7284,11 +7284,11 @@ package scipy.interpolate.interpnd_info;
 		Parameters are the same as for ``pretty_print``. If you wish to wrap lines,
 		pass ``num_columns=None`` to auto-detect the width of the terminal.
 	**/
-	static public function pager_print(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function pager_print(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct polynomials from expressions. 
 	**/
-	static public function parallel_poly_from_expr(exprs:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function parallel_poly_from_expr(exprs:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Separate variables in partial differential equation either by additive
 		or multiplicative separation approach. It tries to rewrite an equation so
@@ -7379,7 +7379,7 @@ package scipy.interpolate.interpnd_info;
 		>>> pdiv(x**2 + 1, 2*x - 4)
 		(2*x + 4, 20)
 	**/
-	static public function pdiv(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function pdiv(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solves any (supported) kind of partial differential equation.
 		
@@ -7478,7 +7478,7 @@ package scipy.interpolate.interpnd_info;
 		>>> pdsolve(eq)
 		f(x, y) == F(3*x - 2*y)*exp(-2*x/13 - 3*y/13)
 	**/
-	static public function pdsolve(eq:Dynamic, ?func:Dynamic, ?hint:Dynamic, ?dict:Dynamic, ?solvefun:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pdsolve(eq:Dynamic, ?func:Dynamic, ?hint:Dynamic, ?dict:Dynamic, ?solvefun:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return ``(b, e)`` such that ``n`` == ``b**e`` if ``n`` is a
 		perfect power; otherwise return ``False``.
@@ -7523,7 +7523,7 @@ package scipy.interpolate.interpnd_info;
 		...
 		ExactQuotientFailed: 2*x - 4 does not divide x**2 + 1
 	**/
-	static public function pexquo(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function pexquo(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
 	/**
 		Takes an expression containing a piecewise function and returns the
@@ -7676,7 +7676,7 @@ package scipy.interpolate.interpnd_info;
 		
 		Plot, LineOver1DRangeSeries.
 	**/
-	static public function plot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var plot_backends : Dynamic;
 	/**
 		A plot function to plot implicit equations / inequalities.
@@ -7764,7 +7764,7 @@ package scipy.interpolate.interpnd_info;
 		>>> p8 = plot_implicit(y - 1, y_var=y)
 		>>> p9 = plot_implicit(x - 1, x_var=x)
 	**/
-	static public function plot_implicit(expr:Dynamic, ?x_var:Dynamic, ?y_var:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function plot_implicit(expr:Dynamic, ?x_var:Dynamic, ?y_var:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Turn all numbers in eq into their polar equivalents (under the standard
 		choice of argument).
@@ -8030,11 +8030,11 @@ package scipy.interpolate.interpnd_info;
 		>>> poly(x*(x**2 + x - 1)**2)
 		Poly(x**5 + 2*x**4 - x**3 - 2*x**2 + x, x, domain='ZZ')
 	**/
-	static public function poly(expr:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function poly(expr:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a polynomial from an expression. 
 	**/
-	static public function poly_from_expr(expr:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function poly_from_expr(expr:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return eq (with generic symbols made positive) and a restore
 		dictionary.
@@ -8309,7 +8309,7 @@ package scipy.interpolate.interpnd_info;
 		order : bool or string, optional
 		    set to 'none' for long expressions if slow; default is None
 	**/
-	static public function pprint(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function pprint(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		See if unicode output is available and leverage it if possible
 	**/
@@ -8332,7 +8332,7 @@ package scipy.interpolate.interpnd_info;
 		>>> pquo(x**2 - 1, 2*x - 1)
 		2*x + 1
 	**/
-	static public function pquo(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function pquo(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generate all prefixes of a sequence.
 		
@@ -8357,13 +8357,13 @@ package scipy.interpolate.interpnd_info;
 		>>> prem(x**2 + 1, 2*x - 4)
 		20
 	**/
-	static public function prem(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function prem(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a string containing the prettified form of expr.
 		
 		For information on keyword arguments see pretty_print function.
 	**/
-	static public function pretty(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function pretty(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Prints expr in pretty form.
 		
@@ -8388,7 +8388,7 @@ package scipy.interpolate.interpnd_info;
 		order : bool or string, optional
 		    set to 'none' for long expressions if slow; default is None
 	**/
-	static public function pretty_print(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function pretty_print(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		View expression or LaTeX markup in PNG, DVI, PostScript or PDF form.
 		
@@ -8472,7 +8472,7 @@ package scipy.interpolate.interpnd_info;
 		
 		>>> preview(x + y, outputTexFile="sample.tex")
 	**/
-	static public function preview(expr:Dynamic, ?output:Dynamic, ?viewer:Dynamic, ?euler:Dynamic, ?packages:Dynamic, ?filename:Dynamic, ?outputbuffer:Dynamic, ?preamble:Dynamic, ?dvioptions:Dynamic, ?outputTexFile:Dynamic, latex_settings:Dynamic):Dynamic;
+	static public function preview(expr:Dynamic, ?output:Dynamic, ?viewer:Dynamic, ?euler:Dynamic, ?packages:Dynamic, ?filename:Dynamic, ?outputbuffer:Dynamic, ?preamble:Dynamic, ?dvioptions:Dynamic, ?outputTexFile:Dynamic, ?latex_settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the largest prime smaller than n.
 		
@@ -8661,11 +8661,11 @@ package scipy.interpolate.interpnd_info;
 		>>> eq.as_content_primitive()
 		(2, x*(x + 1) + 1)
 	**/
-	static public function primitive(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function primitive(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a common number field for all extensions. 
 	**/
-	static public function primitive_element(extension:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function primitive_element(extension:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the smallest primitive root or None
 		
@@ -8744,7 +8744,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Print output of python() function
 	**/
-	static public function print_python(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function print_python(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Prints a tree representation of "node".
 		
@@ -8841,7 +8841,7 @@ package scipy.interpolate.interpnd_info;
 		>>> product(i, (i, 1, k), (k, 1, n))
 		Product(factorial(k), (k, 1, n))
 	**/
-	static public function product(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function product(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append ``obj``'s name to global ``__all__`` variable (call site).
 		
@@ -8877,7 +8877,7 @@ package scipy.interpolate.interpnd_info;
 		Return Python interpretation of passed expression
 		(can be passed to the exec() function without any modifications)
 	**/
-	static public function python(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function python(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the list of quadratic residues.
 		
@@ -8903,7 +8903,7 @@ package scipy.interpolate.interpnd_info;
 		>>> quo(x**2 - 1, x - 1)
 		x + 1
 	**/
-	static public function quo(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function quo(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the radian value for the given degrees (pi = 180 degrees).
 	**/
@@ -9089,7 +9089,7 @@ package scipy.interpolate.interpnd_info;
 		http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.163.6984
 		(specifically, the second algorithm)
 	**/
-	static public function ratsimpmodprime(expr:Dynamic, G:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function ratsimpmodprime(expr:Dynamic, G:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Recursively collect sums in an expression.
 		
@@ -9108,7 +9108,7 @@ package scipy.interpolate.interpnd_info;
 		========
 		collect, collect_const, collect_sqrt
 	**/
-	static public function rcollect(expr:Dynamic, vars:Dynamic):Dynamic;
+	static public function rcollect(expr:Dynamic, ?vars:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return the real nth-root of arg if possible. If n is omitted then
 		all instances of -1**(1/odd) will be changed to -1.
@@ -9229,7 +9229,7 @@ package scipy.interpolate.interpnd_info;
 		>>> reduced(2*x**4 + y**2 - x**2 + y**3, [x**3 - x, y**3 - y])
 		([2*x, 1], x**2 + y**2 + y)
 	**/
-	static public function reduced(f:Dynamic, G:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function reduced(f:Dynamic, G:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Simplify an expression using assumptions.
 		
@@ -9292,7 +9292,7 @@ package scipy.interpolate.interpnd_info;
 		>>> rem(x**2 + 1, 2*x - 4, domain=QQ)
 		5
 	**/
-	static public function rem(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function rem(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Removes a handler from the ask system. Same syntax as register_handler
 	**/
@@ -9372,7 +9372,7 @@ package scipy.interpolate.interpnd_info;
 		>>> resultant(x**2 + 1, x**2 - 1)
 		4
 	**/
-	static public function resultant(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function resultant(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a polynomial ring returning ``(ring, x_1, ..., x_n)``.
 		
@@ -9530,7 +9530,7 @@ package scipy.interpolate.interpnd_info;
 		
 		1. http://en.wikipedia.org/wiki/Cubic_function#Trigonometric_.28and_hyperbolic.29_method
 	**/
-	static public function roots(f:Dynamic, gens:Dynamic, flags:Dynamic):Dynamic;
+	static public function roots(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?flags:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a rotation matrix for a rotation of theta (in radians) about
 		the 1-axis.
@@ -9744,7 +9744,7 @@ package scipy.interpolate.interpnd_info;
 		
 		.. [2] M. Petkovsek, H. S. Wilf, D. Zeilberger, A = B, 1996.
 	**/
-	static public function rsolve_hyper(coeffs:Dynamic, f:Dynamic, n:Dynamic, hints:Dynamic):Dynamic;
+	static public function rsolve_hyper(coeffs:Dynamic, f:Dynamic, n:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Given linear recurrence operator `\operatorname{L}` of order
 		`k` with polynomial coefficients and inhomogeneous equation
@@ -9795,7 +9795,7 @@ package scipy.interpolate.interpnd_info;
 		
 		.. [3] M. Petkovsek, H. S. Wilf, D. Zeilberger, A = B, 1996.
 	**/
-	static public function rsolve_poly(coeffs:Dynamic, f:Dynamic, n:Dynamic, hints:Dynamic):Dynamic;
+	static public function rsolve_poly(coeffs:Dynamic, f:Dynamic, n:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Given linear recurrence operator `\operatorname{L}` of order `k`
 		with polynomial coefficients and inhomogeneous equation
@@ -9848,7 +9848,7 @@ package scipy.interpolate.interpnd_info;
 		
 		rsolve_hyper
 	**/
-	static public function rsolve_ratio(coeffs:Dynamic, f:Dynamic, n:Dynamic, hints:Dynamic):Dynamic;
+	static public function rsolve_ratio(coeffs:Dynamic, f:Dynamic, n:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Check satisfiability of a propositional sentence.
 		Returns a model when it succeeds.
@@ -9968,7 +9968,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Construct a field deriving generators and domain from options and input expressions. 
 	**/
-	static public function sfield(exprs:Dynamic, symbols:Dynamic, options:Dynamic):Dynamic;
+	static public function sfield(exprs:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?options:python.KwArgs<Dynamic>):Dynamic;
 	static public var sieve : Dynamic;
 	/**
 		Sift the sequence, ``seq`` into a dictionary according to keyfunc.
@@ -10242,7 +10242,7 @@ package scipy.interpolate.interpnd_info;
 		hankel_transform, inverse_hankel_transform
 		mellin_transform, laplace_transform
 	**/
-	static public function sine_transform(f:Dynamic, x:Dynamic, k:Dynamic, hints:Dynamic):Dynamic;
+	static public function sine_transform(f:Dynamic, x:Dynamic, k:Dynamic, ?hints:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds singularities for a function.
 		Currently supported functions are:
@@ -10582,7 +10582,7 @@ package scipy.interpolate.interpnd_info;
 		    - rsolve() for solving recurrence relationships
 		    - dsolve() for solving differential equations
 	**/
-	static public function solve(f:Dynamic, symbols:Dynamic, flags:Dynamic):Dynamic;
+	static public function solve(f:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?flags:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a tuple derived from f = lhs - rhs that is either:
 		
@@ -10693,7 +10693,7 @@ package scipy.interpolate.interpnd_info;
 		>>> solve_linear_system(system, x, y)
 		{}
 	**/
-	static public function solve_linear_system(system:Dynamic, symbols:Dynamic, flags:Dynamic):Dynamic;
+	static public function solve_linear_system(system:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?flags:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solves the augmented matrix system using LUsolve and returns a dictionary
 		in which solutions are keyed to the symbols of syms *as ordered*.
@@ -10755,7 +10755,7 @@ package scipy.interpolate.interpnd_info;
 		>>> solve_poly_system([x*y - 2*y, 2*y**2 - x**2], x, y)
 		[(0, 0), (2, -sqrt(2)), (2, sqrt(2))]
 	**/
-	static public function solve_poly_system(seq:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function solve_poly_system(seq:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solve a system of rational inequalities with rational coefficients.
 		
@@ -10806,7 +10806,7 @@ package scipy.interpolate.interpnd_info;
 		Polynomial Equations using Groebner Bases, AAECC-5 on Applied Algebra,
 		Algebraic Algorithms and Error-Correcting Codes, LNCS 356 247--257, 1989
 	**/
-	static public function solve_triangulated(polys:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function solve_triangulated(polys:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solve equation of a type p(x; a_1, ..., a_k) == q(x) where both
 		p, q are univariate polynomials and f depends on k parameters.
@@ -10827,7 +10827,7 @@ package scipy.interpolate.interpnd_info;
 		>>> solve_undetermined_coeffs(Eq(a*c*x + a+b, x), [a, b], x)
 		{a: 1/c, b: -1/c}
 	**/
-	static public function solve_undetermined_coeffs(equ:Dynamic, coeffs:Dynamic, sym:Dynamic, flags:Dynamic):Dynamic;
+	static public function solve_undetermined_coeffs(equ:Dynamic, coeffs:Dynamic, sym:Dynamic, ?flags:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solves a real univariate inequality.
 		
@@ -10861,7 +10861,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sqf(2*x**5 + 16*x**4 + 50*x**3 + 76*x**2 + 56*x + 16)
 		2*(x + 1)**2*(x + 2)**3
 	**/
-	static public function sqf(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function sqf(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute a list of square-free factors of ``f``.
 		
@@ -10874,7 +10874,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sqf_list(2*x**5 + 16*x**4 + 50*x**3 + 76*x**2 + 56*x + 16)
 		(2, [(x + 1, 2), (x + 2, 3)])
 	**/
-	static public function sqf_list(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function sqf_list(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute square-free norm of ``f``.
 		
@@ -10891,7 +10891,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sqf_norm(x**2 + 1, extension=[sqrt(3)])
 		(1, x**2 - 2*sqrt(3)*x + 4, x**4 - 4*x**2 + 16)
 	**/
-	static public function sqf_norm(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function sqf_norm(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute square-free part of ``f``.
 		
@@ -10904,7 +10904,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sqf_part(x**3 - 3*x - 2)
 		x**2 - x - 2
 	**/
-	static public function sqf_part(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function sqf_part(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The square root function
 		
@@ -11046,7 +11046,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		return expr in repr form
 	**/
-	static public function srepr(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function srepr(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a ring deriving generators and domain from options and input expressions.
 		
@@ -11072,7 +11072,7 @@ package scipy.interpolate.interpnd_info;
 		>>> type(_)
 		<class 'sympy.polys.rings.PolyElement'>
 	**/
-	static public function sring(exprs:Dynamic, symbols:Dynamic, options:Dynamic):Dynamic;
+	static public function sring(exprs:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the expression as a string.
 		
@@ -11087,7 +11087,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sstr(Eq(a + b, 0))
 		'a + b == 0'
 	**/
-	static public function sstr(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function sstr(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return expr in mixed str/repr form
 		
@@ -11096,7 +11096,7 @@ package scipy.interpolate.interpnd_info;
 		
 		This function could be useful for hooking into sys.displayhook
 	**/
-	static public function sstrrepr(expr:Dynamic, settings:Dynamic):Dynamic;
+	static public function sstrrepr(expr:Dynamic, ?settings:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute Sturm sequence of ``f``.
 		
@@ -11109,7 +11109,7 @@ package scipy.interpolate.interpnd_info;
 		>>> sturm(x**3 - 2*x**2 + x - 3)
 		[x**3 - 2*x**2 + x - 3, 3*x**2 - 4*x + 1, 2*x/9 + 25/9, -2079/4]
 	**/
-	static public function sturm(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function sturm(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute subresultant PRS of ``f`` and ``g``.
 		
@@ -11122,7 +11122,7 @@ package scipy.interpolate.interpnd_info;
 		>>> subresultants(x**2 + 1, x**2 - 1)
 		[x**2 + 1, x**2 - 1, -2]
 	**/
-	static public function subresultants(f:Dynamic, g:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function subresultants(f:Dynamic, g:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates all k-subsets (combinations) from an n-element set, seq.
 		
@@ -11205,11 +11205,11 @@ package scipy.interpolate.interpnd_info;
 		Sum
 		Product, product
 	**/
-	static public function summation(f:Dynamic, symbols:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function summation(f:Dynamic, ?symbols:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates n-th Swinnerton-Dyer polynomial in `x`.  
 	**/
-	static public function swinnerton_dyer_poly(n:Dynamic, ?x:Dynamic, args:Dynamic):Dynamic;
+	static public function swinnerton_dyer_poly(n:Dynamic, ?x:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a numpy ndarray of symbols (as an object array).
 		
@@ -11381,11 +11381,11 @@ package scipy.interpolate.interpnd_info;
 		    >>> type(_[0])
 		    <class 'sympy.core.function.UndefinedFunction'>
 	**/
-	static public function symbols(names:Dynamic, args:Dynamic):Dynamic;
+	static public function symbols(names:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generates symmetric polynomial of order `n`. 
 	**/
-	static public function symmetric_poly(n:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function symmetric_poly(n:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Rewrite a polynomial in terms of elementary symmetric polynomials.
 		
@@ -11416,7 +11416,7 @@ package scipy.interpolate.interpnd_info;
 		>>> symmetrize(x**2 - y**2, formal=True)
 		(s1**2 - 2*s2, -2*y**2, [(s1, x + y), (s2, x*y)])
 	**/
-	static public function symmetrize(F:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function symmetrize(F:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Converts an arbitrary expression to a type that can be used inside SymPy.
 		
@@ -11663,7 +11663,7 @@ package scipy.interpolate.interpnd_info;
 		========
 		sympy.core.exprtools.gcd_terms, sympy.core.exprtools.factor_terms
 	**/
-	static public function terms_gcd(f:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function terms_gcd(f:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Run tests in the specified test_*.py files.
 		
@@ -11797,7 +11797,7 @@ package scipy.interpolate.interpnd_info;
 		Note that to reproduce the same hash values, you must use both the same seed
 		as well as the same architecture (32-bit vs. 64-bit).
 	**/
-	static public function test(paths:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function test(?paths:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Print a crude ASCII art plot of the SymPy expression 'expr' (which
 		should contain a single symbol, e.g. x or something else) over the
@@ -11882,7 +11882,7 @@ package scipy.interpolate.interpnd_info;
 	/**
 		Express `extension` in the field generated by `theta`. 
 	**/
-	static public function to_number_field(extension:Dynamic, ?theta:Dynamic, args:Dynamic):Dynamic;
+	static public function to_number_field(extension:Dynamic, ?theta:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Denest and combine rational expressions using symbolic methods.
 		
@@ -12103,7 +12103,7 @@ package scipy.interpolate.interpnd_info;
 		>>> trigsimp(t)
 		tanh(x)**7
 	**/
-	static public function trigsimp(expr:Dynamic, opts:Dynamic):Dynamic;
+	static public function trigsimp(expr:Dynamic, ?opts:python.KwArgs<Dynamic>):Dynamic;
 	@:native("true")
 	static public var _true : Dynamic;
 	/**
@@ -12118,7 +12118,7 @@ package scipy.interpolate.interpnd_info;
 		>>> trunc(2*x**3 + 3*x**2 + 5*x + 7, 3)
 		-x**3 - x + 1
 	**/
-	static public function trunc(f:Dynamic, p:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function trunc(f:Dynamic, p:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	static public function unbranched_argument(arg:Dynamic):Dynamic;
 	/**
 		Group ``iter`` into tuples of length ``n``. Raise an error if
@@ -12187,7 +12187,7 @@ package scipy.interpolate.interpnd_info;
 		arguments can be passed to :func:`var`.
 	**/
 	@:native("var")
-	static public function _var(names:Dynamic, args:Dynamic):Dynamic;
+	static public function _var(names:Dynamic, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a generator of the n-sized variations of ``seq`` (size N).
 		``repetition`` controls whether items in ``seq`` can appear more than once;
@@ -12241,7 +12241,7 @@ package scipy.interpolate.interpnd_info;
 		>>> viete(a*x**2 + b*x + c, [r1, r2], x)
 		[(r1 + r2, -b/a), (r1*r2, c/a)]
 	**/
-	static public function viete(f:Dynamic, ?roots:Dynamic, gens:Dynamic, args:Dynamic):Dynamic;
+	static public function viete(f:Dynamic, ?roots:Dynamic, ?gens:python.VarArgs<Dynamic>, ?args:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a polynomial ring and inject ``x_1, ..., x_n`` into the global namespace.
 		

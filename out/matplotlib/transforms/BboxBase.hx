@@ -4,10 +4,10 @@ package matplotlib.transforms;
 	static public var INVALID : Dynamic;
 	static public var INVALID_AFFINE : Dynamic;
 	static public var INVALID_NON_AFFINE : Dynamic;
-	public function __array__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __array__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __copy__(args:Dynamic):Dynamic;
-	public function __deepcopy__(args:Dynamic):Dynamic;
+	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -70,7 +70,7 @@ package matplotlib.transforms;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -324,7 +324,7 @@ package matplotlib.transforms;
 		Should be called from the constructor of any transforms that
 		depend on other transforms.
 	**/
-	public function set_children(children:Dynamic):Dynamic;
+	public function set_children(?children:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return a copy of the :class:`Bbox`, shrunk by the factor *mx*
 		in the *x* direction and the factor *my* in the *y* direction.
@@ -354,7 +354,7 @@ package matplotlib.transforms;
 		splitting the original one with vertical lines at fractional
 		positions *f1*, *f2*, ...
 	**/
-	public function splitx(args:Dynamic):Dynamic;
+	public function splitx(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		e.g., ``bbox.splitx(f1, f2, ...)``
 		
@@ -362,7 +362,7 @@ package matplotlib.transforms;
 		splitting the original one with horizontal lines at fractional
 		positions *f1*, *f2*, ...
 	**/
-	public function splity(args:Dynamic):Dynamic;
+	public function splity(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return a new :class:`Bbox` object, statically transformed by
 		the given transform.

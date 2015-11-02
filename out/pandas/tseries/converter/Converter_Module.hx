@@ -73,7 +73,7 @@ package pandas.tseries.converter;
 		label won't be shown, so we must adjust for that.
 	**/
 	static public function has_level_label(label_flags:Dynamic, vmin:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Modify the endpoints of a range as needed to avoid singularities.
 		

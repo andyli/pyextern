@@ -57,7 +57,7 @@ package pandas.core.panel;
 		method : optional, a passed method name ; possibly to take different
 		    types of propagation actions based on this
 	**/
-	public function __finalize__(other:Dynamic, ?method:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __finalize__(other:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __floordiv__(other:Dynamic):Dynamic;
 	/**
 		default object formatter
@@ -92,7 +92,7 @@ package pandas.core.panel;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
@@ -124,7 +124,7 @@ package pandas.core.panel;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pow__(other:Dynamic):Dynamic;
@@ -204,7 +204,7 @@ package pandas.core.panel;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
-	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _apply_1d(func:Dynamic, axis:Dynamic):Dynamic;
@@ -273,15 +273,15 @@ package pandas.core.panel;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict_for_slice(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict_for_slice(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for the passed axes 
 	**/
-	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		construct and returns axes if supplied in args/kwargs
 		if require_all, raise if all axis arguments are not supplied
@@ -376,13 +376,13 @@ package pandas.core.panel;
 	/**
 		return a list of the axis indicies 
 	**/
-	static public function _extract_axes(self:Dynamic, data:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _extract_axes(self:Dynamic, data:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return the slice dictionary for these axes 
 	**/
 	static public function _extract_axes_for_slice(self:Dynamic, axes:Dynamic):Dynamic;
 	static public function _extract_axis(self:Dynamic, data:Dynamic, ?axis:Dynamic, ?intersect:Dynamic):Dynamic;
-	static public function _from_axes(data:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _from_axes(data:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _get_axis(axis:Dynamic):Dynamic;
 	public function _get_axis_name(axis:Dynamic):Dynamic;
 	public function _get_axis_number(axis:Dynamic):Dynamic;
@@ -446,7 +446,7 @@ package pandas.core.panel;
 		Generate ND initialization; axes are passed
 		as required objects to __init__
 	**/
-	public function _init_data(data:Dynamic, copy:Dynamic, dtype:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _init_data(data:Dynamic, copy:Dynamic, dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _init_dict(data:Dynamic, axes:Dynamic, ?dtype:Dynamic):Dynamic;
 	public function _init_matrix(data:Dynamic, axes:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -503,7 +503,7 @@ package pandas.core.panel;
 		consolidate _data. if the blocks have changed, then clear the cache 
 	**/
 	public function _protect_consolidate(f:Dynamic):Dynamic;
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		perform the reinxed for all the axes 
 	**/
@@ -684,7 +684,7 @@ package pandas.core.panel;
 		(left, right) : (NDFrame, type of other)
 		    Aligned objects
 	**/
-	public function align(other:Dynamic, kwargs:Dynamic):Dynamic;
+	public function align(other:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return whether all elements are True over requested axis
 		
@@ -705,7 +705,7 @@ package pandas.core.panel;
 		-------
 		all : DataFrame or Panel (if level specified)
 	**/
-	public function all(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, kwargs:Dynamic):Dynamic;
+	public function all(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return whether any element is True over requested axis
 		
@@ -726,7 +726,7 @@ package pandas.core.panel;
 		-------
 		any : DataFrame or Panel (if level specified)
 	**/
-	public function any(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, kwargs:Dynamic):Dynamic;
+	public function any(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Applies function along input axis of the Panel
 		
@@ -750,7 +750,7 @@ package pandas.core.panel;
 		-------
 		result : Pandas Object
 	**/
-	public function apply(func:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function apply(func:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert the frame to a dict of dtype -> Constructor Types that each has
 		a homogeneous dtype.
@@ -840,7 +840,7 @@ package pandas.core.panel;
 		-------
 		casted : type of caller
 	**/
-	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, kwargs:Dynamic):Dynamic;
+	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fast label-based scalar accessor
 		
@@ -1093,7 +1093,7 @@ package pandas.core.panel;
 		-------
 		max : DataFrame
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return cumulative min over requested axis.
 		
@@ -1108,7 +1108,7 @@ package pandas.core.panel;
 		-------
 		min : DataFrame
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return cumulative prod over requested axis.
 		
@@ -1123,7 +1123,7 @@ package pandas.core.panel;
 		-------
 		prod : DataFrame
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return cumulative sum over requested axis.
 		
@@ -1138,7 +1138,7 @@ package pandas.core.panel;
 		-------
 		sum : DataFrame
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -1329,7 +1329,7 @@ package pandas.core.panel;
 		-------
 		filled : Panel
 	**/
-	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Restrict the info axis to set of items or wildcard
 		
@@ -1478,7 +1478,7 @@ package pandas.core.panel;
 		-------
 		value : scalar value
 	**/
-	public function get_value(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_value(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		same as values (but handles sparseness conversions) 
 	**/
@@ -1602,7 +1602,7 @@ package pandas.core.panel;
 		3    3
 		dtype: float64
 	**/
-	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, kwargs:Dynamic):Dynamic;
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var is_copy : Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are null
@@ -1623,7 +1623,7 @@ package pandas.core.panel;
 	/**
 		iteritems alias used to get around 2to3. Deprecated
 	**/
-	public function iterkv(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function iterkv(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A primarily label-location based indexer, with integer position
 		fallback.
@@ -1697,7 +1697,7 @@ package pandas.core.panel;
 		-------
 		kurt : DataFrame or Panel (if level specified)
 	**/
-	public function kurt(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function kurt(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return unbiased kurtosis over requested axis using Fishers definition of
 		kurtosis (kurtosis of normal == 0.0). Normalized by N-1
@@ -1720,7 +1720,7 @@ package pandas.core.panel;
 		-------
 		kurt : DataFrame or Panel (if level specified)
 	**/
-	public function kurtosis(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function kurtosis(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience method for subsetting final periods of time series data
 		based on a date offset
@@ -1857,7 +1857,7 @@ package pandas.core.panel;
 		-------
 		max : DataFrame or Panel (if level specified)
 	**/
-	public function max(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the mean of the values for the requested axis
 		
@@ -1878,7 +1878,7 @@ package pandas.core.panel;
 		-------
 		mean : DataFrame or Panel (if level specified)
 	**/
-	public function mean(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function mean(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the median of the values for the requested axis
 		
@@ -1899,7 +1899,7 @@ package pandas.core.panel;
 		-------
 		median : DataFrame or Panel (if level specified)
 	**/
-	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method returns the minimum of the values in the object. If you
 		want the *index* of the minimum, use ``idxmin``. This is the
@@ -1922,7 +1922,7 @@ package pandas.core.panel;
 		-------
 		min : DataFrame or Panel (if level specified)
 	**/
-	public function min(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var minor_axis : Dynamic;
 	/**
 		Return slice of panel along minor axis
@@ -2046,7 +2046,7 @@ package pandas.core.panel;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -2097,7 +2097,7 @@ package pandas.core.panel;
 		pandas.DataFrame.applymap
 		pandas.Series.map
 	**/
-	public function pipe(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return item and drop from frame. Raise KeyError if not found.
 	**/
@@ -2141,7 +2141,7 @@ package pandas.core.panel;
 		-------
 		prod : DataFrame or Panel (if level specified)
 	**/
-	public function prod(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function prod(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the product of the values for the requested axis
 		
@@ -2162,7 +2162,7 @@ package pandas.core.panel;
 		-------
 		prod : DataFrame or Panel (if level specified)
 	**/
-	public function product(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function product(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Addition of series and other, element-wise (binary operator `radd`).
 		Equivalent to ``other + panel``.
@@ -2244,7 +2244,7 @@ package pandas.core.panel;
 		-------
 		reindexed : Panel
 	**/
-	public function reindex(?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reindex(?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conform input object to new index with optional filling logic,
 		placing NA/NaN in locations having no value in the previous index. A
@@ -2336,7 +2336,7 @@ package pandas.core.panel;
 		-------
 		renamed : Panel (new object)
 	**/
-	public function rename(?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rename(?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter index and / or columns using input function or functions.
 		Function / dict values must be unique (1-to-1). Labels not contained in
@@ -2772,7 +2772,7 @@ package pandas.core.panel;
 		-------
 		sem : DataFrame or Panel (if level specified)
 	**/
-	public function sem(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sem(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		public verson of axis assignment 
 	**/
@@ -2794,7 +2794,7 @@ package pandas.core.panel;
 		    If label combo is contained, will be reference to calling Panel,
 		    otherwise a new object
 	**/
-	public function set_value(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_value(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a tuple of axis dimensions
 	**/
@@ -2842,7 +2842,7 @@ package pandas.core.panel;
 		-------
 		skew : DataFrame or Panel (if level specified)
 	**/
-	public function skew(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function skew(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Equivalent to `shift` without copying data. The shifted data will
 		not include the dropped periods and the shifted axis will be smaller
@@ -2917,7 +2917,7 @@ package pandas.core.panel;
 		-------
 		std : DataFrame or Panel (if level specified)
 	**/
-	public function std(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function std(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Subtraction of series and other, element-wise (binary operator `sub`).
 		Equivalent to ``panel - other``.
@@ -2976,7 +2976,7 @@ package pandas.core.panel;
 		-------
 		sum : DataFrame or Panel (if level specified)
 	**/
-	public function sum(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sum(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Interchange axes and swap values axes appropriately
 		
@@ -3017,7 +3017,7 @@ package pandas.core.panel;
 		taken : type of caller
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic):Dynamic;
-	public function toLong(kwargs:Dynamic):Dynamic;
+	public function toLong(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		This can be pasted into Excel, for example.
@@ -3039,7 +3039,7 @@ package pandas.core.panel;
 		  - Windows: none
 		  - OS X: none
 	**/
-	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return dense representation of NDFrame (as opposed to sparse)
 	**/
@@ -3081,7 +3081,7 @@ package pandas.core.panel;
 		Keyword arguments (and na_rep) are passed to the ``to_excel`` method
 		for each DataFrame written.
 	**/
-	public function to_excel(path:Dynamic, ?na_rep:Dynamic, ?engine:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_excel(path:Dynamic, ?na_rep:Dynamic, ?engine:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Transform wide format into long (stacked) format as DataFrame whose
 		columns are the Panel's items and whose index is a MultiIndex formed
@@ -3138,7 +3138,7 @@ package pandas.core.panel;
 		dropna : boolean, default False.
 		    If true, ALL nan rows will not be written to store.
 	**/
-	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert the object to a JSON string.
 		
@@ -3192,7 +3192,7 @@ package pandas.core.panel;
 		same type as input object with filtered info axis
 	**/
 	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
-	public function to_long(kwargs:Dynamic):Dynamic;
+	public function to_long(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		
@@ -3208,7 +3208,7 @@ package pandas.core.panel;
 		compress : type of compressor (zlib or blosc), default to None (no
 		    compression)
 	**/
-	public function to_msgpack(?path_or_buf:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_msgpack(?path_or_buf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pickle (serialize) object to input file path
 		
@@ -3287,7 +3287,7 @@ package pandas.core.panel;
 		-------
 		y : same as input
 	**/
-	public function transpose(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Floating division of series and other, element-wise (binary operator `truediv`).
 		Equivalent to ``panel / other``.
@@ -3458,7 +3458,7 @@ package pandas.core.panel;
 		var : DataFrame or Panel (if level specified)
 	**/
 	@:native("var")
-	public function _var(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _var(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is True and otherwise are from other.

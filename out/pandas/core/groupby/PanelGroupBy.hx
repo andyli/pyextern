@@ -77,7 +77,7 @@ package pandas.core.groupby;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -128,8 +128,8 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _aggregate_generic(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _aggregate_item_by_item(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _aggregate_generic(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _aggregate_item_by_item(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
@@ -150,7 +150,7 @@ package pandas.core.groupby;
 	public function _cython_agg_blocks(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _decide_output_index(output:Dynamic, labels:Dynamic):Dynamic;
-	public function _define_paths(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _define_paths(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -179,7 +179,7 @@ package pandas.core.groupby;
 	public function _make_wrapper(name:Dynamic):Dynamic;
 	static public var _obj_with_exclusions : Dynamic;
 	public function _post_process_cython_aggregate(obj:Dynamic):Dynamic;
-	public function _python_agg_general(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _python_agg_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _python_apply_general(f:Dynamic):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
@@ -192,7 +192,7 @@ package pandas.core.groupby;
 		we may need create a selection if we have non-level groupers 
 	**/
 	public function _set_selection_from_grouper():Dynamic;
-	public function _transform_general(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _transform_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _transform_item_by_item(obj:Dynamic, wrapper:Dynamic):Dynamic;
 	/**
 		try to cast the result to our obj original type,
@@ -224,7 +224,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : DataFrame
 	**/
-	public function agg(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Aggregate using input function or dict of {column -> function}
 		
@@ -239,7 +239,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : Panel
 	**/
-	public function aggregate(arg:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply function and combine results together in an intelligent way. The
 		split-apply-combine combination rules attempt to be as common sense
@@ -283,7 +283,7 @@ package pandas.core.groupby;
 		-------
 		applied : type depending on grouped object and function
 	**/
-	public function apply(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute count of group, excluding missing values 
 	**/
@@ -352,7 +352,7 @@ package pandas.core.groupby;
 		>>> grouped = df.groupby(lambda x: mapping[x])
 		>>> grouped.filter(lambda x: x['A'].sum() + x['B'].sum() > 0)
 	**/
-	public function filter(func:Dynamic, ?dropna:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute first of group values
 	**/
@@ -550,7 +550,7 @@ package pandas.core.groupby;
 		>>> grouped = df.groupby(lambda x: mapping[x])
 		>>> grouped.transform(lambda x: (x - x.mean()) / x.std())
 	**/
-	public function transform(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute variance of groups, excluding missing values
 		

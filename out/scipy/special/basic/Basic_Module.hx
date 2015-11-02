@@ -156,7 +156,7 @@ package scipy.special.basic;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute nt zeros of the Kelvin function bei x
 		    
@@ -186,7 +186,7 @@ package scipy.special.basic;
 		`_bessel_diff_formula` is deprecated!
 		bessel_diff_formula is a private function, do not use it!
 	**/
-	static public function bessel_diff_formula(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bessel_diff_formula(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the zeros of Airy Functions Bi(x) and Bi'(x), b and b'
 		respectively, and the associated values of Ai(b') and Ai'(b).

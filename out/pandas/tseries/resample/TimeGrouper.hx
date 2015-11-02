@@ -41,7 +41,7 @@ package pandas.tseries.resample;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package pandas.tseries.resample;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

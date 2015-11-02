@@ -24,10 +24,10 @@ package scipy.fftpack.basic;
 		under the assumption that arr = asarray(original)
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
-	static public function _fake_cfft(x:Dynamic, n:Dynamic, a:Dynamic, kw:Dynamic):Dynamic;
-	static public function _fake_cfftnd(x:Dynamic, shape:Dynamic, a:Dynamic, kw:Dynamic):Dynamic;
-	static public function _fake_crfft(x:Dynamic, n:Dynamic, a:Dynamic, kw:Dynamic):Dynamic;
-	static public function _fake_rfft(x:Dynamic, n:Dynamic, a:Dynamic, kw:Dynamic):Dynamic;
+	static public function _fake_cfft(x:Dynamic, n:Dynamic, ?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function _fake_cfftnd(x:Dynamic, shape:Dynamic, ?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function _fake_crfft(x:Dynamic, n:Dynamic, ?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function _fake_rfft(x:Dynamic, n:Dynamic, ?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Internal auxiliary function for _raw_fft, _raw_fftnd.
 	**/

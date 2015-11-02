@@ -48,7 +48,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(parent:Dynamic, group:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -65,7 +65,7 @@ package pandas.io.pytables;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -123,7 +123,7 @@ package pandas.io.pytables;
 	/**
 		support fully deleting the node in its entirety (only) - where specification must be None 
 	**/
-	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, kwargs:Dynamic):Dynamic;
+	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var format_type : Dynamic;
 	/**
 		get our object attributes 
@@ -143,7 +143,7 @@ package pandas.io.pytables;
 	static public var pandas_kind : Dynamic;
 	public var pandas_type : Dynamic;
 	public var pathname : Dynamic;
-	public function read(kwargs:Dynamic):Dynamic;
+	public function read(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set our object attributes 
 	**/
@@ -170,5 +170,5 @@ package pandas.io.pytables;
 		are we trying to operate on an old version? 
 	**/
 	public function validate_version(?where:Dynamic):Dynamic;
-	public function write(kwargs:Dynamic):Dynamic;
+	public function write(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

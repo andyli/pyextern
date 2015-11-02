@@ -86,7 +86,7 @@ package matplotlib.figure;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -136,7 +136,7 @@ package matplotlib.figure;
 	/**
 		make a hashable key out of args and kwargs
 	**/
-	public function _make_key(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _make_key(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _repr_html_():Dynamic;
 	public function _set_artist_props(a:Dynamic):Dynamic;
 	public function _set_dpi(dpi:Dynamic):Dynamic;
@@ -239,7 +239,7 @@ package matplotlib.figure;
 		  yticks: sequence of floats
 		  zorder: any number         
 	**/
-	public function add_axes(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_axes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		whenever the axes state change, ``func(self)`` will be called
 	**/
@@ -340,7 +340,7 @@ package matplotlib.figure;
 		  yticks: sequence of floats
 		  zorder: any number         
 	**/
-	public function add_subplot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_subplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var aname : Dynamic;
 	/**
 		Date ticklabels often overlap, so it is useful to rotate them
@@ -536,7 +536,7 @@ package matplotlib.figure;
 		    :meth:`~matplotlib.colorbar.ColorbarBase.set_label` method
 		    to label the colorbar.
 	**/
-	public function colorbar(mappable:Dynamic, ?cax:Dynamic, ?ax:Dynamic, ?use_gridspec:Dynamic, kw:Dynamic):Dynamic;
+	public function colorbar(mappable:Dynamic, ?cax:Dynamic, ?ax:Dynamic, ?use_gridspec:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Test whether the mouse event occurred on the figure.
 		
@@ -562,7 +562,7 @@ package matplotlib.figure;
 		Render the figure using :class:`matplotlib.backend_bases.RendererBase`
 		instance *renderer*.
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		draw :class:`matplotlib.artist.Artist` instance *a* only --
 		this is available only after the figure is drawn
@@ -626,7 +626,7 @@ package matplotlib.figure;
 		Additional kwargs are Artist kwargs passed on to
 		:class:`~matplotlib.image.FigureImage`
 	**/
-	public function figimage(X:Dynamic, ?xo:Dynamic, ?yo:Dynamic, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?resize:Dynamic, kwargs:Dynamic):Dynamic;
+	public function figimage(X:Dynamic, ?xo:Dynamic, ?yo:Dynamic, ?alpha:Dynamic, ?norm:Dynamic, ?cmap:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?resize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -708,7 +708,7 @@ package matplotlib.figure;
 		  yticks: sequence of floats
 		  zorder: any number         
 	**/
-	public function gca(kwargs:Dynamic):Dynamic;
+	public function gca(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return filter function to be used for agg filter
 	**/
@@ -882,7 +882,7 @@ package matplotlib.figure;
 	/**
 		get the figure bounding box in display space; kwargs are void
 	**/
-	public function get_window_extent(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_window_extent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the :class:`Artist`'s zorder.
 	**/
@@ -1042,7 +1042,7 @@ package matplotlib.figure;
 		
 		.. plot:: mpl_examples/pylab_examples/figlegend_demo.py
 	**/
-	public function legend(handles:Dynamic, labels:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function legend(handles:Dynamic, labels:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var mouseover : Dynamic;
 	/**
 		Fire an event when property changed, calling all of the
@@ -1165,7 +1165,7 @@ package matplotlib.figure;
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the current axes to be a and return a
 	**/
@@ -1176,7 +1176,7 @@ package matplotlib.figure;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/
@@ -1478,7 +1478,7 @@ package matplotlib.figure;
 		Update the :class:`SubplotParams` with *kwargs* (defaulting to rc when
 		*None*) and update the subplot locations
 	**/
-	public function subplots_adjust(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function subplots_adjust(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a centered title to the figure.
 		
@@ -1503,7 +1503,7 @@ package matplotlib.figure;
 		
 		  fig.suptitle('this is the figure title', fontsize=12)
 	**/
-	public function suptitle(t:Dynamic, kwargs:Dynamic):Dynamic;
+	public function suptitle(t:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add text to figure.
 		
@@ -1528,7 +1528,7 @@ package matplotlib.figure;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1560,7 +1560,7 @@ package matplotlib.figure;
 		  y: float         
 		  zorder: any number         
 	**/
-	public function text(x:Dynamic, y:Dynamic, s:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Adjust subplot parameters to give specified padding.
 		

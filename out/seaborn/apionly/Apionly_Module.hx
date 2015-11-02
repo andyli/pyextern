@@ -75,7 +75,7 @@ package seaborn.apionly;
 	/**
 		Grab current axis and label it.
 	**/
-	static public function axlabel(xlabel:Dynamic, ylabel:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axlabel(xlabel:Dynamic, ylabel:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Show point estimates and confidence intervals as rectangular bars.
 		
@@ -251,7 +251,7 @@ package seaborn.apionly;
 		    ...                  linewidth=2.5, facecolor=(1, 1, 1, 0),
 		    ...                  errcolor=".2", edgecolor=".2")
 	**/
-	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette that blends between a list of colors.
 		
@@ -302,7 +302,7 @@ package seaborn.apionly;
 		boot_dist: array
 		    array of bootstrapped statistic values
 	**/
-	static public function bootstrap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bootstrap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a box plot to show distributions with respect to categories.
 		
@@ -467,7 +467,7 @@ package seaborn.apionly;
 		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
-	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of unique data values.
 		
@@ -789,7 +789,7 @@ package seaborn.apionly;
 		    ...                  sns.color_palette("OrRd", 3))
 		    >>> g = sns.clustermap(flights, row_colors=season_colors)
 	**/
-	static public function clustermap(data:Dynamic, ?pivot_kws:Dynamic, ?method:Dynamic, ?metric:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?cbar_kws:Dynamic, ?row_cluster:Dynamic, ?col_cluster:Dynamic, ?row_linkage:Dynamic, ?col_linkage:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function clustermap(data:Dynamic, ?pivot_kws:Dynamic, ?method:Dynamic, ?metric:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?cbar_kws:Dynamic, ?row_cluster:Dynamic, ?col_cluster:Dynamic, ?row_linkage:Dynamic, ?col_linkage:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the coefficients from a linear model.
 		
@@ -944,7 +944,7 @@ package seaborn.apionly;
 		ax : matplotlib axis
 		    Axis object with plot.
 	**/
-	static public function corrplot(data:Dynamic, ?names:Dynamic, ?annot:Dynamic, ?sig_stars:Dynamic, ?sig_tail:Dynamic, ?sig_corr:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?diag_names:Dynamic, ?method:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function corrplot(data:Dynamic, ?names:Dynamic, ?annot:Dynamic, ?sig_stars:Dynamic, ?sig_tail:Dynamic, ?sig_corr:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?diag_names:Dynamic, ?method:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Show the counts of observations in each categorical bin using bars.
 		
@@ -1052,7 +1052,7 @@ package seaborn.apionly;
 		    ...                    linewidth=5,
 		    ...                    edgecolor=sns.color_palette("dark", 3))
 	**/
-	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function countplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette with color names from Crayola crayons.
 		
@@ -1712,7 +1712,7 @@ package seaborn.apionly;
 		    ...   .despine(left=True))  #doctest: +ELLIPSIS
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
-	static public function factorplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?col_wrap:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?kind:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?margin_titles:Dynamic, ?facet_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function factorplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?col_wrap:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?kind:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?margin_titles:Dynamic, ?facet_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the path of the seaborn data directory.
 		
@@ -1907,7 +1907,7 @@ package seaborn.apionly;
 		    >>> with sns.axes_style("white"):
 		    ...     ax = sns.heatmap(corr, mask=mask, vmax=.3, square=True)
 	**/
-	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?ax:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?ax:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a set of evenly spaced colors in HLS hue space.
 		
@@ -2060,7 +2060,7 @@ package seaborn.apionly;
 		ax : Matplotlib axis
 		    Axis with the contour plot.
 	**/
-	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate the IQR for an array of numbers.
 	**/
@@ -2197,7 +2197,7 @@ package seaborn.apionly;
 		    ...                   annot_kws=dict(stat="r"),
 		    ...                   s=40, edgecolor="w", linewidth=1)
 	**/
-	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fit and plot a univariate or bivariate kernel density estimate.
 		
@@ -2327,7 +2327,7 @@ package seaborn.apionly;
 		    >>> ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
 		    ...                  cmap="Blues", shade=True, shade_lowest=False)
 	**/
-	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a sequential palette that blends from light to ``color``.
 		
@@ -2675,7 +2675,7 @@ package seaborn.apionly;
 		kws : dict, optional
 		    Passed to pandas.read_csv
 	**/
-	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, kws:Dynamic):Dynamic;
+	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return discrete colors from a matplotlib palette.
 		
@@ -3193,7 +3193,7 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci=68)
 	**/
-	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Plot today's daily puppy. Only works in the IPython notebook.
@@ -3526,7 +3526,7 @@ package seaborn.apionly;
 		ax : matplotlib axes
 		    The Axes object with the plot on it.
 	**/
-	static public function rugplot(a:Dynamic, ?height:Dynamic, ?axis:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rugplot(a:Dynamic, ?height:Dynamic, ?axis:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a fully saturated color with the same hue.
 		
@@ -3905,14 +3905,14 @@ package seaborn.apionly;
 		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
 		    ...                    jitter=True, color="white", edgecolor="gray")
 	**/
-	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a symmetric matrix with colormap and statistic values.
 		
 		NOTE: This function is deprecated in favor of :func:`heatmap` and will
 		be removed in a forthcoming release.
 	**/
-	static public function symmatplot(mat:Dynamic, ?p_mat:Dynamic, ?names:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?annot:Dynamic, ?diag_names:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function symmatplot(mat:Dynamic, ?p_mat:Dynamic, ?names:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?annot:Dynamic, ?diag_names:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot one or more timeseries with flexible representation of uncertainty.
 		
@@ -4059,7 +4059,7 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.tsplot(data=data, err_style="unit_traces")
 	**/
-	static public function tsplot(data:Dynamic, ?time:Dynamic, ?unit:Dynamic, ?condition:Dynamic, ?value:Dynamic, ?err_style:Dynamic, ?ci:Dynamic, ?interpolate:Dynamic, ?color:Dynamic, ?estimator:Dynamic, ?n_boot:Dynamic, ?err_palette:Dynamic, ?err_kws:Dynamic, ?legend:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tsplot(data:Dynamic, ?time:Dynamic, ?unit:Dynamic, ?condition:Dynamic, ?value:Dynamic, ?err_style:Dynamic, ?ci:Dynamic, ?interpolate:Dynamic, ?color:Dynamic, ?estimator:Dynamic, ?n_boot:Dynamic, ?err_palette:Dynamic, ?err_kws:Dynamic, ?legend:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Retrieve a URL into a temporary location on disk.
@@ -4303,7 +4303,7 @@ package seaborn.apionly;
 		    ...   .add_legend(title="smoker"))  # doctest: +ELLIPSIS
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
-	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function violinplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?bw:Dynamic, ?cut:Dynamic, ?scale:Dynamic, ?scale_hue:Dynamic, ?gridsize:Dynamic, ?width:Dynamic, ?inner:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette with color names from the xkcd color survey.
 		

@@ -12,7 +12,7 @@ package seaborn.distributions;
 	/**
 		Plot a joint KDE estimate as a bivariate contour plot.
 	**/
-	static public function _bivariate_kdeplot(x:Dynamic, y:Dynamic, filled:Dynamic, fill_lowest:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, axlabel:Dynamic, ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _bivariate_kdeplot(x:Dynamic, y:Dynamic, filled:Dynamic, fill_lowest:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, axlabel:Dynamic, ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate number of hist bins using Freedman-Diaconis rule.
 	**/
@@ -41,7 +41,7 @@ package seaborn.distributions;
 	/**
 		Plot a univariate kernel density estimate on one of the axes.
 	**/
-	static public function _univariate_kdeplot(data:Dynamic, shade:Dynamic, vertical:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, legend:Dynamic, ax:Dynamic, ?cumulative:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _univariate_kdeplot(data:Dynamic, shade:Dynamic, vertical:Dynamic, kernel:Dynamic, bw:Dynamic, gridsize:Dynamic, cut:Dynamic, clip:Dynamic, legend:Dynamic, ax:Dynamic, ?cumulative:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette that blends between a list of colors.
 		
@@ -413,7 +413,7 @@ package seaborn.distributions;
 		    ...                   annot_kws=dict(stat="r"),
 		    ...                   s=40, edgecolor="w", linewidth=1)
 	**/
-	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function jointplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?kind:Dynamic, ?stat_func:Dynamic, ?color:Dynamic, ?size:Dynamic, ?ratio:Dynamic, ?space:Dynamic, ?dropna:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?joint_kws:Dynamic, ?marginal_kws:Dynamic, ?annot_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fit and plot a univariate or bivariate kernel density estimate.
 		
@@ -543,7 +543,7 @@ package seaborn.distributions;
 		    >>> ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
 		    ...                  cmap="Blues", shade=True, shade_lowest=False)
 	**/
-	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot datapoints in an array as sticks on an axis.
 		
@@ -565,7 +565,7 @@ package seaborn.distributions;
 		ax : matplotlib axes
 		    The Axes object with the plot on it.
 	**/
-	static public function rugplot(a:Dynamic, ?height:Dynamic, ?axis:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rugplot(a:Dynamic, ?height:Dynamic, ?axis:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Independently manipulate the h, l, or s channels of a color.
 		

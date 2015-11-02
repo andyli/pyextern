@@ -82,7 +82,7 @@ package matplotlib.contour;
 		.. plot:: mpl_examples/misc/contour_manual.py
 	**/
 	@:native("__init__")
-	public function ___init__(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -99,7 +99,7 @@ package matplotlib.contour;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -172,7 +172,7 @@ package matplotlib.contour;
 		Must set self.levels, self.zmin and self.zmax, and update axes
 		limits.
 	**/
-	public function _process_args(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _process_args(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Color argument processing for contouring.
 		
@@ -352,7 +352,7 @@ package matplotlib.contour;
 		
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 	**/
-	public function clabel(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function clabel(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds contour that is closest to a point.  Defaults to
 		measuring distance in pixels (screen space - useful for manual

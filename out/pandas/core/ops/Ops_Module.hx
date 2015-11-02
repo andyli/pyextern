@@ -10,13 +10,13 @@ package pandas.core.ops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _arith_doc_FRAME : Dynamic;
-	static public function _arith_method_FRAME(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, eval_kwargs:Dynamic):Dynamic;
-	static public function _arith_method_PANEL(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _arith_method_FRAME(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _arith_method_PANEL(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 	**/
-	static public function _arith_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _arith_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?fill_zeros:Dynamic, ?default_axis:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
@@ -31,7 +31,7 @@ package pandas.core.ops;
 	static public function _comp_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?masker:Dynamic):Dynamic;
 	static public function _create_methods(arith_method:Dynamic, radd_func:Dynamic, comp_method:Dynamic, bool_method:Dynamic, use_numexpr:Dynamic, ?special:Dynamic, ?default_axis:Dynamic):Dynamic;
 	static public function _flex_comp_method_FRAME(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?masker:Dynamic):Dynamic;
-	static public function _flex_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _flex_method_SERIES(op:Dynamic, name:Dynamic, str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public var _op_descriptions : Dynamic;
 	static public var _op_names : Dynamic;

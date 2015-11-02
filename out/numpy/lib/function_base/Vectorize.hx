@@ -5,7 +5,7 @@ package numpy.lib.function_base;
 		Return arrays with the results of `pyfunc` broadcast (vectorized) over
 		`args` and `kwargs` not in `excluded`.
 	**/
-	public function __call__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -63,7 +63,7 @@ package numpy.lib.function_base;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

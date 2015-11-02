@@ -65,7 +65,7 @@ package pandas.core.categorical;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -133,7 +133,7 @@ package pandas.core.categorical;
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
-	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _delegate_method(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _delegate_property_get(name:Dynamic):Dynamic;
 	public function _delegate_property_set(name:Dynamic, new_values:Dynamic):Dynamic;
 	/**
@@ -179,7 +179,7 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	public function add_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be ordered
 		
@@ -189,7 +189,7 @@ package pandas.core.categorical;
 		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
 		   with ordered set to True
 	**/
-	public function as_ordered(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function as_ordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be unordered
 		
@@ -199,7 +199,7 @@ package pandas.core.categorical;
 		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
 		   with ordered set to False
 	**/
-	public function as_unordered(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function as_unordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The categories of this categorical.
 		
@@ -263,7 +263,7 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	public function remove_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Removes categories which are not used.
 		
@@ -285,7 +285,7 @@ package pandas.core.categorical;
 		remove_categories
 		set_categories
 	**/
-	public function remove_unused_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove_unused_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Renames categories.
 		
@@ -318,7 +318,7 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	public function rename_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rename_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reorders categories as specified in new_categories.
 		
@@ -352,7 +352,7 @@ package pandas.core.categorical;
 		remove_unused_categories
 		set_categories
 	**/
-	public function reorder_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reorder_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the categories to the specified new_categories.
 		
@@ -401,5 +401,5 @@ package pandas.core.categorical;
 		remove_categories
 		remove_unused_categories
 	**/
-	public function set_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

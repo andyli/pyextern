@@ -58,7 +58,7 @@ package matplotlib.animation;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -102,7 +102,7 @@ package matplotlib.animation;
 	public function _draw_frame(framedata:Dynamic):Dynamic;
 	public function _draw_next_frame(framedata:Dynamic, blit:Dynamic):Dynamic;
 	public function _end_redraw(evt:Dynamic):Dynamic;
-	public function _handle_resize(args:Dynamic):Dynamic;
+	public function _handle_resize(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _init_draw():Dynamic;
 	public function _post_draw(framedata:Dynamic, blit:Dynamic):Dynamic;
 	public function _pre_draw(framedata:Dynamic, blit:Dynamic):Dynamic;
@@ -115,13 +115,13 @@ package matplotlib.animation;
 		Starts interactive animation. Adds the draw frame command to the GUI
 		handler, calls show to start the event loop.
 	**/
-	public function _start(args:Dynamic):Dynamic;
+	public function _start(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Handler for getting events. By default, gets the next frame in the
 		sequence and hands the data off to be drawn.
 	**/
-	public function _step(args:Dynamic):Dynamic;
-	public function _stop(args:Dynamic):Dynamic;
+	public function _step(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _stop(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Creates a new sequence of frame information.
 	**/

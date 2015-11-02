@@ -13,7 +13,7 @@ package pandas.sparse.array;
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 	**/
-	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		provide concatenation of an sparse/dense array of arrays each of which is a single dtype
 		

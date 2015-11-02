@@ -58,7 +58,7 @@ package seaborn.categorical;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -132,7 +132,7 @@ package seaborn.categorical;
 	/**
 		Draw a line orthogonal to the value axis at width of density.
 	**/
-	public function draw_to_density(ax:Dynamic, center:Dynamic, val:Dynamic, support:Dynamic, density:Dynamic, split:Dynamic, kws:Dynamic):Dynamic;
+	public function draw_to_density(ax:Dynamic, center:Dynamic, val:Dynamic, support:Dynamic, density:Dynamic, split:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw the violins onto `ax`.
 	**/

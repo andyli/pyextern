@@ -44,7 +44,7 @@ package pandas.computation.align;
 		wrapper around numpy.result_type which overcomes the NPY_MAXARGS (32)
 		argument limit 
 	**/
-	static public function _result_type_many(arrays_and_dtypes:Dynamic):Dynamic;
+	static public function _result_type_many(?arrays_and_dtypes:python.VarArgs<Dynamic>):Dynamic;
 	static public function _zip_axes_from_type(typ:Dynamic, new_axes:Dynamic):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function

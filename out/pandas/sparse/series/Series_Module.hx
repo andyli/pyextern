@@ -16,7 +16,7 @@ package pandas.sparse.series;
 		str_rep, default_axis, fill_zeros and eval_kwargs are not used, but are present
 		for compatibility.
 	**/
-	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, eval_kwargs:Dynamic):Dynamic;
+	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert a scipy.sparse.coo_matrix to a SparseSeries.
 		Use the defaults given in the SparseSeries constructor. 

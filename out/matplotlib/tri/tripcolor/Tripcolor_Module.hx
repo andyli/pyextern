@@ -55,6 +55,6 @@ package matplotlib.tri.tripcolor;
 		
 		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
 	**/
-	static public function tripcolor(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

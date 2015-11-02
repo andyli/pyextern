@@ -4,7 +4,7 @@ package numpy.lib.utils;
 	/**
 		Decorator call.  Refer to ``decorate``.
 	**/
-	public function __call__(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __call__(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -62,7 +62,7 @@ package numpy.lib.utils;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

@@ -60,7 +60,7 @@ package pandas.core.strings;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,7 +99,7 @@ package pandas.core.strings;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _wrap_result(result:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _wrap_result(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _wrap_result_expand(result:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be capitalized.
@@ -204,7 +204,7 @@ package pandas.core.strings;
 		-------
 		counts : Series/Index of integer values
 	**/
-	public function count(pat:Dynamic, ?flags:Dynamic, kwargs:Dynamic):Dynamic;
+	public function count(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Decode character string in the Series/Index to unicode
 		using indicated encoding. Equivalent to :meth:`str.decode`.
@@ -340,7 +340,7 @@ package pandas.core.strings;
 		-------
 		matches : Series/Index of lists
 	**/
-	public function findall(pat:Dynamic, ?flags:Dynamic, kwargs:Dynamic):Dynamic;
+	public function findall(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Extract element from lists, tuples, or strings in each element in the
 		Series/Index.
@@ -1023,7 +1023,7 @@ package pandas.core.strings;
 		0             line to be\nwrapped
 		1    another line\nto be\nwrapped
 	**/
-	public function wrap(width:Dynamic, kwargs:Dynamic):Dynamic;
+	public function wrap(width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		"
 		Filling left side of strings in the Series/Index with 0.

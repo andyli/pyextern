@@ -187,7 +187,7 @@ package matplotlib.tri;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	static public function tricontour(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontour(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -362,7 +362,7 @@ package matplotlib.tri;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	static public function tricontourf(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontourf(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a pseudocolor plot of an unstructured triangular grid.
 		
@@ -406,7 +406,7 @@ package matplotlib.tri;
 		
 		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
 	**/
-	static public function tripcolor(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tripcolor(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a unstructured triangular grid as lines and/or markers.
 		
@@ -443,6 +443,6 @@ package matplotlib.tri;
 		
 		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
 	**/
-	static public function triplot(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function triplot(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

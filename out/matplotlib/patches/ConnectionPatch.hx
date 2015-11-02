@@ -86,7 +86,7 @@ package matplotlib.patches;
 		=================   ===================================================
 	**/
 	@:native("__init__")
-	public function ___init__(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -103,7 +103,7 @@ package matplotlib.patches;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -551,7 +551,7 @@ package matplotlib.patches;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/
@@ -603,7 +603,7 @@ package matplotlib.patches;
 		Without argument (or with arrowstyle=None), return
 		available box styles as a list of strings.
 	**/
-	public function set_arrowstyle(?arrowstyle:Dynamic, kw:Dynamic):Dynamic;
+	public function set_arrowstyle(?arrowstyle:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the :class:`~matplotlib.axes.Axes` instance in which the
 		artist resides, if any.
@@ -682,7 +682,7 @@ package matplotlib.patches;
 		Without argument (or with connectionstyle=None), return
 		available styles as a list of strings.
 	**/
-	public function set_connectionstyle(connectionstyle:Dynamic, kw:Dynamic):Dynamic;
+	public function set_connectionstyle(connectionstyle:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replace the contains test used by this artist. The new picker
 		should be a callable function which determines whether the

@@ -18,7 +18,7 @@ package numpy.core.defchararray;
 		do not use 'None' to indicate a default value.  In these cases,
 		we need to remove all `None` arguments, and those following them.
 	**/
-	static public function _clean_args(args:Dynamic):Dynamic;
+	static public function _clean_args(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Helper function that returns the number of characters per field in
 		a string or unicode array.  This is to abstract out the fact that
@@ -42,7 +42,7 @@ package numpy.core.defchararray;
 		For an operation on two ndarrays, if at least one is unicode, the
 		result should be unicode.
 	**/
-	static public function _use_unicode(args:Dynamic):Dynamic;
+	static public function _use_unicode(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _vec_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**

@@ -88,5 +88,5 @@ package pandas.stats._interface;
 		The appropriate OLS object, which allows you to obtain betas and various
 		statistics, such as std err, t-stat, etc.
 	**/
-	static public function ols(kwargs:Dynamic):Dynamic;
+	static public function ols(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

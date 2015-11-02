@@ -41,7 +41,7 @@ package matplotlib.legend_handler;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?marker_pad:Dynamic, ?numpoints:Dynamic, kw:Dynamic):Dynamic;
+	public function ___init__(?marker_pad:Dynamic, ?numpoints:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package matplotlib.legend_handler;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

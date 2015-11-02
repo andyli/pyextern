@@ -87,7 +87,7 @@ package pandas.core.indexing;
 	/**
 		We likely want to take the cross-product
 	**/
-	static public function maybe_convert_ix(args:Dynamic):Dynamic;
+	static public function maybe_convert_ix(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
 	static public function need_slice(obj:Dynamic):Dynamic;
 }

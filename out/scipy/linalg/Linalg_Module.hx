@@ -116,7 +116,7 @@ package scipy.linalg;
 		       [ 0.,  0.,  0.,  4.,  5.],
 		       [ 0.,  0.,  0.,  6.,  7.]])
 	**/
-	static public function block_diag(arrs:Dynamic):Dynamic;
+	static public function block_diag(?arrs:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the Cholesky decomposition of a matrix, to use in cho_solve
 		
@@ -1005,7 +1005,7 @@ package scipy.linalg;
 		expm2 : (N, N) ndarray
 		    Matrix exponential of `A`
 	**/
-	static public function expm2(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function expm2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`expm3` is deprecated, use `expm` instead!
 		
@@ -1024,7 +1024,7 @@ package scipy.linalg;
 		expm3 : (N, N) ndarray
 		    Matrix exponential of `A`
 	**/
-	static public function expm3(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function expm3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Relative condition number of the matrix exponential in the Frobenius norm.
 		

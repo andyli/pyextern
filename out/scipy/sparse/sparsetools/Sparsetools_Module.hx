@@ -13,7 +13,7 @@ package scipy.sparse.sparsetools;
 		`scipy.sparse.sparsetools` is deprecated!
 		scipy.sparse.sparsetools is a private module for scipy.sparse, and should not be used.
 	**/
-	static public function _deprecated(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _deprecated(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function bsr_diagonal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_eldiv_bsr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function bsr_elmul_bsr(args:haxe.extern.Rest<Dynamic>):Dynamic;

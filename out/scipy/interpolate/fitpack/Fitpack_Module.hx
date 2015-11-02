@@ -217,7 +217,7 @@ package scipy.interpolate.fitpack;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Evaluate a bivariate B-spline and its derivatives.
 		

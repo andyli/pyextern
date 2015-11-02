@@ -42,7 +42,7 @@ package pandas.tslib;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __int__():Dynamic;
 	/**
 		Return self<=value.
@@ -103,22 +103,22 @@ package pandas.tslib;
 	public var __weakref__ : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function astimezone(kwargs:Dynamic):Dynamic;
-	public function combine(kwargs:Dynamic):Dynamic;
-	public function ctime(kwargs:Dynamic):Dynamic;
-	public function date(kwargs:Dynamic):Dynamic;
+	public function astimezone(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function combine(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ctime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function date(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var day : Dynamic;
 	public var dayofweek : Dynamic;
 	public var dayofyear : Dynamic;
 	public var days_in_month : Dynamic;
 	public var daysinmonth : Dynamic;
-	public function dst(kwargs:Dynamic):Dynamic;
-	public function fromordinal(kwargs:Dynamic):Dynamic;
-	public function fromtimestamp(kwargs:Dynamic):Dynamic;
+	public function dst(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fromordinal(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fromtimestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var hour : Dynamic;
-	public function isocalendar(kwargs:Dynamic):Dynamic;
-	public function isoformat(kwargs:Dynamic):Dynamic;
-	public function isoweekday(kwargs:Dynamic):Dynamic;
+	public function isocalendar(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function isoformat(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function isoweekday(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var max : Dynamic;
 	public var microsecond : Dynamic;
 	public var millisecond : Dynamic;
@@ -126,34 +126,34 @@ package pandas.tslib;
 	public var minute : Dynamic;
 	public var month : Dynamic;
 	public var nanosecond : Dynamic;
-	public function now(kwargs:Dynamic):Dynamic;
+	public function now(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var offset : Dynamic;
 	public var quarter : Dynamic;
-	public function replace(kwargs:Dynamic):Dynamic;
+	public function replace(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	public var second : Dynamic;
-	public function strftime(kwargs:Dynamic):Dynamic;
-	public function strptime(kwargs:Dynamic):Dynamic;
-	public function time(kwargs:Dynamic):Dynamic;
-	public function timestamp(kwargs:Dynamic):Dynamic;
-	public function timetuple(kwargs:Dynamic):Dynamic;
-	public function timetz(kwargs:Dynamic):Dynamic;
-	public function to_datetime(kwargs:Dynamic):Dynamic;
+	public function strftime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function strptime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function time(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function timestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function timetuple(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function timetz(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function to_datetime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a numpy.datetime64 object with 'ns' precision 
 	**/
 	public function to_datetime64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function today(kwargs:Dynamic):Dynamic;
-	public function toordinal(kwargs:Dynamic):Dynamic;
-	public function total_seconds(kwargs:Dynamic):Dynamic;
+	public function today(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function toordinal(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function total_seconds(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var tzinfo : Dynamic;
-	public function tzname(kwargs:Dynamic):Dynamic;
-	public function utcfromtimestamp(kwargs:Dynamic):Dynamic;
-	public function utcnow(kwargs:Dynamic):Dynamic;
-	public function utcoffset(kwargs:Dynamic):Dynamic;
-	public function utctimetuple(kwargs:Dynamic):Dynamic;
+	public function tzname(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function utcfromtimestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function utcnow(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function utcoffset(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function utctimetuple(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var value : Dynamic;
 	public var week : Dynamic;
-	public function weekday(kwargs:Dynamic):Dynamic;
+	public function weekday(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var year : Dynamic;
 }

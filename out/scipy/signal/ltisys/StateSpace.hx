@@ -45,7 +45,7 @@ package scipy.signal.ltisys;
 		Initialize the state space LTI system.
 	**/
 	@:native("__init__")
-	public function ___init__(system:Dynamic):Dynamic;
+	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -62,7 +62,7 @@ package scipy.signal.ltisys;
 	/**
 		Handle object conversion if input is an instance of `lti`
 	**/
-	static public function __new__(cls:Dynamic, system:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -197,7 +197,7 @@ package scipy.signal.ltisys;
 		sys : instance of `TransferFunction`
 		    Transfer function of the current system
 	**/
-	public function to_tf(kwargs:Dynamic):Dynamic;
+	public function to_tf(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert system representation to `ZerosPolesGain`.
 		
@@ -211,7 +211,7 @@ package scipy.signal.ltisys;
 		sys : instance of `ZerosPolesGain`
 		    Zeros, poles, gain representation of the current system
 	**/
-	public function to_zpk(kwargs:Dynamic):Dynamic;
+	public function to_zpk(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Zeros of the `ZerosPolesGain` system.
 	**/

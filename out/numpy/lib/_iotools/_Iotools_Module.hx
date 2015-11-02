@@ -74,7 +74,7 @@ package numpy.lib._iotools;
 		>>> np.lib._iotools.easy_dtype(float, names="a,b,c")
 		dtype([('a', '<f8'), ('b', '<f8'), ('c', '<f8')])
 	**/
-	static public function easy_dtype(ndtype:Dynamic, ?names:Dynamic, ?defaultfmt:Dynamic, validationargs:Dynamic):Dynamic;
+	static public function easy_dtype(ndtype:Dynamic, ?names:Dynamic, ?defaultfmt:Dynamic, ?validationargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unpack a structured data-type by collapsing nested fields and/or fields
 		with a shape.

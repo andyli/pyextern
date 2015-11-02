@@ -58,7 +58,7 @@ package scipy.integrate._ode;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -145,7 +145,7 @@ package scipy.integrate._ode;
 	/**
 		Integrate from t=t0 to t>=t1 and return (y1,t).
 	**/
-	public function run_relax(args:Dynamic):Dynamic;
+	public function run_relax(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		y,t,istate = dvode(f,jac,y,t,tout,rtol,atol,itask,istate,rwork,iwork,mf,[f_extra_args,jac_extra_args,overwrite_y])
 		
@@ -208,7 +208,7 @@ package scipy.integrate._ode;
 	/**
 		Make one integration step and return (y1,t1).
 	**/
-	public function step(args:Dynamic):Dynamic;
+	public function step(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var success : Dynamic;
 	static public var supports_run_relax : Dynamic;
 	static public var supports_solout : Dynamic;

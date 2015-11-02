@@ -54,5 +54,5 @@ package scipy.sparse.dia;
 	/**
 		Same as `upcast` but taking dtype.char as input (faster).
 	**/
-	static public function upcast_char(args:Dynamic):Dynamic;
+	static public function upcast_char(?args:python.VarArgs<Dynamic>):Dynamic;
 }

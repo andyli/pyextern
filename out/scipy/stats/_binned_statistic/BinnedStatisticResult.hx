@@ -61,7 +61,7 @@ package scipy.stats._binned_statistic;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -142,7 +142,7 @@ package scipy.stats._binned_statistic;
 	/**
 		Return a new BinnedStatisticResult object replacing specified fields with new values
 	**/
-	public function _replace(kwds:Dynamic):Dynamic;
+	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		Alias for field number 1

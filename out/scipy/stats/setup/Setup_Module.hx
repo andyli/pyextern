@@ -18,6 +18,6 @@ package scipy.stats.setup;
 		will be discarded.  An empty last part will result in a path that
 		ends with a separator.
 	**/
-	static public function join(a:Dynamic, p:Dynamic):Dynamic;
+	static public function join(a:Dynamic, ?p:python.VarArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 }

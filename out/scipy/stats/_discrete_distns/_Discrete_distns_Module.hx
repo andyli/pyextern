@@ -129,7 +129,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = bernoulli.rvs(p, size=1000)
 	**/
-	static public function bernoulli(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bernoulli(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A binomial discrete random variable.
 		
@@ -229,7 +229,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = binom.rvs(n, p, size=1000)
 	**/
-	static public function binom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function binom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Boltzmann (Truncated Discrete Exponential) random variable.
 		
@@ -329,7 +329,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = boltzmann.rvs(lambda_, N, size=1000)
 	**/
-	static public function boltzmann(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function boltzmann(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ceil(x[, out])
 		
@@ -489,7 +489,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = dlaplace.rvs(a, size=1000)
 	**/
-	static public function dlaplace(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function dlaplace(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		entr(x[, out])
 		
@@ -770,7 +770,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = geom.rvs(p, size=1000)
 	**/
-	static public function geom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function geom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Collect names of statistical distributions and their generators.
 		
@@ -885,7 +885,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> R = hypergeom.rvs(M, n, N, size=10)
 	**/
-	static public function hypergeom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function hypergeom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		log(x[, out])
 		
@@ -1088,7 +1088,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = logser.rvs(p, size=1000)
 	**/
-	static public function logser(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function logser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A negative binomial discrete random variable.
 		
@@ -1188,7 +1188,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = nbinom.rvs(n, p, size=1000)
 	**/
-	static public function nbinom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nbinom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var pairs : Dynamic;
 	/**
 		A Planck discrete exponential random variable.
@@ -1289,7 +1289,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = planck.rvs(lambda_, size=1000)
 	**/
-	static public function planck(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function planck(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A Poisson discrete random variable.
 		
@@ -1389,7 +1389,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = poisson.rvs(mu, size=1000)
 	**/
-	static public function poisson(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function poisson(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		A uniform discrete random variable.
@@ -1493,7 +1493,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = randint.rvs(low, high, size=1000)
 	**/
-	static public function randint(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function randint(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		sinh(x[, out])
 		
@@ -1658,7 +1658,7 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = skellam.rvs(mu1, mu2, size=1000)
 	**/
-	static public function skellam(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function skellam(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		sqrt(x[, out])
 		
@@ -1861,5 +1861,5 @@ package scipy.stats._discrete_distns;
 		
 		>>> r = zipf.rvs(a, size=1000)
 	**/
-	static public function zipf(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function zipf(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

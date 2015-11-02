@@ -171,11 +171,11 @@ package scipy.sparse.sputils;
 		>>> upcast('bool',complex,float)
 		<type 'numpy.complex128'>
 	**/
-	static public function upcast(args:Dynamic):Dynamic;
+	static public function upcast(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Same as `upcast` but taking dtype.char as input (faster).
 	**/
-	static public function upcast_char(args:Dynamic):Dynamic;
+	static public function upcast_char(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Determine data type for binary operation between an array of
 		type `dtype` and a scalar.

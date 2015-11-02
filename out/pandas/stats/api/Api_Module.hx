@@ -688,7 +688,7 @@ package pandas.stats.api;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function expanding_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding sum.
 		
@@ -740,7 +740,7 @@ package pandas.stats.api;
 		nw_lags_beta: int
 		   Newey-West adjusts the betas by the given lags
 	**/
-	static public function fama_macbeth(kwargs:Dynamic):Dynamic;
+	static public function fama_macbeth(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns the appropriate OLS object depending on whether you need
 		simple or panel OLS, and a full-sample or rolling/expanding OLS.
@@ -820,7 +820,7 @@ package pandas.stats.api;
 		The appropriate OLS object, which allows you to obtain betas and various
 		statistics, such as std err, t-stat, etc.
 	**/
-	static public function ols(kwargs:Dynamic):Dynamic;
+	static public function ols(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generic moving function application.
 		
@@ -1295,7 +1295,7 @@ package pandas.stats.api;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_std(a:Dynamic, kw:Dynamic):Dynamic;
+	static public function rolling_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving sum.
 		
@@ -1425,5 +1425,5 @@ package pandas.stats.api;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

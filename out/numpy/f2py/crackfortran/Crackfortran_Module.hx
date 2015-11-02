@@ -172,7 +172,7 @@ package numpy.f2py.crackfortran;
 	static public function isstring(_var:Dynamic):Dynamic;
 	static public function isstringarray(_var:Dynamic):Dynamic;
 	static public var kindselector : Dynamic;
-	static public function l_or(f:Dynamic):Dynamic;
+	static public function l_or(?f:python.VarArgs<Dynamic>):Dynamic;
 	static public var lenarraypattern : Dynamic;
 	static public var lenkindpattern : Dynamic;
 	static public function markinnerspaces(line:Dynamic):Dynamic;

@@ -51,7 +51,7 @@ package pandas.core.format;
 		justfunc : callable
 		    function used to justify str. Needed for unicode handling.
 	**/
-	static public function adjoin(space:Dynamic, lists:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var common_docstring : Dynamic;
 	/**
 		Try to find the most capable encoding supported by the console.
@@ -323,7 +323,7 @@ package pandas.core.format;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Detect terminal size and return tuple = (width, height).
 		
@@ -334,7 +334,7 @@ package pandas.core.format;
 	static public var header_style : Dynamic;
 	static public var iNaT : Dynamic;
 	static public var justify_docstring : Dynamic;
-	static public function lzip(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
 		on object arrays.
@@ -622,7 +622,7 @@ package pandas.core.format;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function set_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function set_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function single_column_table(column:Dynamic, ?align:Dynamic, ?style:Dynamic):Dynamic;
 	static public function single_row_table(row:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;

@@ -48,7 +48,7 @@ package pandas.core.base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -65,7 +65,7 @@ package pandas.core.base;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -133,9 +133,9 @@ package pandas.core.base;
 		class constructor (for this class it's just `__class__`
 	**/
 	public var _constructor : Dynamic;
-	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _delegate_property_get(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _delegate_method(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_get(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_set(name:Dynamic, value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/

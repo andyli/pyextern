@@ -58,7 +58,7 @@ package seaborn.matrix;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -133,7 +133,7 @@ package seaborn.matrix;
 		self : Grid instance
 		    Returns self for easy chaining.
 	**/
-	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Turns a list of colors into a numpy matrix and matplotlib colormap
 		
@@ -167,7 +167,7 @@ package seaborn.matrix;
 		Extract variables from data or use directly.
 	**/
 	public function format_data(data:Dynamic, pivot_kws:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic):Dynamic;
-	public function plot(metric:Dynamic, method:Dynamic, colorbar_kws:Dynamic, row_cluster:Dynamic, col_cluster:Dynamic, row_linkage:Dynamic, col_linkage:Dynamic, kws:Dynamic):Dynamic;
+	public function plot(metric:Dynamic, method:Dynamic, colorbar_kws:Dynamic, row_cluster:Dynamic, col_cluster:Dynamic, row_linkage:Dynamic, col_linkage:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plots color labels between the dendrogram and the heatmap
 		
@@ -176,17 +176,17 @@ package seaborn.matrix;
 		heatmap_kws : dict
 		    Keyword arguments heatmap
 	**/
-	public function plot_colors(xind:Dynamic, yind:Dynamic, kws:Dynamic):Dynamic;
+	public function plot_colors(xind:Dynamic, yind:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	public function plot_dendrograms(row_cluster:Dynamic, col_cluster:Dynamic, metric:Dynamic, method:Dynamic, row_linkage:Dynamic, col_linkage:Dynamic):Dynamic;
-	public function plot_matrix(colorbar_kws:Dynamic, xind:Dynamic, yind:Dynamic, kws:Dynamic):Dynamic;
+	public function plot_matrix(colorbar_kws:Dynamic, xind:Dynamic, yind:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save the figure.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set attributes on each subplot Axes.
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Divide the data by the difference between the max and min
 		

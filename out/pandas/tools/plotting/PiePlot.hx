@@ -41,7 +41,7 @@ package pandas.tools.plotting;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, ?kind:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package pandas.tools.plotting;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -149,7 +149,7 @@ package pandas.tools.plotting;
 		    str: the name of the column within the plotted DataFrame
 	**/
 	public function _parse_errorbars(label:Dynamic, err:Dynamic):Dynamic;
-	static public function _plot(ax:Dynamic, x:Dynamic, y:Dynamic, ?style:Dynamic, ?is_errorbar:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _plot(ax:Dynamic, x:Dynamic, y:Dynamic, ?style:Dynamic, ?is_errorbar:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _pop_attributes : Dynamic;
 	/**
 		Post process for each axes. Overridden in child classes

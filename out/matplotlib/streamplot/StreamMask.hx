@@ -29,7 +29,7 @@ package matplotlib.streamplot;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
-	public function __getitem__(args:Dynamic):Dynamic;
+	public function __getitem__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -59,7 +59,7 @@ package matplotlib.streamplot;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

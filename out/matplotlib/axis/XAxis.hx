@@ -61,7 +61,7 @@ package matplotlib.axis;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -131,7 +131,7 @@ package matplotlib.axis;
 		Set the clip properly for the gc
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
-	public function _set_scale(value:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _set_scale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _translate_tick_kw(kw:Dynamic, ?to_init_kw:Dynamic):Dynamic;
 	/**
 		check the axis converter for the stored units to see if the
@@ -203,7 +203,7 @@ package matplotlib.axis;
 	/**
 		Draw the axis lines, grid lines, tick lines and labels
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -512,7 +512,7 @@ package matplotlib.axis;
 		
 		  xax.grid(color='r', linestyle='-', linewidth=2)
 	**/
-	public function grid(?b:Dynamic, ?which:Dynamic, kwargs:Dynamic):Dynamic;
+	public function grid(?b:Dynamic, ?which:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if units are set on the *x* or *y* axes
 	**/
@@ -593,7 +593,7 @@ package matplotlib.axis;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set agg_filter fuction.
 	**/
@@ -722,7 +722,7 @@ package matplotlib.axis;
 		
 		ACCEPTS: A string value for the label
 	**/
-	public function set_label_text(label:Dynamic, ?fontdict:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_label_text(label:Dynamic, ?fontdict:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the formatter of the major ticker
 		
@@ -841,7 +841,7 @@ package matplotlib.axis;
 		For documentation of keyword arguments, see
 		:meth:`matplotlib.axes.Axes.tick_params`.
 	**/
-	public function set_tick_params(?which:Dynamic, ?reset:Dynamic, kw:Dynamic):Dynamic;
+	public function set_tick_params(?which:Dynamic, ?reset:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the text values of the tick labels. Return a list of Text
 		instances.  Use *kwarg* *minor=True* to select minor ticks.
@@ -858,7 +858,7 @@ package matplotlib.axis;
 		
 		ACCEPTS: sequence of strings or Text objects
 	**/
-	public function set_ticklabels(ticklabels:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_ticklabels(ticklabels:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the locations of the tick marks from sequence ticks
 		

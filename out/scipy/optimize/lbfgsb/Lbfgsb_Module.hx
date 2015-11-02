@@ -51,7 +51,7 @@ package scipy.optimize.lbfgsb;
 		maxiter : int
 		    Maximum number of iterations.
 	**/
-	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Finite-difference approximation of the gradient of a scalar function.
@@ -107,7 +107,7 @@ package scipy.optimize.lbfgsb;
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
-	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		

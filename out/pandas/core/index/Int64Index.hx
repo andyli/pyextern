@@ -89,7 +89,7 @@ package pandas.core.index;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __inv__():Dynamic;
 	public function __iter__():Dynamic;
 	public function __le__(other:Dynamic):Dynamic;
@@ -105,7 +105,7 @@ package pandas.core.index;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__():Dynamic;
@@ -298,9 +298,9 @@ package pandas.core.index;
 	/**
 		actually format my specific types 
 	**/
-	public function _format_native_types(?na_rep:Dynamic, ?quoting:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_native_types(?na_rep:Dynamic, ?quoting:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
-	public function _format_with_header(header:Dynamic, ?na_rep:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_with_header(header:Dynamic, ?na_rep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the formatted data as a unicode string
 	**/
@@ -385,7 +385,7 @@ package pandas.core.index;
 	/**
 		perform the reduction type operation if we can 
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -428,14 +428,14 @@ package pandas.core.index;
 		    if True, infer the new type of the passed values
 		kwargs : updates the default attributes for this Index
 	**/
-	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we require the we have a dtype compat for the values
 		if we are passed a non-dtype compat, then coerce using the constructor
 		
 		Must be careful not to recurse.
 	**/
-	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?dtype:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	/**
 		*this is an internal non-public method*
@@ -448,7 +448,7 @@ package pandas.core.index;
 		Necessary for making this object picklable
 	**/
 	public function _unpickle_compat(state:Dynamic):Dynamic;
-	public function _update_inplace(result:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -474,7 +474,7 @@ package pandas.core.index;
 		all : bool or array_like (if axis is specified)
 		    A single element array_like may be converted to bool.
 	**/
-	public function all(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function all(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return whether any element is True
 		
@@ -487,7 +487,7 @@ package pandas.core.index;
 		any : bool or array_like (if axis is specified)
 		    A single element array_like may be converted to bool.
 	**/
-	public function any(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function any(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append a collection of Index options together
 		
@@ -523,7 +523,7 @@ package pandas.core.index;
 		--------
 		numpy.ndarray.argsort
 	**/
-	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var asi8 : Dynamic;
 	/**
 		For a sorted index, return the most recent label up to and including
@@ -575,7 +575,7 @@ package pandas.core.index;
 		new_index : Index
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(kwargs:Dynamic):Dynamic;
+	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sorted set difference of two Index objects
 		
@@ -671,7 +671,7 @@ package pandas.core.index;
 	/**
 		Render a string representation of the Index
 	**/
-	public function format(?name:Dynamic, ?formatter:Dynamic, kwargs:Dynamic):Dynamic;
+	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -713,7 +713,7 @@ package pandas.core.index;
 	/**
 		guaranteed return of an indexer even when non-unique 
 	**/
-	public function get_indexer_for(target:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_indexer_for(target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an indexer suitable for taking from a non unique index
 		return the labels in the same order as the target, and
@@ -1121,7 +1121,7 @@ package pandas.core.index;
 		start, end : int
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
-	public function sort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sorted copy of Index
 	**/
@@ -1215,7 +1215,7 @@ package pandas.core.index;
 	/**
 		slice and dice then format 
 	**/
-	public function to_native_types(?slicer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a Series with both index and values equal to the index keys
 		useful with map for returning an indexer based on an index
@@ -1224,7 +1224,7 @@ package pandas.core.index;
 		-------
 		Series : dtype will be based on the type of the Index values.
 	**/
-	public function to_series(kwargs:Dynamic):Dynamic;
+	public function to_series(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a list of the Index values
 	**/

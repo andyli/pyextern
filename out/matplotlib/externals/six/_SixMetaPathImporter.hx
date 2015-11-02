@@ -59,7 +59,7 @@ package matplotlib.externals.six;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -98,7 +98,7 @@ package matplotlib.externals.six;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _add_module(mod:Dynamic, fullnames:Dynamic):Dynamic;
+	public function _add_module(mod:Dynamic, ?fullnames:python.VarArgs<Dynamic>):Dynamic;
 	public function _get_module(fullname:Dynamic):Dynamic;
 	public function find_module(fullname:Dynamic, ?path:Dynamic):Dynamic;
 	/**

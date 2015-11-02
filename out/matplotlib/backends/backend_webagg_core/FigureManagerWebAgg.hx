@@ -101,7 +101,7 @@ package matplotlib.backends.backend_webagg_core;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -141,7 +141,7 @@ package matplotlib.backends.backend_webagg_core;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_toolbar(canvas:Dynamic):Dynamic;
-	public function _send_event(event_type:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _send_event(event_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function add_web_socket(web_socket:Dynamic):Dynamic;
 	public function destroy():Dynamic;
 	public function full_screen_toggle():Dynamic;

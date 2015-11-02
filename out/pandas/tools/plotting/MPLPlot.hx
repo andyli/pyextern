@@ -41,7 +41,7 @@ package pandas.tools.plotting;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, ?kind:Dynamic, ?by:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?use_index:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?rot:Dynamic, ?ax:Dynamic, ?fig:Dynamic, ?title:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?sort_columns:Dynamic, ?fontsize:Dynamic, ?secondary_y:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?layout:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, ?kind:Dynamic, ?by:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?use_index:Dynamic, ?figsize:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?rot:Dynamic, ?ax:Dynamic, ?fig:Dynamic, ?title:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?sort_columns:Dynamic, ?fontsize:Dynamic, ?secondary_y:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?layout:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package pandas.tools.plotting;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -152,7 +152,7 @@ package pandas.tools.plotting;
 		    str: the name of the column within the plotted DataFrame
 	**/
 	public function _parse_errorbars(label:Dynamic, err:Dynamic):Dynamic;
-	static public function _plot(ax:Dynamic, x:Dynamic, y:Dynamic, ?style:Dynamic, ?is_errorbar:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _plot(ax:Dynamic, x:Dynamic, y:Dynamic, ?style:Dynamic, ?is_errorbar:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _pop_attributes : Dynamic;
 	/**
 		Post process for each axes. Overridden in child classes

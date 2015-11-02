@@ -184,7 +184,7 @@ package numpy.ma.core;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert to int.
 	**/
@@ -2432,7 +2432,7 @@ package numpy.ma.core;
 		 [3]
 		 [--]]
 	**/
-	public function reshape(s:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reshape(?s:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		.. warning::
 		

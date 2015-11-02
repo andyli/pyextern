@@ -13,7 +13,7 @@ package pandas.io.api;
 		Backwards compatible alias for ``HDFStore``
 		    
 	**/
-	static public function get_store(path:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read text from clipboard and pass to read_table. See read_table for the
 		full argument list
@@ -24,7 +24,7 @@ package pandas.io.api;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(kwargs:Dynamic):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		
@@ -266,7 +266,7 @@ package pandas.io.api;
 		    DataFrame from the passed in Excel file.  See notes in sheetname argument
 		    for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read a table of fixed-width formatted lines into DataFrame
 		
@@ -433,7 +433,7 @@ package pandas.io.api;
 		Also, 'delimiter' is used to specify the filler character of the
 		fields if it is not spaces (e.g., '~').
 	**/
-	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, kwds:Dynamic):Dynamic;
+	static public function read_fwf(filepath_or_buffer:Dynamic, ?colspecs:Dynamic, ?widths:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load data from Google BigQuery.
 		
@@ -493,7 +493,7 @@ package pandas.io.api;
 		-------
 		The selected object
 	**/
-	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read HTML tables into a ``list`` of ``DataFrame`` objects.
 		
@@ -700,7 +700,7 @@ package pandas.io.api;
 		-------
 		obj : type of object stored in file
 	**/
-	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_msgpack(path_or_buf:Dynamic, ?iterator:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load pickled pandas object (or any other pickled object) from the specified
 		file path
@@ -1141,7 +1141,7 @@ package pandas.io.api;
 		compress : type of compressor (zlib or blosc), default to None (no
 		           compression)
 	**/
-	static public function to_msgpack(path_or_buf:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function to_msgpack(path_or_buf:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pickle (serialize) object to input file path
 		

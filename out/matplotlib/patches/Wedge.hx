@@ -78,7 +78,7 @@ package matplotlib.patches;
 		  zorder: any number         
 	**/
 	@:native("__init__")
-	public function ___init__(center:Dynamic, r:Dynamic, theta1:Dynamic, theta2:Dynamic, ?width:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(center:Dynamic, r:Dynamic, theta1:Dynamic, theta2:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -95,7 +95,7 @@ package matplotlib.patches;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -177,7 +177,7 @@ package matplotlib.patches;
 	/**
 		Draw the :class:`Patch` to the given *renderer*.
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return whether fill is set
 	**/
@@ -503,7 +503,7 @@ package matplotlib.patches;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/

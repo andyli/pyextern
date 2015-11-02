@@ -54,7 +54,7 @@ package pandas.io.html;
 		    'high' for the high-precision converter, and 'round_trip' for the
 		    round-trip converter.
 	**/
-	static public function TextParser(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function TextParser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _HAS_BS4 : Dynamic;
 	static public var _HAS_HTML5LIB : Dynamic;
 	static public var _HAS_LXML : Dynamic;
@@ -182,9 +182,9 @@ package pandas.io.html;
 		
 		Passes kwargs to method.
 	**/
-	static public function iteritems(obj:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Parse a URL into 6 components:
 		<scheme>://<netloc>/<path>;<params>?<query>#<fragment>

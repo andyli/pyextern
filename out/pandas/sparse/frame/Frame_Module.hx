@@ -55,7 +55,7 @@ package pandas.sparse.frame;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var nan : Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use

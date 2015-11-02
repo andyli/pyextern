@@ -119,7 +119,7 @@ package pandas.tseries.index;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function cdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a fixed frequency datetime index, with day (calendar) as the default
 		frequency

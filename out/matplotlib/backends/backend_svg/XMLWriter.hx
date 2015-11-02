@@ -59,7 +59,7 @@ package matplotlib.backends.backend_svg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -101,8 +101,8 @@ package matplotlib.backends.backend_svg;
 	public function close(id:Dynamic):Dynamic;
 	public function comment(comment:Dynamic):Dynamic;
 	public function data(text:Dynamic):Dynamic;
-	public function element(tag:Dynamic, ?text:Dynamic, ?attrib:Dynamic, extra:Dynamic):Dynamic;
+	public function element(tag:Dynamic, ?text:Dynamic, ?attrib:Dynamic, ?extra:python.KwArgs<Dynamic>):Dynamic;
 	public function end(?tag:Dynamic, ?indent:Dynamic):Dynamic;
 	public function flush():Dynamic;
-	public function start(tag:Dynamic, ?attrib:Dynamic, extra:Dynamic):Dynamic;
+	public function start(tag:Dynamic, ?attrib:Dynamic, ?extra:python.KwArgs<Dynamic>):Dynamic;
 }

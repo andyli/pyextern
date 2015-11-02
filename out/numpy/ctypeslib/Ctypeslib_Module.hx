@@ -124,7 +124,7 @@ package numpy.ctypeslib;
 	/**
 		`ctypes_load_library` is deprecated, use `load_library` instead!
 	**/
-	static public function ctypes_load_library(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function ctypes_load_library(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Issues a DeprecationWarning, adds warning to `old_name`'s
 		docstring, rebinds ``old_name.__name__`` and returns the new
@@ -165,7 +165,7 @@ package numpy.ctypeslib;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public function load_library(libname:Dynamic, loader_path:Dynamic):Dynamic;
 	/**

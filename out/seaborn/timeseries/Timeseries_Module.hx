@@ -12,35 +12,35 @@ package seaborn.timeseries;
 	/**
 		Plot the kernal density estimate of the bootstrap distribution.
 	**/
-	static public function _plot_boot_kde(ax:Dynamic, x:Dynamic, boot_data:Dynamic, color:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_boot_kde(ax:Dynamic, x:Dynamic, boot_data:Dynamic, color:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot 250 traces from bootstrap.
 	**/
-	static public function _plot_boot_traces(ax:Dynamic, x:Dynamic, boot_data:Dynamic, color:Dynamic, err_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_boot_traces(ax:Dynamic, x:Dynamic, boot_data:Dynamic, color:Dynamic, err_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot translucent error bands around the central tendancy.
 	**/
-	static public function _plot_ci_band(ax:Dynamic, x:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_ci_band(ax:Dynamic, x:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot error bars at each data point.
 	**/
-	static public function _plot_ci_bars(ax:Dynamic, x:Dynamic, central_data:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_ci_bars(ax:Dynamic, x:Dynamic, central_data:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the kernal density estimate over the sample.
 	**/
-	static public function _plot_unit_kde(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_unit_kde(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot each original data point discretely.
 	**/
-	static public function _plot_unit_points(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, err_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_unit_points(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, err_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a trace for each observation in the original data.
 	**/
-	static public function _plot_unit_traces(ax:Dynamic, x:Dynamic, data:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _plot_unit_traces(ax:Dynamic, x:Dynamic, data:Dynamic, ci:Dynamic, color:Dynamic, err_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Upsample over time and plot a KDE of the bootstrap distribution.
 	**/
-	static public function _ts_kde(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ts_kde(ax:Dynamic, x:Dynamic, data:Dynamic, color:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of colors defining a color palette.
 		
@@ -283,5 +283,5 @@ package seaborn.timeseries;
 		
 		    >>> ax = sns.tsplot(data=data, err_style="unit_traces")
 	**/
-	static public function tsplot(data:Dynamic, ?time:Dynamic, ?unit:Dynamic, ?condition:Dynamic, ?value:Dynamic, ?err_style:Dynamic, ?ci:Dynamic, ?interpolate:Dynamic, ?color:Dynamic, ?estimator:Dynamic, ?n_boot:Dynamic, ?err_palette:Dynamic, ?err_kws:Dynamic, ?legend:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tsplot(data:Dynamic, ?time:Dynamic, ?unit:Dynamic, ?condition:Dynamic, ?value:Dynamic, ?err_style:Dynamic, ?ci:Dynamic, ?interpolate:Dynamic, ?color:Dynamic, ?estimator:Dynamic, ?n_boot:Dynamic, ?err_palette:Dynamic, ?err_kws:Dynamic, ?legend:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

@@ -34,7 +34,7 @@ package scipy._lib._numpy_compat;
 		-------
 		The value returned by `func`.
 	**/
-	static public function _assert_warns(warning_class:Dynamic, func:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	static public function _assert_warns(warning_class:Dynamic, func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;

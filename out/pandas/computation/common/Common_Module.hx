@@ -17,7 +17,7 @@ package pandas.computation.common;
 		wrapper around numpy.result_type which overcomes the NPY_MAXARGS (32)
 		argument limit 
 	**/
-	static public function _result_type_many(arrays_and_dtypes:Dynamic):Dynamic;
+	static public function _result_type_many(?arrays_and_dtypes:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

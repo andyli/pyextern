@@ -18,7 +18,7 @@ package numpy.core.numeric;
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	public function __exit__(exc_info:Dynamic):Dynamic;
+	public function __exit__(?exc_info:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -43,7 +43,7 @@ package numpy.core.numeric;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(kwargs:Dynamic):Dynamic;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -60,7 +60,7 @@ package numpy.core.numeric;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

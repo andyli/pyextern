@@ -42,7 +42,7 @@ package matplotlib.axes._axes;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(fig:Dynamic, rect:Dynamic, ?axisbg:Dynamic, ?frameon:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?label:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -59,7 +59,7 @@ package matplotlib.axes._axes;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -157,8 +157,8 @@ package matplotlib.axes._axes;
 	/**
 		make a twinx axes of self. This is used for twinx and twiny.
 	**/
-	public function _make_twin_axes(kl:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function _pcolorargs(funcname:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	public function _make_twin_axes(?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _pcolorargs(funcname:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Look for unit *kwargs* and update the axis instances as necessary
 	**/
@@ -312,7 +312,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function acorr(x:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function acorr(x:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add any :class:`~matplotlib.artist.Artist` to the axes.
 		
@@ -511,7 +511,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create an annotation: a piece of text referring to a data
 		point.
@@ -658,7 +658,7 @@ package matplotlib.axes._axes;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -695,7 +695,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/annotation_demo2.py
 	**/
-	public function annotate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function annotate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use :meth:`_aspect` and :meth:`_adjustable` to modify the
 		axes box or the view limits.
@@ -781,7 +781,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/arrow_demo.py
 	**/
-	public function arrow(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, kwargs:Dynamic):Dynamic;
+	public function arrow(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Autoscale the axis view to the data (toggle).
 		
@@ -916,7 +916,7 @@ package matplotlib.axes._axes;
 		--------
 		axhspan : for example plot and source code
 	**/
-	public function axhline(?y:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axhline(?y:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a horizontal span (rectangle) across the axis.
 		
@@ -982,7 +982,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/axhspan_demo.py
 	**/
-	public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axhspan(ymin:Dynamic, ymax:Dynamic, ?xmin:Dynamic, ?xmax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set axis properties.
 		
@@ -1026,7 +1026,7 @@ package matplotlib.axes._axes;
 		xmin, xmax, ymin, ymax : float
 		    The axis limits
 	**/
-	public function axis(v:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a vertical line across the axes.
 		
@@ -1112,7 +1112,7 @@ package matplotlib.axes._axes;
 		--------
 		axhspan : for example plot and source code
 	**/
-	public function axvline(?x:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axvline(?x:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a vertical span (rectangle) across the axes.
 		
@@ -1179,7 +1179,7 @@ package matplotlib.axes._axes;
 		    :meth:`axhspan`
 		        for example plot and source code
 	**/
-	public function axvspan(xmin:Dynamic, xmax:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, kwargs:Dynamic):Dynamic;
+	public function axvspan(xmin:Dynamic, xmax:Dynamic, ?ymin:Dynamic, ?ymax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a bar plot.
 		
@@ -1320,9 +1320,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidth', 'width', 'left', 'bottom', 'edgecolor', 'ecolor', 'yerr', 'height', 'color', 'tick_label', 'xerr'.
+		* All arguments with the following names: 'yerr', 'height', 'width', 'tick_label', 'ecolor', 'color', 'left', 'edgecolor', 'linewidth', 'xerr', 'bottom'.
 	**/
-	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a 2-D field of barbs.
 		
@@ -1476,7 +1476,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -1507,7 +1507,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function barbs(args:Dynamic, ?data:Dynamic, kw:Dynamic):Dynamic;
+	public function barbs(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a horizontal bar plot.
 		
@@ -1625,7 +1625,7 @@ package matplotlib.axes._axes;
 		--------
 		bar: Plot a vertical bar plot.
 	**/
-	public function barh(bottom:Dynamic, width:Dynamic, ?height:Dynamic, ?left:Dynamic, kwargs:Dynamic):Dynamic;
+	public function barh(bottom:Dynamic, width:Dynamic, ?height:Dynamic, ?left:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a box and whisker plot.
 		
@@ -1835,7 +1835,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -1873,7 +1873,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function broken_barh(xranges:Dynamic, yrange:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Drawing function for box and whisker plots.
 		
@@ -2108,7 +2108,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/contour_demo.py
 	**/
-	public function clabel(CS:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function clabel(CS:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		clear the axes
 	**/
@@ -2266,9 +2266,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cohere(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Test whether the mouse event occured in the axes.
 		
@@ -2493,7 +2493,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 	**/
-	public function contour(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function contour(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot contours.
 		
@@ -2706,7 +2706,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/contour_corner_mask.py
 	**/
-	public function contourf(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function contourf(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		For artists in an axes, if the xaxis has units support,
 		convert *x* using xaxis unit type
@@ -2898,9 +2898,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function csd(x:Dynamic, y:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Called when the mouse moves during a pan operation.
 		
@@ -2922,7 +2922,7 @@ package matplotlib.axes._axes;
 	/**
 		Draw everything (plot lines, axes, labels)
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method can only be used after an initial draw which
 		caches the renderer.  It is used to efficiently update Axes
@@ -3088,9 +3088,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
+		* All arguments with the following names: 'yerr', 'x', 'xerr', 'y'.
 	**/
-	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot identical parallel lines at specific positions.
 		
@@ -3163,7 +3163,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -3194,9 +3194,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'positions', 'linestyles', 'linewidths', 'lineoffsets', 'linelengths', 'colors'.
+		* All arguments with the following names: 'lineoffsets', 'linestyles', 'linewidths', 'colors', 'linelengths', 'positions'.
 	**/
-	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot filled polygons.
 		
@@ -3271,9 +3271,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function fill(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make filled polygons between two curves.
 		
@@ -3335,7 +3335,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -3370,9 +3370,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
+		* All arguments with the following names: 'y1', 'where', 'x', 'y2'.
 	**/
-	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make filled polygons between two horizontal curves.
 		
@@ -3430,7 +3430,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -3465,9 +3465,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x1', 'x2', 'where'.
+		* All arguments with the following names: 'where', 'x1', 'x2', 'y'.
 	**/
-	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find artist objects.
 		
@@ -3755,7 +3755,7 @@ package matplotlib.axes._axes;
 		get the axes bounding box in display space; *args* and
 		*kwargs* are empty
 	**/
-	public function get_window_extent(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_window_extent(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the XAxis instance
 	**/
@@ -4063,7 +4063,7 @@ package matplotlib.axes._axes;
 		  ydata: 1D array         
 		  zorder: any number         
 	**/
-	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if any artists have been added to axes.
 		
@@ -4206,7 +4206,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -4243,9 +4243,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?gridsize:Dynamic, ?bins:Dynamic, ?xscale:Dynamic, ?yscale:Dynamic, ?extent:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?edgecolors:Dynamic, ?reduce_C_function:Dynamic, ?mincnt:Dynamic, ?marginals:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a histogram.
 		
@@ -4438,7 +4438,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'weights', 'x'.
 	**/
-	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a 2D histogram plot.
 		
@@ -4518,9 +4518,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'weights', 'x'.
+		* All arguments with the following names: 'weights', 'x', 'y'.
 	**/
-	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		List the children of the artist which contain the mouse event *event*.
 	**/
@@ -4566,9 +4566,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xmin', 'xmax'.
+		* All arguments with the following names: 'xmax', 'xmin', 'y'.
 	**/
-	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -4708,7 +4708,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function imshow(X:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?aspect:Dynamic, ?interpolation:Dynamic, ?alpha:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?shape:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?imlim:Dynamic, ?resample:Dynamic, ?url:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if the given *mouseevent* (in display coords)
 		is in the Axes
@@ -4932,7 +4932,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/api/legend_demo.py
 	**/
-	public function legend(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function legend(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Control behavior of tick locators.
 		
@@ -4963,7 +4963,7 @@ package matplotlib.axes._axes;
 		:class:`~matplotlib.ticker.MaxNLocator` used
 		by default on linear axes, but it may be generalized.
 	**/
-	public function locator_params(?axis:Dynamic, ?tight:Dynamic, kwargs:Dynamic):Dynamic;
+	public function locator_params(?axis:Dynamic, ?tight:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on both the *x* and *y* axis.
 		
@@ -5040,7 +5040,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/log_demo.py
 	**/
-	public function loglog(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function loglog(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the magnitude spectrum.
 		
@@ -5185,7 +5185,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function magnitude_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set or retrieve autoscaling margins.
 		
@@ -5219,7 +5219,7 @@ package matplotlib.axes._axes;
 		interval will be added to each end of that interval before
 		it is used in autoscaling.
 	**/
-	public function margins(args:Dynamic, kw:Dynamic):Dynamic;
+	public function margins(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a matrix or array as an image.
 		
@@ -5249,7 +5249,7 @@ package matplotlib.axes._axes;
 		--------
 		.. plot:: mpl_examples/pylab_examples/matshow.py
 	**/
-	public function matshow(Z:Dynamic, kwargs:Dynamic):Dynamic;
+	public function matshow(Z:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove minor ticks from the axes.
 	**/
@@ -5415,7 +5415,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -5458,7 +5458,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function pcolor(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolor(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		pseudocolor plot of a 2-D array
 		
@@ -5548,7 +5548,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function pcolorfast(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolorfast(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a quadrilateral mesh.
 		
@@ -5636,7 +5636,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -5668,7 +5668,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function pcolormesh(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pcolormesh(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the phase spectrum.
 		
@@ -5804,7 +5804,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function phase_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -5813,7 +5813,7 @@ package matplotlib.axes._axes;
 		each child artist will fire a pick event if mouseevent is over
 		the artist and the artist has picker set
 	**/
-	public function pick(args:Dynamic):Dynamic;
+	public function pick(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return *True* if :class:`Artist` is pickable.
 	**/
@@ -5924,7 +5924,7 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'explode', 'colors', 'labels', 'x'.
+		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
 	**/
 	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?data:Dynamic):Dynamic;
 	/**
@@ -6102,9 +6102,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function plot(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with data with dates.
 		
@@ -6207,9 +6207,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function plot_date(x:Dynamic, y:Dynamic, ?fmt:Dynamic, ?tz:Dynamic, ?xdate:Dynamic, ?ydate:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a dictionary mapping property name -> value for all Artist props
 	**/
@@ -6404,7 +6404,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function psd(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?return_line:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a 2-D field of arrows.
 		
@@ -6548,7 +6548,7 @@ package matplotlib.axes._axes;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
@@ -6565,7 +6565,7 @@ package matplotlib.axes._axes;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function quiver(args:Dynamic, ?data:Dynamic, kw:Dynamic):Dynamic;
+	public function quiver(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add a key to a quiver plot.
 		
@@ -6626,7 +6626,7 @@ package matplotlib.axes._axes;
 		tail; in either of these two cases, *X*, *Y* is somewhere in the
 		middle of the arrow+label key object.
 	**/
-	public function quiverkey(args:Dynamic, kw:Dynamic):Dynamic;
+	public function quiverkey(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method can only be used after an initial draw which
 		caches the renderer.  It is used to efficiently update Axes
@@ -6757,9 +6757,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'facecolors', 'edgecolors', 'facecolor', 'y', 'linewidths', 'color', 's', 'c', 'x'.
+		* All arguments with the following names: 's', 'linewidths', 'x', 'facecolors', 'c', 'edgecolors', 'facecolor', 'color', 'y'.
 	**/
-	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on the *x* axis.
 		
@@ -6836,7 +6836,7 @@ package matplotlib.axes._axes;
 		    :meth:`loglog`
 		        For example code and figure
 	**/
-	public function semilogx(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function semilogx(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a plot with log scaling on the *y* axis.
 		
@@ -6913,14 +6913,14 @@ package matplotlib.axes._axes;
 		    :meth:`loglog`
 		        For example code and figure
 	**/
-	public function semilogy(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function semilogy(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A property batch setter. Pass *kwargs* to set properties.
 		Will handle property name collisions (e.g., if both
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ACCEPTS: [ 'box' | 'datalim' | 'box-forced']
 	**/
@@ -7130,7 +7130,7 @@ package matplotlib.axes._axes;
 		
 		ACCEPTS: a (*float*, *color*) tuple
 	**/
-	public function set_cursor_props(args:Dynamic):Dynamic;
+	public function set_cursor_props(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the class:`~matplotlib.axes.Axes` figure
 		
@@ -7266,7 +7266,7 @@ package matplotlib.axes._axes;
 		    :func:`cycler`      Convenience function for creating your
 		                        own cyclers.
 	**/
-	public function set_prop_cycle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_prop_cycle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set zorder value below which artists will be rasterized.  Set
 		to `None` to disable rasterizing of artists below a particular
@@ -7350,7 +7350,7 @@ package matplotlib.axes._axes;
 		    :class:`~matplotlib.text.Text` for a list of valid text
 		    properties.
 	**/
-	public function set_title(label:Dynamic, ?fontdict:Dynamic, ?loc:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_title(label:Dynamic, ?fontdict:Dynamic, ?loc:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the :class:`~matplotlib.transforms.Transform` instance
 		used by this artist.
@@ -7395,7 +7395,7 @@ package matplotlib.axes._axes;
 		--------
 		text : for information on how override and the optional args work
 	**/
-	public function set_xlabel(xlabel:Dynamic, ?fontdict:Dynamic, ?labelpad:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xlabel(xlabel:Dynamic, ?fontdict:Dynamic, ?labelpad:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -7439,7 +7439,7 @@ package matplotlib.axes._axes;
 		
 		ACCEPTS: length 2 sequence of floats
 	**/
-	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, kw:Dynamic):Dynamic;
+	public function set_xlim(?left:Dynamic, ?right:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set padding of X data limits prior to autoscaling.
 		
@@ -7515,7 +7515,7 @@ package matplotlib.axes._axes;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	public function set_xscale(value:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -7537,7 +7537,7 @@ package matplotlib.axes._axes;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -7571,7 +7571,7 @@ package matplotlib.axes._axes;
 		
 		ACCEPTS: sequence of strings
 	**/
-	public function set_xticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_xticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the x ticks with list of *ticks*
 		
@@ -7603,7 +7603,7 @@ package matplotlib.axes._axes;
 		--------
 		text : for information on how override and the optional args work
 	**/
-	public function set_ylabel(ylabel:Dynamic, ?fontdict:Dynamic, ?labelpad:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_ylabel(ylabel:Dynamic, ?fontdict:Dynamic, ?labelpad:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -7647,7 +7647,7 @@ package matplotlib.axes._axes;
 		
 		ACCEPTS: length 2 sequence of floats
 	**/
-	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, kw:Dynamic):Dynamic;
+	public function set_ylim(?bottom:Dynamic, ?top:Dynamic, ?emit:Dynamic, ?auto:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set padding of Y data limits prior to autoscaling.
 		
@@ -7723,7 +7723,7 @@ package matplotlib.axes._axes;
 		           halves of the linear range will be equal to one decade in
 		           the logarithmic range.
 	**/
-	public function set_yscale(value:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_yscale(value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -7745,7 +7745,7 @@ package matplotlib.axes._axes;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -7779,7 +7779,7 @@ package matplotlib.axes._axes;
 		
 		ACCEPTS: sequence of strings
 	**/
-	public function set_yticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_yticklabels(labels:Dynamic, ?fontdict:Dynamic, ?minor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the y ticks with list of *ticks*
 		
@@ -7970,7 +7970,7 @@ package matplotlib.axes._axes;
 		
 		* All arguments with the following names: 'x'.
 	**/
-	public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function specgram(x:Dynamic, ?NFFT:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?detrend:Dynamic, ?window:Dynamic, ?noverlap:Dynamic, ?cmap:Dynamic, ?xextent:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?scale_by_freq:Dynamic, ?mode:Dynamic, ?scale:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot the sparsity pattern on a 2-D array.
 		
@@ -8028,7 +8028,7 @@ package matplotlib.axes._axes;
 		imshow : for image options.
 		plot : for plotting options
 	**/
-	public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?origin:Dynamic, kwargs:Dynamic):Dynamic;
+	public function spy(Z:Dynamic, ?precision:Dynamic, ?marker:Dynamic, ?markersize:Dynamic, ?aspect:Dynamic, ?origin:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draws a stacked area plot.
 		
@@ -8065,7 +8065,7 @@ package matplotlib.axes._axes;
 		:class:`~matplotlib.collections.PolyCollection`, one for each
 		element in the stacked area plot.
 	**/
-	public function stackplot(x:Dynamic, args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function stackplot(x:Dynamic, ?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		If the artist is 'stale' and needs to be re-drawn for the output to
 		match the internal state of the artist.
@@ -8123,7 +8123,7 @@ package matplotlib.axes._axes;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function stem(args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function stem(?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a step plot.
 		
@@ -8157,9 +8157,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function step(x:Dynamic, y:Dynamic, args:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function step(x:Dynamic, y:Dynamic, ?args:python.VarArgs<Dynamic>, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draws streamlines of a vector flow.
 		
@@ -8256,7 +8256,7 @@ package matplotlib.axes._axes;
 		  visible: [True | False]         
 		  zorder: any number         
 	**/
-	public function table(kwargs:Dynamic):Dynamic;
+	public function table(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Add text to the axes.
 		
@@ -8307,7 +8307,7 @@ package matplotlib.axes._axes;
 		
 		    >>> text(x, y, s, bbox=dict(facecolor='red', alpha=0.5))
 	**/
-	public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?fontdict:Dynamic, ?withdash:Dynamic, kwargs:Dynamic):Dynamic;
+	public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?fontdict:Dynamic, ?withdash:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change the appearance of ticks and tick labels.
 		
@@ -8367,7 +8367,7 @@ package matplotlib.axes._axes;
 		and with dimensions 6 points by 2 points.  Tick labels will
 		also be red.
 	**/
-	public function tick_params(?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function tick_params(?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change the `~matplotlib.ticker.ScalarFormatter` used by
 		default for linear axes.
@@ -8405,7 +8405,7 @@ package matplotlib.axes._axes;
 		:class:`~matplotlib.ticker.Formatter` being used, an
 		:exc:`AttributeError` will be raised.
 	**/
-	public function ticklabel_format(kwargs:Dynamic):Dynamic;
+	public function ticklabel_format(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -8580,7 +8580,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	public function tricontour(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function tricontour(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -8755,7 +8755,7 @@ package matplotlib.axes._axes;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	public function tricontourf(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function tricontourf(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a pseudocolor plot of an unstructured triangular grid.
 		
@@ -8799,7 +8799,7 @@ package matplotlib.axes._axes;
 		
 		    .. plot:: mpl_examples/pylab_examples/tripcolor_demo.py
 	**/
-	public function tripcolor(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function tripcolor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a unstructured triangular grid as lines and/or markers.
 		
@@ -8836,7 +8836,7 @@ package matplotlib.axes._axes;
 		
 		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
 	**/
-	public function triplot(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function triplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call signature::
 		
@@ -9125,9 +9125,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymax', 'ymin', 'colors', 'x'.
+		* All arguments with the following names: 'ymin', 'x', 'colors', 'ymax'.
 	**/
-	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets up x-axis ticks and labels that treat the x data as dates.
 		
@@ -9196,9 +9196,9 @@ package matplotlib.axes._axes;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 	**/
-	public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?data:Dynamic, kwargs:Dynamic):Dynamic;
+	public function xcorr(x:Dynamic, y:Dynamic, ?normed:Dynamic, ?detrend:Dynamic, ?usevlines:Dynamic, ?maxlags:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets up y-axis ticks and labels that treat the y data as dates.
 		

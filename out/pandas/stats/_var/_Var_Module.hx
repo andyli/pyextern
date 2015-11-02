@@ -27,7 +27,7 @@ package pandas.stats._var;
 		----------
 		matrices: argument list of ndarray
 	**/
-	static public function chain_dot(matrices:Dynamic):Dynamic;
+	static public function chain_dot(?matrices:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Returns the inverse of A.
@@ -49,7 +49,7 @@ package pandas.stats._var;
 		None
 	**/
 	static public function lag_select(data:Dynamic, ?max_lags:Dynamic, ?ic:Dynamic):Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

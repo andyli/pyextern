@@ -16,7 +16,7 @@ package scipy.spatial._plotutils;
 		decorator(caller, func) decorates a function using a caller.
 	**/
 	static public function _decorator(caller:Dynamic, ?func:Dynamic):Dynamic;
-	static public function _held_figure(func:Dynamic, obj:Dynamic, ?ax:Dynamic, kw:Dynamic):Dynamic;
+	static public function _held_figure(func:Dynamic, obj:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Plot the given convex hull diagram in 2-D

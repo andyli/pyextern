@@ -96,7 +96,7 @@ package matplotlib.table;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -191,7 +191,7 @@ package matplotlib.table;
 		convert *y* using yaxis unit type
 	**/
 	public function convert_yunits(y:Dynamic):Dynamic;
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return whether fill is set
 	**/
@@ -554,7 +554,7 @@ package matplotlib.table;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/
@@ -596,7 +596,7 @@ package matplotlib.table;
 		
 		ACCEPTS: (left, bottom, width, height)
 	**/
-	public function set_bounds(args:Dynamic):Dynamic;
+	public function set_bounds(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the patch capstyle
 		
@@ -873,7 +873,7 @@ package matplotlib.table;
 	/**
 		update the text properties with kwargs
 	**/
-	public function set_text_props(kwargs:Dynamic):Dynamic;
+	public function set_text_props(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the :class:`~matplotlib.transforms.Transform` instance
 		used by this artist.

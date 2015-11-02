@@ -61,7 +61,7 @@ package numpy.lib.npyio;
 		>>> np.lib._iotools.easy_dtype(float, names="a,b,c")
 		dtype([('a', '<f8'), ('b', '<f8'), ('c', '<f8')])
 	**/
-	static public function easy_dtype(ndtype:Dynamic, ?names:Dynamic, ?defaultfmt:Dynamic, validationargs:Dynamic):Dynamic;
+	static public function easy_dtype(ndtype:Dynamic, ?names:Dynamic, ?defaultfmt:Dynamic, ?validationargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unpack a structured data-type by collapsing nested fields and/or fields
 		with a shape.
@@ -532,7 +532,7 @@ package numpy.lib.npyio;
 		--------
 		numpy.genfromtxt : generic function to load ASCII data.
 	**/
-	static public function mafromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function mafromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load ASCII data stored in a file and return it as a single array.
 		
@@ -544,7 +544,7 @@ package numpy.lib.npyio;
 		--------
 		numpy.genfromtxt : generic function.
 	**/
-	static public function ndfromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ndfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		packbits(myarray, axis=None)
 		
@@ -608,7 +608,7 @@ package numpy.lib.npyio;
 		By default, `dtype` is None, which means that the data-type of the output
 		array will be determined from the data.
 	**/
-	static public function recfromcsv(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function recfromcsv(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Load ASCII data from a file and return it in a record array.
 		
@@ -628,7 +628,7 @@ package numpy.lib.npyio;
 		By default, `dtype` is None, which means that the data-type of the output
 		array will be determined from the data.
 	**/
-	static public function recfromtxt(fname:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function recfromtxt(fname:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save an array to a binary file in NumPy ``.npy`` format.
 		
@@ -865,7 +865,7 @@ package numpy.lib.npyio;
 		>>> npzfile['x']
 		array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 	**/
-	static public function savez(file:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function savez(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save several arrays into a single file in compressed ``.npz`` format.
 		
@@ -887,7 +887,7 @@ package numpy.lib.npyio;
 		numpy.savez : Save several arrays into an uncompressed ``.npz`` file format
 		numpy.load : Load the files created by savez_compressed.
 	**/
-	static public function savez_compressed(file:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function savez_compressed(file:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		unpackbits(myarray, axis=None)
 		
@@ -929,5 +929,5 @@ package numpy.lib.npyio;
 		       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)
 	**/
 	static public function unpackbits(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function zipfile_factory(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function zipfile_factory(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

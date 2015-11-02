@@ -57,7 +57,7 @@ package scipy.signal.ltisys;
 		Initialize the zeros, poles, gain LTI system.
 	**/
 	@:native("__init__")
-	public function ___init__(system:Dynamic):Dynamic;
+	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -74,7 +74,7 @@ package scipy.signal.ltisys;
 	/**
 		Handle object conversion if input is an instance of `lti`
 	**/
-	static public function __new__(cls:Dynamic, system:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

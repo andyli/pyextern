@@ -500,7 +500,7 @@ package scipy.signal.signaltools;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -536,7 +536,7 @@ package scipy.signal.signaltools;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Reverse the 1-d slices of `a` along axis `axis`.
 		

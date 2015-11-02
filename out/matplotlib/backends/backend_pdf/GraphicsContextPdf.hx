@@ -58,7 +58,7 @@ package matplotlib.backends.backend_pdf;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -122,7 +122,7 @@ package matplotlib.backends.backend_pdf;
 		An optional argument can be used to specify an alternative
 		_fillcolor, as needed by RendererPdf.draw_markers.
 	**/
-	public function fill(args:Dynamic):Dynamic;
+	public function fill(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function fillcolor_cmd(rgb:Dynamic):Dynamic;
 	/**
 		Make sure every pushed graphics state is popped.

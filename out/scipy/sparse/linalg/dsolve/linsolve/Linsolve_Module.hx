@@ -477,7 +477,7 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		sure that the matrix fulfills this, pass ``assumeSortedIndices=True``
 		to gain some speed.
 	**/
-	static public function use_solver(kwargs:Dynamic):Dynamic;
+	static public function use_solver(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

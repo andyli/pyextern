@@ -64,7 +64,7 @@ package matplotlib.ticker;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -109,7 +109,7 @@ package matplotlib.ticker;
 		base used for :class:`LogLocator`
 	**/
 	public function base(base:Dynamic):Dynamic;
-	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Some classes may want to replace a hyphen for minus with the
 		proper unicode symbol (U+2212) for typographical correctness.

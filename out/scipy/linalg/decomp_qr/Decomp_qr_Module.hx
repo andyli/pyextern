@@ -305,5 +305,5 @@ package scipy.linalg.decomp_qr;
 		Call a LAPACK routine, determining lwork automatically and handling
 		error return values
 	**/
-	static public function safecall(f:Dynamic, name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function safecall(f:Dynamic, name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

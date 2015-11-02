@@ -7,35 +7,35 @@ package matplotlib.backends.backend_webagg;
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function AllFiguresPage(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function AllFiguresPage(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Base class for HTTP request handlers.
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function Download(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function Download(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Base class for HTTP request handlers.
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function FavIcon(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function FavIcon(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Base class for HTTP request handlers.
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function MplJs(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function MplJs(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Base class for HTTP request handlers.
 		
 		Subclasses must define at least one of the methods defined in the
 		"Entry points" section below.
 	**/
-	static public function SingleFigurePage(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function SingleFigurePage(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Subclass this class to create a basic WebSocket handler.
 		
@@ -102,7 +102,7 @@ package matplotlib.backends.backend_webagg;
 		You must first visit a regular HTML page using the same certificate
 		to accept it before the websocket connection will succeed.
 	**/
-	static public function WebSocket(application:Dynamic, request:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function WebSocket(application:Dynamic, request:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call self as a function.
 	**/
@@ -164,7 +164,7 @@ package matplotlib.backends.backend_webagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -230,7 +230,7 @@ package matplotlib.backends.backend_webagg;
 		Note that after calling this method you still need to call
 		``IOLoop.current().start()`` to start the server.
 	**/
-	public function listen(port:Dynamic, ?address:Dynamic, kwargs:Dynamic):Dynamic;
+	public function listen(port:Dynamic, ?address:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Writes a completed HTTP request to the logs.
 		
@@ -256,7 +256,7 @@ package matplotlib.backends.backend_webagg;
 		They will be converted to strings if necessary, encoded as utf8,
 		and url-escaped.
 	**/
-	public function reverse_url(name:Dynamic, args:Dynamic):Dynamic;
+	public function reverse_url(name:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function start():Dynamic;
 	/**
 		This method is called by the server when a new request has started.

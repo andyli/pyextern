@@ -16,13 +16,13 @@ package numpy.linalg.linalg;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _assertFinite(arrays:Dynamic):Dynamic;
-	static public function _assertNdSquareness(arrays:Dynamic):Dynamic;
-	static public function _assertNoEmpty2d(arrays:Dynamic):Dynamic;
-	static public function _assertRank2(arrays:Dynamic):Dynamic;
-	static public function _assertRankAtLeast2(arrays:Dynamic):Dynamic;
-	static public function _assertSquareness(arrays:Dynamic):Dynamic;
-	static public function _commonType(arrays:Dynamic):Dynamic;
+	static public function _assertFinite(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _assertNdSquareness(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _assertNoEmpty2d(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _assertRank2(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _assertRankAtLeast2(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _assertSquareness(?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _commonType(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	static public function _complexType(t:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var _complex_types_map : Dynamic;
 	static public function _convertarray(a:Dynamic):Dynamic;
@@ -31,7 +31,7 @@ package numpy.linalg.linalg;
 		_fastCopyAndTranspose(a)
 	**/
 	static public function _fastCT(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _fastCopyAndTranspose(type:Dynamic, arrays:Dynamic):Dynamic;
+	static public function _fastCopyAndTranspose(type:Dynamic, ?arrays:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Cast the type t to either double or cdouble.
 	**/
@@ -94,7 +94,7 @@ package numpy.linalg.linalg;
 	static public function _raise_linalgerror_svd_nonconvergence(err:Dynamic, flag:Dynamic):Dynamic;
 	static public function _realType(t:Dynamic, ?_default:Dynamic):Dynamic;
 	static public var _real_types_map : Dynamic;
-	static public function _to_native_byte_order(arrays:Dynamic):Dynamic;
+	static public function _to_native_byte_order(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		absolute(x[, out])
 		
@@ -658,7 +658,7 @@ package numpy.linalg.linalg;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Cholesky decomposition.
 		

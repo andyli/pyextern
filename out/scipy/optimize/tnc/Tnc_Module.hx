@@ -84,7 +84,7 @@ package scipy.optimize.tnc;
 		    rescaling.  If 0, rescale at each iteration.  If a large
 		    value, never rescale.  If < 0, rescale is set to 1.3.
 	**/
-	static public function _minimize_tnc(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?eps:Dynamic, ?scale:Dynamic, ?offset:Dynamic, ?mesg_num:Dynamic, ?maxCGit:Dynamic, ?maxiter:Dynamic, ?eta:Dynamic, ?stepmx:Dynamic, ?accuracy:Dynamic, ?minfev:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?rescale:Dynamic, ?disp:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_tnc(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?eps:Dynamic, ?scale:Dynamic, ?offset:Dynamic, ?mesg_num:Dynamic, ?maxCGit:Dynamic, ?maxiter:Dynamic, ?eta:Dynamic, ?stepmx:Dynamic, ?accuracy:Dynamic, ?minfev:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?rescale:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Finite-difference approximation of the gradient of a scalar function.
@@ -140,7 +140,7 @@ package scipy.optimize.tnc;
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
-	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		

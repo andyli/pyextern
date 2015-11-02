@@ -58,7 +58,7 @@ package matplotlib.texmanager;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -102,7 +102,7 @@ package matplotlib.texmanager;
 		On windows, changing directories can be complicated by the presence of
 		multiple drives. get_shell_cmd deals with this issue.
 	**/
-	public function _get_shell_cmd(args:Dynamic):Dynamic;
+	public function _get_shell_cmd(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _rc_cache : Dynamic;
 	static public var _rc_cache_keys : Dynamic;
 	static public var _re_vbox : Dynamic;

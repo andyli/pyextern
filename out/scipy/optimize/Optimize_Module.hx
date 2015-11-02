@@ -76,7 +76,7 @@ package scipy.optimize;
 		----------
 		.. [Ey] V. Eyert, J. Comp. Phys., 124, 271 (1996).
 	**/
-	static public function anderson(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?w0:Dynamic, ?M:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function anderson(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?w0:Dynamic, ?M:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finite-difference approximation of the gradient of a scalar function.
 		
@@ -131,7 +131,7 @@ package scipy.optimize;
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
-	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_fprime(xk:Dynamic, f:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Find the global minimum of a function using the basin-hopping algorithm
 		
@@ -838,7 +838,7 @@ package scipy.optimize;
 		
 		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
-	static public function broyden1(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function broyden1(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find a root of a function, using Broyden's second Jacobian approximation.
 		
@@ -927,7 +927,7 @@ package scipy.optimize;
 		
 		   http://www.math.leidenuniv.nl/scripties/Rotten.pdf
 	**/
-	static public function broyden2(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function broyden2(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?reduction_method:Dynamic, ?max_rank:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a function over a given range by brute force.
 		
@@ -1120,7 +1120,7 @@ package scipy.optimize;
 		>>> check_grad(func, grad, [1.5, -1.5])
 		2.9802322387695312e-08
 	**/
-	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use non-linear least squares to fit a function, f, to data.
 		
@@ -1207,7 +1207,7 @@ package scipy.optimize;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, kw:Dynamic):Dynamic;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find a root of a function, using diagonal Broyden Jacobian approximation.
 		
@@ -1267,7 +1267,7 @@ package scipy.optimize;
 		NoConvergence
 		    When a solution was not found.
 	**/
-	static public function diagbroyden(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function diagbroyden(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Finds the global minimum of a multivariate function.
 		Differential Evolution is stochastic in nature (does not use gradient
@@ -1503,7 +1503,7 @@ package scipy.optimize;
 		NoConvergence
 		    When a solution was not found.
 	**/
-	static public function excitingmixing(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?alphamax:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function excitingmixing(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?alphamax:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find a fixed point of the function.
 		
@@ -2886,7 +2886,7 @@ package scipy.optimize;
 		NoConvergence
 		    When a solution was not found.
 	**/
-	static public function linearmixing(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function linearmixing(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?alpha:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimize a linear objective function subject to linear
 		equality and inequality constraints.
@@ -3073,7 +3073,7 @@ package scipy.optimize;
 		        True if the simplex algorithm has completed
 		        (and this is the final call to callback), otherwise False.
 	**/
-	static public function linprog_verbose_callback(xk:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function linprog_verbose_callback(xk:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables.
 		
@@ -3671,7 +3671,7 @@ package scipy.optimize;
 		.. [2] A.H. Baker and E.R. Jessup and T. Manteuffel,
 		         SIAM J. Matrix Anal. Appl. 26, 962 (2005).
 	**/
-	static public function newton_krylov(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, kw:Dynamic):Dynamic;
+	static public function newton_krylov(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Solve ``argmin_x || Ax - b ||_2`` for ``x>=0``. This is a wrapper
 		for a FORTAN non-negative least squares solver.

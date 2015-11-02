@@ -48,6 +48,6 @@ package matplotlib.tri.triplot;
 		
 		    .. plot:: mpl_examples/pylab_examples/triplot_demo.py
 	**/
-	static public function triplot(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function triplot(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

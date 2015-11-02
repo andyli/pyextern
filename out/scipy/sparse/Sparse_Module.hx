@@ -196,7 +196,7 @@ package scipy.sparse;
 		
 		    
 	**/
-	static public function cs_graph_components(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function cs_graph_components(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct a sparse matrix from diagonals.
 		

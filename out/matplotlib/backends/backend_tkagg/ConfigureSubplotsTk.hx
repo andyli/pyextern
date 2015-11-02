@@ -41,7 +41,7 @@ package matplotlib.backends.backend_tkagg;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -58,7 +58,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -105,7 +105,7 @@ package matplotlib.backends.backend_tkagg;
 		This method is called when the tool is removed by
 		`matplotlib.backend_managers.ToolManager.remove_tool`
 	**/
-	public function destroy(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function destroy(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var figure : Dynamic;
 	static public var image : Dynamic;
 	public function init_window():Dynamic;
@@ -128,5 +128,5 @@ package matplotlib.backends.backend_tkagg;
 		data: object
 		    Extra data
 	**/
-	public function trigger(args:Dynamic):Dynamic;
+	public function trigger(?args:python.VarArgs<Dynamic>):Dynamic;
 }

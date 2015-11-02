@@ -87,7 +87,7 @@ package scipy.optimize.lbfgsb;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __pow__(p:Dynamic):Dynamic;
 	/**
 		helper for pickle

@@ -53,7 +53,7 @@ package matplotlib.backends.backend_nbagg;
 		    mime-type keys in this dictionary will be associated with the individual
 		    representation formats, if they exist.
 	**/
-	static public function display(objs:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function display(?objs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function draw_if_interactive():Dynamic;
 	/**
 		Return true if plot mode is interactive
@@ -62,7 +62,7 @@ package matplotlib.backends.backend_nbagg;
 	/**
 		Create a new figure manager instance
 	**/
-	static public function new_figure_manager(num:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function new_figure_manager(num:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a new figure manager instance for the given figure.
 	**/

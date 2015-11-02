@@ -185,7 +185,7 @@ package numpy.ma.mrecords;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert to int.
 	**/
@@ -266,7 +266,7 @@ package numpy.ma.mrecords;
 		-----
 		A masked array can also be created by taking a .view(MaskedArray).
 	**/
-	static public function __new__(cls:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?buf:Dynamic, ?offset:Dynamic, ?strides:Dynamic, ?formats:Dynamic, ?names:Dynamic, ?titles:Dynamic, ?byteorder:Dynamic, ?aligned:Dynamic, ?mask:Dynamic, ?hard_mask:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?copy:Dynamic, options:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, shape:Dynamic, ?dtype:Dynamic, ?buf:Dynamic, ?offset:Dynamic, ?strides:Dynamic, ?formats:Dynamic, ?names:Dynamic, ?titles:Dynamic, ?byteorder:Dynamic, ?aligned:Dynamic, ?mask:Dynamic, ?hard_mask:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?copy:Dynamic, ?options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self|value.
 	**/
@@ -2408,7 +2408,7 @@ package numpy.ma.mrecords;
 		 [3]
 		 [--]]
 	**/
-	public function reshape(s:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reshape(?s:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		.. warning::
 		

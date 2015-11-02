@@ -15,7 +15,7 @@ package scipy.stats._discrete_distns;
 		rv_frozen : rv_frozen instance
 		    The frozen distribution.
 	**/
-	public function __call__(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function __call__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -73,7 +73,7 @@ package scipy.stats._discrete_distns;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -118,9 +118,9 @@ package scipy.stats._discrete_distns;
 		Returns condition array of 1's where arguments are correct and
 		 0's where they are not.
 	**/
-	public function _argcheck(args:Dynamic):Dynamic;
+	public function _argcheck(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _cdf(x:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
-	public function _cdf_single(k:Dynamic, args:Dynamic):Dynamic;
+	public function _cdf_single(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Construct the parser for the shape arguments.
 		
@@ -144,17 +144,17 @@ package scipy.stats._discrete_distns;
 		Construct the instance docstring with string substitutions.
 	**/
 	public function _construct_doc(docdict:Dynamic, ?shapes_vals:Dynamic):Dynamic;
-	public function _entropy(args:Dynamic):Dynamic;
-	public function _isf(q:Dynamic, args:Dynamic):Dynamic;
-	public function _logcdf(x:Dynamic, args:Dynamic):Dynamic;
-	public function _logpmf(k:Dynamic, args:Dynamic):Dynamic;
-	public function _logsf(x:Dynamic, args:Dynamic):Dynamic;
-	public function _munp(n:Dynamic, args:Dynamic):Dynamic;
-	public function _nonzero(k:Dynamic, args:Dynamic):Dynamic;
+	public function _entropy(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _isf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _logpmf(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _nonzero(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _pmf(k:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
 	public function _ppf(q:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
-	public function _rvs(args:Dynamic):Dynamic;
-	public function _sf(x:Dynamic, args:Dynamic):Dynamic;
+	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _sf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stats(lambda_:Dynamic, N:Dynamic):Dynamic;
 	/**
 		Cumulative distribution function of the given RV.
@@ -174,7 +174,7 @@ package scipy.stats._discrete_distns;
 		cdf : ndarray
 		    Cumulative distribution function evaluated at `k`.
 	**/
-	public function cdf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function cdf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Differential entropy of the RV.
 		
@@ -196,7 +196,7 @@ package scipy.stats._discrete_distns;
 		>>> np.allclose(drv.entropy(), np.log(2.0))
 		True
 	**/
-	public function entropy(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate expected value of a function with respect to the distribution
 		for discrete distribution.
@@ -258,7 +258,7 @@ package scipy.stats._discrete_distns;
 		rv_frozen : rv_frozen instance
 		    The frozen distribution.
 	**/
-	public function freeze(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function freeze(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Confidence interval with equal areas around the median.
 		
@@ -281,7 +281,7 @@ package scipy.stats._discrete_distns;
 		    end-points of range that contain ``100 * alpha %`` of the rv's
 		    possible values.
 	**/
-	public function interval(alpha:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function interval(alpha:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Inverse survival function (inverse of `sf`) at q of the given RV.
 		
@@ -300,7 +300,7 @@ package scipy.stats._discrete_distns;
 		k : ndarray or scalar
 		    Quantile corresponding to the upper tail probability, q.
 	**/
-	public function isf(q:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function isf(q:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Log of the cumulative distribution function at k of the given RV.
 		
@@ -319,7 +319,7 @@ package scipy.stats._discrete_distns;
 		logcdf : array_like
 		    Log of the cumulative distribution function evaluated at k.
 	**/
-	public function logcdf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function logcdf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Log of the probability mass function at k of the given RV.
 		
@@ -338,7 +338,7 @@ package scipy.stats._discrete_distns;
 		logpmf : array_like
 		    Log of the probability mass function evaluated at k.
 	**/
-	public function logpmf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function logpmf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Log of the survival function of the given RV.
 		
@@ -360,7 +360,7 @@ package scipy.stats._discrete_distns;
 		logsf : ndarray
 		    Log of the survival function evaluated at `k`.
 	**/
-	public function logsf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function logsf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Mean of the distribution.
 		
@@ -379,7 +379,7 @@ package scipy.stats._discrete_distns;
 		mean : float
 		    the mean of the distribution
 	**/
-	public function mean(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Median of the distribution.
 		
@@ -403,7 +403,7 @@ package scipy.stats._discrete_distns;
 		stats.distributions.rv_discrete.ppf
 		    Inverse of the CDF
 	**/
-	public function median(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		n-th order non-central moment of distribution.
 		
@@ -419,7 +419,7 @@ package scipy.stats._discrete_distns;
 		scale : array_like, optional
 		    scale parameter (default=1)
 	**/
-	public function moment(n:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function moment(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Probability mass function at k of the given RV.
 		
@@ -438,7 +438,7 @@ package scipy.stats._discrete_distns;
 		pmf : array_like
 		    Probability mass function evaluated at k
 	**/
-	public function pmf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function pmf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Percent point function (inverse of `cdf`) at q of the given RV.
 		
@@ -457,7 +457,7 @@ package scipy.stats._discrete_distns;
 		k : array_like
 		    Quantile corresponding to the lower tail probability, q.
 	**/
-	public function ppf(q:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function ppf(q:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get or set the RandomState object for generating random variates.
 		
@@ -491,7 +491,7 @@ package scipy.stats._discrete_distns;
 		rvs : ndarray or scalar
 		    Random variates of given `size`.
 	**/
-	public function rvs(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rvs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Survival function (1 - `cdf`) at k of the given RV.
 		
@@ -510,7 +510,7 @@ package scipy.stats._discrete_distns;
 		sf : array_like
 		    Survival function evaluated at k.
 	**/
-	public function sf(k:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function sf(k:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Some statistics of the given RV.
 		
@@ -536,7 +536,7 @@ package scipy.stats._discrete_distns;
 		stats : sequence
 		    of requested moments.
 	**/
-	public function stats(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Standard deviation of the distribution.
 		
@@ -555,7 +555,7 @@ package scipy.stats._discrete_distns;
 		std : float
 		    standard deviation of the distribution
 	**/
-	public function std(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Variance of the distribution.
 		
@@ -575,5 +575,5 @@ package scipy.stats._discrete_distns;
 		    the variance of the distribution
 	**/
 	@:native("var")
-	public function _var(args:Dynamic, kwds:Dynamic):Dynamic;
+	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

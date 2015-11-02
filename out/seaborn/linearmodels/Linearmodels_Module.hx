@@ -166,7 +166,7 @@ package seaborn.linearmodels;
 		ax : matplotlib axis
 		    Axis object with plot.
 	**/
-	static public function corrplot(data:Dynamic, ?names:Dynamic, ?annot:Dynamic, ?sig_stars:Dynamic, ?sig_tail:Dynamic, ?sig_corr:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?diag_names:Dynamic, ?method:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function corrplot(data:Dynamic, ?names:Dynamic, ?annot:Dynamic, ?sig_stars:Dynamic, ?sig_tail:Dynamic, ?sig_corr:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?diag_names:Dynamic, ?method:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove any common leading whitespace from every line in `text`.
 		
@@ -214,7 +214,7 @@ package seaborn.linearmodels;
 		ax : Matplotlib axis
 		    Axis with the contour plot.
 	**/
-	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fit and plot a univariate or bivariate kernel density estimate.
 		
@@ -344,7 +344,7 @@ package seaborn.linearmodels;
 		    >>> ax = sns.kdeplot(virginica.sepal_width, virginica.sepal_length,
 		    ...                  cmap="Blues", shade=True, shade_lowest=False)
 	**/
-	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function kdeplot(data:Dynamic, ?data2:Dynamic, ?shade:Dynamic, ?vertical:Dynamic, ?kernel:Dynamic, ?bw:Dynamic, ?gridsize:Dynamic, ?cut:Dynamic, ?clip:Dynamic, ?legend:Dynamic, ?cumulative:Dynamic, ?shade_lowest:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot data and regression model fits across a FacetGrid.
 		
@@ -1047,5 +1047,5 @@ package seaborn.linearmodels;
 		NOTE: This function is deprecated in favor of :func:`heatmap` and will
 		be removed in a forthcoming release.
 	**/
-	static public function symmatplot(mat:Dynamic, ?p_mat:Dynamic, ?names:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?annot:Dynamic, ?diag_names:Dynamic, ?ax:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function symmatplot(mat:Dynamic, ?p_mat:Dynamic, ?names:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?annot:Dynamic, ?diag_names:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

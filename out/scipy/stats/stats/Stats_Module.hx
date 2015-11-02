@@ -548,7 +548,7 @@ package scipy.stats.stats;
 		
 		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
 	**/
-	static public function f_oneway(args:Dynamic):Dynamic;
+	static public function f_oneway(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns an F-statistic for a restricted vs. unrestricted model.
 		
@@ -619,7 +619,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function fastsort(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function fastsort(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find repeats and repeat counts.
 		
@@ -739,7 +739,7 @@ package scipy.stats.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Friedman_test
 	**/
-	static public function friedmanchisquare(args:Dynamic):Dynamic;
+	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the geometric mean along the specified axis.
 		
@@ -855,7 +855,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function histogram2(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function histogram2(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculates the harmonic mean along the specified axis.
 		
@@ -1062,7 +1062,7 @@ package scipy.stats.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskal(args:Dynamic):Dynamic;
+	static public function kruskal(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the Kolmogorov-Smirnov statistic on 2 samples.
 		
@@ -1512,7 +1512,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function nanmean(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nanmean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`nanmedian` is deprecated!
 		scipy.stats.nanmedian is deprecated in scipy 0.15 in favour of numpy.nanmedian.
@@ -1564,7 +1564,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function nanmedian(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nanmedian(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`nanstd` is deprecated!
 		scipy.stats.nanstd is deprecated in scipy 0.15 in favour of numpy.nanstd.
@@ -1609,7 +1609,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function nanstd(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function nanstd(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Tests whether a sample differs from a normal distribution.
 		
@@ -1694,7 +1694,7 @@ package scipy.stats.stats;
 		If we require that ``p < 0.05`` for significance, we cannot conclude
 		that the variances are different.
 	**/
-	static public function obrientransform(args:Dynamic):Dynamic;
+	static public function obrientransform(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Calculates a Pearson correlation coefficient and the p-value for testing
 		non-correlation.
@@ -2315,7 +2315,7 @@ package scipy.stats.stats;
 		
 		    
 	**/
-	static public function signaltonoise(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function signaltonoise(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes the skewness of a data set.
 		

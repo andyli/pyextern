@@ -59,7 +59,7 @@ package scipy.signal.ltisys;
 		The heavy lifting is done by the subclasses.
 	**/
 	@:native("__init__")
-	public function ___init__(system:Dynamic):Dynamic;
+	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -76,7 +76,7 @@ package scipy.signal.ltisys;
 	/**
 		Create an instance of the appropriate subclass.
 	**/
-	static public function __new__(cls:Dynamic, system:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

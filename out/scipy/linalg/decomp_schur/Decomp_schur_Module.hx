@@ -13,8 +13,8 @@ package scipy.linalg.decomp_schur;
 	static public var _array_kind : Dynamic;
 	static public var _array_precision : Dynamic;
 	static public var _array_type : Dynamic;
-	static public function _castCopy(type:Dynamic, arrays:Dynamic):Dynamic;
-	static public function _commonType(arrays:Dynamic):Dynamic;
+	static public function _castCopy(type:Dynamic, ?arrays:python.VarArgs<Dynamic>):Dynamic;
+	static public function _commonType(?arrays:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Strict check for `arr` not sharing any data with `original`,
 		under the assumption that arr = asarray(original)

@@ -109,7 +109,7 @@ package pandas.io.pytables;
 		justfunc : callable
 		    function used to justify str. Needed for unicode handling.
 	**/
-	static public function adjoin(space:Dynamic, lists:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var attribute_conflict_doc : Dynamic;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
@@ -436,14 +436,14 @@ package pandas.io.pytables;
 		    (new way).
 		    [default: False] [currently: False]
 	**/
-	static public function get_option(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backwards compatible alias for ``HDFStore``
 		    
 	**/
-	static public function get_store(path:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var incompatibility_doc : Dynamic;
-	static public function lrange(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
 		Compute locations of to_match into values
@@ -521,13 +521,13 @@ package pandas.io.pytables;
 		-------
 		The selected object
 	**/
-	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function read_hdf(path_or_buf:Dynamic, ?key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
-	static public function timeit(key:Dynamic, df:Dynamic, ?fn:Dynamic, ?remove:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function timeit(key:Dynamic, df:Dynamic, ?fn:Dynamic, ?remove:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		store this object, close it if we opened it 
 	**/
-	static public function to_hdf(path_or_buf:Dynamic, key:Dynamic, value:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?append:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function to_hdf(path_or_buf:Dynamic, key:Dynamic, value:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	/**
 		Compute unique values (not necessarily sorted) efficiently from input array

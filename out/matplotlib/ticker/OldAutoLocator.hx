@@ -63,7 +63,7 @@ package matplotlib.ticker;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -107,7 +107,7 @@ package matplotlib.ticker;
 	**/
 	public function autoscale():Dynamic;
 	static public var axis : Dynamic;
-	public function create_dummy_axis(kwargs:Dynamic):Dynamic;
+	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		pick the best locator based on a distance
 	**/
@@ -132,7 +132,7 @@ package matplotlib.ticker;
 		Do nothing, and rase a warning. Any locator class not supporting the
 		set_params() function will call this.
 	**/
-	public function set_params(kwargs:Dynamic):Dynamic;
+	public function set_params(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_view_interval(vmin:Dynamic, vmax:Dynamic):Dynamic;
 	/**
 		Return the values of the located ticks given **vmin** and **vmax**.

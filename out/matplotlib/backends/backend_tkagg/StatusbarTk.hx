@@ -57,7 +57,7 @@ package matplotlib.backends.backend_tkagg;
 		highlightcolor, highlightthickness, relief, takefocus, visual, width.
 	**/
 	@:native("__init__")
-	public function ___init__(window:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(window:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -74,7 +74,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -134,8 +134,8 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Call Tcl configure command and return the result as a dict.
 	**/
-	public function _getconfigure(args:Dynamic):Dynamic;
-	public function _getconfigure1(args:Dynamic):Dynamic;
+	public function _getconfigure(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _getconfigure1(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Internal function.
 	**/
@@ -187,7 +187,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Internal function.
 	**/
-	public function _substitute(args:Dynamic):Dynamic;
+	public function _substitute(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _tclCommands : Dynamic;
 	/**
 		Internal function.
@@ -201,7 +201,7 @@ package matplotlib.backends.backend_tkagg;
 		are given as parameters to the function call.  Return
 		identifier to cancel scheduling with after_cancel.
 	**/
-	public function after(ms:Dynamic, ?func:Dynamic, args:Dynamic):Dynamic;
+	public function after(ms:Dynamic, ?func:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Cancel scheduling of function identified with ID.
 		
@@ -216,7 +216,7 @@ package matplotlib.backends.backend_tkagg;
 		Return an identifier to cancel the scheduling with
 		after_cancel.
 	**/
-	public function after_idle(func:Dynamic, args:Dynamic):Dynamic;
+	public function after_idle(func:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		The anchor value controls how to place the grid within the
 		master when no row/column has any weight.
@@ -318,14 +318,14 @@ package matplotlib.backends.backend_tkagg;
 		argument specifies the target display. The clipboard
 		can be retrieved with selection_get.
 	**/
-	public function clipboard_append(string:Dynamic, kw:Dynamic):Dynamic;
+	public function clipboard_append(string:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Clear the data in the Tk clipboard.
 		
 		A widget specified for the optional displayof keyword
 		argument specifies the target display.
 	**/
-	public function clipboard_clear(kw:Dynamic):Dynamic;
+	public function clipboard_clear(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Retrieve data from the clipboard on window's display.
 		
@@ -341,7 +341,7 @@ package matplotlib.backends.backend_tkagg;
 		
 		selection_get(CLIPBOARD)
 	**/
-	public function clipboard_get(kw:Dynamic):Dynamic;
+	public function clipboard_get(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Configure column INDEX of a grid.
 		
@@ -349,7 +349,7 @@ package matplotlib.backends.backend_tkagg;
 		weight (how much does additional space propagate to this column)
 		and pad (how much space to let additionally).
 	**/
-	public function columnconfigure(index:Dynamic, ?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function columnconfigure(index:Dynamic, ?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Configure resources of a widget.
 		
@@ -357,7 +357,7 @@ package matplotlib.backends.backend_tkagg;
 		arguments. To get an overview about
 		the allowed keyword arguments call the method keys.
 	**/
-	public function config(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function config(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Configure resources of a widget.
 		
@@ -365,7 +365,7 @@ package matplotlib.backends.backend_tkagg;
 		arguments. To get an overview about
 		the allowed keyword arguments call the method keys.
 	**/
-	public function configure(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function configure(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Internal function.
 		
@@ -381,17 +381,17 @@ package matplotlib.backends.backend_tkagg;
 		to an event SEQUENCE such that the virtual event is triggered
 		whenever SEQUENCE occurs.
 	**/
-	public function event_add(virtual:Dynamic, sequences:Dynamic):Dynamic;
+	public function event_add(virtual:Dynamic, ?sequences:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Unbind a virtual event VIRTUAL from SEQUENCE.
 	**/
-	public function event_delete(virtual:Dynamic, sequences:Dynamic):Dynamic;
+	public function event_delete(virtual:Dynamic, ?sequences:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Generate an event SEQUENCE. Additional
 		keyword arguments specify parameter of the event
 		(e.g. x, y, rootx, rooty).
 	**/
-	public function event_generate(sequence:Dynamic, kw:Dynamic):Dynamic;
+	public function event_generate(sequence:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of all virtual events or the information
 		about the SEQUENCE bound to the virtual event VIRTUAL.
@@ -444,7 +444,7 @@ package matplotlib.backends.backend_tkagg;
 		Unmap this widget and do not use it for the packing order.
 	**/
 	public function forget():Dynamic;
-	public function form(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function form(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a boolean value for Tcl boolean values true and false given as parameter.
 	**/
@@ -499,7 +499,7 @@ package matplotlib.backends.backend_tkagg;
 		sticky=NSEW - if cell is larger on which sides will this
 		              widget stick to the cell boundary
 	**/
-	public function grid(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function grid(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The anchor value controls how to place the grid within the
 		master when no row/column has any weight.
@@ -527,7 +527,7 @@ package matplotlib.backends.backend_tkagg;
 		weight (how much does additional space propagate to this column)
 		and pad (how much space to let additionally).
 	**/
-	public function grid_columnconfigure(index:Dynamic, ?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function grid_columnconfigure(index:Dynamic, ?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Position a widget in the parent widget in a grid. Use as options:
 		column=number - use cell identified with given column (starting with 0)
@@ -543,7 +543,7 @@ package matplotlib.backends.backend_tkagg;
 		sticky=NSEW - if cell is larger on which sides will this
 		              widget stick to the cell boundary
 	**/
-	public function grid_configure(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function grid_configure(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unmap this widget.
 	**/
@@ -578,7 +578,7 @@ package matplotlib.backends.backend_tkagg;
 		weight (how much does additional space propagate to this row)
 		and pad (how much space to let additionally).
 	**/
-	public function grid_rowconfigure(index:Dynamic, ?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function grid_rowconfigure(index:Dynamic, ?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a tuple of the number of column and rows in the grid.
 	**/
@@ -672,7 +672,7 @@ package matplotlib.backends.backend_tkagg;
 		pady=amount - add padding in y direction
 		side=TOP or BOTTOM or LEFT or RIGHT -  where to add this widget.
 	**/
-	public function pack(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function pack(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pack a widget in the parent widget. Use as options:
 		after=widget - pack it after you have packed widget
@@ -689,7 +689,7 @@ package matplotlib.backends.backend_tkagg;
 		pady=amount - add padding in y direction
 		side=TOP or BOTTOM or LEFT or RIGHT -  where to add this widget.
 	**/
-	public function pack_configure(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function pack_configure(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unmap this widget and do not use it for the packing order.
 	**/
@@ -734,7 +734,7 @@ package matplotlib.backends.backend_tkagg;
 		bordermode="inside" or "outside" - whether to take border width of
 		                                   master widget into account
 	**/
-	public function place(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function place(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Place a widget in the parent widget. Use as options:
 		in=master - master relative to which the widget is placed
@@ -757,7 +757,7 @@ package matplotlib.backends.backend_tkagg;
 		bordermode="inside" or "outside" - whether to take border width of
 		                                   master widget into account
 	**/
-	public function place_configure(?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function place_configure(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unmap this widget.
 	**/
@@ -798,11 +798,11 @@ package matplotlib.backends.backend_tkagg;
 		weight (how much does additional space propagate to this row)
 		and pad (how much space to let additionally).
 	**/
-	public function rowconfigure(index:Dynamic, ?cnf:Dynamic, kw:Dynamic):Dynamic;
+	public function rowconfigure(index:Dynamic, ?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Clear the current X selection.
 	**/
-	public function selection_clear(kw:Dynamic):Dynamic;
+	public function selection_clear(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the contents of the current X selection.
 		
@@ -813,7 +813,7 @@ package matplotlib.backends.backend_tkagg;
 		fetched, defaulting to STRING except on X11, where UTF8_STRING is tried
 		before STRING.
 	**/
-	public function selection_get(kw:Dynamic):Dynamic;
+	public function selection_get(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Specify a function COMMAND to call if the X
 		selection owned by this widget is queried by another
@@ -827,14 +827,14 @@ package matplotlib.backends.backend_tkagg;
 		selection - name of the selection (default PRIMARY),
 		type - type of the selection (e.g. STRING, FILE_NAME).
 	**/
-	public function selection_handle(command:Dynamic, kw:Dynamic):Dynamic;
+	public function selection_handle(command:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Become owner of X selection.
 		
 		A keyword parameter selection specifies the name of
 		the selection (default PRIMARY).
 	**/
-	public function selection_own(kw:Dynamic):Dynamic;
+	public function selection_own(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return owner of X selection.
 		
@@ -843,11 +843,11 @@ package matplotlib.backends.backend_tkagg;
 		selection - name of the selection (default PRIMARY),
 		type - type of the selection (e.g. STRING, FILE_NAME).
 	**/
-	public function selection_own_get(kw:Dynamic):Dynamic;
+	public function selection_own_get(?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Send Tcl command CMD to different interpreter INTERP to be executed.
 	**/
-	public function send(interp:Dynamic, cmd:Dynamic, args:Dynamic):Dynamic;
+	public function send(interp:Dynamic, cmd:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Display a message on toolbar or in status bar
 		
@@ -897,7 +897,7 @@ package matplotlib.backends.backend_tkagg;
 	/**
 		Do not use. Needed in Tk 3.6 and earlier.
 	**/
-	public function tk_menuBar(args:Dynamic):Dynamic;
+	public function tk_menuBar(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set a new color scheme for all widget elements.
 		
@@ -910,7 +910,7 @@ package matplotlib.backends.backend_tkagg;
 		background, highlightColor, selectForeground,
 		disabledForeground, insertBackground, troughColor.
 	**/
-	public function tk_setPalette(args:Dynamic, kw:Dynamic):Dynamic;
+	public function tk_setPalette(?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set Tcl internal variable, whether the look and feel
 		should adhere to Motif.

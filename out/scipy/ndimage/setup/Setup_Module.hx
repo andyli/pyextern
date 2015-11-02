@@ -31,5 +31,5 @@ package scipy.ndimage.setup;
 	**/
 	static public function get_include():Dynamic;
 	static public var print_function : Dynamic;
-	static public function setup(attr:Dynamic):Dynamic;
+	static public function setup(?attr:python.KwArgs<Dynamic>):Dynamic;
 }

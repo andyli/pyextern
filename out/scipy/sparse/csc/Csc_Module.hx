@@ -59,5 +59,5 @@ package scipy.sparse.csc;
 		>>> upcast('bool',complex,float)
 		<type 'numpy.complex128'>
 	**/
-	static public function upcast(args:Dynamic):Dynamic;
+	static public function upcast(?args:python.VarArgs<Dynamic>):Dynamic;
 }

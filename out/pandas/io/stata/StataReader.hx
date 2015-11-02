@@ -67,7 +67,7 @@ package pandas.io.stata;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -168,7 +168,7 @@ package pandas.io.stata;
 		-------
 		DataFrame
 	**/
-	public function data(kwargs:Dynamic):Dynamic;
+	public function data(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns data label of Stata file
 	**/

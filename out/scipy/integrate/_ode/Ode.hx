@@ -58,7 +58,7 @@ package scipy.integrate._ode;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -104,7 +104,7 @@ package scipy.integrate._ode;
 	/**
 		Set extra parameters for user-supplied function f.
 	**/
-	public function set_f_params(args:Dynamic):Dynamic;
+	public function set_f_params(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set initial conditions y(t) = y.
 	**/
@@ -119,11 +119,11 @@ package scipy.integrate._ode;
 		integrator_params :
 		    Additional parameters for the integrator.
 	**/
-	public function set_integrator(name:Dynamic, integrator_params:Dynamic):Dynamic;
+	public function set_integrator(name:Dynamic, ?integrator_params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set extra parameters for user-supplied function jac.
 	**/
-	public function set_jac_params(args:Dynamic):Dynamic;
+	public function set_jac_params(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set callable to be called at every successful integration step.
 		

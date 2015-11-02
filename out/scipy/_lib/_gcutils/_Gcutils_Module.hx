@@ -43,7 +43,7 @@ package scipy._lib._gcutils;
 		    ...
 		ReferenceError: Remaining reference(s) to object
 	**/
-	static public function assert_deallocated(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function assert_deallocated(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		@contextmanager decorator.
 		

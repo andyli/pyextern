@@ -75,7 +75,7 @@ package scipy.sparse.bsr;
 		>>> upcast('bool',complex,float)
 		<type 'numpy.complex128'>
 	**/
-	static public function upcast(args:Dynamic):Dynamic;
+	static public function upcast(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

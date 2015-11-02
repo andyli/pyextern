@@ -379,10 +379,21 @@ class Main {
 	static function sigToFun(sig:Dynamic):Function {
 		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
 			// trace(Reflect.field(p, "default") == Inspect.Parameter.empty);
+			var isVarArgs = python.Syntax.binop(p.kind, "is", inspect.Parameter.VAR_POSITIONAL);
+			var isKwargs = python.Syntax.binop(p.kind, "is", inspect.Parameter.VAR_KEYWORD);
 			var arg:FunctionArg = {
-				opt: if (python.Syntax.binop(Reflect.field(p, "default"), "is", inspect.Parameter.empty)) false else true,
+				opt:
+					isVarArgs ||
+					isKwargs ||
+					!python.Syntax.binop(Reflect.field(p, "default"), "is", inspect.Parameter.empty),
 				name: if (isHxKeyword(p.name)) "_" + p.name else p.name,
-				type: macro:Dynamic,
+				type:
+					if (isVarArgs)
+						macro:python.VarArgs<Dynamic>
+					else if (isKwargs)
+						macro:python.KwArgs<Dynamic>
+					else
+						macro:Dynamic,
 				// value: null
 			};
 			arg;

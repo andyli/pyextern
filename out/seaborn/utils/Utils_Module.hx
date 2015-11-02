@@ -51,7 +51,7 @@ package seaborn.utils;
 	/**
 		Grab current axis and label it.
 	**/
-	static public function axlabel(xlabel:Dynamic, ylabel:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function axlabel(xlabel:Dynamic, ylabel:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a list of unique data values.
 		
@@ -166,7 +166,7 @@ package seaborn.utils;
 		kws : dict, optional
 		    Passed to pandas.read_csv
 	**/
-	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, kws:Dynamic):Dynamic;
+	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Simple function to offset spines away from axes.
 		

@@ -77,7 +77,7 @@ package pandas.tseries.index;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	/**
@@ -101,7 +101,7 @@ package pandas.tseries.index;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?verify_integrity:Dynamic, ?normalize:Dynamic, ?closed:Dynamic, ?ambiguous:Dynamic, ?dtype:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?verify_integrity:Dynamic, ?normalize:Dynamic, ?closed:Dynamic, ?ambiguous:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
@@ -309,9 +309,9 @@ package pandas.tseries.index;
 	/**
 		actually format my specific types 
 	**/
-	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
-	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
 	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?ambiguous:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
@@ -349,7 +349,7 @@ package pandas.tseries.index;
 	/**
 		create the join wrapper methods 
 	**/
-	public function _join_i8_wrapper(kwargs:Dynamic):Dynamic;
+	public function _join_i8_wrapper(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -427,7 +427,7 @@ package pandas.tseries.index;
 	/**
 		perform the reduction type operation if we can 
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -472,12 +472,12 @@ package pandas.tseries.index;
 		    if True, infer the new type of the passed values
 		kwargs : updates the default attributes for this Index
 	**/
-	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we require the we have a dtype compat for the values
 		if we are passed a non-dtype compat, then coerce using the constructor
 	**/
-	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?dtype:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
@@ -491,7 +491,7 @@ package pandas.tseries.index;
 		Necessary for making this object picklable
 	**/
 	public function _unpickle_compat(state:Dynamic):Dynamic;
-	public function _update_inplace(result:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -542,7 +542,7 @@ package pandas.tseries.index;
 		--------
 		numpy.ndarray.argsort
 	**/
-	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var asi8 : Dynamic;
 	public var asobject : Dynamic;
 	/**
@@ -628,7 +628,7 @@ package pandas.tseries.index;
 		new_index : DatetimeIndex
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(kwargs:Dynamic):Dynamic;
+	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sorted set difference of two Index objects
 		
@@ -724,7 +724,7 @@ package pandas.tseries.index;
 	/**
 		Render a string representation of the Index
 	**/
-	public function format(?name:Dynamic, ?formatter:Dynamic, kwargs:Dynamic):Dynamic;
+	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		get/set the frequncy of the Index
 	**/
@@ -774,7 +774,7 @@ package pandas.tseries.index;
 	/**
 		guaranteed return of an indexer even when non-unique 
 	**/
-	public function get_indexer_for(target:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_indexer_for(target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an indexer suitable for taking from a non unique index
 		return the labels in the same order as the target, and
@@ -1227,7 +1227,7 @@ package pandas.tseries.index;
 		Snap time stamps to nearest occurring frequency
 	**/
 	public function snap(?freq:Dynamic):Dynamic;
-	public function sort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sorted copy of Index
 	**/
@@ -1324,7 +1324,7 @@ package pandas.tseries.index;
 	/**
 		Analogous to ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns numpy array of datetime.time. The time part of the Timestamps.
 	**/
@@ -1343,7 +1343,7 @@ package pandas.tseries.index;
 	/**
 		slice and dice then format 
 	**/
-	public function to_native_types(?slicer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cast to PeriodIndex at a particular frequency
 	**/

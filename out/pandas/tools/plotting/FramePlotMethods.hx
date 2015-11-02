@@ -125,7 +125,7 @@ package pandas.tools.plotting;
 		  is a function of one argument that reduces all the values in a bin to
 		  a single number (e.g. `mean`, `max`, `sum`, `std`).
 	**/
-	public function __call__(?x:Dynamic, ?y:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?secondary_y:Dynamic, ?sort_columns:Dynamic, kwds:Dynamic):Dynamic;
+	public function __call__(?x:Dynamic, ?y:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?subplots:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?layout:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?secondary_y:Dynamic, ?sort_columns:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -183,7 +183,7 @@ package pandas.tools.plotting;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -266,7 +266,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function area(?x:Dynamic, ?y:Dynamic, kwds:Dynamic):Dynamic;
+	public function area(?x:Dynamic, ?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Vertical bar plot
 		
@@ -283,7 +283,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function bar(?x:Dynamic, ?y:Dynamic, kwds:Dynamic):Dynamic;
+	public function bar(?x:Dynamic, ?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Horizontal bar plot
 		
@@ -300,7 +300,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function barh(?x:Dynamic, ?y:Dynamic, kwds:Dynamic):Dynamic;
+	public function barh(?x:Dynamic, ?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Boxplot
 		
@@ -317,7 +317,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function box(?by:Dynamic, kwds:Dynamic):Dynamic;
+	public function box(?by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Kernel Density Estimate plot
 		
@@ -332,7 +332,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function density(kwds:Dynamic):Dynamic;
+	public function density(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Hexbin plot
 		
@@ -356,7 +356,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?reduce_C_function:Dynamic, ?gridsize:Dynamic, kwds:Dynamic):Dynamic;
+	public function hexbin(x:Dynamic, y:Dynamic, ?C:Dynamic, ?reduce_C_function:Dynamic, ?gridsize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Histogram
 		
@@ -375,7 +375,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function hist(?by:Dynamic, ?bins:Dynamic, kwds:Dynamic):Dynamic;
+	public function hist(?by:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Kernel Density Estimate plot
 		
@@ -390,7 +390,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function kde(kwds:Dynamic):Dynamic;
+	public function kde(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Line plot
 		
@@ -407,7 +407,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function line(?x:Dynamic, ?y:Dynamic, kwds:Dynamic):Dynamic;
+	public function line(?x:Dynamic, ?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pie chart
 		
@@ -424,7 +424,7 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function pie(?y:Dynamic, kwds:Dynamic):Dynamic;
+	public function pie(?y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Scatter plot
 		
@@ -445,5 +445,5 @@ package pandas.tools.plotting;
 		-------
 		axes : matplotlib.AxesSubplot or np.array of them
 	**/
-	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, kwds:Dynamic):Dynamic;
+	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

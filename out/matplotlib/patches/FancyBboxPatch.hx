@@ -104,7 +104,7 @@ package matplotlib.patches;
 		  zorder: any number         
 	**/
 	@:native("__init__")
-	public function ___init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -121,7 +121,7 @@ package matplotlib.patches;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -202,7 +202,7 @@ package matplotlib.patches;
 	/**
 		Draw the :class:`Patch` to the given *renderer*.
 	**/
-	public function draw(renderer:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw(renderer:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return whether fill is set
 	**/
@@ -557,7 +557,7 @@ package matplotlib.patches;
 		'color' and 'facecolor' are specified, the property
 		with higher priority gets set last).
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		alias for set_antialiased
 	**/
@@ -599,7 +599,7 @@ package matplotlib.patches;
 		
 		ACCEPTS: (left, bottom, width, height)
 	**/
-	public function set_bounds(args:Dynamic):Dynamic;
+	public function set_bounds(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the box style.
 		
@@ -634,7 +634,7 @@ package matplotlib.patches;
 		
 		ACCEPTS: [ 'circle' | 'darrow' | 'larrow' | 'rarrow' | 'round' | 'round4' | 'roundtooth' | 'sawtooth' | 'square' ]
 	**/
-	public function set_boxstyle(?boxstyle:Dynamic, kw:Dynamic):Dynamic;
+	public function set_boxstyle(?boxstyle:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the patch capstyle
 		

@@ -97,7 +97,7 @@ package numpy.core.shape_base;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -133,7 +133,7 @@ package numpy.core.shape_base;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least three dimensions.
 		
@@ -181,7 +181,7 @@ package numpy.core.shape_base;
 		  [2]]] (1, 2, 1)
 		[[[1 2]]] (1, 1, 2)
 	**/
-	static public function atleast_3d(arys:Dynamic):Dynamic;
+	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Stack arrays in sequence horizontally (column wise).

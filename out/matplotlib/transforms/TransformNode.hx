@@ -5,8 +5,8 @@ package matplotlib.transforms;
 	static public var INVALID_AFFINE : Dynamic;
 	static public var INVALID_NON_AFFINE : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __copy__(args:Dynamic):Dynamic;
-	public function __deepcopy__(args:Dynamic):Dynamic;
+	public function __copy__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __deepcopy__(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/
@@ -69,7 +69,7 @@ package matplotlib.transforms;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -137,5 +137,5 @@ package matplotlib.transforms;
 		Should be called from the constructor of any transforms that
 		depend on other transforms.
 	**/
-	public function set_children(children:Dynamic):Dynamic;
+	public function set_children(?children:python.VarArgs<Dynamic>):Dynamic;
 }

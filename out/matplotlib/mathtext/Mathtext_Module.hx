@@ -36,8 +36,8 @@ package matplotlib.mathtext;
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
-	static public function findfont(prop:Dynamic, kw:Dynamic):Dynamic;
-	static public function get_data_path(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function get_data_path(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;
 	/**
 		get_unicode_index(symbol) -> integer

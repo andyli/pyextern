@@ -46,7 +46,7 @@ package pandas.io.data;
 		ff = DataReader("F-F_ST_Reversal_Factor", "famafrench")
 	**/
 	static public function DataReader(name:Dynamic, ?data_source:Dynamic, ?start:Dynamic, ?end:Dynamic, ?retry_count:Dynamic, ?pause:Dynamic):Dynamic;
-	static public function ZipFile(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ZipFile(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _FAMAFRENCH_URL : Dynamic;
 	static public var _FRED_URL : Dynamic;
 	static public var _HISTORICAL_GOOGLE_URL : Dynamic;
@@ -255,7 +255,7 @@ package pandas.io.data;
 	**/
 	static public function get_quote_yahoo(symbols:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
-	static public function lmap(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		

@@ -104,19 +104,19 @@ package seaborn.external.six;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
-	static public function iteritems(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iteritems(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the keys of a dictionary.
 	**/
-	static public function iterkeys(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iterkeys(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the (key, [values]) pairs of a dictionary.
 	**/
-	static public function iterlists(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function iterlists(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an iterator over the values of a dictionary.
 	**/
-	static public function itervalues(d:Dynamic, kw:Dynamic):Dynamic;
+	static public function itervalues(d:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		next(iterator[, default])
 		
@@ -155,5 +155,5 @@ package seaborn.external.six;
 	/**
 		Create a base class with a metaclass.
 	**/
-	static public function with_metaclass(meta:Dynamic, bases:Dynamic):Dynamic;
+	static public function with_metaclass(meta:Dynamic, ?bases:python.VarArgs<Dynamic>):Dynamic;
 }

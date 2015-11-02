@@ -43,7 +43,7 @@ package pandas.tseries.base;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -61,7 +61,7 @@ package pandas.tseries.base;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -130,7 +130,7 @@ package pandas.tseries.base;
 		Return a list of tuples of the (attr,formatted_value)
 	**/
 	public function _format_attrs():Dynamic;
-	public function _format_with_header(header:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
 	/**
 		create the join wrapper methods 
@@ -238,7 +238,7 @@ package pandas.tseries.base;
 	/**
 		Analogous to ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, kwargs:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a list of the underlying data
 	**/

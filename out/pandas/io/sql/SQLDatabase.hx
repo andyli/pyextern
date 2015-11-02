@@ -65,7 +65,7 @@ package pandas.io.sql;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -141,7 +141,7 @@ package pandas.io.sql;
 	/**
 		Simple passthrough to SQLAlchemy connectable
 	**/
-	public function execute(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function execute(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_table(table_name:Dynamic, ?schema:Dynamic):Dynamic;
 	public function has_table(name:Dynamic, ?schema:Dynamic):Dynamic;
 	/**

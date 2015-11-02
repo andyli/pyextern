@@ -177,7 +177,7 @@ package seaborn.axisgrid;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -260,7 +260,7 @@ package seaborn.axisgrid;
 		self : Grid instance
 		    Returns self for easy chaining.
 	**/
-	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_legend(?legend_data:Dynamic, ?title:Dynamic, ?label_order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with the same function in every subplot.
 		
@@ -270,7 +270,7 @@ package seaborn.axisgrid;
 		    Must take x, y arrays as positional arguments and draw onto the
 		    "currently active" matplotlib Axes.
 	**/
-	public function map(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with a univariate function on each diagonal subplot.
 		
@@ -282,7 +282,7 @@ package seaborn.axisgrid;
 		    using a ``hue`` variable and ``plt.hist``; the histogram will be
 		    plotted with stacked bars.
 	**/
-	public function map_diag(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map_diag(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with a bivariate function on the lower diagonal subplots.
 		
@@ -292,7 +292,7 @@ package seaborn.axisgrid;
 		    Must take x, y arrays as positional arguments and draw onto the
 		    "currently active" matplotlib Axes.
 	**/
-	public function map_lower(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map_lower(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with a bivariate function on the off-diagonal subplots.
 		
@@ -302,7 +302,7 @@ package seaborn.axisgrid;
 		    Must take x, y arrays as positional arguments and draw onto the
 		    "currently active" matplotlib Axes.
 	**/
-	public function map_offdiag(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map_offdiag(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot with a bivariate function on the upper diagonal subplots.
 		
@@ -312,13 +312,13 @@ package seaborn.axisgrid;
 		    Must take x, y arrays as positional arguments and draw onto the
 		    "currently active" matplotlib Axes.
 	**/
-	public function map_upper(func:Dynamic, kwargs:Dynamic):Dynamic;
+	public function map_upper(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Save the figure.
 	**/
-	public function savefig(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function savefig(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set attributes on each subplot Axes.
 	**/
-	public function set(kwargs:Dynamic):Dynamic;
+	public function set(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

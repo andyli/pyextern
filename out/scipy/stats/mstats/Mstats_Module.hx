@@ -32,7 +32,7 @@ package scipy.stats.mstats;
 		`numpy.ma.row_stack` has identical behavior, but is called with a sequence
 		of sequences.
 	**/
-	static public function argstoarray(args:Dynamic):Dynamic;
+	static public function argstoarray(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Returns the incomplete beta function.
 		
@@ -290,7 +290,7 @@ package scipy.stats.mstats;
 		pvalue : float
 		    The associated p-value from the F-distribution.
 	**/
-	static public function f_oneway(args:Dynamic):Dynamic;
+	static public function f_oneway(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Calculation of Wilks lambda F-statistic for multivariate data, per
 		Maxwell & Delaney p.657.
@@ -335,7 +335,7 @@ package scipy.stats.mstats;
 		pvalue : float
 		    the associated p-value.
 	**/
-	static public function friedmanchisquare(args:Dynamic):Dynamic;
+	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the geometric mean along the specified axis.
 		
@@ -564,7 +564,7 @@ package scipy.stats.mstats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskal(args:Dynamic):Dynamic;
+	static public function kruskal(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -599,7 +599,7 @@ package scipy.stats.mstats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskalwallis(args:Dynamic):Dynamic;
+	static public function kruskalwallis(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the Kolmogorov-Smirnov test on two samples.
 		
@@ -756,7 +756,7 @@ package scipy.stats.mstats;
 		Missing values are considered pair-wise: if a value is missing in x,
 		the corresponding value in y is masked.
 	**/
-	static public function linregress(args:Dynamic):Dynamic;
+	static public function linregress(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Computes the Mann-Whitney statistic
 		
@@ -1086,7 +1086,7 @@ package scipy.stats.mstats;
 		
 		Returns: transformed data for use in an ANOVA
 	**/
-	static public function obrientransform(args:Dynamic):Dynamic;
+	static public function obrientransform(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Calculates a Pearson correlation coefficient and the p-value for testing
 		non-correlation.
@@ -1317,7 +1317,7 @@ package scipy.stats.mstats;
 		        on a flat version of the array.
 		    
 	**/
-	static public function signaltonoise(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function signaltonoise(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Computes the skewness of a data set.
 		

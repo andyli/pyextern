@@ -50,7 +50,7 @@ package numpy.ma;
 		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
 		>>> plt.show()
 	**/
-	static public function abs(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function abs(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		absolute(x[, out])
 		
@@ -90,7 +90,7 @@ package numpy.ma;
 		>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
 		>>> plt.show()
 	**/
-	static public function absolute(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function absolute(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		add(x1, x2[, out])
@@ -125,7 +125,7 @@ package numpy.ma;
 		       [  3.,   5.,   7.],
 		       [  6.,   8.,  10.]])
 	**/
-	static public function add(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function add(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		all(self, axis=None, out=None)
 		
@@ -158,7 +158,7 @@ package numpy.ma;
 		>>> (a.all() is np.ma.masked)
 		True
 	**/
-	static public function all(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function all(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns True if two arrays are element-wise equal within a tolerance.
 		
@@ -459,7 +459,7 @@ package numpy.ma;
 		>>> np.angle(1+1j, deg=True)                  # in degrees
 		45.0
 	**/
-	static public function angle(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function angle(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		anom(self, axis=None, dtype=None)
 		
@@ -491,7 +491,7 @@ package numpy.ma;
 		             mask = False,
 		       fill_value = 1e+20)
 	**/
-	static public function anom(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function anom(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		anom(self, axis=None, dtype=None)
 		
@@ -523,7 +523,7 @@ package numpy.ma;
 		             mask = False,
 		       fill_value = 1e+20)
 	**/
-	static public function anomalies(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function anomalies(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		any(self, axis=None, out=None)
 		
@@ -545,7 +545,7 @@ package numpy.ma;
 		--------
 		any : equivalent function
 	**/
-	static public function any(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function any(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append values to the end of an array.
 		
@@ -639,7 +639,7 @@ package numpy.ma;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -755,7 +755,7 @@ package numpy.ma;
 		>>> np.arange(3,7,2)
 		array([3, 5])
 	**/
-	static public function arange(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function arange(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arccos(x[, out])
 		
@@ -821,7 +821,7 @@ package numpy.ma;
 		>>> plt.axis('tight')
 		>>> plt.show()
 	**/
-	static public function arccos(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arccos(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arccosh(x[, out])
 		
@@ -874,7 +874,7 @@ package numpy.ma;
 		>>> np.arccosh(1)
 		0.0
 	**/
-	static public function arccosh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arccosh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arcsin(x[, out])
 		
@@ -931,7 +931,7 @@ package numpy.ma;
 		>>> np.arcsin(0)
 		0.0
 	**/
-	static public function arcsin(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arcsin(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arcsinh(x[, out])
 		
@@ -978,7 +978,7 @@ package numpy.ma;
 		>>> np.arcsinh(np.array([np.e, 10.0]))
 		array([ 1.72538256,  2.99822295])
 	**/
-	static public function arcsinh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arcsinh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arctan(x[, out])
 		
@@ -1044,7 +1044,7 @@ package numpy.ma;
 		>>> plt.axis('tight')
 		>>> plt.show()
 	**/
-	static public function arctan(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arctan(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arctan2(x1, x2[, out])
 		
@@ -1121,7 +1121,7 @@ package numpy.ma;
 		>>> np.arctan2([0., 0., np.inf], [+0., -0., np.inf])
 		array([ 0.        ,  3.14159265,  0.78539816])
 	**/
-	static public function arctan2(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arctan2(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		arctanh(x[, out])
 		
@@ -1169,7 +1169,7 @@ package numpy.ma;
 		>>> np.arctanh([0, -0.5])
 		array([ 0.        , -0.54930614])
 	**/
-	static public function arctanh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function arctanh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns array of indices of the maximum values along the given axis.
 		Masked values are treated as if they had the value fill_value.
@@ -1292,7 +1292,7 @@ package numpy.ma;
 		--------
 		around : equivalent function
 	**/
-	static public function around(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function around(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		An array class with possibly masked values.
 		
@@ -1468,7 +1468,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_1d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_1d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		atleast_2d(*arys)
 		
@@ -1511,7 +1511,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_2d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_2d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		atleast_3d(*arys)
 		
@@ -1566,7 +1566,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function atleast_3d(args:Dynamic, params:Dynamic):Dynamic;
+	static public function atleast_3d(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the weighted average of array over the given axis.
 		
@@ -1721,7 +1721,7 @@ package numpy.ma;
 		>>> np.bitwise_and([True, True], [False, True])
 		array([False,  True], dtype=bool)
 	**/
-	static public function bitwise_and(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bitwise_and(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		bitwise_or(x1, x2[, out])
 		
@@ -1780,7 +1780,7 @@ package numpy.ma;
 		>>> np.bitwise_or([True, True], [False, True])
 		array([ True,  True], dtype=bool)
 	**/
-	static public function bitwise_or(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bitwise_or(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		bitwise_xor(x1, x2[, out])
 		
@@ -1829,7 +1829,7 @@ package numpy.ma;
 		>>> np.bitwise_xor([True, True], [False, True])
 		array([ True, False], dtype=bool)
 	**/
-	static public function bitwise_xor(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bitwise_xor(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ceil(x[, out])
 		
@@ -1858,7 +1858,7 @@ package numpy.ma;
 		>>> np.ceil(a)
 		array([-1., -1., -0.,  1.,  2.,  2.,  2.])
 	**/
-	static public function ceil(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function ceil(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Use an index array to construct a new array from a set of choices.
 		
@@ -2054,7 +2054,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function column_stack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function column_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the common filling value of two masked arrays, if any.
 		
@@ -2134,7 +2134,7 @@ package numpy.ma;
 		 [False False]],
 		      fill_value=999999)
 	**/
-	static public function compress(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function compress(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Suppress whole columns of a 2-D array that contain masked values.
 		
@@ -2309,7 +2309,7 @@ package numpy.ma;
 		array([[ 1.-1.j,  0.-0.j],
 		       [ 0.-0.j,  1.-1.j]])
 	**/
-	static public function conjugate(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function conjugate(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		copy
 		a.copy(order='C')
@@ -2350,7 +2350,7 @@ package numpy.ma;
 		    >>> y.flags['C_CONTIGUOUS']
 		    True
 	**/
-	static public function copy(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function copy(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return Pearson product-moment correlation coefficients.
 		
@@ -2446,7 +2446,7 @@ package numpy.ma;
 		  File "<stdin>", line 1, in <module>
 		ValueError: invalid return array shape
 	**/
-	static public function cos(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cos(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		cosh(x[, out])
 		
@@ -2476,7 +2476,7 @@ package numpy.ma;
 		>>> plt.plot(x, np.cosh(x))
 		>>> plt.show()
 	**/
-	static public function cosh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cosh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Count the non-masked elements of the array along the given axis.
 		
@@ -2664,7 +2664,7 @@ package numpy.ma;
 		Arithmetic is modular when using integer types, and no error is
 		raised on overflow.
 	**/
-	static public function cumprod(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function cumprod(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		cumsum(self, axis=None, dtype=None, out=None)
 		
@@ -2712,7 +2712,7 @@ package numpy.ma;
 		>>> print marr.cumsum()
 		[0 1 3 -- -- -- 9 16 24 33]
 	**/
-	static public function cumsum(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function cumsum(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the default fill value for the argument object.
 		
@@ -2807,7 +2807,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function diagflat(args:Dynamic, params:Dynamic):Dynamic;
+	static public function diagflat(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		diagonal
 		a.diagonal(offset=0, axis1=0, axis2=1)
@@ -2822,7 +2822,7 @@ package numpy.ma;
 		    --------
 		    numpy.diagonal : equivalent function
 	**/
-	static public function diagonal(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function diagonal(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate the n-th order discrete difference along given axis.
 		
@@ -2914,7 +2914,7 @@ package numpy.ma;
 		>>> x//4
 		array([0, 0, 0, 0, 1])
 	**/
-	static public function divide(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function divide(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the dot product of two arrays.
@@ -3015,7 +3015,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function dstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function dstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pickle a masked array to a file.
 		
@@ -3095,7 +3095,7 @@ package numpy.ma;
 		array([[-1073741821, -1067949133],
 		       [  496041986,    19249760]])                     #random
 	**/
-	static public function empty(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function empty(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		empty_like(a, dtype=None, order='K', subok=True)
 		
@@ -3153,7 +3153,7 @@ package numpy.ma;
 		array([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000],#random
 		       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])
 	**/
-	static public function empty_like(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		equal(x1, x2[, out])
 		
@@ -3184,7 +3184,7 @@ package numpy.ma;
 		>>> np.equal(1, np.ones(1))
 		array([ True], dtype=bool)
 	**/
-	static public function equal(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function equal(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		exp(x[, out])
 		
@@ -3247,7 +3247,7 @@ package numpy.ma;
 		>>> plt.title('Phase (angle) of exp(x)')
 		>>> plt.show()
 	**/
-	static public function exp(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function exp(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expand the shape of an array.
 		
@@ -3321,7 +3321,7 @@ package numpy.ma;
 		>>> np.fabs([-1.2, 1.2])
 		array([ 1.2,  1.2])
 	**/
-	static public function fabs(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fabs(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return input as an array with masked data replaced by a fill value.
 		
@@ -3577,7 +3577,7 @@ package numpy.ma;
 		>>> np.floor(a)
 		array([-2., -2., -1.,  0.,  1.,  1.,  2.])
 	**/
-	static public function floor(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function floor(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		floor_divide(x1, x2[, out])
 		
@@ -3610,7 +3610,7 @@ package numpy.ma;
 		>>> np.floor_divide([1., 2., 3., 4.], 2.5)
 		array([ 0.,  0.,  1.,  1.])
 	**/
-	static public function floor_divide(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function floor_divide(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		fmod(x1, x2[, out])
 		
@@ -3665,7 +3665,7 @@ package numpy.ma;
 		       [-1,  0],
 		       [ 1,  0]])
 	**/
-	static public function fmod(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function fmod(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		frombuffer(buffer, dtype=float, count=-1, offset=0)
 		
@@ -3701,7 +3701,7 @@ package numpy.ma;
 		array(['w', 'o', 'r', 'l', 'd'],
 		      dtype='|S1')
 	**/
-	static public function frombuffer(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function frombuffer(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Build a masked array from a suitable flexible-type array.
 		
@@ -3814,7 +3814,7 @@ package numpy.ma;
 		       [1, 2, 3],
 		       [2, 3, 4]])
 	**/
-	static public function fromfunction(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function fromfunction(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the data of a masked array as an ndarray.
 		
@@ -3996,7 +3996,7 @@ package numpy.ma;
 		>>> a > b
 		array([ True, False], dtype=bool)
 	**/
-	static public function greater(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function greater(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		greater_equal(x1, x2[, out])
 		
@@ -4023,7 +4023,7 @@ package numpy.ma;
 		>>> np.greater_equal([4, 2, 1], [2, 2, 2])
 		array([ True, True, False], dtype=bool)
 	**/
-	static public function greater_equal(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function greater_equal(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		harden_mask(self)
 		
@@ -4036,7 +4036,7 @@ package numpy.ma;
 		--------
 		hardmask
 	**/
-	static public function harden_mask(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function harden_mask(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hsplit(ary, indices_or_sections)
 		
@@ -4097,7 +4097,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hsplit(args:Dynamic, params:Dynamic):Dynamic;
+	static public function hsplit(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hstack(tup)
 		
@@ -4146,7 +4146,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function hstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function hstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		hypot(x1, x2[, out])
 		
@@ -4184,7 +4184,7 @@ package numpy.ma;
 		       [ 5.,  5.,  5.],
 		       [ 5.,  5.,  5.]])
 	**/
-	static public function hypot(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function hypot(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		identity(n, dtype=None)
 		
@@ -4213,7 +4213,7 @@ package numpy.ma;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function identity(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function identity(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		ids(self)
 		
@@ -4236,7 +4236,7 @@ package numpy.ma;
 		>>> x.ids()
 		(166691080, 3083169284L)
 	**/
-	static public function ids(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function ids(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Test whether each element of an array is also present in a second
 		array.
@@ -4771,7 +4771,7 @@ package numpy.ma;
 		>>> np.less([1, 2], [2, 2])
 		array([ True, False], dtype=bool)
 	**/
-	static public function less(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function less(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		less_equal(x1, x2[, out])
 		
@@ -4798,7 +4798,7 @@ package numpy.ma;
 		>>> np.less_equal([4, 2, 1], [2, 2, 2])
 		array([False,  True,  True], dtype=bool)
 	**/
-	static public function less_equal(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function less_equal(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper around ``cPickle.load`` which accepts either a file-like object
 		or a filename.
@@ -4882,7 +4882,7 @@ package numpy.ma;
 		>>> np.log([1, np.e, np.e**2, 0])
 		array([  0.,   1.,   2., -Inf])
 	**/
-	static public function log(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function log(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		log10(x[, out])
 		
@@ -4929,7 +4929,7 @@ package numpy.ma;
 		>>> np.log10([1e-15, -3.])
 		array([-15.,  NaN])
 	**/
-	static public function log10(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function log10(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		log2(x[, out])
 		
@@ -4976,7 +4976,7 @@ package numpy.ma;
 		>>> np.log2(xi)
 		array([ 0.+2.26618007j,  0.+0.j        ,  1.+0.j        ,  2.+2.26618007j])
 	**/
-	static public function log2(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function log2(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		logical_and(x1, x2[, out])
 		
@@ -5010,7 +5010,7 @@ package numpy.ma;
 		>>> np.logical_and(x>1, x<4)
 		array([False, False,  True,  True, False], dtype=bool)
 	**/
-	static public function logical_and(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function logical_and(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		logical_not(x[, out])
 		
@@ -5042,7 +5042,7 @@ package numpy.ma;
 		>>> np.logical_not(x<3)
 		array([False, False, False,  True,  True], dtype=bool)
 	**/
-	static public function logical_not(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function logical_not(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		logical_or(x1, x2[, out])
 		
@@ -5076,7 +5076,7 @@ package numpy.ma;
 		>>> np.logical_or(x < 1, x > 3)
 		array([ True, False, False, False,  True], dtype=bool)
 	**/
-	static public function logical_or(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function logical_or(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		logical_xor(x1, x2[, out])
 		
@@ -5116,7 +5116,7 @@ package numpy.ma;
 		array([[ True, False],
 		       [False,  True]], dtype=bool)
 	**/
-	static public function logical_xor(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function logical_xor(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a boolean mask from an array.
 		
@@ -6110,7 +6110,7 @@ package numpy.ma;
 		>>> a.mean()
 		1.5
 	**/
-	static public function mean(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function mean(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the median along the specified axis.
 		
@@ -6288,7 +6288,7 @@ package numpy.ma;
 		>>> np.remainder(np.arange(7), 5)
 		array([0, 1, 2, 3, 4, 0, 1])
 	**/
-	static public function mod(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function mod(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var mr_ : Dynamic;
 	/**
 		multiply(x1, x2[, out])
@@ -6322,7 +6322,7 @@ package numpy.ma;
 		       [  0.,   4.,  10.],
 		       [  0.,   7.,  16.]])
 	**/
-	static public function multiply(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function multiply(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the number of dimensions of an array.
 		
@@ -6373,7 +6373,7 @@ package numpy.ma;
 		>>> np.negative([1.,-1.])
 		array([-1.,  1.])
 	**/
-	static public function negative(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function negative(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var nomask : Dynamic;
 	/**
 		nonzero(self)
@@ -6474,7 +6474,7 @@ package numpy.ma;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		not_equal(x1, x2[, out])
 		
@@ -6507,7 +6507,7 @@ package numpy.ma;
 		array([[False,  True],
 		       [False,  True]], dtype=bool)
 	**/
-	static public function not_equal(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function not_equal(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find contiguous unmasked data in a masked array along the given axis.
 		
@@ -6631,7 +6631,7 @@ package numpy.ma;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the outer product of two vectors.
 		
@@ -7012,7 +7012,7 @@ package numpy.ma;
 		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
 		array([  2.,  12.])
 	**/
-	static public function prod(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function prod(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		prod(self, axis=None, dtype=None, out=None)
 		
@@ -7062,7 +7062,7 @@ package numpy.ma;
 		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
 		array([  2.,  12.])
 	**/
-	static public function product(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function product(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return (maximum - minimum) along the the given dimension
 		(i.e. peak-to-peak value).
@@ -7194,7 +7194,7 @@ package numpy.ma;
 		>>> print x.ravel()
 		[1 -- 3 -- 5 -- 7 -- 9]
 	**/
-	static public function ravel(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		remainder(x1, x2[, out])
 		
@@ -7238,7 +7238,7 @@ package numpy.ma;
 		>>> np.remainder(np.arange(7), 5)
 		array([0, 1, 2, 3, 4, 0, 1])
 	**/
-	static public function remainder(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function remainder(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		repeat
 		a.repeat(repeats, axis=None)
@@ -7251,7 +7251,7 @@ package numpy.ma;
 		    --------
 		    numpy.repeat : equivalent function
 	**/
-	static public function repeat(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function repeat(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns an array containing the same data with a new shape.
 		
@@ -7427,7 +7427,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function row_stack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function row_stack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set the filling value of a, if a is a masked array.
 		
@@ -7608,7 +7608,7 @@ package numpy.ma;
 		>>> plt.axis('tight')
 		>>> plt.show()
 	**/
-	static public function sin(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function sin(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		sinh(x[, out])
 		
@@ -7665,7 +7665,7 @@ package numpy.ma;
 		  File "<stdin>", line 1, in <module>
 		ValueError: invalid return array shape
 	**/
-	static public function sinh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function sinh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the number of elements along a given axis.
 		
@@ -7711,7 +7711,7 @@ package numpy.ma;
 		--------
 		hardmask
 	**/
-	static public function soften_mask(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function soften_mask(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reduce `target` along the given `axis`.
 	**/
@@ -7826,7 +7826,7 @@ package numpy.ma;
 		>>> np.sqrt([4, -1, numpy.inf])
 		array([  2.,  NaN,  Inf])
 	**/
-	static public function sqrt(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function sqrt(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove single-dimensional entries from the shape of an array.
 		
@@ -7955,7 +7955,7 @@ package numpy.ma;
 		>>> np.std(a, dtype=np.float64)
 		0.44999999925494177
 	**/
-	static public function std(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function std(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		subtract(x1, x2[, out])
 		
@@ -7988,7 +7988,7 @@ package numpy.ma;
 		       [ 3.,  3.,  3.],
 		       [ 6.,  6.,  6.]])
 	**/
-	static public function subtract(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function subtract(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		sum(self, axis=None, dtype=None, out=None)
 		
@@ -8035,7 +8035,7 @@ package numpy.ma;
 		>>> print type(x.sum(axis=0, dtype=np.int64)[0])
 		<type 'numpy.int64'>
 	**/
-	static public function sum(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		swapaxes
 		a.swapaxes(axis1, axis2)
@@ -8048,7 +8048,7 @@ package numpy.ma;
 		    --------
 		    numpy.swapaxes : equivalent function
 	**/
-	static public function swapaxes(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function swapaxes(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		    
 	**/
@@ -8105,7 +8105,7 @@ package numpy.ma;
 		  File "<stdin>", line 1, in <module>
 		ValueError: invalid return array shape
 	**/
-	static public function tan(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tan(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		tanh(x[, out])
 		
@@ -8161,7 +8161,7 @@ package numpy.ma;
 		  File "<stdin>", line 1, in <module>
 		ValueError: invalid return array shape
 	**/
-	static public function tanh(a:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tanh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Run tests for module using nose.
 		
@@ -8234,7 +8234,7 @@ package numpy.ma;
 		    --------
 		    numpy.trace : equivalent function
 	**/
-	static public function trace(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function trace(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Permute the dimensions of an array.
 		
@@ -8316,7 +8316,7 @@ package numpy.ma;
 		>>> x//4
 		array([0, 0, 0, 0, 1])
 	**/
-	static public function true_divide(a:Dynamic, b:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function true_divide(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Union of two arrays.
 		
@@ -8513,7 +8513,7 @@ package numpy.ma;
 		0.2025
 	**/
 	@:native("var")
-	static public function _var(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function _var(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		vstack(tup)
 		
@@ -8569,7 +8569,7 @@ package numpy.ma;
 		-----
 		The function is applied to both the _data and the _mask, if any.
 	**/
-	static public function vstack(args:Dynamic, params:Dynamic):Dynamic;
+	static public function vstack(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a masked array with elements from x or y, depending on condition.
 		
@@ -8666,5 +8666,5 @@ package numpy.ma;
 		array([(0, 0), (0, 0)],
 		      dtype=[('x', '<i4'), ('y', '<i4')])
 	**/
-	static public function zeros(a:Dynamic, args:Dynamic, params:Dynamic):Dynamic;
+	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 }

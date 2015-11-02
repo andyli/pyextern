@@ -122,7 +122,7 @@ package scipy.stats.mstats_extras;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function beta(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function beta(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		A binomial discrete random variable.
 		
@@ -222,7 +222,7 @@ package scipy.stats.mstats_extras;
 		
 		>>> r = binom.rvs(n, p, size=1000)
 	**/
-	static public function binom(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function binom(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compares the medians from two independent groups along the given axis.
 		
@@ -490,7 +490,7 @@ package scipy.stats.mstats_extras;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function norm(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function norm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Evaluates Rosenblatt's shifted histogram estimators for each point
@@ -615,7 +615,7 @@ package scipy.stats.mstats_extras;
 		>>> ax.legend(loc='best', frameon=False)
 		>>> plt.show()
 	**/
-	static public function t(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function t(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Selected confidence interval of the trimmed mean along the given axis.
 		

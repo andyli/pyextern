@@ -46,7 +46,7 @@ package pandas.tseries.offsets;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?n:Dynamic, ?normalize:Dynamic, kwds:Dynamic):Dynamic;
+	public function ___init__(?n:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -65,7 +65,7 @@ package pandas.tseries.offsets;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
@@ -119,7 +119,7 @@ package pandas.tseries.offsets;
 		Offsets index to end of Period frequency
 	**/
 	public function _end_apply_index(i:Dynamic, freq:Dynamic):Dynamic;
-	static public function _from_name(args:Dynamic):Dynamic;
+	static public function _from_name(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var _kwds_use_relativedelta : Dynamic;
 	static public var _normalize_cache : Dynamic;
 	public function _params():Dynamic;

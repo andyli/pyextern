@@ -186,7 +186,7 @@ package matplotlib.tri.tricontour;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	static public function tricontour(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontour(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw contours on an unstructured triangular grid.
 		:func:`~matplotlib.pyplot.tricontour` and
@@ -361,6 +361,6 @@ package matplotlib.tri.tricontour;
 		
 		.. plot:: mpl_examples/pylab_examples/tricontour_demo.py
 	**/
-	static public function tricontourf(ax:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function tricontourf(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 }

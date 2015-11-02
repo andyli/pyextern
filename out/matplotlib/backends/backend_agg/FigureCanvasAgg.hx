@@ -58,7 +58,7 @@ package matplotlib.backends.backend_agg;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -159,7 +159,7 @@ package matplotlib.backends.backend_agg;
 	/**
 		:meth:`draw` only if idle; defaults to draw but backends can overrride
 	**/
-	public function draw_idle(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function draw_idle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Backend derived classes should call this function when entering
 		canvas
@@ -331,7 +331,7 @@ package matplotlib.backends.backend_agg;
 		  Sequence of (func, args, kwargs) where func(*args, **kwargs) will
 		  be executed by the timer every *interval*.
 	**/
-	public function new_timer(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Mouse event processor which highlights the artists
 		under the cursor.  Connect this to the 'motion_notify_event'
@@ -353,7 +353,7 @@ package matplotlib.backends.backend_agg;
 		This method will be called by artists who are picked and will
 		fire off :class:`PickEvent` callbacks registered listeners
 	**/
-	public function pick_event(mouseevent:Dynamic, artist:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pick_event(mouseevent:Dynamic, artist:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Render the figure to hardcopy. Set the figure patch face and edge
 		colors.  This is useful because some of the GUIs have a gray figure
@@ -396,7 +396,7 @@ package matplotlib.backends.backend_agg;
 		    A list of extra artists that will be considered when the
 		    tight bbox is calculated.
 	**/
-	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Supported kwargs:
 		
@@ -413,7 +413,7 @@ package matplotlib.backends.backend_agg;
 		*progressive*: If present, indicates that this image
 		    should be stored as a progressive JPEG file.
 	**/
-	public function print_jpeg(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_jpeg(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Supported kwargs:
 		
@@ -430,12 +430,12 @@ package matplotlib.backends.backend_agg;
 		*progressive*: If present, indicates that this image
 		    should be stored as a progressive JPEG file.
 	**/
-	public function print_jpg(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_png(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_raw(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_rgba(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_tif(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function print_tiff(filename_or_obj:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function print_jpg(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_png(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_raw(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_rgba(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_tif(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function print_tiff(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_to_buffer():Dynamic;
 	/**
 		Release the mouse grab held by the axes, ax.

@@ -238,7 +238,7 @@ package scipy.special;
 		`_bessel_diff_formula` is deprecated!
 		bessel_diff_formula is a private function, do not use it!
 	**/
-	static public function bessel_diff_formula(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function bessel_diff_formula(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		besselpoly(x1, x2, x3[, out])
 		

@@ -29,7 +29,7 @@ package scipy.optimize.slsqp;
 		maxiter : int
 		    Maximum number of iterations.
 	**/
-	static public function _minimize_slsqp(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?iprint:Dynamic, ?disp:Dynamic, ?eps:Dynamic, ?callback:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _minimize_slsqp(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?constraints:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?iprint:Dynamic, ?disp:Dynamic, ?eps:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Append values to the end of an array.
@@ -100,7 +100,7 @@ package scipy.optimize.slsqp;
 		-----
 		The approximation is done using forward differences.
 	**/
-	static public function approx_jacobian(x:Dynamic, func:Dynamic, epsilon:Dynamic, args:Dynamic):Dynamic;
+	static public function approx_jacobian(x:Dynamic, func:Dynamic, epsilon:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -254,7 +254,7 @@ package scipy.optimize.slsqp;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		concatenate((a1, a2, ...), axis=0)
 		

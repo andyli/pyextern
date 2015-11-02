@@ -89,7 +89,7 @@ package pandas.core.index;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __iter__():Dynamic;
 	public function __le__(other:Dynamic):Dynamic;
@@ -105,7 +105,7 @@ package pandas.core.index;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
@@ -312,9 +312,9 @@ package pandas.core.index;
 	/**
 		method delegation to the ._values 
 	**/
-	public function _delegate_method(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _delegate_property_get(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
-	public function _delegate_property_set(name:Dynamic, value:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _delegate_method(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_get(name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _delegate_property_set(name:Dynamic, value:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _dir_additions():Dynamic;
 	public function _dir_deletions():Dynamic;
 	static public var _engine : Dynamic;
@@ -342,9 +342,9 @@ package pandas.core.index;
 	/**
 		actually format my specific types 
 	**/
-	public function _format_native_types(?na_rep:Dynamic, ?quoting:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_native_types(?na_rep:Dynamic, ?quoting:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
-	public function _format_with_header(header:Dynamic, ?na_rep:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _format_with_header(header:Dynamic, ?na_rep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
 	/**
 		return an attributes dict for my class 
@@ -436,7 +436,7 @@ package pandas.core.index;
 	/**
 		perform the reduction type operation if we can 
 	**/
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reindex from a non-unique; which CategoricalIndex's are almost always 
 	**/
@@ -465,14 +465,14 @@ package pandas.core.index;
 		    if True, infer the new type of the passed values
 		kwargs : updates the default attributes for this Index
 	**/
-	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we require the we have a dtype compat for the values
 		if we are passed a non-dtype compat, then coerce using the constructor
 		
 		Must be careful not to recurse.
 	**/
-	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	/**
 		*this is an internal non-public method*
@@ -485,7 +485,7 @@ package pandas.core.index;
 		Necessary for making this object picklable
 	**/
 	public function _unpickle_compat(state:Dynamic):Dynamic;
-	public function _update_inplace(result:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Validate index level.
 		
@@ -530,7 +530,7 @@ package pandas.core.index;
 		remove_unused_categories
 		set_categories
 	**/
-	public function add_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function add_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function all(?other:Dynamic):Dynamic;
 	public function any(?other:Dynamic):Dynamic;
 	/**
@@ -572,7 +572,7 @@ package pandas.core.index;
 		--------
 		numpy.ndarray.argsort
 	**/
-	public function argsort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function argsort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be ordered
 		
@@ -582,7 +582,7 @@ package pandas.core.index;
 		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
 		   with ordered set to True
 	**/
-	public function as_ordered(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function as_ordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be unordered
 		
@@ -592,7 +592,7 @@ package pandas.core.index;
 		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
 		   with ordered set to False
 	**/
-	public function as_unordered(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function as_unordered(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var asi8 : Dynamic;
 	/**
 		For a sorted index, return the most recent label up to and including
@@ -646,7 +646,7 @@ package pandas.core.index;
 		new_index : Index
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(kwargs:Dynamic):Dynamic;
+	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sorted set difference of two Index objects
 		
@@ -742,7 +742,7 @@ package pandas.core.index;
 	/**
 		Render a string representation of the Index
 	**/
-	public function format(?name:Dynamic, ?formatter:Dynamic, kwargs:Dynamic):Dynamic;
+	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -775,7 +775,7 @@ package pandas.core.index;
 	/**
 		guaranteed return of an indexer even when non-unique 
 	**/
-	public function get_indexer_for(target:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_indexer_for(target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		this is the same for a CategoricalIndex for get_indexer; the API returns the missing values as well 
 	**/
@@ -989,7 +989,7 @@ package pandas.core.index;
 		-------
 		max : the maximum of this `Categorical`
 	**/
-	public function max(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function max(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The minimum value of the object.
 		
@@ -1004,7 +1004,7 @@ package pandas.core.index;
 		-------
 		min : the minimum of this `Categorical`
 	**/
-	public function min(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function min(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var name : Dynamic;
 	public var names : Dynamic;
 	/**
@@ -1096,7 +1096,7 @@ package pandas.core.index;
 		remove_unused_categories
 		set_categories
 	**/
-	public function remove_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Removes categories which are not used.
 		
@@ -1118,7 +1118,7 @@ package pandas.core.index;
 		remove_categories
 		set_categories
 	**/
-	public function remove_unused_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function remove_unused_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set new names on index. Defaults to returning new index.
 		
@@ -1166,7 +1166,7 @@ package pandas.core.index;
 		remove_unused_categories
 		set_categories
 	**/
-	public function rename_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rename_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reorders categories as specified in new_categories.
 		
@@ -1200,7 +1200,7 @@ package pandas.core.index;
 		remove_unused_categories
 		set_categories
 	**/
-	public function reorder_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reorder_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a new Index of the values repeated n times
 		
@@ -1261,7 +1261,7 @@ package pandas.core.index;
 		remove_categories
 		remove_unused_categories
 	**/
-	public function set_categories(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function set_categories(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Set new names on index. Defaults to returning new index.
 		
@@ -1360,7 +1360,7 @@ package pandas.core.index;
 		start, end : int
 	**/
 	public function slice_locs(?start:Dynamic, ?end:Dynamic, ?step:Dynamic, ?kind:Dynamic):Dynamic;
-	public function sort(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sort(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sorted copy of Index
 	**/
@@ -1453,7 +1453,7 @@ package pandas.core.index;
 	/**
 		slice and dice then format 
 	**/
-	public function to_native_types(?slicer:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_native_types(?slicer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a Series with both index and values equal to the index keys
 		useful with map for returning an indexer based on an index
@@ -1462,7 +1462,7 @@ package pandas.core.index;
 		-------
 		Series : dtype will be based on the type of the Index values.
 	**/
-	public function to_series(kwargs:Dynamic):Dynamic;
+	public function to_series(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a list of the Index values
 	**/

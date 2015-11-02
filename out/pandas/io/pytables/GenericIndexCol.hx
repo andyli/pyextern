@@ -45,7 +45,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?itemsize:Dynamic, ?name:Dynamic, ?axis:Dynamic, ?kind_attr:Dynamic, ?pos:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?index_name:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?itemsize:Dynamic, ?name:Dynamic, ?axis:Dynamic, ?kind_attr:Dynamic, ?pos:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?index_name:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -63,7 +63,7 @@ package pandas.io.pytables;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -140,7 +140,7 @@ package pandas.io.pytables;
 		min_itemsize can be an interger or a dict with this columns name
 		with an integer size 
 	**/
-	public function maybe_set_size(?min_itemsize:Dynamic, kwargs:Dynamic):Dynamic;
+	public function maybe_set_size(?min_itemsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		retrieve the metadata for this columns 
 	**/
@@ -175,8 +175,8 @@ package pandas.io.pytables;
 		if there is a conflict raise/warn as needed 
 	**/
 	public function update_info(info:Dynamic):Dynamic;
-	public function validate(handler:Dynamic, append:Dynamic, kwargs:Dynamic):Dynamic;
-	public function validate_and_set(handler:Dynamic, append:Dynamic, kwargs:Dynamic):Dynamic;
+	public function validate(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function validate_and_set(handler:Dynamic, append:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function validate_attr(append:Dynamic):Dynamic;
 	/**
 		validate this column: return the compared against itemsize 

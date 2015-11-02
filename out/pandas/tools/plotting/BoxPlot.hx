@@ -45,7 +45,7 @@ package pandas.tools.plotting;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, ?return_type:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, ?return_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -62,7 +62,7 @@ package pandas.tools.plotting;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -157,7 +157,7 @@ package pandas.tools.plotting;
 		    str: the name of the column within the plotted DataFrame
 	**/
 	public function _parse_errorbars(label:Dynamic, err:Dynamic):Dynamic;
-	static public function _plot(ax:Dynamic, y:Dynamic, ?column_num:Dynamic, ?return_type:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _plot(ax:Dynamic, y:Dynamic, ?column_num:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _pop_attributes : Dynamic;
 	/**
 		Post process for each axes. Overridden in child classes
@@ -169,7 +169,7 @@ package pandas.tools.plotting;
 	public function _post_plot_logic_common(ax:Dynamic, data:Dynamic):Dynamic;
 	public function _set_ticklabels(ax:Dynamic, labels:Dynamic):Dynamic;
 	public function _setup_subplots():Dynamic;
-	static public function _ts_plot(ax:Dynamic, x:Dynamic, data:Dynamic, ?style:Dynamic, kwds:Dynamic):Dynamic;
+	static public function _ts_plot(ax:Dynamic, x:Dynamic, data:Dynamic, ?style:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function _update_stacker(ax:Dynamic, stacking_id:Dynamic, values:Dynamic):Dynamic;
 	public function _use_dynamic_x():Dynamic;
 	static public var _valid_return_types : Dynamic;

@@ -58,7 +58,7 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -127,7 +127,7 @@ package matplotlib.backends.backend_macosx;
 	/**
 		move back up the view lim stack
 	**/
-	public function back(args:Dynamic):Dynamic;
+	public function back(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		the drag callback in pan/zoom mode
 	**/
@@ -148,16 +148,16 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Move forward in the view lim stack
 	**/
-	public function forward(args:Dynamic):Dynamic;
+	public function forward(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Restore the original view
 	**/
-	public function home(args:Dynamic):Dynamic;
+	public function home(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function mouse_move(event:Dynamic):Dynamic;
 	/**
 		Activate the pan/zoom tool. pan with left button, zoom with right
 	**/
-	public function pan(args:Dynamic):Dynamic;
+	public function pan(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function prepare_configure_subplots():Dynamic;
 	/**
 		Called whenver a mouse button is pressed.
@@ -194,7 +194,7 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Save the current figure
 	**/
-	public function save_figure(args:Dynamic):Dynamic;
+	public function save_figure(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Set the current cursor to one of the :class:`Cursors`
 		enums values
@@ -216,5 +216,5 @@ package matplotlib.backends.backend_macosx;
 	/**
 		Activate zoom to rect mode
 	**/
-	public function zoom(args:Dynamic):Dynamic;
+	public function zoom(?args:python.VarArgs<Dynamic>):Dynamic;
 }

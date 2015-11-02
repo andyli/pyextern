@@ -55,7 +55,7 @@ package matplotlib.container;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(lines:Dynamic, ?has_xerr:Dynamic, ?has_yerr:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(lines:Dynamic, ?has_xerr:Dynamic, ?has_yerr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -84,7 +84,7 @@ package matplotlib.container;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, kl:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

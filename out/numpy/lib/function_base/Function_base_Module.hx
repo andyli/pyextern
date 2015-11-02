@@ -45,7 +45,7 @@ package numpy.lib.function_base;
 		    which can be used to reshape the result to the same shape a ufunc with
 		    keepdims=True would produce.
 	**/
-	static public function _ureduce(a:Dynamic, func:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		add(x1, x2[, out])
@@ -790,7 +790,7 @@ package numpy.lib.function_base;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -826,7 +826,7 @@ package numpy.lib.function_base;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(arys:Dynamic):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute the weighted average along the specified axis.
 		
@@ -1612,7 +1612,7 @@ package numpy.lib.function_base;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Extract a diagonal or construct a diagonal array.
 		
@@ -2227,7 +2227,7 @@ package numpy.lib.function_base;
 		>>> np.gradient(y, dx, edge_order=2)
 		array([-0.,  2.,  4.,  6.,  8.])
 	**/
-	static public function gradient(f:Dynamic, varargs:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function gradient(f:Dynamic, ?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the Hamming window.
 		
@@ -3339,7 +3339,7 @@ package numpy.lib.function_base;
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
-	static public function meshgrid(xi:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		remainder(x1, x2[, out])
 		
@@ -3814,7 +3814,7 @@ package numpy.lib.function_base;
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
 	**/
-	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, args:Dynamic, kw:Dynamic):Dynamic;
+	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change elements of an array based on conditional and input values.
 		
@@ -4530,7 +4530,7 @@ package numpy.lib.function_base;
 		This function is deprecated.  Use numpy.lib.arraysetops.unique()
 		instead.
 	**/
-	static public function unique(args:Dynamic, kwds:Dynamic):Dynamic;
+	static public function unique(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unwrap by changing deltas between values to 2*pi complement.
 		

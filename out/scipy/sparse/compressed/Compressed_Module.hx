@@ -162,11 +162,11 @@ package scipy.sparse.compressed;
 		>>> upcast('bool',complex,float)
 		<type 'numpy.complex128'>
 	**/
-	static public function upcast(args:Dynamic):Dynamic;
+	static public function upcast(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Same as `upcast` but taking dtype.char as input (faster).
 	**/
-	static public function upcast_char(args:Dynamic):Dynamic;
+	static public function upcast_char(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.
 	**/

@@ -36,7 +36,7 @@ package matplotlib.offsetbox;
 	**/
 	static public function _get_packed_offsets(wd_list:Dynamic, total:Dynamic, sep:Dynamic, ?mode:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	static public function bbox_artist(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function bbox_artist(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		This is a debug function to draw a rectangle around the bounding

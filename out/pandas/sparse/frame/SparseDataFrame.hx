@@ -133,7 +133,7 @@ package pandas.sparse.frame;
 		method : optional, a passed method name ; possibly to take different
 		    types of propagation actions based on this
 	**/
-	public function __finalize__(other:Dynamic, ?method:Dynamic, kwargs:Dynamic):Dynamic;
+	public function __finalize__(other:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Binary operator __floordiv__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -275,7 +275,7 @@ package pandas.sparse.frame;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	/**
 		Binary operator __or__ with support to substitute a fill_value for missing data in
@@ -735,11 +735,11 @@ package pandas.sparse.frame;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
-	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _apply_broadcast(func:Dynamic, axis:Dynamic):Dynamic;
-	public function _apply_empty_result(func:Dynamic, axis:Dynamic, reduce:Dynamic, args:Dynamic, kwds:Dynamic):Dynamic;
+	public function _apply_empty_result(func:Dynamic, axis:Dynamic, reduce:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	public function _apply_raw(func:Dynamic, axis:Dynamic):Dynamic;
 	public function _apply_standard(func:Dynamic, axis:Dynamic, ?ignore_failures:Dynamic, ?reduce:Dynamic):Dynamic;
 	static public var _at : Dynamic;
@@ -810,15 +810,15 @@ package pandas.sparse.frame;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for myself 
 	**/
-	public function _construct_axes_dict_for_slice(?axes:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _construct_axes_dict_for_slice(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return an axes dictionary for the passed axes 
 	**/
-	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		construct and returns axes if supplied in args/kwargs
 		if require_all, raise if all axis arguments are not supplied
@@ -892,7 +892,7 @@ package pandas.sparse.frame;
 	public function _expand_axes(key:Dynamic):Dynamic;
 	public function _flex_compare_frame(other:Dynamic, func:Dynamic, str_rep:Dynamic, level:Dynamic):Dynamic;
 	static public function _from_arrays(arrays:Dynamic, columns:Dynamic, index:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function _from_axes(data:Dynamic, axes:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function _from_axes(data:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		let's be explict about this 
 	**/
@@ -1003,7 +1003,7 @@ package pandas.sparse.frame;
 		consolidate _data. if the blocks have changed, then clear the cache 
 	**/
 	public function _protect_consolidate(f:Dynamic):Dynamic;
-	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		perform the reinxed for all the axes 
 	**/
@@ -1303,7 +1303,7 @@ package pandas.sparse.frame;
 		-------
 		all : Series or DataFrame (if level specified)
 	**/
-	public function all(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, kwargs:Dynamic):Dynamic;
+	public function all(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return whether any element is True over requested axis
 		
@@ -1324,7 +1324,7 @@ package pandas.sparse.frame;
 		-------
 		any : Series or DataFrame (if level specified)
 	**/
-	public function any(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, kwargs:Dynamic):Dynamic;
+	public function any(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Append rows of `other` to the end of this frame, returning a new
 		object. Columns not in this frame are added as new columns.
@@ -1551,7 +1551,7 @@ package pandas.sparse.frame;
 		8   9  0.549296  2.197225
 		9  10 -0.758542  2.302585
 	**/
-	public function assign(kwargs:Dynamic):Dynamic;
+	public function assign(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cast object to input numpy.dtype
 		Return a copy when copy = True (be really careful with this!)
@@ -1664,7 +1664,7 @@ package pandas.sparse.frame;
 		of the lines after plotting. In this case a dict containing the Lines
 		making up the boxes, caps, fliers, medians, and whiskers is returned.
 	**/
-	public function boxplot(?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, kwds:Dynamic):Dynamic;
+	public function boxplot(?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Trim values at input threshold(s)
 		
@@ -1946,7 +1946,7 @@ package pandas.sparse.frame;
 		-------
 		count : Series (or DataFrame if level specified)
 	**/
-	public function count(?axis:Dynamic, kwds:Dynamic):Dynamic;
+	public function count(?axis:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute pairwise covariance of columns, excluding NA/null values
 		
@@ -1980,7 +1980,7 @@ package pandas.sparse.frame;
 		-------
 		max : Series
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return cumulative min over requested axis.
 		
@@ -1995,7 +1995,7 @@ package pandas.sparse.frame;
 		-------
 		min : Series
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return cumulative prod over requested axis.
 		
@@ -2010,7 +2010,7 @@ package pandas.sparse.frame;
 		-------
 		prod : Series
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, kwargs:Dynamic):Dynamic;
+	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return SparseDataFrame of cumulative sums over requested axis.
 		
@@ -2318,7 +2318,7 @@ package pandas.sparse.frame;
 		>>> df.eval('a + b')
 		>>> df.eval('c = a + b')
 	**/
-	public function eval(expr:Dynamic, kwargs:Dynamic):Dynamic;
+	public function eval(expr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Synonym for NDFrame.fillna(method='ffill')
 	**/
@@ -2690,7 +2690,7 @@ package pandas.sparse.frame;
 		kwds : other plotting keyword arguments
 		    To be passed to hist function
 	**/
-	public function hist(?column:Dynamic, ?by:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?ax:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?bins:Dynamic, kwds:Dynamic):Dynamic;
+	public function hist(?column:Dynamic, ?by:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?ax:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Fast integer location scalar accessor.
 		
@@ -2887,7 +2887,7 @@ package pandas.sparse.frame;
 		3    3
 		dtype: float64
 	**/
-	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, kwargs:Dynamic):Dynamic;
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		DEPRECATED. Use ``.iloc[i]`` instead
 	**/
@@ -2971,7 +2971,7 @@ package pandas.sparse.frame;
 	/**
 		iteritems alias used to get around 2to3. Deprecated
 	**/
-	public function iterkv(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function iterkv(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Iterate over the rows of a DataFrame as (index, Series) pairs.
 		
@@ -3132,7 +3132,7 @@ package pandas.sparse.frame;
 		-------
 		kurt : Series or DataFrame (if level specified)
 	**/
-	public function kurt(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function kurt(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return unbiased kurtosis over requested axis using Fishers definition of
 		kurtosis (kurtosis of normal == 0.0). Normalized by N-1
@@ -3155,7 +3155,7 @@ package pandas.sparse.frame;
 		-------
 		kurt : Series or DataFrame (if level specified)
 	**/
-	public function kurtosis(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function kurtosis(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience method for subsetting final periods of time series data
 		based on a date offset
@@ -3298,7 +3298,7 @@ package pandas.sparse.frame;
 		-------
 		max : Series or DataFrame (if level specified)
 	**/
-	public function max(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the mean of the values for the requested axis
 		
@@ -3319,7 +3319,7 @@ package pandas.sparse.frame;
 		-------
 		mean : Series or DataFrame (if level specified)
 	**/
-	public function mean(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function mean(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the median of the values for the requested axis
 		
@@ -3340,7 +3340,7 @@ package pandas.sparse.frame;
 		-------
 		median : Series or DataFrame (if level specified)
 	**/
-	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Memory usage of DataFrame columns.
 		
@@ -3468,7 +3468,7 @@ package pandas.sparse.frame;
 		-------
 		min : Series or DataFrame (if level specified)
 	**/
-	public function min(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Modulo of dataframe and other, element-wise (binary operator `mod`).
 		
@@ -3702,7 +3702,7 @@ package pandas.sparse.frame;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -3753,7 +3753,7 @@ package pandas.sparse.frame;
 		pandas.DataFrame.applymap
 		pandas.Series.map
 	**/
-	public function pipe(func:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function pipe(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reshape data (produce a "pivot" table) based on column values. Uses
 		unique values from index / columns to form axes and return either
@@ -3926,7 +3926,7 @@ package pandas.sparse.frame;
 		-------
 		prod : Series or DataFrame (if level specified)
 	**/
-	public function prod(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function prod(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the product of the values for the requested axis
 		
@@ -3947,7 +3947,7 @@ package pandas.sparse.frame;
 		-------
 		prod : Series or DataFrame (if level specified)
 	**/
-	public function product(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function product(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return values at the given quantile over requested axis, a la
 		numpy.percentile.
@@ -4050,7 +4050,7 @@ package pandas.sparse.frame;
 		>>> df.query('a > b')
 		>>> df[df.a > df.b]  # same result as the previous expression
 	**/
-	public function query(expr:Dynamic, kwargs:Dynamic):Dynamic;
+	public function query(expr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Addition of dataframe and other, element-wise (binary operator `radd`).
 		
@@ -4186,7 +4186,7 @@ package pandas.sparse.frame;
 		-------
 		reindexed : DataFrame
 	**/
-	public function reindex(?index:Dynamic, ?columns:Dynamic, kwargs:Dynamic):Dynamic;
+	public function reindex(?index:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conform input object to new index with optional filling logic,
 		placing NA/NaN in locations having no value in the previous index. A
@@ -4278,7 +4278,7 @@ package pandas.sparse.frame;
 		-------
 		renamed : DataFrame (new object)
 	**/
-	public function rename(?index:Dynamic, ?columns:Dynamic, kwargs:Dynamic):Dynamic;
+	public function rename(?index:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter index and / or columns using input function or functions.
 		Function / dict values must be unique (1-to-1). Labels not contained in
@@ -4946,7 +4946,7 @@ package pandas.sparse.frame;
 		-------
 		sem : Series or DataFrame (if level specified)
 	**/
-	public function sem(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sem(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		public verson of axis assignment 
 	**/
@@ -5053,7 +5053,7 @@ package pandas.sparse.frame;
 		-------
 		skew : Series or DataFrame (if level specified)
 	**/
-	public function skew(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function skew(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Equivalent to `shift` without copying data. The shifted data will
 		not include the dropped periods and the shifted axis will be smaller
@@ -5244,7 +5244,7 @@ package pandas.sparse.frame;
 		-------
 		std : Series or DataFrame (if level specified)
 	**/
-	public function std(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function std(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Subtraction of dataframe and other, element-wise (binary operator `sub`).
 		
@@ -5327,7 +5327,7 @@ package pandas.sparse.frame;
 		-------
 		sum : Series or DataFrame (if level specified)
 	**/
-	public function sum(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function sum(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Interchange axes and swap values axes appropriately
 		
@@ -5389,7 +5389,7 @@ package pandas.sparse.frame;
 		  - Windows: none
 		  - OS X: none
 	**/
-	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_clipboard(?excel:Dynamic, ?sep:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Write DataFrame to a comma-separated values (csv) file
 		
@@ -5447,7 +5447,7 @@ package pandas.sparse.frame;
 		
 		    .. versionadded:: 0.16.0
 	**/
-	public function to_csv(?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?columns:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?quoting:Dynamic, ?quotechar:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic, kwds:Dynamic):Dynamic;
+	public function to_csv(?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?columns:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?quoting:Dynamic, ?quotechar:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert to dense DataFrame
 		
@@ -5607,7 +5607,7 @@ package pandas.sparse.frame;
 		dropna : boolean, default False.
 		    If true, ALL nan rows will not be written to store.
 	**/
-	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_hdf(path_or_buf:Dynamic, key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Render a DataFrame as an HTML table.
 		
@@ -5782,7 +5782,7 @@ package pandas.sparse.frame;
 		compress : type of compressor (zlib or blosc), default to None (no
 		    compression)
 	**/
-	public function to_msgpack(?path_or_buf:Dynamic, kwargs:Dynamic):Dynamic;
+	public function to_msgpack(?path_or_buf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Transform long (stacked) format (DataFrame) into wide (3D, Panel)
 		format.
@@ -5975,7 +5975,7 @@ package pandas.sparse.frame;
 		df : DataFrame with DatetimeIndex
 	**/
 	public function to_timestamp(?freq:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
-	public function to_wide(kwargs:Dynamic):Dynamic;
+	public function to_wide(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns a DataFrame with the rows/columns switched.
 	**/
@@ -6214,7 +6214,7 @@ package pandas.sparse.frame;
 		var : Series or DataFrame (if level specified)
 	**/
 	@:native("var")
-	public function _var(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, kwargs:Dynamic):Dynamic;
+	public function _var(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is True and otherwise are from other.

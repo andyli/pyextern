@@ -146,7 +146,7 @@ package matplotlib;
 		cycler : Cycler
 		    New :class:`cycler.Cycler` for the given properties
 	**/
-	static public function cycler(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function cycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Remove excess indentation from docstring *s*.
 		
@@ -173,7 +173,7 @@ package matplotlib;
 		The procedure used to find the directory is the same as for
 		_get_config_dir, except using `$XDG_CACHE_HOME`/`~/.cache` instead.
 	**/
-	static public function get_cachedir(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_cachedir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the string representing the configuration directory.
 		
@@ -193,8 +193,8 @@ package matplotlib;
 		   configuration directory.
 		5. A writable directory could not be found or created; return None.
 	**/
-	static public function get_configdir(args:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function get_data_path(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_configdir(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function get_data_path(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		get_example_data is deprecated -- use matplotlib.cbook.get_sample_data
 		                                  instead
@@ -207,7 +207,7 @@ package matplotlib;
 		:see:
 		    http://mail.python.org/pipermail/python-list/2005-February/325395.html
 	**/
-	static public function get_home(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function get_home(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_label(y:Dynamic, default_name:Dynamic):Dynamic;
 	static public function get_py2exe_datafiles():Dynamic;
 	/**
@@ -309,7 +309,7 @@ package matplotlib;
 		Use :func:`~matplotlib.pyplot.rcdefaults` to restore the default
 		rc params after changes.
 	**/
-	static public function rc(group:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function rc(group:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
 	static public var rcParamsDefault : Dynamic;
 	static public var rcParamsOrig : Dynamic;

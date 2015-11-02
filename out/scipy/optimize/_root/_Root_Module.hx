@@ -207,7 +207,7 @@ package scipy.optimize._root;
 		.. [2] W. La Cruz, Opt. Meth. Software, 29, 24 (2014).
 		.. [3] W. Cheng, D.-H. Li. IMA J. Numer. Anal. **29**, 814 (2009).
 	**/
-	static public function _root_df_sane(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?maxfev:Dynamic, ?fnorm:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?M:Dynamic, ?eta_strategy:Dynamic, ?sigma_eps:Dynamic, ?sigma_0:Dynamic, ?line_search:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_df_sane(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?maxfev:Dynamic, ?fnorm:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?M:Dynamic, ?eta_strategy:Dynamic, ?sigma_eps:Dynamic, ?sigma_0:Dynamic, ?line_search:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -315,7 +315,7 @@ package scipy.optimize._root;
 		    N positive entries that serve as a scale factors for the
 		    variables.
 	**/
-	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?full_output:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?full_output:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -407,7 +407,7 @@ package scipy.optimize._root;
 		diag : sequence
 		    N positive entries that serve as a scale factors for the variables.
 	**/
-	static public function _root_leastsq(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?maxiter:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_leastsq(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?maxiter:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -443,7 +443,7 @@ package scipy.optimize._root;
 		        initial guess for the jacobian is (-1/alpha).
 	**/
 	static public function _root_linearmixing_doc():Dynamic;
-	static public function _root_nonlin_solve(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?_callback:Dynamic, ?_method:Dynamic, ?nit:Dynamic, ?disp:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?xtol:Dynamic, ?xatol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?jac_options:Dynamic, unknown_options:Dynamic):Dynamic;
+	static public function _root_nonlin_solve(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?_callback:Dynamic, ?_method:Dynamic, ?nit:Dynamic, ?disp:Dynamic, ?maxiter:Dynamic, ?ftol:Dynamic, ?fatol:Dynamic, ?xtol:Dynamic, ?xatol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?jac_options:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public function _warn_jac_unused(jac:Dynamic, method:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;

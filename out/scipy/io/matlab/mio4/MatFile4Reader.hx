@@ -60,7 +60,7 @@ package scipy.io.matlab.mio4;
 		    
 	**/
 	@:native("__init__")
-	public function ___init__(mat_stream:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(mat_stream:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -77,7 +77,7 @@ package scipy.io.matlab.mio4;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/

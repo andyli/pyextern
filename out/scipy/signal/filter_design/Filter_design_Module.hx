@@ -853,7 +853,7 @@ package scipy.signal.filter_design;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(arys:Dynamic):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	static public var band_dict : Dynamic;
 	/**
 		Band Stop Objective Function for order minimization.

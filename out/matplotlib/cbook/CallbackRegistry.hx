@@ -59,7 +59,7 @@ package matplotlib.cbook;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -113,5 +113,5 @@ package matplotlib.cbook;
 		process signal *s*.  All of the functions registered to receive
 		callbacks on *s* will be called with *\*args* and *\*\*kwargs*
 	**/
-	public function process(s:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function process(s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

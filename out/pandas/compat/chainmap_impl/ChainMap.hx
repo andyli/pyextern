@@ -62,7 +62,7 @@ package pandas.compat.chainmap_impl;
 		If no mappings are provided, a single empty dictionary is used.
 	**/
 	@:native("__init__")
-	public function ___init__(maps:Dynamic):Dynamic;
+	public function ___init__(?maps:python.VarArgs<Dynamic>):Dynamic;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -82,7 +82,7 @@ package pandas.compat.chainmap_impl;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -135,7 +135,7 @@ package pandas.compat.chainmap_impl;
 	/**
 		Create a ChainMap with a single dict created from the iterable.
 	**/
-	static public function fromkeys(iterable:Dynamic, args:Dynamic):Dynamic;
+	static public function fromkeys(iterable:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		D.get(k[,d]) -> D[k] if k in D, else d.  d defaults to None.
 	**/
@@ -160,7 +160,7 @@ package pandas.compat.chainmap_impl;
 	/**
 		Remove *key* from maps[0] and return its value. Raise KeyError if *key* not in maps[0].
 	**/
-	public function pop(key:Dynamic, args:Dynamic):Dynamic;
+	public function pop(key:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Remove and return an item pair from maps[0]. Raise KeyError is maps[0] is empty.
 	**/
@@ -175,7 +175,7 @@ package pandas.compat.chainmap_impl;
 		If E present and lacks .keys() method, does:     for (k, v) in E: D[k] = v
 		In either case, this is followed by: for k, v in F.items(): D[k] = v
 	**/
-	public function update(kwds:Dynamic):Dynamic;
+	public function update(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		D.values() -> an object providing a view on D's values
 	**/

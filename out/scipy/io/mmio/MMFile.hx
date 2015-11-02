@@ -54,7 +54,7 @@ package scipy.io.mmio;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(kwargs:Dynamic):Dynamic;
+	public function ___init__(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -71,7 +71,7 @@ package scipy.io.mmio;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -117,7 +117,7 @@ package scipy.io.mmio;
 		Initialize each attributes with the corresponding keyword arg value
 		or a default of None
 	**/
-	public function _init_attrs(kwargs:Dynamic):Dynamic;
+	public function _init_attrs(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an open file stream for reading based on source.  If source is
 		a file name, open it (after trying to find it with mtx and gzipped mtx
