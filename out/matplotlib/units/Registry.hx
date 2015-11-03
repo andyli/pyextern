@@ -52,6 +52,10 @@ package matplotlib.units;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new():Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

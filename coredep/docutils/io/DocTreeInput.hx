@@ -43,6 +43,10 @@ package docutils.io;
 	@:native("__init__")
 	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -90,6 +90,56 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(numsides:Dynamic, ?rotation:Dynamic, ?sizes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*numsides*
+		    the number of sides of the polygon
+		
+		*rotation*
+		    the rotation of the polygon in radians
+		
+		*sizes*
+		    gives the area of the circle circumscribing the
+		    regular polygon in points^2
+		
+		    Valid Collection keyword arguments:
+		
+		        * *edgecolors*: None
+		        * *facecolors*: None
+		        * *linewidths*: None
+		        * *antialiaseds*: None
+		        * *offsets*: None
+		        * *transOffset*: transforms.IdentityTransform()
+		        * *norm*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		        * *cmap*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		
+		    *offsets* and *transOffset* are used to translate the patch after
+		    rendering (default no offsets)
+		
+		    If any of *edgecolors*, *facecolors*, *linewidths*, *antialiaseds*
+		    are None, they default to their :data:`matplotlib.rcParams` patch
+		    setting, in sequence form.
+		
+		
+		Example: see :file:`examples/dynamic_collection.py` for
+		complete example::
+		
+		    offsets = np.random.rand(20,2)
+		    facecolors = [cm.jet(x) for x in np.random.rand(20)]
+		    black = (0,0,0,1)
+		
+		    collection = RegularPolyCollection(
+		        numsides=5, # a pentagon
+		        rotation=0, sizes=(50,),
+		        facecolors = facecolors,
+		        edgecolors = (black,),
+		        linewidths = (1,),
+		        offsets = offsets,
+		        transOffset = ax.transData,
+		        )
+	**/
+	public function new(numsides:Dynamic, ?rotation:Dynamic, ?sizes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	@:native("__init__")
 	public function ___init__(type:Dynamic, value:Dynamic, pos:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(type:Dynamic, value:Dynamic, pos:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

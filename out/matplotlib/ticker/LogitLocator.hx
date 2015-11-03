@@ -48,6 +48,10 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(?minor:Dynamic):Dynamic;
 	/**
+		place ticks on the logit locations
+	**/
+	public function new(?minor:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

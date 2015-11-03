@@ -41,6 +41,10 @@ package matplotlib.dviread;
 	**/
 	@:native("__init__")
 	public function ___init__(filename:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(filename:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

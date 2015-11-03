@@ -43,6 +43,10 @@ package docutils.writers.odf_odt.pygmentsformatter;
 	@:native("__init__")
 	public function ___init__(rststyle_function:Dynamic, escape_function:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(rststyle_function:Dynamic, escape_function:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

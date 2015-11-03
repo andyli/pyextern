@@ -46,6 +46,12 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(meshWidth:Dynamic, meshHeight:Dynamic, coordinates:Dynamic, ?antialiased:Dynamic, ?shading:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a Collection
+		
+		%(Collection)s
+	**/
+	public function new(meshWidth:Dynamic, meshHeight:Dynamic, coordinates:Dynamic, ?antialiased:Dynamic, ?shading:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -47,6 +47,14 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Add a cursor to *ax*.  If ``useblit=True``, use the backend-
+		dependent blitting features for faster updates (GTKAgg
+		only for now).  *lineprops* is a dictionary of line properties.
+		
+		.. plot :: mpl_examples/widgets/cursor.py
+	**/
+	public function new(ax:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?useblit:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

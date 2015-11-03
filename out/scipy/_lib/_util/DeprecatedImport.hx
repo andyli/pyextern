@@ -44,6 +44,10 @@ package scipy._lib._util;
 	@:native("__init__")
 	public function ___init__(old_module_name:Dynamic, new_module_name:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(old_module_name:Dynamic, new_module_name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

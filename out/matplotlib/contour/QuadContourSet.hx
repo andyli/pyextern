@@ -49,6 +49,15 @@ package matplotlib.contour;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Calculate and draw contour lines or filled regions, depending
+		on whether keyword arg 'filled' is False (default) or True.
+		
+		The first argument of the initializer must be an axes
+		object.  The remaining arguments and keyword arguments
+		are described in QuadContourSet.contour_doc.
+	**/
+	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

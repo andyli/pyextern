@@ -57,6 +57,23 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(s:Dynamic, ?textprops:Dynamic, ?multilinebaseline:Dynamic, ?minimumdescent:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		s : str
+		    a string to be displayed.
+		
+		textprops : `~matplotlib.font_manager.FontProperties`, optional
+		
+		multilinebaseline : bool, optional
+		    If `True`, baseline for multiline text is adjusted so that
+		    it is (approximatedly) center-aligned with singleline
+		    text.
+		
+		minimumdescent : bool, optional
+		    If `True`, the box has a minimum descent of "p".
+	**/
+	public function new(s:Dynamic, ?textprops:Dynamic, ?multilinebaseline:Dynamic, ?minimumdescent:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

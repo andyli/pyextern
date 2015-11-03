@@ -54,6 +54,12 @@ package scipy.interpolate.ndgriddata;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Dynamic;
 	/**
+		Check shape of points and values arrays, and reshape values to
+		(npoints, nvalues).  Ensure the `points` and values arrays are
+		C-contiguous, and of correct type.
+	**/
+	public function new(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

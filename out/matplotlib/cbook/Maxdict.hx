@@ -52,6 +52,10 @@ package matplotlib.cbook;
 	@:native("__init__")
 	public function ___init__(maxsize:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(maxsize:Dynamic):Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

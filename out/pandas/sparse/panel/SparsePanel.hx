@@ -93,6 +93,10 @@ package pandas.sparse.panel;
 	**/
 	@:native("__init__")
 	public function ___init__(?frames:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?default_fill_value:Dynamic, ?default_kind:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?frames:Dynamic, ?items:Dynamic, ?major_axis:Dynamic, ?minor_axis:Dynamic, ?default_fill_value:Dynamic, ?default_kind:Dynamic, ?copy:Dynamic):Void;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;

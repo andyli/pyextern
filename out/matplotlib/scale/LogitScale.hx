@@ -45,6 +45,12 @@ package matplotlib.scale;
 	@:native("__init__")
 	public function ___init__(axis:Dynamic, ?nonpos:Dynamic):Dynamic;
 	/**
+		*nonpos*: ['mask' | 'clip' ]
+		  values beyond ]0, 1[ can be masked as invalid, or clipped to a number
+		  very close to 0 or 1
+	**/
+	public function new(axis:Dynamic, ?nonpos:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

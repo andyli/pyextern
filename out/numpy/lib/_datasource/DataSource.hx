@@ -44,6 +44,10 @@ package numpy.lib._datasource;
 	@:native("__init__")
 	public function ___init__(?destpath:Dynamic):Dynamic;
 	/**
+		Create a DataSource with a local path at destpath.
+	**/
+	public function new(?destpath:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -49,6 +49,10 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(?unit:Dynamic, ?places:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?unit:Dynamic, ?places:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

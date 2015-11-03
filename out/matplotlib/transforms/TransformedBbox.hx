@@ -52,6 +52,12 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(bbox:Dynamic, transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*bbox*: a child :class:`Bbox`
+		
+		*transform*: a 2D :class:`Transform`
+	**/
+	public function new(bbox:Dynamic, transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

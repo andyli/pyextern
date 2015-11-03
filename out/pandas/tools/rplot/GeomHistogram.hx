@@ -48,6 +48,15 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(?bins:Dynamic, ?colour:Dynamic):Dynamic;
 	/**
+		Initialize GeomHistogram instance.
+		
+		Parameters:
+		-----------
+		bins: integer, number of histogram bins
+		colour: matplotlib colour
+	**/
+	public function new(?bins:Dynamic, ?colour:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

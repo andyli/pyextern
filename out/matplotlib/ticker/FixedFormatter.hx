@@ -48,6 +48,11 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(seq:Dynamic):Dynamic;
 	/**
+		*seq* is a sequence of strings.  For positions ``i < len(seq)`` return
+		*seq[i]* regardless of *x*.  Otherwise return ''
+	**/
+	public function new(seq:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

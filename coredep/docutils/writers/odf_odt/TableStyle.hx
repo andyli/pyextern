@@ -43,6 +43,10 @@ package docutils.writers.odf_odt;
 	@:native("__init__")
 	public function ___init__(?border:Dynamic, ?backgroundcolor:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?border:Dynamic, ?backgroundcolor:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

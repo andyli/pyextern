@@ -84,6 +84,29 @@ package matplotlib.colors;
 	@:native("__init__")
 	public function ___init__(colors:Dynamic, ?name:Dynamic, ?N:Dynamic):Dynamic;
 	/**
+		Make a colormap from a list of colors.
+		
+		*colors*
+		    a list of matplotlib color specifications,
+		    or an equivalent Nx3 or Nx4 floating point array
+		    (*N* rgb or rgba values)
+		*name*
+		    a string to identify the colormap
+		*N*
+		    the number of entries in the map.  The default is *None*,
+		    in which case there is one colormap entry for each
+		    element in the list of colors.  If::
+		
+		        N < len(colors)
+		
+		    the list will be truncated at *N*.  If::
+		
+		        N > len(colors)
+		
+		    the list will be extended by repetition.
+	**/
+	public function new(colors:Dynamic, ?name:Dynamic, ?N:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

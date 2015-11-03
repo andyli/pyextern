@@ -193,6 +193,10 @@ package pandas.core.frame;
 	**/
 	@:native("__init__")
 	public function ___init__(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?data:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Void;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;

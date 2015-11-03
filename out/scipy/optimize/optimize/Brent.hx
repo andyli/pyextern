@@ -43,6 +43,10 @@ package scipy.optimize.optimize;
 	@:native("__init__")
 	public function ___init__(func:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(func:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

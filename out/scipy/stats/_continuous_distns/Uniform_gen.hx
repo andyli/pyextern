@@ -58,6 +58,10 @@ package scipy.stats._continuous_distns;
 	@:native("__init__")
 	public function ___init__(?momtype:Dynamic, ?a:Dynamic, ?b:Dynamic, ?xtol:Dynamic, ?badvalue:Dynamic, ?name:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?momtype:Dynamic, ?a:Dynamic, ?b:Dynamic, ?xtol:Dynamic, ?badvalue:Dynamic, ?name:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

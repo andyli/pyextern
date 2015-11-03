@@ -46,6 +46,12 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(triangulation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a Collection
+		
+		%(Collection)s
+	**/
+	public function new(triangulation:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

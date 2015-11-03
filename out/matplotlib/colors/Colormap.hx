@@ -70,6 +70,15 @@ package matplotlib.colors;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, ?N:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		name : str
+		    The name of the colormap.
+		N : int
+		    The number of rgb quantization levels.
+	**/
+	public function new(name:Dynamic, ?N:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

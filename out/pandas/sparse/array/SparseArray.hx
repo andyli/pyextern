@@ -176,6 +176,10 @@ package pandas.sparse.array;
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		int(self)
 	**/
 	public function __int__():Dynamic;

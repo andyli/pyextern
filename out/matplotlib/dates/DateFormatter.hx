@@ -49,6 +49,11 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(fmt:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		*fmt* is a :func:`strftime` format string; *tz* is the
+		 :class:`tzinfo` instance.
+	**/
+	public function new(fmt:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

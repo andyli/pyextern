@@ -43,6 +43,10 @@ package matplotlib.backends.backend_pdf;
 	@:native("__init__")
 	public function ___init__(filename:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(filename:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -45,6 +45,12 @@ package matplotlib.legend;
 	@:native("__init__")
 	public function ___init__(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Dynamic;
 	/**
+		update : If "loc", update *loc* parameter of
+		         legend upon finalizing. If "bbox", update
+		         *bbox_to_anchor* parameter.
+	**/
+	public function new(legend:Dynamic, ?use_blit:Dynamic, ?update:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

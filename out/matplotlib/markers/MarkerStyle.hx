@@ -61,6 +61,26 @@ package matplotlib.markers;
 	@:native("__init__")
 	public function ___init__(?marker:Dynamic, ?fillstyle:Dynamic):Dynamic;
 	/**
+		MarkerStyle
+		
+		Attributes
+		----------
+		markers : list of known markes
+		
+		fillstyles : list of known fillstyles
+		
+		filled_markers : list of known filled markers.
+		
+		Parameters
+		----------
+		marker : string or array_like, optional, default: None
+		    See the descriptions of possible markers in the module docstring.
+		
+		fillstyle : string, optional, default: 'full'
+		    'full', 'left", 'right', 'bottom', 'top', 'none'
+	**/
+	public function new(?marker:Dynamic, ?fillstyle:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

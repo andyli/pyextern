@@ -61,6 +61,12 @@ package scipy.signal.ltisys;
 	@:native("__init__")
 	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Initialize the `lti` baseclass.
+		
+		The heavy lifting is done by the subclasses.
+	**/
+	public function new(?system:python.VarArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

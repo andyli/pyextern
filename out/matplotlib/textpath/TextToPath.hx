@@ -45,6 +45,10 @@ package matplotlib.textpath;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		Initialization
+	**/
+	public function new():Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

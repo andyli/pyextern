@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(filename:Dynamic):Dynamic;
 	/**
+		Create the position from a file.
+	**/
+	public function new(filename:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

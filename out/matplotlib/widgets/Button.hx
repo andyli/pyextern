@@ -61,6 +61,28 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, label:Dynamic, ?image:Dynamic, ?color:Dynamic, ?hovercolor:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		ax : matplotlib.axes.Axes
+		    The :class:`matplotlib.axes.Axes` instance the button
+		    will be placed into.
+		
+		label : str
+		    The button text. Accepts string.
+		
+		image : array, mpl image, Pillow Image
+		    The image to place in the button, if not *None*.
+		    Can be any legal arg to imshow (numpy array,
+		    matplotlib Image instance, or Pillow Image).
+		
+		color : color
+		    The color of the button when not activated
+		
+		hovercolor : color
+		    The color of the button when the mouse is over it
+	**/
+	public function new(ax:Dynamic, label:Dynamic, ?image:Dynamic, ?color:Dynamic, ?hovercolor:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

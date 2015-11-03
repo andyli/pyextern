@@ -45,6 +45,12 @@ package docutils.utils.math.latex2mathml;
 	@:native("__init__")
 	public function ___init__(par:Dynamic):Dynamic;
 	/**
+		math([children]) -> MathML element
+		
+		children can be one child or a list of children.
+	**/
+	public function new(par:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

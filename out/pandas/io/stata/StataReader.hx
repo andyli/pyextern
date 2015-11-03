@@ -50,6 +50,10 @@ package pandas.io.stata;
 	**/
 	@:native("__init__")
 	public function ___init__(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(path_or_buf:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

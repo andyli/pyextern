@@ -281,6 +281,23 @@ package matplotlib.scale;
 	@:native("__init__")
 	public function ___init__(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*basex* /*basey*:
+		   The base of the logarithm
+		
+		*nonposx* /*nonposy*: ['mask' | 'clip' ]
+		  non-positive values in *x* or *y* can be masked as
+		  invalid, or clipped to a very small positive number
+		
+		*subsx* /*subsy*:
+		   Where to place the subticks between each major tick.
+		   Should be a sequence of integers.  For example, in a log10
+		   scale: ``[2, 3, 4, 5, 6, 7, 8, 9]``
+		
+		   will place 8 logarithmically spaced minor ticks between
+		   each major tick.
+	**/
+	public function new(axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

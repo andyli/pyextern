@@ -43,6 +43,10 @@ package pandas.io.packers;
 	@:native("__init__")
 	public function ___init__(?_default:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?use_single_float:Dynamic, ?autoreset:Dynamic, ?use_bin_type:Dynamic):Dynamic;
 	/**
+		        
+	**/
+	public function new(?_default:Dynamic, ?encoding:Dynamic, ?unicode_errors:Dynamic, ?use_single_float:Dynamic, ?autoreset:Dynamic, ?use_bin_type:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

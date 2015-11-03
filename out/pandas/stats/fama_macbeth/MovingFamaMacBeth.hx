@@ -50,6 +50,10 @@ package pandas.stats.fama_macbeth;
 	@:native("__init__")
 	public function ___init__(y:Dynamic, x:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_lags_beta:Dynamic, ?entity_effects:Dynamic, ?time_effects:Dynamic, ?x_effects:Dynamic, ?cluster:Dynamic, ?dropped_dummies:Dynamic, ?verbose:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(y:Dynamic, x:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_lags_beta:Dynamic, ?entity_effects:Dynamic, ?time_effects:Dynamic, ?x_effects:Dynamic, ?cluster:Dynamic, ?dropped_dummies:Dynamic, ?verbose:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

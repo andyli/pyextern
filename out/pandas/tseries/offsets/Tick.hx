@@ -41,6 +41,10 @@ package pandas.tseries.offsets;
 	**/
 	@:native("__init__")
 	public function ___init__(?n:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?n:Dynamic, ?normalize:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
 	public function __le__(other:Dynamic):Dynamic;
 	public function __lt__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;

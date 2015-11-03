@@ -47,6 +47,10 @@ package matplotlib.rcsetup;
 	@:native("__init__")
 	public function ___init__(key:Dynamic, valid:Dynamic, ?ignorecase:Dynamic):Dynamic;
 	/**
+		valid is a list of legal strings
+	**/
+	public function new(key:Dynamic, valid:Dynamic, ?ignorecase:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

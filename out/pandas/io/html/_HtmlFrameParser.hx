@@ -43,6 +43,10 @@ package pandas.io.html;
 	@:native("__init__")
 	public function ___init__(io:Dynamic, match:Dynamic, attrs:Dynamic, encoding:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(io:Dynamic, match:Dynamic, attrs:Dynamic, encoding:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

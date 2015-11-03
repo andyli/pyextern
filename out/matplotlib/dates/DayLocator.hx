@@ -51,6 +51,13 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Mark every day in *bymonthday*; *bymonthday* can be an int or
+		sequence.
+		
+		Default is to tick every day of the month: ``bymonthday=range(1,32)``
+	**/
+	public function new(?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

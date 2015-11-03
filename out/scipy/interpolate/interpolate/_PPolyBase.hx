@@ -70,6 +70,10 @@ package scipy.interpolate.interpolate;
 	@:native("__init__")
 	public function ___init__(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(c:Dynamic, x:Dynamic, ?extrapolate:Dynamic, ?axis:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

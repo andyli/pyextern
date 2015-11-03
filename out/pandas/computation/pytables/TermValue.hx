@@ -43,6 +43,10 @@ package pandas.computation.pytables;
 	@:native("__init__")
 	public function ___init__(value:Dynamic, converted:Dynamic, kind:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(value:Dynamic, converted:Dynamic, kind:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

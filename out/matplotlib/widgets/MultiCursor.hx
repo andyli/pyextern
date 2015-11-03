@@ -43,6 +43,10 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(canvas:Dynamic, axes:Dynamic, ?useblit:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(canvas:Dynamic, axes:Dynamic, ?useblit:Dynamic, ?horizOn:Dynamic, ?vertOn:Dynamic, ?lineprops:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

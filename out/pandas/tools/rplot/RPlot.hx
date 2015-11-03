@@ -49,6 +49,16 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?x:Dynamic, ?y:Dynamic):Dynamic;
 	/**
+		Initialize RPlot instance.
+		
+		Parameters:
+		-----------
+		data: pandas DataFrame instance
+		x: string, DataFrame column name
+		y: string, DataFrame column name
+	**/
+	public function new(data:Dynamic, ?x:Dynamic, ?y:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

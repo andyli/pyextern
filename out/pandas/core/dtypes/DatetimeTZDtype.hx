@@ -53,6 +53,13 @@ package pandas.core.dtypes;
 	@:native("__init__")
 	public function ___init__(unit:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		unit : string unit that this represents, currently must be 'ns'
+		tz : string tz that this represents
+	**/
+	public function new(unit:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

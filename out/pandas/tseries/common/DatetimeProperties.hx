@@ -50,6 +50,10 @@ package pandas.tseries.common;
 	@:native("__init__")
 	public function ___init__(values:Dynamic, index:Dynamic, name:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(values:Dynamic, index:Dynamic, name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -71,6 +71,37 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?child:Dynamic, ?prop:Dynamic, ?frameon:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		loc is a string or an integer specifying the legend location.
+		The valid  location codes are::
+		
+		'upper right'  : 1,
+		'upper left'   : 2,
+		'lower left'   : 3,
+		'lower right'  : 4,
+		'right'        : 5,
+		'center left'  : 6,
+		'center right' : 7,
+		'lower center' : 8,
+		'upper center' : 9,
+		'center'       : 10,
+		
+		pad : pad around the child for drawing a frame. given in
+		  fraction of fontsize.
+		
+		borderpad : pad between offsetbox frame and the bbox_to_anchor,
+		
+		child : OffsetBox instance that will be anchored.
+		
+		prop : font property. This is only used as a reference for paddings.
+		
+		frameon : draw a frame box if True.
+		
+		bbox_to_anchor : bbox to anchor. Use self.axes.bbox if None.
+		
+		bbox_transform : with which the bbox_to_anchor will be transformed.
+	**/
+	public function new(loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?child:Dynamic, ?prop:Dynamic, ?frameon:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

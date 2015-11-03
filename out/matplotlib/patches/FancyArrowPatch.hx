@@ -136,6 +136,102 @@ package matplotlib.patches;
 	@:native("__init__")
 	public function ___init__(?posA:Dynamic, ?posB:Dynamic, ?path:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		If *posA* and *posB* is given, a path connecting two point are
+		created according to the connectionstyle. The path will be
+		clipped with *patchA* and *patchB* and further shrunken by
+		*shrinkA* and *shrinkB*. An arrow is drawn along this
+		resulting path using the *arrowstyle* parameter. If *path*
+		provided, an arrow is drawn along this path and *patchA*,
+		*patchB*, *shrinkA*, and *shrinkB* are ignored.
+		
+		The *connectionstyle* describes how *posA* and *posB* are
+		connected. It can be an instance of the ConnectionStyle class
+		(matplotlib.patches.ConnectionStlye) or a string of the
+		connectionstyle name, with optional comma-separated
+		attributes.  The following connection styles are available.
+		
+		
+		  ======   ==========   =============================================
+		  Class    Name         Attrs                                        
+		  ======   ==========   =============================================
+		  Angle    ``angle``    angleA=90,angleB=0,rad=0.0                   
+		  Angle3   ``angle3``   angleA=90,angleB=0                           
+		  Arc      ``arc``      angleA=0,angleB=0,armA=None,armB=None,rad=0.0
+		  Arc3     ``arc3``     rad=0.0                                      
+		  Bar      ``bar``      armA=0.0,armB=0.0,fraction=0.3,angle=None    
+		  ======   ==========   =============================================
+		
+		
+		
+		The *arrowstyle* describes how the fancy arrow will be
+		drawn. It can be string of the available arrowstyle names,
+		with optional comma-separated attributes, or one of the
+		ArrowStyle instance. The optional attributes are meant to be
+		scaled with the *mutation_scale*. The following arrow styles are
+		available.
+		
+		
+		  =============   ==========   =====================================================================
+		  Class           Name         Attrs                                                                
+		  =============   ==========   =====================================================================
+		  Curve           ``-``        None                                                                 
+		  CurveB          ``->``       head_length=0.4,head_width=0.2                                       
+		  BracketB        ``-[``       widthB=1.0,lengthB=0.2,angleB=None                                   
+		  CurveFilledB    ``-|>``      head_length=0.4,head_width=0.2                                       
+		  CurveA          ``<-``       head_length=0.4,head_width=0.2                                       
+		  CurveAB         ``<->``      head_length=0.4,head_width=0.2                                       
+		  CurveFilledA    ``<|-``      head_length=0.4,head_width=0.2                                       
+		  CurveFilledAB   ``<|-|>``    head_length=0.4,head_width=0.2                                       
+		  BracketA        ``]-``       widthA=1.0,lengthA=0.2,angleA=None                                   
+		  BracketAB       ``]-[``      widthA=1.0,lengthA=0.2,angleA=None,widthB=1.0,lengthB=0.2,angleB=None
+		  Fancy           ``fancy``    head_length=0.4,head_width=0.4,tail_width=0.4                        
+		  Simple          ``simple``   head_length=0.5,head_width=0.5,tail_width=0.2                        
+		  Wedge           ``wedge``    tail_width=0.3,shrink_factor=0.5                                     
+		  BarAB           ``|-|``      widthA=1.0,angleA=None,widthB=1.0,angleB=None                        
+		  =============   ==========   =====================================================================
+		
+		
+		*mutation_scale* : a value with which attributes of arrowstyle
+		    (e.g., head_length) will be scaled. default=1.
+		
+		*mutation_aspect* : The height of the rectangle will be
+		    squeezed by this value before the mutation and the mutated
+		    box will be stretched by the inverse of it. default=None.
+		
+		Valid kwargs are:
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or aa: [True | False]  or None for default         
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  capstyle: ['butt' | 'round' | 'projecting']         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  color: matplotlib color spec
+		  contains: a callable function         
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  fill: [True | False]         
+		  gid: an id string         
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
+		  joinstyle: ['miter' | 'round' | 'bevel']         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw: float or None for default         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  visible: [True | False]         
+		  zorder: any number         
+	**/
+	public function new(?posA:Dynamic, ?posB:Dynamic, ?path:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

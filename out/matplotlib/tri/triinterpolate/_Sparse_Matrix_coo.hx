@@ -47,6 +47,14 @@ package matplotlib.tri.triinterpolate;
 	@:native("__init__")
 	public function ___init__(vals:Dynamic, rows:Dynamic, cols:Dynamic, shape:Dynamic):Dynamic;
 	/**
+		Creates a sparse matrix in coo format
+		*vals*: arrays of values of non-null entries of the matrix
+		*rows*: int arrays of rows of non-null entries of the matrix
+		*cols*: int arrays of cols of non-null entries of the matrix
+		*shape*: 2-tuple (n,m) of matrix shape
+	**/
+	public function new(vals:Dynamic, rows:Dynamic, cols:Dynamic, shape:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

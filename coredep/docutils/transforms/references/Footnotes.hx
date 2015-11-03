@@ -43,6 +43,10 @@ package docutils.transforms.references;
 	@:native("__init__")
 	public function ___init__(document:Dynamic, ?startnode:Dynamic):Dynamic;
 	/**
+		Initial setup for in-place document transforms.
+	**/
+	public function new(document:Dynamic, ?startnode:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

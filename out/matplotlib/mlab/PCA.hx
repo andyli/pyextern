@@ -76,6 +76,43 @@ package matplotlib.mlab;
 	@:native("__init__")
 	public function ___init__(a:Dynamic, ?standardize:Dynamic):Dynamic;
 	/**
+		compute the SVD of a and store data for PCA.  Use project to
+		project the data onto a reduced set of dimensions
+		
+		Inputs:
+		
+		  *a*: a numobservations x numdims array
+		  *standardize*: True if input data are to be standardized. If False,
+		  only centering will be carried out.
+		
+		Attrs:
+		
+		  *a* a centered unit sigma version of input a
+		
+		  *numrows*, *numcols*: the dimensions of a
+		
+		  *mu*: a numdims array of means of a. This is the vector that points
+		  to the origin of PCA space.
+		
+		  *sigma*: a numdims array of standard deviation of a
+		
+		  *fracs*: the proportion of variance of each of the principal
+		  components
+		
+		  *s*: the actual eigenvalues of the decomposition
+		
+		  *Wt*: the weight vector for projecting a numdims point or array into
+		  PCA space
+		
+		  *Y*: a projected into PCA space
+		
+		
+		The factor loadings are in the Wt factor, i.e., the factor
+		loadings for the 1st principal component are given by Wt[0].
+		This row is also the 1st eigenvector.
+	**/
+	public function new(a:Dynamic, ?standardize:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

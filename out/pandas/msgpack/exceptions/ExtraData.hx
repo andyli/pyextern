@@ -51,6 +51,10 @@ package pandas.msgpack.exceptions;
 	@:native("__init__")
 	public function ___init__(unpacked:Dynamic, extra:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(unpacked:Dynamic, extra:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

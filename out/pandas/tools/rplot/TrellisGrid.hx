@@ -47,6 +47,14 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(by:Dynamic):Dynamic;
 	/**
+		Initialize TreelisGrid instance.
+		
+		Parameters:
+		-----------
+		by: column names to group by
+	**/
+	public function new(by:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

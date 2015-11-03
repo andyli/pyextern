@@ -43,6 +43,10 @@ package scipy.io.matlab.mio4;
 	@:native("__init__")
 	public function ___init__(file_writer:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(file_writer:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

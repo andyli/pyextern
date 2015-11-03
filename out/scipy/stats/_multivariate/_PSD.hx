@@ -43,6 +43,10 @@ package scipy.stats._multivariate;
 	@:native("__init__")
 	public function ___init__(M:Dynamic, ?cond:Dynamic, ?rcond:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic, ?allow_singular:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(M:Dynamic, ?cond:Dynamic, ?rcond:Dynamic, ?lower:Dynamic, ?check_finite:Dynamic, ?allow_singular:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

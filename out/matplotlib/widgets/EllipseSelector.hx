@@ -97,6 +97,64 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic, ?maxdist:Dynamic, ?marker_props:Dynamic, ?interactive:Dynamic, ?state_modifier_keys:Dynamic):Dynamic;
 	/**
+		Create a selector in *ax*.  When a selection is made, clear
+		the span and call onselect with::
+		
+		  onselect(pos_1, pos_2)
+		
+		and clear the drawn box/line. The ``pos_1`` and ``pos_2`` are
+		arrays of length 2 containing the x- and y-coordinate.
+		
+		If *minspanx* is not *None* then events smaller than *minspanx*
+		in x direction are ignored (it's the same for y).
+		
+		The rectangle is drawn with *rectprops*; default::
+		
+		  rectprops = dict(facecolor='red', edgecolor = 'black',
+		                   alpha=0.2, fill=True)
+		
+		The line is drawn with *lineprops*; default::
+		
+		  lineprops = dict(color='black', linestyle='-',
+		                   linewidth = 2, alpha=0.5)
+		
+		Use *drawtype* if you want the mouse to draw a line,
+		a box or nothing between click and actual position by setting
+		
+		``drawtype = 'line'``, ``drawtype='box'`` or ``drawtype = 'none'``.
+		
+		*spancoords* is one of 'data' or 'pixels'.  If 'data', *minspanx*
+		and *minspanx* will be interpreted in the same coordinates as
+		the x and y axis. If 'pixels', they are in pixels.
+		
+		*button* is a list of integers indicating which mouse buttons should
+		be used for rectangle selection.  You can also specify a single
+		integer if only a single button is desired.  Default is *None*,
+		which does not limit which button can be used.
+		
+		Note, typically:
+		 1 = left mouse button
+		 2 = center mouse button (scroll wheel)
+		 3 = right mouse button
+		
+		*interactive* will draw a set of handles and allow you interact
+		with the widget after it is drawn.
+		
+		*state_modifier_keys* are keyboard modifiers that affect the behavior
+		of the widget.
+		
+		The defaults are:
+		dict(move=' ', clear='escape', square='shift', center='ctrl')
+		
+		Keyboard modifiers, which:
+		'move': Move the existing shape.
+		'clear': Clear the current shape.
+		'square': Makes the shape square.
+		'center': Make the initial point the center of the shape.
+		'square' and 'center' can be combined.
+	**/
+	public function new(ax:Dynamic, onselect:Dynamic, ?drawtype:Dynamic, ?minspanx:Dynamic, ?minspany:Dynamic, ?useblit:Dynamic, ?lineprops:Dynamic, ?rectprops:Dynamic, ?spancoords:Dynamic, ?button:Dynamic, ?maxdist:Dynamic, ?marker_props:Dynamic, ?interactive:Dynamic, ?state_modifier_keys:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

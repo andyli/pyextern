@@ -56,6 +56,18 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?byweekday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Mark every weekday in *byweekday*; *byweekday* can be a number or
+		sequence.
+		
+		Elements of *byweekday* must be one of MO, TU, WE, TH, FR, SA,
+		SU, the constants from :mod:`dateutil.rrule`, which have been
+		imported into the :mod:`matplotlib.dates` namespace.
+		
+		*interval* specifies the number of weeks to skip.  For example,
+		``interval=2`` plots every second week.
+	**/
+	public function new(?byweekday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -45,6 +45,12 @@ package docutils.parsers.rst.directives.html;
 	@:native("__init__")
 	public function ___init__(state_machine:Dynamic, ?debug:Dynamic):Dynamic;
 	/**
+		Initialize a `StateSM` object; extends `State.__init__()`.
+		
+		Check for indent state machine attributes, set defaults if not set.
+	**/
+	public function new(state_machine:Dynamic, ?debug:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

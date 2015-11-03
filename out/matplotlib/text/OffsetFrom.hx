@@ -47,6 +47,10 @@ package matplotlib.text;
 	@:native("__init__")
 	public function ___init__(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

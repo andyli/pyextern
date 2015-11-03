@@ -42,6 +42,10 @@ package pandas.io.parsers;
 	**/
 	@:native("__init__")
 	public function ___init__(f:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(f:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -49,6 +49,16 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(degree:Dynamic, ?lw:Dynamic, ?colour:Dynamic):Dynamic;
 	/**
+		Initialize GeomPolyFit object.
+		
+		Parameters:
+		-----------
+		degree: an integer, polynomial degree
+		lw: line width
+		colour: matplotlib colour
+	**/
+	public function new(degree:Dynamic, ?lw:Dynamic, ?colour:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

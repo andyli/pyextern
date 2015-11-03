@@ -43,6 +43,10 @@ package scipy.odr.odrpack;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, model:Dynamic, ?beta0:Dynamic, ?delta0:Dynamic, ?ifixb:Dynamic, ?ifixx:Dynamic, ?job:Dynamic, ?iprint:Dynamic, ?errfile:Dynamic, ?rptfile:Dynamic, ?ndigit:Dynamic, ?taufac:Dynamic, ?sstol:Dynamic, ?partol:Dynamic, ?maxit:Dynamic, ?stpb:Dynamic, ?stpd:Dynamic, ?sclb:Dynamic, ?scld:Dynamic, ?work:Dynamic, ?iwork:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, model:Dynamic, ?beta0:Dynamic, ?delta0:Dynamic, ?ifixb:Dynamic, ?ifixx:Dynamic, ?job:Dynamic, ?iprint:Dynamic, ?errfile:Dynamic, ?rptfile:Dynamic, ?ndigit:Dynamic, ?taufac:Dynamic, ?sstol:Dynamic, ?partol:Dynamic, ?maxit:Dynamic, ?stpb:Dynamic, ?stpd:Dynamic, ?sclb:Dynamic, ?scld:Dynamic, ?work:Dynamic, ?iwork:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package pandas.core.groupby;
 	@:native("__init__")
 	public function ___init__(comp_ids:Dynamic, ngroups:Dynamic, labels:Dynamic, levels:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(comp_ids:Dynamic, ngroups:Dynamic, labels:Dynamic, levels:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

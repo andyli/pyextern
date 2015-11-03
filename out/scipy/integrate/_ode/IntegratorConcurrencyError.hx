@@ -51,6 +51,10 @@ package scipy.integrate._ode;
 	@:native("__init__")
 	public function ___init__(name:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

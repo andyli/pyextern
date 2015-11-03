@@ -58,6 +58,10 @@ package numpy.lib.user_array;
 	**/
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Void;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ior__(other:Dynamic):Dynamic;

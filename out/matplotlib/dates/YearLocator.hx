@@ -49,6 +49,11 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?base:Dynamic, ?month:Dynamic, ?day:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Mark years that are multiple of base on a given month and day
+		(default jan 1).
+	**/
+	public function new(?base:Dynamic, ?month:Dynamic, ?day:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package matplotlib.mathtext;
 	@:native("__init__")
 	public function ___init__(output:Dynamic):Dynamic;
 	/**
+		Create a MathTextParser for the given backend *output*.
+	**/
+	public function new(output:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

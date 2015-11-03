@@ -51,6 +51,10 @@ package pandas.stats.ols;
 	@:native("__init__")
 	public function ___init__(y:Dynamic, x:Dynamic, ?weights:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_overlap:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(y:Dynamic, x:Dynamic, ?weights:Dynamic, ?window_type:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?intercept:Dynamic, ?nw_lags:Dynamic, ?nw_overlap:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

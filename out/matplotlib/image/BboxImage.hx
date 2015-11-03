@@ -55,6 +55,21 @@ package matplotlib.image;
 	@:native("__init__")
 	public function ___init__(bbox:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?interp_at_native:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		cmap is a colors.Colormap instance
+		norm is a colors.Normalize instance to map luminance to 0-1
+		
+		interp_at_native is a flag that determines whether or not
+		interpolation should still be applied when the image is
+		displayed at its native resolution.  A common use case for this
+		is when displaying an image for annotational purposes; it is
+		treated similarly to Photoshop (interpolation is only used when
+		displaying the image at non-native resolutions).
+		
+		
+		kwargs are an optional list of Artist keyword args
+	**/
+	public function new(bbox:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?interp_at_native:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(string:Dynamic):Dynamic;
 	/**
+		Set the constant string
+	**/
+	public function new(string:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

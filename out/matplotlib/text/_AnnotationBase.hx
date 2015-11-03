@@ -43,6 +43,10 @@ package matplotlib.text;
 	@:native("__init__")
 	public function ___init__(xy:Dynamic, ?xycoords:Dynamic, ?annotation_clip:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(xy:Dynamic, ?xycoords:Dynamic, ?annotation_clip:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

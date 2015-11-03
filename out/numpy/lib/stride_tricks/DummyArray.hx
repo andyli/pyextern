@@ -43,6 +43,10 @@ package numpy.lib.stride_tricks;
 	@:native("__init__")
 	public function ___init__(_interface:Dynamic, ?base:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(_interface:Dynamic, ?base:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

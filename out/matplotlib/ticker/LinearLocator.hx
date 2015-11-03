@@ -48,6 +48,10 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(?numticks:Dynamic, ?presets:Dynamic):Dynamic;
 	/**
+		Use presets to set locs based on lom.  A dict mapping vmin, vmax->locs
+	**/
+	public function new(?numticks:Dynamic, ?presets:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

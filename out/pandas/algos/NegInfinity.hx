@@ -31,6 +31,10 @@ package pandas.algos;
 	**/
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	public function __le__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __lt__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __module__ : Dynamic;

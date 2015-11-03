@@ -43,6 +43,10 @@ package scipy.optimize.zeros;
 	@:native("__init__")
 	public function ___init__(root:Dynamic, iterations:Dynamic, function_calls:Dynamic, flag:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(root:Dynamic, iterations:Dynamic, function_calls:Dynamic, flag:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

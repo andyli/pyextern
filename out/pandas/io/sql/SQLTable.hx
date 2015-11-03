@@ -50,6 +50,10 @@ package pandas.io.sql;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, pandas_sql_engine:Dynamic, ?frame:Dynamic, ?index:Dynamic, ?if_exists:Dynamic, ?prefix:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic, pandas_sql_engine:Dynamic, ?frame:Dynamic, ?index:Dynamic, ?if_exists:Dynamic, ?prefix:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -73,6 +73,10 @@ package scipy.interpolate.fitpack2;
 	@:native("__init__")
 	public function ___init__(theta:Dynamic, phi:Dynamic, r:Dynamic, tt:Dynamic, tp:Dynamic, ?w:Dynamic, ?eps:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(theta:Dynamic, phi:Dynamic, r:Dynamic, tt:Dynamic, tp:Dynamic, ?w:Dynamic, ?eps:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

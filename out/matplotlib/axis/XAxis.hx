@@ -45,6 +45,10 @@ package matplotlib.axis;
 	@:native("__init__")
 	public function ___init__(axes:Dynamic, ?pickradius:Dynamic):Dynamic;
 	/**
+		Init the axis with the parent Axes instance
+	**/
+	public function new(axes:Dynamic, ?pickradius:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -48,6 +48,15 @@ package docutils.statemachine;
 	@:native("__init__")
 	public function ___init__(state_machine:Dynamic, ?debug:Dynamic):Dynamic;
 	/**
+		Initialize a `State` object; make & add initial transitions.
+		
+		Parameters:
+		
+		- `statemachine`: the controlling `StateMachine` object.
+		- `debug`: a boolean; produce verbose output if true.
+	**/
+	public function new(state_machine:Dynamic, ?debug:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

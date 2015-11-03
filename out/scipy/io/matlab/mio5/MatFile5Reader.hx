@@ -71,6 +71,38 @@ package scipy.io.matlab.mio5;
 	@:native("__init__")
 	public function ___init__(mat_stream:Dynamic, ?byte_order:Dynamic, ?mat_dtype:Dynamic, ?squeeze_me:Dynamic, ?chars_as_strings:Dynamic, ?matlab_compatible:Dynamic, ?struct_as_record:Dynamic, ?verify_compressed_data_integrity:Dynamic, ?uint16_codec:Dynamic):Dynamic;
 	/**
+		Initializer for matlab 5 file format reader
+		
+		mat_stream : file-like
+		   Object with file API, open for reading.
+		byte_order : str or None, optional
+		   None by default, implying byte order guessed from mat
+		   file. Otherwise can be one of ('native', '=', 'little', '<',
+		   'BIG', '>').
+		mat_dtype : bool, optional
+		   If True, return arrays in same dtype as would be loaded into
+		   MATLAB (instead of the dtype with which they are saved).
+		squeeze_me : bool, optional
+		   Whether to squeeze unit matrix dimensions or not.
+		chars_as_strings : bool, optional
+		   Whether to convert char arrays to string arrays.
+		matlab_compatible : bool, optional
+		   Returns matrices as would be loaded by MATLAB (implies
+		   squeeze_me=False, chars_as_strings=False, mat_dtype=True,
+		   struct_as_record=True).
+		struct_as_record : bool, optional
+		   Whether to load MATLAB structs as numpy record arrays, or as
+		   old-style numpy arrays with dtype=object.  Setting this flag to
+		   False replicates the behavior of scipy version 0.7.x (returning
+		   numpy object arrays).  The default setting is True, because it
+		   allows easier round-trip load and save of MATLAB files.
+		uint16_codec : {None, string}
+		    Set codec to use for uint16 char arrays (e.g. 'utf-8').
+		    Use system default codec if None
+		    
+	**/
+	public function new(mat_stream:Dynamic, ?byte_order:Dynamic, ?mat_dtype:Dynamic, ?squeeze_me:Dynamic, ?chars_as_strings:Dynamic, ?matlab_compatible:Dynamic, ?struct_as_record:Dynamic, ?verify_compressed_data_integrity:Dynamic, ?uint16_codec:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

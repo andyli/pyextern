@@ -43,6 +43,10 @@ package matplotlib.legend_handler;
 	@:native("__init__")
 	public function ___init__(?xerr_size:Dynamic, ?yerr_size:Dynamic, ?marker_pad:Dynamic, ?numpoints:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?xerr_size:Dynamic, ?yerr_size:Dynamic, ?marker_pad:Dynamic, ?numpoints:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

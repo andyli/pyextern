@@ -42,6 +42,10 @@ package pandas.core.common;
 	**/
 	@:native("__init__")
 	public function ___init__(f:Dynamic, encoding:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(f:Dynamic, encoding:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

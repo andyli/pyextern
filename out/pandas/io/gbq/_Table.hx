@@ -43,6 +43,10 @@ package pandas.io.gbq;
 	@:native("__init__")
 	public function ___init__(project_id:Dynamic, dataset_id:Dynamic, ?reauth:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(project_id:Dynamic, dataset_id:Dynamic, ?reauth:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

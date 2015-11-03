@@ -63,6 +63,12 @@ package pandas.tslib;
 	@:native("__init__")
 	public function ___init__(?locale_time:Dynamic):Dynamic;
 	/**
+		Create keys/values.
+		
+		Order of execution is important for dependency reasons.
+	**/
+	public function new(?locale_time:Dynamic):Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

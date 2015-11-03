@@ -60,6 +60,22 @@ package scipy.sparse.linalg.matfuncs;
 	@:native("__init__")
 	public function ___init__(A:Dynamic, ?structure:Dynamic, ?use_exact_onenorm:Dynamic):Dynamic;
 	/**
+		Initialize the object.
+		
+		Parameters
+		----------
+		A : a dense or sparse square numpy matrix or ndarray
+		    The matrix to be exponentiated.
+		structure : str, optional
+		    A string describing the structure of matrix `A`.
+		    Only `upper_triangular` is currently supported.
+		use_exact_onenorm : bool, optional
+		    If True then only the exact one-norm of matrix powers and products
+		    will be used. Otherwise, the one-norm of powers and products
+		    may initially be estimated.
+	**/
+	public function new(A:Dynamic, ?structure:Dynamic, ?use_exact_onenorm:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

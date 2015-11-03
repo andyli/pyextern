@@ -47,6 +47,14 @@ package matplotlib.patheffects;
 	@:native("__init__")
 	public function ___init__(path_effects:Dynamic, renderer:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		path_effects : iterable of :class:`AbstractPathEffect`
+		    The path effects which this renderer represents.
+		renderer : :class:`matplotlib.backend_bases.RendererBase` instance
+	**/
+	public function new(path_effects:Dynamic, renderer:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

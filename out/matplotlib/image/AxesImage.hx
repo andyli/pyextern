@@ -53,6 +53,19 @@ package matplotlib.image;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		interpolation and cmap default to their rc settings
+		
+		cmap is a colors.Colormap instance
+		norm is a colors.Normalize instance to map luminance to 0-1
+		
+		extent is data axes (left, right, bottom, top) for making image plots
+		registered with data plots.  Default is to label the pixel
+		centers with the zero-based row and column indices.
+		
+		Additional kwargs are matplotlib.artist properties
+	**/
+	public function new(ax:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?extent:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

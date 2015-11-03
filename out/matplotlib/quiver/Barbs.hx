@@ -195,8 +195,8 @@ package matplotlib.quiver;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -216,6 +216,183 @@ package matplotlib.quiver;
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		        The constructor takes one required argument, an Axes
+		        instance, followed by the args and kwargs described
+		        by the following pylab interface documentation:
+		        
+		Plot a 2-D field of barbs.
+		
+		Call signatures::
+		
+		  barb(U, V, **kw)
+		  barb(U, V, C, **kw)
+		  barb(X, Y, U, V, **kw)
+		  barb(X, Y, U, V, C, **kw)
+		
+		Arguments:
+		
+		  *X*, *Y*:
+		    The x and y coordinates of the barb locations
+		    (default is head of barb; see *pivot* kwarg)
+		
+		  *U*, *V*:
+		    Give the x and y components of the barb shaft
+		
+		  *C*:
+		    An optional array used to map colors to the barbs
+		
+		All arguments may be 1-D or 2-D arrays or sequences. If *X* and *Y*
+		are absent, they will be generated as a uniform grid.  If *U* and *V*
+		are 2-D arrays but *X* and *Y* are 1-D, and if ``len(X)`` and ``len(Y)``
+		match the column and row dimensions of *U*, then *X* and *Y* will be
+		expanded with :func:`numpy.meshgrid`.
+		
+		*U*, *V*, *C* may be masked arrays, but masked *X*, *Y* are not
+		supported at present.
+		
+		Keyword arguments:
+		
+		  *length*:
+		    Length of the barb in points; the other parts of the barb
+		    are scaled against this.
+		    Default is 9
+		
+		  *pivot*: [ 'tip' | 'middle' ]
+		    The part of the arrow that is at the grid point; the arrow rotates
+		    about this point, hence the name *pivot*.  Default is 'tip'
+		
+		  *barbcolor*: [ color | color sequence ]
+		    Specifies the color all parts of the barb except any flags.  This
+		    parameter is analagous to the *edgecolor* parameter for polygons,
+		    which can be used instead. However this parameter will override
+		    facecolor.
+		
+		  *flagcolor*: [ color | color sequence ]
+		    Specifies the color of any flags on the barb.  This parameter is
+		    analagous to the *facecolor* parameter for polygons, which can be
+		    used instead. However this parameter will override facecolor.  If
+		    this is not set (and *C* has not either) then *flagcolor* will be
+		    set to match *barbcolor* so that the barb has a uniform color. If
+		    *C* has been set, *flagcolor* has no effect.
+		
+		  *sizes*:
+		    A dictionary of coefficients specifying the ratio of a given
+		    feature to the length of the barb. Only those values one wishes to
+		    override need to be included.  These features include:
+		
+		        - 'spacing' - space between features (flags, full/half barbs)
+		
+		        - 'height' - height (distance from shaft to top) of a flag or
+		          full barb
+		
+		        - 'width' - width of a flag, twice the width of a full barb
+		
+		        - 'emptybarb' - radius of the circle used for low magnitudes
+		
+		  *fill_empty*:
+		    A flag on whether the empty barbs (circles) that are drawn should
+		    be filled with the flag color.  If they are not filled, they will
+		    be drawn such that no color is applied to the center.  Default is
+		    False
+		
+		  *rounding*:
+		    A flag to indicate whether the vector magnitude should be rounded
+		    when allocating barb components.  If True, the magnitude is
+		    rounded to the nearest multiple of the half-barb increment.  If
+		    False, the magnitude is simply truncated to the next lowest
+		    multiple.  Default is True
+		
+		  *barb_increments*:
+		    A dictionary of increments specifying values to associate with
+		    different parts of the barb. Only those values one wishes to
+		    override need to be included.
+		
+		        - 'half' - half barbs (Default is 5)
+		
+		        - 'full' - full barbs (Default is 10)
+		
+		        - 'flag' - flags (default is 50)
+		
+		  *flip_barb*:
+		    Either a single boolean flag or an array of booleans.  Single
+		    boolean indicates whether the lines and flags should point
+		    opposite to normal for all barbs.  An array (which should be the
+		    same size as the other data arrays) indicates whether to flip for
+		    each individual barb.  Normal behavior is for the barbs and lines
+		    to point right (comes from wind barbs having these features point
+		    towards low pressure in the Northern Hemisphere.)  Default is
+		    False
+		
+		Barbs are traditionally used in meteorology as a way to plot the speed
+		and direction of wind observations, but can technically be used to
+		plot any two dimensional vector quantity.  As opposed to arrows, which
+		give vector magnitude by the length of the arrow, the barbs give more
+		quantitative information about the vector magnitude by putting slanted
+		lines or a triangle for various increments in magnitude, as show
+		schematically below::
+		
+		 :     /\    \
+		 :    /  \    \
+		 :   /    \    \    \
+		 :  /      \    \    \
+		 : ------------------------------
+		
+		.. note the double \ at the end of each line to make the figure
+		.. render correctly
+		
+		The largest increment is given by a triangle (or "flag"). After those
+		come full lines (barbs). The smallest increment is a half line.  There
+		is only, of course, ever at most 1 half line.  If the magnitude is
+		small and only needs a single half-line and no full lines or
+		triangles, the half-line is offset from the end of the barb so that it
+		can be easily distinguished from barbs with a single full line.  The
+		magnitude for the barb shown above would nominally be 65, using the
+		standard increments of 50, 10, and 5.
+		
+		linewidths and edgecolors can be used to customize the barb.
+		Additional :class:`~matplotlib.collections.PolyCollection` keyword
+		arguments:
+		
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  array: unknown
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  clim: a length 2 sequence of floats         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  cmap: a colormap or registered colormap name         
+		  color: matplotlib color arg or sequence of rgba tuples
+		  contains: a callable function         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  gid: an id string         
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats         
+		  norm: unknown
+		  offset_position: unknown
+		  offsets: float or sequence of floats         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  pickradius: unknown
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  urls: unknown
+		  visible: [True | False]         
+		  zorder: any number         
+		
+		        
+	**/
+	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/

@@ -48,6 +48,10 @@ package pandas.tseries.converter;
 	@:native("__init__")
 	public function ___init__(freq:Dynamic, ?minor_locator:Dynamic, ?dynamic_mode:Dynamic, ?plot_obj:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(freq:Dynamic, ?minor_locator:Dynamic, ?dynamic_mode:Dynamic, ?plot_obj:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

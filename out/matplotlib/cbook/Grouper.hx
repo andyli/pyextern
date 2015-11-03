@@ -44,6 +44,10 @@ package matplotlib.cbook;
 	@:native("__init__")
 	public function ___init__(?init:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?init:Dynamic):Void;
+	/**
 		Iterate over each of the disjoint sets as a list.
 		
 		The iterator is invalid if interleaved with calls to join().

@@ -60,6 +60,14 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(value:Dynamic):Dynamic;
 	/**
+		Initialize ScaleConstant instance.
+		
+		Parameters:
+		-----------
+		value: any Python value to be returned when called
+	**/
+	public function new(value:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -86,6 +86,36 @@ package matplotlib.path;
 	@:native("__init__")
 	public function ___init__(vertices:Dynamic, ?codes:Dynamic, ?_interpolation_steps:Dynamic, ?closed:Dynamic, ?readonly:Dynamic):Dynamic;
 	/**
+		Create a new path with the given vertices and codes.
+		
+		Parameters
+		----------
+		vertices : array_like
+		    The ``(n, 2)`` float array, masked array or sequence of pairs
+		    representing the vertices of the path.
+		
+		    If *vertices* contains masked values, they will be converted
+		    to NaNs which are then handled correctly by the Agg
+		    PathIterator and other consumers of path data, such as
+		    :meth:`iter_segments`.
+		codes : {None, array_like}, optional
+		    n-length array integers representing the codes of the path.
+		    If not None, codes must be the same length as vertices.
+		    If None, *vertices* will be treated as a series of line segments.
+		_interpolation_steps : int, optional
+		    Used as a hint to certain projections, such as Polar, that this
+		    path should be linearly interpolated immediately before drawing.
+		    This attribute is primarily an implementation detail and is not
+		    intended for public use.
+		closed : bool, optional
+		    If *codes* is None and closed is True, vertices will be treated as
+		    line segments of a closed polygon.
+		readonly : bool, optional
+		    Makes the path behave in an immutable way and sets the vertices
+		    and codes as read-only arrays.
+	**/
+	public function new(vertices:Dynamic, ?codes:Dynamic, ?_interpolation_steps:Dynamic, ?closed:Dynamic, ?readonly:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

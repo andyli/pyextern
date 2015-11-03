@@ -43,6 +43,10 @@ package pandas.tseries.resample;
 	@:native("__init__")
 	public function ___init__(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?freq:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?how:Dynamic, ?nperiods:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?loffset:Dynamic, ?kind:Dynamic, ?convention:Dynamic, ?base:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

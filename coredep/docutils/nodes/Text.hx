@@ -67,6 +67,10 @@ package docutils.nodes;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?rawsource:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, ?rawsource:Dynamic):Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

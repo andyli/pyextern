@@ -43,6 +43,10 @@ package scipy.integrate._ode;
 	@:native("__init__")
 	public function ___init__(?method:Dynamic, ?with_jacobian:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?lband:Dynamic, ?uband:Dynamic, ?order:Dynamic, ?nsteps:Dynamic, ?max_step:Dynamic, ?min_step:Dynamic, ?first_step:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?method:Dynamic, ?with_jacobian:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?lband:Dynamic, ?uband:Dynamic, ?order:Dynamic, ?nsteps:Dynamic, ?max_step:Dynamic, ?min_step:Dynamic, ?first_step:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

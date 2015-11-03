@@ -59,6 +59,14 @@ package matplotlib.backends.backend_tkagg;
 	@:native("__init__")
 	public function ___init__(window:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Construct a frame widget with the parent MASTER.
+		
+		Valid resource names: background, bd, bg, borderwidth, class,
+		colormap, container, cursor, height, highlightbackground,
+		highlightcolor, highlightthickness, relief, takefocus, visual, width.
+	**/
+	public function new(window:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -54,6 +54,21 @@ package docutils.io;
 	@:native("__init__")
 	public function ___init__(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
+		:Parameters:
+		    - `source`: either a file-like object (which is read directly), or
+		      `None` (which implies `sys.stdin` if no `source_path` given).
+		    - `source_path`: a path to a file, which is opened and then read.
+		    - `encoding`: the expected text encoding of the input file.
+		    - `error_handler`: the encoding error handler to use.
+		    - `autoclose`: close automatically after read (except when
+		      `sys.stdin` is the source).
+		    - `handle_io_errors`: ignored, deprecated, will be removed.
+		    - `mode`: how the file is to be opened (see standard function
+		      `open`). The default 'rU' provides universal newline support
+		      for text files.
+	**/
+	public function new(?source:Dynamic, ?source_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package scipy.io.harwell_boeing.hb;
 	@:native("__init__")
 	public function ___init__(title:Dynamic, key:Dynamic, total_nlines:Dynamic, pointer_nlines:Dynamic, indices_nlines:Dynamic, values_nlines:Dynamic, mxtype:Dynamic, nrows:Dynamic, ncols:Dynamic, nnon_zeros:Dynamic, pointer_format_str:Dynamic, indices_format_str:Dynamic, values_format_str:Dynamic, ?right_hand_sides_nlines:Dynamic, ?nelementals:Dynamic):Dynamic;
 	/**
+		Do not use this directly, but the class ctrs (from_* functions).
+	**/
+	public function new(title:Dynamic, key:Dynamic, total_nlines:Dynamic, pointer_nlines:Dynamic, indices_nlines:Dynamic, values_nlines:Dynamic, mxtype:Dynamic, nrows:Dynamic, ncols:Dynamic, nnon_zeros:Dynamic, pointer_format_str:Dynamic, indices_format_str:Dynamic, values_format_str:Dynamic, ?right_hand_sides_nlines:Dynamic, ?nelementals:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

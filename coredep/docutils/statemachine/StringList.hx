@@ -48,6 +48,10 @@ package docutils.statemachine;
 	@:native("__init__")
 	public function ___init__(?initlist:Dynamic, ?source:Dynamic, ?items:Dynamic, ?parent:Dynamic, ?parent_offset:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?initlist:Dynamic, ?source:Dynamic, ?items:Dynamic, ?parent:Dynamic, ?parent_offset:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(other:Dynamic):Dynamic;

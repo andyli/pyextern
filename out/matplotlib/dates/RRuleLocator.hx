@@ -48,6 +48,10 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(o:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		*tz* is a :class:`tzinfo` instance.
+	**/
+	public function new(o:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

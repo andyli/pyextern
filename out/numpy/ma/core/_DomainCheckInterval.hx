@@ -47,6 +47,10 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__(a:Dynamic, b:Dynamic):Dynamic;
 	/**
+		domain_check_interval(a,b)(x) = true where x < a or y > b
+	**/
+	public function new(a:Dynamic, b:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

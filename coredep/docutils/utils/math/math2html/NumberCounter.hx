@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(name:Dynamic):Dynamic;
 	/**
+		Give a name to the counter.
+	**/
+	public function new(name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

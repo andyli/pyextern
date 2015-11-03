@@ -63,6 +63,10 @@ package matplotlib.mlab;
 	@:native("__init__")
 	public function ___init__(dataset:Dynamic, ?bw_method:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(dataset:Dynamic, ?bw_method:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(symbol:Dynamic):Dynamic;
 	/**
+		Create the big symbol.
+	**/
+	public function new(symbol:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -44,6 +44,10 @@ package matplotlib.artist;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new():Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

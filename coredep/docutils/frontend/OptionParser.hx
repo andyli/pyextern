@@ -45,6 +45,12 @@ package docutils.frontend;
 	@:native("__init__")
 	public function ___init__(?components:Dynamic, ?defaults:Dynamic, ?read_config_files:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`components` is a list of Docutils components each containing a
+		``.settings_spec`` attribute.  `defaults` is a mapping of setting
+		default overrides.
+	**/
+	public function new(?components:Dynamic, ?defaults:Dynamic, ?read_config_files:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

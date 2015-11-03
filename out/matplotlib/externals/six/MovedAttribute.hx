@@ -44,6 +44,10 @@ package matplotlib.externals.six;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, old_mod:Dynamic, new_mod:Dynamic, ?old_attr:Dynamic, ?new_attr:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic, old_mod:Dynamic, new_mod:Dynamic, ?old_attr:Dynamic, ?new_attr:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

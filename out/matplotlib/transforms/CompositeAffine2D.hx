@@ -63,6 +63,18 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(a:Dynamic, b:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a new composite transform that is the result of
+		applying transform *a* then transform *b*.
+		
+		Both *a* and *b* must be instances of :class:`Affine2DBase`.
+		
+		You will generally not call this constructor directly but use
+		the :func:`composite_transform_factory` function instead,
+		which can automatically choose the best kind of composite
+		transform instance to create.
+	**/
+	public function new(a:Dynamic, b:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

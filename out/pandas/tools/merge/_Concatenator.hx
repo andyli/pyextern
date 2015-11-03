@@ -43,6 +43,10 @@ package pandas.tools.merge;
 	@:native("__init__")
 	public function ___init__(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(objs:Dynamic, ?axis:Dynamic, ?join:Dynamic, ?join_axes:Dynamic, ?keys:Dynamic, ?levels:Dynamic, ?names:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic, ?copy:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

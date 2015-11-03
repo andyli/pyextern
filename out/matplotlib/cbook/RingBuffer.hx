@@ -48,6 +48,10 @@ package matplotlib.cbook;
 	@:native("__init__")
 	public function ___init__(size_max:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(size_max:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

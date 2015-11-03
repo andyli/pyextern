@@ -47,6 +47,14 @@ package numpy.core.machar;
 	@:native("__init__")
 	public function ___init__(?float_conv:Dynamic, ?int_conv:Dynamic, ?float_to_float:Dynamic, ?float_to_str:Dynamic, ?title:Dynamic):Dynamic;
 	/**
+		float_conv - convert integer to float (array)
+		int_conv   - convert float (array) to integer
+		float_to_float - convert float array to float
+		float_to_str - convert array float to str
+		title        - description of used floating point numbers
+	**/
+	public function new(?float_conv:Dynamic, ?int_conv:Dynamic, ?float_to_float:Dynamic, ?float_to_str:Dynamic, ?title:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -51,6 +51,10 @@ package docutils.parsers.rst;
 	@:native("__init__")
 	public function ___init__(level:Dynamic, message:Dynamic):Dynamic;
 	/**
+		Set error `message` and `level`
+	**/
+	public function new(level:Dynamic, message:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

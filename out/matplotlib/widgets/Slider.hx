@@ -89,6 +89,56 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a slider from *valmin* to *valmax* in axes *ax*.
+		
+		additional kwargs are passed on to ``self.poly`` which is the
+		:class:`matplotlib.patches.Rectangle` which draws the slider
+		knob.  See the :class:`matplotlib.patches.Rectangle` documentation
+		valid property names (e.g., *facecolor*, *edgecolor*, *alpha*, ...)
+		
+		Parameters
+		----------
+		ax : Axes
+		    The Axes to put the slider in
+		
+		label : str
+		    Slider label
+		
+		valmin : float
+		    The minimum value of the slider
+		
+		valmax : float
+		    The maximum value of the slider
+		
+		valinit : float
+		    The slider initial position
+		
+		label : str
+		    The slider label
+		
+		valfmt : str
+		    Used to format the slider value, fprint format string
+		
+		closedmin : bool
+		    Indicate whether the slider interval is closed on the bottom
+		
+		closedmax : bool
+		    Indicate whether the slider interval is closed on the top
+		
+		slidermin : Slider or None
+		    Do not allow the current slider to have a value less than
+		    `slidermin`
+		
+		slidermax : Slider or None
+		    Do not allow the current slider to have a value greater than
+		    `slidermax`
+		
+		
+		dragging : bool
+		    if the slider can be dragged by the mouse
+	**/
+	public function new(ax:Dynamic, label:Dynamic, valmin:Dynamic, valmax:Dynamic, ?valinit:Dynamic, ?valfmt:Dynamic, ?closedmin:Dynamic, ?closedmax:Dynamic, ?slidermin:Dynamic, ?slidermax:Dynamic, ?dragging:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

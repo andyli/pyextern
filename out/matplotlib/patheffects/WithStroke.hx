@@ -45,6 +45,12 @@ package matplotlib.patheffects;
 	@:native("__init__")
 	public function ___init__(?offset:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		The path will be stroked with its gc updated with the given
+		keyword arguments, i.e., the keyword arguments should be valid
+		gc parameter values.
+	**/
+	public function new(?offset:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

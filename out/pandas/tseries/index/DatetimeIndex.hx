@@ -78,6 +78,10 @@ package pandas.tseries.index;
 	**/
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	public function __inv__(?other:Dynamic):Dynamic;
 	public function __isub__(other:Dynamic):Dynamic;
 	/**

@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(size:Dynamic, bracket:Dynamic, ?alignment:Dynamic):Dynamic;
 	/**
+		Set the size and symbol for the bracket.
+	**/
+	public function new(size:Dynamic, bracket:Dynamic, ?alignment:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

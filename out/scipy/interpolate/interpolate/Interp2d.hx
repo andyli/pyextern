@@ -68,6 +68,10 @@ package scipy.interpolate.interpolate;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, z:Dynamic, ?kind:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(x:Dynamic, y:Dynamic, z:Dynamic, ?kind:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

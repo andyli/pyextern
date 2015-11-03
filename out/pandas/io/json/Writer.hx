@@ -43,6 +43,10 @@ package pandas.io.json;
 	@:native("__init__")
 	public function ___init__(obj:Dynamic, orient:Dynamic, date_format:Dynamic, double_precision:Dynamic, ensure_ascii:Dynamic, date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(obj:Dynamic, orient:Dynamic, date_format:Dynamic, double_precision:Dynamic, ensure_ascii:Dynamic, date_unit:Dynamic, ?default_handler:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

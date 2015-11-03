@@ -46,6 +46,13 @@ package matplotlib.lines;
 	@:native("__init__")
 	public function ___init__(line:Dynamic):Dynamic;
 	/**
+		Initialize the class with a :class:`matplotlib.lines.Line2D`
+		instance.  The line should already be added to some
+		:class:`matplotlib.axes.Axes` instance and should have the
+		picker property set.
+	**/
+	public function new(line:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

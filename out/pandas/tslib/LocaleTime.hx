@@ -65,6 +65,26 @@ package pandas.tslib;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		Set all attributes.
+		
+		Order of methods called matters for dependency reasons.
+		
+		The locale language is set at the offset and then checked again before
+		exiting.  This is to make sure that the attributes were not set with a
+		mix of information from more than one locale.  This would most likely
+		happen when using threads where one thread calls a locale-dependent
+		function while another thread changes the locale while the function in
+		the other thread is still running.  Proper coding would call for
+		locks to prevent changing the locale while locale-dependent code is
+		running.  The check here is done in case someone does not think about
+		doing this.
+		
+		Only other possible issue is if someone changed the timezone and did
+		not call tz.tzset .  That is an issue for the programmer, though,
+		since changing the timezone is worthless without that call.
+	**/
+	public function new():Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

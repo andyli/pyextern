@@ -62,6 +62,29 @@ package scipy.io.matlab.mio4;
 	@:native("__init__")
 	public function ___init__(mat_stream:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize matlab 4 file reader
+		
+		mat_stream : file-like
+		   Object with file API, open for reading.
+		byte_order : str or None, optional
+		   None by default, implying byte order guessed from mat
+		   file. Otherwise can be one of ('native', '=', 'little', '<',
+		   'BIG', '>').
+		mat_dtype : bool, optional
+		   If True, return arrays in same dtype as would be loaded into
+		   MATLAB (instead of the dtype with which they are saved).
+		squeeze_me : bool, optional
+		   Whether to squeeze unit matrix dimensions or not.
+		chars_as_strings : bool, optional
+		   Whether to convert char arrays to string arrays.
+		matlab_compatible : bool, optional
+		   Returns matrices as would be loaded by MATLAB (implies
+		   squeeze_me=False, chars_as_strings=False, mat_dtype=True,
+		   struct_as_record=True).
+		    
+	**/
+	public function new(mat_stream:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

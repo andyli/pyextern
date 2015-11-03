@@ -63,6 +63,30 @@ package matplotlib.animation;
 	@:native("__init__")
 	public function ___init__(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Dynamic;
 	/**
+		Construct a new MovieWriter object.
+		
+		fps: int
+		    Framerate for movie.
+		codec: string or None, optional
+		    The codec to use. If None (the default) the setting in the
+		    rcParam `animation.codec` is used.
+		bitrate: int or None, optional
+		    The bitrate for the saved movie file, which is one way to control
+		    the output file size and quality. The default value is None,
+		    which uses the value stored in the rcParam `animation.bitrate`.
+		    A value of -1 implies that the bitrate should be determined
+		    automatically by the underlying utility.
+		extra_args: list of strings or None
+		    A list of extra string arguments to be passed to the underlying
+		    movie utiltiy. The default is None, which passes the additional
+		    argurments in the 'animation.extra_args' rcParam.
+		metadata: dict of string:string or None
+		    A dictionary of keys and values for metadata to include in the
+		    output file. Some keys that may be of use include:
+		    title, artist, genre, subject, copyright, srcform, comment.
+	**/
+	public function new(?fps:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

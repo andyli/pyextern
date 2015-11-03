@@ -47,6 +47,10 @@ package numpy.lib.utils;
 	@:native("__init__")
 	public function ___init__(?old_name:Dynamic, ?new_name:Dynamic, ?message:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?old_name:Dynamic, ?new_name:Dynamic, ?message:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

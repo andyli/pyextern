@@ -48,6 +48,11 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		maximum(a, b) or maximum(a)
+		In one argument case returns the scalar maximum.
+	**/
+	public function new():Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

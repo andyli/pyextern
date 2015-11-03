@@ -60,6 +60,22 @@ package docutils.utils;
 	@:native("__init__")
 	public function ___init__(source:Dynamic, report_level:Dynamic, halt_level:Dynamic, ?stream:Dynamic, ?debug:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic):Dynamic;
 	/**
+		:Parameters:
+		    - `source`: The path to or description of the source data.
+		    - `report_level`: The level at or above which warning output will
+		      be sent to `stream`.
+		    - `halt_level`: The level at or above which `SystemMessage`
+		      exceptions will be raised, halting execution.
+		    - `debug`: Show debug (level=0) system messages?
+		    - `stream`: Where warning output is sent.  Can be file-like (has a
+		      ``.write`` method), a string (file name, opened for writing),
+		      '' (empty string) or `False` (for discarding all stream messages)
+		      or `None` (implies `sys.stderr`; default).
+		    - `encoding`: The output encoding.
+		    - `error_handler`: The error handler for stderr output encoding.
+	**/
+	public function new(source:Dynamic, report_level:Dynamic, halt_level:Dynamic, ?stream:Dynamic, ?debug:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -49,6 +49,16 @@ package docutils.parsers.rst.states;
 	@:native("__init__")
 	public function ___init__(state_classes:Dynamic, initial_state:Dynamic, ?debug:Dynamic):Dynamic;
 	/**
+		Initialize a `StateMachine` object; add state objects.
+		
+		Parameters:
+		
+		- `state_classes`: a list of `State` (sub)classes.
+		- `initial_state`: a string, the class name of the initial state.
+		- `debug`: a boolean; produce verbose output if true (nonzero).
+	**/
+	public function new(state_classes:Dynamic, initial_state:Dynamic, ?debug:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

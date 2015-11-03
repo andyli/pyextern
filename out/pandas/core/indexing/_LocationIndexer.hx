@@ -47,6 +47,10 @@ package pandas.core.indexing;
 	**/
 	@:native("__init__")
 	public function ___init__(obj:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(obj:Dynamic, name:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

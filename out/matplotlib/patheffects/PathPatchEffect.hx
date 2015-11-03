@@ -51,6 +51,18 @@ package matplotlib.patheffects;
 	@:native("__init__")
 	public function ___init__(?offset:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Parameters
+		----------
+		offset : pair of floats
+		    The offset to apply to the path, in points.
+		**kwargs :
+		    All keyword arguments are passed through to the
+		    :class:`~matplotlib.patches.PathPatch` constructor. The
+		    properties which cannot be overridden are "path", "clip_box"
+		    "transform" and "clip_path".
+	**/
+	public function new(?offset:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

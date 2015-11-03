@@ -55,6 +55,21 @@ package matplotlib.backends.backend_pdf;
 	@:native("__init__")
 	public function ___init__(filename:Dynamic, ?keep_empty:Dynamic):Dynamic;
 	/**
+		Create a new PdfPages object.
+		
+		Parameters
+		----------
+		
+		filename: str
+		    Plots using :meth:`PdfPages.savefig` will be written to a file at
+		    this location. The file is opened at once and any older file with
+		    the same name is overwritten.
+		keep_empty: bool, optional
+		    If set to False, then empty pdf files will be deleted automatically
+		    when closed.
+	**/
+	public function new(filename:Dynamic, ?keep_empty:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

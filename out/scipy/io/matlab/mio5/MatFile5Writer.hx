@@ -60,6 +60,27 @@ package scipy.io.matlab.mio5;
 	@:native("__init__")
 	public function ___init__(file_stream:Dynamic, ?do_compression:Dynamic, ?unicode_strings:Dynamic, ?global_vars:Dynamic, ?long_field_names:Dynamic, ?oned_as:Dynamic):Dynamic;
 	/**
+		Initialize writer for matlab 5 format files
+		
+		Parameters
+		----------
+		do_compression : bool, optional
+		   Whether to compress matrices on write. Default is False.
+		unicode_strings : bool, optional
+		   If True, write strings as Unicode, else MATLAB usual encoding.
+		global_vars : None or sequence of strings, optional
+		    Names of variables to be marked as global for matlab
+		long_field_names : bool, optional
+		   * False - maximum field name length in a structure is 31 characters
+		     which is the documented maximum length. This is the default.
+		   * True - maximum field name length in a structure is 63 characters
+		     which works for MATLAB 7.6
+		oned_as : {'row', 'column'}, optional
+		   If 'column', write 1-D numpy arrays as column vectors.
+		   If 'row', write 1D numpy arrays as row vectors.
+	**/
+	public function new(file_stream:Dynamic, ?do_compression:Dynamic, ?unicode_strings:Dynamic, ?global_vars:Dynamic, ?long_field_names:Dynamic, ?oned_as:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

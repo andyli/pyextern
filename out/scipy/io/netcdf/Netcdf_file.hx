@@ -49,6 +49,10 @@ package scipy.io.netcdf;
 	@:native("__init__")
 	public function ___init__(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic):Dynamic;
 	/**
+		Initialize netcdf_file from fileobj (str or file-like).
+	**/
+	public function new(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

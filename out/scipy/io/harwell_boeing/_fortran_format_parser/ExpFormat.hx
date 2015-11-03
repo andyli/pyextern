@@ -46,6 +46,13 @@ package scipy.io.harwell_boeing._fortran_format_parser;
 	@:native("__init__")
 	public function ___init__(width:Dynamic, significand:Dynamic, ?min:Dynamic, ?repeat:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		width : int
+		    number of characters taken by the string (includes space).
+	**/
+	public function new(width:Dynamic, significand:Dynamic, ?min:Dynamic, ?repeat:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

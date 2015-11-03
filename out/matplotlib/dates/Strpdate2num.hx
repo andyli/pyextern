@@ -48,6 +48,10 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(fmt:Dynamic):Dynamic;
 	/**
+		fmt: any valid strptime format is supported 
+	**/
+	public function new(fmt:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

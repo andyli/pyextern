@@ -51,6 +51,10 @@ package docutils.utils;
 	@:native("__init__")
 	public function ___init__(system_message:Dynamic, level:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(system_message:Dynamic, level:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

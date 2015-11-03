@@ -47,6 +47,10 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__(funcname:Dynamic, ?params:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(funcname:Dynamic, ?params:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

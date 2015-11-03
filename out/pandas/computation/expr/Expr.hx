@@ -54,6 +54,10 @@ package pandas.computation.expr;
 	@:native("__init__")
 	public function ___init__(expr:Dynamic, ?engine:Dynamic, ?parser:Dynamic, ?env:Dynamic, ?truediv:Dynamic, ?level:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(expr:Dynamic, ?engine:Dynamic, ?parser:Dynamic, ?env:Dynamic, ?truediv:Dynamic, ?level:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

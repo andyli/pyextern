@@ -68,6 +68,34 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(?pad:Dynamic, ?sep:Dynamic, ?width:Dynamic, ?height:Dynamic, ?align:Dynamic, ?mode:Dynamic, ?children:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		pad : float, optional
+		    Boundary pad.
+		
+		sep : float, optional
+		    Spacing between items.
+		
+		width : float, optional
+		
+		height : float, optional
+		   Width and height of the container box, calculated if
+		   `None`.
+		
+		align : str
+		   Alignment of boxes.
+		
+		mode : str
+		   Packing mode.
+		
+		Notes
+		-----
+		*pad* and *sep* need to given in points and will be scale with
+		the renderer dpi, while *width* and *height* need to be in
+		pixels.
+	**/
+	public function new(?pad:Dynamic, ?sep:Dynamic, ?width:Dynamic, ?height:Dynamic, ?align:Dynamic, ?mode:Dynamic, ?children:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

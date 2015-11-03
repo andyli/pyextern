@@ -77,6 +77,43 @@ package matplotlib.patches;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Draws an arrow, starting at (*x*, *y*), direction and length
+		given by (*dx*, *dy*) the width of the arrow is scaled by *width*.
+		
+		Valid kwargs are:
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or aa: [True | False]  or None for default         
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  capstyle: ['butt' | 'round' | 'projecting']         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  color: matplotlib color spec
+		  contains: a callable function         
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  fill: [True | False]         
+		  gid: an id string         
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
+		  joinstyle: ['miter' | 'round' | 'bevel']         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw: float or None for default         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  visible: [True | False]         
+		  zorder: any number         
+	**/
+	public function new(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

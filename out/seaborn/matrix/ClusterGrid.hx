@@ -43,6 +43,10 @@ package seaborn.matrix;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?pivot_kws:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic):Dynamic;
 	/**
+		Grid object for organizing clustered heatmap input on to axes
+	**/
+	public function new(data:Dynamic, ?pivot_kws:Dynamic, ?z_score:Dynamic, ?standard_scale:Dynamic, ?figsize:Dynamic, ?row_colors:Dynamic, ?col_colors:Dynamic, ?mask:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

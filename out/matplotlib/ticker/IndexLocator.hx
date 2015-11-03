@@ -48,6 +48,10 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(base:Dynamic, offset:Dynamic):Dynamic;
 	/**
+		place ticks on the i-th data points where (i-offset)%base==0
+	**/
+	public function new(base:Dynamic, offset:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

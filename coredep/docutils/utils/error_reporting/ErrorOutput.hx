@@ -49,6 +49,16 @@ package docutils.utils.error_reporting;
 	@:native("__init__")
 	public function ___init__(?stream:Dynamic, ?encoding:Dynamic, ?encoding_errors:Dynamic, ?decoding_errors:Dynamic):Dynamic;
 	/**
+		:Parameters:
+		    - `stream`: a file-like object,
+		                a string (path to a file),
+		                `None` (write to `sys.stderr`, default), or
+		                evaluating to `False` (write() requests are ignored).
+		    - `encoding`: `stream` text encoding. Guessed if None.
+		    - `encoding_errors`: how to treat encoding errors.
+	**/
+	public function new(?stream:Dynamic, ?encoding:Dynamic, ?encoding_errors:Dynamic, ?decoding_errors:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

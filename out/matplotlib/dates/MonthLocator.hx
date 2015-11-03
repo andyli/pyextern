@@ -52,6 +52,14 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?bymonth:Dynamic, ?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Mark every month in *bymonth*; *bymonth* can be an int or
+		sequence.  Default is ``range(1,13)``, i.e. every month.
+		
+		*interval* is the interval between each iteration.  For
+		example, if ``interval=2``, mark every second occurance.
+	**/
+	public function new(?bymonth:Dynamic, ?bymonthday:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

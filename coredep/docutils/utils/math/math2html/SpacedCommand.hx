@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__():Dynamic;
 	/**
+		The formula bit type can be 'alpha', 'number', 'font'.
+	**/
+	public function new():Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

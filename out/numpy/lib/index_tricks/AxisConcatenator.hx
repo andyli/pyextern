@@ -45,6 +45,10 @@ package numpy.lib.index_tricks;
 	@:native("__init__")
 	public function ___init__(?axis:Dynamic, ?matrix:Dynamic, ?ndmin:Dynamic, ?trans1d:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?axis:Dynamic, ?matrix:Dynamic, ?ndmin:Dynamic, ?trans1d:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

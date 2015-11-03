@@ -46,6 +46,12 @@ package matplotlib.dviread;
 	@:native("__init__")
 	public function ___init__(filename:Dynamic):Dynamic;
 	/**
+		Initialize the object. This takes the filename as input and
+		opens the file; actually reading the file happens when
+		iterating through the pages of the file.
+	**/
+	public function new(filename:Dynamic):Void;
+	/**
 		Iterate through the pages of the file.
 		
 		Returns (text, boxes) pairs, where:

@@ -52,6 +52,14 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?byhour:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		Mark every hour in *byhour*; *byhour* can be an int or sequence.
+		Default is to tick every hour: ``byhour=range(24)``
+		
+		*interval* is the interval between each iteration.  For
+		example, if ``interval=2``, mark every second occurrence.
+	**/
+	public function new(?byhour:Dynamic, ?interval:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -48,6 +48,10 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(transform:Dynamic, ?subs:Dynamic):Dynamic;
 	/**
+		place ticks on the location= base**i*subs[j]
+	**/
+	public function new(transform:Dynamic, ?subs:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

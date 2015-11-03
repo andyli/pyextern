@@ -48,6 +48,11 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(t:Dynamic, fmt:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		*t* is a sequence of dates (floating point days).  *fmt* is a
+		:func:`strftime` format string.
+	**/
+	public function new(t:Dynamic, fmt:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -56,6 +56,11 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(boxin:Dynamic, boxout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a new :class:`BboxTransform` that linearly transforms
+		points from *boxin* to *boxout*.
+	**/
+	public function new(boxin:Dynamic, boxout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

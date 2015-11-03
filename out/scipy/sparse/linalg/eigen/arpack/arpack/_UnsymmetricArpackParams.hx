@@ -43,6 +43,10 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 	@:native("__init__")
 	public function ___init__(n:Dynamic, k:Dynamic, tp:Dynamic, matvec:Dynamic, ?mode:Dynamic, ?M_matvec:Dynamic, ?Minv_matvec:Dynamic, ?sigma:Dynamic, ?ncv:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?which:Dynamic, ?tol:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(n:Dynamic, k:Dynamic, tp:Dynamic, matvec:Dynamic, ?mode:Dynamic, ?M_matvec:Dynamic, ?Minv_matvec:Dynamic, ?sigma:Dynamic, ?ncv:Dynamic, ?v0:Dynamic, ?maxiter:Dynamic, ?which:Dynamic, ?tol:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

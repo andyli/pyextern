@@ -47,6 +47,10 @@ package pandas.core.nanops;
 	@:native("__init__")
 	public function ___init__(?dtypes:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?dtypes:python.VarArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

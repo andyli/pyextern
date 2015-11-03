@@ -117,6 +117,84 @@ package matplotlib.sankey;
 	@:native("__init__")
 	public function ___init__(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a new Sankey instance.
+		
+		Optional keyword arguments:
+		
+		  ===============   ===================================================
+		  Field             Description
+		  ===============   ===================================================
+		  *ax*              axes onto which the data should be plotted
+		                    If *ax* isn't provided, new axes will be created.
+		  *scale*           scaling factor for the flows
+		                    *scale* sizes the width of the paths in order to
+		                    maintain proper layout.  The same scale is applied
+		                    to all subdiagrams.  The value should be chosen
+		                    such that the product of the scale and the sum of
+		                    the inputs is approximately 1.0 (and the product of
+		                    the scale and the sum of the outputs is
+		                    approximately -1.0).
+		  *unit*            string representing the physical unit associated
+		                    with the flow quantities
+		                    If *unit* is None, then none of the quantities are
+		                    labeled.
+		  *format*          a Python number formatting string to be used in
+		                    labeling the flow as a quantity (i.e., a number
+		                    times a unit, where the unit is given)
+		  *gap*             space between paths that break in/break away
+		                    to/from the top or bottom
+		  *radius*          inner radius of the vertical paths
+		  *shoulder*        size of the shoulders of output arrowS
+		  *offset*          text offset (from the dip or tip of the arrow)
+		  *head_angle*      angle of the arrow heads (and negative of the angle
+		                    of the tails) [deg]
+		  *margin*          minimum space between Sankey outlines and the edge
+		                    of the plot area
+		  *tolerance*       acceptable maximum of the magnitude of the sum of
+		                    flows
+		                    The magnitude of the sum of connected flows cannot
+		                    be greater than *tolerance*.
+		  ===============   ===================================================
+		
+		The optional arguments listed above are applied to all subdiagrams so
+		that there is consistent alignment and formatting.
+		
+		If :class:`Sankey` is instantiated with any keyword arguments other
+		than those explicitly listed above (``**kwargs``), they will be passed
+		to :meth:`add`, which will create the first subdiagram.
+		
+		In order to draw a complex Sankey diagram, create an instance of
+		:class:`Sankey` by calling it without any kwargs::
+		
+		    sankey = Sankey()
+		
+		Then add simple Sankey sub-diagrams::
+		
+		    sankey.add() # 1
+		    sankey.add() # 2
+		    #...
+		    sankey.add() # n
+		
+		Finally, create the full diagram::
+		
+		    sankey.finish()
+		
+		Or, instead, simply daisy-chain those calls::
+		
+		    Sankey().add().add...  .add().finish()
+		
+		.. seealso::
+		
+		    :meth:`add`
+		    :meth:`finish`
+		
+		
+		**Examples:**
+		
+		    .. plot:: mpl_examples/api/sankey_demo_basics.py
+	**/
+	public function new(?ax:Dynamic, ?scale:Dynamic, ?unit:Dynamic, ?format:Dynamic, ?gap:Dynamic, ?radius:Dynamic, ?shoulder:Dynamic, ?offset:Dynamic, ?head_angle:Dynamic, ?margin:Dynamic, ?tolerance:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

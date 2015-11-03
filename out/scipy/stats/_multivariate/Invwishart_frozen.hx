@@ -56,6 +56,23 @@ package scipy.stats._multivariate;
 	@:native("__init__")
 	public function ___init__(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
+		Create a frozen inverse Wishart distribution.
+		
+		Parameters
+		----------
+		df : array_like
+		    Degrees of freedom of the distribution
+		scale : array_like
+		    Scale matrix of the distribution
+		seed : None or int or np.random.RandomState instance, optional
+		    This parameter defines the RandomState object to use for drawing
+		    random variates.
+		    If None (or np.random), the global np.random state is used.
+		    If integer, it is used to seed the local RandomState instance
+		    Default is None.
+	**/
+	public function new(df:Dynamic, scale:Dynamic, ?seed:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

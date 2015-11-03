@@ -48,6 +48,15 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(?data:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize layer object.
+		
+		Parameters:
+		-----------
+		data: pandas DataFrame instance
+		aes: aesthetics dictionary with bindings
+	**/
+	public function new(?data:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

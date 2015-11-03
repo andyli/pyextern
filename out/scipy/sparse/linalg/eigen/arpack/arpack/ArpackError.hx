@@ -51,6 +51,10 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 	@:native("__init__")
 	public function ___init__(info:Dynamic, ?infodict:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(info:Dynamic, ?infodict:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

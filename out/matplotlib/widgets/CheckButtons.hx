@@ -50,6 +50,17 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, labels:Dynamic, actives:Dynamic):Dynamic;
 	/**
+		Add check buttons to :class:`matplotlib.axes.Axes` instance *ax*
+		
+		*labels*
+		    A len(buttons) list of labels as strings
+		
+		*actives*
+		    A len(buttons) list of booleans indicating whether
+		     the button is active
+	**/
+	public function new(ax:Dynamic, labels:Dynamic, actives:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

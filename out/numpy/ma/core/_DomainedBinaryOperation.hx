@@ -48,6 +48,11 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__(dbfunc:Dynamic, domain:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Dynamic;
 	/**
+		abfunc(fillx, filly) must be defined.
+		abfunc(x, filly) = x for all x to enable reduce.
+	**/
+	public function new(dbfunc:Dynamic, domain:Dynamic, ?fillx:Dynamic, ?filly:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

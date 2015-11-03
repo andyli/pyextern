@@ -47,6 +47,10 @@ package scipy.signal.ltisys;
 	@:native("__init__")
 	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
 	/**
+		Initialize the state space LTI system.
+	**/
+	public function new(?system:python.VarArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

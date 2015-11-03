@@ -43,6 +43,10 @@ package numpy.core.records;
 	@:native("__init__")
 	public function ___init__(formats:Dynamic, names:Dynamic, titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(formats:Dynamic, names:Dynamic, titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

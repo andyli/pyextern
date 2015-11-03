@@ -52,6 +52,10 @@ package pandas.core.common;
 	@:native("__init__")
 	public function ___init__(seq:Dynamic, ?key:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(seq:Dynamic, ?key:Dynamic):Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

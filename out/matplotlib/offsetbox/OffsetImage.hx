@@ -44,6 +44,10 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(arr:Dynamic, ?zoom:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(arr:Dynamic, ?zoom:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?interpolation:Dynamic, ?origin:Dynamic, ?filternorm:Dynamic, ?filterrad:Dynamic, ?resample:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

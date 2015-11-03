@@ -62,6 +62,16 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(column:Dynamic, colour1:Dynamic, colour2:Dynamic):Dynamic;
 	/**
+		Initialize ScaleGradient instance.
+		
+		Parameters:
+		-----------
+		column: string, pandas DataFrame column name
+		colour1: tuple, 3 element tuple with float values representing an RGB colour
+		colour2: tuple, 3 element tuple with float values representing an RGB colour
+	**/
+	public function new(column:Dynamic, colour1:Dynamic, colour2:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

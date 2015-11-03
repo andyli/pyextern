@@ -51,6 +51,10 @@ package numpy.lib.arrayterator;
 	**/
 	@:native("__init__")
 	public function ___init__(_var:Dynamic, ?buf_size:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(_var:Dynamic, ?buf_size:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

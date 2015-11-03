@@ -50,6 +50,12 @@ package matplotlib.gridspec;
 	@:native("__init__")
 	public function ___init__(nrows:Dynamic, ncols:Dynamic, ?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?width_ratios:Dynamic, ?height_ratios:Dynamic):Dynamic;
 	/**
+		The number of rows and number of columns of the
+		grid need to be set. Optionally, the subplot layout parameters
+		(e.g., left, right, etc.) can be tuned.
+	**/
+	public function new(nrows:Dynamic, ncols:Dynamic, ?left:Dynamic, ?bottom:Dynamic, ?right:Dynamic, ?top:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?width_ratios:Dynamic, ?height_ratios:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

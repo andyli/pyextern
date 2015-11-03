@@ -43,6 +43,10 @@ package scipy.integrate._ode;
 	@:native("__init__")
 	public function ___init__(f:Dynamic, ?jac:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(f:Dynamic, ?jac:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -49,6 +49,10 @@ package pandas.io.stata;
 	@:native("__init__")
 	public function ___init__(value:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(value:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

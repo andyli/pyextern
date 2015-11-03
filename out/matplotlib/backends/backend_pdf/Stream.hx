@@ -46,6 +46,14 @@ package matplotlib.backends.backend_pdf;
 	@:native("__init__")
 	public function ___init__(id:Dynamic, len:Dynamic, file:Dynamic, ?extra:Dynamic, ?png:Dynamic):Dynamic;
 	/**
+		id: object id of stream; len: an unused Reference object for the
+		length of the stream, or None (to use a memory buffer); file:
+		a PdfFile; extra: a dictionary of extra key-value pairs to
+		include in the stream header; png: if the data is already
+		png compressed, the decode parameters
+	**/
+	public function new(id:Dynamic, len:Dynamic, file:Dynamic, ?extra:Dynamic, ?png:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

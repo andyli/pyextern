@@ -43,6 +43,10 @@ package pandas.core.format;
 	@:native("__init__")
 	public function ___init__(values:Dynamic, ?nat_rep:Dynamic, ?box:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(values:Dynamic, ?nat_rep:Dynamic, ?box:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

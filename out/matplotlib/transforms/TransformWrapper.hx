@@ -56,6 +56,11 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(child:Dynamic):Dynamic;
 	/**
+		*child*: A class:`Transform` instance.  This child may later
+		be replaced with :meth:`set`.
+	**/
+	public function new(child:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

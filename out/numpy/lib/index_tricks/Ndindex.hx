@@ -42,6 +42,10 @@ package numpy.lib.index_tricks;
 	**/
 	@:native("__init__")
 	public function ___init__(?shape:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?shape:python.VarArgs<Dynamic>):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

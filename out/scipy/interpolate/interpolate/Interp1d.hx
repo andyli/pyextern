@@ -58,6 +58,10 @@ package scipy.interpolate.interpolate;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, ?kind:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic, ?assume_sorted:Dynamic):Dynamic;
 	/**
+		Initialize a 1D linear interpolation class.
+	**/
+	public function new(x:Dynamic, y:Dynamic, ?kind:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?bounds_error:Dynamic, ?fill_value:Dynamic, ?assume_sorted:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -51,6 +51,18 @@ package scipy.io.harwell_boeing.hb;
 	@:native("__init__")
 	public function ___init__(file:Dynamic, ?hb_info:Dynamic):Dynamic;
 	/**
+		Create a HBFile instance.
+		
+		Parameters
+		----------
+		file : file-object
+		    StringIO work as well
+		hb_info : HBInfo, optional
+		    Should be given as an argument for writing, in which case the file
+		    should be writable.
+	**/
+	public function new(file:Dynamic, ?hb_info:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

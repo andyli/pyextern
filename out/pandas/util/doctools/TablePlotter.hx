@@ -43,6 +43,10 @@ package pandas.util.doctools;
 	@:native("__init__")
 	public function ___init__(?cell_width:Dynamic, ?cell_height:Dynamic, ?font_size:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?cell_width:Dynamic, ?cell_height:Dynamic, ?font_size:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -48,6 +48,10 @@ package numpy.lib.function_base;
 	@:native("__init__")
 	public function ___init__(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(pyfunc:Dynamic, ?otypes:Dynamic, ?doc:Dynamic, ?excluded:Dynamic, ?cache:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

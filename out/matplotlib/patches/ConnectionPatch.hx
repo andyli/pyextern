@@ -88,6 +88,54 @@ package matplotlib.patches;
 	@:native("__init__")
 	public function ___init__(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Connect point *xyA* in *coordsA* with point *xyB* in *coordsB*
+		
+		
+		Valid keys are
+		
+		
+		===============  ======================================================
+		Key              Description
+		===============  ======================================================
+		arrowstyle       the arrow style
+		connectionstyle  the connection style
+		relpos           default is (0.5, 0.5)
+		patchA           default is bounding box of the text
+		patchB           default is None
+		shrinkA          default is 2 points
+		shrinkB          default is 2 points
+		mutation_scale   default is text size (in points)
+		mutation_aspect  default is 1.
+		?                any key for :class:`matplotlib.patches.PathPatch`
+		===============  ======================================================
+		
+		
+		*coordsA* and *coordsB* are strings that indicate the
+		coordinates of *xyA* and *xyB*.
+		
+		=================   ===================================================
+		Property            Description
+		=================   ===================================================
+		'figure points'     points from the lower left corner of the figure
+		'figure pixels'     pixels from the lower left corner of the figure
+		'figure fraction'   0,0 is lower left of figure and 1,1 is upper, right
+		'axes points'       points from lower left corner of axes
+		'axes pixels'       pixels from lower left corner of axes
+		'axes fraction'     0,1 is lower left of axes and 1,1 is upper right
+		'data'              use the coordinate system of the object being
+		                    annotated (default)
+		'offset points'     Specify an offset (in points) from the *xy* value
+		
+		'polar'             you can specify *theta*, *r* for the annotation,
+		                    even in cartesian plots.  Note that if you
+		                    are using a polar axes, you do not need
+		                    to specify polar for the coordinate
+		                    system since that is the native "data" coordinate
+		                    system.
+		=================   ===================================================
+	**/
+	public function new(xyA:Dynamic, xyB:Dynamic, coordsA:Dynamic, ?coordsB:Dynamic, ?axesA:Dynamic, ?axesB:Dynamic, ?arrowstyle:Dynamic, ?arrow_transmuter:Dynamic, ?connectionstyle:Dynamic, ?connector:Dynamic, ?patchA:Dynamic, ?patchB:Dynamic, ?shrinkA:Dynamic, ?shrinkB:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?clip_on:Dynamic, ?dpi_cor:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

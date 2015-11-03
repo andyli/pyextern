@@ -54,6 +54,10 @@ package pandas.core.categorical;
 	@:native("__init__")
 	public function ___init__(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?levels:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?levels:Dynamic):Void;
+	/**
 		Returns an Iterator over the values of this Categorical.
 	**/
 	public function __iter__():Dynamic;

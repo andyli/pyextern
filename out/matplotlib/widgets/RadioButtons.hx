@@ -52,6 +52,19 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Dynamic;
 	/**
+		Add radio buttons to :class:`matplotlib.axes.Axes` instance *ax*
+		
+		*labels*
+		    A len(buttons) list of labels as strings
+		
+		*active*
+		    The index into labels for the button that is active
+		
+		*activecolor*
+		    The color of the button when clicked
+	**/
+	public function new(ax:Dynamic, labels:Dynamic, ?active:Dynamic, ?activecolor:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package numpy.core.getlimits;
 	@:native("__init__")
 	public function ___init__(int_type:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(int_type:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

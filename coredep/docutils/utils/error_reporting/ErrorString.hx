@@ -43,6 +43,10 @@ package docutils.utils.error_reporting;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?encoding:Dynamic, ?encoding_errors:Dynamic, ?decoding_errors:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, ?encoding:Dynamic, ?encoding_errors:Dynamic, ?decoding_errors:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package scipy.integrate.quadpack;
 	@:native("__init__")
 	public function ___init__(func:Dynamic, ranges:Dynamic, opts:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(func:Dynamic, ranges:Dynamic, opts:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

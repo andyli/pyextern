@@ -43,6 +43,10 @@ package scipy.io.matlab.mio4;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, dtype:Dynamic, mclass:Dynamic, dims:Dynamic, is_complex:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic, dtype:Dynamic, mclass:Dynamic, dims:Dynamic, is_complex:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

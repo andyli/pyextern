@@ -73,6 +73,13 @@ package scipy.linalg._matfuncs_inv_ssq;
 	@:native("__init__")
 	public function ___init__(A:Dynamic, p:Dynamic):Dynamic;
 	/**
+		Initialize this LinearOperator.
+		
+		To be called by subclasses. ``dtype`` may be None; ``shape`` should
+		be convertible to a length-2 tuple.
+	**/
+	public function new(A:Dynamic, p:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -45,6 +45,12 @@ package docutils.core;
 	@:native("__init__")
 	public function ___init__(?reader:Dynamic, ?parser:Dynamic, ?writer:Dynamic, ?source:Dynamic, ?source_class:Dynamic, ?destination:Dynamic, ?destination_class:Dynamic, ?settings:Dynamic):Dynamic;
 	/**
+		Initial setup.  If any of `reader`, `parser`, or `writer` are not
+		specified, the corresponding ``set_...`` method should be called with
+		a component name (`set_reader` sets the parser as well).
+	**/
+	public function new(?reader:Dynamic, ?parser:Dynamic, ?writer:Dynamic, ?source:Dynamic, ?source_class:Dynamic, ?destination:Dynamic, ?destination_class:Dynamic, ?settings:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

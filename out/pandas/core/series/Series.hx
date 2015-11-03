@@ -100,6 +100,10 @@ package pandas.core.series;
 	**/
 	@:native("__init__")
 	public function ___init__(?data:Dynamic, ?index:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?data:Dynamic, ?index:Dynamic, ?dtype:Dynamic, ?name:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic):Void;
 	public function __int__():Dynamic;
 	public function __invert__():Dynamic;
 	public function __ipow__(other:Dynamic):Dynamic;

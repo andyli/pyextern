@@ -45,6 +45,12 @@ package docutils.utils;
 	@:native("__init__")
 	public function ___init__(?output_file:Dynamic, ?dependencies:Dynamic):Dynamic;
 	/**
+		Initialize the dependency list, automatically setting the
+		output file to `output_file` (see `set_output()`) and adding
+		all supplied dependencies.
+	**/
+	public function new(?output_file:Dynamic, ?dependencies:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

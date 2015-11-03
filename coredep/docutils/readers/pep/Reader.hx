@@ -43,6 +43,10 @@ package docutils.readers.pep;
 	@:native("__init__")
 	public function ___init__(?parser:Dynamic, ?parser_name:Dynamic):Dynamic;
 	/**
+		`parser` should be ``None``.
+	**/
+	public function new(?parser:Dynamic, ?parser_name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

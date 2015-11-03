@@ -46,6 +46,10 @@ package scipy.spatial.kdtree;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?leafsize:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, ?leafsize:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

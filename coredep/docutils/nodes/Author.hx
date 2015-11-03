@@ -60,6 +60,10 @@ package docutils.nodes;
 	@:native("__init__")
 	public function ___init__(?rawsource:Dynamic, ?text:Dynamic, ?children:python.VarArgs<Dynamic>, ?attributes:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?rawsource:Dynamic, ?text:Dynamic, ?children:python.VarArgs<Dynamic>, ?attributes:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

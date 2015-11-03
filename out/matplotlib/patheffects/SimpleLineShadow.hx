@@ -59,6 +59,26 @@ package matplotlib.patheffects;
 	@:native("__init__")
 	public function ___init__(?offset:Dynamic, ?shadow_color:Dynamic, ?alpha:Dynamic, ?rho:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Parameters
+		----------
+		offset : pair of floats
+		    The offset to apply to the path, in points.
+		shadow_color : color
+		    The shadow color. Default is black.
+		    A value of ``None`` takes the original artist's color
+		    with a scale factor of `rho`.
+		alpha : float
+		    The alpha transparency of the created shadow patch.
+		    Default is 0.3.
+		rho : float
+		    A scale factor to apply to the rgbFace color if `shadow_rgbFace`
+		    is ``None``. Default is 0.3.
+		**kwargs
+		    Extra keywords are stored and passed through to
+		    :meth:`AbstractPathEffect._update_gc`.
+	**/
+	public function new(?offset:Dynamic, ?shadow_color:Dynamic, ?alpha:Dynamic, ?rho:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package numpy.core._internal;
 	@:native("__init__")
 	public function ___init__(array:Dynamic, ?ptr:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(array:Dynamic, ?ptr:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

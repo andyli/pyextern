@@ -45,6 +45,10 @@ package matplotlib;
 	@:native("__init__")
 	public function ___init__(?rc:Dynamic, ?fname:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?rc:Dynamic, ?fname:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

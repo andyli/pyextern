@@ -106,6 +106,72 @@ package matplotlib.patches;
 	@:native("__init__")
 	public function ___init__(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*xy* = lower left corner
+		
+		*width*, *height*
+		
+		*boxstyle* determines what kind of fancy box will be drawn. It
+		can be a string of the style name with a comma separated
+		attribute, or an instance of :class:`BoxStyle`. Following box
+		styles are available.
+		
+		
+		  ==========   ==============   ==========================
+		  Class        Name             Attrs                     
+		  ==========   ==============   ==========================
+		  Circle       ``circle``       pad=0.3                   
+		  DArrow       ``darrow``       pad=0.3                   
+		  LArrow       ``larrow``       pad=0.3                   
+		  RArrow       ``rarrow``       pad=0.3                   
+		  Round        ``round``        pad=0.3,rounding_size=None
+		  Round4       ``round4``       pad=0.3,rounding_size=None
+		  Roundtooth   ``roundtooth``   pad=0.3,tooth_size=None   
+		  Sawtooth     ``sawtooth``     pad=0.3,tooth_size=None   
+		  Square       ``square``       pad=0.3                   
+		  ==========   ==============   ==========================
+		
+		
+		*mutation_scale* : a value with which attributes of boxstyle
+		(e.g., pad) will be scaled. default=1.
+		
+		*mutation_aspect* : The height of the rectangle will be
+		squeezed by this value before the mutation and the mutated
+		box will be stretched by the inverse of it. default=None.
+		
+		Valid kwargs are:
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or aa: [True | False]  or None for default         
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  capstyle: ['butt' | 'round' | 'projecting']         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  color: matplotlib color spec
+		  contains: a callable function         
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  fill: [True | False]         
+		  gid: an id string         
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
+		  joinstyle: ['miter' | 'round' | 'bevel']         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw: float or None for default         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  visible: [True | False]         
+		  zorder: any number         
+	**/
+	public function new(xy:Dynamic, width:Dynamic, height:Dynamic, ?boxstyle:Dynamic, ?bbox_transmuter:Dynamic, ?mutation_scale:Dynamic, ?mutation_aspect:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

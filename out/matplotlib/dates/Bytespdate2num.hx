@@ -52,6 +52,12 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(fmt:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
+		Args:
+		    fmt: any valid strptime format is supported
+		    encoding: encoding to use on byte input (default: 'utf-8')
+	**/
+	public function new(fmt:Dynamic, ?encoding:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

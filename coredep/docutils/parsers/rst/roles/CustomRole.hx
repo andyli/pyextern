@@ -47,6 +47,10 @@ package docutils.parsers.rst.roles;
 	@:native("__init__")
 	public function ___init__(role_name:Dynamic, base_role:Dynamic, ?options:Dynamic, ?content:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(role_name:Dynamic, base_role:Dynamic, ?options:Dynamic, ?content:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

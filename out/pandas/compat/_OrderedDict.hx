@@ -66,6 +66,12 @@ package pandas.compat;
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize an ordered dictionary. Signature is the same as for
+		regular dictionaries, but keyword arguments are not recommended
+		because their insertion order is arbitrary.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Void;
+	/**
 		od.__iter__() <==> iter(od)
 	**/
 	public function __iter__():Dynamic;

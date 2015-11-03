@@ -47,6 +47,10 @@ package scipy.optimize._trustregion_dogleg;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, fun:Dynamic, jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(x:Dynamic, fun:Dynamic, jac:Dynamic, ?hess:Dynamic, ?hessp:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -54,6 +54,14 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(points:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*points*: a 2x2 numpy array of the form [[x0, y0], [x1, y1]]
+		
+		If you need to create a :class:`Bbox` object from another form
+		of data, consider the static methods :meth:`unit`,
+		:meth:`from_bounds` and :meth:`from_extents`.
+	**/
+	public function new(points:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

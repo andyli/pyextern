@@ -43,6 +43,10 @@ package scipy.optimize.nonlin;
 	@:native("__init__")
 	public function ___init__(?alpha:Dynamic, ?alphamax:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?alpha:Dynamic, ?alphamax:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

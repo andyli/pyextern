@@ -52,6 +52,19 @@ package scipy.sparse.linalg._expm_multiply;
 	@:native("__init__")
 	public function ___init__(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Dynamic;
 	/**
+		Provide the operator and some norm-related information.
+		
+		Parameters
+		----------
+		A : linear operator
+		    The operator of interest.
+		A_1_norm : float, optional
+		    The exact 1-norm of A.
+		ell : int, optional
+		    A technical parameter controlling norm estimation quality.
+	**/
+	public function new(A:Dynamic, ?A_1_norm:Dynamic, ?ell:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

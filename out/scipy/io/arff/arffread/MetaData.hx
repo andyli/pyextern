@@ -43,6 +43,10 @@ package scipy.io.arff.arffread;
 	**/
 	@:native("__init__")
 	public function ___init__(rel:Dynamic, attr:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(rel:Dynamic, attr:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

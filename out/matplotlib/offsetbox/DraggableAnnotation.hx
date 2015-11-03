@@ -43,6 +43,10 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(annotation:Dynamic, ?use_blit:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(annotation:Dynamic, ?use_blit:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

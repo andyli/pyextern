@@ -60,6 +60,15 @@ package matplotlib.projections.polar;
 	@:native("__init__")
 	public function ___init__(?axis:Dynamic, ?use_rmin:Dynamic):Dynamic;
 	/**
+		Creates a new :class:`TransformNode`.
+		
+		**shorthand_name** - a string representing the "name" of this
+		                     transform. The name carries no significance
+		                     other than to improve the readability of
+		                     ``str(transform)`` when DEBUG=True.
+	**/
+	public function new(?axis:Dynamic, ?use_rmin:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

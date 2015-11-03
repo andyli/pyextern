@@ -43,6 +43,10 @@ package matplotlib.backends.backend_macosx;
 	@:native("__init__")
 	public function ___init__(dpi:Dynamic, width:Dynamic, height:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(dpi:Dynamic, width:Dynamic, height:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

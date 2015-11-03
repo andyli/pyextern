@@ -43,6 +43,10 @@ package matplotlib.backend_bases;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, canvas:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic, canvas:Dynamic, ?guiEvent:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

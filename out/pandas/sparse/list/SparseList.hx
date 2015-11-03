@@ -51,6 +51,10 @@ package pandas.sparse.list;
 	@:native("__init__")
 	public function ___init__(?data:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?data:Dynamic, ?fill_value:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

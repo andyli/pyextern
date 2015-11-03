@@ -94,6 +94,60 @@ package matplotlib.legend;
 	@:native("__init__")
 	public function ___init__(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Dynamic;
 	/**
+		- *parent*: the artist that contains the legend
+		- *handles*: a list of artists (lines, patches) to be added to the
+		              legend
+		- *labels*: a list of strings to label the legend
+		
+		Optional keyword arguments:
+		
+		================   ====================================================
+		Keyword            Description
+		================   ====================================================
+		loc                a location code
+		prop               the font property
+		fontsize           the font size (used only if prop is not specified)
+		markerscale        the relative size of legend markers vs. original
+		markerfirst        If true, place legend marker to left of label
+		                   If false, place legend marker to right of label
+		numpoints          the number of points in the legend for line
+		scatterpoints      the number of points in the legend for scatter plot
+		scatteryoffsets    a list of yoffsets for scatter symbols in legend
+		frameon            if True, draw a frame around the legend.
+		                   If None, use rc
+		fancybox           if True, draw a frame with a round fancybox.
+		                   If None, use rc
+		shadow             if True, draw a shadow behind legend
+		framealpha         If not None, alpha channel for the frame.
+		ncol               number of columns
+		borderpad          the fractional whitespace inside the legend border
+		labelspacing       the vertical space between the legend entries
+		handlelength       the length of the legend handles
+		handleheight       the height of the legend handles
+		handletextpad      the pad between the legend handle and text
+		borderaxespad      the pad between the axes and legend border
+		columnspacing      the spacing between columns
+		title              the legend title
+		bbox_to_anchor     the bbox that the legend will be anchored.
+		bbox_transform     the transform for the bbox. transAxes if None.
+		================   ====================================================
+		
+		
+		The pad and spacing parameters are measured in font-size units.  e.g.,
+		a fontsize of 10 points and a handlelength=5 implies a handlelength of
+		50 points.  Values from rcParams will be used if None.
+		
+		Users can specify any arbitrary location for the legend using the
+		*bbox_to_anchor* keyword argument. bbox_to_anchor can be an instance
+		of BboxBase(or its derivatives) or a tuple of 2 or 4 floats.
+		See :meth:`set_bbox_to_anchor` for more detail.
+		
+		The legend location can be specified by setting *loc* with a tuple of
+		2 floats, which is interpreted as the lower-left corner of the legend
+		in the normalized axes coordinate.
+	**/
+	public function new(parent:Dynamic, handles:Dynamic, labels:Dynamic, ?loc:Dynamic, ?numpoints:Dynamic, ?markerscale:Dynamic, ?markerfirst:Dynamic, ?scatterpoints:Dynamic, ?scatteryoffsets:Dynamic, ?prop:Dynamic, ?fontsize:Dynamic, ?borderpad:Dynamic, ?labelspacing:Dynamic, ?handlelength:Dynamic, ?handleheight:Dynamic, ?handletextpad:Dynamic, ?borderaxespad:Dynamic, ?columnspacing:Dynamic, ?ncol:Dynamic, ?mode:Dynamic, ?fancybox:Dynamic, ?shadow:Dynamic, ?title:Dynamic, ?framealpha:Dynamic, ?bbox_to_anchor:Dynamic, ?bbox_transform:Dynamic, ?frameon:Dynamic, ?handler_map:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

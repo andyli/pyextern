@@ -46,6 +46,10 @@ package pandas.io.pytables;
 	**/
 	@:native("__init__")
 	public function ___init__(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?values:Dynamic, ?kind:Dynamic, ?typ:Dynamic, ?cname:Dynamic, ?data:Dynamic, ?meta:Dynamic, ?metadata:Dynamic, ?block:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

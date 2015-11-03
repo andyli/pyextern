@@ -167,7 +167,7 @@ class Main {
 								)
 							;
 							var fun = if (sig != null) {
-								var fun = sigToFun(sig);
+								var fun = sigToFun(sig, Inspect.getdoc(clsMemObj));
 								if (isInstanceMethod) {
 									if (fun.args.length < 1) {
 										trace(moduleName + " " + memName + " " + clsMemName);
@@ -230,6 +230,20 @@ class Main {
 								trace('warning: ${td.pack.join(".")}.${td.name}.${field.name} has already been added');
 							} else {
 								td.fields.push(field);
+								if (clsMemName == "__init__") {
+									var field_new = Reflect.copy(field);
+									field_new.name = "new";
+									field_new.meta = [];
+									field_new.kind = switch (field_new.kind) {
+										case FFun(f):
+											var f_new = Reflect.copy(f);
+											f_new.ret = macro:Void;
+											FFun(f_new);
+										case _:
+											throw "should be FFun";
+									}
+									td.fields.push(field_new);
+								}
 							}
 						} else { //not callable
 							var isInstanceField = Inspect.isdatadescriptor(clsMemObj) || Inspect.isgetsetdescriptor(clsMemObj);
@@ -287,7 +301,7 @@ class Main {
 					}
 
 					var fun = if (sig != null) {
-						sigToFun(sig);
+						sigToFun(sig, Inspect.getdoc(memObj));
 					} else {
 						{
 							params:[],
@@ -401,7 +415,15 @@ class Main {
 		].indexOf(name) >= 0;
 	}
 
-	static function sigToFun(sig:Dynamic):Function {
+	static function sigToFun(sig:Dynamic, doc:Null<String>):Function {
+		// if (doc != null) {
+		// 	var document = docutils.utils.Utils.new_document("");
+		// 	var parser = new docutils.parsers.rst.Parser();
+			
+		// 	var doc = Xml.parse(docutils.core.Core.publish_doctree(doc).asdom().toxml());
+		// 	// trace(doc.toString());
+		// }
+
 		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
 			// trace(Reflect.field(p, "default") == Inspect.Parameter.empty);
 			var isVarArgs = python.Syntax.binop(p.kind, "is", inspect.Parameter.VAR_POSITIONAL);

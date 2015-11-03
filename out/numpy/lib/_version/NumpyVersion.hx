@@ -41,6 +41,10 @@ package numpy.lib._version;
 	@:native("__init__")
 	public function ___init__(vstring:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(vstring:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(other:Dynamic):Dynamic;

@@ -47,6 +47,10 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__(eps:Dynamic):Dynamic;
 	/**
+		domain_tan(eps) = true where abs(cos(x)) < eps)
+	**/
+	public function new(eps:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

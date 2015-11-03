@@ -57,6 +57,12 @@ package matplotlib.projections.polar;
 	@:native("__init__")
 	public function ___init__(scale_transform:Dynamic, limits:Dynamic):Dynamic;
 	/**
+		*limits* is the view limit of the data.  The only part of
+		its bounds that is used is ymax (for the radius maximum).
+		The theta range is always fixed to (0, 2pi).
+	**/
+	public function new(scale_transform:Dynamic, limits:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

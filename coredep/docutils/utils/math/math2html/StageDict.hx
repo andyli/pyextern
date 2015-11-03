@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(classes:Dynamic, postprocessor:Dynamic):Dynamic;
 	/**
+		Instantiate an element from elyxer.each class and store as a dictionary
+	**/
+	public function new(classes:Dynamic, postprocessor:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

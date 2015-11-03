@@ -40,6 +40,10 @@ package inspect;
 	@:native("__init__")
 	public function ___init__(signature:Dynamic, arguments:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(signature:Dynamic, arguments:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

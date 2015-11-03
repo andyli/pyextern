@@ -43,6 +43,10 @@ package docutils.writers.latex2e;
 	@:native("__init__")
 	public function ___init__(document:Dynamic, ?babel_class:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(document:Dynamic, ?babel_class:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

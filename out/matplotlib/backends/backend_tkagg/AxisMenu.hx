@@ -43,6 +43,10 @@ package matplotlib.backends.backend_tkagg;
 	@:native("__init__")
 	public function ___init__(master:Dynamic, naxes:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(master:Dynamic, naxes:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

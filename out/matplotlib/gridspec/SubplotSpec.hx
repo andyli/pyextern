@@ -47,6 +47,14 @@ package matplotlib.gridspec;
 	@:native("__init__")
 	public function ___init__(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Dynamic;
 	/**
+		The subplot will occupy the num1-th cell of the given
+		gridspec.  If num2 is provided, the subplot will span between
+		num1-th cell and num2-th cell.
+		
+		The index stars from 0.
+	**/
+	public function new(gridspec:Dynamic, num1:Dynamic, ?num2:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

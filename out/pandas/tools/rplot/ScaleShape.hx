@@ -60,6 +60,14 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(column:Dynamic):Dynamic;
 	/**
+		Initialize ScaleShape instance.
+		
+		Parameters:
+		-----------
+		column: string, pandas DataFrame column name
+	**/
+	public function new(column:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

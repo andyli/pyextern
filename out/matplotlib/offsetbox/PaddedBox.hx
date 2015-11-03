@@ -49,6 +49,15 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(child:Dynamic, ?pad:Dynamic, ?draw_frame:Dynamic, ?patch_attrs:Dynamic):Dynamic;
 	/**
+		*pad* : boundary pad
+		
+		.. note::
+		  *pad* need to given in points and will be
+		  scale with the renderer dpi, while *width* and *height*
+		  need to be in pixels.
+	**/
+	public function new(child:Dynamic, ?pad:Dynamic, ?draw_frame:Dynamic, ?patch_attrs:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

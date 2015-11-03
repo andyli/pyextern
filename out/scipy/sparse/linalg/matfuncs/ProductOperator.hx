@@ -67,6 +67,13 @@ package scipy.sparse.linalg.matfuncs;
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize this LinearOperator.
+		
+		To be called by subclasses. ``dtype`` may be None; ``shape`` should
+		be convertible to a length-2 tuple.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

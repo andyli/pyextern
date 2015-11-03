@@ -56,6 +56,23 @@ package matplotlib.backends.backend_mixed;
 	@:native("__init__")
 	public function ___init__(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Dynamic;
 	/**
+		figure: The figure instance.
+		
+		width: The width of the canvas in logical units
+		
+		height: The height of the canvas in logical units
+		
+		dpi: The dpi of the canvas
+		
+		vector_renderer: An instance of a subclass of RendererBase
+		that will be used for the vector drawing.
+		
+		raster_renderer_class: The renderer class to use for the
+		raster drawing.  If not provided, this will use the Agg
+		backend (which is currently the only viable option anyway.)
+	**/
+	public function new(figure:Dynamic, width:Dynamic, height:Dynamic, dpi:Dynamic, vector_renderer:Dynamic, ?raster_renderer_class:Dynamic, ?bbox_inches_restore:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

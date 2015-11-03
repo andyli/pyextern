@@ -49,6 +49,16 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(?marker:Dynamic, ?colour:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
+		Initialize GeomScatter instance.
+		
+		Parameters:
+		-----------
+		marker: matplotlib marker string
+		colour: matplotlib colour
+		alpha: matplotlib alpha
+	**/
+	public function new(?marker:Dynamic, ?colour:Dynamic, ?alpha:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

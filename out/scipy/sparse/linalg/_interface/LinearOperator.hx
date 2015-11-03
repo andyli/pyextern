@@ -73,6 +73,13 @@ package scipy.sparse.linalg._interface;
 	@:native("__init__")
 	public function ___init__(dtype:Dynamic, shape:Dynamic):Dynamic;
 	/**
+		Initialize this LinearOperator.
+		
+		To be called by subclasses. ``dtype`` may be None; ``shape`` should
+		be convertible to a length-2 tuple.
+	**/
+	public function new(dtype:Dynamic, shape:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

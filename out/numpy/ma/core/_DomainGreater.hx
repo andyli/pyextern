@@ -47,6 +47,10 @@ package numpy.ma.core;
 	@:native("__init__")
 	public function ___init__(critical_value:Dynamic):Dynamic;
 	/**
+		DomainGreater(v)(x) = true where x <= v
+	**/
+	public function new(critical_value:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

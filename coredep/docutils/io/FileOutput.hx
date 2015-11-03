@@ -56,6 +56,23 @@ package docutils.io;
 	@:native("__init__")
 	public function ___init__(?destination:Dynamic, ?destination_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
+		:Parameters:
+		    - `destination`: either a file-like object (which is written
+		      directly) or `None` (which implies `sys.stdout` if no
+		      `destination_path` given).
+		    - `destination_path`: a path to a file, which is opened and then
+		      written.
+		    - `encoding`: the text encoding of the output file.
+		    - `error_handler`: the encoding error handler to use.
+		    - `autoclose`: close automatically after write (except when
+		      `sys.stdout` or `sys.stderr` is the destination).
+		    - `handle_io_errors`: ignored, deprecated, will be removed.
+		    - `mode`: how the file is to be opened (see standard function
+		      `open`). The default is 'w', providing universal newline
+		      support for text files.
+	**/
+	public function new(?destination:Dynamic, ?destination_path:Dynamic, ?encoding:Dynamic, ?error_handler:Dynamic, ?autoclose:Dynamic, ?handle_io_errors:Dynamic, ?mode:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

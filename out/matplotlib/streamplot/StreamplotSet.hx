@@ -43,6 +43,10 @@ package matplotlib.streamplot;
 	@:native("__init__")
 	public function ___init__(lines:Dynamic, arrows:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(lines:Dynamic, arrows:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

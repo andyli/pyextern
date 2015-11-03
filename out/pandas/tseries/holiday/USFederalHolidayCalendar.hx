@@ -51,6 +51,18 @@ package pandas.tseries.holiday;
 	@:native("__init__")
 	public function ___init__(?name:Dynamic, ?rules:Dynamic):Dynamic;
 	/**
+		Initializes holiday object with a given set a rules.  Normally
+		classes just have the rules defined within them.
+		
+		Parameters
+		----------
+		name : str
+		    Name of the holiday calendar, defaults to class name
+		rules : array of Holiday objects
+		    A set of rules used to create the holidays.
+	**/
+	public function new(?name:Dynamic, ?rules:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

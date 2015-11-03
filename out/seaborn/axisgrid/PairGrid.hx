@@ -162,6 +162,129 @@ package seaborn.axisgrid;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
+		Initialize the plot figure and PairGrid object.
+		
+		Parameters
+		----------
+		data : DataFrame
+		    Tidy (long-form) dataframe where each column is a variable and
+		    each row is an observation.
+		hue : string (variable name), optional
+		    Variable in ``data`` to map plot aspects to different colors.
+		hue_order : list of strings
+		    Order for the levels of the hue variable in the palette
+		palette : dict or seaborn color palette
+		    Set of colors for mapping the ``hue`` variable. If a dict, keys
+		    should be values  in the ``hue`` variable.
+		hue_kws : dictionary of param -> list of values mapping
+		    Other keyword arguments to insert into the plotting call to let
+		    other plot attributes vary across levels of the hue variable (e.g.
+		    the markers in a scatterplot).
+		vars : list of variable names, optional
+		    Variables within ``data`` to use, otherwise use every column with
+		    a numeric datatype.
+		{x, y}_vars : lists of variable names, optional
+		    Variables within ``data`` to use separately for the rows and
+		    columns of the figure; i.e. to make a non-square plot.
+		size : scalar, optional
+		    Height (in inches) of each facet.
+		aspect : scalar, optional
+		    Aspect * size gives the width (in inches) of each facet.
+		despine : boolean, optional
+		    Remove the top and right spines from the plots.
+		dropna : boolean, optional
+		    Drop missing values from the data before plotting.
+		
+		See Also
+		--------
+		pairplot : Easily drawing common uses of :class:`PairGrid`.
+		FacetGrid : Subplot grid for plotting conditional relationships.
+		
+		Examples
+		--------
+		
+		Draw a scatterplot for each pairwise relationship:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> import matplotlib.pyplot as plt
+		    >>> import seaborn as sns; sns.set()
+		    >>> iris = sns.load_dataset("iris")
+		    >>> g = sns.PairGrid(iris)
+		    >>> g = g.map(plt.scatter)
+		
+		Show a univariate distribution on the diagonal:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris)
+		    >>> g = g.map_diag(plt.hist)
+		    >>> g = g.map_offdiag(plt.scatter)
+		
+		(It's not actually necessary to catch the return value every time,
+		as it is the same object, but it makes it easier to deal with the
+		doctests).
+		
+		Color the points using a categorical variable:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris, hue="species")
+		    >>> g = g.map(plt.scatter)
+		    >>> g = g.add_legend()
+		
+		Plot a subset of variables
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris, vars=["sepal_length", "sepal_width"])
+		    >>> g = g.map(plt.scatter)
+		
+		Pass additional keyword arguments to the functions
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris)
+		    >>> g = g.map_diag(plt.hist, edgecolor="w")
+		    >>> g = g.map_offdiag(plt.scatter, edgecolor="w", s=40)
+		
+		Use different variables for the rows and columns:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris,
+		    ...                  x_vars=["sepal_length", "sepal_width"],
+		    ...                  y_vars=["petal_length", "petal_width"])
+		    >>> g = g.map(plt.scatter)
+		
+		Use different functions on the upper and lower triangles:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris)
+		    >>> g = g.map_upper(plt.scatter)
+		    >>> g = g.map_lower(sns.kdeplot, cmap="Blues_d")
+		    >>> g = g.map_diag(sns.kdeplot, lw=3, legend=False)
+		
+		Use different colors and markers for each categorical level:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.PairGrid(iris, hue="species", palette="Set2",
+		    ...                  hue_kws={"marker": ["o", "s", "D"]})
+		    >>> g = g.map(plt.scatter, linewidths=1, edgecolor="w", s=40)
+		    >>> g = g.add_legend()
+	**/
+	public function new(data:Dynamic, ?hue:Dynamic, ?hue_order:Dynamic, ?palette:Dynamic, ?hue_kws:Dynamic, ?vars:Dynamic, ?x_vars:Dynamic, ?y_vars:Dynamic, ?diag_sharey:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?despine:Dynamic, ?dropna:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

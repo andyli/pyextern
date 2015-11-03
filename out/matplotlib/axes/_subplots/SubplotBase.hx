@@ -53,6 +53,20 @@ package matplotlib.axes._subplots;
 	@:native("__init__")
 	public function ___init__(fig:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*fig* is a :class:`matplotlib.figure.Figure` instance.
+		
+		*args* is the tuple (*numRows*, *numCols*, *plotNum*), where
+		the array of subplots in the figure has dimensions *numRows*,
+		*numCols*, and where *plotNum* is the number of the subplot
+		being created.  *plotNum* starts at 1 in the upper left
+		corner and increases to the right.
+		
+		
+		If *numRows* <= *numCols* <= *plotNum* < 10, *args* can be the
+		decimal integer *numRows* * 100 + *numCols* * 10 + *plotNum*.
+	**/
+	public function new(fig:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

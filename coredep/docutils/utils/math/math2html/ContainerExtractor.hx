@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(config:Dynamic):Dynamic;
 	/**
+		The config parameter is a map containing three lists: allowed, copied and extracted.
+	**/
+	public function new(config:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

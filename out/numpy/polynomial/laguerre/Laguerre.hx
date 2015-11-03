@@ -49,6 +49,10 @@ package numpy.polynomial.laguerre;
 	**/
 	@:native("__init__")
 	public function ___init__(coef:Dynamic, ?domain:Dynamic, ?window:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(coef:Dynamic, ?domain:Dynamic, ?window:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

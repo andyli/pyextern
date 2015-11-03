@@ -48,6 +48,15 @@ package seaborn.matrix;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, linkage:Dynamic, metric:Dynamic, method:Dynamic, axis:Dynamic, label:Dynamic, rotate:Dynamic):Dynamic;
 	/**
+		Plot a dendrogram of the relationships between the columns of data
+		
+		Parameters
+		----------
+		data : pandas.DataFrame
+		    Rectangular data
+	**/
+	public function new(data:Dynamic, linkage:Dynamic, metric:Dynamic, method:Dynamic, axis:Dynamic, label:Dynamic, rotate:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

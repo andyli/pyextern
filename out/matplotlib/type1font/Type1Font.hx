@@ -43,6 +43,11 @@ package matplotlib.type1font;
 	@:native("__init__")
 	public function ___init__(input:Dynamic):Dynamic;
 	/**
+		Initialize a Type-1 font. *input* can be either the file name of
+		a pfb file or a 3-tuple of already-decoded Type-1 font parts.
+	**/
+	public function new(input:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

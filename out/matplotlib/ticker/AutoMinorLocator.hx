@@ -52,6 +52,14 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(?n:Dynamic):Dynamic;
 	/**
+		*n* is the number of subdivisions of the interval between
+		major ticks; e.g., n=2 will place a single minor tick midway
+		between major ticks.
+		
+		If *n* is omitted or None, it will be set to 5 or 4.
+	**/
+	public function new(?n:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

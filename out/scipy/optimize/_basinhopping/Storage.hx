@@ -43,6 +43,10 @@ package scipy.optimize._basinhopping;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, f:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(x:Dynamic, f:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -49,6 +49,15 @@ package matplotlib.image;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?x:Dynamic, ?y:Dynamic, ?A:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		cmap defaults to its rc setting
+		
+		cmap is a colors.Colormap instance
+		norm is a colors.Normalize instance to map luminance to 0-1
+		
+		Additional kwargs are matplotlib.artist properties
+	**/
+	public function new(ax:Dynamic, ?x:Dynamic, ?y:Dynamic, ?A:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

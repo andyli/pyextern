@@ -71,6 +71,37 @@ package matplotlib.figure;
 	@:native("__init__")
 	public function ___init__(?figsize:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?frameon:Dynamic, ?subplotpars:Dynamic, ?tight_layout:Dynamic):Dynamic;
 	/**
+		*figsize*
+		    w,h tuple in inches
+		
+		*dpi*
+		    Dots per inch
+		
+		*facecolor*
+		    The figure patch facecolor; defaults to rc ``figure.facecolor``
+		
+		*edgecolor*
+		    The figure patch edge color; defaults to rc ``figure.edgecolor``
+		
+		*linewidth*
+		    The figure patch edge linewidth; the default linewidth of the frame
+		
+		*frameon*
+		    If *False*, suppress drawing the figure frame
+		
+		*subplotpars*
+		    A :class:`SubplotParams` instance, defaults to rc
+		
+		*tight_layout*
+		    If *False* use *subplotpars*; if *True* adjust subplot
+		    parameters using :meth:`tight_layout` with default padding.
+		    When providing a dict containing the keys `pad`, `w_pad`, `h_pad`
+		    and `rect`, the default :meth:`tight_layout` paddings will be
+		    overridden.
+		    Defaults to rc ``figure.autolayout``.
+	**/
+	public function new(?figsize:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?frameon:Dynamic, ?subplotpars:Dynamic, ?tight_layout:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
@@ -1528,7 +1559,7 @@ package matplotlib.figure;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontfamily or name or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1552,7 +1583,7 @@ package matplotlib.figure;
 		  url: a url string         
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
 		  visible: [True | False]         
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
 		  wrap: unknown

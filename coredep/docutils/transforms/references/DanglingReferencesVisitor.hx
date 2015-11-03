@@ -43,6 +43,10 @@ package docutils.transforms.references;
 	@:native("__init__")
 	public function ___init__(document:Dynamic, unknown_reference_resolvers:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(document:Dynamic, unknown_reference_resolvers:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

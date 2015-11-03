@@ -43,6 +43,10 @@ package matplotlib.animation;
 	@:native("__init__")
 	public function ___init__(fig:Dynamic, func:Dynamic, ?frames:Dynamic, ?init_func:Dynamic, ?fargs:Dynamic, ?save_count:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(fig:Dynamic, func:Dynamic, ?frames:Dynamic, ?init_func:Dynamic, ?fargs:Dynamic, ?save_count:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -65,6 +65,20 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(x_transform:Dynamic, y_transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a new "blended" transform using *x_transform* to
+		transform the *x*-axis and *y_transform* to transform the
+		*y*-axis.
+		
+		Both *x_transform* and *y_transform* must be 2D affine
+		transforms.
+		
+		You will generally not call this constructor directly but use
+		the :func:`blended_transform_factory` function instead, which
+		can determine automatically which kind of blended transform to
+		create.
+	**/
+	public function new(x_transform:Dynamic, y_transform:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

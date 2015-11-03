@@ -49,6 +49,11 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(?interval:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
+		*interval* is the interval between each iteration.  For
+		example, if ``interval=2``, mark every second microsecond.
+	**/
+	public function new(?interval:Dynamic, ?tz:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

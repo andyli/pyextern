@@ -50,6 +50,16 @@ package matplotlib.mathtext;
 	@:native("__init__")
 	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*default_font_prop*: A
+		:class:`~matplotlib.font_manager.FontProperties` object to use
+		for the default non-math font, or the base font for Unicode
+		(generic) font rendering.
+		
+		*mathtext_backend*: A subclass of :class:`MathTextBackend`
+		used to delegate the actual rendering.
+	**/
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -46,6 +46,12 @@ package matplotlib.axis;
 	@:native("__init__")
 	public function ___init__(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Dynamic;
 	/**
+		bbox is the Bound2D bounding box in display coords of the Axes
+		loc is the tick location in data coords
+		size is the tick size in points
+	**/
+	public function new(axes:Dynamic, loc:Dynamic, label:Dynamic, ?size:Dynamic, ?width:Dynamic, ?color:Dynamic, ?tickdir:Dynamic, ?pad:Dynamic, ?labelsize:Dynamic, ?labelcolor:Dynamic, ?zorder:Dynamic, ?gridOn:Dynamic, ?tick1On:Dynamic, ?tick2On:Dynamic, ?label1On:Dynamic, ?label2On:Dynamic, ?major:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

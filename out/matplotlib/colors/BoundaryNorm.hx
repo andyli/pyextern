@@ -69,6 +69,28 @@ package matplotlib.colors;
 	@:native("__init__")
 	public function ___init__(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
+		*boundaries*
+		    a monotonically increasing sequence
+		*ncolors*
+		    number of colors in the colormap to be used
+		
+		If::
+		
+		    b[i] <= v < b[i+1]
+		
+		then v is mapped to color j;
+		as i varies from 0 to len(boundaries)-2,
+		j goes from 0 to ncolors-1.
+		
+		Out-of-range values are mapped
+		to -1 if low and ncolors if high; these are converted
+		to valid indices by
+		:meth:`Colormap.__call__` .
+		If clip == True, out-of-range values
+		are mapped to 0 if low and ncolors-1 if high.
+	**/
+	public function new(boundaries:Dynamic, ncolors:Dynamic, ?clip:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

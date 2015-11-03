@@ -57,6 +57,23 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(offsetbox:Dynamic, xy:Dynamic, ?xybox:Dynamic, ?xycoords:Dynamic, ?boxcoords:Dynamic, ?frameon:Dynamic, ?pad:Dynamic, ?annotation_clip:Dynamic, ?box_alignment:Dynamic, ?bboxprops:Dynamic, ?arrowprops:Dynamic, ?fontsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*offsetbox* : OffsetBox instance
+		
+		*xycoords* : same as Annotation but can be a tuple of two
+		   strings which are interpreted as x and y coordinates.
+		
+		*boxcoords* : similar to textcoords as Annotation but can be a
+		   tuple of two strings which are interpreted as x and y
+		   coordinates.
+		
+		*box_alignment* : a tuple of two floats for a vertical and
+		   horizontal alignment of the offset box w.r.t. the *boxcoords*.
+		   The lower-left corner is (0.0) and upper-right corner is (1.1).
+		
+		other parameters are identical to that of Annotation.
+	**/
+	public function new(offsetbox:Dynamic, xy:Dynamic, ?xybox:Dynamic, ?xycoords:Dynamic, ?boxcoords:Dynamic, ?frameon:Dynamic, ?pad:Dynamic, ?annotation_clip:Dynamic, ?box_alignment:Dynamic, ?bboxprops:Dynamic, ?arrowprops:Dynamic, ?fontsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

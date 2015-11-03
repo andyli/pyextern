@@ -43,6 +43,10 @@ package pandas.tools.plotting;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, x:Dynamic, y:Dynamic, ?C:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, x:Dynamic, y:Dynamic, ?C:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

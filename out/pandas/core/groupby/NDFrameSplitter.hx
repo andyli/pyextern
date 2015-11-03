@@ -42,6 +42,10 @@ package pandas.core.groupby;
 	**/
 	@:native("__init__")
 	public function ___init__(data:Dynamic, labels:Dynamic, ngroups:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, labels:Dynamic, ngroups:Dynamic, ?axis:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

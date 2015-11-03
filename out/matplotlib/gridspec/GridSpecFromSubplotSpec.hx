@@ -51,6 +51,14 @@ package matplotlib.gridspec;
 	@:native("__init__")
 	public function ___init__(nrows:Dynamic, ncols:Dynamic, subplot_spec:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
 	/**
+		The number of rows and number of columns of the grid need to
+		be set. An instance of SubplotSpec is also needed to be set
+		from which the layout parameters will be inherited. The wspace
+		and hspace of the layout can be optionally specified or the
+		default values (from the figure or rcParams) will be used.
+	**/
+	public function new(nrows:Dynamic, ncols:Dynamic, subplot_spec:Dynamic, ?wspace:Dynamic, ?hspace:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

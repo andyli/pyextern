@@ -49,6 +49,16 @@ package matplotlib.widgets;
 	@:native("__init__")
 	public function ___init__(targetfig:Dynamic, toolfig:Dynamic):Dynamic;
 	/**
+		*targetfig*
+		    The figure instance to adjust
+		
+		*toolfig*
+		    The figure instance to embed the subplot tool into. If
+		    None, a default figure will be created. If you are using
+		    this from the GUI
+	**/
+	public function new(targetfig:Dynamic, toolfig:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -85,6 +85,51 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(widths:Dynamic, heights:Dynamic, angles:Dynamic, ?units:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*widths*: sequence
+		    lengths of first axes (e.g., major axis lengths)
+		
+		*heights*: sequence
+		    lengths of second axes
+		
+		*angles*: sequence
+		    angles of first axes, degrees CCW from the X-axis
+		
+		*units*: ['points' | 'inches' | 'dots' | 'width' | 'height'
+		| 'x' | 'y' | 'xy']
+		
+		    units in which majors and minors are given; 'width' and
+		    'height' refer to the dimensions of the axes, while 'x'
+		    and 'y' refer to the *offsets* data units. 'xy' differs
+		    from all others in that the angle as plotted varies with
+		    the aspect ratio, and equals the specified angle only when
+		    the aspect ratio is unity.  Hence it behaves the same as
+		    the :class:`~matplotlib.patches.Ellipse` with
+		    axes.transData as its transform.
+		
+		Additional kwargs inherited from the base :class:`Collection`:
+		
+		    Valid Collection keyword arguments:
+		
+		        * *edgecolors*: None
+		        * *facecolors*: None
+		        * *linewidths*: None
+		        * *antialiaseds*: None
+		        * *offsets*: None
+		        * *transOffset*: transforms.IdentityTransform()
+		        * *norm*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		        * *cmap*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		
+		    *offsets* and *transOffset* are used to translate the patch after
+		    rendering (default no offsets)
+		
+		    If any of *edgecolors*, *facecolors*, *linewidths*, *antialiaseds*
+		    are None, they default to their :data:`matplotlib.rcParams` patch
+		    setting, in sequence form.
+	**/
+	public function new(widths:Dynamic, heights:Dynamic, angles:Dynamic, ?units:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -46,6 +46,12 @@ package matplotlib.image;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		kwargs are identical to those for AxesImage, except
+		that 'interpolation' defaults to 'nearest', and 'bilinear'
+		is the only alternative.
+	**/
+	public function new(ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -44,6 +44,10 @@ package scipy.io.netcdf;
 	@:native("__init__")
 	public function ___init__(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

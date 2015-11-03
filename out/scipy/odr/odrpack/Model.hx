@@ -48,6 +48,10 @@ package scipy.odr.odrpack;
 	@:native("__init__")
 	public function ___init__(fcn:Dynamic, ?fjacb:Dynamic, ?fjacd:Dynamic, ?extra_args:Dynamic, ?estimate:Dynamic, ?implicit:Dynamic, ?meta:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(fcn:Dynamic, ?fjacb:Dynamic, ?fjacd:Dynamic, ?extra_args:Dynamic, ?estimate:Dynamic, ?implicit:Dynamic, ?meta:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

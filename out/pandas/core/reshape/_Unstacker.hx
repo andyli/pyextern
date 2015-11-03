@@ -43,6 +43,10 @@ package pandas.core.reshape;
 	@:native("__init__")
 	public function ___init__(values:Dynamic, index:Dynamic, ?level:Dynamic, ?value_columns:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(values:Dynamic, index:Dynamic, ?level:Dynamic, ?value_columns:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

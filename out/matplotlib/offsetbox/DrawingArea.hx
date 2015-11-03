@@ -46,6 +46,12 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(width:Dynamic, height:Dynamic, ?xdescent:Dynamic, ?ydescent:Dynamic, ?clip:Dynamic):Dynamic;
 	/**
+		*width*, *height* : width and height of the container box.
+		*xdescent*, *ydescent* : descent of the box in x- and y-direction.
+		*clip* : Whether to clip the children
+	**/
+	public function new(width:Dynamic, height:Dynamic, ?xdescent:Dynamic, ?ydescent:Dynamic, ?clip:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

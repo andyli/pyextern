@@ -47,6 +47,10 @@ package matplotlib.cbook;
 	@:native("__init__")
 	public function ___init__(?fmt:Dynamic, ?missing:Dynamic, ?missingval:Dynamic):Dynamic;
 	/**
+		use a :func:`time.strptime` format string for conversion
+	**/
+	public function new(?fmt:Dynamic, ?missing:Dynamic, ?missingval:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

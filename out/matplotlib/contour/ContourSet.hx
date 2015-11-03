@@ -84,6 +84,50 @@ package matplotlib.contour;
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Draw contour lines or filled regions, depending on
+		whether keyword arg 'filled' is *False* (default) or *True*.
+		
+		The first three arguments must be:
+		
+		  *ax*: axes object.
+		
+		  *levels*: [level0, level1, ..., leveln]
+		    A list of floating point numbers indicating the contour
+		    levels.
+		
+		  *allsegs*: [level0segs, level1segs, ...]
+		    List of all the polygon segments for all the *levels*.
+		    For contour lines ``len(allsegs) == len(levels)``, and for
+		    filled contour regions ``len(allsegs) = len(levels)-1``.
+		
+		    level0segs = [polygon0, polygon1, ...]
+		
+		    polygon0 = array_like [[x0,y0], [x1,y1], ...]
+		
+		  *allkinds*: *None* or [level0kinds, level1kinds, ...]
+		    Optional list of all the polygon vertex kinds (code types), as
+		    described and used in Path.   This is used to allow multiply-
+		    connected paths such as holes within filled polygons.
+		    If not *None*, len(allkinds) == len(allsegs).
+		
+		    level0kinds = [polygon0kinds, ...]
+		
+		    polygon0kinds = [vertexcode0, vertexcode1, ...]
+		
+		    If *allkinds* is not *None*, usually all polygons for a particular
+		    contour level are grouped together so that
+		
+		    level0segs = [polygon0] and level0kinds = [polygon0kinds].
+		
+		Keyword arguments are as described in
+		:class:`~matplotlib.contour.QuadContourSet` object.
+		
+		**Examples:**
+		
+		.. plot:: mpl_examples/misc/contour_manual.py
+	**/
+	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

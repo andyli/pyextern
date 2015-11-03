@@ -47,6 +47,10 @@ package numpy.core.arrayprint;
 	@:native("__init__")
 	public function ___init__(precision:Dynamic, ?sign:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(precision:Dynamic, ?sign:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -49,6 +49,12 @@ package matplotlib.ticker;
 	@:native("__init__")
 	public function ___init__(?base:Dynamic, ?labelOnlyBase:Dynamic):Dynamic;
 	/**
+		*base* is used to locate the decade tick,
+		which will be the only one to be labeled if *labelOnlyBase*
+		is ``False``
+	**/
+	public function new(?base:Dynamic, ?labelOnlyBase:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

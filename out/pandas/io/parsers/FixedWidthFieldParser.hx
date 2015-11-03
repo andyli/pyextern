@@ -45,6 +45,12 @@ package pandas.io.parsers;
 	@:native("__init__")
 	public function ___init__(f:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Workhorse function for processing nested list into DataFrame
+		
+		Should be replaced by np.genfromtxt eventually?
+	**/
+	public function new(f:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

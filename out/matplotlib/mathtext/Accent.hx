@@ -42,6 +42,10 @@ package matplotlib.mathtext;
 	**/
 	@:native("__init__")
 	public function ___init__(c:Dynamic, state:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(c:Dynamic, state:Dynamic):Void;
 	public function __internal_repr__():Dynamic;
 	/**
 		Return self<=value.

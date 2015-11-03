@@ -82,6 +82,11 @@ package numpy._import_tools;
 	@:native("__init__")
 	public function ___init__(?verbose:Dynamic, ?infunc:Dynamic):Dynamic;
 	/**
+		Manages loading packages.
+		        
+	**/
+	public function new(?verbose:Dynamic, ?infunc:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

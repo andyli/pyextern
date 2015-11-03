@@ -49,6 +49,12 @@ package matplotlib.gridspec;
 	@:native("__init__")
 	public function ___init__(nrows:Dynamic, ncols:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Dynamic;
 	/**
+		The number of rows and number of columns of the grid need to
+		be set. Optionally, the ratio of heights and widths of rows and
+		columns can be specified.
+	**/
+	public function new(nrows:Dynamic, ncols:Dynamic, ?height_ratios:Dynamic, ?width_ratios:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

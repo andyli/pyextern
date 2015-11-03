@@ -47,6 +47,14 @@ package matplotlib.units;
 	@:native("__init__")
 	public function ___init__(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Dynamic;
 	/**
+		majloc and minloc: TickLocators for the major and minor ticks
+		majfmt and minfmt: TickFormatters for the major and minor ticks
+		label: the default axis label
+		default_limits: the default min, max of the axis if no data is present
+		If any of the above are None, the axis will simply use the default
+	**/
+	public function new(?majloc:Dynamic, ?minloc:Dynamic, ?majfmt:Dynamic, ?minfmt:Dynamic, ?label:Dynamic, ?default_limits:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

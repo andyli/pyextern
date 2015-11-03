@@ -186,8 +186,8 @@ package matplotlib.quiver;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -207,6 +207,173 @@ package matplotlib.quiver;
 	**/
 	@:native("__init__")
 	public function ___init__(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		        The constructor takes one required argument, an Axes
+		        instance, followed by the args and kwargs described
+		        by the following pylab interface documentation:
+		        
+		Plot a 2-D field of arrows.
+		
+		call signatures::
+		
+		  quiver(U, V, **kw)
+		  quiver(U, V, C, **kw)
+		  quiver(X, Y, U, V, **kw)
+		  quiver(X, Y, U, V, C, **kw)
+		
+		Arguments:
+		
+		  *X*, *Y*:
+		    The x and y coordinates of the arrow locations (default is tail of
+		    arrow; see *pivot* kwarg)
+		
+		  *U*, *V*:
+		    Give the x and y components of the arrow vectors
+		
+		  *C*:
+		    An optional array used to map colors to the arrows
+		
+		All arguments may be 1-D or 2-D arrays or sequences. If *X* and *Y*
+		are absent, they will be generated as a uniform grid.  If *U* and *V*
+		are 2-D arrays but *X* and *Y* are 1-D, and if ``len(X)`` and ``len(Y)``
+		match the column and row dimensions of *U*, then *X* and *Y* will be
+		expanded with :func:`numpy.meshgrid`.
+		
+		*U*, *V*, *C* may be masked arrays, but masked *X*, *Y* are not
+		supported at present.
+		
+		Keyword arguments:
+		
+		  *units*: [ 'width' | 'height' | 'dots' | 'inches' | 'x' | 'y' | 'xy' ]
+		    Arrow units; the arrow dimensions *except for length* are in
+		    multiples of this unit.
+		
+		    * 'width' or 'height': the width or height of the axes
+		
+		    * 'dots' or 'inches': pixels or inches, based on the figure dpi
+		
+		    * 'x', 'y', or 'xy': *X*, *Y*, or sqrt(X^2+Y^2) data units
+		
+		    The arrows scale differently depending on the units.  For
+		    'x' or 'y', the arrows get larger as one zooms in; for other
+		    units, the arrow size is independent of the zoom state.  For
+		    'width or 'height', the arrow size increases with the width and
+		    height of the axes, respectively, when the window is resized;
+		    for 'dots' or 'inches', resizing does not change the arrows.
+		
+		
+		  *angles*: [ 'uv' | 'xy' | array ]
+		    With the default 'uv', the arrow axis aspect ratio is 1, so that
+		    if *U*==*V* the orientation of the arrow on the plot is 45 degrees
+		    CCW from the horizontal axis (positive to the right).
+		    With 'xy', the arrow points from (x,y) to (x+u, y+v).
+		    Use this for plotting a gradient field, for example.
+		    Alternatively, arbitrary angles may be specified as an array
+		    of values in degrees, CCW from the horizontal axis.
+		    Note: inverting a data axis will correspondingly invert the
+		    arrows *only* with `angles='xy'`.
+		
+		  *scale*: [ *None* | float ]
+		    Data units per arrow length unit, e.g., m/s per plot width; a smaller
+		    scale parameter makes the arrow longer.  If *None*, a simple
+		    autoscaling algorithm is used, based on the average vector length
+		    and the number of vectors.  The arrow length unit is given by
+		    the *scale_units* parameter
+		
+		  *scale_units*: *None*, or any of the *units* options.
+		    For example, if *scale_units* is 'inches', *scale* is 2.0, and
+		    ``(u,v) = (1,0)``, then the vector will be 0.5 inches long.
+		    If *scale_units* is 'width', then the vector will be half the width
+		    of the axes.
+		
+		    If *scale_units* is 'x' then the vector will be 0.5 x-axis
+		    units.  To plot vectors in the x-y plane, with u and v having
+		    the same units as x and y, use
+		    "angles='xy', scale_units='xy', scale=1".
+		
+		  *width*:
+		    Shaft width in arrow units; default depends on choice of units,
+		    above, and number of vectors; a typical starting value is about
+		    0.005 times the width of the plot.
+		
+		  *headwidth*: scalar
+		    Head width as multiple of shaft width, default is 3
+		
+		  *headlength*: scalar
+		    Head length as multiple of shaft width, default is 5
+		
+		  *headaxislength*: scalar
+		    Head length at shaft intersection, default is 4.5
+		
+		  *minshaft*: scalar
+		    Length below which arrow scales, in units of head length. Do not
+		    set this to less than 1, or small arrows will look terrible!
+		    Default is 1
+		
+		  *minlength*: scalar
+		    Minimum length as a multiple of shaft width; if an arrow length
+		    is less than this, plot a dot (hexagon) of this diameter instead.
+		    Default is 1.
+		
+		  *pivot*: [ 'tail' | 'mid' | 'middle' | 'tip' ]
+		    The part of the arrow that is at the grid point; the arrow rotates
+		    about this point, hence the name *pivot*.
+		
+		  *color*: [ color | color sequence ]
+		    This is a synonym for the
+		    :class:`~matplotlib.collections.PolyCollection` facecolor kwarg.
+		    If *C* has been set, *color* has no effect.
+		
+		The defaults give a slightly swept-back arrow; to make the head a
+		triangle, make *headaxislength* the same as *headlength*. To make the
+		arrow more pointed, reduce *headwidth* or increase *headlength* and
+		*headaxislength*. To make the head smaller relative to the shaft,
+		scale down all the head parameters. You will probably do best to leave
+		minshaft alone.
+		
+		linewidths and edgecolors can be used to customize the arrow
+		outlines. Additional :class:`~matplotlib.collections.PolyCollection`
+		keyword arguments:
+		
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  array: unknown
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  clim: a length 2 sequence of floats         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  cmap: a colormap or registered colormap name         
+		  color: matplotlib color arg or sequence of rgba tuples
+		  contains: a callable function         
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
+		  facecolor or facecolors: matplotlib color spec or sequence of specs         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  gid: an id string         
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats         
+		  norm: unknown
+		  offset_position: unknown
+		  offsets: float or sequence of floats         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  pickradius: unknown
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  urls: unknown
+		  visible: [True | False]         
+		  zorder: any number         
+		
+		        
+	**/
+	public function new(ax:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/

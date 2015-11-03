@@ -62,6 +62,10 @@ package pandas.computation.ops;
 	**/
 	@:native("__init__")
 	public function ___init__(lhs:Dynamic, rhs:Dynamic, truediv:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(lhs:Dynamic, rhs:Dynamic, truediv:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -61,6 +61,16 @@ package matplotlib.transforms;
 	@:native("__init__")
 	public function ___init__(?matrix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize an Affine transform from a 3x3 numpy float array::
+		
+		  a c e
+		  b d f
+		  0 0 1
+		
+		If *matrix* is None, initialize with the identity transform.
+	**/
+	public function new(?matrix:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

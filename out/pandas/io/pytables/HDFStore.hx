@@ -63,6 +63,10 @@ package pandas.io.pytables;
 	@:native("__init__")
 	public function ___init__(path:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?fletcher32:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(path:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?fletcher32:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

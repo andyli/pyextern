@@ -90,6 +90,56 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(positions:Dynamic, ?orientation:Dynamic, ?lineoffset:Dynamic, ?linelength:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*positions*
+		    a sequence of numerical values or a 1D numpy array.  Can be None
+		
+		*orientation* [ 'horizontal' | 'vertical' | None ]
+		    defaults to 'horizontal' if not specified or None
+		
+		*lineoffset*
+		    a single numerical value, corresponding to the offset of the center
+		    of the markers from the origin
+		
+		*linelength*
+		    a single numerical value, corresponding to the total height of the
+		    marker (i.e. the marker stretches from lineoffset+linelength/2 to
+		    lineoffset-linelength/2).  Defaults to 1
+		
+		*linewidth*
+		    a single numerical value
+		
+		*color*
+		    must be a sequence of RGBA tuples (e.g., arbitrary color
+		    strings, etc, not allowed).
+		
+		*linestyle* [ 'solid' | 'dashed' | 'dashdot' | 'dotted' ]
+		
+		*antialiased*
+		    1 or 2
+		
+		If *linewidth*, *color*, or *antialiased* is None, they
+		default to their rcParams setting, in sequence form.
+		
+		*norm*
+		    None (optional for :class:`matplotlib.cm.ScalarMappable`)
+		*cmap*
+		    None (optional for :class:`matplotlib.cm.ScalarMappable`)
+		
+		*pickradius* is the tolerance for mouse clicks picking a line.
+		The default is 5 pt.
+		
+		The use of :class:`~matplotlib.cm.ScalarMappable` is optional.
+		If the :class:`~matplotlib.cm.ScalarMappable` array
+		:attr:`~matplotlib.cm.ScalarMappable._A` is not None (i.e., a call to
+		:meth:`~matplotlib.cm.ScalarMappable.set_array` has been made), at
+		draw time a call to scalar mappable will be made to set the colors.
+		
+		**Example:**
+		
+		.. plot:: mpl_examples/pylab_examples/eventcollection_demo.py
+	**/
+	public function new(positions:Dynamic, ?orientation:Dynamic, ?lineoffset:Dynamic, ?linelength:Dynamic, ?linewidth:Dynamic, ?color:Dynamic, ?linestyle:Dynamic, ?antialiased:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

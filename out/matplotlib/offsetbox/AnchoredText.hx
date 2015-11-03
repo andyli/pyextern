@@ -65,6 +65,31 @@ package matplotlib.offsetbox;
 	@:native("__init__")
 	public function ___init__(s:Dynamic, loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?prop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Parameters
+		----------
+		s : string
+		    Text.
+		
+		loc : str
+		    Location code.
+		
+		pad : float, optional
+		    Pad between the text and the frame as fraction of the font
+		    size.
+		
+		borderpad : float, optional
+		    Pad between the frame and the axes (or *bbox_to_anchor*).
+		
+		prop : `matplotlib.font_manager.FontProperties`
+		    Font properties.
+		
+		Notes
+		-----
+		Other keyword parameters of `AnchoredOffsetbox` are also
+		allowed.
+	**/
+	public function new(s:Dynamic, loc:Dynamic, ?pad:Dynamic, ?borderpad:Dynamic, ?prop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -50,6 +50,12 @@ package matplotlib.dates;
 	@:native("__init__")
 	public function ___init__(locator:Dynamic, ?tz:Dynamic, ?defaultfmt:Dynamic):Dynamic;
 	/**
+		Autoformat the date labels.  The default format is the one to use
+		if none of the values in ``self.scaled`` are greater than the unit
+		returned by ``locator._get_unit()``.
+	**/
+	public function new(locator:Dynamic, ?tz:Dynamic, ?defaultfmt:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

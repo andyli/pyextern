@@ -42,6 +42,10 @@ package pandas.io.sas;
 	**/
 	@:native("__init__")
 	public function ___init__(filepath_or_buffer:Dynamic, ?index:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(filepath_or_buffer:Dynamic, ?index:Dynamic, ?encoding:Dynamic, ?chunksize:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

@@ -43,6 +43,10 @@ package docutils.utils.code_analyzer;
 	@:native("__init__")
 	public function ___init__(code:Dynamic, language:Dynamic, ?tokennames:Dynamic):Dynamic;
 	/**
+		Set up a lexical analyzer for `code` in `language`.
+	**/
+	public function new(code:Dynamic, language:Dynamic, ?tokennames:Dynamic):Void;
+	/**
 		Parse self.code and yield "classified" tokens.
 		        
 	**/

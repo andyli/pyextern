@@ -57,6 +57,10 @@ package matplotlib.container;
 	@:native("__init__")
 	public function ___init__(lines:Dynamic, ?has_xerr:Dynamic, ?has_yerr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(lines:Dynamic, ?has_xerr:Dynamic, ?has_yerr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Implement iter(self).
 	**/
 	public function __iter__():Dynamic;

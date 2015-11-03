@@ -43,6 +43,10 @@ package matplotlib.backend_managers;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, sender:Dynamic, tool:Dynamic, ?canvasevent:Dynamic, ?data:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(name:Dynamic, sender:Dynamic, tool:Dynamic, ?canvasevent:Dynamic, ?data:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

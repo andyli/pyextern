@@ -43,6 +43,10 @@ package scipy.signal.ltisys;
 	@:native("__init__")
 	public function ___init__(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?kwds:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

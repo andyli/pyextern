@@ -46,6 +46,13 @@ package docutils.readers.doctree;
 	@:native("__init__")
 	public function ___init__(?parser:Dynamic, ?parser_name:Dynamic):Dynamic;
 	/**
+		Initialize the Reader instance.
+		
+		Several instance attributes are defined with dummy initial values.
+		Subclasses may use these attributes as they wish.
+	**/
+	public function new(?parser:Dynamic, ?parser_name:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

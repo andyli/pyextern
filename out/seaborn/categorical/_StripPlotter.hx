@@ -43,6 +43,10 @@ package seaborn.categorical;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
 	/**
+		Initialize the plotter.
+	**/
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, jitter:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -69,6 +69,36 @@ package pandas.tseries.holiday;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?offset:Dynamic, ?observance:Dynamic, ?start_date:Dynamic, ?end_date:Dynamic, ?days_of_week:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		name : str
+		    Name of the holiday , defaults to class name
+		offset : array of pandas.tseries.offsets or
+		        class from pandas.tseries.offsets
+		    computes offset from  date
+		observance: function
+		    computes when holiday is given a pandas Timestamp
+		days_of_week:
+		    provide a tuple of days e.g  (0,1,2,3,) for Monday Through Thursday
+		    Monday=0,..,Sunday=6
+		
+		Examples
+		--------
+		>>> from pandas.tseries.holiday import Holiday, nearest_workday
+		>>> from pandas import DateOffset
+		>>> from dateutil.relativedelta import MO
+		>>> USMemorialDay = Holiday('MemorialDay', month=5, day=24,
+		                            offset=DateOffset(weekday=MO(1)))
+		>>> USLaborDay = Holiday('Labor Day', month=9, day=1,
+		                    offset=DateOffset(weekday=MO(1)))
+		>>> July3rd = Holiday('July 3rd', month=7, day=3,)
+		>>> NewYears = Holiday('New Years Day', month=1,  day=1,
+		                       observance=nearest_workday),
+		>>> July3rd = Holiday('July 3rd', month=7, day=3,
+		                      days_of_week=(0, 1, 2, 3))
+	**/
+	public function new(name:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?offset:Dynamic, ?observance:Dynamic, ?start_date:Dynamic, ?end_date:Dynamic, ?days_of_week:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

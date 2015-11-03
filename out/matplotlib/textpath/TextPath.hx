@@ -68,6 +68,18 @@ package matplotlib.textpath;
 	@:native("__init__")
 	public function ___init__(xy:Dynamic, s:Dynamic, ?size:Dynamic, ?prop:Dynamic, ?_interpolation_steps:Dynamic, ?usetex:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Create a path from the text. No support for TeX yet. Note that
+		it simply is a path, not an artist. You need to use the
+		PathPatch (or other artists) to draw this path onto the
+		canvas.
+		
+		xy : position of the text.
+		s : text
+		size : font size
+		prop : font property
+	**/
+	public function new(xy:Dynamic, s:Dynamic, ?size:Dynamic, ?prop:Dynamic, ?_interpolation_steps:Dynamic, ?usetex:Dynamic, ?kl:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

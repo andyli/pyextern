@@ -48,6 +48,10 @@ package matplotlib.axes._base;
 	@:native("__init__")
 	public function ___init__(axes:Dynamic, ?command:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(axes:Dynamic, ?command:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

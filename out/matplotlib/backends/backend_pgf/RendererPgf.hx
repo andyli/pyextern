@@ -48,6 +48,15 @@ package matplotlib.backends.backend_pgf;
 	@:native("__init__")
 	public function ___init__(figure:Dynamic, fh:Dynamic, ?dummy:Dynamic):Dynamic;
 	/**
+		Creates a new PGF renderer that translates any drawing instruction
+		into text commands to be interpreted in a latex pgfpicture environment.
+		
+		Attributes:
+		* figure: Matplotlib figure to initialize height, width and dpi from.
+		* fh: File handle for the output of the drawing commands.
+	**/
+	public function new(figure:Dynamic, fh:Dynamic, ?dummy:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

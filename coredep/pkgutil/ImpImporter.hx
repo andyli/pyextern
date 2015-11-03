@@ -43,6 +43,10 @@ package pkgutil;
 	@:native("__init__")
 	public function ___init__(?path:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?path:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

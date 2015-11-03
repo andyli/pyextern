@@ -47,6 +47,10 @@ package pandas.core.config;
 	@:native("__init__")
 	public function ___init__(func:Dynamic, doc_tmpl:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(func:Dynamic, doc_tmpl:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

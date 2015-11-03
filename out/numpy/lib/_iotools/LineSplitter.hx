@@ -47,6 +47,10 @@ package numpy.lib._iotools;
 	@:native("__init__")
 	public function ___init__(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?delimiter:Dynamic, ?comments:Dynamic, ?autostrip:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

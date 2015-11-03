@@ -65,6 +65,31 @@ package matplotlib.collections;
 	@:native("__init__")
 	public function ___init__(paths:Dynamic, ?sizes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		*paths* is a sequence of :class:`matplotlib.path.Path`
+		instances.
+		
+		    Valid Collection keyword arguments:
+		
+		        * *edgecolors*: None
+		        * *facecolors*: None
+		        * *linewidths*: None
+		        * *antialiaseds*: None
+		        * *offsets*: None
+		        * *transOffset*: transforms.IdentityTransform()
+		        * *norm*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		        * *cmap*: None (optional for
+		          :class:`matplotlib.cm.ScalarMappable`)
+		
+		    *offsets* and *transOffset* are used to translate the patch after
+		    rendering (default no offsets)
+		
+		    If any of *edgecolors*, *facecolors*, *linewidths*, *antialiaseds*
+		    are None, they default to their :data:`matplotlib.rcParams` patch
+		    setting, in sequence form.
+	**/
+	public function new(paths:Dynamic, ?sizes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

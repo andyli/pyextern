@@ -43,6 +43,10 @@ package docutils.utils.math.math2html;
 	@:native("__init__")
 	public function ___init__(text:Dynamic):Dynamic;
 	/**
+		Create the position from elyxer.some text.
+	**/
+	public function new(text:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -98,6 +98,64 @@ package matplotlib.patches;
 	@:native("__init__")
 	public function ___init__(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?length_includes_head:Dynamic, ?head_width:Dynamic, ?head_length:Dynamic, ?shape:Dynamic, ?overhang:Dynamic, ?head_starts_at_zero:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Constructor arguments
+		  *width*: float (default: 0.001)
+		    width of full arrow tail
+		
+		  *length_includes_head*: [True | False] (default: False)
+		    True if head is to be counted in calculating the length.
+		
+		  *head_width*: float or None (default: 3*width)
+		    total width of the full arrow head
+		
+		  *head_length*: float or None (default: 1.5 * head_width)
+		    length of arrow head
+		
+		  *shape*: ['full', 'left', 'right'] (default: 'full')
+		    draw the left-half, right-half, or full arrow
+		
+		  *overhang*: float (default: 0)
+		    fraction that the arrow is swept back (0 overhang means
+		    triangular shape). Can be negative or greater than one.
+		
+		  *head_starts_at_zero*: [True | False] (default: False)
+		    if True, the head starts being drawn at coordinate 0
+		    instead of ending at coordinate 0.
+		
+		Other valid kwargs (inherited from :class:`Patch`) are:
+		  agg_filter: unknown
+		  alpha: float or None         
+		  animated: [True | False]         
+		  antialiased or aa: [True | False]  or None for default         
+		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  capstyle: ['butt' | 'round' | 'projecting']         
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
+		  clip_on: [True | False]         
+		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  color: matplotlib color spec
+		  contains: a callable function         
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
+		  figure: a :class:`matplotlib.figure.Figure` instance         
+		  fill: [True | False]         
+		  gid: an id string         
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
+		  joinstyle: ['miter' | 'round' | 'bevel']         
+		  label: string or anything printable with '%s' conversion.         
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or lw: float or None for default         
+		  path_effects: unknown
+		  picker: [None|float|boolean|callable]         
+		  rasterized: [True | False | None]         
+		  sketch_params: unknown
+		  snap: unknown
+		  transform: :class:`~matplotlib.transforms.Transform` instance         
+		  url: a url string         
+		  visible: [True | False]         
+		  zorder: any number         
+	**/
+	public function new(x:Dynamic, y:Dynamic, dx:Dynamic, dy:Dynamic, ?width:Dynamic, ?length_includes_head:Dynamic, ?head_width:Dynamic, ?head_length:Dynamic, ?shape:Dynamic, ?overhang:Dynamic, ?head_starts_at_zero:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -43,6 +43,10 @@ package matplotlib.legend_handler;
 	@:native("__init__")
 	public function ___init__(?numpoints:Dynamic, ?yoffsets:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?numpoints:Dynamic, ?yoffsets:Dynamic, ?kw:python.KwArgs<Dynamic>):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

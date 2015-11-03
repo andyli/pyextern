@@ -47,6 +47,10 @@ package numpy.lib.npyio;
 	**/
 	@:native("__init__")
 	public function ___init__(fid:Dynamic, ?own_fid:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
+	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(fid:Dynamic, ?own_fid:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

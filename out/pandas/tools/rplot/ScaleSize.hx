@@ -59,6 +59,17 @@ package pandas.tools.rplot;
 	@:native("__init__")
 	public function ___init__(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Dynamic;
 	/**
+		Initialize ScaleSize instance.
+		
+		Parameters:
+		-----------
+		column: string, a column name
+		min_size: float, minimum point size
+		max_size: float, maximum point size
+		transform: a one argument function of form float -> float (e.g. lambda x: log(x))
+	**/
+	public function new(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

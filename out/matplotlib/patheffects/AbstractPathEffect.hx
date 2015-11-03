@@ -46,6 +46,13 @@ package matplotlib.patheffects;
 	@:native("__init__")
 	public function ___init__(?offset:Dynamic):Dynamic;
 	/**
+		Parameters
+		----------
+		offset : pair of floats
+		    The offset to apply to the path, measured in points.
+	**/
+	public function new(?offset:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

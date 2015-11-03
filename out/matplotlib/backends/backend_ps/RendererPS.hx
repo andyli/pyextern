@@ -45,6 +45,12 @@ package matplotlib.backends.backend_ps;
 	@:native("__init__")
 	public function ___init__(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Dynamic;
 	/**
+		Although postscript itself is dpi independent, we need to
+		imform the image code about a requested dpi to generate high
+		res images and them scale them before embeddin them
+	**/
+	public function new(width:Dynamic, height:Dynamic, pswriter:Dynamic, ?imagedpi:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

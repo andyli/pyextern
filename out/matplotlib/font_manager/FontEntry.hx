@@ -43,6 +43,10 @@ package matplotlib.font_manager;
 	@:native("__init__")
 	public function ___init__(?fname:Dynamic, ?name:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic):Dynamic;
 	/**
+		Initialize self.  See help(type(self)) for accurate signature.
+	**/
+	public function new(?fname:Dynamic, ?name:Dynamic, ?style:Dynamic, ?variant:Dynamic, ?weight:Dynamic, ?stretch:Dynamic, ?size:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;

@@ -109,6 +109,54 @@ package matplotlib.colors;
 	@:native("__init__")
 	public function ___init__(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Dynamic;
 	/**
+		Create color map from linear mapping segments
+		
+		segmentdata argument is a dictionary with a red, green and blue
+		entries. Each entry should be a list of *x*, *y0*, *y1* tuples,
+		forming rows in a table. Entries for alpha are optional.
+		
+		Example: suppose you want red to increase from 0 to 1 over
+		the bottom half, green to do the same over the middle half,
+		and blue over the top half.  Then you would use::
+		
+		    cdict = {'red':   [(0.0,  0.0, 0.0),
+		                       (0.5,  1.0, 1.0),
+		                       (1.0,  1.0, 1.0)],
+		
+		             'green': [(0.0,  0.0, 0.0),
+		                       (0.25, 0.0, 0.0),
+		                       (0.75, 1.0, 1.0),
+		                       (1.0,  1.0, 1.0)],
+		
+		             'blue':  [(0.0,  0.0, 0.0),
+		                       (0.5,  0.0, 0.0),
+		                       (1.0,  1.0, 1.0)]}
+		
+		Each row in the table for a given color is a sequence of
+		*x*, *y0*, *y1* tuples.  In each sequence, *x* must increase
+		monotonically from 0 to 1.  For any input value *z* falling
+		between *x[i]* and *x[i+1]*, the output value of a given color
+		will be linearly interpolated between *y1[i]* and *y0[i+1]*::
+		
+		    row i:   x  y0  y1
+		                   /
+		                  /
+		    row i+1: x  y0  y1
+		
+		Hence y0 in the first row and y1 in the last row are never used.
+		
+		
+		.. seealso::
+		
+		       :meth:`LinearSegmentedColormap.from_list`
+		       Static method; factory function for generating a
+		       smoothly-varying LinearSegmentedColormap.
+		
+		       :func:`makeMappingArray`
+		       For information about making a mapping array.
+	**/
+	public function new(name:Dynamic, segmentdata:Dynamic, ?N:Dynamic, ?gamma:Dynamic):Void;
+	/**
 		Return self<=value.
 	**/
 	public function __le__(value:Dynamic):Dynamic;
