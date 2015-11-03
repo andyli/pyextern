@@ -58,7 +58,7 @@ package pkgutil;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -96,7 +96,7 @@ package pkgutil;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	public function find_module(fullname:Dynamic, ?path:Dynamic):Dynamic;
 	public function iter_modules(?prefix:Dynamic):Dynamic;
 }

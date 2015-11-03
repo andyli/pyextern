@@ -61,7 +61,7 @@ package inspect;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -142,12 +142,12 @@ package inspect;
 	/**
 		Return a new Traceback object replacing specified fields with new values
 	**/
-	public function _replace(kwds:Dynamic):Dynamic;
+	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var code_context : Dynamic;
+	public var code_context : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
 	**/
@@ -155,18 +155,18 @@ package inspect;
 	/**
 		Alias for field number 0
 	**/
-	static public var filename : Dynamic;
+	public var filename : Dynamic;
 	/**
 		Alias for field number 2
 	**/
 	@:native("function")
-	static public var _function : Dynamic;
+	public var _function : Dynamic;
 	/**
 		Alias for field number 4
 	**/
-	static public var index : Dynamic;
+	public var index : Dynamic;
 	/**
 		Alias for field number 1
 	**/
-	static public var lineno : Dynamic;
+	public var lineno : Dynamic;
 }

@@ -58,7 +58,7 @@ package inspect;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -139,20 +139,20 @@ package inspect;
 		    `Parameter.KEYWORD_ONLY`, `Parameter.VAR_KEYWORD`.
 	**/
 	static public function _parameter_cls(name:Dynamic, kind:Dynamic, _default:Dynamic, annotation:Dynamic):Dynamic;
-	static public var _parameters : Dynamic;
-	static public var _return_annotation : Dynamic;
+	public var _parameters : Dynamic;
+	public var _return_annotation : Dynamic;
 	/**
 		Get a BoundArguments object, that maps the passed `args`
 		and `kwargs` to the function's signature.  Raises `TypeError`
 		if the passed arguments can not be bound.
 	**/
-	public function bind(kwargs:Dynamic):Dynamic;
+	public function bind(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a BoundArguments object, that partially maps the
 		passed `args` and `kwargs` to the function's signature.
 		Raises `TypeError` if the passed arguments can not be bound.
 	**/
-	public function bind_partial(kwargs:Dynamic):Dynamic;
+	public function bind_partial(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Marker object for Signature.empty and Parameter.empty.
 	**/
@@ -169,12 +169,12 @@ package inspect;
 		Constructs Signature for the given python function.
 	**/
 	static public function from_function(func:Dynamic):Dynamic;
-	static public var parameters : Dynamic;
+	public var parameters : Dynamic;
 	/**
 		Creates a customized copy of the Signature.
 		Pass 'parameters' and/or 'return_annotation' arguments
 		to override them in the new copy.
 	**/
 	public function replace(?parameters:Dynamic, ?return_annotation:Dynamic):Dynamic;
-	static public var return_annotation : Dynamic;
+	public var return_annotation : Dynamic;
 }

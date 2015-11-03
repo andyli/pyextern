@@ -29,6 +29,33 @@ class Main {
 	public function new():Void {}
 
 	public function write(outPath:String):Void {
+		// setup typedefs of $name => ${name}_Module
+		function collide(m:String):TypeDefinition->Bool {
+			var real_td = getTd(m, "", false);
+			if (real_td == null) return function(_) return true;
+			var pack = real_td.pack.join(".").toLowerCase();
+			var hxName = real_td.name.substr(0, -"_Module".length).toLowerCase();
+			return function(td:TypeDefinition) return td.name.toLowerCase() == hxName && td.pack.join(".").toLowerCase() == pack;
+		}
+		var canTypedef = [
+			for (m in modules.keys())
+			if (!Lambda.exists(tds,collide(m)))
+			m
+		];
+
+		for (m in canTypedef) {
+			var real_td = getTd(m, "");
+			try {
+				var td = getTd(m, real_td.name.substr(0, -"_Module".length));
+				td.meta = [];
+				td.isExtern = false;
+				td.kind = TDAlias(TPath({
+					pack: real_td.pack,
+					name: real_td.name
+				}));
+			} catch (e:Dynamic) {}
+		}
+
 		//command("rm", ["-rf", outPath]);
 		createDirectory(outPath);
 		setCwd(outPath);
@@ -245,9 +272,7 @@ class Main {
 								name: real_td.name
 							}));
 						}
-					} catch (e:Dynamic) {
-
-					}
+					} catch (e:Dynamic) {}
 				}
 			} else { // is a module member but is not a mobule/class
 				var td = getTd(moduleName, "");
@@ -441,7 +466,7 @@ class Main {
 		}
 	}
 
-	function getTd(module:String, fullname:String):TypeDefinition {
+	function getTd(module:String, fullname:String, create:Bool = true):TypeDefinition {
 		var pack = [
 			for (p in module.split(".")) {
 				p = lowerCaseFirstLetter(p);
@@ -478,7 +503,9 @@ class Main {
 		}
 
 		return switch (tds[hxFullName]) {
-			case null:
+			case null if (!create):
+				null;
+			case null if (create):
 				// find td of same package and same name (with different cases)
 				var td = tds.find(function(td){
 					return td.name.toLowerCase() == hxName.toLowerCase() && td.pack.join(".").toLowerCase() == pack.join(".").toLowerCase();

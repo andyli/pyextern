@@ -73,7 +73,7 @@ package importlib.abc;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,7 +111,7 @@ package importlib.abc;
 	/**
 		list of weak references to the object (if defined)
 	**/
-	static public var __weakref__ : Dynamic;
+	public var __weakref__ : Dynamic;
 	static public var _abc_cache : Dynamic;
 	static public var _abc_negative_cache : Dynamic;
 	static public var _abc_negative_cache_version : Dynamic;
@@ -142,7 +142,7 @@ package importlib.abc;
 	/**
 		Return the path to the source file as found by the finder.
 	**/
-	public function get_filename(?name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function get_filename(?name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Abstract method which should return the source code for the
 		module.  The fullname is a str.  Returns a str.
@@ -162,7 +162,7 @@ package importlib.abc;
 		
 		This method is deprecated.  Use exec_module() instead.
 	**/
-	public function load_module(?name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function load_module(?name:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a module's repr.
 		

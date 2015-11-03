@@ -925,7 +925,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or name or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -3564,7 +3564,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'yerr', 'height', 'width', 'tick_label', 'ecolor', 'color', 'left', 'edgecolor', 'linewidth', 'xerr', 'bottom'.
+		* All arguments with the following names: 'tick_label', 'color', 'linewidth', 'ecolor', 'width', 'yerr', 'left', 'edgecolor', 'height', 'xerr', 'bottom'.
 		
 		
 		
@@ -10299,7 +10299,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'yerr', 'x', 'xerr', 'y'.
+		* All arguments with the following names: 'x', 'xerr', 'yerr', 'y'.
 		
 		
 		
@@ -10411,7 +10411,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'lineoffsets', 'linestyles', 'linewidths', 'colors', 'linelengths', 'positions'.
+		* All arguments with the following names: 'positions', 'lineoffsets', 'linewidths', 'linestyles', 'colors', 'linelengths'.
 		
 		
 		
@@ -11335,7 +11335,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or name or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -11593,7 +11593,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y1', 'where', 'x', 'y2'.
+		* All arguments with the following names: 'x', 'y1', 'where', 'y2'.
 		
 		
 		
@@ -11693,7 +11693,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'x1', 'x2', 'y'.
+		* All arguments with the following names: 'x2', 'x1', 'where', 'y'.
 		
 		
 		
@@ -14493,7 +14493,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x'.
+		* All arguments with the following names: 'x', 'weights'.
 		
 		
 		
@@ -14580,7 +14580,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x', 'y'.
+		* All arguments with the following names: 'x', 'weights', 'y'.
 		
 		
 		
@@ -14884,7 +14884,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmax', 'xmin', 'y'.
+		* All arguments with the following names: 'xmin', 'xmax', 'y'.
 		
 		
 		
@@ -23957,7 +23957,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
+		* All arguments with the following names: 'x', 'labels', 'colors', 'explode'.
 		
 		
 		
@@ -28958,7 +28958,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 's', 'linewidths', 'x', 'facecolors', 'c', 'edgecolors', 'facecolor', 'color', 'y'.
+		* All arguments with the following names: 'color', 'facecolor', 'linewidths', 's', 'x', 'facecolors', 'y', 'c', 'edgecolors'.
 		
 		
 		
@@ -34801,7 +34801,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'x', 'colors', 'ymax'.
+		* All arguments with the following names: 'x', 'ymax', 'colors', 'ymin'.
 		
 		
 		

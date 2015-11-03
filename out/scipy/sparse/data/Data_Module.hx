@@ -20,59 +20,29 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		sin(x[, out])
+		rint(x[, out])
 		
-		Trigonometric sine, element-wise.
+		Round elements of the array to the nearest integer.
 		
 		Parameters
 		----------
 		x : array_like
-		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		    Input array.
 		
 		Returns
 		-------
-		y : array_like
-		    The sine of each element of x.
+		out : ndarray or scalar
+		    Output array is same shape and type as `x`.
 		
 		See Also
 		--------
-		arcsin, sinh, cos
-		
-		Notes
-		-----
-		The sine is one of the fundamental functions of trigonometry (the
-		mathematical study of triangles).  Consider a circle of radius 1
-		centered on the origin.  A ray comes in from the :math:`+x` axis, makes
-		an angle at the origin (measured counter-clockwise from that axis), and
-		departs from the origin.  The :math:`y` coordinate of the outgoing
-		ray's intersection with the unit circle is the sine of that angle.  It
-		ranges from -1 for :math:`x=3\pi / 2` to +1 for :math:`\pi / 2.`  The
-		function has zeroes where the angle is a multiple of :math:`\pi`.
-		Sines of angles between :math:`\pi` and :math:`2\pi` are negative.
-		The numerous properties of the sine and related functions are included
-		in any standard trigonometry text.
+		ceil, floor, trunc
 		
 		Examples
 		--------
-		Print sine of one angle:
-		
-		>>> np.sin(np.pi/2.)
-		1.0
-		
-		Print sines of an array of angles given in degrees:
-		
-		>>> np.sin(np.array((0., 30., 45., 60., 90.)) * np.pi / 180. )
-		array([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])
-		
-		Plot the sine function:
-		
-		>>> import matplotlib.pylab as plt
-		>>> x = np.linspace(-np.pi, np.pi, 201)
-		>>> plt.plot(x, np.sin(x))
-		>>> plt.xlabel('Angle [rad]')
-		>>> plt.ylabel('sin(x)')
-		>>> plt.axis('tight')
-		>>> plt.show()
+		>>> a = np.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])
+		>>> np.rint(a)
+		array([-2., -2., -0.,  0.,  2.,  2.,  2.])
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

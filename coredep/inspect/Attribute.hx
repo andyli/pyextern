@@ -61,7 +61,7 @@ package inspect;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Implement iter(self).
 	**/
@@ -142,7 +142,7 @@ package inspect;
 	/**
 		Return a new Attribute object replacing specified fields with new values
 	**/
-	public function _replace(kwds:Dynamic):Dynamic;
+	public function _replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _source : Dynamic;
 	/**
 		T.count(value) -> integer -- return number of occurrences of value
@@ -151,7 +151,7 @@ package inspect;
 	/**
 		Alias for field number 2
 	**/
-	static public var defining_class : Dynamic;
+	public var defining_class : Dynamic;
 	/**
 		T.index(value, [start, [stop]]) -> integer -- return first index of value.
 		Raises ValueError if the value is not present.
@@ -160,13 +160,13 @@ package inspect;
 	/**
 		Alias for field number 1
 	**/
-	static public var kind : Dynamic;
+	public var kind : Dynamic;
 	/**
 		Alias for field number 0
 	**/
-	static public var name : Dynamic;
+	public var name : Dynamic;
 	/**
 		Alias for field number 3
 	**/
-	static public var object : Dynamic;
+	public var object : Dynamic;
 }

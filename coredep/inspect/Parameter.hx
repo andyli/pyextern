@@ -62,7 +62,7 @@ package inspect;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(args:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -99,17 +99,17 @@ package inspect;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _annotation : Dynamic;
-	static public var _default : Dynamic;
-	static public var _kind : Dynamic;
-	static public var _name : Dynamic;
-	static public var annotation : Dynamic;
+	public var _annotation : Dynamic;
+	public var _default : Dynamic;
+	public var _kind : Dynamic;
+	public var _name : Dynamic;
+	public var annotation : Dynamic;
 	/**
 		Marker object for Signature.empty and Parameter.empty.
 	**/
 	static public function empty():Dynamic;
-	static public var kind : Dynamic;
-	static public var name : Dynamic;
+	public var kind : Dynamic;
+	public var name : Dynamic;
 	/**
 		Creates a customized copy of the Parameter.
 	**/
