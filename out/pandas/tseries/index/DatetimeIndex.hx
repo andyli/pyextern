@@ -806,7 +806,7 @@ package pandas.tseries.index;
 		-------
 		loc : int
 	**/
-	public function get_loc(key:Dynamic, ?method:Dynamic, ?tolerance:Dynamic):Dynamic;
+	public function get_loc(key:Dynamic, ?method:Dynamic, ?tolerance:Dynamic):Int;
 	/**
 		Calculate slice bound that corresponds to given label.
 		
@@ -1062,7 +1062,7 @@ package pandas.tseries.index;
 		-------
 		nunique : int
 	**/
-	public function nunique(?dropna:Dynamic):Dynamic;
+	public function nunique(?dropna:Dynamic):Int;
 	static public var offset : Dynamic;
 	/**
 		Return sorted copy of Index

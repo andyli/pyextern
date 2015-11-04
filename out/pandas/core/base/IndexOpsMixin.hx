@@ -235,7 +235,7 @@ package pandas.core.base;
 		-------
 		nunique : int
 	**/
-	public function nunique(?dropna:Dynamic):Dynamic;
+	public function nunique(?dropna:Dynamic):Int;
 	/**
 		np.ndarray searchsorted compat 
 	**/

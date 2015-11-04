@@ -9,6 +9,7 @@ import haxe.macro.*;
 import haxe.macro.Expr;
 using StringTools;
 using Lambda;
+using selecthxml.SelectDom;
 
 import python.Tuple;
 
@@ -415,14 +416,40 @@ class Main {
 		].indexOf(name) >= 0;
 	}
 
+	static var rstParser = new docutils.parsers.rst.Parser();
+	static var docDefaults = new docutils.frontend.OptionParser([docutils.parsers.rst.Parser]).get_default_values();
+	static function docToFun(doc:String):Function {
+		var document = docutils.utils.Utils.new_document("", docDefaults);
+		var xml = try {
+			rstParser.parse(doc, document);
+			Xml.parse(document.asdom().toxml());
+		} catch (e:Dynamic) { null; }
+
+		var ret:ComplexType = if (xml != null) {
+			switch (xml.select("section[ids=returns]")) {
+				case [ret]:
+					var fast = new haxe.xml.Fast(ret);
+					if (fast.hasNode.paragraph) {
+						var retDoc = fast.node.paragraph.innerHTML;
+						var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
+						if (re.match(retDoc)) {
+							hxType(re.matched(2));
+						} else null;
+					} else null;
+				case _: null;
+			}
+		} else null;
+
+		return {
+			params: [],
+			args: null,
+			ret: ret,
+			expr: null
+		}
+	}
+
 	static function sigToFun(sig:Dynamic, doc:Null<String>):Function {
-		// if (doc != null) {
-		// 	var document = docutils.utils.Utils.new_document("");
-		// 	var parser = new docutils.parsers.rst.Parser();
-			
-		// 	var doc = Xml.parse(docutils.core.Core.publish_doctree(doc).asdom().toxml());
-		// 	// trace(doc.toString());
-		// }
+		var docFunc = if (doc != null) docToFun(doc) else null;
 
 		var args = [for (p in (sig.parameters:python.Dict<String, Dynamic>)) {
 			// trace(Reflect.field(p, "default") == Inspect.Parameter.empty);
@@ -449,8 +476,28 @@ class Main {
 		return {
 			params:[],
 			args: args,
-			ret: macro:Dynamic,
+			ret: if (docFunc != null && docFunc.ret != null) docFunc.ret else macro:Dynamic,
 			expr: null
+		}
+	}
+
+	static function hxType(type:String):ComplexType {
+		return switch (type) {
+			case "callable":
+				macro:haxe.Constraints.Function;
+			case "int":
+				macro:Int;
+			case "float":
+				macro:Float;
+			case "string":
+				macro:String;
+			case "array":
+				macro:Array<Dynamic>;
+			case "object":
+				macro:Dynamic;
+			case other:
+				trace(other);
+				null;
 		}
 	}
 

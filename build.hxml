@@ -1,5 +1,6 @@
 -cp src
 -cp coredep
+-lib selecthxml
 -main pyextern.Main
 -python Main.py
 # -cmd python3 Main.py docutils,pkgutil,inspect,importlib coredep

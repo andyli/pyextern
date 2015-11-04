@@ -958,7 +958,7 @@ package pandas.tseries.interval;
 		-------
 		nunique : int
 	**/
-	public function nunique(?dropna:Dynamic):Dynamic;
+	public function nunique(?dropna:Dynamic):Int;
 	/**
 		Return sorted copy of Index
 		

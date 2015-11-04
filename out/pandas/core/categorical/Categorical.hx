@@ -938,7 +938,7 @@ package pandas.core.categorical;
 		-------
 		dense : array
 	**/
-	public function to_dense():Dynamic;
+	public function to_dense():Array<Dynamic>;
 	/**
 		Return the ``Categorical`` which ``categories`` and ``codes`` are unique.
 		Unused categories are NOT returned.

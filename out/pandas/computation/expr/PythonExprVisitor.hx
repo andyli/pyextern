@@ -146,7 +146,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Add(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Add(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -155,7 +155,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_And(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_And(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Assert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		support a single assignment node, like
@@ -182,7 +182,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_BitAnd(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_BitAnd(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -191,7 +191,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_BitOr(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_BitOr(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_BoolOp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Break(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -219,7 +219,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Eq(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Eq(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_ExceptHandler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Expr(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Expression(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -231,7 +231,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_FloorDiv(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_FloorDiv(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_For(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_FunctionDef(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_GeneratorExp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -244,7 +244,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Gt(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Gt(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -253,7 +253,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_GtE(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_GtE(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_If(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_IfExp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Import(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -272,7 +272,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Invert(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Invert(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Is(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_IsNot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Lambda(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -286,7 +286,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Lt(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Lt(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -295,7 +295,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_LtE(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_LtE(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -304,7 +304,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Mod(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Mod(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Module(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a partial function with an Op subclass with an operator
@@ -314,7 +314,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Mult(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Mult(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Name(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_NameConstant(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Nonlocal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -327,7 +327,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_NotEq(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_NotEq(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_NotIn(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Num(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -338,7 +338,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Or(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Or(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Param(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Pass(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -349,7 +349,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Pow(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Pow(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Raise(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Repr(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Return(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -369,7 +369,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_Sub(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_Sub(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_Subscript(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Suite(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Try(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -382,7 +382,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_UAdd(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_UAdd(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Return a partial function with an Op subclass with an operator
 		already passed.
@@ -391,7 +391,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	public function visit_USub(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function visit_USub(node:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	public function visit_UnaryOp(node:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_While(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_With(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

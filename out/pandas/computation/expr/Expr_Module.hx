@@ -57,7 +57,7 @@ package pandas.computation.expr;
 		-------
 		f : callable
 	**/
-	static public function _op_maker(op_class:Dynamic, op_symbol:Dynamic):Dynamic;
+	static public function _op_maker(op_class:Dynamic, op_symbol:Dynamic):haxe.Constraints.Function;
 	static public var _operator_nodes : Dynamic;
 	static public var _parsers : Dynamic;
 	/**
@@ -159,7 +159,7 @@ package pandas.computation.expr;
 		-------
 		disallowed : callable
 	**/
-	static public function disallow(nodes:Dynamic):Dynamic;
+	static public function disallow(nodes:Dynamic):haxe.Constraints.Function;
 	static public function is_term(obj:Dynamic):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

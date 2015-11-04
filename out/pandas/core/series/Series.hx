@@ -1059,7 +1059,7 @@ package pandas.core.series;
 		-------
 		autocorr : float
 	**/
-	public function autocorr(?lag:Dynamic):Dynamic;
+	public function autocorr(?lag:Dynamic):Float;
 	/**
 		Return a list of the row axis labels
 	**/
@@ -1345,7 +1345,7 @@ package pandas.core.series;
 		-------
 		correlation : float
 	**/
-	public function corr(other:Dynamic, ?method:Dynamic, ?min_periods:Dynamic):Dynamic;
+	public function corr(other:Dynamic, ?method:Dynamic, ?min_periods:Dynamic):Float;
 	/**
 		Return number of non-NA/null observations in the Series
 		
@@ -1375,7 +1375,7 @@ package pandas.core.series;
 		
 		Normalized by N-1 (unbiased estimator).
 	**/
-	public function cov(other:Dynamic, ?min_periods:Dynamic):Dynamic;
+	public function cov(other:Dynamic, ?min_periods:Dynamic):Float;
 	/**
 		Return cumulative max over requested axis.
 		
@@ -2704,7 +2704,7 @@ package pandas.core.series;
 		-------
 		nunique : int
 	**/
-	public function nunique(?dropna:Dynamic):Dynamic;
+	public function nunique(?dropna:Dynamic):Int;
 	/**
 		DEPRECATED: use :meth:`Series.sort_values`
 		

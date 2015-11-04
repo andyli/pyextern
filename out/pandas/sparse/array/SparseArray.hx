@@ -581,7 +581,7 @@ package pandas.sparse.array;
 		-------
 		nobs : int
 	**/
-	public function count():Dynamic;
+	public function count():Int;
 	/**
 		An object to simplify the interaction of the array with the ctypes
 		module.
@@ -1146,7 +1146,7 @@ package pandas.sparse.array;
 		-------
 		mean : float
 	**/
-	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Float;
 	/**
 		a.min(axis=None, out=None, keepdims=False)
 		
@@ -1797,7 +1797,7 @@ package pandas.sparse.array;
 		-------
 		sum : float
 	**/
-	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Float;
 	/**
 		a.swapaxes(axis1, axis2)
 		
