@@ -42,7 +42,7 @@ package numpy.matrixlib;
 		matrix([[5, 2],
 		        [3, 4]])
 	**/
-	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):numpy.Matrix;
 	/**
 		Run benchmarks for module using nose.
 		
@@ -96,7 +96,7 @@ package numpy.matrixlib;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Build a matrix object from a string, nested sequence, or array.
 		
@@ -146,7 +146,7 @@ package numpy.matrixlib;
 		        [3, 4, 7, 8],
 		        [5, 6, 9, 0]])
 	**/
-	static public function bmat(obj:Dynamic, ?ldict:Dynamic, ?gdict:Dynamic):Dynamic;
+	static public function bmat(obj:Dynamic, ?ldict:Dynamic, ?gdict:Dynamic):numpy.Matrix;
 	static public var division : Dynamic;
 	/**
 		Interpret the input as a matrix.
@@ -178,7 +178,7 @@ package numpy.matrixlib;
 		matrix([[5, 2],
 		        [3, 4]])
 	**/
-	static public function mat(data:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function mat(data:Dynamic, ?dtype:Dynamic):numpy.Matrix;
 	static public var print_function : Dynamic;
 	/**
 		Run tests for module using nose.

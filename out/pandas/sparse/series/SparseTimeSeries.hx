@@ -235,7 +235,7 @@ package pandas.sparse.series;
 		-------
 		combined : Series
 	**/
-	public function _binop(other:Dynamic, func:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function _binop(other:Dynamic, func:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.Series;
 	public function _box_item_values(key:Dynamic, values:Dynamic):Dynamic;
 	public var _can_hold_na : Dynamic;
 	/**
@@ -650,7 +650,7 @@ package pandas.sparse.series;
 		--------
 		Series.radd
 	**/
-	public function add(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function add(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Concatenate prefix string with panel items names.
 		
@@ -765,7 +765,7 @@ package pandas.sparse.series;
 		-------
 		appended : Series
 	**/
-	public function append(to_append:Dynamic, ?verify_integrity:Dynamic):Dynamic;
+	public function append(to_append:Dynamic, ?verify_integrity:Dynamic):pandas.Series;
 	/**
 		Invoke function on values of Series. Can be ufunc (a NumPy function
 		that applies to the entire Series) or a Python function that only works
@@ -1190,7 +1190,7 @@ package pandas.sparse.series;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):Dynamic;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated
 		
@@ -1242,7 +1242,7 @@ package pandas.sparse.series;
 		-------
 		result : Series
 	**/
-	public function combine(other:Dynamic, func:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function combine(other:Dynamic, func:Dynamic, ?fill_value:Dynamic):pandas.Series;
 	/**
 		Combine Series values, choosing the calling Series's values
 		first. Result index will be the union of the two indexes
@@ -1255,7 +1255,7 @@ package pandas.sparse.series;
 		-------
 		y : Series
 	**/
-	public function combine_first(other:Dynamic):Dynamic;
+	public function combine_first(other:Dynamic):pandas.Series;
 	/**
 		Return the compound percentage of the values for the requested axis
 		
@@ -1500,7 +1500,7 @@ package pandas.sparse.series;
 		-------
 		diffed : Series
 	**/
-	public function diff(?periods:Dynamic):Dynamic;
+	public function diff(?periods:Dynamic):pandas.Series;
 	/**
 		Floating division of series and other, element-wise (binary operator `truediv`).
 		
@@ -1525,7 +1525,7 @@ package pandas.sparse.series;
 		--------
 		Series.rtruediv
 	**/
-	public function div(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function div(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Floating division of series and other, element-wise (binary operator `truediv`).
 		
@@ -1550,7 +1550,7 @@ package pandas.sparse.series;
 		--------
 		Series.rtruediv
 	**/
-	public function divide(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function divide(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Matrix multiplication with DataFrame or inner-product with Series
 		objects
@@ -1603,7 +1603,7 @@ package pandas.sparse.series;
 		-------
 		deduplicated : Series
 	**/
-	public function drop_duplicates(?keep:Dynamic, ?inplace:Dynamic):Dynamic;
+	public function drop_duplicates(?keep:Dynamic, ?inplace:Dynamic):pandas.Series;
 	/**
 		Analogous to Series.dropna. If fill_value=NaN, returns a dense Series
 	**/
@@ -1644,7 +1644,7 @@ package pandas.sparse.series;
 		-------
 		duplicated : Series
 	**/
-	public function duplicated(?keep:Dynamic):Dynamic;
+	public function duplicated(?keep:Dynamic):pandas.Series;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
@@ -1715,7 +1715,7 @@ package pandas.sparse.series;
 		-------
 		filled : Series
 	**/
-	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Restrict the info axis to set of items or wildcard
 		
@@ -1787,7 +1787,7 @@ package pandas.sparse.series;
 		--------
 		Series.rfloordiv
 	**/
-	public function floordiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function floordiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Simplified alternate constructor
 	**/
@@ -1879,7 +1879,7 @@ package pandas.sparse.series;
 		-------
 		y : Series
 	**/
-	static public function from_csv(path:Dynamic, ?sep:Dynamic, ?parse_dates:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?encoding:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function from_csv(path:Dynamic, ?sep:Dynamic, ?parse_dates:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?encoding:Dynamic, ?infer_datetime_format:Dynamic):pandas.Series;
 	/**
 		return if the data is sparse|dense 
 	**/
@@ -2547,7 +2547,7 @@ package pandas.sparse.series;
 		--------
 		Series.rmod
 	**/
-	public function mod(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function mod(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Returns the mode(s) of the dataset.
 		
@@ -2589,7 +2589,7 @@ package pandas.sparse.series;
 		--------
 		Series.rmul
 	**/
-	public function mul(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function mul(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Multiplication of series and other, element-wise (binary operator `mul`).
 		
@@ -2614,7 +2614,7 @@ package pandas.sparse.series;
 		--------
 		Series.rmul
 	**/
-	public function multiply(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function multiply(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		return the number of bytes in the underlying data 
 	**/
@@ -2772,7 +2772,7 @@ package pandas.sparse.series;
 		--------
 		Series.sort_values
 	**/
-	public function order(?na_last:Dynamic, ?ascending:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?inplace:Dynamic):Dynamic;
+	public function order(?na_last:Dynamic, ?ascending:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?inplace:Dynamic):pandas.Series;
 	/**
 		Percent change over given number of periods.
 		
@@ -2798,7 +2798,7 @@ package pandas.sparse.series;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.core.frame.NDFrame;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -2892,7 +2892,7 @@ package pandas.sparse.series;
 		--------
 		Series.rpow
 	**/
-	public function pow(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function pow(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return the product of the values for the requested axis
 		
@@ -2995,7 +2995,7 @@ package pandas.sparse.series;
 		--------
 		Series.add
 	**/
-	public function radd(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function radd(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Compute data ranks (1 through n). Equal values are assigned a rank that
 		is the average of the ranks of those values
@@ -3019,7 +3019,7 @@ package pandas.sparse.series;
 		-------
 		ranks : Series
 	**/
-	public function rank(?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
+	public function rank(?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):pandas.Series;
 	/**
 		Return the flattened underlying data as an ndarray
 		
@@ -3052,7 +3052,7 @@ package pandas.sparse.series;
 		--------
 		Series.truediv
 	**/
-	public function rdiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rdiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	public var real : Dynamic;
 	/**
 		Conform SparseSeries to new Index
@@ -3063,7 +3063,7 @@ package pandas.sparse.series;
 		-------
 		reindexed : SparseSeries
 	**/
-	public function reindex(?index:Dynamic, ?method:Dynamic, ?copy:Dynamic, ?limit:Dynamic):Dynamic;
+	public function reindex(?index:Dynamic, ?method:Dynamic, ?copy:Dynamic, ?limit:Dynamic):pandas.SparseSeries;
 	/**
 		for compatibility with higher dims 
 	**/
@@ -3255,7 +3255,7 @@ package pandas.sparse.series;
 		* This method has *a lot* of options. You are encouraged to experiment
 		  and play with this method to gain intuition about how it works.
 	**/
-	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):Dynamic;
+	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -3439,7 +3439,7 @@ package pandas.sparse.series;
 		--------
 		Series.floordiv
 	**/
-	public function rfloordiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rfloordiv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Modulo of series and other, element-wise (binary operator `rmod`).
 		
@@ -3464,7 +3464,7 @@ package pandas.sparse.series;
 		--------
 		Series.mod
 	**/
-	public function rmod(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rmod(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Multiplication of series and other, element-wise (binary operator `rmul`).
 		
@@ -3489,7 +3489,7 @@ package pandas.sparse.series;
 		--------
 		Series.mul
 	**/
-	public function rmul(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rmul(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		    a.round(decimals=0, out=None)
 		
@@ -3526,7 +3526,7 @@ package pandas.sparse.series;
 		--------
 		Series.pow
 	**/
-	public function rpow(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rpow(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Subtraction of series and other, element-wise (binary operator `rsub`).
 		
@@ -3551,7 +3551,7 @@ package pandas.sparse.series;
 		--------
 		Series.sub
 	**/
-	public function rsub(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rsub(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Floating division of series and other, element-wise (binary operator `rtruediv`).
 		
@@ -3576,7 +3576,7 @@ package pandas.sparse.series;
 		--------
 		Series.truediv
 	**/
-	public function rtruediv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rtruediv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Returns a random sample of items from an axis of object.
 		
@@ -3732,7 +3732,7 @@ package pandas.sparse.series;
 		-------
 		series : SparseSeries
 	**/
-	public function set_value(label:Dynamic, value:Dynamic, ?takeable:Dynamic):Dynamic;
+	public function set_value(label:Dynamic, value:Dynamic, ?takeable:Dynamic):pandas.SparseSeries;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
@@ -3883,7 +3883,7 @@ package pandas.sparse.series;
 		--------
 		Series.sort_index(level=...)
 	**/
-	public function sortlevel(?level:Dynamic, ?ascending:Dynamic, ?sort_remaining:Dynamic):Dynamic;
+	public function sortlevel(?level:Dynamic, ?ascending:Dynamic, ?sort_remaining:Dynamic):pandas.Series;
 	public var sp_index : Dynamic;
 	public var sp_values : Dynamic;
 	/**
@@ -3897,7 +3897,7 @@ package pandas.sparse.series;
 		-------
 		reindexed : SparseSeries
 	**/
-	public function sparse_reindex(new_index:Dynamic):Dynamic;
+	public function sparse_reindex(new_index:Dynamic):pandas.SparseSeries;
 	/**
 		squeeze length 1 dimensions 
 	**/
@@ -3964,7 +3964,7 @@ package pandas.sparse.series;
 		--------
 		Series.rsub
 	**/
-	public function sub(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function sub(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Subtraction of series and other, element-wise (binary operator `sub`).
 		
@@ -3989,7 +3989,7 @@ package pandas.sparse.series;
 		--------
 		Series.rsub
 	**/
-	public function subtract(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function subtract(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return the sum of the values for the requested axis
 		
@@ -4031,7 +4031,7 @@ package pandas.sparse.series;
 		-------
 		swapped : Series
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic, ?copy:Dynamic):Dynamic;
+	public function swaplevel(i:Dynamic, j:Dynamic, ?copy:Dynamic):pandas.Series;
 	/**
 		Returns last n rows
 	**/
@@ -4043,7 +4043,7 @@ package pandas.sparse.series;
 		-------
 		taken : ndarray
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic):numpy.Ndarray;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		This can be pasted into Excel, for example.
@@ -4317,7 +4317,7 @@ package pandas.sparse.series;
 		-------
 		sp : SparseSeries
 	**/
-	public function to_sparse(?kind:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function to_sparse(?kind:Dynamic, ?fill_value:Dynamic):pandas.SparseSeries;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		
@@ -4431,7 +4431,7 @@ package pandas.sparse.series;
 		--------
 		Series.rtruediv
 	**/
-	public function truediv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):Dynamic;
+	public function truediv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Truncates a sorted NDFrame before and/or after some particular
 		dates.
@@ -4473,7 +4473,7 @@ package pandas.sparse.series;
 		-------
 		shifted : NDFrame
 	**/
-	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convert tz-aware axis to target time zone.
 		
@@ -4534,7 +4534,7 @@ package pandas.sparse.series;
 		-------
 		uniques : ndarray
 	**/
-	public function unique():Dynamic;
+	public function unique():numpy.Ndarray;
 	/**
 		Unstack, a.k.a. pivot, Series with MultiIndex to produce DataFrame.
 		The level involved will automatically get sorted.
@@ -4566,7 +4566,7 @@ package pandas.sparse.series;
 		-------
 		unstacked : DataFrame
 	**/
-	public function unstack(?level:Dynamic):Dynamic;
+	public function unstack(?level:Dynamic):pandas.DataFrame;
 	/**
 		Modify Series in place using non-NA values from passed
 		Series. Aligns on index
@@ -4603,7 +4603,7 @@ package pandas.sparse.series;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 	/**
 		return the array 
 	**/

@@ -131,7 +131,7 @@ package numpy.lib.shape_base;
 		        [ 92],
 		        [124]]])
 	**/
-	static public function apply_over_axes(func:Dynamic, a:Dynamic, axes:Dynamic):Dynamic;
+	static public function apply_over_axes(func:Dynamic, a:Dynamic, axes:Dynamic):numpy.Ndarray;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -357,7 +357,7 @@ package numpy.lib.shape_base;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least three dimensions.
 		
@@ -405,7 +405,7 @@ package numpy.lib.shape_base;
 		  [2]]] (1, 2, 1)
 		[[[1 2]]] (1, 1, 2)
 	**/
-	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Stack 1-D arrays as columns into a 2-D array.
 		
@@ -599,7 +599,7 @@ package numpy.lib.shape_base;
 		       [[2, 3]],
 		       [[3, 4]]])
 	**/
-	static public function dstack(tup:Dynamic):Dynamic;
+	static public function dstack(tup:Dynamic):numpy.Ndarray;
 	/**
 		Expand the shape of an array.
 		
@@ -649,7 +649,7 @@ package numpy.lib.shape_base;
 		>>> np.newaxis is None
 		True
 	**/
-	static public function expand_dims(a:Dynamic, axis:Dynamic):Dynamic;
+	static public function expand_dims(a:Dynamic, axis:Dynamic):numpy.Ndarray;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
@@ -738,7 +738,7 @@ package numpy.lib.shape_base;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Kronecker product of two arrays.
 		
@@ -982,7 +982,7 @@ package numpy.lib.shape_base;
 		       [3, 4],
 		       [5, 6]])
 	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		
@@ -1031,7 +1031,7 @@ package numpy.lib.shape_base;
 		       [3],
 		       [4]])
 	**/
-	static public function row_stack(tup:Dynamic):Dynamic;
+	static public function row_stack(tup:Dynamic):numpy.Ndarray;
 	/**
 		Split an array into multiple sub-arrays.
 		
@@ -1151,7 +1151,7 @@ package numpy.lib.shape_base;
 		       [1, 2],
 		       [3, 4]])
 	**/
-	static public function tile(A:Dynamic, reps:Dynamic):Dynamic;
+	static public function tile(A:Dynamic, reps:Dynamic):numpy.Ndarray;
 	/**
 		Split an array into multiple sub-arrays vertically (row-wise).
 		
@@ -1246,7 +1246,7 @@ package numpy.lib.shape_base;
 		       [3],
 		       [4]])
 	**/
-	static public function vstack(tup:Dynamic):Dynamic;
+	static public function vstack(tup:Dynamic):numpy.Ndarray;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

@@ -1,5 +1,6 @@
 package pyextern;
 
+import Type as StdType;
 import haxe.ds.*;
 import haxe.macro.*;
 import haxe.macro.Expr;
@@ -31,33 +32,18 @@ class Processor {
 
 	static var rstParser = new docutils.parsers.rst.Parser();
 	static var docDefaults = new docutils.frontend.OptionParser([docutils.parsers.rst.Parser]).get_default_values();
-	public function docToFun(doc:String):Function {
+	public function parseRst(doc:String):Null<Xml> {
 		var document = docutils.utils.Utils.new_document("", docDefaults);
-		var xml = try {
+		return try {
 			rstParser.parse(doc, document);
 			Xml.parse(document.asdom().toxml());
 		} catch (e:Dynamic) { null; }
-
-		var ret:ComplexType = if (xml != null) {
-			var sec =
-				new Fast(xml).node.document.nodes.section
-					.find(function(sec:Fast) return 
-						sec.hasNode.title && 
-						sec.node.title.innerHTML.toLowerCase() == "returns"
-					);
-			if (sec != null && sec.hasNode.paragraph) {
-				var retDoc = sec.node.paragraph.innerHTML;
-				var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
-				if (re.match(retDoc)) {
-					hxType(re.matched(2));
-				} else null;
-			} else null;
-		} else null;
-
+	}
+	public function docToFun(doc:String):Function {
 		return {
 			params: [],
 			args: null,
-			ret: ret,
+			ret: macro:Dynamic,
 			expr: null
 		}
 	}
@@ -95,7 +81,9 @@ class Processor {
 		}
 	}
 
+	var currentModule:String;
 	public function processModule(module:Dynamic, moduleName:String, main:Main):Void {
+		currentModule = moduleName;
 		var members = try {
 			(Inspect.getmembers(module):Array<Tuple2<String,Dynamic>>);
 		} catch (e:Dynamic){
@@ -368,8 +356,8 @@ class Processor {
 
 	public function hxType(type:String):ComplexType {
 		return switch (type) {
-			case "callable":
-				macro:haxe.Constraints.Function;
+			case "bool":
+				macro:Bool;
 			case "int":
 				macro:Int;
 			case "float":
@@ -378,10 +366,23 @@ class Processor {
 				macro:String;
 			case "array":
 				macro:Array<Dynamic>;
+			case "callable", "function":
+				macro:haxe.Constraints.Function;
 			case "object":
 				macro:Dynamic;
+			case "str":
+				macro:String;
+			case "tuple":
+				macro:python.Tuple<Dynamic>;
+			case "list":
+				macro:Array<Dynamic>;
+			case "dict":
+				macro:python.Dict<Dynamic,Dynamic>;
+			case "any":
+				macro:Dynamic;
 			case other:
-				trace(other);
+				// var curCls = StdType.getClassName(StdType.getClass(this));
+				// trace('${curCls}.hxType not able to handle: $currentModule $other');
 				null;
 		}
 	}

@@ -137,7 +137,7 @@ package numpy.fft.helper;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		concatenate((a1, a2, ...), axis=0)
 		
@@ -290,7 +290,7 @@ package numpy.fft.helper;
 		>>> freq
 		array([ 0.  ,  1.25,  2.5 ,  3.75, -5.  , -3.75, -2.5 , -1.25])
 	**/
-	static public function fftfreq(n:Dynamic, ?d:Dynamic):Dynamic;
+	static public function fftfreq(n:Dynamic, ?d:Dynamic):numpy.Ndarray;
 	/**
 		Shift the zero-frequency component to the center of the spectrum.
 		
@@ -333,7 +333,7 @@ package numpy.fft.helper;
 		       [-4.,  3.,  4.],
 		       [-1., -3., -2.]])
 	**/
-	static public function fftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function fftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		The inverse of `fftshift`. Although identical for even-length `x`, the
 		functions differ by one sample for odd-length `x`.
@@ -366,7 +366,7 @@ package numpy.fft.helper;
 		       [ 3.,  4., -4.],
 		       [-3., -2., -1.]])
 	**/
-	static public function ifftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function ifftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	static public var integer_types : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -410,7 +410,7 @@ package numpy.fft.helper;
 		>>> freq
 		array([  0.,  10.,  20.,  30.,  40.,  50.])
 	**/
-	static public function rfftfreq(n:Dynamic, ?d:Dynamic):Dynamic;
+	static public function rfftfreq(n:Dynamic, ?d:Dynamic):numpy.Ndarray;
 	/**
 		Take elements from an array along an axis.
 		

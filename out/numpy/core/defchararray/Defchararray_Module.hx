@@ -63,7 +63,7 @@ package numpy.core.defchararray;
 		    Output array of `string_` or `unicode_`, depending on input types
 		    of the same shape as `x1` and `x2`.
 	**/
-	static public function add(x1:Dynamic, x2:Dynamic):Dynamic;
+	static public function add(x1:Dynamic, x2:Dynamic):numpy.Ndarray;
 	/**
 		Create a `chararray`.
 		
@@ -207,7 +207,7 @@ package numpy.core.defchararray;
 		array(['A1b2', '1b2a', 'B2a1', '2a1b'],
 		    dtype='|S4')
 	**/
-	static public function capitalize(a:Dynamic):Dynamic;
+	static public function capitalize(a:Dynamic):numpy.Ndarray;
 	/**
 		Return a copy of `a` with its elements centered in a string of
 		length `width`.
@@ -233,7 +233,7 @@ package numpy.core.defchararray;
 		--------
 		str.center
 	**/
-	static public function center(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):Dynamic;
+	static public function center(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):numpy.Ndarray;
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns an array with the number of non-overlapping occurrences of
@@ -276,7 +276,7 @@ package numpy.core.defchararray;
 		>>> np.char.count(c, 'A', start=1, end=3)
 		array([1, 0, 0])
 	**/
-	static public function count(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function count(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Calls `str.decode` element-wise.
 		
@@ -387,7 +387,7 @@ package numpy.core.defchararray;
 		>>> np.char.endswith(s, 'a', start=1, end=2)
 		array([False,  True], dtype=bool)
 	**/
-	static public function endswith(a:Dynamic, suffix:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function endswith(a:Dynamic, suffix:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Return (x1 == x2) element-wise.
 		
@@ -439,7 +439,7 @@ package numpy.core.defchararray;
 		--------
 		str.expandtabs
 	**/
-	static public function expandtabs(a:Dynamic, ?tabsize:Dynamic):Dynamic;
+	static public function expandtabs(a:Dynamic, ?tabsize:Dynamic):numpy.Ndarray;
 	/**
 		For each element, return the lowest index in the string where
 		substring `sub` is found.
@@ -537,7 +537,7 @@ package numpy.core.defchararray;
 		--------
 		find, str.find
 	**/
-	static public function index(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function index(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Returns true for each element if all characters in the string are
 		alphanumeric and there is at least one character, false otherwise.
@@ -559,7 +559,7 @@ package numpy.core.defchararray;
 		--------
 		str.isalnum
 	**/
-	static public function isalnum(a:Dynamic):Dynamic;
+	static public function isalnum(a:Dynamic):numpy.Ndarray;
 	/**
 		Returns true for each element if all characters in the string are
 		alphabetic and there is at least one character, false otherwise.
@@ -581,7 +581,7 @@ package numpy.core.defchararray;
 		--------
 		str.isalpha
 	**/
-	static public function isalpha(a:Dynamic):Dynamic;
+	static public function isalpha(a:Dynamic):numpy.Ndarray;
 	/**
 		For each element, return True if there are only decimal
 		characters in the element.
@@ -628,7 +628,7 @@ package numpy.core.defchararray;
 		--------
 		str.isdigit
 	**/
-	static public function isdigit(a:Dynamic):Dynamic;
+	static public function isdigit(a:Dynamic):numpy.Ndarray;
 	/**
 		Returns true for each element if all cased characters in the
 		string are lowercase and there is at least one cased character,
@@ -651,7 +651,7 @@ package numpy.core.defchararray;
 		--------
 		str.islower
 	**/
-	static public function islower(a:Dynamic):Dynamic;
+	static public function islower(a:Dynamic):numpy.Ndarray;
 	/**
 		For each element, return True if there are only numeric
 		characters in the element.
@@ -699,7 +699,7 @@ package numpy.core.defchararray;
 		--------
 		str.isspace
 	**/
-	static public function isspace(a:Dynamic):Dynamic;
+	static public function isspace(a:Dynamic):numpy.Ndarray;
 	/**
 		Returns true for each element if the element is a titlecased
 		string and there is at least one character, false otherwise.
@@ -721,7 +721,7 @@ package numpy.core.defchararray;
 		--------
 		str.istitle
 	**/
-	static public function istitle(a:Dynamic):Dynamic;
+	static public function istitle(a:Dynamic):numpy.Ndarray;
 	/**
 		Returns true for each element if all cased characters in the
 		string are uppercase and there is at least one character, false
@@ -744,7 +744,7 @@ package numpy.core.defchararray;
 		--------
 		str.isupper
 	**/
-	static public function isupper(a:Dynamic):Dynamic;
+	static public function isupper(a:Dynamic):numpy.Ndarray;
 	/**
 		Return a string which is the concatenation of the strings in the
 		sequence `seq`.
@@ -765,7 +765,7 @@ package numpy.core.defchararray;
 		--------
 		str.join
 	**/
-	static public function join(sep:Dynamic, seq:Dynamic):Dynamic;
+	static public function join(sep:Dynamic, seq:Dynamic):numpy.Ndarray;
 	/**
 		Return (x1 < x2) element-wise.
 		
@@ -834,7 +834,7 @@ package numpy.core.defchararray;
 		--------
 		str.ljust
 	**/
-	static public function ljust(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):Dynamic;
+	static public function ljust(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):numpy.Ndarray;
 	/**
 		Return an array with the elements converted to lowercase.
 		
@@ -939,7 +939,7 @@ package numpy.core.defchararray;
 		--------
 		str.__mod__
 	**/
-	static public function mod(a:Dynamic, values:Dynamic):Dynamic;
+	static public function mod(a:Dynamic, values:Dynamic):numpy.Ndarray;
 	/**
 		Return (a * i), that is string multiple concatenation,
 		element-wise.
@@ -958,7 +958,7 @@ package numpy.core.defchararray;
 		out : ndarray
 		    Output array of str or unicode, depending on input types
 	**/
-	static public function multiply(a:Dynamic, i:Dynamic):Dynamic;
+	static public function multiply(a:Dynamic, i:Dynamic):numpy.Ndarray;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -1127,7 +1127,7 @@ package numpy.core.defchararray;
 		--------
 		str.replace
 	**/
-	static public function replace(a:Dynamic, old:Dynamic, _new:Dynamic, ?count:Dynamic):Dynamic;
+	static public function replace(a:Dynamic, old:Dynamic, _new:Dynamic, ?count:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return the highest index in the string
 		where substring `sub` is found, such that `sub` is contained
@@ -1154,7 +1154,7 @@ package numpy.core.defchararray;
 		--------
 		str.rfind
 	**/
-	static public function rfind(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function rfind(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Like `rfind`, but raises `ValueError` when the substring `sub` is
 		not found.
@@ -1178,7 +1178,7 @@ package numpy.core.defchararray;
 		--------
 		rfind, str.rindex
 	**/
-	static public function rindex(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function rindex(a:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Return an array with the elements of `a` right-justified in a
 		string of length `width`.
@@ -1203,7 +1203,7 @@ package numpy.core.defchararray;
 		--------
 		str.rjust
 	**/
-	static public function rjust(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):Dynamic;
+	static public function rjust(a:Dynamic, width:Dynamic, ?fillchar:Dynamic):numpy.Ndarray;
 	/**
 		Partition (split) each element around the right-most separator.
 		
@@ -1233,7 +1233,7 @@ package numpy.core.defchararray;
 		--------
 		str.rpartition
 	**/
-	static public function rpartition(a:Dynamic, sep:Dynamic):Dynamic;
+	static public function rpartition(a:Dynamic, sep:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a list of the words in the
 		string, using `sep` as the delimiter string.
@@ -1263,7 +1263,7 @@ package numpy.core.defchararray;
 		--------
 		str.rsplit, split
 	**/
-	static public function rsplit(a:Dynamic, ?sep:Dynamic, ?maxsplit:Dynamic):Dynamic;
+	static public function rsplit(a:Dynamic, ?sep:Dynamic, ?maxsplit:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a copy with the trailing
 		characters removed.
@@ -1302,7 +1302,7 @@ package numpy.core.defchararray;
 		array(['aAaAa', 'abBABba'],
 		    dtype='|S7')
 	**/
-	static public function rstrip(a:Dynamic, ?chars:Dynamic):Dynamic;
+	static public function rstrip(a:Dynamic, ?chars:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a list of the words in the
 		string, using `sep` as the delimiter string.
@@ -1329,7 +1329,7 @@ package numpy.core.defchararray;
 		--------
 		str.split, rsplit
 	**/
-	static public function split(a:Dynamic, ?sep:Dynamic, ?maxsplit:Dynamic):Dynamic;
+	static public function split(a:Dynamic, ?sep:Dynamic, ?maxsplit:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a list of the lines in the
 		element, breaking at line boundaries.
@@ -1353,7 +1353,7 @@ package numpy.core.defchararray;
 		--------
 		str.splitlines
 	**/
-	static public function splitlines(a:Dynamic, ?keepends:Dynamic):Dynamic;
+	static public function splitlines(a:Dynamic, ?keepends:Dynamic):numpy.Ndarray;
 	/**
 		Returns a boolean array which is `True` where the string element
 		in `a` starts with `prefix`, otherwise `False`.
@@ -1379,7 +1379,7 @@ package numpy.core.defchararray;
 		--------
 		str.startswith
 	**/
-	static public function startswith(a:Dynamic, prefix:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
+	static public function startswith(a:Dynamic, prefix:Dynamic, ?start:Dynamic, ?end:Dynamic):numpy.Ndarray;
 	/**
 		Return len(a) element-wise.
 		
@@ -1396,7 +1396,7 @@ package numpy.core.defchararray;
 		--------
 		__builtin__.len
 	**/
-	static public function str_len(a:Dynamic):Dynamic;
+	static public function str_len(a:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a copy with the leading and
 		trailing characters removed.
@@ -1439,7 +1439,7 @@ package numpy.core.defchararray;
 		array(['aAaAa', '  aA  ', 'abBABba'],
 		    dtype='|S7')
 	**/
-	static public function strip(a:Dynamic, ?chars:Dynamic):Dynamic;
+	static public function strip(a:Dynamic, ?chars:Dynamic):numpy.Ndarray;
 	/**
 		Return element-wise a copy of the string with
 		uppercase characters converted to lowercase and vice versa.
@@ -1505,7 +1505,7 @@ package numpy.core.defchararray;
 		array(['A1B C', '1B Ca', 'B Ca1', 'Ca1B'],
 		    dtype='|S5')
 	**/
-	static public function title(a:Dynamic):Dynamic;
+	static public function title(a:Dynamic):numpy.Ndarray;
 	/**
 		For each element in `a`, return a copy of the string where all
 		characters occurring in the optional argument `deletechars` are
@@ -1531,7 +1531,7 @@ package numpy.core.defchararray;
 		--------
 		str.translate
 	**/
-	static public function translate(a:Dynamic, table:Dynamic, ?deletechars:Dynamic):Dynamic;
+	static public function translate(a:Dynamic, table:Dynamic, ?deletechars:Dynamic):numpy.Ndarray;
 	/**
 		Return an array with the elements converted to uppercase.
 		

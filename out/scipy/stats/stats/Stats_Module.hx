@@ -2712,7 +2712,7 @@ package scipy.stats.stats;
 		-------
 		tmax : float
 	**/
-	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Compute the trimmed mean.
 		
@@ -2737,7 +2737,7 @@ package scipy.stats.stats;
 		-------
 		tmean : float
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Compute the trimmed minimum
 		
@@ -2764,7 +2764,7 @@ package scipy.stats.stats;
 		-------
 		tmin : float
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Slices off a proportion of items from ONE end of the passed array
 		distribution.
@@ -2901,7 +2901,7 @@ package scipy.stats.stats;
 		`tsem` uses unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Compute the trimmed sample standard deviation
 		
@@ -2931,7 +2931,7 @@ package scipy.stats.stats;
 		`tstd` computes the unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
 		

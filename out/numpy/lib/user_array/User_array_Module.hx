@@ -300,7 +300,7 @@ package numpy.lib.user_array;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		bitwise_and(x1, x2[, out])
 		
@@ -1028,7 +1028,7 @@ package numpy.lib.user_array;
 		       [3, 4],
 		       [5, 6]])
 	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		right_shift(x1, x2[, out])
 		
@@ -1286,5 +1286,5 @@ package numpy.lib.user_array;
 		>>> np.transpose(x, (1, 0, 2)).shape
 		(2, 1, 3)
 	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 }

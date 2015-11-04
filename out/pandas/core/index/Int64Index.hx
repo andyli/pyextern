@@ -45,7 +45,7 @@ package pandas.core.index;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):Dynamic;
+	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -503,7 +503,7 @@ package pandas.core.index;
 		-------
 		appended : Index
 	**/
-	public function append(other:Dynamic):Dynamic;
+	public function append(other:Dynamic):pandas.Index;
 	/**
 		return a ndarray of the maximum argument indexer
 		
@@ -566,7 +566,7 @@ package pandas.core.index;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function copy(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):Dynamic;
+	public function copy(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
 	/**
 		return the data pointer of the underlying data 
 	**/
@@ -597,7 +597,7 @@ package pandas.core.index;
 		
 		>>> index.difference(index2)
 	**/
-	public function difference(other:Dynamic):Dynamic;
+	public function difference(other:Dynamic):pandas.Index;
 	/**
 		Make new Index with passed list of labels deleted
 		
@@ -611,7 +611,7 @@ package pandas.core.index;
 		-------
 		dropped : Index
 	**/
-	public function drop(labels:Dynamic, ?errors:Dynamic):Dynamic;
+	public function drop(labels:Dynamic, ?errors:Dynamic):pandas.Index;
 	/**
 		Return Index with duplicate values removed
 		
@@ -629,7 +629,7 @@ package pandas.core.index;
 		-------
 		deduplicated : Index
 	**/
-	public function drop_duplicates(?keep:Dynamic):Dynamic;
+	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	static public var dtype : Dynamic;
 	static public var dtype_str : Dynamic;
 	/**
@@ -737,7 +737,7 @@ package pandas.core.index;
 		-------
 		values : ndarray
 	**/
-	public function get_level_values(level:Dynamic):Dynamic;
+	public function get_level_values(level:Dynamic):numpy.Ndarray;
 	/**
 		Get integer location for requested label
 		
@@ -833,7 +833,7 @@ package pandas.core.index;
 		-------
 		intersection : Index
 	**/
-	public function intersection(other:Dynamic):Dynamic;
+	public function intersection(other:Dynamic):pandas.Index;
 	/**
 		More flexible, faster check like ``is`` but that works through views
 		
@@ -1080,7 +1080,7 @@ package pandas.core.index;
 		-------
 		shifted : Index
 	**/
-	public function shift(?periods:Dynamic, ?freq:Dynamic):Dynamic;
+	public function shift(?periods:Dynamic, ?freq:Dynamic):pandas.Index;
 	/**
 		return the number of elements in the underlying data 
 	**/
@@ -1248,7 +1248,7 @@ package pandas.core.index;
 		-------
 		union : Index
 	**/
-	public function union(other:Dynamic):Dynamic;
+	public function union(other:Dynamic):pandas.Index;
 	/**
 		Return array of unique values in the object. Significantly faster than
 		numpy.unique. Includes NA values.
@@ -1257,7 +1257,7 @@ package pandas.core.index;
 		-------
 		uniques : ndarray
 	**/
-	public function unique():Dynamic;
+	public function unique():numpy.Ndarray;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -1284,7 +1284,7 @@ package pandas.core.index;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 	/**
 		return the underlying data as an ndarray 
 	**/

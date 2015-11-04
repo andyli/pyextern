@@ -97,7 +97,7 @@ package pandas.io.json;
 		3      Summit        1234   John Kasich     Ohio        OH
 		4    Cuyahoga        1337   John Kasich     Ohio        OH
 	**/
-	static public function json_normalize(data:Dynamic, ?record_path:Dynamic, ?meta:Dynamic, ?meta_prefix:Dynamic, ?record_prefix:Dynamic):Dynamic;
+	static public function json_normalize(data:Dynamic, ?record_path:Dynamic, ?meta:Dynamic, ?meta_prefix:Dynamic, ?record_prefix:Dynamic):pandas.DataFrame;
 	/**
 		Converts JSON as string to dict object structure. Use precise_float=True to use high precision float decoder.
 	**/

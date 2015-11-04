@@ -174,7 +174,7 @@ package numpy.fft.fftpack;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		conjugate(x[, out])
 		
@@ -1335,7 +1335,7 @@ package numpy.fft.fftpack;
 		       [[1, 5],
 		        [3, 7]]])
 	**/
-	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):Dynamic;
+	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):numpy.Ndarray;
 	/**
 		Take elements from an array along an axis.
 		

@@ -167,7 +167,7 @@ package pandas.core.reshape;
 		-------
 		reshaped : DataFrame
 	**/
-	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):Dynamic;
+	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
 	/**
 		Construct 1-0 dummy variables corresponding to designated axis
 		labels
@@ -333,7 +333,7 @@ package pandas.core.reshape;
 		-------
 		stacked : Series
 	**/
-	static public function stack(frame:Dynamic, ?level:Dynamic, ?dropna:Dynamic):Dynamic;
+	static public function stack(frame:Dynamic, ?level:Dynamic, ?dropna:Dynamic):pandas.Series;
 	static public function stack_multiple(frame:Dynamic, level:Dynamic, ?dropna:Dynamic):Dynamic;
 	static public function unstack(obj:Dynamic, level:Dynamic):Dynamic;
 	/**

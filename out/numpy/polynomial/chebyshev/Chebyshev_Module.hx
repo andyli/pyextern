@@ -197,7 +197,7 @@ package numpy.polynomial.chebyshev;
 		>>> P.cheb2poly(range(4))
 		array([ -2.,  -8.,   4.,  12.])
 	**/
-	static public function cheb2poly(c:Dynamic):Dynamic;
+	static public function cheb2poly(c:Dynamic):numpy.Ndarray;
 	/**
 		Add one Chebyshev series to another.
 		
@@ -235,7 +235,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebadd(c1,c2)
 		array([ 4.,  4.,  4.])
 	**/
-	static public function chebadd(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function chebadd(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Return the scaled companion matrix of c.
 		
@@ -261,7 +261,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function chebcompanion(c:Dynamic):Dynamic;
+	static public function chebcompanion(c:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Chebyshev series.
 		
@@ -529,7 +529,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebfromroots((-j,j)) # x^2 + 1 relative to the standard basis
 		array([ 1.5+0.j,  0.0+0.j,  0.5+0.j])
 	**/
-	static public function chebfromroots(roots:Dynamic):Dynamic;
+	static public function chebfromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Gauss-Chebyshev quadrature.
 		
@@ -777,7 +777,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebval(-3, C.chebline(3,2)) # should be -3
 		-3.0
 	**/
-	static public function chebline(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function chebline(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Chebyshev series by another.
 		
@@ -816,7 +816,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebmul(c1,c2) # multiplication requires "reprojection"
 		array([  6.5,  12. ,  12. ,   4. ,   1.5])
 	**/
-	static public function chebmul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function chebmul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Multiply a Chebyshev series by x.
 		
@@ -872,7 +872,7 @@ package numpy.polynomial.chebyshev;
 		Examples
 		--------
 	**/
-	static public function chebpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function chebpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Chebyshev points of the first kind.
 		
@@ -962,7 +962,7 @@ package numpy.polynomial.chebyshev;
 		>>> cheb.chebroots((-1, 1,-1, 1)) # T3 - T2 + T1 - T0 has real roots
 		array([ -5.00000000e-01,   2.60860684e-17,   1.00000000e+00])
 	**/
-	static public function chebroots(c:Dynamic):Dynamic;
+	static public function chebroots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Chebyshev series from another.
 		
@@ -1002,7 +1002,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebsub(c2,c1) # -C.chebsub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function chebsub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function chebsub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Remove "small" "trailing" coefficients from a polynomial.
 		
@@ -1045,7 +1045,7 @@ package numpy.polynomial.chebyshev;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function chebtrim(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function chebtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a Chebyshev series at points x.
 		
@@ -1233,7 +1233,7 @@ package numpy.polynomial.chebyshev;
 		    corresponding Chebyshev polynomial.  The dtype will be the same as
 		    the converted `x`.
 	**/
-	static public function chebvander(x:Dynamic, deg:Dynamic):Dynamic;
+	static public function chebvander(x:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1283,7 +1283,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function chebvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):Dynamic;
+	static public function chebvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1334,7 +1334,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function chebvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):Dynamic;
+	static public function chebvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		The weight function of the Chebyshev polynomials.
 		
@@ -1401,6 +1401,6 @@ package numpy.polynomial.chebyshev;
 		>>> P.poly2cheb(range(4))
 		array([ 1.  ,  3.25,  1.  ,  0.75])
 	**/
-	static public function poly2cheb(pol:Dynamic):Dynamic;
+	static public function poly2cheb(pol:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

@@ -136,7 +136,7 @@ package pandas.tslib;
 		TypeError
 		    If Timestamp is tz-naive.
 	**/
-	public function astimezone(tz:Dynamic):Dynamic;
+	public function astimezone(tz:Dynamic):pandas.Timestamp;
 	/**
 		date, time -> datetime with same date and time fields
 	**/
@@ -291,7 +291,7 @@ package pandas.tslib;
 		TypeError
 		    If Timestamp is tz-naive.
 	**/
-	public function tz_convert(tz:Dynamic):Dynamic;
+	public function tz_convert(tz:Dynamic):pandas.Timestamp;
 	/**
 		Convert naive Timestamp to local time zone, or remove
 		timezone from tz-aware Timestamp.
@@ -316,7 +316,7 @@ package pandas.tslib;
 		TypeError
 		    If the Timestamp is tz-aware and tz is not None.
 	**/
-	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic):Dynamic;
+	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic):pandas.Timestamp;
 	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).

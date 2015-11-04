@@ -165,7 +165,7 @@ package numpy.ctypeslib;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public var division : Dynamic;
 	static public function load_library(libname:Dynamic, loader_path:Dynamic):Dynamic;
 	/**

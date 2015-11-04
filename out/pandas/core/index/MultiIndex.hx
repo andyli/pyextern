@@ -48,7 +48,7 @@ package pandas.core.index;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):Dynamic;
+	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -514,7 +514,7 @@ package pandas.core.index;
 		-------
 		appended : Index
 	**/
-	public function append(other:Dynamic):Dynamic;
+	public function append(other:Dynamic):pandas.Index;
 	/**
 		return a ndarray of the maximum argument indexer
 		
@@ -580,7 +580,7 @@ package pandas.core.index;
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 		This could be potentially expensive on large MultiIndex objects.
 	**/
-	public function copy(?names:Dynamic, ?dtype:Dynamic, ?levels:Dynamic, ?labels:Dynamic, ?deep:Dynamic, ?_set_identity:Dynamic):Dynamic;
+	public function copy(?names:Dynamic, ?dtype:Dynamic, ?levels:Dynamic, ?labels:Dynamic, ?deep:Dynamic, ?_set_identity:Dynamic):pandas.MultiIndex;
 	/**
 		return the data pointer of the underlying data 
 	**/
@@ -601,7 +601,7 @@ package pandas.core.index;
 		-------
 		diff : MultiIndex
 	**/
-	public function difference(other:Dynamic):Dynamic;
+	public function difference(other:Dynamic):pandas.MultiIndex;
 	/**
 		Make new MultiIndex with passed list of labels deleted
 		
@@ -615,7 +615,7 @@ package pandas.core.index;
 		-------
 		dropped : MultiIndex
 	**/
-	public function drop(labels:Dynamic, ?level:Dynamic, ?errors:Dynamic):Dynamic;
+	public function drop(labels:Dynamic, ?level:Dynamic, ?errors:Dynamic):pandas.MultiIndex;
 	/**
 		Return Index with duplicate values removed
 		
@@ -633,7 +633,7 @@ package pandas.core.index;
 		-------
 		deduplicated : Index
 	**/
-	public function drop_duplicates(?keep:Dynamic):Dynamic;
+	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	/**
 		Return Index with requested level removed. If MultiIndex has only 2
 		levels, the result will be of Index type not MultiIndex.
@@ -733,7 +733,7 @@ package pandas.core.index;
 		MultiIndex.from_product : Make a MultiIndex from cartesian product
 		                          of iterables
 	**/
-	static public function from_arrays(arrays:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):Dynamic;
+	static public function from_arrays(arrays:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):pandas.MultiIndex;
 	/**
 		Make a MultiIndex from the cartesian product of multiple iterables
 		
@@ -766,7 +766,7 @@ package pandas.core.index;
 		MultiIndex.from_arrays : Convert list of arrays to MultiIndex
 		MultiIndex.from_tuples : Convert list of tuples to MultiIndex
 	**/
-	static public function from_product(iterables:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):Dynamic;
+	static public function from_product(iterables:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):pandas.MultiIndex;
 	/**
 		Convert list of tuples to MultiIndex
 		
@@ -794,7 +794,7 @@ package pandas.core.index;
 		MultiIndex.from_product : Make a MultiIndex from cartesian product
 		                          of iterables
 	**/
-	static public function from_tuples(tuples:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):Dynamic;
+	static public function from_tuples(tuples:Dynamic, ?sortorder:Dynamic, ?names:Dynamic):pandas.MultiIndex;
 	public function get_duplicates():Dynamic;
 	/**
 		Compute indexer and mask for new index given the current index. The
@@ -847,7 +847,7 @@ package pandas.core.index;
 		-------
 		values : ndarray
 	**/
-	public function get_level_values(level:Dynamic):Dynamic;
+	public function get_level_values(level:Dynamic):numpy.Ndarray;
 	/**
 		Get integer location, slice or boolean mask for requested label or tuple
 		If the key is past the lexsort depth, the return may be a boolean mask
@@ -1349,7 +1349,7 @@ package pandas.core.index;
 		-------
 		shifted : Index
 	**/
-	public function shift(?periods:Dynamic, ?freq:Dynamic):Dynamic;
+	public function shift(?periods:Dynamic, ?freq:Dynamic):pandas.Index;
 	/**
 		return the number of elements in the underlying data 
 	**/
@@ -1453,7 +1453,7 @@ package pandas.core.index;
 		-------
 		swapped : MultiIndex
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic):Dynamic;
+	public function swaplevel(i:Dynamic, j:Dynamic):pandas.MultiIndex;
 	/**
 		Compute the sorted symmetric difference of two Index objects.
 		
@@ -1573,7 +1573,7 @@ package pandas.core.index;
 		-------
 		truncated : MultiIndex
 	**/
-	public function truncate(?before:Dynamic, ?after:Dynamic):Dynamic;
+	public function truncate(?before:Dynamic, ?after:Dynamic):pandas.MultiIndex;
 	/**
 		Form the union of two MultiIndex objects, sorting if possible
 		
@@ -1596,7 +1596,7 @@ package pandas.core.index;
 		-------
 		uniques : ndarray
 	**/
-	public function unique():Dynamic;
+	public function unique():numpy.Ndarray;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -1623,7 +1623,7 @@ package pandas.core.index;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 	public var values : Dynamic;
 	/**
 		this is defined as a copy with the same identity 

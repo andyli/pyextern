@@ -180,5 +180,5 @@ package pandas.sparse.list;
 		-------
 		sparr : SparseArray
 	**/
-	public function to_array():Dynamic;
+	public function to_array():pandas.SparseArray;
 }

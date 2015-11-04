@@ -222,7 +222,7 @@ package numpy.lib.type_check;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return an array converted to a float type.
 		
@@ -248,7 +248,7 @@ package numpy.lib.type_check;
 		>>> np.asfarray([2, 3], dtype='int8')
 		array([ 2.,  3.])
 	**/
-	static public function asfarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asfarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Convert an array of size 1 to its scalar equivalent.
 		
@@ -332,7 +332,7 @@ package numpy.lib.type_check;
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
 	**/
-	static public function imag(val:Dynamic):Dynamic;
+	static public function imag(val:Dynamic):numpy.Ndarray;
 	/**
 		Returns a bool array, where True if input element is complex.
 		
@@ -391,7 +391,7 @@ package numpy.lib.type_check;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		isnan(x[, out])
 		
@@ -487,7 +487,7 @@ package numpy.lib.type_check;
 		>>> y
 		array([1, 0, 0])
 	**/
-	static public function isneginf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isneginf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
 	/**
 		Test element-wise for positive infinity, return result as bool array.
 		
@@ -542,7 +542,7 @@ package numpy.lib.type_check;
 		>>> y
 		array([0, 0, 1])
 	**/
-	static public function isposinf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isposinf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
 	/**
 		Returns a bool array, where True if input element is real.
 		
@@ -600,7 +600,7 @@ package numpy.lib.type_check;
 		>>> np.isrealobj([3, 1+0j, True])
 		False
 	**/
-	static public function isrealobj(x:Dynamic):Dynamic;
+	static public function isrealobj(x:Dynamic):Bool;
 	/**
 		Return the character for the minimum-size type to which given types can
 		be safely cast.
@@ -642,7 +642,7 @@ package numpy.lib.type_check;
 		>>> np.mintypecode('abceh', default='G')
 		'G'
 	**/
-	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
 		Replace nan with zero and inf with finite numbers.
 		
@@ -687,7 +687,7 @@ package numpy.lib.type_check;
 		array([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000,
 		        -1.28000000e+002,   1.28000000e+002])
 	**/
-	static public function nan_to_num(x:Dynamic):Dynamic;
+	static public function nan_to_num(x:Dynamic):numpy.Ndarray;
 	/**
 		Return the scalar dtype or NumPy equivalent of Python type of an object.
 		
@@ -757,7 +757,7 @@ package numpy.lib.type_check;
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
 	**/
-	static public function real(val:Dynamic):Dynamic;
+	static public function real(val:Dynamic):numpy.Ndarray;
 	/**
 		If complex input returns a real array if complex parts are close to zero.
 		
@@ -799,7 +799,7 @@ package numpy.lib.type_check;
 		>>> np.real_if_close([2.1 + 4e-13j], tol=1000)
 		array([ 2.1 +4.00000000e-13j])
 	**/
-	static public function real_if_close(a:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function real_if_close(a:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Return a description for the given data type code.
 		
@@ -847,7 +847,7 @@ package numpy.lib.type_check;
 		l  :  long integer
 		q  :  long long integer
 	**/
-	static public function typename(char:Dynamic):Dynamic;
+	static public function typename(char:Dynamic):String;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

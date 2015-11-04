@@ -170,7 +170,7 @@ package numpy.lib._datasource;
 		-----
 		The functionality is based on `os.path.abspath`.
 	**/
-	public function abspath(path:Dynamic):Dynamic;
+	public function abspath(path:Dynamic):String;
 	/**
 		Test if path exists.
 		
@@ -199,7 +199,7 @@ package numpy.lib._datasource;
 		URL.  `DataSource` does not discriminate between the two, the file
 		is accessible if it exists in either location.
 	**/
-	public function exists(path:Dynamic):Dynamic;
+	public function exists(path:Dynamic):Bool;
 	/**
 		Open and return file-like object.
 		

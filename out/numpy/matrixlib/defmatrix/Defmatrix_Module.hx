@@ -95,7 +95,7 @@ package numpy.matrixlib.defmatrix;
 		matrix([[5, 2],
 		        [3, 4]])
 	**/
-	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asmatrix(data:Dynamic, ?dtype:Dynamic):numpy.Matrix;
 	/**
 		Return the binary representation of the input number as a string.
 		
@@ -152,7 +152,7 @@ package numpy.matrixlib.defmatrix;
 		>>> np.binary_repr(-3, width=4)
 		'1101'
 	**/
-	static public function binary_repr(num:Dynamic, ?width:Dynamic):Dynamic;
+	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
 		Build a matrix object from a string, nested sequence, or array.
 		
@@ -202,7 +202,7 @@ package numpy.matrixlib.defmatrix;
 		        [3, 4, 7, 8],
 		        [5, 6, 9, 0]])
 	**/
-	static public function bmat(obj:Dynamic, ?ldict:Dynamic, ?gdict:Dynamic):Dynamic;
+	static public function bmat(obj:Dynamic, ?ldict:Dynamic, ?gdict:Dynamic):numpy.Matrix;
 	/**
 		concatenate((a1, a2, ...), axis=0)
 		
@@ -303,7 +303,7 @@ package numpy.matrixlib.defmatrix;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function identity(n:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function identity(n:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Returns True if the type of `num` is a scalar type.
 		
@@ -326,7 +326,7 @@ package numpy.matrixlib.defmatrix;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -382,7 +382,7 @@ package numpy.matrixlib.defmatrix;
 		matrix([[5, 2],
 		        [3, 4]])
 	**/
-	static public function mat(data:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function mat(data:Dynamic, ?dtype:Dynamic):numpy.Matrix;
 	/**
 		Raise a square matrix to the (integer) power `n`.
 		

@@ -100,7 +100,7 @@ package numpy.lib.ufunclike;
 		>>> y
 		array([1, 0, 0])
 	**/
-	static public function isneginf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isneginf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
 	/**
 		Test element-wise for positive infinity, return result as bool array.
 		
@@ -155,6 +155,6 @@ package numpy.lib.ufunclike;
 		>>> y
 		array([0, 0, 1])
 	**/
-	static public function isposinf(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function isposinf(x:Dynamic, ?y:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

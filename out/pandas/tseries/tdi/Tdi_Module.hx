@@ -85,7 +85,7 @@ package pandas.tseries.tdi;
 		-------
 		rng : TimedeltaIndex
 	**/
-	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):Dynamic;
+	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**
 		Return DateOffset object from string representation or
 		Timedelta object

@@ -50,7 +50,7 @@ package numpy.core.fromnumeric;
 		>>> np.sctype2char(list)
 		'O'
 	**/
-	static public function _dt_(sctype:Dynamic):Dynamic;
+	static public function _dt_(sctype:Dynamic):String;
 	/**
 		Return the sum of a 'start' value (default: 0) plus an iterable of numbers
 		
@@ -86,7 +86,7 @@ package numpy.core.fromnumeric;
 		>>> np.alen(a)
 		7
 	**/
-	static public function alen(a:Dynamic):Dynamic;
+	static public function alen(a:Dynamic):Int;
 	/**
 		Test whether all array elements along a given axis evaluate to True.
 		
@@ -696,7 +696,7 @@ package numpy.core.fromnumeric;
 		>>> np.around([1,2,3,11], decimals=-1)
 		array([ 0,  0,  0, 10])
 	**/
-	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
+	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -903,7 +903,7 @@ package numpy.core.fromnumeric;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Construct an array from an index array and a set of arrays to choose from.
 		
@@ -1021,7 +1021,7 @@ package numpy.core.fromnumeric;
 		        [-1, -2, -3, -4, -5],
 		        [-1, -2, -3, -4, -5]]])
 	**/
-	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Clip (limit) the values in an array.
 		
@@ -1070,7 +1070,7 @@ package numpy.core.fromnumeric;
 		>>> np.clip(a, [3,4,1,1,1,4,4,4,4,4], 8)
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
-	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):Dynamic;
+	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Return selected slices of an array along given axis.
 		
@@ -1129,7 +1129,7 @@ package numpy.core.fromnumeric;
 		>>> np.compress([False, True], a)
 		array([2])
 	**/
-	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		concatenate((a1, a2, ...), axis=0)
 		
@@ -1261,7 +1261,7 @@ package numpy.core.fromnumeric;
 		array([[  1,   2,   6],
 		       [  4,  20, 120]])
 	**/
-	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Return the cumulative product over the given axis.
 		
@@ -1438,7 +1438,7 @@ package numpy.core.fromnumeric;
 		array([[1, 3],
 		       [5, 7]])
 	**/
-	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
+	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Compute the arithmetic mean along the specified axis.
@@ -1549,7 +1549,7 @@ package numpy.core.fromnumeric;
 		>>> np.ndim(1)
 		0
 	**/
-	static public function ndim(a:Dynamic):Dynamic;
+	static public function ndim(a:Dynamic):Int;
 	/**
 		Return the indices of the elements that are non-zero.
 		
@@ -1623,7 +1623,7 @@ package numpy.core.fromnumeric;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Return a partitioned copy of an array.
 		
@@ -1836,7 +1836,7 @@ package numpy.core.fromnumeric;
 		>>> np.ptp(x, axis=1)
 		array([1, 1])
 	**/
-	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Replaces specified elements of an array with given values.
 		
@@ -1927,7 +1927,7 @@ package numpy.core.fromnumeric;
 		>>> np.rank(1)
 		0
 	**/
-	static public function rank(a:Dynamic):Dynamic;
+	static public function rank(a:Dynamic):Int;
 	/**
 		Return a contiguous flattened array.
 		
@@ -2028,7 +2028,7 @@ package numpy.core.fromnumeric;
 		>>> a.ravel(order='K')
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Repeat elements of an array.
 		
@@ -2066,7 +2066,7 @@ package numpy.core.fromnumeric;
 		       [3, 4],
 		       [3, 4]])
 	**/
-	static public function repeat(a:Dynamic, repeats:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function repeat(a:Dynamic, repeats:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Gives a new shape to an array without changing its data.
 		
@@ -2159,7 +2159,7 @@ package numpy.core.fromnumeric;
 		       [3, 4],
 		       [5, 6]])
 	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return a new array with the specified shape.
 		
@@ -2199,7 +2199,7 @@ package numpy.core.fromnumeric;
 		array([[0, 1, 2, 3],
 		       [0, 1, 2, 3]])
 	**/
-	static public function resize(a:Dynamic, new_shape:Dynamic):Dynamic;
+	static public function resize(a:Dynamic, new_shape:Dynamic):numpy.Ndarray;
 	/**
 		Round an array to the given number of decimals.
 		
@@ -2331,7 +2331,7 @@ package numpy.core.fromnumeric;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Check whether some values are true.
 		
@@ -2442,7 +2442,7 @@ package numpy.core.fromnumeric;
 		       ('Arthur', 1.8, 41)],
 		      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
 	**/
-	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Remove single-dimensional entries from the shape of an array.
 		
@@ -2692,7 +2692,7 @@ package numpy.core.fromnumeric;
 		       [[1, 5],
 		        [3, 7]]])
 	**/
-	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):Dynamic;
+	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):numpy.Ndarray;
 	/**
 		Take elements from an array along an axis.
 		
@@ -2811,7 +2811,7 @@ package numpy.core.fromnumeric;
 		>>> np.trace(a).shape
 		(2, 3)
 	**/
-	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Permute the dimensions of an array.
 		
@@ -2856,7 +2856,7 @@ package numpy.core.fromnumeric;
 		>>> np.transpose(x, (1, 0, 2)).shape
 		(2, 1, 3)
 	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		Compute the variance along the specified axis.
 		

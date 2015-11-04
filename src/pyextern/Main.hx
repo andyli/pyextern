@@ -63,7 +63,11 @@ class Main {
 	}
 
 	var modules = new Map<String,Dynamic>();
-	public var processors = new Map<String,Processor>();
+	public var processors:Map<String,Processor> = [
+		for (cls in CompileTime.getAllClasses(Processor))
+		for (m in haxe.rtti.Meta.getType(cls).process_modules)
+		m => Type.createInstance(cls, [])
+	];
 	public var defaultProcessor = new Processor();
 
 	public function getProcessor(moduleName:String):Processor {

@@ -1281,7 +1281,7 @@ package numpy.matrixlib.defmatrix;
 		>>> m.flatten('F')
 		matrix([[1, 3, 2, 4]])
 	**/
-	public function flatten(?order:Dynamic):Dynamic;
+	public function flatten(?order:Dynamic):numpy.Matrix;
 	/**
 		Return `self` as an `ndarray` object.
 		
@@ -1307,7 +1307,7 @@ package numpy.matrixlib.defmatrix;
 		       [ 4,  5,  6,  7],
 		       [ 8,  9, 10, 11]])
 	**/
-	public function getA():Dynamic;
+	public function getA():numpy.Ndarray;
 	/**
 		Return `self` as a flattened `ndarray`.
 		
@@ -1331,7 +1331,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.getA1()
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	public function getA1():Dynamic;
+	public function getA1():numpy.Ndarray;
 	/**
 		Returns the (complex) conjugate transpose of `self`.
 		
@@ -1922,7 +1922,7 @@ package numpy.matrixlib.defmatrix;
 		matrix.flat : a flat iterator on the array.
 		numpy.ravel : related function which returns an ndarray
 	**/
-	public function ravel(?order:Dynamic):Dynamic;
+	public function ravel(?order:Dynamic):numpy.Matrix;
 	/**
 		The real part of the array.
 		
@@ -2332,7 +2332,7 @@ package numpy.matrixlib.defmatrix;
 		matrix([[1, 2],
 		        [3, 4]])
 	**/
-	public function squeeze(?axis:Dynamic):Dynamic;
+	public function squeeze(?axis:Dynamic):numpy.Matrix;
 	/**
 		Return the standard deviation of the array elements along the given axis.
 		

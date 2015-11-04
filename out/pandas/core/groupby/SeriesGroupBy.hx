@@ -224,7 +224,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : DataFrame
 	**/
-	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Apply aggregation function or functions to groups, yielding most likely
 		Series but in some cases DataFrame depending on the output of the
@@ -656,7 +656,7 @@ package pandas.core.groupby;
 		-------
 		filtered : Series
 	**/
-	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Compute first of group values
 	**/
@@ -1293,7 +1293,7 @@ package pandas.core.groupby;
 		-------
 		transformed : Series
 	**/
-	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Shift the time index, using the index's frequency if available
 		

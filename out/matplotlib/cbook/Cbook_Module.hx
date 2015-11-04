@@ -10,6 +10,7 @@ package matplotlib.cbook;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	/**
 		Converts a sequence of less than 1 dimension, to an array of 1
 		dimension; leaves everything else untouched.

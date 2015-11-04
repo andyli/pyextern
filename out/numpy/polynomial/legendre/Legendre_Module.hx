@@ -53,7 +53,7 @@ package numpy.polynomial.legendre;
 		>>> P.leg2poly(range(4))
 		array([-1. , -3.5,  3. ,  7.5])
 	**/
-	static public function leg2poly(c:Dynamic):Dynamic;
+	static public function leg2poly(c:Dynamic):numpy.Ndarray;
 	/**
 		Add one Legendre series to another.
 		
@@ -91,7 +91,7 @@ package numpy.polynomial.legendre;
 		>>> L.legadd(c1,c2)
 		array([ 4.,  4.,  4.])
 	**/
-	static public function legadd(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function legadd(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Return the scaled companion matrix of c.
 		
@@ -117,7 +117,7 @@ package numpy.polynomial.legendre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function legcompanion(c:Dynamic):Dynamic;
+	static public function legcompanion(c:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Legendre series.
 		
@@ -385,7 +385,7 @@ package numpy.polynomial.legendre;
 		>>> L.legfromroots((-j,j)) # x^2 + 1 relative to the standard basis
 		array([ 1.33333333+0.j,  0.00000000+0.j,  0.66666667+0.j])
 	**/
-	static public function legfromroots(roots:Dynamic):Dynamic;
+	static public function legfromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Gauss-Legendre quadrature.
 		
@@ -420,7 +420,7 @@ package numpy.polynomial.legendre;
 		is the k'th root of :math:`L_n`, and then scaling the results to get
 		the right value when integrating 1.
 	**/
-	static public function leggauss(deg:Dynamic):Dynamic;
+	static public function leggauss(deg:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a 2-D Legendre series on the Cartesian product of x and y.
 		
@@ -634,7 +634,7 @@ package numpy.polynomial.legendre;
 		>>> L.legval(-3, L.legline(3,2)) # should be -3
 		-3.0
 	**/
-	static public function legline(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function legline(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Legendre series by another.
 		
@@ -673,7 +673,7 @@ package numpy.polynomial.legendre;
 		>>> P.legmul(c1,c2) # multiplication requires "reprojection"
 		array([  4.33333333,  10.4       ,  11.66666667,   3.6       ])
 	**/
-	static public function legmul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function legmul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Multiply a Legendre series by x.
 		
@@ -701,7 +701,7 @@ package numpy.polynomial.legendre;
 		
 		  xP_i(x) = ((i + 1)*P_{i + 1}(x) + i*P_{i - 1}(x))/(2i + 1)
 	**/
-	static public function legmulx(c:Dynamic):Dynamic;
+	static public function legmulx(c:Dynamic):numpy.Ndarray;
 	static public var legone : Dynamic;
 	/**
 		Raise a Legendre series to a power.
@@ -733,7 +733,7 @@ package numpy.polynomial.legendre;
 		Examples
 		--------
 	**/
-	static public function legpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function legpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Legendre series.
 		
@@ -775,7 +775,7 @@ package numpy.polynomial.legendre;
 		>>> leg.legroots((1, 2, 3, 4)) # 4L_3 + 3L_2 + 2L_1 + 1L_0, all real roots
 		array([-0.85099543, -0.11407192,  0.51506735])
 	**/
-	static public function legroots(c:Dynamic):Dynamic;
+	static public function legroots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Legendre series from another.
 		
@@ -815,7 +815,7 @@ package numpy.polynomial.legendre;
 		>>> L.legsub(c2,c1) # -C.legsub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function legsub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function legsub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Remove "small" "trailing" coefficients from a polynomial.
 		
@@ -858,7 +858,7 @@ package numpy.polynomial.legendre;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function legtrim(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function legtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a Legendre series at points x.
 		
@@ -1046,7 +1046,7 @@ package numpy.polynomial.legendre;
 		    corresponding Legendre polynomial.  The dtype will be the same as
 		    the converted `x`.
 	**/
-	static public function legvander(x:Dynamic, deg:Dynamic):Dynamic;
+	static public function legvander(x:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1096,7 +1096,7 @@ package numpy.polynomial.legendre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function legvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):Dynamic;
+	static public function legvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1147,7 +1147,7 @@ package numpy.polynomial.legendre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function legvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):Dynamic;
+	static public function legvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Weight function of the Legendre polynomials.
 		
@@ -1170,7 +1170,7 @@ package numpy.polynomial.legendre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function legweight(x:Dynamic):Dynamic;
+	static public function legweight(x:Dynamic):numpy.Ndarray;
 	static public var legx : Dynamic;
 	static public var legzero : Dynamic;
 	/**
@@ -1211,6 +1211,6 @@ package numpy.polynomial.legendre;
 		>>> c
 		Legendre([ 1.  ,  3.25,  1.  ,  0.75], [-1.,  1.])
 	**/
-	static public function poly2leg(pol:Dynamic):Dynamic;
+	static public function poly2leg(pol:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

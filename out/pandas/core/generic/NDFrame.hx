@@ -761,7 +761,7 @@ package pandas.core.generic;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):Dynamic;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated
 		
@@ -979,7 +979,7 @@ package pandas.core.generic;
 		-------
 		filled : NDFrame
 	**/
-	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic):Dynamic;
+	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Restrict the info axis to set of items or wildcard
 		
@@ -1342,7 +1342,7 @@ package pandas.core.generic;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.core.frame.NDFrame;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -1651,7 +1651,7 @@ package pandas.core.generic;
 		* This method has *a lot* of options. You are encouraged to experiment
 		  and play with this method to gain intuition about how it works.
 	**/
-	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):Dynamic;
+	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -1863,7 +1863,7 @@ package pandas.core.generic;
 		-------
 		shifted : NDFrame
 	**/
-	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		number of elements in the NDFrame
 	**/
@@ -2202,7 +2202,7 @@ package pandas.core.generic;
 		-------
 		shifted : NDFrame
 	**/
-	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convert tz-aware axis to target time zone.
 		

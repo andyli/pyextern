@@ -91,7 +91,7 @@ package numpy.ma.mrecords;
 		       [999999,      4,      5],
 		       [     6,      7,      8]])
 	**/
-	static public function filled(a:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function filled(a:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
 	/**
 		Creates a mrecarray from a (flat) list of masked arrays.
 		

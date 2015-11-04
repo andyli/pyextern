@@ -703,7 +703,7 @@ package pandas.sparse.array;
 		-------
 		cumsum : Series
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):pandas.Series;
 	/**
 		Python buffer object pointing to the start of the array's data.
 	**/
@@ -1817,7 +1817,7 @@ package pandas.sparse.array;
 		-------
 		taken : ndarray
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Convert SparseSeries to (dense) Series
 	**/

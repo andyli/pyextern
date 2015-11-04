@@ -38,7 +38,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __add__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __add__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __and__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -63,7 +63,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __and__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __and__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	public function __array__(?dtype:Dynamic):Dynamic;
 	public function __array_wrap__(result:Dynamic, ?context:Dynamic):Dynamic;
 	public function __bool__():Dynamic;
@@ -117,7 +117,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __div__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __div__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	static public var __doc__ : Dynamic;
 	/**
 		Wrapper for comparison method __eq__
@@ -158,7 +158,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __floordiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __floordiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		default object formatter
 	**/
@@ -241,7 +241,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __mod__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __mod__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	static public var __module__ : Dynamic;
 	/**
 		Binary operator __mul__ with support to substitute a fill_value for missing data in
@@ -267,7 +267,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __mul__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __mul__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Wrapper for comparison method __ne__
 	**/
@@ -302,7 +302,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __or__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __or__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __pow__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -327,7 +327,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __pow__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __pow__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __radd__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -352,7 +352,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __radd__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __radd__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rand__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -377,7 +377,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rand__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rand__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rtruediv__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -402,7 +402,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rdiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rdiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		helper for pickle
 	**/
@@ -441,7 +441,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rfloordiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rfloordiv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rmod__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -466,7 +466,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rmod__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rmod__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rmul__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -491,7 +491,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rmul__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rmul__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __ror__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -516,7 +516,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __ror__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __ror__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rpow__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -541,7 +541,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rpow__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rpow__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rsub__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -566,7 +566,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rsub__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rsub__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rtruediv__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -591,7 +591,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rtruediv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rtruediv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Binary operator __rxor__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -616,7 +616,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __rxor__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __rxor__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		After regular attribute access, try setting the name
 		This allows simpler access to columns for interactive use.
@@ -660,7 +660,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __sub__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __sub__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -694,7 +694,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __truediv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __truediv__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Return a string representation for a particular DataFrame
 		
@@ -730,7 +730,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function __xor__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function __xor__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	static public var _accessors : Dynamic;
 	/**
 		add the operations to the cls; evaluate the doc strings again 
@@ -1226,7 +1226,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.radd
 	**/
-	public function add(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function add(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Concatenate prefix string with panel items names.
 		
@@ -1381,7 +1381,7 @@ package pandas.core.frame;
 		2  5  6
 		3  7  8
 	**/
-	public function append(other:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic):Dynamic;
+	public function append(other:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic):pandas.DataFrame;
 	/**
 		Applies function along input axis of DataFrame.
 		
@@ -1459,7 +1459,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.apply : For operations on rows/columns
 	**/
-	public function applymap(func:Dynamic):Dynamic;
+	public function applymap(func:Dynamic):pandas.DataFrame;
 	/**
 		Convert the frame to a dict of dtype -> Constructor Types that each has
 		a homogeneous dtype.
@@ -1759,7 +1759,7 @@ package pandas.core.frame;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):Dynamic;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated
 		
@@ -1814,7 +1814,7 @@ package pandas.core.frame;
 		-------
 		result : DataFrame
 	**/
-	public function combine(other:Dynamic, func:Dynamic, ?fill_value:Dynamic, ?overwrite:Dynamic):Dynamic;
+	public function combine(other:Dynamic, func:Dynamic, ?fill_value:Dynamic, ?overwrite:Dynamic):pandas.DataFrame;
 	/**
 		DEPRECATED. Use ``DataFrame.add(other, fill_value=0.)`` instead.
 		
@@ -1876,7 +1876,7 @@ package pandas.core.frame;
 		-------
 		combined : DataFrame
 	**/
-	public function combine_first(other:Dynamic):Dynamic;
+	public function combine_first(other:Dynamic):pandas.DataFrame;
 	/**
 		Return the compound percentage of the values for the requested axis
 		
@@ -1968,7 +1968,7 @@ package pandas.core.frame;
 		-------
 		y : DataFrame
 	**/
-	public function corr(?method:Dynamic, ?min_periods:Dynamic):Dynamic;
+	public function corr(?method:Dynamic, ?min_periods:Dynamic):pandas.DataFrame;
 	/**
 		Compute pairwise correlation between rows or columns of two DataFrame
 		objects.
@@ -1985,7 +1985,7 @@ package pandas.core.frame;
 		-------
 		correls : Series
 	**/
-	public function corrwith(other:Dynamic, ?axis:Dynamic, ?drop:Dynamic):Dynamic;
+	public function corrwith(other:Dynamic, ?axis:Dynamic, ?drop:Dynamic):pandas.Series;
 	/**
 		Return Series with number of non-NA/null observations over requested
 		axis. Works with non-floating point data as well (detects NaN and None)
@@ -2023,7 +2023,7 @@ package pandas.core.frame;
 		`y` contains the covariance matrix of the DataFrame's time series.
 		The covariance is normalized by N-1 (unbiased estimator).
 	**/
-	public function cov(?min_periods:Dynamic):Dynamic;
+	public function cov(?min_periods:Dynamic):pandas.DataFrame;
 	/**
 		Return cumulative max over requested axis.
 		
@@ -2038,7 +2038,7 @@ package pandas.core.frame;
 		-------
 		max : Series
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return cumulative min over requested axis.
 		
@@ -2053,7 +2053,7 @@ package pandas.core.frame;
 		-------
 		min : Series
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return cumulative prod over requested axis.
 		
@@ -2068,7 +2068,7 @@ package pandas.core.frame;
 		-------
 		prod : Series
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return cumulative sum over requested axis.
 		
@@ -2083,7 +2083,7 @@ package pandas.core.frame;
 		-------
 		sum : Series
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -2152,7 +2152,7 @@ package pandas.core.frame;
 		-------
 		diffed : DataFrame
 	**/
-	public function diff(?periods:Dynamic, ?axis:Dynamic):Dynamic;
+	public function diff(?periods:Dynamic, ?axis:Dynamic):pandas.DataFrame;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `truediv`).
 		
@@ -2183,7 +2183,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rtruediv
 	**/
-	public function div(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function div(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `truediv`).
 		
@@ -2214,7 +2214,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rtruediv
 	**/
-	public function divide(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function divide(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Matrix multiplication with DataFrame or Series objects
 		
@@ -2270,7 +2270,7 @@ package pandas.core.frame;
 		-------
 		deduplicated : DataFrame
 	**/
-	public function drop_duplicates(?subset:Dynamic, ?keep:Dynamic, ?inplace:Dynamic):Dynamic;
+	public function drop_duplicates(?subset:Dynamic, ?keep:Dynamic, ?inplace:Dynamic):pandas.DataFrame;
 	/**
 		Return object with labels on given axis omitted where alternately any
 		or all of the data are missing
@@ -2294,7 +2294,7 @@ package pandas.core.frame;
 		-------
 		dropped : DataFrame
 	**/
-	public function dropna(?axis:Dynamic, ?how:Dynamic, ?thresh:Dynamic, ?subset:Dynamic, ?inplace:Dynamic):Dynamic;
+	public function dropna(?axis:Dynamic, ?how:Dynamic, ?thresh:Dynamic, ?subset:Dynamic, ?inplace:Dynamic):pandas.DataFrame;
 	/**
 		Return the dtypes in this object 
 	**/
@@ -2321,7 +2321,7 @@ package pandas.core.frame;
 		-------
 		duplicated : Series
 	**/
-	public function duplicated(?subset:Dynamic, ?keep:Dynamic):Dynamic;
+	public function duplicated(?subset:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
 		True if NDFrame is entirely empty [no items]
 	**/
@@ -2415,7 +2415,7 @@ package pandas.core.frame;
 		-------
 		filled : DataFrame
 	**/
-	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Restrict the info axis to set of items or wildcard
 		
@@ -2489,7 +2489,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rfloordiv
 	**/
-	public function floordiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function floordiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Read CSV file (DISCOURAGED, please use :func:`pandas.read_csv` instead).
 		
@@ -2537,7 +2537,7 @@ package pandas.core.frame;
 		-------
 		y : DataFrame
 	**/
-	static public function from_csv(path:Dynamic, ?header:Dynamic, ?sep:Dynamic, ?index_col:Dynamic, ?parse_dates:Dynamic, ?encoding:Dynamic, ?tupleize_cols:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public function from_csv(path:Dynamic, ?header:Dynamic, ?sep:Dynamic, ?index_col:Dynamic, ?parse_dates:Dynamic, ?encoding:Dynamic, ?tupleize_cols:Dynamic, ?infer_datetime_format:Dynamic):pandas.DataFrame;
 	/**
 		Construct DataFrame from dict of array-like or dicts
 		
@@ -2578,7 +2578,7 @@ package pandas.core.frame;
 		-------
 		frame : DataFrame
 	**/
-	static public function from_items(items:Dynamic, ?columns:Dynamic, ?orient:Dynamic):Dynamic;
+	static public function from_items(items:Dynamic, ?columns:Dynamic, ?orient:Dynamic):pandas.DataFrame;
 	/**
 		Convert structured or record ndarray to DataFrame
 		
@@ -2604,7 +2604,7 @@ package pandas.core.frame;
 		-------
 		df : DataFrame
 	**/
-	static public function from_records(data:Dynamic, ?index:Dynamic, ?exclude:Dynamic, ?columns:Dynamic, ?coerce_float:Dynamic, ?nrows:Dynamic):Dynamic;
+	static public function from_records(data:Dynamic, ?index:Dynamic, ?exclude:Dynamic, ?columns:Dynamic, ?coerce_float:Dynamic, ?nrows:Dynamic):pandas.DataFrame;
 	/**
 		Return the ftypes (indication of sparse/dense and dtype)
 		in this object.
@@ -2779,7 +2779,7 @@ package pandas.core.frame;
 		--------
 		Series.idxmax
 	**/
-	public function idxmax(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function idxmax(?axis:Dynamic, ?skipna:Dynamic):pandas.Series;
 	/**
 		Return index of first occurrence of minimum over requested axis.
 		NA/null values are excluded.
@@ -2804,7 +2804,7 @@ package pandas.core.frame;
 		--------
 		Series.idxmin
 	**/
-	public function idxmin(?axis:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function idxmin(?axis:Dynamic, ?skipna:Dynamic):pandas.Series;
 	/**
 		DEPRECATED. Use ``.iat[i, j]`` instead
 	**/
@@ -3155,7 +3155,7 @@ package pandas.core.frame;
 		-------
 		joined : DataFrame
 	**/
-	public function join(other:Dynamic, ?on:Dynamic, ?how:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic, ?sort:Dynamic):Dynamic;
+	public function join(other:Dynamic, ?on:Dynamic, ?how:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic, ?sort:Dynamic):pandas.DataFrame;
 	/**
 		Get the 'info axis' (see Indexing for more)
 		
@@ -3552,7 +3552,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rmod
 	**/
-	public function mod(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function mod(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Gets the mode(s) of each element along the axis selected. Empty if nothing
 		has 2+ occurrences. Adds a row for each mode per label, fills in gaps
@@ -3615,7 +3615,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rmul
 	**/
-	public function mul(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function mul(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Multiplication of dataframe and other, element-wise (binary operator `mul`).
 		
@@ -3646,7 +3646,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rmul
 	**/
-	public function multiply(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function multiply(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Number of axes / array dimensions
 	**/
@@ -3755,7 +3755,7 @@ package pandas.core.frame;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.core.frame.NDFrame;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -3909,7 +3909,7 @@ package pandas.core.frame;
 		-------
 		table : DataFrame
 	**/
-	public function pivot_table(?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function pivot_table(?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
 	/**
 		DataFrame plotting accessor and method
 		
@@ -3958,7 +3958,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rpow
 	**/
-	public function pow(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function pow(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Return the product of the values for the requested axis
 		
@@ -4134,7 +4134,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.add
 	**/
-	public function radd(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function radd(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Compute numerical data ranks (1 through n) along axis. Equal values are
 		assigned a rank that is the average of the ranks of those values
@@ -4164,7 +4164,7 @@ package pandas.core.frame;
 		-------
 		ranks : DataFrame
 	**/
-	public function rank(?axis:Dynamic, ?numeric_only:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
+	public function rank(?axis:Dynamic, ?numeric_only:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):pandas.DataFrame;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `rtruediv`).
 		
@@ -4195,7 +4195,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.truediv
 	**/
-	public function rdiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rdiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Conform DataFrame to new index with optional filling logic, placing
 		NA/NaN in locations having no value in the previous index. A new object
@@ -4466,7 +4466,7 @@ package pandas.core.frame;
 		* This method has *a lot* of options. You are encouraged to experiment
 		  and play with this method to gain intuition about how it works.
 	**/
-	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):Dynamic;
+	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -4624,7 +4624,7 @@ package pandas.core.frame;
 		-------
 		resetted : DataFrame
 	**/
-	public function reset_index(?level:Dynamic, ?drop:Dynamic, ?inplace:Dynamic, ?col_level:Dynamic, ?col_fill:Dynamic):Dynamic;
+	public function reset_index(?level:Dynamic, ?drop:Dynamic, ?inplace:Dynamic, ?col_level:Dynamic, ?col_fill:Dynamic):pandas.DataFrame;
 	/**
 		Integer division of dataframe and other, element-wise (binary operator `rfloordiv`).
 		
@@ -4655,7 +4655,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.floordiv
 	**/
-	public function rfloordiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rfloordiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Modulo of dataframe and other, element-wise (binary operator `rmod`).
 		
@@ -4686,7 +4686,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.mod
 	**/
-	public function rmod(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rmod(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Multiplication of dataframe and other, element-wise (binary operator `rmul`).
 		
@@ -4717,7 +4717,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.mul
 	**/
-	public function rmul(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rmul(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Round a DataFrame to a variable number of decimal places.
 		
@@ -4796,7 +4796,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.pow
 	**/
-	public function rpow(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rpow(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Subtraction of dataframe and other, element-wise (binary operator `rsub`).
 		
@@ -4827,7 +4827,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.sub
 	**/
-	public function rsub(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rsub(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `rtruediv`).
 		
@@ -4858,7 +4858,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.truediv
 	**/
-	public function rtruediv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function rtruediv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Returns a random sample of items from an axis of object.
 		
@@ -5032,7 +5032,7 @@ package pandas.core.frame;
 		-------
 		dataframe : DataFrame
 	**/
-	public function set_index(keys:Dynamic, ?drop:Dynamic, ?append:Dynamic, ?inplace:Dynamic, ?verify_integrity:Dynamic):Dynamic;
+	public function set_index(keys:Dynamic, ?drop:Dynamic, ?append:Dynamic, ?inplace:Dynamic, ?verify_integrity:Dynamic):pandas.DataFrame;
 	/**
 		Put single value at passed column and index
 		
@@ -5076,7 +5076,7 @@ package pandas.core.frame;
 		-------
 		shifted : DataFrame
 	**/
-	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.DataFrame;
 	/**
 		number of elements in the NDFrame
 	**/
@@ -5156,7 +5156,7 @@ package pandas.core.frame;
 		-------
 		sorted : DataFrame
 	**/
-	public function sort(?columns:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic):Dynamic;
+	public function sort(?columns:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic):pandas.DataFrame;
 	/**
 		Sort object by labels (along an axis)
 		
@@ -5233,7 +5233,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.sort_index(level=...)
 	**/
-	public function sortlevel(?level:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?sort_remaining:Dynamic):Dynamic;
+	public function sortlevel(?level:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?sort_remaining:Dynamic):pandas.DataFrame;
 	/**
 		squeeze length 1 dimensions 
 	**/
@@ -5324,7 +5324,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rsub
 	**/
-	public function sub(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function sub(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Subtraction of dataframe and other, element-wise (binary operator `sub`).
 		
@@ -5355,7 +5355,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rsub
 	**/
-	public function subtract(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function subtract(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Return the sum of the values for the requested axis
 		
@@ -5839,7 +5839,7 @@ package pandas.core.frame;
 		-------
 		panel : Panel
 	**/
-	public function to_panel():Dynamic;
+	public function to_panel():pandas.Panel;
 	/**
 		Convert DataFrame from DatetimeIndex to PeriodIndex with desired
 		frequency (inferred from index if not passed)
@@ -5895,7 +5895,7 @@ package pandas.core.frame;
 		-------
 		y : SparseDataFrame
 	**/
-	public function to_sparse(?fill_value:Dynamic, ?kind:Dynamic):Dynamic;
+	public function to_sparse(?fill_value:Dynamic, ?kind:Dynamic):pandas.SparseDataFrame;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		
@@ -6055,7 +6055,7 @@ package pandas.core.frame;
 		--------
 		DataFrame.rtruediv
 	**/
-	public function truediv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function truediv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
 		Truncates a sorted NDFrame before and/or after some particular
 		dates.
@@ -6097,7 +6097,7 @@ package pandas.core.frame;
 		-------
 		shifted : NDFrame
 	**/
-	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convert tz-aware axis to target time zone.
 		

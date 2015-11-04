@@ -230,7 +230,7 @@ package pandas.tseries.base;
 		-------
 		shifted : DatetimeIndex
 	**/
-	public function shift(n:Dynamic, ?freq:Dynamic):Dynamic;
+	public function shift(n:Dynamic, ?freq:Dynamic):pandas.DatetimeIndex;
 	/**
 		Return sorted copy of Index
 	**/

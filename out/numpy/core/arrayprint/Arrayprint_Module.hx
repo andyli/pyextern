@@ -258,7 +258,7 @@ package numpy.core.arrayprint;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
 	/**
 		Convert the input to an array.
 		
@@ -326,7 +326,7 @@ package numpy.core.arrayprint;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public function datetime_as_string(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function datetime_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -354,7 +354,7 @@ package numpy.core.arrayprint;
 		--------
 		set_printoptions, set_string_function
 	**/
-	static public function get_printoptions():Dynamic;
+	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	/**
 		isinf(x[, out])
 		
@@ -709,7 +709,7 @@ package numpy.core.arrayprint;
 		>>> a.ravel(order='K')
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

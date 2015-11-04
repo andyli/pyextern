@@ -168,7 +168,7 @@ package numpy.ma.extras;
 		  [--]
 		  [124]]]
 	**/
-	static public function apply_over_axes(func:Dynamic, a:Dynamic, axes:Dynamic):Dynamic;
+	static public function apply_over_axes(func:Dynamic, a:Dynamic, axes:Dynamic):numpy.Ndarray;
 	/**
 		An array class with possibly masked values.
 		
@@ -257,7 +257,7 @@ package numpy.ma.extras;
 		>>> type(np.ma.asarray(x))
 		<class 'numpy.ma.core.MaskedArray'>
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.ma.MaskedArray;
 	/**
 		atleast_1d(*arys)
 		
@@ -586,7 +586,7 @@ package numpy.ma.extras;
 		compress_array : ndarray
 		    The compressed array.
 	**/
-	static public function compress_nd(x:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function compress_nd(x:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Suppress the rows and/or columns of a 2-D array that contain
 		masked values.
@@ -636,7 +636,7 @@ package numpy.ma.extras;
 		       [4, 5],
 		       [7, 8]])
 	**/
-	static public function compress_rowcols(x:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function compress_rowcols(x:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Suppress whole rows of a 2-D array that contain masked values.
 		
@@ -687,7 +687,7 @@ package numpy.ma.extras;
 		             mask = [False  True False False False False],
 		       fill_value = 999999)
 	**/
-	static public function concatenate(arrays:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function concatenate(arrays:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Return Pearson product-moment correlation coefficients.
 		
@@ -1027,7 +1027,7 @@ package numpy.ma.extras;
 		       [999999,      4,      5],
 		       [     6,      7,      8]])
 	**/
-	static public function filled(a:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function filled(a:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
 	/**
 		Find contiguous unmasked data in a masked array along the given axis.
 		
@@ -1067,7 +1067,7 @@ package numpy.ma.extras;
 		>>> print np.ma.flatnotmasked_edges(a)
 		None
 	**/
-	static public function flatnotmasked_contiguous(a:Dynamic):Dynamic;
+	static public function flatnotmasked_contiguous(a:Dynamic):Array<Dynamic>;
 	/**
 		Find the indices of the first and last unmasked values.
 		
@@ -1593,7 +1593,7 @@ package numpy.ma.extras;
 		 [False  True False]],
 		      fill_value=999999)
 	**/
-	static public function mask_rowcols(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function mask_rowcols(a:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Mask rows of a 2D array that contain masked values.
 		
@@ -1682,7 +1682,7 @@ package numpy.ma.extras;
 		>>> a.dtype
 		dtype('int32')
 	**/
-	static public function masked_all(shape:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function masked_all(shape:Dynamic, ?dtype:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Empty masked array with the properties of an existing array.
 		
@@ -1731,7 +1731,7 @@ package numpy.ma.extras;
 		>>> ma.masked_all_like(arr).dtype
 		dtype('float32')
 	**/
-	static public function masked_all_like(arr:Dynamic):Dynamic;
+	static public function masked_all_like(arr:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Compute the median along the specified axis.
 		
@@ -1790,7 +1790,7 @@ package numpy.ma.extras;
 		             mask = False,
 		       fill_value = 1e+20)
 	**/
-	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):Dynamic;
+	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):numpy.Ndarray;
 	static public var mr_ : Dynamic;
 	static public var nomask : Dynamic;
 	/**
@@ -1832,7 +1832,7 @@ package numpy.ma.extras;
 		>>> np.ma.notmasked_contiguous(ma)
 		[slice(0, 4, None), slice(6, 7, None)]
 	**/
-	static public function notmasked_contiguous(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function notmasked_contiguous(a:Dynamic, ?axis:Dynamic):Array<Dynamic>;
 	/**
 		Find the indices of the first and last unmasked values along an axis.
 		
@@ -2006,7 +2006,7 @@ package numpy.ma.extras;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Least squares polynomial fit.
 		
@@ -2308,7 +2308,7 @@ package numpy.ma.extras;
 		>>> print a
 		[1 -- -- 3 5]
 	**/
-	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
 	/**
 		Union of two arrays.
 		
@@ -2514,5 +2514,5 @@ package numpy.ma.extras;
 		array([(0, 0), (0, 0)],
 		      dtype=[('x', '<i4'), ('y', '<i4')])
 	**/
-	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 }

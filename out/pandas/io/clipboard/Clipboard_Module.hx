@@ -264,7 +264,7 @@ package pandas.io.clipboard;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		The clipboard can be then pasted into Excel for example.

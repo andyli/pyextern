@@ -227,7 +227,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : DataFrame
 	**/
-	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Aggregate using input function or dict of {column -> function}
 		
@@ -249,7 +249,7 @@ package pandas.core.groupby;
 		-------
 		aggregated : DataFrame
 	**/
-	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Apply function and combine results together in an intelligent way. The
 		split-apply-combine combination rules attempt to be as common sense

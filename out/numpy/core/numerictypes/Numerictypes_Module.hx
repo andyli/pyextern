@@ -547,7 +547,7 @@ package numpy.core.numerictypes;
 		>>> np.issctype(np.dtype('str'))
 		True
 	**/
-	static public function issctype(rep:Dynamic):Dynamic;
+	static public function issctype(rep:Dynamic):Bool;
 	/**
 		Determine if a class is a subclass of a second class.
 		
@@ -579,7 +579,7 @@ package numpy.core.numerictypes;
 		>>> np.issubclass_(np.int32, np.float)
 		False
 	**/
-	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -631,7 +631,7 @@ package numpy.core.numerictypes;
 		>>> np.issubsctype(np.array([1]), np.float)
 		False
 	**/
-	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Return the scalar type of highest precision of the same kind as the input.
 		
@@ -749,7 +749,7 @@ package numpy.core.numerictypes;
 		>>> np.sctype2char(list)
 		'O'
 	**/
-	static public function sctype2char(sctype:Dynamic):Dynamic;
+	static public function sctype2char(sctype:Dynamic):String;
 	static public var sctypeDict : Dynamic;
 	static public var sctypeNA : Dynamic;
 	static public var sctypes : Dynamic;

@@ -180,7 +180,7 @@ package numpy.lib.polynomial;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Extract a diagonal or construct a diagonal array.
 		
@@ -233,7 +233,7 @@ package numpy.lib.polynomial;
 		       [0, 4, 0],
 		       [0, 0, 8]])
 	**/
-	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
+	static public function diag(v:Dynamic, ?k:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
@@ -415,7 +415,7 @@ package numpy.lib.polynomial;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function hstack(tup:Dynamic):Dynamic;
+	static public function hstack(tup:Dynamic):numpy.Ndarray;
 	/**
 		Return the imaginary part of the elements of the array.
 		
@@ -443,7 +443,7 @@ package numpy.lib.polynomial;
 		>>> a
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
 	**/
-	static public function imag(val:Dynamic):Dynamic;
+	static public function imag(val:Dynamic):numpy.Ndarray;
 	/**
 		Compute the (multiplicative) inverse of a matrix.
 		
@@ -550,7 +550,7 @@ package numpy.lib.polynomial;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Return the least-squares solution to a linear matrix equation.
 		
@@ -674,7 +674,7 @@ package numpy.lib.polynomial;
 		>>> np.mintypecode('abceh', default='G')
 		'G'
 	**/
-	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
 		Return a new array of given shape and type, filled with ones.
 		
@@ -715,7 +715,7 @@ package numpy.lib.polynomial;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Find the coefficients of a polynomial with the given sequence of roots.
 		
@@ -806,7 +806,7 @@ package numpy.lib.polynomial;
 		
 		Note how in all cases the leading coefficient is always 1.
 	**/
-	static public function poly(seq_of_zeros:Dynamic):Dynamic;
+	static public function poly(seq_of_zeros:Dynamic):numpy.Ndarray;
 	/**
 		Find the sum of two polynomials.
 		
@@ -944,7 +944,7 @@ package numpy.lib.polynomial;
 		>>> np.polydiv(x, y)
 		(array([ 1.5 ,  1.75]), array([ 0.25]))
 	**/
-	static public function polydiv(u:Dynamic, v:Dynamic):Dynamic;
+	static public function polydiv(u:Dynamic, v:Dynamic):numpy.Ndarray;
 	/**
 		Least squares polynomial fit.
 		
@@ -1322,7 +1322,7 @@ package numpy.lib.polynomial;
 		>>> a
 		array([ 9.+2.j,  8.+4.j,  7.+6.j])
 	**/
-	static public function real(val:Dynamic):Dynamic;
+	static public function real(val:Dynamic):numpy.Ndarray;
 	/**
 		Return the roots of a polynomial with coefficients given in p.
 		
@@ -1370,7 +1370,7 @@ package numpy.lib.polynomial;
 		>>> np.roots(coeff)
 		array([-0.3125+0.46351241j, -0.3125-0.46351241j])
 	**/
-	static public function roots(p:Dynamic):Dynamic;
+	static public function roots(p:Dynamic):numpy.Ndarray;
 	/**
 		Sort a complex array using the real part first, then the imaginary part.
 		

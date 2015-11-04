@@ -944,7 +944,7 @@ package pandas.core.panel;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):Dynamic;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated
 		
@@ -1082,7 +1082,7 @@ package pandas.core.panel;
 		-------
 		count : DataFrame
 	**/
-	public function count(?axis:Dynamic):Dynamic;
+	public function count(?axis:Dynamic):pandas.DataFrame;
 	/**
 		Return cumulative max over requested axis.
 		
@@ -1097,7 +1097,7 @@ package pandas.core.panel;
 		-------
 		max : DataFrame
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Return cumulative min over requested axis.
 		
@@ -1112,7 +1112,7 @@ package pandas.core.panel;
 		-------
 		min : DataFrame
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Return cumulative prod over requested axis.
 		
@@ -1127,7 +1127,7 @@ package pandas.core.panel;
 		-------
 		prod : DataFrame
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Return cumulative sum over requested axis.
 		
@@ -1142,7 +1142,7 @@ package pandas.core.panel;
 		-------
 		sum : DataFrame
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -1272,7 +1272,7 @@ package pandas.core.panel;
 		-------
 		dropped : Panel
 	**/
-	public function dropna(?axis:Dynamic, ?how:Dynamic, ?inplace:Dynamic):Dynamic;
+	public function dropna(?axis:Dynamic, ?how:Dynamic, ?inplace:Dynamic):pandas.Panel;
 	/**
 		Return the dtypes in this object 
 	**/
@@ -1333,7 +1333,7 @@ package pandas.core.panel;
 		-------
 		filled : Panel
 	**/
-	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Panel;
 	/**
 		Restrict the info axis to set of items or wildcard
 		
@@ -1671,7 +1671,7 @@ package pandas.core.panel;
 		-------
 		joined : Panel
 	**/
-	public function join(other:Dynamic, ?how:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic):Dynamic;
+	public function join(other:Dynamic, ?how:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic):pandas.Panel;
 	/**
 		Get the 'info axis' (see Indexing for more)
 		
@@ -2050,7 +2050,7 @@ package pandas.core.panel;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function pct_change(?periods:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.core.frame.NDFrame;
 	/**
 		Apply func(self, \*args, \*\*kwargs)
 		
@@ -2458,7 +2458,7 @@ package pandas.core.panel;
 		* This method has *a lot* of options. You are encouraged to experiment
 		  and play with this method to gain intuition about how it works.
 	**/
-	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):Dynamic;
+	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -2820,7 +2820,7 @@ package pandas.core.panel;
 		-------
 		shifted : Panel
 	**/
-	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.Panel;
 	/**
 		number of elements in the NDFrame
 	**/
@@ -3101,7 +3101,7 @@ package pandas.core.panel;
 		-------
 		y : DataFrame
 	**/
-	public function to_frame(?filter_observations:Dynamic):Dynamic;
+	public function to_frame(?filter_observations:Dynamic):pandas.DataFrame;
 	/**
 		activate the HDFStore
 		
@@ -3234,7 +3234,7 @@ package pandas.core.panel;
 		-------
 		y : SparseDataFrame
 	**/
-	public function to_sparse(?fill_value:Dynamic, ?kind:Dynamic):Dynamic;
+	public function to_sparse(?fill_value:Dynamic, ?kind:Dynamic):pandas.SparseDataFrame;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		
@@ -3352,7 +3352,7 @@ package pandas.core.panel;
 		-------
 		shifted : NDFrame
 	**/
-	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
+	public function tshift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
 		Convert tz-aware axis to target time zone.
 		

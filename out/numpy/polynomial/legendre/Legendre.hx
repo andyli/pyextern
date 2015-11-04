@@ -177,7 +177,7 @@ package numpy.polynomial.legendre;
 		>>> L.legadd(c1,c2)
 		array([ 4.,  4.,  4.])
 	**/
-	static public function _add(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _add(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Legendre series.
 		
@@ -444,7 +444,7 @@ package numpy.polynomial.legendre;
 		>>> L.legfromroots((-j,j)) # x^2 + 1 relative to the standard basis
 		array([ 1.33333333+0.j,  0.00000000+0.j,  0.66666667+0.j])
 	**/
-	static public function _fromroots(roots:Dynamic):Dynamic;
+	static public function _fromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Interpret other as polynomial coefficients.
 		
@@ -583,7 +583,7 @@ package numpy.polynomial.legendre;
 		>>> L.legval(-3, L.legline(3,2)) # should be -3
 		-3.0
 	**/
-	static public function _line(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function _line(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Legendre series by another.
 		
@@ -622,7 +622,7 @@ package numpy.polynomial.legendre;
 		>>> P.legmul(c1,c2) # multiplication requires "reprojection"
 		array([  4.33333333,  10.4       ,  11.66666667,   3.6       ])
 	**/
-	static public function _mul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _mul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Raise a Legendre series to a power.
 		
@@ -653,7 +653,7 @@ package numpy.polynomial.legendre;
 		Examples
 		--------
 	**/
-	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Legendre series.
 		
@@ -695,7 +695,7 @@ package numpy.polynomial.legendre;
 		>>> leg.legroots((1, 2, 3, 4)) # 4L_3 + 3L_2 + 2L_1 + 1L_0, all real roots
 		array([-0.85099543, -0.11407192,  0.51506735])
 	**/
-	static public function _roots(c:Dynamic):Dynamic;
+	static public function _roots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Legendre series from another.
 		
@@ -735,7 +735,7 @@ package numpy.polynomial.legendre;
 		>>> L.legsub(c2,c1) # -C.legsub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function _sub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _sub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a Legendre series at points x.
 		
@@ -1225,7 +1225,7 @@ package numpy.polynomial.legendre;
 		roots : ndarray
 		    Array containing the roots of the series.
 	**/
-	public function roots():Dynamic;
+	public function roots():numpy.Ndarray;
 	/**
 		Remove trailing coefficients
 		

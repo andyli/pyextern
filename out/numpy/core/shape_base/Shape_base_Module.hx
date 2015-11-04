@@ -97,7 +97,7 @@ package numpy.core.shape_base;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -133,7 +133,7 @@ package numpy.core.shape_base;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least three dimensions.
 		
@@ -181,7 +181,7 @@ package numpy.core.shape_base;
 		  [2]]] (1, 2, 1)
 		[[[1 2]]] (1, 1, 2)
 	**/
-	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Stack arrays in sequence horizontally (column wise).
@@ -224,7 +224,7 @@ package numpy.core.shape_base;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function hstack(tup:Dynamic):Dynamic;
+	static public function hstack(tup:Dynamic):numpy.Ndarray;
 	static public var newaxis : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -325,5 +325,5 @@ package numpy.core.shape_base;
 		       [3],
 		       [4]])
 	**/
-	static public function vstack(tup:Dynamic):Dynamic;
+	static public function vstack(tup:Dynamic):numpy.Ndarray;
 }

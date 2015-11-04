@@ -110,7 +110,7 @@ package numpy.lib.nanfunctions;
 		    If `a` is of inexact type, return a boolean mask marking locations of
 		    NaNs, otherwise return None.
 	**/
-	static public function _replace_nan(a:Dynamic, val:Dynamic):Dynamic;
+	static public function _replace_nan(a:Dynamic, val:Dynamic):numpy.Ndarray;
 	/**
 		Internal Function.
 		Call `func` with `a` as first argument swapping the axes to use extended
@@ -135,7 +135,7 @@ package numpy.lib.nanfunctions;
 		    which can be used to reshape the result to the same shape a ufunc with
 		    keepdims=True would produce.
 	**/
-	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -172,7 +172,7 @@ package numpy.lib.nanfunctions;
 		>>> np.nanargmax(a, axis=1)
 		array([1, 1])
 	**/
-	static public function nanargmax(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function nanargmax(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return the indices of the minimum values in the specified axis ignoring
 		NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results
@@ -206,7 +206,7 @@ package numpy.lib.nanfunctions;
 		>>> np.nanargmin(a, axis=1)
 		array([1, 0])
 	**/
-	static public function nanargmin(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function nanargmin(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return the maximum of an array or maximum along an axis, ignoring any
 		NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is

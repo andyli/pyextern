@@ -165,7 +165,7 @@ package numpy.lib._datasource;
 		out : str
 		    Complete path, including the `DataSource` destination directory.
 	**/
-	public function abspath(path:Dynamic):Dynamic;
+	public function abspath(path:Dynamic):String;
 	/**
 		Test if path exists prepending Repository base URL to path.
 		
@@ -196,7 +196,7 @@ package numpy.lib._datasource;
 		URL.  `DataSource` does not discriminate between the two, the file
 		is accessible if it exists in either location.
 	**/
-	public function exists(path:Dynamic):Dynamic;
+	public function exists(path:Dynamic):Bool;
 	/**
 		List files in the source Repository.
 		

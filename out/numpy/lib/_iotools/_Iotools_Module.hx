@@ -146,5 +146,5 @@ package numpy.lib._iotools;
 		>>> np.lib._iotools.str2bool('false')
 		False
 	**/
-	static public function str2bool(value:Dynamic):Dynamic;
+	static public function str2bool(value:Dynamic):Bool;
 }

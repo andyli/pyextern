@@ -64,7 +64,7 @@ package numpy.fft;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
 		Compute the one-dimensional discrete Fourier Transform.
@@ -268,7 +268,7 @@ package numpy.fft;
 		>>> freq
 		array([ 0.  ,  1.25,  2.5 ,  3.75, -5.  , -3.75, -2.5 , -1.25])
 	**/
-	static public function fftfreq(n:Dynamic, ?d:Dynamic):Dynamic;
+	static public function fftfreq(n:Dynamic, ?d:Dynamic):numpy.Ndarray;
 	/**
 		Compute the N-dimensional discrete Fourier Transform.
 		
@@ -402,7 +402,7 @@ package numpy.fft;
 		       [-4.,  3.,  4.],
 		       [-1., -3., -2.]])
 	**/
-	static public function fftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function fftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		Compute the FFT of a signal which has Hermitian symmetry (real spectrum).
 		
@@ -751,7 +751,7 @@ package numpy.fft;
 		       [ 3.,  4., -4.],
 		       [-3., -2., -1.]])
 	**/
-	static public function ifftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function ifftshift(x:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		Compute the inverse FFT of a signal which has Hermitian symmetry.
 		
@@ -1142,7 +1142,7 @@ package numpy.fft;
 		>>> freq
 		array([  0.,  10.,  20.,  30.,  40.,  50.])
 	**/
-	static public function rfftfreq(n:Dynamic, ?d:Dynamic):Dynamic;
+	static public function rfftfreq(n:Dynamic, ?d:Dynamic):numpy.Ndarray;
 	/**
 		Compute the N-dimensional discrete Fourier Transform for real input.
 		

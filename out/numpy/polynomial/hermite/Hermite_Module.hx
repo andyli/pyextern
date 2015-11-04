@@ -76,7 +76,7 @@ package numpy.polynomial.hermite;
 		>>> herm2poly([ 1.   ,  2.75 ,  0.5  ,  0.375])
 		array([ 0.,  1.,  2.,  3.])
 	**/
-	static public function herm2poly(c:Dynamic):Dynamic;
+	static public function herm2poly(c:Dynamic):numpy.Ndarray;
 	/**
 		Add one Hermite series to another.
 		
@@ -112,7 +112,7 @@ package numpy.polynomial.hermite;
 		>>> hermadd([1, 2, 3], [1, 2, 3, 4])
 		array([ 2.,  4.,  6.,  4.])
 	**/
-	static public function hermadd(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function hermadd(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Return the scaled companion matrix of c.
 		
@@ -138,7 +138,7 @@ package numpy.polynomial.hermite;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function hermcompanion(c:Dynamic):Dynamic;
+	static public function hermcompanion(c:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Hermite series.
 		
@@ -406,7 +406,7 @@ package numpy.polynomial.hermite;
 		>>> hermval((-1j, 1j), coef)
 		array([ 0.+0.j,  0.+0.j])
 	**/
-	static public function hermfromroots(roots:Dynamic):Dynamic;
+	static public function hermfromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Gauss-Hermite quadrature.
 		
@@ -441,7 +441,7 @@ package numpy.polynomial.hermite;
 		is the k'th root of :math:`H_n`, and then scaling the results to get
 		the right value when integrating 1.
 	**/
-	static public function hermgauss(deg:Dynamic):Dynamic;
+	static public function hermgauss(deg:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a 2-D Hermite series on the Cartesian product of x and y.
 		
@@ -653,7 +653,7 @@ package numpy.polynomial.hermite;
 		>>> hermval(1,hermline(3, 2))
 		5.0
 	**/
-	static public function hermline(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function hermline(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Hermite series by another.
 		
@@ -690,7 +690,7 @@ package numpy.polynomial.hermite;
 		>>> hermmul([1, 2, 3], [0, 1, 2])
 		array([ 52.,  29.,  52.,   7.,   6.])
 	**/
-	static public function hermmul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function hermmul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Multiply a Hermite series by x.
 		
@@ -724,7 +724,7 @@ package numpy.polynomial.hermite;
 		>>> hermmulx([1, 2, 3])
 		array([ 2. ,  6.5,  1. ,  1.5])
 	**/
-	static public function hermmulx(c:Dynamic):Dynamic;
+	static public function hermmulx(c:Dynamic):numpy.Ndarray;
 	static public var hermone : Dynamic;
 	/**
 		Raise a Hermite series to a power.
@@ -759,7 +759,7 @@ package numpy.polynomial.hermite;
 		>>> hermpow([1, 2, 3], 2)
 		array([ 81.,  52.,  82.,  12.,   9.])
 	**/
-	static public function hermpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function hermpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Hermite series.
 		
@@ -804,7 +804,7 @@ package numpy.polynomial.hermite;
 		>>> hermroots(coef)
 		array([ -1.00000000e+00,  -1.38777878e-17,   1.00000000e+00])
 	**/
-	static public function hermroots(c:Dynamic):Dynamic;
+	static public function hermroots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Hermite series from another.
 		
@@ -840,7 +840,7 @@ package numpy.polynomial.hermite;
 		>>> hermsub([1, 2, 3, 4], [1, 2, 3])
 		array([ 0.,  0.,  0.,  4.])
 	**/
-	static public function hermsub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function hermsub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Remove "small" "trailing" coefficients from a polynomial.
 		
@@ -883,7 +883,7 @@ package numpy.polynomial.hermite;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function hermtrim(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function hermtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate an Hermite series at points x.
 		
@@ -1087,7 +1087,7 @@ package numpy.polynomial.hermite;
 		       [ 1.,  0., -2., -0.],
 		       [ 1.,  2.,  2., -4.]])
 	**/
-	static public function hermvander(x:Dynamic, deg:Dynamic):Dynamic;
+	static public function hermvander(x:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1137,7 +1137,7 @@ package numpy.polynomial.hermite;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function hermvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):Dynamic;
+	static public function hermvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1188,7 +1188,7 @@ package numpy.polynomial.hermite;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function hermvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):Dynamic;
+	static public function hermvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Weight function of the Hermite polynomials.
 		
@@ -1211,7 +1211,7 @@ package numpy.polynomial.hermite;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function hermweight(x:Dynamic):Dynamic;
+	static public function hermweight(x:Dynamic):numpy.Ndarray;
 	static public var hermx : Dynamic;
 	static public var hermzero : Dynamic;
 	/**
@@ -1250,6 +1250,6 @@ package numpy.polynomial.hermite;
 		>>> poly2herm(np.arange(4))
 		array([ 1.   ,  2.75 ,  0.5  ,  0.375])
 	**/
-	static public function poly2herm(pol:Dynamic):Dynamic;
+	static public function poly2herm(pol:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

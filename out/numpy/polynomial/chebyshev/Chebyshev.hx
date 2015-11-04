@@ -177,7 +177,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebadd(c1,c2)
 		array([ 4.,  4.,  4.])
 	**/
-	static public function _add(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _add(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Chebyshev series.
 		
@@ -444,7 +444,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebfromroots((-j,j)) # x^2 + 1 relative to the standard basis
 		array([ 1.5+0.j,  0.0+0.j,  0.5+0.j])
 	**/
-	static public function _fromroots(roots:Dynamic):Dynamic;
+	static public function _fromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Interpret other as polynomial coefficients.
 		
@@ -583,7 +583,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebval(-3, C.chebline(3,2)) # should be -3
 		-3.0
 	**/
-	static public function _line(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function _line(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Chebyshev series by another.
 		
@@ -622,7 +622,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebmul(c1,c2) # multiplication requires "reprojection"
 		array([  6.5,  12. ,  12. ,   4. ,   1.5])
 	**/
-	static public function _mul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _mul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Raise a Chebyshev series to a power.
 		
@@ -653,7 +653,7 @@ package numpy.polynomial.chebyshev;
 		Examples
 		--------
 	**/
-	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Chebyshev series.
 		
@@ -695,7 +695,7 @@ package numpy.polynomial.chebyshev;
 		>>> cheb.chebroots((-1, 1,-1, 1)) # T3 - T2 + T1 - T0 has real roots
 		array([ -5.00000000e-01,   2.60860684e-17,   1.00000000e+00])
 	**/
-	static public function _roots(c:Dynamic):Dynamic;
+	static public function _roots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Chebyshev series from another.
 		
@@ -735,7 +735,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebsub(c2,c1) # -C.chebsub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function _sub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _sub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a Chebyshev series at points x.
 		
@@ -1225,7 +1225,7 @@ package numpy.polynomial.chebyshev;
 		roots : ndarray
 		    Array containing the roots of the series.
 	**/
-	public function roots():Dynamic;
+	public function roots():numpy.Ndarray;
 	/**
 		Remove trailing coefficients
 		

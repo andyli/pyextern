@@ -190,7 +190,7 @@ package numpy.lib.twodim_base;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Extract a diagonal or construct a diagonal array.
 		
@@ -243,7 +243,7 @@ package numpy.lib.twodim_base;
 		       [0, 4, 0],
 		       [0, 0, 8]])
 	**/
-	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
+	static public function diag(v:Dynamic, ?k:Dynamic):numpy.Ndarray;
 	/**
 		Create a two-dimensional array with the flattened input as a diagonal.
 		
@@ -281,7 +281,7 @@ package numpy.lib.twodim_base;
 		       [0, 0, 2],
 		       [0, 0, 0]])
 	**/
-	static public function diagflat(v:Dynamic, ?k:Dynamic):Dynamic;
+	static public function diagflat(v:Dynamic, ?k:Dynamic):numpy.Ndarray;
 	/**
 		Return specified diagonals.
 		
@@ -386,7 +386,7 @@ package numpy.lib.twodim_base;
 		array([[1, 3],
 		       [5, 7]])
 	**/
-	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
+	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
@@ -512,7 +512,7 @@ package numpy.lib.twodim_base;
 		>>> np.all(np.fliplr(A)==A[:,::-1,...])
 		True
 	**/
-	static public function fliplr(m:Dynamic):Dynamic;
+	static public function fliplr(m:Dynamic):numpy.Ndarray;
 	/**
 		Flip array in the up/down direction.
 		
@@ -559,7 +559,7 @@ package numpy.lib.twodim_base;
 		>>> np.flipud([1,2])
 		array([2, 1])
 	**/
-	static public function flipud(m:Dynamic):Dynamic;
+	static public function flipud(m:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		greater_equal(x1, x2[, out])
 		
@@ -850,7 +850,7 @@ package numpy.lib.twodim_base;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 	/**
 		promote_types(type1, type2)
@@ -938,7 +938,7 @@ package numpy.lib.twodim_base;
 		array([[4, 3],
 		       [2, 1]])
 	**/
-	static public function rot90(m:Dynamic, ?k:Dynamic):Dynamic;
+	static public function rot90(m:Dynamic, ?k:Dynamic):numpy.Ndarray;
 	/**
 		An array with ones at and below the given diagonal and zeros elsewhere.
 		

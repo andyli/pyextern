@@ -160,7 +160,7 @@ package pandas.core.algorithms;
 		-------
 		nordered : Series
 	**/
-	static public function select_n(series:Dynamic, n:Dynamic, keep:Dynamic, method:Dynamic):Dynamic;
+	static public function select_n(series:Dynamic, n:Dynamic, keep:Dynamic, method:Dynamic):pandas.Series;
 	static public function select_n_slow(dropped:Dynamic, n:Dynamic, keep:Dynamic, method:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**

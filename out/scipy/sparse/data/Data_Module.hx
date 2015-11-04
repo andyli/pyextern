@@ -20,50 +20,69 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsinh(x[, out])
+		arctan(x[, out])
 		
-		Inverse hyperbolic sine element-wise.
+		Trigonometric inverse tangent, element-wise.
+		
+		The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
-		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		    Input values.  `arctan` is applied to each element of `x`.
 		
 		Returns
 		-------
 		out : ndarray
-		    Array of of the same shape as `x`.
+		    Out has the same shape as `x`.  Its real part is in
+		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
+		    It is a scalar if `x` is a scalar.
+		
+		See Also
+		--------
+		arctan2 : The "four quadrant" arctan of the angle formed by (`x`, `y`)
+		    and the positive `x`-axis.
+		angle : Argument of complex values.
 		
 		Notes
 		-----
-		`arcsinh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `sinh(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi/2, pi/2]`.
+		`arctan` is a multi-valued function: for each `x` there are infinitely
+		many numbers `z` such that tan(`z`) = `x`.  The convention is to return
+		the angle `z` whose real part lies in [-pi/2, pi/2].
 		
-		For real-valued input data types, `arcsinh` always returns real output.
-		For each value that cannot be expressed as a real number or infinity, it
-		returns ``nan`` and sets the `invalid` floating point error flag.
+		For real-valued input data types, `arctan` always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
 		
-		For complex-valued input, `arccos` is a complex analytical function that
-		has branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from
-		the right on the former and from the left on the latter.
+		For complex-valued input, `arctan` is a complex analytic function that
+		has [`1j, infj`] and [`-1j, -infj`] as branch cuts, and is continuous
+		from the left on the former and from the right on the latter.
 		
-		The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``.
+		The inverse tangent is also known as `atan` or tan^{-1}.
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
+		10th printing, New York: Dover, 1964, pp. 79.
+		http://www.math.sfu.ca/~cbm/aands/
 		
 		Examples
 		--------
-		>>> np.arcsinh(np.array([np.e, 10.0]))
-		array([ 1.72538256,  2.99822295])
+		We expect the arctan of 0 to be 0, and of 1 to be pi/4:
+		
+		>>> np.arctan([0, 1])
+		array([ 0.        ,  0.78539816])
+		
+		>>> np.pi/4
+		0.78539816339744828
+		
+		Plot arctan:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-10, 10)
+		>>> plt.plot(x, np.arctan(x))
+		>>> plt.axis('tight')
+		>>> plt.show()
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

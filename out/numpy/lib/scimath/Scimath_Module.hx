@@ -395,7 +395,7 @@ package numpy.lib.scimath;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Returns a bool array, where True if input element is real.

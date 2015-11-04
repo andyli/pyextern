@@ -376,7 +376,7 @@ package pandas.core.categorical;
 		-------
 		valid : Categorical
 	**/
-	public function dropna():Dynamic;
+	public function dropna():pandas.Categorical;
 	static public var dtype : Dynamic;
 	/**
 		Returns True if categorical arrays are equal.
@@ -863,7 +863,7 @@ package pandas.core.categorical;
 		-------
 		shifted : Categorical
 	**/
-	public function shift(periods:Dynamic):Dynamic;
+	public function shift(periods:Dynamic):pandas.Categorical;
 	static public var size : Dynamic;
 	/**
 		Sorts the Category inplace by category value.
@@ -967,7 +967,7 @@ package pandas.core.categorical;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?dropna:Dynamic):Dynamic;
+	public function value_counts(?dropna:Dynamic):pandas.Series;
 	/**
 		Return a view of myself.
 		

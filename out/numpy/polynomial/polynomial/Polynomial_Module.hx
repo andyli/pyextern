@@ -43,7 +43,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyval(2, sum) # 4 + 4(2) + 4(2**2)
 		28.0
 	**/
-	static public function polyadd(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function polyadd(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Return the companion matrix of c.
 		
@@ -346,7 +346,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyfromroots((-j,j)) # complex returned, though values are real
 		array([ 1.+0.j,  0.+0.j,  1.+0.j])
 	**/
-	static public function polyfromroots(roots:Dynamic):Dynamic;
+	static public function polyfromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a 2-D polynomial on the Cartesian product of x and y.
 		
@@ -550,7 +550,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyval(1, P.polyline(1,-1)) # should be 0
 		0.0
 	**/
-	static public function polyline(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function polyline(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one polynomial by another.
 		
@@ -581,7 +581,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polymul(c1,c2)
 		array([  3.,   8.,  14.,   8.,   3.])
 	**/
-	static public function polymul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function polymul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Multiply a polynomial by x.
 		
@@ -637,7 +637,7 @@ package numpy.polynomial.polynomial;
 		Examples
 		--------
 	**/
-	static public function polypow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function polypow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a polynomial.
 		
@@ -681,7 +681,7 @@ package numpy.polynomial.polynomial;
 		>>> poly.polyroots(poly.polyfromroots((-j,0,j)))
 		array([  0.00000000e+00+0.j,   0.00000000e+00+1.j,   2.77555756e-17-1.j])
 	**/
-	static public function polyroots(c:Dynamic):Dynamic;
+	static public function polyroots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one polynomial from another.
 		
@@ -714,7 +714,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polysub(c2,c1) # -P.polysub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function polysub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function polysub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Remove "small" "trailing" coefficients from a polynomial.
 		
@@ -757,7 +757,7 @@ package numpy.polynomial.polynomial;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function polytrim(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function polytrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a polynomial at points x.
 		
@@ -1013,7 +1013,7 @@ package numpy.polynomial.polynomial;
 		--------
 		polyvander, polyvander3d. polyval2d, polyval3d
 	**/
-	static public function polyvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):Dynamic;
+	static public function polyvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		

@@ -595,7 +595,7 @@ package numpy.linalg.linalg;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public function asbytes(s:Dynamic):Dynamic;
 	/**
 		Return an array converted to a float type.
@@ -622,7 +622,7 @@ package numpy.linalg.linalg;
 		>>> np.asfarray([2, 3], dtype='int8')
 		array([ 2.,  3.])
 	**/
-	static public function asfarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asfarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -658,7 +658,7 @@ package numpy.linalg.linalg;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Cholesky decomposition.
 		
@@ -1565,7 +1565,7 @@ package numpy.linalg.linalg;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Return the least-squares solution to a linear matrix equation.
 		
@@ -1927,7 +1927,7 @@ package numpy.linalg.linalg;
 		    cost((AB)C) = 10*100*5 + 10*5*50   = 5000 + 2500   = 7500
 		    cost(A(BC)) = 10*100*50 + 100*5*50 = 50000 + 25000 = 75000
 	**/
-	static public function multi_dot(arrays:Dynamic):Dynamic;
+	static public function multi_dot(arrays:Dynamic):numpy.Ndarray;
 	/**
 		multiply(x1, x2[, out])
 		
@@ -2385,7 +2385,7 @@ package numpy.linalg.linalg;
 		>>> a.ravel(order='K')
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Roll the specified axis backwards, until it lies in a given position.
 		
@@ -2422,7 +2422,7 @@ package numpy.linalg.linalg;
 		>>> np.rollaxis(a, 1, 4).shape
 		(3, 5, 6, 4)
 	**/
-	static public function rollaxis(a:Dynamic, axis:Dynamic, ?start:Dynamic):Dynamic;
+	static public function rollaxis(a:Dynamic, axis:Dynamic, ?start:Dynamic):numpy.Ndarray;
 	/**
 		Return the number of elements along a given axis.
 		
@@ -2455,7 +2455,7 @@ package numpy.linalg.linalg;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Compute the sign and (natural) logarithm of the determinant of an array.
 		
@@ -2849,7 +2849,7 @@ package numpy.linalg.linalg;
 		>>> np.allclose(np.tensordot(ainv, b, 1), np.linalg.tensorsolve(a, b))
 		True
 	**/
-	static public function tensorinv(a:Dynamic, ?ind:Dynamic):Dynamic;
+	static public function tensorinv(a:Dynamic, ?ind:Dynamic):numpy.Ndarray;
 	/**
 		Solve the tensor equation ``a x = b`` for x.
 		
@@ -2940,7 +2940,7 @@ package numpy.linalg.linalg;
 		>>> np.transpose(x, (1, 0, 2)).shape
 		(2, 1, 3)
 	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		Upper triangle of an array.
 		

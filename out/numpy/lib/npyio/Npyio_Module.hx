@@ -140,7 +140,7 @@ package numpy.lib.npyio;
 		>>> output['num']
 		array([1312, 1534,  444], dtype=int64)
 	**/
-	static public function fromregex(file:Dynamic, regexp:Dynamic, dtype:Dynamic):Dynamic;
+	static public function fromregex(file:Dynamic, regexp:Dynamic, dtype:Dynamic):numpy.Ndarray;
 	/**
 		Load data from a text file, with missing values handled as specified.
 		

@@ -1,5 +1,6 @@
 -cp src
 -cp coredep
+-lib compiletime
 -lib selecthxml
 --macro include("pyextern")
 -main pyextern.Main

@@ -45,7 +45,7 @@ package numpy.lib.function_base;
 		    which can be used to reshape the result to the same shape a ufunc with
 		    keepdims=True would produce.
 	**/
-	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		add(x1, x2[, out])
@@ -284,7 +284,7 @@ package numpy.lib.function_base;
 		...
 		ValueError: arrays must have same number of dimensions
 	**/
-	static public function append(arr:Dynamic, values:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function append(arr:Dynamic, values:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -485,7 +485,7 @@ package numpy.lib.function_base;
 		>>> np.around([1,2,3,11], decimals=-1)
 		array([ 0,  0,  0, 10])
 	**/
-	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
+	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -692,7 +692,7 @@ package numpy.lib.function_base;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Convert the input to an array, checking for NaNs or Infs.
 		
@@ -752,7 +752,7 @@ package numpy.lib.function_base;
 		...
 		ValueError
 	**/
-	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Convert inputs to arrays with at least one dimension.
 		
@@ -790,7 +790,7 @@ package numpy.lib.function_base;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -826,7 +826,7 @@ package numpy.lib.function_base;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Compute the weighted average along the specified axis.
 		
@@ -997,7 +997,7 @@ package numpy.lib.function_base;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function bartlett(M:Dynamic):Dynamic;
+	static public function bartlett(M:Dynamic):Array<Dynamic>;
 	/**
 		bincount(x, weights=None, minlength=None)
 		
@@ -1157,7 +1157,7 @@ package numpy.lib.function_base;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function blackman(M:Dynamic):Dynamic;
+	static public function blackman(M:Dynamic):numpy.Ndarray;
 	/**
 		ceil(x[, out])
 		
@@ -1303,7 +1303,7 @@ package numpy.lib.function_base;
 		>>> x[0] == z[0]
 		False
 	**/
-	static public function copy(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function copy(a:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return Pearson product-moment correlation coefficients.
 		
@@ -1571,7 +1571,7 @@ package numpy.lib.function_base;
 		>>> np.delete(arr, [1,3,5], None)
 		array([ 1,  3,  5,  7,  8,  9, 10, 11, 12])
 	**/
-	static public function delete(arr:Dynamic, obj:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function delete(arr:Dynamic, obj:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Issues a DeprecationWarning, adds warning to `old_name`'s
 		docstring, rebinds ``old_name.__name__`` and returns the new
@@ -1612,7 +1612,7 @@ package numpy.lib.function_base;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	/**
 		Extract a diagonal or construct a diagonal array.
 		
@@ -1665,7 +1665,7 @@ package numpy.lib.function_base;
 		       [0, 4, 0],
 		       [0, 0, 8]])
 	**/
-	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
+	static public function diag(v:Dynamic, ?k:Dynamic):numpy.Ndarray;
 	/**
 		Calculate the n-th order discrete difference along given axis.
 		
@@ -1707,7 +1707,7 @@ package numpy.lib.function_base;
 		>>> np.diff(x, axis=0)
 		array([[-1,  2,  0, -2]])
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		digitize(x, bins, right=False)
 		
@@ -2103,7 +2103,7 @@ package numpy.lib.function_base;
 		>>> arr[condition]
 		array([0, 3, 6, 9])
 	**/
-	static public function extract(condition:Dynamic, arr:Dynamic):Dynamic;
+	static public function extract(condition:Dynamic, arr:Dynamic):numpy.Ndarray;
 	/**
 		floor(x[, out])
 		
@@ -2316,7 +2316,7 @@ package numpy.lib.function_base;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function hamming(M:Dynamic):Dynamic;
+	static public function hamming(M:Dynamic):numpy.Ndarray;
 	/**
 		Return the Hanning window.
 		
@@ -2489,7 +2489,7 @@ package numpy.lib.function_base;
 		>>> np.sum(hist*np.diff(bin_edges))
 		1.0
 	**/
-	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
+	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Array<Dynamic>;
 	/**
 		Compute the multidimensional histogram of some data.
 		
@@ -2539,7 +2539,7 @@ package numpy.lib.function_base;
 		>>> H.shape, edges[0].size, edges[1].size, edges[2].size
 		((5, 8, 4), 6, 9, 5)
 	**/
-	static public function histogramdd(sample:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):Dynamic;
+	static public function histogramdd(sample:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic):numpy.Ndarray;
 	/**
 		Modified Bessel function of the first kind, order 0.
 		
@@ -2788,7 +2788,7 @@ package numpy.lib.function_base;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Check whether or not an object can be iterated over.
 		
@@ -2929,7 +2929,7 @@ package numpy.lib.function_base;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function kaiser(M:Dynamic, beta:Dynamic):Dynamic;
+	static public function kaiser(M:Dynamic, beta:Dynamic):Array<Dynamic>;
 	/**
 		less_equal(x1, x2[, out])
 		
@@ -3405,7 +3405,7 @@ package numpy.lib.function_base;
 		-----
 		``np.msort(a)`` is equivalent to  ``np.sort(a, axis=0)``.
 	**/
-	static public function msort(a:Dynamic):Dynamic;
+	static public function msort(a:Dynamic):numpy.Ndarray;
 	/**
 		multiply(x1, x2[, out])
 		
@@ -3512,7 +3512,7 @@ package numpy.lib.function_base;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Return a new array of given shape and type, filled with ones.
 		
@@ -3553,7 +3553,7 @@ package numpy.lib.function_base;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return a partitioned copy of an array.
 		
@@ -3814,7 +3814,7 @@ package numpy.lib.function_base;
 		>>> np.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])
 		array([ 2.5,  1.5,  0.5,  0.5,  1.5,  2.5])
 	**/
-	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function piecewise(x:Dynamic, condlist:Dynamic, funclist:Dynamic, ?args:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Change elements of an array based on conditional and input values.
 		
@@ -3950,7 +3950,7 @@ package numpy.lib.function_base;
 		>>> a.ravel(order='K')
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Return an array drawn from elements in choicelist, depending on conditions.
 		
@@ -3986,7 +3986,7 @@ package numpy.lib.function_base;
 		>>> np.select(condlist, choicelist)
 		array([ 0,  1,  2,  0,  0,  0, 36, 49, 64, 81])
 	**/
-	static public function select(condlist:Dynamic, choicelist:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function select(condlist:Dynamic, choicelist:Dynamic, ?_default:Dynamic):numpy.Ndarray;
 	/**
 		sin(x[, out])
 		
@@ -4115,7 +4115,7 @@ package numpy.lib.function_base;
 		>>> plt.imshow(np.sinc(xx))
 		<matplotlib.image.AxesImage object at 0x...>
 	**/
-	static public function sinc(x:Dynamic):Dynamic;
+	static public function sinc(x:Dynamic):numpy.Ndarray;
 	/**
 		Return a sorted copy of an array.
 		
@@ -4216,7 +4216,7 @@ package numpy.lib.function_base;
 		       ('Arthur', 1.8, 41)],
 		      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
 	**/
-	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Sort a complex array using the real part first, then the imaginary part.
 		
@@ -4489,7 +4489,7 @@ package numpy.lib.function_base;
 		>>> np.trapz(a, axis=1)
 		array([ 2.,  8.])
 	**/
-	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Trim the leading and/or trailing zeros from a 1-D array or sequence.
 		
@@ -4570,7 +4570,7 @@ package numpy.lib.function_base;
 		>>> np.unwrap(phase)
 		array([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ])
 	**/
-	static public function unwrap(p:Dynamic, ?discont:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function unwrap(p:Dynamic, ?discont:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		where(condition, [x, y])
 		

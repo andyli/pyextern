@@ -30,7 +30,7 @@ package numpy.lib.arraypad;
 		padarr : ndarray
 		    Output array, with `pad_amt` constant `val` appended along `axis`.
 	**/
-	static public function _append_const(arr:Dynamic, pad_amt:Dynamic, val:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_const(arr:Dynamic, pad_amt:Dynamic, val:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Append `pad_amt` to `arr` along `axis` by extending edge values.
 		
@@ -49,7 +49,7 @@ package numpy.lib.arraypad;
 		    Output array, extended by `pad_amt` edge values prepended along
 		    `axis`.
 	**/
-	static public function _append_edge(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_edge(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Pad one `axis` of `arr` with the maximum of the last `num` elements.
 		
@@ -71,7 +71,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values appended along `axis`. The
 		    appended region is the maximum of the final `num` values along `axis`.
 	**/
-	static public function _append_max(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_max(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Append `pad_amt` mean values along `axis`.
 		
@@ -93,7 +93,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values appended along `axis`. The
 		    appended region is the maximum of the final `num` values along `axis`.
 	**/
-	static public function _append_mean(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_mean(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Append `pad_amt` median values along `axis`.
 		
@@ -115,7 +115,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values appended along `axis`. The
 		    appended region is the median of the final `num` values along `axis`.
 	**/
-	static public function _append_med(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_med(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Append `pad_amt` median values along `axis`.
 		
@@ -137,7 +137,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values appended along `axis`. The
 		    appended region is the minimum of the final `num` values along `axis`.
 	**/
-	static public function _append_min(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_min(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Append linear ramp along `axis`.
 		
@@ -159,7 +159,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values appended along `axis`. The
 		    appended region ramps linearly from the edge value to `end`.
 	**/
-	static public function _append_ramp(arr:Dynamic, pad_amt:Dynamic, end:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _append_ramp(arr:Dynamic, pad_amt:Dynamic, end:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Create an ndarray of `shape` with increments along specified `axis`
 		
@@ -188,7 +188,7 @@ package numpy.lib.arraypad;
 		this algorithm as broadcasting `np.arange` to a single `axis` of an
 		arbitrarily shaped ndarray.
 	**/
-	static public function _arange_ndarray(arr:Dynamic, shape:Dynamic, axis:Dynamic, ?reverse:Dynamic):Dynamic;
+	static public function _arange_ndarray(arr:Dynamic, shape:Dynamic, axis:Dynamic, ?reverse:Dynamic):numpy.Ndarray;
 	/**
 		Private function which does some checks and normalizes the possibly
 		much simpler representations of 'pad_width', 'stat_length',
@@ -255,7 +255,7 @@ package numpy.lib.arraypad;
 		single function, lest the indexing tricks in non-integer multiples of the
 		original shape would violate repetition in the final iteration.
 	**/
-	static public function _pad_ref(arr:Dynamic, pad_amt:Dynamic, method:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _pad_ref(arr:Dynamic, pad_amt:Dynamic, method:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Pad `axis` of `arr` by symmetry.
 		
@@ -286,7 +286,7 @@ package numpy.lib.arraypad;
 		single function, lest the indexing tricks in non-integer multiples of the
 		original shape would violate repetition in the final iteration.
 	**/
-	static public function _pad_sym(arr:Dynamic, pad_amt:Dynamic, method:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _pad_sym(arr:Dynamic, pad_amt:Dynamic, method:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Pad `axis` of `arr` via wrapping.
 		
@@ -314,7 +314,7 @@ package numpy.lib.arraypad;
 		single function, lest the indexing tricks in non-integer multiples of the
 		original shape would violate repetition in the final iteration.
 	**/
-	static public function _pad_wrap(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _pad_wrap(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend constant `val` along `axis` of `arr`.
 		
@@ -335,7 +335,7 @@ package numpy.lib.arraypad;
 		padarr : ndarray
 		    Output array, with `pad_amt` constant `val` prepended along `axis`.
 	**/
-	static public function _prepend_const(arr:Dynamic, pad_amt:Dynamic, val:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_const(arr:Dynamic, pad_amt:Dynamic, val:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend `pad_amt` to `arr` along `axis` by extending edge values.
 		
@@ -353,7 +353,7 @@ package numpy.lib.arraypad;
 		padarr : ndarray
 		    Output array, extended by `pad_amt` edge values appended along `axis`.
 	**/
-	static public function _prepend_edge(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_edge(arr:Dynamic, pad_amt:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend `pad_amt` maximum values along `axis`.
 		
@@ -376,7 +376,7 @@ package numpy.lib.arraypad;
 		    prepended region is the maximum of the first `num` values along
 		    `axis`.
 	**/
-	static public function _prepend_max(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_max(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend `pad_amt` mean values along `axis`.
 		
@@ -398,7 +398,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values prepended along `axis`. The
 		    prepended region is the mean of the first `num` values along `axis`.
 	**/
-	static public function _prepend_mean(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_mean(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend `pad_amt` median values along `axis`.
 		
@@ -420,7 +420,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values prepended along `axis`. The
 		    prepended region is the median of the first `num` values along `axis`.
 	**/
-	static public function _prepend_med(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_med(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend `pad_amt` minimum values along `axis`.
 		
@@ -443,7 +443,7 @@ package numpy.lib.arraypad;
 		    prepended region is the minimum of the first `num` values along
 		    `axis`.
 	**/
-	static public function _prepend_min(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_min(arr:Dynamic, pad_amt:Dynamic, num:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Prepend linear ramp along `axis`.
 		
@@ -465,7 +465,7 @@ package numpy.lib.arraypad;
 		    Output array, with `pad_amt` values prepended along `axis`. The
 		    prepended region ramps linearly from the edge value to `end`.
 	**/
-	static public function _prepend_ramp(arr:Dynamic, pad_amt:Dynamic, end:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _prepend_ramp(arr:Dynamic, pad_amt:Dynamic, end:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Rounds arr inplace if destination dtype is integer.
 		

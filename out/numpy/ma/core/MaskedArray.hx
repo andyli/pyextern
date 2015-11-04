@@ -815,7 +815,7 @@ package numpy.ma.core;
 		 [-- 5 --]
 		 [7 -- 9]]
 	**/
-	public function astype(newtype:Dynamic):Dynamic;
+	public function astype(newtype:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Base object if memory is from some other object.
 		
@@ -953,7 +953,7 @@ package numpy.ma.core;
 		 [False False]],
 		      fill_value=999999)
 	**/
-	public function compress(condition:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	public function compress(condition:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Return all the non-masked data as a 1-D array.
 		
@@ -974,7 +974,7 @@ package numpy.ma.core;
 		>>> type(x.compressed())
 		<type 'numpy.ndarray'>
 	**/
-	public function compressed():Dynamic;
+	public function compressed():numpy.Ndarray;
 	/**
 		a.conj()
 		
@@ -1222,7 +1222,7 @@ package numpy.ma.core;
 		Arithmetic is modular when using integer types, and no error is
 		raised on overflow.
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Return the cumulative sum of the elements along the given axis.
 		The cumulative sum is calculated over the flattened array by
@@ -1424,7 +1424,7 @@ package numpy.ma.core;
 		matrix([[     1, 999999],
 		        [999999,      4]])
 	**/
-	public function filled(?fill_value:Dynamic):Dynamic;
+	public function filled(?fill_value:Dynamic):numpy.Ndarray;
 	/**
 		Information about the memory layout of the array.
 		
@@ -1579,7 +1579,7 @@ package numpy.ma.core;
 		             mask = [False  True False],
 		       fill_value = 1e+20)
 	**/
-	public function get_imag():Dynamic;
+	public function get_imag():numpy.ma.MaskedArray;
 	/**
 		Return the real part of the masked array.
 		
@@ -1607,7 +1607,7 @@ package numpy.ma.core;
 		             mask = [False  True False],
 		       fill_value = 1e+20)
 	**/
-	public function get_real():Dynamic;
+	public function get_real():numpy.ma.MaskedArray;
 	/**
 		a.getfield(dtype, offset=0)
 		
@@ -1852,7 +1852,7 @@ package numpy.ma.core;
 		maximum_fill_value
 		    Returns the maximum filling value for a given datatype.
 	**/
-	public function max(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Returns the average of the array elements.
 		
@@ -1926,7 +1926,7 @@ package numpy.ma.core;
 		minimum_fill_value
 		    Returns the minimum filling value for a given datatype.
 	**/
-	public function min(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Return the array minimum along the specified axis.
 		
@@ -2126,7 +2126,7 @@ package numpy.ma.core;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	public function nonzero():Dynamic;
+	public function nonzero():python.Tuple<Dynamic>;
 	/**
 		a.partition(kth, axis=-1, kind='introselect', order=None)
 		
@@ -2447,7 +2447,7 @@ package numpy.ma.core;
 		 [3]
 		 [--]]
 	**/
-	public function reshape(?s:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function reshape(?s:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
 	/**
 		.. warning::
 		
@@ -2771,7 +2771,7 @@ package numpy.ma.core;
 		>>> print a
 		[1 -- -- 3 5]
 	**/
-	public function sort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function sort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
 	/**
 		a.squeeze(axis=None)
 		
@@ -3084,7 +3084,7 @@ package numpy.ma.core;
 		 [(4, True) (5, False) (6, True)]
 		 [(7, False) (8, True) (9, False)]]
 	**/
-	public function toflex():Dynamic;
+	public function toflex():numpy.Ndarray;
 	/**
 		Return the data portion of the masked array as a hierarchical Python list.
 		
@@ -3110,7 +3110,7 @@ package numpy.ma.core;
 		>>> x.tolist(-999)
 		[[1, -999, 3], [-999, 5, -999], [7, -999, 9]]
 	**/
-	public function tolist(?fill_value:Dynamic):Dynamic;
+	public function tolist(?fill_value:Dynamic):Array<Dynamic>;
 	/**
 		Transforms a masked array into a flexible-type array.
 		
@@ -3147,7 +3147,7 @@ package numpy.ma.core;
 		 [(4, True) (5, False) (6, True)]
 		 [(7, False) (8, True) (9, False)]]
 	**/
-	public function torecords():Dynamic;
+	public function torecords():numpy.Ndarray;
 	/**
 		This function is a compatibility alias for tobytes. Despite its name it
 		returns bytes not strings.

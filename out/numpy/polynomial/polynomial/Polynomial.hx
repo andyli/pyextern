@@ -171,7 +171,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyval(2, sum) # 4 + 4(2) + 4(2**2)
 		28.0
 	**/
-	static public function _add(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _add(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a polynomial.
 		
@@ -449,7 +449,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyfromroots((-j,j)) # complex returned, though values are real
 		array([ 1.+0.j,  0.+0.j,  1.+0.j])
 	**/
-	static public function _fromroots(roots:Dynamic):Dynamic;
+	static public function _fromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Interpret other as polynomial coefficients.
 		
@@ -578,7 +578,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyval(1, P.polyline(1,-1)) # should be 0
 		0.0
 	**/
-	static public function _line(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function _line(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one polynomial by another.
 		
@@ -609,7 +609,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polymul(c1,c2)
 		array([  3.,   8.,  14.,   8.,   3.])
 	**/
-	static public function _mul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _mul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Raise a polynomial to a power.
 		
@@ -640,7 +640,7 @@ package numpy.polynomial.polynomial;
 		Examples
 		--------
 	**/
-	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a polynomial.
 		
@@ -684,7 +684,7 @@ package numpy.polynomial.polynomial;
 		>>> poly.polyroots(poly.polyfromroots((-j,0,j)))
 		array([  0.00000000e+00+0.j,   0.00000000e+00+1.j,   2.77555756e-17-1.j])
 	**/
-	static public function _roots(c:Dynamic):Dynamic;
+	static public function _roots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one polynomial from another.
 		
@@ -717,7 +717,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polysub(c2,c1) # -P.polysub(c1,c2)
 		array([ 2.,  0., -2.])
 	**/
-	static public function _sub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _sub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a polynomial at points x.
 		
@@ -1226,7 +1226,7 @@ package numpy.polynomial.polynomial;
 		roots : ndarray
 		    Array containing the roots of the series.
 	**/
-	public function roots():Dynamic;
+	public function roots():numpy.Ndarray;
 	/**
 		Remove trailing coefficients
 		

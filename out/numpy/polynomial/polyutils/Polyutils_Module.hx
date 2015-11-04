@@ -88,7 +88,7 @@ package numpy.polynomial.polyutils;
 		>>> pu.getdomain(c)
 		array([-1.-1.j,  1.+1.j])
 	**/
-	static public function getdomain(x:Dynamic):Dynamic;
+	static public function getdomain(x:Dynamic):numpy.Ndarray;
 	/**
 		Apply linear map to input points.
 		
@@ -150,7 +150,7 @@ package numpy.polynomial.polyutils;
 		>>> new_z = P.mapdomain(z, old, new); new_z
 		array([-1.0+1.j , -0.6+0.6j, -0.2+0.2j,  0.2-0.2j,  0.6-0.6j,  1.0-1.j ])
 	**/
-	static public function mapdomain(x:Dynamic, old:Dynamic, _new:Dynamic):Dynamic;
+	static public function mapdomain(x:Dynamic, old:Dynamic, _new:Dynamic):numpy.Ndarray;
 	/**
 		Linear map parameters between domains.
 		
@@ -234,7 +234,7 @@ package numpy.polynomial.polyutils;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function trimcoef(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function trimcoef(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Remove small Poly series coefficients.
 		

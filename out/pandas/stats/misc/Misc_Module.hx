@@ -74,7 +74,7 @@ package pandas.stats.misc;
 		-------
 		y : Series
 	**/
-	static public function correl_ts(frame1:Dynamic, frame2:Dynamic):Dynamic;
+	static public function correl_ts(frame1:Dynamic, frame2:Dynamic):pandas.Series;
 	static public function correl_xs(frame1:Dynamic, frame2:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)

@@ -162,7 +162,7 @@ package numpy.core.function_base;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 	/**
 		result_type(*arrays_and_dtypes)

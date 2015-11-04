@@ -390,7 +390,7 @@ package pandas.core.strings;
 		--------
 		pandas.get_dummies
 	**/
-	public function get_dummies(?sep:Dynamic):Dynamic;
+	public function get_dummies(?sep:Dynamic):pandas.DataFrame;
 	/**
 		Return lowest indexes in each strings where the substring is
 		fully contained between [start:end]. This is the same as ``str.find``

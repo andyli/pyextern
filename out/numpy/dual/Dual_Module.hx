@@ -585,7 +585,7 @@ package numpy.dual;
 		array([[ 1.,  0.],
 		       [ 0.,  1.]])
 	**/
-	static public function inv(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function inv(a:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):numpy.Ndarray;
 	/**
 		Compute least-squares solution to equation Ax = b.
 		
@@ -736,7 +736,7 @@ package numpy.dual;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
@@ -907,5 +907,5 @@ package numpy.dual;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):numpy.Ndarray;
 }

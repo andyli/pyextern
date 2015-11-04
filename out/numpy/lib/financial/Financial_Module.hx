@@ -101,7 +101,7 @@ package numpy.lib.financial;
 		>>> np.fv(a, 10*12, -100, -100)
 		array([ 15692.92889434,  16569.87435405,  17509.44688102])
 	**/
-	static public function fv(rate:Dynamic, nper:Dynamic, pmt:Dynamic, pv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function fv(rate:Dynamic, nper:Dynamic, pmt:Dynamic, pv:Dynamic, ?when:Dynamic):numpy.Ndarray;
 	/**
 		Compute the interest portion of a payment.
 		
@@ -183,7 +183,7 @@ package numpy.lib.financial;
 		>>> np.round(interestpd, 2)
 		-112.98
 	**/
-	static public function ipmt(rate:Dynamic, per:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function ipmt(rate:Dynamic, per:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):numpy.Ndarray;
 	/**
 		Return the Internal Rate of Return (IRR).
 		
@@ -243,7 +243,7 @@ package numpy.lib.financial;
 		
 		(Compare with the Example given for numpy.lib.financial.npv)
 	**/
-	static public function irr(values:Dynamic):Dynamic;
+	static public function irr(values:Dynamic):Float;
 	/**
 		Modified internal rate of return.
 		
@@ -263,7 +263,7 @@ package numpy.lib.financial;
 		out : float
 		    Modified internal rate of return
 	**/
-	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Dynamic;
+	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
 		Compute the number of periodic payments.
 		
@@ -352,7 +352,7 @@ package numpy.lib.financial;
 		
 		(Compare with the Example given for numpy.lib.financial.irr)
 	**/
-	static public function npv(rate:Dynamic, values:Dynamic):Dynamic;
+	static public function npv(rate:Dynamic, values:Dynamic):Float;
 	/**
 		Compute the payment against loan principal plus interest.
 		
@@ -434,7 +434,7 @@ package numpy.lib.financial;
 		today, a monthly payment of $1,854.02 would be required.  Note that this
 		example illustrates usage of `fv` having a default value of 0.
 	**/
-	static public function pmt(rate:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):Dynamic;
+	static public function pmt(rate:Dynamic, nper:Dynamic, pv:Dynamic, ?fv:Dynamic, ?when:Dynamic):numpy.Ndarray;
 	/**
 		Compute the payment against loan principal.
 		

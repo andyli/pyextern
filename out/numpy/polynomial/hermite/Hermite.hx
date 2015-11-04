@@ -175,7 +175,7 @@ package numpy.polynomial.hermite;
 		>>> hermadd([1, 2, 3], [1, 2, 3, 4])
 		array([ 2.,  4.,  6.,  4.])
 	**/
-	static public function _add(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _add(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Hermite series.
 		
@@ -442,7 +442,7 @@ package numpy.polynomial.hermite;
 		>>> hermval((-1j, 1j), coef)
 		array([ 0.+0.j,  0.+0.j])
 	**/
-	static public function _fromroots(roots:Dynamic):Dynamic;
+	static public function _fromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Interpret other as polynomial coefficients.
 		
@@ -579,7 +579,7 @@ package numpy.polynomial.hermite;
 		>>> hermval(1,hermline(3, 2))
 		5.0
 	**/
-	static public function _line(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function _line(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Hermite series by another.
 		
@@ -616,7 +616,7 @@ package numpy.polynomial.hermite;
 		>>> hermmul([1, 2, 3], [0, 1, 2])
 		array([ 52.,  29.,  52.,   7.,   6.])
 	**/
-	static public function _mul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _mul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Raise a Hermite series to a power.
 		
@@ -650,7 +650,7 @@ package numpy.polynomial.hermite;
 		>>> hermpow([1, 2, 3], 2)
 		array([ 81.,  52.,  82.,  12.,   9.])
 	**/
-	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function _pow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Hermite series.
 		
@@ -695,7 +695,7 @@ package numpy.polynomial.hermite;
 		>>> hermroots(coef)
 		array([ -1.00000000e+00,  -1.38777878e-17,   1.00000000e+00])
 	**/
-	static public function _roots(c:Dynamic):Dynamic;
+	static public function _roots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Hermite series from another.
 		
@@ -731,7 +731,7 @@ package numpy.polynomial.hermite;
 		>>> hermsub([1, 2, 3, 4], [1, 2, 3])
 		array([ 0.,  0.,  0.,  4.])
 	**/
-	static public function _sub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function _sub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate an Hermite series at points x.
 		
@@ -1228,7 +1228,7 @@ package numpy.polynomial.hermite;
 		roots : ndarray
 		    Array containing the roots of the series.
 	**/
-	public function roots():Dynamic;
+	public function roots():numpy.Ndarray;
 	/**
 		Remove trailing coefficients
 		

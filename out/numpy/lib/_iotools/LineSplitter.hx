@@ -124,5 +124,5 @@ package numpy.lib._iotools;
 		    argument and returns a list of strings that are stripped of
 		    white-space.
 	**/
-	public function autostrip(method:Dynamic):Dynamic;
+	public function autostrip(method:Dynamic):haxe.Constraints.Function;
 }

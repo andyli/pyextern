@@ -275,7 +275,7 @@ package pandas.core.base;
 		-------
 		uniques : ndarray
 	**/
-	public function unique():Dynamic;
+	public function unique():numpy.Ndarray;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -302,5 +302,5 @@ package pandas.core.base;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 }

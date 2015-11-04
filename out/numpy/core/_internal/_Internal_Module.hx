@@ -107,7 +107,7 @@ package numpy.core._internal;
 		ValueError
 		    If `ary` does not contain a field given in `names`.
 	**/
-	static public function _index_fields(ary:Dynamic, names:Dynamic):Dynamic;
+	static public function _index_fields(ary:Dynamic, names:Dynamic):numpy.Ndarray;
 	static public function _makenames_list(adict:Dynamic, align:Dynamic):Dynamic;
 	static public var _nbo : Dynamic;
 	static public function _newnames(datatype:Dynamic, order:Dynamic):Dynamic;

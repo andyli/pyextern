@@ -48,7 +48,7 @@ package pandas.tseries.period;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):Dynamic;
+	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -504,7 +504,7 @@ package pandas.tseries.period;
 		-------
 		appended : Index
 	**/
-	public function append(other:Dynamic):Dynamic;
+	public function append(other:Dynamic):pandas.Index;
 	/**
 		return a ndarray of the maximum argument indexer
 		
@@ -607,7 +607,7 @@ package pandas.tseries.period;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function copy(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):Dynamic;
+	public function copy(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
 	/**
 		return the data pointer of the underlying data 
 	**/
@@ -662,7 +662,7 @@ package pandas.tseries.period;
 		
 		>>> index.difference(index2)
 	**/
-	public function difference(other:Dynamic):Dynamic;
+	public function difference(other:Dynamic):pandas.Index;
 	/**
 		Make new Index with passed list of labels deleted
 		
@@ -676,7 +676,7 @@ package pandas.tseries.period;
 		-------
 		dropped : Index
 	**/
-	public function drop(labels:Dynamic, ?errors:Dynamic):Dynamic;
+	public function drop(labels:Dynamic, ?errors:Dynamic):pandas.Index;
 	/**
 		Return Index with duplicate values removed
 		
@@ -694,7 +694,7 @@ package pandas.tseries.period;
 		-------
 		deduplicated : Index
 	**/
-	public function drop_duplicates(?keep:Dynamic):Dynamic;
+	public function drop_duplicates(?keep:Dynamic):pandas.Index;
 	static public var dtype : Dynamic;
 	static public var dtype_str : Dynamic;
 	/**
@@ -807,7 +807,7 @@ package pandas.tseries.period;
 		-------
 		values : ndarray
 	**/
-	public function get_level_values(level:Dynamic):Dynamic;
+	public function get_level_values(level:Dynamic):numpy.Ndarray;
 	/**
 		Get integer location for requested label
 		
@@ -879,7 +879,7 @@ package pandas.tseries.period;
 		-------
 		intersection : Index
 	**/
-	public function intersection(other:Dynamic):Dynamic;
+	public function intersection(other:Dynamic):pandas.Index;
 	/**
 		More flexible, faster check like ``is`` but that works through views
 		
@@ -1132,7 +1132,7 @@ package pandas.tseries.period;
 		-------
 		shifted : PeriodIndex
 	**/
-	public function shift(n:Dynamic):Dynamic;
+	public function shift(n:Dynamic):pandas.PeriodIndex;
 	/**
 		return the number of elements in the underlying data 
 	**/
@@ -1334,7 +1334,7 @@ package pandas.tseries.period;
 		----
 		Not currently implemented for PeriodIndex
 	**/
-	public function tz_convert(tz:Dynamic):Dynamic;
+	public function tz_convert(tz:Dynamic):pandas.DatetimeIndex;
 	/**
 		Localize tz-naive DatetimeIndex to given time zone (using pytz/dateutil),
 		or remove timezone from tz-aware DatetimeIndex
@@ -1356,7 +1356,7 @@ package pandas.tseries.period;
 		----
 		Not currently implemented for PeriodIndex
 	**/
-	public function tz_localize(tz:Dynamic, ?infer_dst:Dynamic):Dynamic;
+	public function tz_localize(tz:Dynamic, ?infer_dst:Dynamic):pandas.DatetimeIndex;
 	/**
 		Form the union of two Index objects and sorts if possible
 		
@@ -1368,7 +1368,7 @@ package pandas.tseries.period;
 		-------
 		union : Index
 	**/
-	public function union(other:Dynamic):Dynamic;
+	public function union(other:Dynamic):pandas.Index;
 	/**
 		Index.unique with handling for DatetimeIndex/PeriodIndex metadata
 		
@@ -1403,7 +1403,7 @@ package pandas.tseries.period;
 		-------
 		counts : Series
 	**/
-	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
+	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
 	/**
 		return the underlying data as an ndarray 
 	**/

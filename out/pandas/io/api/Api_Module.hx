@@ -24,7 +24,7 @@ package pandas.io.api;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		

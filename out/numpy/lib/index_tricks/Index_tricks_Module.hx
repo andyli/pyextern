@@ -241,7 +241,7 @@ package numpy.lib.index_tricks;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public var c_ : Dynamic;
 	/**
 		Return the cumulative product of elements along a given axis.
@@ -301,7 +301,7 @@ package numpy.lib.index_tricks;
 		array([[  1,   2,   6],
 		       [  4,  20, 120]])
 	**/
-	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Return the indices to access the main diagonal of an array.
 		
@@ -424,7 +424,7 @@ package numpy.lib.index_tricks;
 		>>> np.diff(x, axis=0)
 		array([[-1,  2,  0, -2]])
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.

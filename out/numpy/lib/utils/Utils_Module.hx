@@ -10,6 +10,7 @@ package numpy.lib.utils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	static public var _dictlist : Dynamic;
 	static public var _function_signature_re : Dynamic;
 	static public function _getmembers(item:Dynamic):Dynamic;
@@ -123,7 +124,7 @@ package numpy.lib.utils;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Returns pointers to the end-points of an array.
 		
@@ -195,7 +196,7 @@ package numpy.lib.utils;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -313,7 +314,7 @@ package numpy.lib.utils;
 		>>> np.issubclass_(np.int32, np.float)
 		False
 	**/
-	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -365,7 +366,7 @@ package numpy.lib.utils;
 		>>> np.issubsctype(np.array([1]), np.float)
 		False
 	**/
-	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Do a keyword search on docstrings.
 		

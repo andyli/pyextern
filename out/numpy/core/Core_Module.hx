@@ -188,7 +188,7 @@ package numpy.core;
 		>>> np.alen(a)
 		7
 	**/
-	static public function alen(a:Dynamic):Dynamic;
+	static public function alen(a:Dynamic):Int;
 	/**
 		Test whether all array elements along a given axis evaluate to True.
 		
@@ -1329,7 +1329,7 @@ package numpy.core;
 		       [1, 1],
 		       [1, 2]])
 	**/
-	static public function argwhere(a:Dynamic):Dynamic;
+	static public function argwhere(a:Dynamic):numpy.Ndarray;
 	/**
 		Evenly round to the given number of decimals.
 		
@@ -1394,7 +1394,7 @@ package numpy.core;
 		>>> np.around([1,2,3,11], decimals=-1)
 		array([ 0,  0,  0, 10])
 	**/
-	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):Dynamic;
+	static public function around(a:Dynamic, ?decimals:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
 		
@@ -1577,7 +1577,7 @@ package numpy.core;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
 	/**
 		True if two arrays have the same shape and elements, False otherwise.
 		
@@ -1609,7 +1609,7 @@ package numpy.core;
 		>>> np.array_equal([1, 2], [1, 4])
 		False
 	**/
-	static public function array_equal(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equal(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Returns True if input arrays are shape consistent and all elements equal.
 		
@@ -1643,7 +1643,7 @@ package numpy.core;
 		>>> np.array_equiv([1, 2], [[1, 2], [1, 3]])
 		False
 	**/
-	static public function array_equiv(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equiv(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Return the string representation of an array.
 		
@@ -1684,7 +1684,7 @@ package numpy.core;
 		>>> np.array_repr(x, precision=6, suppress_small=True)
 		'array([ 0.000001,  0.      ,  2.      ,  3.      ])'
 	**/
-	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
+	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):String;
 	/**
 		Return a string representation of the data in an array.
 		
@@ -1834,7 +1834,7 @@ package numpy.core;
 		>>> np.asanyarray(a) is a
 		True
 	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return a contiguous array in memory (C order).
 		
@@ -1867,7 +1867,7 @@ package numpy.core;
 		>>> x.flags['C_CONTIGUOUS']
 		True
 	**/
-	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function ascontiguousarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Return an array laid out in Fortran order in memory.
 		
@@ -1900,7 +1900,7 @@ package numpy.core;
 		>>> y.flags['F_CONTIGUOUS']
 		True
 	**/
-	static public function asfortranarray(a:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function asfortranarray(a:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Convert inputs to arrays with at least one dimension.
 		
@@ -1938,7 +1938,7 @@ package numpy.core;
 		>>> np.atleast_1d(1, [3, 4])
 		[array([1]), array([3, 4])]
 	**/
-	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least two dimensions.
 		
@@ -1974,7 +1974,7 @@ package numpy.core;
 		>>> np.atleast_2d(1, [1, 2], [[1, 2]])
 		[array([[1]]), array([[1, 2]]), array([[1, 2]])]
 	**/
-	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_2d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		View inputs as arrays with at least three dimensions.
 		
@@ -2022,7 +2022,7 @@ package numpy.core;
 		  [2]]] (1, 2, 1)
 		[[[1 2]]] (1, 1, 2)
 	**/
-	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):Dynamic;
+	static public function atleast_3d(?arys:python.VarArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Return a string representation of a number in the given base system.
 		
@@ -2059,7 +2059,7 @@ package numpy.core;
 		>>> np.base_repr(32, base=16)
 		'20'
 	**/
-	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):Dynamic;
+	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):String;
 	/**
 		Run benchmarks for module using nose.
 		
@@ -2113,7 +2113,7 @@ package numpy.core;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Return the binary representation of the input number as a string.
 		
@@ -2170,7 +2170,7 @@ package numpy.core;
 		>>> np.binary_repr(-3, width=4)
 		'1101'
 	**/
-	static public function binary_repr(num:Dynamic, ?width:Dynamic):Dynamic;
+	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
 		bitwise_and(x1, x2[, out])
 		
@@ -2845,7 +2845,7 @@ package numpy.core;
 		        [-1, -2, -3, -4, -5],
 		        [-1, -2, -3, -4, -5]]])
 	**/
-	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Clip (limit) the values in an array.
 		
@@ -2894,7 +2894,7 @@ package numpy.core;
 		>>> np.clip(a, [3,4,1,1,1,4,4,4,4,4], 8)
 		array([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])
 	**/
-	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):Dynamic;
+	static public function clip(a:Dynamic, a_min:Dynamic, a_max:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	static public function compare_chararrays(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return selected slices of an array along given axis.
@@ -2954,7 +2954,7 @@ package numpy.core;
 		>>> np.compress([False, True], a)
 		array([2])
 	**/
-	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		concatenate((a1, a2, ...), axis=0)
 		
@@ -3171,7 +3171,7 @@ package numpy.core;
 		>>> np.convolve([1,2,3],[0,1,0.5], 'valid')
 		array([ 2.5])
 	**/
-	static public function convolve(a:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function convolve(a:Dynamic, v:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		copysign(x1, x2[, out])
 		
@@ -3304,7 +3304,7 @@ package numpy.core;
 		>>> np.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')
 		array([ 0.0+0.j ,  3.0+1.j ,  1.5+1.5j,  1.0+0.j ,  0.5+0.5j])
 	**/
-	static public function correlate(a:Dynamic, v:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function correlate(a:Dynamic, v:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		cos(x[, out])
 		
@@ -3581,7 +3581,7 @@ package numpy.core;
 		array([[  1,   2,   6],
 		       [  4,  20, 120]])
 	**/
-	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function cumprod(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Return the cumulative product over the given axis.
 		
@@ -3829,7 +3829,7 @@ package numpy.core;
 		array([[1, 3],
 		       [5, 7]])
 	**/
-	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
+	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):numpy.Ndarray;
 	/**
 		true_divide(x1, x2[, out])
 		
@@ -4565,7 +4565,7 @@ package numpy.core;
 		>>> x.ravel()[np.flatnonzero(x)]
 		array([-2, -1,  1,  2])
 	**/
-	static public function flatnonzero(a:Dynamic):Dynamic;
+	static public function flatnonzero(a:Dynamic):numpy.Ndarray;
 	/**
 		floor(x[, out])
 		
@@ -5168,7 +5168,7 @@ package numpy.core;
 		array([[10, 10],
 		       [10, 10]])
 	**/
-	static public function full(shape:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function full(shape:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return a full array with the same shape and type as a given array.
 		
@@ -5222,7 +5222,7 @@ package numpy.core;
 		>>> np.full_like(y, 0.1)
 		array([ 0.1,  0.1,  0.1,  0.1,  0.1,  0.1])
 	**/
-	static public function full_like(a:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function full_like(a:Dynamic, fill_value:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 	/**
 		Return the current print options.
 		
@@ -5246,7 +5246,7 @@ package numpy.core;
 		--------
 		set_printoptions, set_string_function
 	**/
-	static public function get_printoptions():Dynamic;
+	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	/**
 		Return the size of the buffer used in ufuncs.
 		
@@ -5255,7 +5255,7 @@ package numpy.core;
 		getbufsize : int
 		    Size of ufunc buffer in bytes.
 	**/
-	static public function getbufsize():Dynamic;
+	static public function getbufsize():Int;
 	/**
 		Get the current way of handling floating-point errors.
 		
@@ -5291,7 +5291,7 @@ package numpy.core;
 		__main__:1: RuntimeWarning: invalid value encountered in divide
 		array([ NaN,   1.,   1.])
 	**/
-	static public function geterr():Dynamic;
+	static public function geterr():python.Dict<Dynamic, Dynamic>;
 	/**
 		Return the current callback function used on floating-point errors.
 		
@@ -5498,7 +5498,7 @@ package numpy.core;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function hstack(tup:Dynamic):Dynamic;
+	static public function hstack(tup:Dynamic):numpy.Ndarray;
 	/**
 		hypot(x1, x2[, out])
 		
@@ -5563,7 +5563,7 @@ package numpy.core;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function identity(n:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function identity(n:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Return an array representing the indices of a grid.
 		
@@ -5622,7 +5622,7 @@ package numpy.core;
 		Note that it would be more straightforward in the above example to
 		extract the required elements directly with ``x[:2, :3]``.
 	**/
-	static public function indices(dimensions:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function indices(dimensions:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	static public var inf : Dynamic;
 	static public var infty : Dynamic;
 	/**
@@ -6133,7 +6133,7 @@ package numpy.core;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Determines whether the given object represents a scalar data-type.
 		
@@ -6166,7 +6166,7 @@ package numpy.core;
 		>>> np.issctype(np.dtype('str'))
 		True
 	**/
-	static public function issctype(rep:Dynamic):Dynamic;
+	static public function issctype(rep:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -7002,7 +7002,7 @@ package numpy.core;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function logspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?base:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		matmul(a, b, out=None)
 		
@@ -7720,7 +7720,7 @@ package numpy.core;
 		>>> np.ndim(1)
 		0
 	**/
-	static public function ndim(a:Dynamic):Dynamic;
+	static public function ndim(a:Dynamic):Int;
 	/**
 		negative(x[, out])
 		
@@ -7846,7 +7846,7 @@ package numpy.core;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		not_equal(x1, x2[, out])
 		
@@ -7958,7 +7958,7 @@ package numpy.core;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return an array of ones with the same shape and type as a given array.
 		
@@ -8399,7 +8399,7 @@ package numpy.core;
 		>>> np.ptp(x, axis=1)
 		array([1, 1])
 	**/
-	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
+	static public function ptp(a:Dynamic, ?axis:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Replaces specified elements of an array with given values.
 		
@@ -8602,7 +8602,7 @@ package numpy.core;
 		>>> np.rank(1)
 		0
 	**/
-	static public function rank(a:Dynamic):Dynamic;
+	static public function rank(a:Dynamic):Int;
 	/**
 		Return a contiguous flattened array.
 		
@@ -8703,7 +8703,7 @@ package numpy.core;
 		>>> a.ravel(order='K')
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	static public function ravel(a:Dynamic, ?order:Dynamic):Dynamic;
+	static public function ravel(a:Dynamic, ?order:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		reciprocal(x[, out])
 		
@@ -8819,7 +8819,7 @@ package numpy.core;
 		       [3, 4],
 		       [3, 4]])
 	**/
-	static public function repeat(a:Dynamic, repeats:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function repeat(a:Dynamic, repeats:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return an ndarray of the provided type that satisfies requirements.
 		
@@ -8971,7 +8971,7 @@ package numpy.core;
 		       [3, 4],
 		       [5, 6]])
 	**/
-	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Return a new array with the specified shape.
 		
@@ -9011,7 +9011,7 @@ package numpy.core;
 		array([[0, 1, 2, 3],
 		       [0, 1, 2, 3]])
 	**/
-	static public function resize(a:Dynamic, new_shape:Dynamic):Dynamic;
+	static public function resize(a:Dynamic, new_shape:Dynamic):numpy.Ndarray;
 	/**
 		Restore `dot`, `vdot`, and `innerproduct` to the default non-BLAS
 		implementations.
@@ -9211,7 +9211,7 @@ package numpy.core;
 		array([[4, 0, 1, 2, 3],
 		       [9, 5, 6, 7, 8]])
 	**/
-	static public function roll(a:Dynamic, shift:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function roll(a:Dynamic, shift:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Roll the specified axis backwards, until it lies in a given position.
 		
@@ -9248,7 +9248,7 @@ package numpy.core;
 		>>> np.rollaxis(a, 1, 4).shape
 		(3, 5, 6, 4)
 	**/
-	static public function rollaxis(a:Dynamic, axis:Dynamic, ?start:Dynamic):Dynamic;
+	static public function rollaxis(a:Dynamic, axis:Dynamic, ?start:Dynamic):numpy.Ndarray;
 	/**
 		Round an array to the given number of decimals.
 		
@@ -9309,7 +9309,7 @@ package numpy.core;
 		>>> np.sctype2char(list)
 		'O'
 	**/
-	static public function sctype2char(sctype:Dynamic):Dynamic;
+	static public function sctype2char(sctype:Dynamic):String;
 	static public var sctypeDict : Dynamic;
 	static public var sctypeNA : Dynamic;
 	static public var sctypes : Dynamic;
@@ -9642,7 +9642,7 @@ package numpy.core;
 		Warning: overflow encountered in short_scalars
 		30464
 	**/
-	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):Dynamic;
+	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Set the floating-point error callback function or log object.
 		
@@ -10014,7 +10014,7 @@ package numpy.core;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Check whether some values are true.
 		
@@ -10125,7 +10125,7 @@ package numpy.core;
 		       ('Arthur', 1.8, 41)],
 		      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])
 	**/
-	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		spacing(x[, out])
 		
@@ -10563,7 +10563,7 @@ package numpy.core;
 		       [[1, 5],
 		        [3, 7]]])
 	**/
-	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):Dynamic;
+	static public function swapaxes(a:Dynamic, axis1:Dynamic, axis2:Dynamic):numpy.Ndarray;
 	/**
 		Take elements from an array along an axis.
 		
@@ -10972,7 +10972,7 @@ package numpy.core;
 		>>> np.trace(a).shape
 		(2, 3)
 	**/
-	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	static public function trace(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic, ?dtype:Dynamic, ?out:Dynamic):numpy.Ndarray;
 	/**
 		Permute the dimensions of an array.
 		
@@ -11017,7 +11017,7 @@ package numpy.core;
 		>>> np.transpose(x, (1, 0, 2)).shape
 		(2, 1, 3)
 	**/
-	static public function transpose(a:Dynamic, ?axes:Dynamic):Dynamic;
+	static public function transpose(a:Dynamic, ?axes:Dynamic):numpy.Ndarray;
 	/**
 		true_divide(x1, x2[, out])
 		
@@ -11302,7 +11302,7 @@ package numpy.core;
 		       [3],
 		       [4]])
 	**/
-	static public function vstack(tup:Dynamic):Dynamic;
+	static public function vstack(tup:Dynamic):numpy.Ndarray;
 	/**
 		where(condition, [x, y])
 		

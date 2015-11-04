@@ -114,7 +114,7 @@ package pandas.tseries.period;
 		-------
 		prng : PeriodIndex
 	**/
-	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):Dynamic;
+	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
 	static public function pnow(?freq:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 }

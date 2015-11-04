@@ -53,7 +53,7 @@ package numpy.lib.arraysetops;
 		>>> np.ediff1d(y)
 		array([ 1,  2, -3,  5, 18])
 	**/
-	static public function ediff1d(ary:Dynamic, ?to_end:Dynamic, ?to_begin:Dynamic):Dynamic;
+	static public function ediff1d(ary:Dynamic, ?to_end:Dynamic, ?to_begin:Dynamic):numpy.Ndarray;
 	/**
 		Test whether each element of a 1-D array is also present in a second array.
 		
@@ -149,7 +149,7 @@ package numpy.lib.arraysetops;
 		>>> reduce(np.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))
 		array([3])
 	**/
-	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
+	static public function intersect1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 	/**
 		Find the set difference of two arrays.
@@ -183,7 +183,7 @@ package numpy.lib.arraysetops;
 		>>> np.setdiff1d(a, b)
 		array([1, 2])
 	**/
-	static public function setdiff1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
+	static public function setdiff1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
 	/**
 		Find the set exclusive-or of two arrays.
 		
@@ -211,7 +211,7 @@ package numpy.lib.arraysetops;
 		>>> np.setxor1d(a,b)
 		array([1, 4, 5, 7])
 	**/
-	static public function setxor1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):Dynamic;
+	static public function setxor1d(ar1:Dynamic, ar2:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
 	/**
 		Find the union of two arrays.
 		
@@ -244,7 +244,7 @@ package numpy.lib.arraysetops;
 		>>> reduce(np.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))
 		array([1, 2, 3, 4, 6])
 	**/
-	static public function union1d(ar1:Dynamic, ar2:Dynamic):Dynamic;
+	static public function union1d(ar1:Dynamic, ar2:Dynamic):numpy.Ndarray;
 	/**
 		Find the unique elements of an array.
 		

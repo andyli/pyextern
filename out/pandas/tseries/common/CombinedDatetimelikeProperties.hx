@@ -256,7 +256,7 @@ package pandas.tseries.common;
 		-------
 		normalized : DatetimeIndex
 	**/
-	public function normalize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function normalize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
 		The quarter of the date
 	**/
@@ -323,7 +323,7 @@ package pandas.tseries.common;
 		TypeError
 		    If DatetimeIndex is tz-naive.
 	**/
-	public function tz_convert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function tz_convert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
 		Localize tz-naive DatetimeIndex to given time zone (using pytz/dateutil),
 		or remove timezone from tz-aware DatetimeIndex
@@ -352,7 +352,7 @@ package pandas.tseries.common;
 		TypeError
 		    If the DatetimeIndex is tz-aware and tz is not None.
 	**/
-	public function tz_localize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function tz_localize(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
 		The week ordinal of the year
 	**/

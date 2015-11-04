@@ -117,5 +117,5 @@ package numpy.lib._datasource;
 		    strings (i.e. ``'.gz'``, ``'.bz2'``) for supported compression
 		    methods.
 	**/
-	public function keys():Dynamic;
+	public function keys():Array<Dynamic>;
 }

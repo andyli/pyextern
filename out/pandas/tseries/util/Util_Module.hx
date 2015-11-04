@@ -48,5 +48,5 @@ package pandas.tseries.util;
 		-------
 		annual : DataFrame
 	**/
-	static public function pivot_annual(series:Dynamic, ?freq:Dynamic):Dynamic;
+	static public function pivot_annual(series:Dynamic, ?freq:Dynamic):pandas.DataFrame;
 }

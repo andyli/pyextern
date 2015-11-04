@@ -342,7 +342,7 @@ package pandas.core.strings;
 		--------
 		pandas.get_dummies
 	**/
-	static public function str_get_dummies(arr:Dynamic, ?sep:Dynamic):Dynamic;
+	static public function str_get_dummies(arr:Dynamic, ?sep:Dynamic):pandas.DataFrame;
 	static public function str_index(arr:Dynamic, sub:Dynamic, ?start:Dynamic, ?end:Dynamic, ?side:Dynamic):Dynamic;
 	/**
 		Join lists contained as elements in the Series/Index with

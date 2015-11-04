@@ -48,7 +48,7 @@ package numpy.polynomial.laguerre;
 		>>> lag2poly([ 23., -63.,  58., -18.])
 		array([ 0.,  1.,  2.,  3.])
 	**/
-	static public function lag2poly(c:Dynamic):Dynamic;
+	static public function lag2poly(c:Dynamic):numpy.Ndarray;
 	/**
 		Add one Laguerre series to another.
 		
@@ -84,7 +84,7 @@ package numpy.polynomial.laguerre;
 		>>> lagadd([1, 2, 3], [1, 2, 3, 4])
 		array([ 2.,  4.,  6.,  4.])
 	**/
-	static public function lagadd(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function lagadd(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Return the companion matrix of c.
 		
@@ -108,7 +108,7 @@ package numpy.polynomial.laguerre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function lagcompanion(c:Dynamic):Dynamic;
+	static public function lagcompanion(c:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a Laguerre series.
 		
@@ -374,7 +374,7 @@ package numpy.polynomial.laguerre;
 		>>> lagval((-1j, 1j), coef)
 		array([ 0.+0.j,  0.+0.j])
 	**/
-	static public function lagfromroots(roots:Dynamic):Dynamic;
+	static public function lagfromroots(roots:Dynamic):numpy.Ndarray;
 	/**
 		Gauss-Laguerre quadrature.
 		
@@ -409,7 +409,7 @@ package numpy.polynomial.laguerre;
 		is the k'th root of :math:`L_n`, and then scaling the results to get
 		the right value when integrating 1.
 	**/
-	static public function laggauss(deg:Dynamic):Dynamic;
+	static public function laggauss(deg:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a 2-D Laguerre series on the Cartesian product of x and y.
 		
@@ -622,7 +622,7 @@ package numpy.polynomial.laguerre;
 		>>> lagval(1,lagline(3, 2))
 		5.0
 	**/
-	static public function lagline(off:Dynamic, scl:Dynamic):Dynamic;
+	static public function lagline(off:Dynamic, scl:Dynamic):numpy.Ndarray;
 	/**
 		Multiply one Laguerre series by another.
 		
@@ -659,7 +659,7 @@ package numpy.polynomial.laguerre;
 		>>> lagmul([1, 2, 3], [0, 1, 2])
 		array([  8., -13.,  38., -51.,  36.])
 	**/
-	static public function lagmul(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function lagmul(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Multiply a Laguerre series by x.
 		
@@ -693,7 +693,7 @@ package numpy.polynomial.laguerre;
 		>>> lagmulx([1, 2, 3])
 		array([ -1.,  -1.,  11.,  -9.])
 	**/
-	static public function lagmulx(c:Dynamic):Dynamic;
+	static public function lagmulx(c:Dynamic):numpy.Ndarray;
 	static public var lagone : Dynamic;
 	/**
 		Raise a Laguerre series to a power.
@@ -728,7 +728,7 @@ package numpy.polynomial.laguerre;
 		>>> lagpow([1, 2, 3], 2)
 		array([ 14., -16.,  56., -72.,  54.])
 	**/
-	static public function lagpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):Dynamic;
+	static public function lagpow(c:Dynamic, pow:Dynamic, ?maxpower:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Laguerre series.
 		
@@ -773,7 +773,7 @@ package numpy.polynomial.laguerre;
 		>>> lagroots(coef)
 		array([ -4.44089210e-16,   1.00000000e+00,   2.00000000e+00])
 	**/
-	static public function lagroots(c:Dynamic):Dynamic;
+	static public function lagroots(c:Dynamic):numpy.Ndarray;
 	/**
 		Subtract one Laguerre series from another.
 		
@@ -809,7 +809,7 @@ package numpy.polynomial.laguerre;
 		>>> lagsub([1, 2, 3, 4], [1, 2, 3])
 		array([ 0.,  0.,  0.,  4.])
 	**/
-	static public function lagsub(c1:Dynamic, c2:Dynamic):Dynamic;
+	static public function lagsub(c1:Dynamic, c2:Dynamic):numpy.Ndarray;
 	/**
 		Remove "small" "trailing" coefficients from a polynomial.
 		
@@ -852,7 +852,7 @@ package numpy.polynomial.laguerre;
 		>>> P.trimcoef((3e-4,1e-3*(1-i),5e-4,2e-5*(1+i)), 1e-3)
 		array([ 0.0003+0.j   ,  0.0010-0.001j])
 	**/
-	static public function lagtrim(c:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function lagtrim(c:Dynamic, ?tol:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a Laguerre series at points x.
 		
@@ -1056,7 +1056,7 @@ package numpy.polynomial.laguerre;
 		       [ 1.        ,  0.        , -0.5       , -0.66666667],
 		       [ 1.        , -1.        , -1.        , -0.33333333]])
 	**/
-	static public function lagvander(x:Dynamic, deg:Dynamic):Dynamic;
+	static public function lagvander(x:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1106,7 +1106,7 @@ package numpy.polynomial.laguerre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function lagvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):Dynamic;
+	static public function lagvander2d(x:Dynamic, y:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Pseudo-Vandermonde matrix of given degrees.
 		
@@ -1157,7 +1157,7 @@ package numpy.polynomial.laguerre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function lagvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):Dynamic;
+	static public function lagvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	/**
 		Weight function of the Laguerre polynomials.
 		
@@ -1180,7 +1180,7 @@ package numpy.polynomial.laguerre;
 		
 		.. versionadded::1.7.0
 	**/
-	static public function lagweight(x:Dynamic):Dynamic;
+	static public function lagweight(x:Dynamic):numpy.Ndarray;
 	static public var lagx : Dynamic;
 	static public var lagzero : Dynamic;
 	/**
@@ -1219,6 +1219,6 @@ package numpy.polynomial.laguerre;
 		>>> poly2lag(np.arange(4))
 		array([ 23., -63.,  58., -18.])
 	**/
-	static public function poly2lag(pol:Dynamic):Dynamic;
+	static public function poly2lag(pol:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

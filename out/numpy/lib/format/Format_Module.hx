@@ -29,7 +29,7 @@ package numpy.lib.format;
 		header : str
 		    Cleaned up header.
 	**/
-	static public function _filter_header(s:Dynamic):Dynamic;
+	static public function _filter_header(s:Dynamic):String;
 	/**
 		see read_array_header_1_0
 	**/
@@ -101,7 +101,7 @@ package numpy.lib.format;
 		    This has the appropriate entries for writing its string representation
 		    to the header of the file.
 	**/
-	static public function header_data_from_array_1_0(array:Dynamic):Dynamic;
+	static public function header_data_from_array_1_0(array:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public function isfileobj(f:Dynamic):Dynamic;
 	/**
 		Return the magic string for the given file format version.
@@ -195,7 +195,7 @@ package numpy.lib.format;
 		    If the data is invalid, or allow_pickle=False and the file contains
 		    an object array.
 	**/
-	static public function read_array(fp:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
+	static public function read_array(fp:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):numpy.Ndarray;
 	/**
 		Read an array header from a filelike object using the 1.0 file format
 		version.

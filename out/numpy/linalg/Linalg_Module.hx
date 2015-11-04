@@ -948,7 +948,7 @@ package numpy.linalg;
 		    cost((AB)C) = 10*100*5 + 10*5*50   = 5000 + 2500   = 7500
 		    cost(A(BC)) = 10*100*50 + 100*5*50 = 50000 + 25000 = 75000
 	**/
-	static public function multi_dot(arrays:Dynamic):Dynamic;
+	static public function multi_dot(arrays:Dynamic):numpy.Ndarray;
 	/**
 		Matrix or vector norm.
 		
@@ -1529,7 +1529,7 @@ package numpy.linalg;
 		>>> np.allclose(np.tensordot(ainv, b, 1), np.linalg.tensorsolve(a, b))
 		True
 	**/
-	static public function tensorinv(a:Dynamic, ?ind:Dynamic):Dynamic;
+	static public function tensorinv(a:Dynamic, ?ind:Dynamic):numpy.Ndarray;
 	/**
 		Solve the tensor equation ``a x = b`` for x.
 		
