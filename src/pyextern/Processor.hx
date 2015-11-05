@@ -408,7 +408,9 @@ class Processor {
 				macro:Array<Dynamic>;
 			case "callable", "function":
 				macro:haxe.Constraints.Function;
-			case "object":
+			case "generator":
+				macro:python.NativeIterable<Dynamic>;
+			case "object", "Python object":
 				macro:Dynamic;
 			case "str":
 				macro:String;

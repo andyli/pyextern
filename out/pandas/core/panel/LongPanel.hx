@@ -3065,7 +3065,7 @@ package pandas.core.panel;
 		itertuples : Iterate over the rows of a DataFrame as tuples of the values.
 		iteritems : Iterate over (column name, Series) pairs.
 	**/
-	public function iterrows():Dynamic;
+	public function iterrows():python.NativeIterable<Dynamic>;
 	/**
 		Iterate over the rows of DataFrame as tuples, with index value
 		as first element of the tuple.

@@ -20,6 +20,8 @@ class Process_pandas extends Processor {
 						macro:pandas.core.frame.NDFrame;
 					case "ndarray":
 						macro:numpy.Ndarray;
+					case "pd.Index":
+						macro:pandas.Index;
 					case _ if (classes.exists(type)):
 						TPath({
 							pack: ["pandas"],

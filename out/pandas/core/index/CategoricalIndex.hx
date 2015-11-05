@@ -1068,7 +1068,7 @@ package pandas.core.index;
 		indexer : np.ndarray or None
 		    Indices of output values in original index
 	**/
-	public function reindex(target:Dynamic, ?method:Dynamic, ?level:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
+	public function reindex(target:Dynamic, ?method:Dynamic, ?level:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):pandas.Index;
 	/**
 		Removes the specified categories.
 		

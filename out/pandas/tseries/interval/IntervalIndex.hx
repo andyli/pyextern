@@ -406,7 +406,7 @@ package pandas.tseries.interval;
 		indexer : np.ndarray or None
 		    Indices of output values in original index
 	**/
-	public function _reindex_non_unique(target:Dynamic):Dynamic;
+	public function _reindex_non_unique(target:Dynamic):pandas.Index;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -995,7 +995,7 @@ package pandas.tseries.interval;
 		indexer : np.ndarray or None
 		    Indices of output values in original index
 	**/
-	public function reindex(target:Dynamic, ?method:Dynamic, ?level:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
+	public function reindex(target:Dynamic, ?method:Dynamic, ?level:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):pandas.Index;
 	/**
 		Set new names on index. Defaults to returning new index.
 		

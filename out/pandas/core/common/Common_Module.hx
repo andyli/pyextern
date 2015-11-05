@@ -419,7 +419,7 @@ package pandas.core.common;
 		-------
 		flattened : generator
 	**/
-	static public function flatten(l:Dynamic):Dynamic;
+	static public function flatten(l:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Parameters
 		----------

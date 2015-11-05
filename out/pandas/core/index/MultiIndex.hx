@@ -427,7 +427,7 @@ package pandas.core.index;
 		indexer : np.ndarray or None
 		    Indices of output values in original index
 	**/
-	public function _reindex_non_unique(target:Dynamic):Dynamic;
+	public function _reindex_non_unique(target:Dynamic):pandas.Index;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/

@@ -20,59 +20,69 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		tanh(x[, out])
+		arctan(x[, out])
 		
-		Compute hyperbolic tangent element-wise.
+		Trigonometric inverse tangent, element-wise.
 		
-		Equivalent to ``np.sinh(x)/np.cosh(x)`` or ``-1j * np.tan(1j*x)``.
+		The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
-		out : ndarray, optional
-		    Output array of same shape as `x`.
+		    Input values.  `arctan` is applied to each element of `x`.
 		
 		Returns
 		-------
-		y : ndarray
-		    The corresponding hyperbolic tangent values.
+		out : ndarray
+		    Out has the same shape as `x`.  Its real part is in
+		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
+		    It is a scalar if `x` is a scalar.
 		
-		Raises
-		------
-		ValueError: invalid return array shape
-		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
+		See Also
+		--------
+		arctan2 : The "four quadrant" arctan of the angle formed by (`x`, `y`)
+		    and the positive `x`-axis.
+		angle : Argument of complex values.
 		
 		Notes
 		-----
-		If `out` is provided, the function writes the result into it,
-		and returns a reference to `out`.  (See Examples)
+		`arctan` is a multi-valued function: for each `x` there are infinitely
+		many numbers `z` such that tan(`z`) = `x`.  The convention is to return
+		the angle `z` whose real part lies in [-pi/2, pi/2].
+		
+		For real-valued input data types, `arctan` always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
+		
+		For complex-valued input, `arctan` is a complex analytic function that
+		has [`1j, infj`] and [`-1j, -infj`] as branch cuts, and is continuous
+		from the left on the former and from the right on the latter.
+		
+		The inverse tangent is also known as `atan` or tan^{-1}.
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
-		       New York, NY: Dover, 1972, pg. 83.
-		       http://www.math.sfu.ca/~cbm/aands/
-		
-		.. [2] Wikipedia, "Hyperbolic function",
-		       http://en.wikipedia.org/wiki/Hyperbolic_function
+		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
+		10th printing, New York: Dover, 1964, pp. 79.
+		http://www.math.sfu.ca/~cbm/aands/
 		
 		Examples
 		--------
-		>>> np.tanh((0, np.pi*1j, np.pi*1j/2))
-		array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])
+		We expect the arctan of 0 to be 0, and of 1 to be pi/4:
 		
-		>>> # Example of providing the optional output parameter illustrating
-		>>> # that what is returned is a reference to said parameter
-		>>> out2 = np.tanh([0.1], out1)
-		>>> out2 is out1
-		True
+		>>> np.arctan([0, 1])
+		array([ 0.        ,  0.78539816])
 		
-		>>> # Example of ValueError due to provision of shape mis-matched `out`
-		>>> np.tanh(np.zeros((3,3)),np.zeros((2,2)))
-		Traceback (most recent call last):
-		  File "<stdin>", line 1, in <module>
-		ValueError: invalid return array shape
+		>>> np.pi/4
+		0.78539816339744828
+		
+		Plot arctan:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-10, 10)
+		>>> plt.plot(x, np.arctan(x))
+		>>> plt.axis('tight')
+		>>> plt.show()
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
