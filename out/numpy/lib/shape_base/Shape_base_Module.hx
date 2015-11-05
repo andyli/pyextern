@@ -805,7 +805,7 @@ package numpy.lib.shape_base;
 		>>> c[K] == a[I]*b[J]
 		True
 	**/
-	static public function kron(a:Dynamic, b:Dynamic):Dynamic;
+	static public function kron(a:Dynamic, b:Dynamic):numpy.Ndarray;
 	/**
 		Compute the outer product of two vectors.
 		

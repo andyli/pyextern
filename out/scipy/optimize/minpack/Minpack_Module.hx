@@ -443,7 +443,7 @@ package scipy.optimize.minpack;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Array<Dynamic>;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
@@ -736,7 +736,7 @@ package scipy.optimize.minpack;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -761,7 +761,7 @@ package scipy.optimize.minpack;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Minimize the sum of squares of a set of equations.
 		

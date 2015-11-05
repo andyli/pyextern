@@ -167,7 +167,7 @@ package scipy.linalg._matfuncs_sqrtm;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Convert real Schur form to complex Schur form.

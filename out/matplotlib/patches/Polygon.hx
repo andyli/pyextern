@@ -330,7 +330,7 @@ package matplotlib.patches;
 		closed : bool
 		    If the path is closed
 	**/
-	public function get_closed():Dynamic;
+	public function get_closed():Bool;
 	/**
 		Return the _contains test used by the artist, or *None* for default.
 	**/

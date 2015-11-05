@@ -66,7 +66,7 @@ package scipy.linalg;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Create a block diagonal matrix from provided arrays.
 		
@@ -187,7 +187,7 @@ package scipy.linalg;
 		--------
 		cho_factor : Cholesky factorization of a matrix
 	**/
-	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Solve the linear equations A x = b, given the Cholesky factorization of A.
 		
@@ -1159,7 +1159,7 @@ package scipy.linalg;
 		prefer_fortran : bool
 		    Whether to prefer Fortran order routines over C order.
 	**/
-	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):String;
 	/**
 		Compute the fractional power of a matrix.
 		
@@ -1296,7 +1296,7 @@ package scipy.linalg;
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
 	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Return available LAPACK function objects from names.
 		
@@ -1334,7 +1334,7 @@ package scipy.linalg;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Construct a Hadamard matrix.
 		
@@ -1979,7 +1979,7 @@ package scipy.linalg;
 		--------
 		lu_factor : LU factorize a matrix
 	**/
-	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Matrix or vector norm.
 		
@@ -2081,7 +2081,7 @@ package scipy.linalg;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	/**
 		Construct an orthonormal basis for the range of A using SVD
 		

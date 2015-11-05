@@ -415,7 +415,7 @@ package matplotlib.axis;
 		ret : list
 		   List of :class:`~matplotlib.text.Text` instances.
 	**/
-	public function get_ticklabels(?minor:Dynamic, ?which:Dynamic):Dynamic;
+	public function get_ticklabels(?minor:Dynamic, ?which:Dynamic):Array<Dynamic>;
 	/**
 		Return the tick lines as a list of Line2D instances
 	**/

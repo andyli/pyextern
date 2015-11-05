@@ -44,7 +44,7 @@ package scipy.misc.doccer;
 		>>> docformat(docstring, docdict)
 		'First line\n    Second line\n    indented\n    string'
 	**/
-	static public function docformat(docstring:Dynamic, ?docdict:Dynamic):Dynamic;
+	static public function docformat(docstring:Dynamic, ?docdict:Dynamic):String;
 	/**
 		Return docstring decorator using docdict variable dictionary
 		
@@ -61,7 +61,7 @@ package scipy.misc.doccer;
 		decfunc : function
 		    decorator that applies dictionary to input function docstring
 	**/
-	static public function filldoc(docdict:Dynamic, ?unindent_params:Dynamic):Dynamic;
+	static public function filldoc(docdict:Dynamic, ?unindent_params:Dynamic):haxe.Constraints.Function;
 	/**
 		Minimum indent for all lines in line list
 		
@@ -123,7 +123,7 @@ package scipy.misc.doccer;
 		    Do it fast.
 		    '
 	**/
-	static public function inherit_docstring_from(cls:Dynamic):Dynamic;
+	static public function inherit_docstring_from(cls:Dynamic):haxe.Constraints.Function;
 	static public var print_function : Dynamic;
 	/**
 		Unindent all strings in a docdict 

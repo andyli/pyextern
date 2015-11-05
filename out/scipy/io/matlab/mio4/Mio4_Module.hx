@@ -32,7 +32,7 @@ package scipy.io.matlab.mio4;
 		arr2d : array
 		   2D version of the array
 	**/
-	static public function arr_to_2d(arr:Dynamic, ?oned_as:Dynamic):Dynamic;
+	static public function arr_to_2d(arr:Dynamic, ?oned_as:Dynamic):Array<Dynamic>;
 	/**
 		Convert string array to char array 
 	**/
@@ -132,7 +132,7 @@ package scipy.io.matlab.mio4;
 		   ...
 		ValueError: 1D option "bizarre" is strange
 	**/
-	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):Dynamic;
+	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):python.Tuple<Dynamic>;
 	static public var mclass_info : Dynamic;
 	static public var mdtypes_template : Dynamic;
 	static public var miDOUBLE : Dynamic;

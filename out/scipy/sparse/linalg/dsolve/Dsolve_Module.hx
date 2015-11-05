@@ -65,7 +65,7 @@ package scipy.sparse.linalg.dsolve;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
 		Return a fuction for solving a sparse linear system, with A pre-factorized.
@@ -93,7 +93,7 @@ package scipy.sparse.linalg.dsolve;
 		>>> x1 = solve( rhs1 ) # Uses the LU factors.
 		array([ 1., -2., -2.])
 	**/
-	static public function factorized(A:Dynamic):Dynamic;
+	static public function factorized(A:Dynamic):haxe.Constraints.Function;
 	static public var print_function : Dynamic;
 	/**
 		Compute an incomplete LU decomposition for a sparse, square matrix.

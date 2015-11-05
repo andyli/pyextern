@@ -141,7 +141,7 @@ package scipy.stats.contingency;
 		         [[ 15.54012004,  15.54012004],
 		          [ 18.10873492,  18.10873492]]]]))
 	**/
-	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Dynamic;
+	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Float;
 	static public var division : Dynamic;
 	/**
 		Compute the expected frequencies from a contingency table.

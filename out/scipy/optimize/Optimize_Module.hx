@@ -447,7 +447,7 @@ package scipy.optimize;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Find root of a function within an interval.
 		
@@ -499,7 +499,7 @@ package scipy.optimize;
 		fixed_point : scalar fixed-point finder
 		fsolve : n-dimensional root-finding
 	**/
-	static public function bisect(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function bisect(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Bracket the minimum of the function.
 		
@@ -531,7 +531,7 @@ package scipy.optimize;
 		funcalls : int
 		    Number of function evaluations made.
 	**/
-	static public function bracket(func:Dynamic, ?xa:Dynamic, ?xb:Dynamic, ?args:Dynamic, ?grow_limit:Dynamic, ?maxiter:Dynamic):Dynamic;
+	static public function bracket(func:Dynamic, ?xa:Dynamic, ?xb:Dynamic, ?args:Dynamic, ?grow_limit:Dynamic, ?maxiter:Dynamic):Float;
 	/**
 		Given a function of one-variable and a possible bracketing interval,
 		return the minimum of the function isolated to a fractional precision of
@@ -647,7 +647,7 @@ package scipy.optimize;
 		
 		fixed_point : scalar fixed-point finder
 	**/
-	static public function brenth(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brenth(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Find a root of a function in given interval.
 		
@@ -746,7 +746,7 @@ package scipy.optimize;
 		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
 		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 	**/
-	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Find a root of a function, using Broyden's first Jacobian approximation.
 		
@@ -1120,7 +1120,7 @@ package scipy.optimize;
 		>>> check_grad(func, grad, [1.5, -1.5])
 		2.9802322387695312e-08
 	**/
-	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		Use non-linear least squares to fit a function, f, to data.
 		
@@ -1207,7 +1207,7 @@ package scipy.optimize;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Array<Dynamic>;
 	/**
 		Find a root of a function, using diagonal Broyden Jacobian approximation.
 		
@@ -3560,7 +3560,7 @@ package scipy.optimize;
 		sign. The brentq algorithm is recommended for general use in one
 		dimensional problems when such an interval has been found.
 	**/
-	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Dynamic;
+	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Float;
 	/**
 		Find a root of a function, using Krylov approximation for inverse Jacobian.
 		
@@ -3766,7 +3766,7 @@ package scipy.optimize;
 		   Single Root of a Real Continuous Function."
 		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
 	**/
-	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Find a root of a vector function.
 		
@@ -3915,7 +3915,7 @@ package scipy.optimize;
 		--------
 		rosen_der, rosen_hess, rosen_hess_prod
 	**/
-	static public function rosen(x:Dynamic):Dynamic;
+	static public function rosen(x:Dynamic):Float;
 	/**
 		The derivative (i.e. gradient) of the Rosenbrock function.
 		

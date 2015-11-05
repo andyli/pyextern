@@ -305,7 +305,7 @@ package pandas.io.excel;
 		    value has been replaced with a native openpyxl style object of the
 		    appropriate class.
 	**/
-	static public function _convert_to_style_kwargs(style_dict:Dynamic):Dynamic;
+	static public function _convert_to_style_kwargs(style_dict:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public function _get_sheet_name(sheet_name:Dynamic):Dynamic;
 	static public var book : Dynamic;
 	/**

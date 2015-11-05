@@ -443,7 +443,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_midstep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function pts_to_midstep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	/**
 		Covert continuous line to pre-steps
 		
@@ -472,7 +472,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_poststep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function pts_to_poststep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	/**
 		Covert continuous line to pre-steps
 		
@@ -501,7 +501,7 @@ package matplotlib.cbook;
 		--------
 		>> x_s, y1_s, y2_s = pts_to_prestep(x, y1, y2)
 	**/
-	static public function pts_to_prestep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function pts_to_prestep(x:Dynamic, ?args:python.VarArgs<Dynamic>):Array<Dynamic>;
 	static public function recursive_remove(path:Dynamic):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value

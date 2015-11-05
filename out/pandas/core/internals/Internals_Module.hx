@@ -133,7 +133,7 @@ package pandas.core.internals;
 		...     np.array([1, 2, np.nan]))
 		False
 	**/
-	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Dynamic;
+	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
 	/**
 		Combine multiple concatenation plans into one.
 		

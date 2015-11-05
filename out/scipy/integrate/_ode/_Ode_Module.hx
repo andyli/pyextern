@@ -240,7 +240,7 @@ package scipy.integrate._ode;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	static public var print_function : Dynamic;
 	/**
 		Return the real part of the elements of the array.

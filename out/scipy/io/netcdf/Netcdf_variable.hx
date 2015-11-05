@@ -146,7 +146,7 @@ package scipy.io.netcdf;
 		itemsize : int
 		    The element size of the variable (eg, 8 for float64).
 	**/
-	public function itemsize():Dynamic;
+	public function itemsize():Int;
 	/**
 		Returns the shape tuple of the data variable.
 		

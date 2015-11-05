@@ -126,7 +126,7 @@ package seaborn.matrix;
 		    .dendrogram. The important key-value pairing is
 		    "reordered_ind" which indicates the re-ordering of the matrix
 	**/
-	public function calculate_dendrogram():Dynamic;
+	public function calculate_dendrogram():python.Dict<Dynamic, Dynamic>;
 	public var calculated_linkage : Dynamic;
 	/**
 		Plots a dendrogram of the similarities between data on the axes

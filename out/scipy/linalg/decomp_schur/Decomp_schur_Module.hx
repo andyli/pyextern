@@ -231,7 +231,7 @@ package scipy.linalg.decomp_schur;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Convert real Schur form to complex Schur form.

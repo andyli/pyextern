@@ -460,7 +460,7 @@ package scipy.optimize.optimize;
 		funcalls : int
 		    Number of function evaluations made.
 	**/
-	static public function bracket(func:Dynamic, ?xa:Dynamic, ?xb:Dynamic, ?args:Dynamic, ?grow_limit:Dynamic, ?maxiter:Dynamic):Dynamic;
+	static public function bracket(func:Dynamic, ?xa:Dynamic, ?xb:Dynamic, ?args:Dynamic, ?grow_limit:Dynamic, ?maxiter:Dynamic):Float;
 	/**
 		Given a function of one-variable and a possible bracketing interval,
 		return the minimum of the function isolated to a fractional precision of
@@ -701,7 +701,7 @@ package scipy.optimize.optimize;
 		>>> check_grad(func, grad, [1.5, -1.5])
 		2.9802322387695312e-08
 	**/
-	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function check_grad(func:Dynamic, grad:Dynamic, x0:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	static public var division : Dynamic;
 	/**
 		Return a 2-D array with ones on the diagonal and zeros elsewhere.
@@ -1578,7 +1578,7 @@ package scipy.optimize.optimize;
 		--------
 		rosen_der, rosen_hess, rosen_hess_prod
 	**/
-	static public function rosen(x:Dynamic):Dynamic;
+	static public function rosen(x:Dynamic):Float;
 	/**
 		The derivative (i.e. gradient) of the Rosenbrock function.
 		

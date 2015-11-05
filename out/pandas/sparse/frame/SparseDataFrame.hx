@@ -1468,7 +1468,7 @@ package pandas.sparse.frame;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix(?columns:Dynamic):Dynamic;
+	public function as_matrix(?columns:Dynamic):numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.
@@ -3370,7 +3370,7 @@ package pandas.sparse.frame;
 		--------
 		numpy.ndarray.nbytes
 	**/
-	public function memory_usage(?index:Dynamic):Dynamic;
+	public function memory_usage(?index:Dynamic):pandas.Series;
 	/**
 		Merge DataFrame objects by performing a database-style join operation by
 		columns or indexes.
@@ -3806,7 +3806,7 @@ package pandas.sparse.frame;
 		    If no values column specified, will have hierarchically indexed
 		    columns
 	**/
-	public function pivot(?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):Dynamic;
+	public function pivot(?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):pandas.DataFrame;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the
 		pivot table will be stored in MultiIndex objects (hierarchical indexes) on
@@ -4927,7 +4927,7 @@ package pandas.sparse.frame;
 		4   True
 		5  False
 	**/
-	public function select_dtypes(?include:Dynamic, ?exclude:Dynamic):Dynamic;
+	public function select_dtypes(?include:Dynamic, ?exclude:Dynamic):pandas.DataFrame;
 	/**
 		Return unbiased standard error of the mean over requested axis.
 		

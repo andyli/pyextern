@@ -12,33 +12,6 @@ using Lambda;
 
 @process_modules("pandas")
 class Process_pandas extends Processor {
-	override public function docToFun(doc:String):Function {
-		var xml = parseRst(doc);
-
-		var ret:ComplexType = if (xml != null) {
-			var sec =
-				new Fast(xml).node.document.nodes.section
-					.find(function(sec:Fast) return 
-						sec.hasNode.title && 
-						sec.node.title.innerHTML.toLowerCase() == "returns"
-					);
-			if (sec != null && sec.hasNode.paragraph) {
-				var retDoc = sec.node.paragraph.innerHTML;
-				var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
-				if (re.match(retDoc)) {
-					hxType(re.matched(2));
-				} else null;
-			} else null;
-		} else null;
-
-		return {
-			params: [],
-			args: null,
-			ret: ret,
-			expr: null
-		}
-	}
-
 	override public function hxType(type:String):ComplexType {
 		return switch (super.hxType(type)) {
 			case null:

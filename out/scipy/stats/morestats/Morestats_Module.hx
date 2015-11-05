@@ -41,7 +41,7 @@ package scipy.stats.morestats;
 		A2aKN : float
 		    The A2aKN statistics of Scholz and Stephens 1987.
 	**/
-	static public function _anderson_ksamp_midrank(samples:Dynamic, Z:Dynamic, Zstar:Dynamic, k:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
+	static public function _anderson_ksamp_midrank(samples:Dynamic, Z:Dynamic, Zstar:Dynamic, k:Dynamic, n:Dynamic, N:Dynamic):Float;
 	/**
 		Compute A2akN equation 6 of Scholz & Stephens.
 		
@@ -65,7 +65,7 @@ package scipy.stats.morestats;
 		A2KN : float
 		    The A2KN statistics of Scholz and Stephens 1987.
 	**/
-	static public function _anderson_ksamp_right(samples:Dynamic, Z:Dynamic, Zstar:Dynamic, k:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
+	static public function _anderson_ksamp_right(samples:Dynamic, Z:Dynamic, Zstar:Dynamic, k:Dynamic, n:Dynamic, N:Dynamic):Float;
 	static public function _apply_func(x:Dynamic, g:Dynamic, func:Dynamic):Dynamic;
 	static public function _boxcox_conf_interval(x:Dynamic, lmax:Dynamic, alpha:Dynamic):Dynamic;
 	/**
@@ -309,7 +309,7 @@ package scipy.stats.morestats;
 		       Based on the Empirical Distribution Function, Biometrika, Vol. 66,
 		       pp. 591-595.
 	**/
-	static public function anderson(x:Dynamic, ?dist:Dynamic):Dynamic;
+	static public function anderson(x:Dynamic, ?dist:Dynamic):Float;
 	/**
 		The Anderson-Darling test for k-samples.
 		
@@ -466,7 +466,7 @@ package scipy.stats.morestats;
 		.. [1] Sprent, Peter and N.C. Smeeton.  Applied nonparametric statistical
 		       methods.  3rd ed. Chapman and Hall/CRC. 2001.  Section 5.8.2.
 	**/
-	static public function ansari(x:Dynamic, y:Dynamic):Dynamic;
+	static public function ansari(x:Dynamic, y:Dynamic):Float;
 	/**
 		Test whether any array element along a given axis evaluates to True.
 		
@@ -886,7 +886,7 @@ package scipy.stats.morestats;
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
 	**/
-	static public function bartlett(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function bartlett(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Bayesian confidence intervals for the mean, var, and std.
 		
@@ -929,7 +929,7 @@ package scipy.stats.morestats;
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
 		standard-deviation from data", http://hdl.handle.net/1877/438, 2006.
 	**/
-	static public function bayes_mvs(data:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function bayes_mvs(data:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Perform a test that the probability of success is p.
 		
@@ -958,7 +958,7 @@ package scipy.stats.morestats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Binomial_test
 	**/
-	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic):Dynamic;
+	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic):Float;
 	/**
 		Return a positive dataset transformed by a Box-Cox power transformation.
 		
@@ -1413,7 +1413,7 @@ package scipy.stats.morestats;
 		         [[ 15.54012004,  15.54012004],
 		          [ 18.10873492,  18.10873492]]]]))
 	**/
-	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Dynamic;
+	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Float;
 	/**
 		Compute the circular mean for samples in a range.
 		
@@ -1434,7 +1434,7 @@ package scipy.stats.morestats;
 		circmean : float
 		    Circular mean.
 	**/
-	static public function circmean(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circmean(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the circular standard deviation for samples assumed to be in the
 		range [low to high].
@@ -1462,7 +1462,7 @@ package scipy.stats.morestats;
 		This uses a definition of circular standard deviation that in the limit of
 		small angles returns a number close to the 'linear' standard deviation.
 	**/
-	static public function circstd(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circstd(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the circular variance for samples assumed to be in a range
 		
@@ -1488,7 +1488,7 @@ package scipy.stats.morestats;
 		This uses a definition of circular variance that in the limit of small
 		angles returns a number close to the 'linear' variance.
 	**/
-	static public function circvar(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circvar(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Return selected slices of an array along given axis.
 		
@@ -1664,7 +1664,7 @@ package scipy.stats.morestats;
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
 		(array([ 4., 5.]), array([2, 2], dtype=int32))
 	**/
-	static public function find_repeats(arr:Dynamic):Dynamic;
+	static public function find_repeats(arr:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Perform Fligner's test for equal variances.
 		
@@ -1706,7 +1706,7 @@ package scipy.stats.morestats;
 		       tests for scale. 'Journal of the American Statistical Association.'
 		       71(353), 210-213.
 	**/
-	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		floor(x[, out])
 		
@@ -1764,7 +1764,7 @@ package scipy.stats.morestats;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Return the nth k-statistic (1<=n<=4 so far).
 		
@@ -1810,7 +1810,7 @@ package scipy.stats.morestats;
 		
 		http://mathworld.wolfram.com/Cumulant.html
 	**/
-	static public function kstat(data:Dynamic, ?n:Dynamic):Dynamic;
+	static public function kstat(data:Dynamic, ?n:Dynamic):Float;
 	/**
 		Returns an unbiased estimator of the variance of the k-statistic.
 		
@@ -1832,7 +1832,7 @@ package scipy.stats.morestats;
 		--------
 		kstat
 	**/
-	static public function kstatvar(data:Dynamic, ?n:Dynamic):Dynamic;
+	static public function kstatvar(data:Dynamic, ?n:Dynamic):Float;
 	/**
 		Perform Levene test for equal variances.
 		
@@ -1878,7 +1878,7 @@ package scipy.stats.morestats;
 		.. [3]  Brown, M. B. and Forsythe, A. B. (1974), Journal of the American
 		          Statistical Association, 69, 364-367
 	**/
-	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		log(x[, out])
 		
@@ -2559,7 +2559,7 @@ package scipy.stats.morestats;
 		----------
 		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 	**/
-	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Dynamic;
+	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
 	/**
 		Return a sorted copy of an array.
 		
@@ -2917,7 +2917,7 @@ package scipy.stats.morestats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
 	**/
-	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Dynamic;
+	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Float;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

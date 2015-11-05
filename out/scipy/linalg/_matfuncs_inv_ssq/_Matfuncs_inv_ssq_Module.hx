@@ -274,7 +274,7 @@ package scipy.linalg._matfuncs_inv_ssq;
 		    It can be thought of as an output of the linear operator
 		    that is relatively large in norm compared to the input.
 	**/
-	static public function _onenormest_m1_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Dynamic;
+	static public function _onenormest_m1_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	/**
 		Compute the fractional power of a matrix, for fractions -1 < t < 1.
 		

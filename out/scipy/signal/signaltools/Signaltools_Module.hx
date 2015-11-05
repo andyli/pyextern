@@ -762,7 +762,7 @@ package scipy.signal.signaltools;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Convolve two 2-dimensional arrays.
 		
@@ -900,7 +900,7 @@ package scipy.signal.signaltools;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Cross-correlate two 2-dimensional arrays.
 		
@@ -1479,7 +1479,7 @@ package scipy.signal.signaltools;
 		>>> ax_blurred.set_axis_off()
 		>>> fig.show()
 	**/
-	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Return the Discrete Fourier Transform sample frequencies.
 		
@@ -2209,7 +2209,7 @@ package scipy.signal.signaltools;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		Returns True if the type of `num` is a scalar type.
 		
@@ -2232,7 +2232,7 @@ package scipy.signal.signaltools;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Filter data along one-dimension with an IIR or FIR filter.
 		
@@ -2296,7 +2296,7 @@ package scipy.signal.signaltools;
 		                         -1               -na
 		             a[0] + a[1]z  + ... + a[na] z
 	**/
-	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Dynamic;
+	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
 		Compute an initial state `zi` for the lfilter function that corresponds
 		to the steady state of the step response.

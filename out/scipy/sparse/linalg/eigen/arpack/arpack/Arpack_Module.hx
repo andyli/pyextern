@@ -391,7 +391,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		>>> vecs.shape
 		(13, 6)
 	**/
-	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Sparse matrix with ones on diagonal
 		
@@ -575,7 +575,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		--------
 		lu_factor : LU factorize a matrix
 	**/
-	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Compute the LU decomposition of a sparse, square matrix.

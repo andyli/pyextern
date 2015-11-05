@@ -218,7 +218,7 @@ package scipy.linalg.decomp_cholesky;
 		--------
 		cho_factor : Cholesky factorization of a matrix
 	**/
-	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Solve the linear equations A x = b, given the Cholesky factorization of A.
 		
@@ -371,6 +371,6 @@ package scipy.linalg.decomp_cholesky;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 }

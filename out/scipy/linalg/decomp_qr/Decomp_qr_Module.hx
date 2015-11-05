@@ -55,7 +55,7 @@ package scipy.linalg.decomp_qr;
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
 	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Return available LAPACK function objects from names.
 		
@@ -93,7 +93,7 @@ package scipy.linalg.decomp_qr;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Compute QR decomposition of a matrix.

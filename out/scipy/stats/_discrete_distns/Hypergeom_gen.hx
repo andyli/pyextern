@@ -250,7 +250,7 @@ package scipy.stats._discrete_distns;
 		  (a maximum of suppnmin+1000 positive plus suppnmin+1000 negative
 		  integers are evaluated)
 	**/
-	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic):Dynamic;
+	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic):Float;
 	/**
 		Freeze the distribution for the given arguments.
 		
@@ -386,7 +386,7 @@ package scipy.stats._discrete_distns;
 		mean : float
 		    the mean of the distribution
 	**/
-	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Median of the distribution.
 		
@@ -410,7 +410,7 @@ package scipy.stats._discrete_distns;
 		stats.distributions.rv_discrete.ppf
 		    Inverse of the CDF
 	**/
-	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		n-th order non-central moment of distribution.
 		
@@ -562,7 +562,7 @@ package scipy.stats._discrete_distns;
 		std : float
 		    standard deviation of the distribution
 	**/
-	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Variance of the distribution.
 		
@@ -582,5 +582,5 @@ package scipy.stats._discrete_distns;
 		    the variance of the distribution
 	**/
 	@:native("var")
-	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 }

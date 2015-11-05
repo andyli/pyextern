@@ -180,7 +180,7 @@ package scipy.io.matlab.mio4;
 		   array with post-processing applied or not according to
 		   `process`.
 	**/
-	public function read_var_array(header:Dynamic, ?process:Dynamic):Dynamic;
+	public function read_var_array(header:Dynamic, ?process:Dynamic):Array<Dynamic>;
 	/**
 		Read and return header, next position
 		

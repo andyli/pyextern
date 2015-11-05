@@ -808,7 +808,7 @@ package pandas.core.panel;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix():Dynamic;
+	public function as_matrix():numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.
@@ -1815,7 +1815,7 @@ package pandas.core.panel;
 		MultiIndex Slicers is a generic way to get/set values on any level or levels
 		it is a superset of major_xs functionality, see :ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function major_xs(key:Dynamic, ?copy:Dynamic):Dynamic;
+	public function major_xs(key:Dynamic, ?copy:Dynamic):pandas.DataFrame;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is False and otherwise are from other.
@@ -1950,7 +1950,7 @@ package pandas.core.panel;
 		MultiIndex Slicers is a generic way to get/set values on any level or levels
 		it is a superset of minor_xs functionality, see :ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function minor_xs(key:Dynamic, ?copy:Dynamic):Dynamic;
+	public function minor_xs(key:Dynamic, ?copy:Dynamic):pandas.DataFrame;
 	/**
 		Modulo of series and other, element-wise (binary operator `mod`).
 		Equivalent to ``panel % other``.
@@ -2798,7 +2798,7 @@ package pandas.core.panel;
 		    If label combo is contained, will be reference to calling Panel,
 		    otherwise a new object
 	**/
-	public function set_value(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function set_value(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Panel;
 	/**
 		Return a tuple of axis dimensions
 	**/

@@ -322,7 +322,7 @@ package scipy.fftpack.pseudo_diffs;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		Return inverse h-Tilbert transform of a periodic sequence x.
 		

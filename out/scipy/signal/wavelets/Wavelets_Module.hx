@@ -144,7 +144,7 @@ package scipy.signal.wavelets;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Continuous wavelet transform.
 		

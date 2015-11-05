@@ -502,7 +502,7 @@ package scipy.stats.stats;
 		--------
 		skew, kurtosis
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Int;
 	static public var division : Dynamic;
 	/**
 		Performs a 1-way ANOVA.
@@ -548,7 +548,7 @@ package scipy.stats.stats;
 		
 		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
 	**/
-	static public function f_oneway(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Returns an F-statistic for a restricted vs. unrestricted model.
 		
@@ -594,7 +594,7 @@ package scipy.stats.stats;
 		fstat : float
 		    The computed F-statistic.
 	**/
-	static public function f_value_multivariate(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic):Dynamic;
+	static public function f_value_multivariate(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic):Float;
 	/**
 		Calculation of Wilks lambda F-statistic for multivarite data, per
 		Maxwell & Delaney p.657.
@@ -645,7 +645,7 @@ package scipy.stats.stats;
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
 		(array([ 4., 5.]), array([2, 2], dtype=int32))
 	**/
-	static public function find_repeats(arr:Dynamic):Dynamic;
+	static public function find_repeats(arr:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Performs a Fisher exact test on a 2x2 contingency table.
 		
@@ -704,7 +704,7 @@ package scipy.stats.stats;
 		statistically significant; whales prefer the Atlantic while sharks prefer
 		the Indian ocean.
 	**/
-	static public function fisher_exact(table:Dynamic, ?alternative:Dynamic):Dynamic;
+	static public function fisher_exact(table:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		Computes the Friedman test for repeated measurements
 		
@@ -739,7 +739,7 @@ package scipy.stats.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Friedman_test
 	**/
-	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Compute the geometric mean along the specified axis.
 		
@@ -970,7 +970,7 @@ package scipy.stats.stats;
 		>>> stats.jarque_bera(y)
 		(6713.7098548143422, 0.0)
 	**/
-	static public function jarque_bera(x:Dynamic):Dynamic;
+	static public function jarque_bera(x:Dynamic):Float;
 	/**
 		Calculates Kendall's tau, a correlation measure for ordinal data.
 		
@@ -1027,7 +1027,7 @@ package scipy.stats.stats;
 		>>> p_value
 		0.24821309157521476
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic):Dynamic;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -1062,7 +1062,7 @@ package scipy.stats.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskal(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Computes the Kolmogorov-Smirnov statistic on 2 samples.
 		
@@ -1124,7 +1124,7 @@ package scipy.stats.stats;
 		>>> stats.ks_2samp(rvs1, rvs4)
 		(0.07999999999999996, 0.41126949729859719)
 	**/
-	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Dynamic;
+	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Float;
 	/**
 		Perform the Kolmogorov-Smirnov test for goodness of fit.
 		
@@ -1228,7 +1228,7 @@ package scipy.stats.stats;
 		>>> stats.kstest(stats.t.rvs(3,size=100),'norm')
 		(0.131016895759829, 0.058826222555312224)
 	**/
-	static public function kstest(rvs:Dynamic, cdf:Dynamic, ?args:Dynamic, ?N:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function kstest(rvs:Dynamic, cdf:Dynamic, ?args:Dynamic, ?N:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Float;
 	/**
 		Computes the kurtosis (Fisher or Pearson) of a dataset.
 		
@@ -1266,7 +1266,7 @@ package scipy.stats.stats;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 	**/
-	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Array<Dynamic>;
 	/**
 		Tests whether a dataset has normal kurtosis
 		
@@ -1293,7 +1293,7 @@ package scipy.stats.stats;
 		-----
 		Valid only for n>20.  The Z-score is set to 0 for bad entries.
 	**/
-	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Calculate a regression line
 		
@@ -1334,7 +1334,7 @@ package scipy.stats.stats;
 		>>> print("r-squared:", r_value**2)
 		r-squared: 0.15286643777
 	**/
-	static public function linregress(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
 		Computes the Mann-Whitney rank test on samples x and y.
 		
@@ -1364,7 +1364,7 @@ package scipy.stats.stats;
 		The reported p-value is for a one-sided hypothesis, to get the two-sided
 		p-value multiply the returned p-value by 2.
 	**/
-	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Dynamic;
+	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Float;
 	/**
 		Mask an array for values outside of given limits.
 		
@@ -1798,7 +1798,7 @@ package scipy.stats.stats;
 		>>> stats.percentileofscore([1, 2, 3, 3, 4], 3, kind='mean')
 		60.0
 	**/
-	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Dynamic;
+	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Float;
 	/**
 		Calculates a point biserial correlation coefficient and the associated
 		p-value.
@@ -1843,7 +1843,7 @@ package scipy.stats.stats;
 		array([[ 1.       ,  0.8660254],
 		       [ 0.8660254,  1.       ]])
 	**/
-	static public function pointbiserialr(x:Dynamic, y:Dynamic):Dynamic;
+	static public function pointbiserialr(x:Dynamic, y:Dynamic):Float;
 	/**
 		Cressie-Read power divergence statistic and goodness of fit test.
 		
@@ -2094,7 +2094,7 @@ package scipy.stats.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
 	**/
-	static public function ranksums(x:Dynamic, y:Dynamic):Dynamic;
+	static public function ranksums(x:Dynamic, y:Dynamic):Float;
 	/**
 		Returns a relative frequency histogram, using the histogram function.
 		
@@ -2375,7 +2375,7 @@ package scipy.stats.stats;
 		-----
 		The sample size must be at least 8.
 	**/
-	static public function skewtest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function skewtest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Calculates a Spearman rank-order correlation coefficient and the p-value
 		to test for non-correlation.
@@ -2613,7 +2613,7 @@ package scipy.stats.stats;
 		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
 		>>> plt.show()
 	**/
-	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
 		Clip array to a given value.
 		
@@ -2712,7 +2712,7 @@ package scipy.stats.stats;
 		-------
 		tmax : float
 	**/
-	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed mean.
 		
@@ -2737,7 +2737,7 @@ package scipy.stats.stats;
 		-------
 		tmean : float
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed minimum
 		
@@ -2764,7 +2764,7 @@ package scipy.stats.stats;
 		-------
 		tmin : float
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Slices off a proportion of items from ONE end of the passed array
 		distribution.
@@ -2901,7 +2901,7 @@ package scipy.stats.stats;
 		`tsem` uses unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed sample standard deviation
 		
@@ -2931,7 +2931,7 @@ package scipy.stats.stats;
 		`tstd` computes the unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
 		
@@ -3204,7 +3204,7 @@ package scipy.stats.stats;
 		`tvar` computes the unbiased sample variance, i.e. it uses a correction
 		factor ``n / (n - 1)``.
 	**/
-	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Computes the coefficient of variation, the ratio of the biased standard
 		deviation to the mean.

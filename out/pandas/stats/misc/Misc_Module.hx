@@ -212,7 +212,7 @@ package pandas.stats.misc;
 		>>> percentileofscore([1, 2, 3, 3, 4], 3, kind='mean')
 		60.0
 	**/
-	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Dynamic;
+	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Float;
 	/**
 		Return series containing only true/non-NaN values, possibly empty.
 	**/

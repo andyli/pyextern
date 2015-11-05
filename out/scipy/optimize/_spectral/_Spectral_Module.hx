@@ -54,7 +54,7 @@ package scipy.optimize._spectral;
 		       search and its application to the spectral residual
 		       method'', IMA J. Numer. Anal. 29, 814 (2009).
 	**/
-	static public function _nonmonotone_line_search_cheng(f:Dynamic, x_k:Dynamic, d:Dynamic, f_k:Dynamic, C:Dynamic, Q:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic, ?nu:Dynamic):Dynamic;
+	static public function _nonmonotone_line_search_cheng(f:Dynamic, x_k:Dynamic, d:Dynamic, f_k:Dynamic, C:Dynamic, Q:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic, ?nu:Dynamic):Float;
 	/**
 		Nonmonotone backtracking line search as described in [1]_
 		
@@ -92,7 +92,7 @@ package scipy.optimize._spectral;
 		    large-scale nonlinear systems of equations." W. La Cruz,
 		    J.M. Martinez, M. Raydan. Math. Comp. **75**, 1429 (2006).
 	**/
-	static public function _nonmonotone_line_search_cruz(f:Dynamic, x_k:Dynamic, d:Dynamic, prev_fs:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic):Dynamic;
+	static public function _nonmonotone_line_search_cruz(f:Dynamic, x_k:Dynamic, d:Dynamic, prev_fs:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic):Float;
 	static public function _real2complex(x:Dynamic):Dynamic;
 	/**
 		Solve nonlinear equation with the DF-SANE method
@@ -178,7 +178,7 @@ package scipy.optimize._spectral;
 		is_complex : bool
 		    Whether complex values were mapped to reals
 	**/
-	static public function _wrap_func(func:Dynamic, x0:Dynamic, fmerit:Dynamic, nfev_list:Dynamic, maxfev:Dynamic, ?args:Dynamic):Dynamic;
+	static public function _wrap_func(func:Dynamic, x0:Dynamic, fmerit:Dynamic, nfev_list:Dynamic, maxfev:Dynamic, ?args:Dynamic):haxe.Constraints.Function;
 	/**
 		Convert from real to complex and reshape result arrays.
 	**/

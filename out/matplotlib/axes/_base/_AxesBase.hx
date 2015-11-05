@@ -400,7 +400,7 @@ package matplotlib.axes._base;
 		xmin, xmax, ymin, ymax : float
 		    The axis limits
 	**/
-	public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function axis(?v:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		Return *True* if this axes supports any pan/zoom button functionality.
 	**/
@@ -842,7 +842,7 @@ package matplotlib.axes._base;
 		ret : list
 		   List of :class:`~matplotlib.text.Text` instances.
 	**/
-	public function get_xticklabels(?minor:Dynamic, ?which:Dynamic):Dynamic;
+	public function get_xticklabels(?minor:Dynamic, ?which:Dynamic):Array<Dynamic>;
 	/**
 		Get the xtick lines as a list of Line2D instances
 	**/
@@ -955,7 +955,7 @@ package matplotlib.axes._base;
 		ret : list
 		   List of :class:`~matplotlib.text.Text` instances.
 	**/
-	public function get_yticklabels(?minor:Dynamic, ?which:Dynamic):Dynamic;
+	public function get_yticklabels(?minor:Dynamic, ?which:Dynamic):Array<Dynamic>;
 	/**
 		Get the ytick lines as a list of Line2D instances
 	**/
@@ -1809,7 +1809,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1997,7 +1997,7 @@ package matplotlib.axes._base;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         

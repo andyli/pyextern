@@ -112,7 +112,7 @@ package scipy.integrate;
 		romb : integrator for sampled data
 		scipy.special : for coefficients and roots of orthogonal polynomials
 	**/
-	static public function dblquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Dynamic;
+	static public function dblquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 	static public var division : Dynamic;
 	/**
 		Compute a definite integral using fixed-order Gaussian quadrature.
@@ -151,7 +151,7 @@ package scipy.integrate;
 		ode : ODE integrator
 		odeint : ODE integrator
 	**/
-	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Dynamic;
+	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
 		Return weights and error coefficient for Newton-Cotes integration.
 		
@@ -306,7 +306,7 @@ package scipy.integrate;
 		...                 opts=[opts0, opts1, opts2, opts3])
 		(25.066666666666666, 2.7829590483937256e-13)
 	**/
-	static public function nquad(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?opts:Dynamic):Dynamic;
+	static public function nquad(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?opts:Dynamic):Float;
 	/**
 		Integrate a system of ordinary differential equations.
 		
@@ -684,7 +684,7 @@ package scipy.integrate;
 		>>> print((1.0**3/3.0 + 1.0) - (0.0**3/3.0 + 0.0)) #Analytic result
 		1.3333333333333333
 	**/
-	static public function quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?full_output:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic, ?limit:Dynamic, ?points:Dynamic, ?weight:Dynamic, ?wvar:Dynamic, ?wopts:Dynamic, ?maxp1:Dynamic, ?limlst:Dynamic):Dynamic;
+	static public function quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?full_output:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic, ?limit:Dynamic, ?points:Dynamic, ?weight:Dynamic, ?wvar:Dynamic, ?wopts:Dynamic, ?maxp1:Dynamic, ?limlst:Dynamic):Float;
 	/**
 		Print extra information about integrate.quad() parameters and returns.
 		
@@ -746,7 +746,7 @@ package scipy.integrate;
 		ode: ODE integrator
 		odeint: ODE integrator
 	**/
-	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Dynamic;
+	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Float;
 	/**
 		Romberg integration using samples of a function.
 		
@@ -863,7 +863,7 @@ package scipy.integrate;
 		>>> print("%g %g" % (2*result, erf(1)))
 		0.842701 0.842701
 	**/
-	static public function romberg(_function:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?show:Dynamic, ?divmax:Dynamic, ?vec_func:Dynamic):Dynamic;
+	static public function romberg(_function:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?show:Dynamic, ?divmax:Dynamic, ?vec_func:Dynamic):Float;
 	/**
 		Integrate y(x) using samples along the given axis and the composite
 		Simpson's rule.  If x is None, spacing of dx is assumed.
@@ -1027,7 +1027,7 @@ package scipy.integrate;
 		odeint: ODE integrators
 		scipy.special: For coefficients and roots of orthogonal polynomials
 	**/
-	static public function tplquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, qfun:Dynamic, rfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Dynamic;
+	static public function tplquad(func:Dynamic, a:Dynamic, b:Dynamic, gfun:Dynamic, hfun:Dynamic, qfun:Dynamic, rfun:Dynamic, ?args:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic):Float;
 	/**
 		Integrate along the given axis using the composite trapezoidal rule.
 		
@@ -1086,5 +1086,5 @@ package scipy.integrate;
 		>>> np.trapz(a, axis=1)
 		array([ 2.,  8.])
 	**/
-	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Float;
 }

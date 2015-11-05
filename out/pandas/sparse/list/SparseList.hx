@@ -162,7 +162,7 @@ package pandas.sparse.list;
 		    If inplace=False, new object, otherwise reference to existing
 		    object
 	**/
-	public function consolidate(?inplace:Dynamic):Dynamic;
+	public function consolidate(?inplace:Dynamic):pandas.SparseList;
 	/**
 		Return copy of the list
 		

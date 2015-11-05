@@ -148,7 +148,7 @@ package scipy.interpolate;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Evaluate a bivariate B-spline and its derivatives.
 		
@@ -424,7 +424,7 @@ package scipy.interpolate;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines, Monographs on
 		    Numerical Analysis", Oxford University Press, 1993.
 	**/
-	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):Dynamic;
+	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Multidimensional interpolation on regular grids.
 		
@@ -913,7 +913,7 @@ package scipy.interpolate;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
-	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Dynamic;
+	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Float;
 	/**
 		Return a representation of a spline given data-points at internal knots
 		
@@ -940,7 +940,7 @@ package scipy.interpolate;
 		    Return a (`xk`, `cvals`, `k`) representation of a spline given
 		    data-points where the (internal) knots are at the data-points.
 	**/
-	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):Dynamic;
+	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Find the B-spline representation of an N-dimensional curve.
 		
@@ -1047,7 +1047,7 @@ package scipy.interpolate;
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs on
 		    Numerical Analysis, Oxford University Press, 1993.
 	**/
-	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):Dynamic;
+	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Find the B-spline representation of 1-D curve.
 		
@@ -1170,7 +1170,7 @@ package scipy.interpolate;
 		>>> plt.plot(x, y, 'o', x2, y2)
 		>>> plt.show()
 	**/
-	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):Dynamic;
+	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Return a piece-wise polynomial object from a fixed-spline tuple.
 		    

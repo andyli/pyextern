@@ -27,7 +27,7 @@ package scipy.sparse.linalg.matfuncs;
 		value : int
 		    A value related to a bound.
 	**/
-	static public function _ell(A:Dynamic, m:Dynamic):Dynamic;
+	static public function _ell(A:Dynamic, m:Dynamic):Int;
 	/**
 		Equation (10.42) of Functions of Matrices: Theory and Computation.
 		
@@ -74,7 +74,7 @@ package scipy.sparse.linalg.matfuncs;
 		out : float
 		    The 1-norm of the matrix power p of A.
 	**/
-	static public function _onenorm_matrix_power_nnm(A:Dynamic, p:Dynamic):Dynamic;
+	static public function _onenorm_matrix_power_nnm(A:Dynamic, p:Dynamic):Float;
 	/**
 		Efficiently estimate the 1-norm of A^p.
 		
@@ -109,7 +109,7 @@ package scipy.sparse.linalg.matfuncs;
 		    It can be thought of as an output of the linear operator
 		    that is relatively large in norm compared to the input.
 	**/
-	static public function _onenormest_matrix_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic, ?structure:Dynamic):Dynamic;
+	static public function _onenormest_matrix_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic, ?structure:Dynamic):Float;
 	/**
 		Efficiently estimate the 1-norm of the matrix product of the args.
 		
@@ -145,7 +145,7 @@ package scipy.sparse.linalg.matfuncs;
 		    It can be thought of as an output of the linear operator
 		    that is relatively large in norm compared to the input.
 	**/
-	static public function _onenormest_product(operator_seq:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic, ?structure:Dynamic):Dynamic;
+	static public function _onenormest_product(operator_seq:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic, ?structure:Dynamic):Float;
 	/**
 		Stably evaluate sinch.
 		

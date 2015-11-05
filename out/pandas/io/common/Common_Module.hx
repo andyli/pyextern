@@ -41,7 +41,7 @@ package pandas.io.common;
 		isurl : bool
 		    If `url` has a valid protocol return True otherwise False.
 	**/
-	static public function _is_url(url:Dynamic):Dynamic;
+	static public function _is_url(url:Dynamic):Bool;
 	static public function _urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	/**

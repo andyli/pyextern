@@ -84,7 +84,7 @@ package pandas.computation.expr;
 		form ``(toknum, tokval)``, where ``toknum`` is one of the constants from
 		the ``tokenize`` module and ``tokval`` is a string.
 	**/
-	static public function _preparse(source:Dynamic, ?f:Dynamic):Dynamic;
+	static public function _preparse(source:Dynamic, ?f:Dynamic):String;
 	static public var _python_not_supported : Dynamic;
 	static public var _reductions : Dynamic;
 	/**

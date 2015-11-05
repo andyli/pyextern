@@ -1428,7 +1428,7 @@ package scipy.linalg.blas;
 		prefer_fortran : bool
 		    Whether to prefer Fortran order routines over C order.
 	**/
-	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function find_best_blas_type(?arrays:Dynamic, ?dtype:Dynamic):String;
 	/**
 		Return available BLAS function objects from names.
 		
@@ -1467,7 +1467,7 @@ package scipy.linalg.blas;
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
 	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		k = icamax(x,[n,offx,incx])
 		

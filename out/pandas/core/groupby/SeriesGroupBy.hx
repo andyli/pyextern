@@ -871,7 +871,7 @@ package pandas.core.groupby;
 		>>> s = pd.Series(np.random.randn(1e6))
 		>>> s.nlargest(10)  # only sorts up to the N requested
 	**/
-	public function nlargest(?n:Dynamic, ?keep:Dynamic):Dynamic;
+	public function nlargest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
 		Return the smallest `n` elements.
 		
@@ -906,7 +906,7 @@ package pandas.core.groupby;
 		>>> s = pd.Series(np.random.randn(1e6))
 		>>> s.nsmallest(10)  # only sorts up to the N requested
 	**/
-	public function nsmallest(?n:Dynamic, ?keep:Dynamic):Dynamic;
+	public function nsmallest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
 		Take the nth row from each group if n is an int, or a subset of rows
 		if n is a list of ints.

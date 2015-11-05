@@ -370,7 +370,7 @@ package scipy.interpolate.fitpack;
 		integ : float
 		    The value of the resulting integral.
 	**/
-	static public function dblint(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic, tck:Dynamic):Dynamic;
+	static public function dblint(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic, tck:Dynamic):Float;
 	static public var division : Dynamic;
 	/**
 		empty(shape, dtype=float, order='C')
@@ -459,7 +459,7 @@ package scipy.interpolate.fitpack;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines, Monographs on
 		    Numerical Analysis", Oxford University Press, 1993.
 	**/
-	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):Dynamic;
+	static public function insert(x:Dynamic, tck:Dynamic, ?m:Dynamic, ?per:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Return a new array of given shape and type, filled with ones.
 		
@@ -834,7 +834,7 @@ package scipy.interpolate.fitpack;
 		.. [2] P. Dierckx, "Curve and surface fitting with splines", Monographs
 		    on Numerical Analysis, Oxford University Press, 1993.
 	**/
-	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Dynamic;
+	static public function splint(a:Dynamic, b:Dynamic, tck:Dynamic, ?full_output:Dynamic):Float;
 	/**
 		Find the B-spline representation of an N-dimensional curve.
 		
@@ -941,7 +941,7 @@ package scipy.interpolate.fitpack;
 		.. [3] P. Dierckx, "Curve and surface fitting with splines", Monographs on
 		    Numerical Analysis, Oxford University Press, 1993.
 	**/
-	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):Dynamic;
+	static public function splprep(x:Dynamic, ?w:Dynamic, ?u:Dynamic, ?ub:Dynamic, ?ue:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?nest:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Find the B-spline representation of 1-D curve.
 		
@@ -1064,7 +1064,7 @@ package scipy.interpolate.fitpack;
 		>>> plt.plot(x, y, 'o', x2, y2)
 		>>> plt.show()
 	**/
-	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):Dynamic;
+	static public function splrep(x:Dynamic, y:Dynamic, ?w:Dynamic, ?xb:Dynamic, ?xe:Dynamic, ?k:Dynamic, ?task:Dynamic, ?s:Dynamic, ?t:Dynamic, ?full_output:Dynamic, ?per:Dynamic, ?quiet:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Find the roots of a cubic B-spline.
 		

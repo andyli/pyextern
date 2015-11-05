@@ -142,7 +142,7 @@ package pandas.core.algorithms;
 		>>> stats.scoreatpercentile(a, 50)
 		49.5
 	**/
-	static public function quantile(x:Dynamic, q:Dynamic, ?interpolation_method:Dynamic):Dynamic;
+	static public function quantile(x:Dynamic, q:Dynamic, ?interpolation_method:Dynamic):Float;
 	/**
 		    
 	**/

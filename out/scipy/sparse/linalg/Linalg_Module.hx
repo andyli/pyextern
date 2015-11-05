@@ -537,7 +537,7 @@ package scipy.sparse.linalg;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Use BIConjugate Gradient iteration to solve A x = b
 		
@@ -1138,7 +1138,7 @@ package scipy.sparse.linalg;
 		>>> vecs.shape
 		(13, 6)
 	**/
-	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		empty(shape, dtype=float, order='C')
 		
@@ -1354,7 +1354,7 @@ package scipy.sparse.linalg;
 		>>> x1 = solve( rhs1 ) # Uses the LU factors.
 		array([ 1., -2., -2.])
 	**/
-	static public function factorized(A:Dynamic):Dynamic;
+	static public function factorized(A:Dynamic):haxe.Constraints.Function;
 	/**
 		_fastCopyAndTranspose(a)
 	**/
@@ -1812,7 +1812,7 @@ package scipy.sparse.linalg;
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
 	**/
-	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Dynamic;
+	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	/**
 		Iterative solver for least-squares problems.
 		
@@ -2607,7 +2607,7 @@ package scipy.sparse.linalg;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Compute an incomplete LU decomposition for a sparse, square matrix.
 		

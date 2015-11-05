@@ -625,7 +625,7 @@ package scipy.stats._distn_infrastructure;
 		S : float
 		    The calculated entropy.
 	**/
-	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Dynamic;
+	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Float;
 	/**
 		Execute the given source in the context of globals and locals.
 		

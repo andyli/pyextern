@@ -166,7 +166,7 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		--------
 		cho_factor : Cholesky factorization of a matrix
 	**/
-	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function cho_solve(c_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Compute the Cholesky decomposition of a matrix.
 		
@@ -475,7 +475,7 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
 	**/
-	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Dynamic;
+	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	static public function pause():Dynamic;
 	static public var print_function : Dynamic;
 	static public function save(ar:Dynamic, fileName:Dynamic):Dynamic;

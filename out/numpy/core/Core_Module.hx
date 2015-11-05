@@ -6191,7 +6191,7 @@ package numpy.core;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		ldexp(x1, x2[, out])
 		

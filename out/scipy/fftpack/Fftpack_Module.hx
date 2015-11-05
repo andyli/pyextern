@@ -66,7 +66,7 @@ package scipy.fftpack;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Return (a,b)-cosh/cosh pseudo-derivative of a periodic sequence.
 		

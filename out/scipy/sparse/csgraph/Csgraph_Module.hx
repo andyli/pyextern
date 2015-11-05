@@ -52,7 +52,7 @@ package scipy.sparse.csgraph;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function _deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function _deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public var absolute_import : Dynamic;
 	/**
 		bellman_ford(csgraph, directed=True, indices=None, return_predecessors=False,

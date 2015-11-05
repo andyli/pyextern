@@ -501,7 +501,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1225,7 +1225,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'bottom', 'width', 'edgecolor', 'ecolor', 'left', 'tick_label', 'height', 'yerr', 'color', 'xerr', 'linewidth'.
+		* All arguments with the following names: 'left', 'color', 'linewidth', 'width', 'tick_label', 'ecolor', 'edgecolor', 'height', 'yerr', 'bottom', 'xerr'.
 		
 		
 		
@@ -1386,8 +1386,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -1728,7 +1728,7 @@ package matplotlib.pyplot;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
+	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Plot horizontal bars.
 		
@@ -1771,8 +1771,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -2089,7 +2089,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -3203,7 +3203,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -3437,7 +3437,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
+		* All arguments with the following names: 'x', 'xerr', 'yerr', 'y'.
 		
 		
 		
@@ -3517,8 +3517,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3548,7 +3548,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'lineoffsets', 'linestyles', 'positions', 'linelengths', 'linewidths', 'colors'.
+		* All arguments with the following names: 'colors', 'linestyles', 'linelengths', 'lineoffsets', 'linewidths', 'positions'.
 		
 		
 		
@@ -3695,7 +3695,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -3849,7 +3849,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -3918,8 +3918,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3953,7 +3953,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
+		* All arguments with the following names: 'y2', 'x', 'where', 'y1'.
 		
 		
 		
@@ -4018,8 +4018,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -4053,7 +4053,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y', 'x1', 'x2'.
+		* All arguments with the following names: 'x1', 'where', 'x2', 'y'.
 		
 		
 		
@@ -4448,8 +4448,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -4485,7 +4485,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -4770,7 +4770,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'weights', 'x'.
+		* All arguments with the following names: 'weights', 'x', 'y'.
 		
 		
 		
@@ -4819,7 +4819,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmin', 'y', 'xmax'.
+		* All arguments with the following names: 'xmax', 'xmin', 'y'.
 		
 		
 		
@@ -5790,8 +5790,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -5926,8 +5926,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -6211,7 +6211,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'explode', 'labels', 'colors', 'x'.
+		* All arguments with the following names: 'colors', 'x', 'labels', 'explode'.
 		
 		
 		
@@ -6404,7 +6404,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -6514,7 +6514,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -7073,8 +7073,8 @@ package matplotlib.pyplot;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -7462,7 +7462,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 's', 'y', 'edgecolors', 'linewidths', 'c', 'color', 'facecolors', 'facecolor', 'x'.
+		* All arguments with the following names: 's', 'color', 'x', 'edgecolors', 'y', 'facecolor', 'facecolors', 'c', 'linewidths'.
 		
 		
 		
@@ -8078,7 +8078,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -9343,7 +9343,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'ymax', 'colors', 'x'.
+		* All arguments with the following names: 'colors', 'x', 'ymax', 'ymin'.
 		
 		
 		
@@ -9427,7 +9427,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		

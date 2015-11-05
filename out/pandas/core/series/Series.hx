@@ -972,7 +972,7 @@ package pandas.core.series;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix(?columns:Dynamic):Dynamic;
+	public function as_matrix(?columns:Dynamic):numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.
@@ -2374,7 +2374,7 @@ package pandas.core.series;
 		y : Series
 		    same index as caller
 	**/
-	public function map(arg:Dynamic, ?na_action:Dynamic):Dynamic;
+	public function map(arg:Dynamic, ?na_action:Dynamic):pandas.Series;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is False and otherwise are from other.
@@ -2621,7 +2621,7 @@ package pandas.core.series;
 		>>> s = pd.Series(np.random.randn(1e6))
 		>>> s.nlargest(10)  # only sorts up to the N requested
 	**/
-	public function nlargest(?n:Dynamic, ?keep:Dynamic):Dynamic;
+	public function nlargest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
 		Return the indices of the elements that are non-zero
 		
@@ -2689,7 +2689,7 @@ package pandas.core.series;
 		>>> s = pd.Series(np.random.randn(1e6))
 		>>> s.nsmallest(10)  # only sorts up to the N requested
 	**/
-	public function nsmallest(?n:Dynamic, ?keep:Dynamic):Dynamic;
+	public function nsmallest(?n:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
 		Return number of unique elements in the object.
 		
@@ -3725,7 +3725,7 @@ package pandas.core.series;
 		    If label is contained, will be reference to calling Series,
 		    otherwise a new object
 	**/
-	public function set_value(label:Dynamic, value:Dynamic, ?takeable:Dynamic):Dynamic;
+	public function set_value(label:Dynamic, value:Dynamic, ?takeable:Dynamic):pandas.Series;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/

@@ -166,7 +166,7 @@ package scipy.stats._multivariate;
 		mode : float
 		    The Mode of the distribution
 	**/
-	public function mode():Dynamic;
+	public function mode():Float;
 	/**
 		Inverse Wishart probability density function.
 		
@@ -229,5 +229,5 @@ package scipy.stats._multivariate;
 		    The variance of the distribution
 	**/
 	@:native("var")
-	public function _var():Dynamic;
+	public function _var():Float;
 }

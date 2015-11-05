@@ -263,5 +263,5 @@ package pandas.tools.merge;
 		    The output type will the be same as 'left', if it is a subclass
 		    of DataFrame.
 	**/
-	static public function ordered_merge(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic):Dynamic;
+	static public function ordered_merge(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic):pandas.DataFrame;
 }

@@ -5630,7 +5630,7 @@ package scipy.stats._continuous_distns;
 		    Do it fast.
 		    '
 	**/
-	static public function inherit_docstring_from(cls:Dynamic):Dynamic;
+	static public function inherit_docstring_from(cls:Dynamic):haxe.Constraints.Function;
 	/**
 		inv_boxcox(x1, x2[, out])
 		

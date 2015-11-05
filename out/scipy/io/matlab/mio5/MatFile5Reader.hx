@@ -202,7 +202,7 @@ package scipy.io.matlab.mio5;
 		   array with post-processing applied or not according to
 		   `process`.
 	**/
-	public function read_var_array(header:Dynamic, ?process:Dynamic):Dynamic;
+	public function read_var_array(header:Dynamic, ?process:Dynamic):Array<Dynamic>;
 	/**
 		Read header, return header, next position
 		

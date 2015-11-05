@@ -55,7 +55,7 @@ package scipy.special.setup;
 		
 		  config.add_extension('foo', sources=['foo.c'], extra_info=npymath_info)
 	**/
-	static public function get_info(pkgname:Dynamic, ?dirs:Dynamic):Dynamic;
+	static public function get_info(pkgname:Dynamic, ?dirs:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public function get_numpy_include_dirs():Dynamic;
 	/**
 		Return the directory containing installed Python header files.

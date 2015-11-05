@@ -316,7 +316,7 @@ package scipy.stats._multivariate;
 		mean : float
 		    The mean of the distribution
 	**/
-	public function mean(df:Dynamic, scale:Dynamic):Dynamic;
+	public function mean(df:Dynamic, scale:Dynamic):Float;
 	/**
 		Mode of the Wishart distribution
 		

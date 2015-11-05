@@ -1513,7 +1513,7 @@ package pandas.core.frame;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix(?columns:Dynamic):Dynamic;
+	public function as_matrix(?columns:Dynamic):numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.
@@ -3419,7 +3419,7 @@ package pandas.core.frame;
 		--------
 		numpy.ndarray.nbytes
 	**/
-	public function memory_usage(?index:Dynamic):Dynamic;
+	public function memory_usage(?index:Dynamic):pandas.Series;
 	/**
 		Merge DataFrame objects by performing a database-style join operation by
 		columns or indexes.
@@ -3855,7 +3855,7 @@ package pandas.core.frame;
 		    If no values column specified, will have hierarchically indexed
 		    columns
 	**/
-	public function pivot(?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):Dynamic;
+	public function pivot(?index:Dynamic, ?columns:Dynamic, ?values:Dynamic):pandas.DataFrame;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the
 		pivot table will be stored in MultiIndex objects (hierarchical indexes) on
@@ -4976,7 +4976,7 @@ package pandas.core.frame;
 		4   True
 		5  False
 	**/
-	public function select_dtypes(?include:Dynamic, ?exclude:Dynamic):Dynamic;
+	public function select_dtypes(?include:Dynamic, ?exclude:Dynamic):pandas.DataFrame;
 	/**
 		Return unbiased standard error of the mean over requested axis.
 		
@@ -5049,7 +5049,7 @@ package pandas.core.frame;
 		    If label pair is contained, will be reference to calling DataFrame,
 		    otherwise a new object
 	**/
-	public function set_value(index:Dynamic, col:Dynamic, value:Dynamic, ?takeable:Dynamic):Dynamic;
+	public function set_value(index:Dynamic, col:Dynamic, value:Dynamic, ?takeable:Dynamic):pandas.DataFrame;
 	/**
 		Return a tuple representing the dimensionality of the DataFrame.
 	**/

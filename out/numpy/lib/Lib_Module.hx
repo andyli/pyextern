@@ -3741,7 +3741,7 @@ package numpy.lib;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Determine if the first argument is a subclass of the second argument.
 		
@@ -4019,7 +4019,7 @@ package numpy.lib;
 		>>> c[K] == a[I]*b[J]
 		True
 	**/
-	static public function kron(a:Dynamic, b:Dynamic):Dynamic;
+	static public function kron(a:Dynamic, b:Dynamic):numpy.Ndarray;
 	/**
 		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
 		

@@ -616,7 +616,7 @@ package scipy.optimize.nonlin;
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
 	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Compute the inverse of a matrix.
 		
@@ -1005,7 +1005,7 @@ package scipy.optimize.nonlin;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Compute QR decomposition of a matrix.
@@ -1147,7 +1147,7 @@ package scipy.optimize.nonlin;
 		-----
 		Uses routine DCSRCH from MINPACK.
 	**/
-	static public function scalar_search_wolfe1(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?amin:Dynamic, ?xtol:Dynamic):Dynamic;
+	static public function scalar_search_wolfe1(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?amin:Dynamic, ?xtol:Dynamic):Float;
 	/**
 		Solve the equation ``a x = b`` for ``x``.
 		

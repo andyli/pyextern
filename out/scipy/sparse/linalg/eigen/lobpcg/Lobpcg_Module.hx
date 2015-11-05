@@ -64,7 +64,7 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
 		Locally Optimal Block Preconditioned Conjugate Gradient Method (LOBPCG)
@@ -210,7 +210,7 @@ package scipy.sparse.linalg.eigen.lobpcg;
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
 	**/
-	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Dynamic;
+	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Run tests for module using nose.

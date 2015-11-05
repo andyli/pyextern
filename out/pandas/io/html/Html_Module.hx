@@ -117,7 +117,7 @@ package pandas.io.html;
 		isurl : bool
 		    If `url` has a valid protocol return True otherwise False.
 	**/
-	static public function _is_url(url:Dynamic):Dynamic;
+	static public function _is_url(url:Dynamic):Bool;
 	static public function _parse(flavor:Dynamic, io:Dynamic, match:Dynamic, header:Dynamic, index_col:Dynamic, skiprows:Dynamic, parse_dates:Dynamic, tupleize_cols:Dynamic, thousands:Dynamic, attrs:Dynamic, encoding:Dynamic):Dynamic;
 	/**
 		Choose the parser based on the input flavor.

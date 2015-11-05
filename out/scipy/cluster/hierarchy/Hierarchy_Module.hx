@@ -235,7 +235,7 @@ package scipy.cluster.hierarchy;
 		    A boolean indicating whether the linkage matrix and distance
 		    matrix could possibly correspond to one another.
 	**/
-	static public function correspond(Z:Dynamic, Y:Dynamic):Dynamic;
+	static public function correspond(Z:Dynamic, Y:Dynamic):Bool;
 	/**
 		Plots the hierarchical clustering as a dendrogram.
 		
@@ -444,7 +444,7 @@ package scipy.cluster.hierarchy;
 		      ``i``-th leaf node corresponds to an original observation.
 		      Otherwise, it corresponds to a non-singleton cluster.
 	**/
-	static public function dendrogram(Z:Dynamic, ?p:Dynamic, ?truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?no_plot:Dynamic, ?no_labels:Dynamic, ?color_list:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?leaf_label_func:Dynamic, ?no_leaves:Dynamic, ?show_contracted:Dynamic, ?link_color_func:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):Dynamic;
+	static public function dendrogram(Z:Dynamic, ?p:Dynamic, ?truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?no_plot:Dynamic, ?no_labels:Dynamic, ?color_list:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?leaf_label_func:Dynamic, ?no_leaves:Dynamic, ?show_contracted:Dynamic, ?link_color_func:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public var division : Dynamic;
 	/**
 		Forms flat clusters from the hierarchical clustering defined by
@@ -644,7 +644,7 @@ package scipy.cluster.hierarchy;
 		    Whether the flat cluster assignments `T1` and `T2` are
 		    equivalent.
 	**/
-	static public function is_isomorphic(T1:Dynamic, T2:Dynamic):Dynamic;
+	static public function is_isomorphic(T1:Dynamic, T2:Dynamic):Bool;
 	/**
 		Returns True if the linkage passed is monotonic.
 		
@@ -662,7 +662,7 @@ package scipy.cluster.hierarchy;
 		b : bool
 		    A boolean indicating whether the linkage is monotonic.
 	**/
-	static public function is_monotonic(Z:Dynamic):Dynamic;
+	static public function is_monotonic(Z:Dynamic):Bool;
 	/**
 		Returns True if the inconsistency matrix passed is valid.
 		
@@ -689,7 +689,7 @@ package scipy.cluster.hierarchy;
 		b : bool
 		    True if the inconsistency matrix is valid.
 	**/
-	static public function is_valid_im(R:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Dynamic;
+	static public function is_valid_im(R:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Bool;
 	/**
 		Checks the validity of a linkage matrix.
 		
@@ -721,7 +721,7 @@ package scipy.cluster.hierarchy;
 		b : bool
 		    True iff the inconsistency matrix is valid.
 	**/
-	static public function is_valid_linkage(Z:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Dynamic;
+	static public function is_valid_linkage(Z:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Bool;
 	/**
 		Returns the root nodes in a hierarchical clustering.
 		
@@ -1054,7 +1054,7 @@ package scipy.cluster.hierarchy;
 		n : int
 		    The number of original observations in the linkage.
 	**/
-	static public function num_obs_linkage(Z:Dynamic):Dynamic;
+	static public function num_obs_linkage(Z:Dynamic):Int;
 	static public var print_function : Dynamic;
 	/**
 		Set list of matplotlib color codes for dendrogram color_threshold.
@@ -1146,7 +1146,7 @@ package scipy.cluster.hierarchy;
 		L : list
 		    The pre-order traversal.
 	**/
-	static public function to_tree(Z:Dynamic, ?rd:Dynamic):Dynamic;
+	static public function to_tree(Z:Dynamic, ?rd:Dynamic):Array<Dynamic>;
 	/**
 		Performs Ward's linkage on a condensed or redundant distance matrix.
 		

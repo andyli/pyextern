@@ -32,7 +32,7 @@ package scipy.io.matlab.mio5_params;
 		codecs : dict
 		   key, value are name, codec (as in .encode(codec))
 	**/
-	static public function _convert_codecs(template:Dynamic, byte_order:Dynamic):Dynamic;
+	static public function _convert_codecs(template:Dynamic, byte_order:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public var _def : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var codecs_template : Dynamic;

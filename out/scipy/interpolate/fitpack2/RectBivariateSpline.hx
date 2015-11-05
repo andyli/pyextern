@@ -189,5 +189,5 @@ package scipy.interpolate.fitpack2;
 		integ : float
 		    The value of the resulting integral.
 	**/
-	public function integral(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic):Dynamic;
+	public function integral(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic):Float;
 }

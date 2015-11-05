@@ -23,7 +23,7 @@ package pandas.compat.openpyxl_compat;
 		    ``True`` if openpyxl is installed and is a compatible version.
 		    ``False`` otherwise.
 	**/
-	static public function is_compat(?major_ver:Dynamic):Dynamic;
+	static public function is_compat(?major_ver:Dynamic):Bool;
 	static public var start_ver : Dynamic;
 	static public var stop_ver : Dynamic;
 }

@@ -401,7 +401,7 @@ package seaborn.categorical;
 		order : list
 		    Ordered list of category levels not including null values.
 	**/
-	static public function categorical_order(values:Dynamic, ?order:Dynamic):Dynamic;
+	static public function categorical_order(values:Dynamic, ?order:Dynamic):Array<Dynamic>;
 	/**
 		Return a list of colors defining a color palette.
 		

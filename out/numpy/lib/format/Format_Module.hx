@@ -119,7 +119,7 @@ package numpy.lib.format;
 		------
 		ValueError if the version cannot be formatted.
 	**/
-	static public function magic(major:Dynamic, minor:Dynamic):Dynamic;
+	static public function magic(major:Dynamic, minor:Dynamic):String;
 	/**
 		Open a .npy file as a memory-mapped array.
 		

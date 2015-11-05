@@ -625,7 +625,7 @@ package pandas.core.generic;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix(?columns:Dynamic):Dynamic;
+	public function as_matrix(?columns:Dynamic):numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.

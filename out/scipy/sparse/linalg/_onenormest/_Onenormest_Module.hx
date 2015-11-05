@@ -91,7 +91,7 @@ package scipy.sparse.linalg._onenormest;
 		-----
 		This is algorithm 2.4.
 	**/
-	static public function _onenormest_core(A:Dynamic, AT:Dynamic, t:Dynamic, itmax:Dynamic):Dynamic;
+	static public function _onenormest_core(A:Dynamic, AT:Dynamic, t:Dynamic, itmax:Dynamic):Float;
 	static public function _sum_abs_axis0(X:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**

@@ -1858,7 +1858,7 @@ package scipy.stats.distributions;
 		S : float
 		    The calculated entropy.
 	**/
-	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Dynamic;
+	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Float;
 	/**
 		An Erlang continuous random variable.
 		

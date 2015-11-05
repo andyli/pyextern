@@ -187,7 +187,7 @@ package scipy.linalg.decomp_lu;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Compute pivoted LU decomposition of a matrix.
 		
@@ -310,7 +310,7 @@ package scipy.linalg.decomp_lu;
 		--------
 		lu_factor : LU factorize a matrix
 	**/
-	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function lu_solve(lu_and_piv:Dynamic, b:Dynamic, ?trans:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Issue a warning, or maybe ignore it or raise an exception.

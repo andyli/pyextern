@@ -1088,7 +1088,7 @@ package scipy.linalg.matfuncs;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Return the product of array elements over a given axis.

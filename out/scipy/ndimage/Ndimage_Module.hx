@@ -2861,7 +2861,7 @@ package scipy.ndimage;
 		>>> ndimage.mean(a, labels=labels, index=index)
 		[10.285714285714286, 21.0]
 	**/
-	static public function mean(input:Dynamic, ?labels:Dynamic, ?index:Dynamic):Dynamic;
+	static public function mean(input:Dynamic, ?labels:Dynamic, ?index:Dynamic):Array<Dynamic>;
 	/**
 		Calculate the median of the values of an array over labeled regions.
 		

@@ -374,7 +374,7 @@ package scipy.integrate.quadrature;
 		ode : ODE integrator
 		odeint : ODE integrator
 	**/
-	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Dynamic;
+	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
 		gammaln(x[, out])
 		
@@ -476,7 +476,7 @@ package scipy.integrate.quadrature;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Return weights and error coefficient for Newton-Cotes integration.
 		
@@ -637,7 +637,7 @@ package scipy.integrate.quadrature;
 		ode: ODE integrator
 		odeint: ODE integrator
 	**/
-	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Dynamic;
+	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Float;
 	/**
 		Return the real part of the elements of the array.
 		
@@ -785,7 +785,7 @@ package scipy.integrate.quadrature;
 		>>> print("%g %g" % (2*result, erf(1)))
 		0.842701 0.842701
 	**/
-	static public function romberg(_function:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?show:Dynamic, ?divmax:Dynamic, ?vec_func:Dynamic):Dynamic;
+	static public function romberg(_function:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?show:Dynamic, ?divmax:Dynamic, ?vec_func:Dynamic):Float;
 	/**
 		Integrate y(x) using samples along the given axis and the composite
 		Simpson's rule.  If x is None, spacing of dx is assumed.
@@ -976,7 +976,7 @@ package scipy.integrate.quadrature;
 		>>> np.trapz(a, axis=1)
 		array([ 2.,  8.])
 	**/
-	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Float;
 	static public function tupleset(t:Dynamic, i:Dynamic, value:Dynamic):Dynamic;
 	/**
 		Vectorize the call to a function.
@@ -1002,5 +1002,5 @@ package scipy.integrate.quadrature;
 		    A function that will take a vector argument and return the
 		    result.
 	**/
-	static public function vectorize1(func:Dynamic, ?args:Dynamic, ?vec_func:Dynamic):Dynamic;
+	static public function vectorize1(func:Dynamic, ?args:Dynamic, ?vec_func:Dynamic):haxe.Constraints.Function;
 }

@@ -106,7 +106,7 @@ package scipy.signal.ltisys;
 		ValueError
 		    If not enough information on the system was provided.
 	**/
-	static public function abcd_normalize(?A:Dynamic, ?B:Dynamic, ?C:Dynamic, ?D:Dynamic):Dynamic;
+	static public function abcd_normalize(?A:Dynamic, ?B:Dynamic, ?C:Dynamic, ?D:Dynamic):Array<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)

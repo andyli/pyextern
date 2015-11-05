@@ -3343,7 +3343,7 @@ package scipy.linalg.lapack;
 		prefer_fortran : bool
 		    Whether to prefer Fortran order routines over C order.
 	**/
-	static public function find_best_lapack_type(?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function find_best_lapack_type(?arrays:Dynamic, ?dtype:Dynamic):String;
 	static public var flapack : Dynamic;
 	/**
 		Return available LAPACK function objects from names.
@@ -3382,7 +3382,7 @@ package scipy.linalg.lapack;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		lub,piv,x,info = sgbsv(kl,ku,ab,b,[overwrite_ab,overwrite_b])

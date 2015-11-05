@@ -383,7 +383,7 @@ package scipy.constants;
 		>>> codata.precision(u'proton mass')
 		4.96226989798e-08
 	**/
-	static public function precision(key:Dynamic):Dynamic;
+	static public function precision(key:Dynamic):Float;
 	static public var print_function : Dynamic;
 	static public var proton_mass : Dynamic;
 	static public var psi : Dynamic;

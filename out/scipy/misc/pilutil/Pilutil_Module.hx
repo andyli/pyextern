@@ -635,7 +635,7 @@ package scipy.misc.pilutil;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -660,7 +660,7 @@ package scipy.misc.pilutil;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	static public var newaxis : Dynamic;
 	/**
 		Return a new array of given shape and type, filled with ones.

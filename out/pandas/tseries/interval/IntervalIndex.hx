@@ -796,7 +796,7 @@ package pandas.tseries.interval;
 		groups : dict
 		    {group name -> group labels}
 	**/
-	public function groupby(to_groupby:Dynamic):Dynamic;
+	public function groupby(to_groupby:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;

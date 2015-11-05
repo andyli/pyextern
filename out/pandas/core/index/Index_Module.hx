@@ -76,7 +76,7 @@ package pandas.core.index;
 		...     np.array([1, 2, np.nan]))
 		False
 	**/
-	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Dynamic;
+	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
 	static public function default_pprint(x:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	/**

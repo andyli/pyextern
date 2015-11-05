@@ -199,7 +199,7 @@ package scipy.linalg._matfuncs_inv_ssq;
 		    1-d or 2-d array (depending on the shape of x) that represents
 		    the result of applying this linear operator on x.
 	**/
-	public function dot(x:Dynamic):Dynamic;
+	public function dot(x:Dynamic):Array<Dynamic>;
 	/**
 		Matrix-matrix multiplication.
 		

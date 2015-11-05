@@ -113,6 +113,6 @@ package scipy.special.lambertw;
 		>>> -lambertw(-np.log(0.5)) / np.log(0.5)
 		(0.64118574450498589+0j)
 	**/
-	static public function lambertw(z:Dynamic, ?k:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function lambertw(z:Dynamic, ?k:Dynamic, ?tol:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 }

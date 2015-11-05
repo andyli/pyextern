@@ -130,7 +130,7 @@ package scipy.io.matlab.miobase;
 		   ...
 		ValueError: 1D option "bizarre" is strange
 	**/
-	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):Dynamic;
+	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):python.Tuple<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Generic get of byte stream data of known type

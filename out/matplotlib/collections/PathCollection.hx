@@ -361,7 +361,7 @@ package matplotlib.collections;
 		sizes : array
 		    The 'area' of each element.
 	**/
-	public function get_sizes():Dynamic;
+	public function get_sizes():Array<Dynamic>;
 	/**
 		Returns the sketch parameters for the artist.
 		

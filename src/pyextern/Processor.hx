@@ -40,10 +40,44 @@ class Processor {
 		} catch (e:Dynamic) { null; }
 	}
 	public function docToFun(doc:String):Function {
+		var xml = parseRst(doc);
+
+		function getRet() {
+			if (xml != null) {
+				var sec =
+					new Fast(xml).node.document.nodes.section
+						.find(function(sec:Fast) return 
+							sec.hasNode.title && 
+							sec.node.title.innerHTML.toLowerCase() == "returns"
+						);
+				if (sec != null) {
+					if (
+						sec.hasNode.definition_list &&
+						sec.node.definition_list.node.definition_list_item.hasNode.classifier
+					) {
+						var retDoc = sec.node.definition_list.node.definition_list_item.node.classifier.innerHTML;
+						return hxType(retDoc);
+					}
+
+					if (sec != null && sec.hasNode.paragraph) {
+						var retDoc = sec.node.paragraph.innerHTML;
+						var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
+						if (re.match(retDoc)) {
+							return hxType(re.matched(2));
+						}
+					}
+				}
+			}
+			return null;
+		}
+
 		return {
 			params: [],
 			args: null,
-			ret: macro:Dynamic,
+			ret: switch (getRet()) {
+				case null: macro:Dynamic;
+				case ret: ret;
+			},
 			expr: null
 		}
 	}

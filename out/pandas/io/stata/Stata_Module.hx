@@ -146,7 +146,7 @@ package pandas.io.stata;
 		If you don't have pandas with datetime support, then you can't do
 		milliseconds accurately.
 	**/
-	static public function _stata_elapsed_date_to_datetime_vec(dates:Dynamic, fmt:Dynamic):Dynamic;
+	static public function _stata_elapsed_date_to_datetime_vec(dates:Dynamic, fmt:Dynamic):pandas.Series;
 	static public var _stata_reader_doc : Dynamic;
 	static public var _statafile_processing_params1 : Dynamic;
 	static public var _statafile_processing_params2 : Dynamic;

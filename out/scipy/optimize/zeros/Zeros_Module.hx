@@ -68,7 +68,7 @@ package scipy.optimize.zeros;
 		fixed_point : scalar fixed-point finder
 		fsolve : n-dimensional root-finding
 	**/
-	static public function bisect(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function bisect(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Find root of f in [a,b].
 		
@@ -137,7 +137,7 @@ package scipy.optimize.zeros;
 		
 		fixed_point : scalar fixed-point finder
 	**/
-	static public function brenth(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brenth(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		Find a root of a function in given interval.
 		
@@ -236,7 +236,7 @@ package scipy.optimize.zeros;
 		   Cambridge, England: Cambridge University Press, pp. 352-355, 1992.
 		   Section 9.3:  "Van Wijngaarden-Dekker-Brent Method."
 	**/
-	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function brentq(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	static public var division : Dynamic;
 	static public var flag_map : Dynamic;
 	/**
@@ -297,7 +297,7 @@ package scipy.optimize.zeros;
 		sign. The brentq algorithm is recommended for general use in one
 		dimensional problems when such an interval has been found.
 	**/
-	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Dynamic;
+	static public function newton(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?fprime2:Dynamic):Float;
 	static public var print_function : Dynamic;
 	static public function results_c(full_output:Dynamic, r:Dynamic):Dynamic;
 	/**
@@ -364,7 +364,7 @@ package scipy.optimize.zeros;
 		   Single Root of a Real Continuous Function."
 		   IEEE Trans. Circuits Systems 26, 979-980, 1979.
 	**/
-	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Dynamic;
+	static public function ridder(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
 		sign(x[, out])
 		

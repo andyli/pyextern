@@ -232,7 +232,7 @@ package scipy.stats._distn_infrastructure;
 		mean : float
 		    the mean of the distribution
 	**/
-	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Median of the distribution.
 		
@@ -256,7 +256,7 @@ package scipy.stats._distn_infrastructure;
 		stats.distributions.rv_discrete.ppf
 		    Inverse of the CDF
 	**/
-	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function median(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		n-th order non-central moment of distribution.
 		
@@ -352,7 +352,7 @@ package scipy.stats._distn_infrastructure;
 		std : float
 		    standard deviation of the distribution
 	**/
-	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function std(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Variance of the distribution.
 		
@@ -372,5 +372,5 @@ package scipy.stats._distn_infrastructure;
 		    the variance of the distribution
 	**/
 	@:native("var")
-	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _var(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 }

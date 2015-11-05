@@ -142,6 +142,6 @@ package pandas.core.panel;
 		            (1961, 'B'), (1961, 'C'), (1962, 'A'), (1962, 'B'),
 		            (1962, 'C')], dtype=object)
 	**/
-	static public function panel_index(time:Dynamic, panels:Dynamic, ?names:Dynamic):Dynamic;
+	static public function panel_index(time:Dynamic, panels:Dynamic, ?names:Dynamic):pandas.MultiIndex;
 	static public function u(s:Dynamic):Dynamic;
 }

@@ -60,7 +60,7 @@ package scipy.optimize.linesearch;
 		       search and its application to the spectral residual
 		       method'', IMA J. Numer. Anal. 29, 814 (2009).
 	**/
-	static public function _nonmonotone_line_search_cheng(f:Dynamic, x_k:Dynamic, d:Dynamic, f_k:Dynamic, C:Dynamic, Q:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic, ?nu:Dynamic):Dynamic;
+	static public function _nonmonotone_line_search_cheng(f:Dynamic, x_k:Dynamic, d:Dynamic, f_k:Dynamic, C:Dynamic, Q:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic, ?nu:Dynamic):Float;
 	/**
 		Nonmonotone backtracking line search as described in [1]_
 		
@@ -98,7 +98,7 @@ package scipy.optimize.linesearch;
 		    large-scale nonlinear systems of equations." W. La Cruz,
 		    J.M. Martinez, M. Raydan. Math. Comp. **75**, 1429 (2006).
 	**/
-	static public function _nonmonotone_line_search_cruz(f:Dynamic, x_k:Dynamic, d:Dynamic, prev_fs:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic):Dynamic;
+	static public function _nonmonotone_line_search_cruz(f:Dynamic, x_k:Dynamic, d:Dynamic, prev_fs:Dynamic, eta:Dynamic, ?gamma:Dynamic, ?tau_min:Dynamic, ?tau_max:Dynamic):Float;
 	/**
 		Finds the minimizer for a quadratic polynomial that goes through
 		the points (a,fa), (b,fb) with derivative at a of fpa,
@@ -321,7 +321,7 @@ package scipy.optimize.linesearch;
 		-----
 		Uses routine DCSRCH from MINPACK.
 	**/
-	static public function scalar_search_wolfe1(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?amin:Dynamic, ?xtol:Dynamic):Dynamic;
+	static public function scalar_search_wolfe1(phi:Dynamic, derphi:Dynamic, ?phi0:Dynamic, ?old_phi0:Dynamic, ?derphi0:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic, ?amin:Dynamic, ?xtol:Dynamic):Float;
 	/**
 		Find alpha that satisfies strong Wolfe conditions.
 		

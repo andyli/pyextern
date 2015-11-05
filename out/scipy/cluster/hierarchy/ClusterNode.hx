@@ -111,7 +111,7 @@ package scipy.cluster.hierarchy;
 		get_count : int
 		    The number of leaf nodes below the target node.
 	**/
-	public function get_count():Dynamic;
+	public function get_count():Int;
 	/**
 		The identifier of the target node.
 		
@@ -124,7 +124,7 @@ package scipy.cluster.hierarchy;
 		id : int
 		    The identifier of the target node.
 	**/
-	public function get_id():Dynamic;
+	public function get_id():Int;
 	/**
 		Return a reference to the left child tree object.
 		
@@ -153,7 +153,7 @@ package scipy.cluster.hierarchy;
 		leafness : bool
 		    True if the target node is a leaf node.
 	**/
-	public function is_leaf():Dynamic;
+	public function is_leaf():Bool;
 	/**
 		Performs pre-order traversal without recursive function calls.
 		
@@ -181,5 +181,5 @@ package scipy.cluster.hierarchy;
 		L : list
 		    The pre-order traversal.
 	**/
-	public function pre_order(?func:Dynamic):Dynamic;
+	public function pre_order(?func:Dynamic):Array<Dynamic>;
 }

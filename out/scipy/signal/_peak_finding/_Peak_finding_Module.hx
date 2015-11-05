@@ -127,7 +127,7 @@ package scipy.signal._peak_finding;
 		This function is intended to be used in conjunction with `cwt`
 		as part of `find_peaks_cwt`.
 	**/
-	static public function _identify_ridge_lines(matr:Dynamic, max_distances:Dynamic, gap_thresh:Dynamic):Dynamic;
+	static public function _identify_ridge_lines(matr:Dynamic, max_distances:Dynamic, gap_thresh:Dynamic):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		Calculate the relative extrema of `data`.

@@ -150,7 +150,7 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		>>> x1 = solve( rhs1 ) # Uses the LU factors.
 		array([ 1., -2., -2.])
 	**/
-	static public function factorized(A:Dynamic):Dynamic;
+	static public function factorized(A:Dynamic):haxe.Constraints.Function;
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public function isspmatrix_csc(x:Dynamic):Dynamic;
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
@@ -228,7 +228,7 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Return a contiguous flattened array.

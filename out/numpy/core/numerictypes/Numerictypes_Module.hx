@@ -363,7 +363,7 @@ package numpy.core.numerictypes;
 		>>> english_capitalize('')
 		''
 	**/
-	static public function english_capitalize(s:Dynamic):Dynamic;
+	static public function english_capitalize(s:Dynamic):String;
 	/**
 		Apply English case rules to convert ASCII strings to all lower case.
 		
@@ -388,7 +388,7 @@ package numpy.core.numerictypes;
 		>>> english_lower('')
 		''
 	**/
-	static public function english_lower(s:Dynamic):Dynamic;
+	static public function english_lower(s:Dynamic):String;
 	/**
 		Apply English case rules to convert ASCII strings to all upper case.
 		
@@ -413,7 +413,7 @@ package numpy.core.numerictypes;
 		>>> english_upper('')
 		''
 	**/
-	static public function english_upper(s:Dynamic):Dynamic;
+	static public function english_upper(s:Dynamic):String;
 	/**
 		Determine common type following standard coercion rules.
 		
@@ -604,7 +604,7 @@ package numpy.core.numerictypes;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Determine if the first argument is a subclass of the second argument.
 		

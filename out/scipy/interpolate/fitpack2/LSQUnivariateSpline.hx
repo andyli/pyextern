@@ -300,7 +300,7 @@ package scipy.interpolate.fitpack2;
 		>>> spl.integral(-1, 0)
 		0.0
 	**/
-	public function integral(a:Dynamic, b:Dynamic):Dynamic;
+	public function integral(a:Dynamic, b:Dynamic):Float;
 	/**
 		Return the zeros of the spline.
 		

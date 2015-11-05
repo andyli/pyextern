@@ -400,7 +400,7 @@ package scipy.io.mmio;
 		symm : str
 		    Either 'general', 'symmetric', 'skew-symmetric', or 'hermitian'.
 	**/
-	static public function mminfo(source:Dynamic):Dynamic;
+	static public function mminfo(source:Dynamic):Int;
 	/**
 		Reads the contents of a Matrix Market file 'filename' into a matrix.
 		

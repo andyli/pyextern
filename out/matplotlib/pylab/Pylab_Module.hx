@@ -286,7 +286,7 @@ package matplotlib.pylab;
 		>>> np.alen(a)
 		7
 	**/
-	static public function alen(a:Dynamic):Dynamic;
+	static public function alen(a:Dynamic):Int;
 	/**
 		Test whether all array elements along a given axis evaluate to True.
 		
@@ -925,7 +925,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -2203,7 +2203,7 @@ package matplotlib.pylab;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
 	/**
 		True if two arrays have the same shape and elements, False otherwise.
 		
@@ -2235,7 +2235,7 @@ package matplotlib.pylab;
 		>>> np.array_equal([1, 2], [1, 4])
 		False
 	**/
-	static public function array_equal(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equal(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Returns True if input arrays are shape consistent and all elements equal.
 		
@@ -2269,7 +2269,7 @@ package matplotlib.pylab;
 		>>> np.array_equiv([1, 2], [[1, 2], [1, 3]])
 		False
 	**/
-	static public function array_equiv(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equiv(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Return the string representation of an array.
 		
@@ -2310,7 +2310,7 @@ package matplotlib.pylab;
 		>>> np.array_repr(x, precision=6, suppress_small=True)
 		'array([ 0.000001,  0.      ,  2.      ,  3.      ])'
 	**/
-	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
+	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):String;
 	/**
 		Split an array into multiple sub-arrays.
 		
@@ -3564,7 +3564,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'bottom', 'width', 'edgecolor', 'ecolor', 'left', 'tick_label', 'height', 'yerr', 'color', 'xerr', 'linewidth'.
+		* All arguments with the following names: 'left', 'color', 'linewidth', 'width', 'tick_label', 'ecolor', 'edgecolor', 'height', 'yerr', 'bottom', 'xerr'.
 		
 		
 		
@@ -3725,8 +3725,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -3981,7 +3981,7 @@ package matplotlib.pylab;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function bartlett(M:Dynamic):Dynamic;
+	static public function bartlett(M:Dynamic):Array<Dynamic>;
 	/**
 		Return a string representation of a number in the given base system.
 		
@@ -4018,7 +4018,7 @@ package matplotlib.pylab;
 		>>> np.base_repr(32, base=16)
 		'20'
 	**/
-	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):Dynamic;
+	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):String;
 	/**
 		Run tests for module using nose.
 		
@@ -4172,7 +4172,7 @@ package matplotlib.pylab;
 		>>> np.binary_repr(-3, width=4)
 		'1101'
 	**/
-	static public function binary_repr(num:Dynamic, ?width:Dynamic):Dynamic;
+	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
 		bincount(x, weights=None, minlength=None)
 		
@@ -4894,7 +4894,7 @@ package matplotlib.pylab;
 		
 		Additional kwargs: hold = [True|False] overrides default hold state
 	**/
-	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):Dynamic;
+	static public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?hold:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Broadcast any number of arrays against each other.
 		
@@ -5018,8 +5018,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -5670,7 +5670,7 @@ package matplotlib.pylab;
 		        [-1, -2, -3, -4, -5],
 		        [-1, -2, -3, -4, -5]]])
 	**/
-	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Clear the current axes.
 	**/
@@ -5994,7 +5994,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -8086,7 +8086,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -8534,7 +8534,7 @@ package matplotlib.pylab;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
 	/**
 		Compute the determinant of an array.
@@ -10299,7 +10299,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xerr', 'yerr', 'x'.
+		* All arguments with the following names: 'x', 'xerr', 'yerr', 'y'.
 		
 		
 		
@@ -10380,8 +10380,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -10411,7 +10411,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'lineoffsets', 'linestyles', 'positions', 'linelengths', 'linewidths', 'colors'.
+		* All arguments with the following names: 'colors', 'linestyles', 'linelengths', 'lineoffsets', 'linewidths', 'positions'.
 		
 		
 		
@@ -11335,7 +11335,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or name or fontfamily or fontname: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -11489,7 +11489,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -11558,8 +11558,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -11593,7 +11593,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y2', 'y1', 'x'.
+		* All arguments with the following names: 'y2', 'x', 'where', 'y1'.
 		
 		
 		
@@ -11658,8 +11658,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -11693,7 +11693,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'where', 'y', 'x1', 'x2'.
+		* All arguments with the following names: 'x1', 'where', 'x2', 'y'.
 		
 		
 		
@@ -13286,7 +13286,7 @@ package matplotlib.pylab;
 		--------
 		set_printoptions, set_string_function
 	**/
-	static public function get_printoptions():Dynamic;
+	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	/**
 		Helper function for generating docstrings related to scales.
 	**/
@@ -13342,7 +13342,7 @@ package matplotlib.pylab;
 		getbufsize : int
 		    Size of ufunc buffer in bytes.
 	**/
-	static public function getbufsize():Dynamic;
+	static public function getbufsize():Int;
 	/**
 		Get the current way of handling floating-point errors.
 		
@@ -13378,7 +13378,7 @@ package matplotlib.pylab;
 		__main__:1: RuntimeWarning: invalid value encountered in divide
 		array([ NaN,   1.,   1.])
 	**/
-	static public function geterr():Dynamic;
+	static public function geterr():python.Dict<Dynamic, Dynamic>;
 	/**
 		Return the current callback function used on floating-point errors.
 		
@@ -14190,8 +14190,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -14227,7 +14227,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -14580,7 +14580,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'weights', 'x'.
+		* All arguments with the following names: 'weights', 'x', 'y'.
 		
 		
 		
@@ -14669,7 +14669,7 @@ package matplotlib.pylab;
 		>>> np.sum(hist*np.diff(bin_edges))
 		1.0
 	**/
-	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
+	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Array<Dynamic>;
 	/**
 		Compute the bi-dimensional histogram of two data samples.
 		
@@ -14884,7 +14884,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmin', 'y', 'xmax'.
+		* All arguments with the following names: 'xmax', 'xmin', 'y'.
 		
 		
 		
@@ -16656,7 +16656,7 @@ package matplotlib.pylab;
 		
 		(Compare with the Example given for numpy.lib.financial.npv)
 	**/
-	static public function irr(values:Dynamic):Dynamic;
+	static public function irr(values:Dynamic):Float;
 	/**
 		is_busday(dates, weekmask='1111100', holidays=None, busdaycal=None, out=None)
 		
@@ -16838,7 +16838,7 @@ package matplotlib.pylab;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		isfinite(x[, out])
 		
@@ -17245,7 +17245,7 @@ package matplotlib.pylab;
 		>>> np.isrealobj([3, 1+0j, True])
 		False
 	**/
-	static public function isrealobj(x:Dynamic):Dynamic;
+	static public function isrealobj(x:Dynamic):Bool;
 	/**
 		Returns True if the type of `num` is a scalar type.
 		
@@ -17268,7 +17268,7 @@ package matplotlib.pylab;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Determines whether the given object represents a scalar data-type.
 		
@@ -17301,7 +17301,7 @@ package matplotlib.pylab;
 		>>> np.issctype(np.dtype('str'))
 		True
 	**/
-	static public function issctype(rep:Dynamic):Dynamic;
+	static public function issctype(rep:Dynamic):Bool;
 	/**
 		Determine if a class is a subclass of a second class.
 		
@@ -17333,7 +17333,7 @@ package matplotlib.pylab;
 		>>> np.issubclass_(np.int32, np.float)
 		False
 	**/
-	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -17358,7 +17358,7 @@ package matplotlib.pylab;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Determine if the first argument is a subclass of the second argument.
 		
@@ -17385,7 +17385,7 @@ package matplotlib.pylab;
 		>>> np.issubsctype(np.array([1]), np.float)
 		False
 	**/
-	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Like the MATLAB function with the same name, returns *True*
 		if the supplied numpy array or matrix *X* looks like a vector,
@@ -17584,7 +17584,7 @@ package matplotlib.pylab;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function kaiser(M:Dynamic, beta:Dynamic):Dynamic;
+	static public function kaiser(M:Dynamic, beta:Dynamic):Array<Dynamic>;
 	/**
 		Kronecker product of two arrays.
 		
@@ -20588,7 +20588,7 @@ package matplotlib.pylab;
 		>>> np.mintypecode('abceh', default='G')
 		'G'
 	**/
-	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
 		Modified internal rate of return.
 		
@@ -20608,7 +20608,7 @@ package matplotlib.pylab;
 		out : float
 		    Modified internal rate of return
 	**/
-	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Dynamic;
+	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
 		remainder(x1, x2[, out])
 		
@@ -21860,7 +21860,7 @@ package matplotlib.pylab;
 		>>> np.ndim(1)
 		0
 	**/
-	static public function ndim(a:Dynamic):Dynamic;
+	static public function ndim(a:Dynamic):Int;
 	/**
 		negative(x[, out])
 		
@@ -22192,7 +22192,7 @@ package matplotlib.pylab;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Matrix or vector norm.
 		
@@ -22545,7 +22545,7 @@ package matplotlib.pylab;
 		
 		(Compare with the Example given for numpy.lib.financial.irr)
 	**/
-	static public function npv(rate:Dynamic, values:Dynamic):Dynamic;
+	static public function npv(rate:Dynamic, values:Dynamic):Float;
 	/**
 		*x* is a float value which gives the number of days
 		(fraction part represents hours, minutes, seconds) since
@@ -23398,8 +23398,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -23534,8 +23534,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -23957,7 +23957,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'explode', 'labels', 'colors', 'x'.
+		* All arguments with the following names: 'colors', 'x', 'labels', 'explode'.
 		
 		
 		
@@ -24364,7 +24364,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -24474,7 +24474,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -26384,8 +26384,8 @@ package matplotlib.pylab;
 		  gid: an id string         
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
 		  label: string or anything printable with '%s' conversion.         
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw or linewidths: float or sequence of floats         
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats         
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats         
@@ -26924,7 +26924,7 @@ package matplotlib.pylab;
 		>>> np.rank(1)
 		0
 	**/
-	static public function rank(a:Dynamic):Dynamic;
+	static public function rank(a:Dynamic):Int;
 	/**
 		Compute the rate of interest per period.
 		
@@ -28958,7 +28958,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 's', 'y', 'edgecolors', 'linewidths', 'c', 'color', 'facecolors', 'facecolor', 'x'.
+		* All arguments with the following names: 's', 'color', 'x', 'edgecolors', 'y', 'facecolor', 'facecolors', 'c', 'linewidths'.
 		
 		
 		
@@ -29014,7 +29014,7 @@ package matplotlib.pylab;
 		>>> np.sctype2char(list)
 		'O'
 	**/
-	static public function sctype2char(sctype:Dynamic):Dynamic;
+	static public function sctype2char(sctype:Dynamic):String;
 	static public var sctypeDict : Dynamic;
 	static public var sctypeNA : Dynamic;
 	static public var sctypes : Dynamic;
@@ -29662,7 +29662,7 @@ package matplotlib.pylab;
 		Warning: overflow encountered in short_scalars
 		30464
 	**/
-	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):Dynamic;
+	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Set the floating-point error callback function or log object.
 		
@@ -30227,7 +30227,7 @@ package matplotlib.pylab;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Compute the sign and (natural) logarithm of the determinant of an array.
 		
@@ -31542,7 +31542,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		
@@ -33115,7 +33115,7 @@ package matplotlib.pylab;
 		>>> np.trapz(a, axis=1)
 		array([ 2.,  8.])
 	**/
-	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Float;
 	/**
 		An array with ones at and below the given diagonal and zeros elsewhere.
 		
@@ -34097,7 +34097,7 @@ package matplotlib.pylab;
 		l  :  long integer
 		q  :  long long integer
 	**/
-	static public function typename(char:Dynamic):Dynamic;
+	static public function typename(char:Dynamic):String;
 	static public var unicode_literals : Dynamic;
 	/**
 		uniform(low=0.0, high=1.0, size=None)
@@ -34801,7 +34801,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'ymax', 'colors', 'x'.
+		* All arguments with the following names: 'colors', 'x', 'ymax', 'ymin'.
 		
 		
 		
@@ -35345,7 +35345,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x'.
+		* All arguments with the following names: 'x', 'y'.
 		
 		
 		

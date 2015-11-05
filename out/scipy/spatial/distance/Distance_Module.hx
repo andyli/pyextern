@@ -560,7 +560,7 @@ package scipy.spatial.distance;
 		the diagonal are ignored if they are within the tolerance specified
 		by `tol`.
 	**/
-	static public function is_valid_dm(D:Dynamic, ?tol:Dynamic, ?_throw:Dynamic, ?name:Dynamic, ?warning:Dynamic):Dynamic;
+	static public function is_valid_dm(D:Dynamic, ?tol:Dynamic, ?_throw:Dynamic, ?name:Dynamic, ?warning:Dynamic):Bool;
 	/**
 		Returns True if the input array is a valid condensed distance matrix.
 		
@@ -821,7 +821,7 @@ package scipy.spatial.distance;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	/**
 		Returns the number of original observations that correspond to a
 		square, redundant distance matrix.
@@ -836,7 +836,7 @@ package scipy.spatial.distance;
 		num_obs_dm : int
 		    The number of observations in the redundant distance matrix.
 	**/
-	static public function num_obs_dm(d:Dynamic):Dynamic;
+	static public function num_obs_dm(d:Dynamic):Int;
 	/**
 		Returns the number of original observations that correspond to a
 		condensed distance matrix.
@@ -851,7 +851,7 @@ package scipy.spatial.distance;
 		n : int
 		    The number of observations in the condensed distance matrix `Y`.
 	**/
-	static public function num_obs_y(Y:Dynamic):Dynamic;
+	static public function num_obs_y(Y:Dynamic):Int;
 	/**
 		Pairwise distances between observations in n-dimensional space.
 		

@@ -86,7 +86,7 @@ package pandas.util.decorators;
 		The decorator itself is decorated with the ``nose.tools.make_decorator``
 		function in order to transmit function name, and various other metadata.
 	**/
-	static public function knownfailureif(fail_condition:Dynamic, ?msg:Dynamic):Dynamic;
+	static public function knownfailureif(fail_condition:Dynamic, ?msg:Dynamic):haxe.Constraints.Function;
 	/**
 		Returns a string repr of the arg list of a func call, with any defaults
 		

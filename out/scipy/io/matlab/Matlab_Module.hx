@@ -65,7 +65,7 @@ package scipy.io.matlab;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
 		Load MATLAB file
@@ -128,7 +128,7 @@ package scipy.io.matlab;
 		files.  Because scipy does not supply one, we do not implement the
 		HDF5 / 7.3 interface here.
 	**/
-	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Dict<Dynamic, Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Save a dictionary of names and arrays into a MATLAB-style .mat file.

@@ -593,7 +593,7 @@ package scipy.special.basic;
 		>>> factorialk(5, 3, exact=True)
 		10L
 	**/
-	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Dynamic;
+	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Int;
 	/**
 		floor(x[, out])
 		
@@ -813,7 +813,7 @@ package scipy.special.basic;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -838,7 +838,7 @@ package scipy.special.basic;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		iv(x1, x2[, out])
 		

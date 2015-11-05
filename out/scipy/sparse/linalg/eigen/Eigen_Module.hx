@@ -65,7 +65,7 @@ package scipy.sparse.linalg.eigen;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
 		Find k eigenvalues and eigenvectors of the square matrix A.
@@ -393,7 +393,7 @@ package scipy.sparse.linalg.eigen;
 		>>> vecs.shape
 		(13, 6)
 	**/
-	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function eigsh(A:Dynamic, ?k:Dynamic, ?M:Dynamic, ?sigma:Dynamic, ?which:Dynamic, ?v0:Dynamic, ?ncv:Dynamic, ?maxiter:Dynamic, ?tol:Dynamic, ?return_eigenvectors:Dynamic, ?Minv:Dynamic, ?OPinv:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Locally Optimal Block Preconditioned Conjugate Gradient Method (LOBPCG)
 		
@@ -538,7 +538,7 @@ package scipy.sparse.linalg.eigen;
 		.. [3] A. V. Knyazev's C and MATLAB implementations:
 		       http://www-math.cudenver.edu/~aknyazev/software/BLOPEX/
 	**/
-	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Dynamic;
+	static public function lobpcg(A:Dynamic, X:Dynamic, ?B:Dynamic, ?M:Dynamic, ?Y:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic, ?largest:Dynamic, ?verbosityLevel:Dynamic, ?retLambdaHistory:Dynamic, ?retResidualNormsHistory:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Compute the largest k singular values/vectors for a sparse matrix.

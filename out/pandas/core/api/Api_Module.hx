@@ -725,7 +725,7 @@ package pandas.core.api;
 		len(grouped) : int
 		    Number of groups
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Int;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		

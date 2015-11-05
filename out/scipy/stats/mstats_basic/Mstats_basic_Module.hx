@@ -203,7 +203,7 @@ package scipy.stats.mstats_basic;
 		>>> mstats.count_tied_groups(z, use_missing=True)
 		{2: 2, 3: 1}
 	**/
-	static public function count_tied_groups(x:Dynamic, ?use_missing:Dynamic):Dynamic;
+	static public function count_tied_groups(x:Dynamic, ?use_missing:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Computes several descriptive statistics of the passed array.
 		
@@ -253,7 +253,7 @@ package scipy.stats.mstats_basic;
 		,
 		 -1.5)
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Int;
 	static public var division : Dynamic;
 	/**
 		Performs a 1-way ANOVA, returning an F-value and probability given
@@ -269,7 +269,7 @@ package scipy.stats.mstats_basic;
 		pvalue : float
 		    The associated p-value from the F-distribution.
 	**/
-	static public function f_oneway(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Calculation of Wilks lambda F-statistic for multivariate data, per
 		Maxwell & Delaney p.657.
@@ -314,7 +314,7 @@ package scipy.stats.mstats_basic;
 		pvalue : float
 		    the associated p-value.
 	**/
-	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
 	static public var genmissingvaldoc : Dynamic;
 	/**
 		Return an iterator over the (key, value) pairs of a dictionary.
@@ -342,7 +342,7 @@ package scipy.stats.mstats_basic;
 		pvalue : float
 		    Approximate 2-side p-value.
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?use_ties:Dynamic, ?use_missing:Dynamic):Dynamic;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?use_ties:Dynamic, ?use_missing:Dynamic):Float;
 	/**
 		Computes a multivariate Kendall's rank correlation tau, for seasonal data.
 		
@@ -386,7 +386,7 @@ package scipy.stats.mstats_basic;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskal(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -421,7 +421,7 @@ package scipy.stats.mstats_basic;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskalwallis(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function kruskalwallis(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Computes the Kolmogorov-Smirnov test on two samples.
 		
@@ -443,7 +443,7 @@ package scipy.stats.mstats_basic;
 		p : float
 		    Corresponding p-value.
 	**/
-	static public function ks_2samp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic):Dynamic;
+	static public function ks_2samp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		Computes the Kolmogorov-Smirnov test on two samples.
 		
@@ -465,7 +465,7 @@ package scipy.stats.mstats_basic;
 		p : float
 		    Corresponding p-value.
 	**/
-	static public function ks_twosamp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic):Dynamic;
+	static public function ks_twosamp(data1:Dynamic, data2:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		Computes the Kolmogorov-Smirnov statistic on 2 samples.
 		
@@ -511,7 +511,7 @@ package scipy.stats.mstats_basic;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 	**/
-	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Array<Dynamic>;
 	/**
 		Tests whether a dataset has normal kurtosis
 		
@@ -538,7 +538,7 @@ package scipy.stats.mstats_basic;
 		-----
 		Valid only for n>20.  The Z-score is set to 0 for bad entries.
 	**/
-	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Calculate a regression line
 		
@@ -586,7 +586,7 @@ package scipy.stats.mstats_basic;
 		Missing values are considered pair-wise: if a value is missing in x,
 		the corresponding value in y is masked.
 	**/
-	static public function linregress(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function linregress(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Computes the Mann-Whitney statistic
 		
@@ -608,7 +608,7 @@ package scipy.stats.mstats_basic;
 		pvalue : float
 		    Approximate p-value assuming a normal distribution.
 	**/
-	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Dynamic;
+	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Float;
 	static public var masked : Dynamic;
 	/**
 		Returns plotting positions (or empirical percentile points) for the data.
@@ -921,7 +921,7 @@ package scipy.stats.mstats_basic;
 		----------
 		http://www.statsoft.com/textbook/glosp.html#Pearson%20Correlation
 	**/
-	static public function pearsonr(x:Dynamic, y:Dynamic):Dynamic;
+	static public function pearsonr(x:Dynamic, y:Dynamic):Float;
 	/**
 		Returns plotting positions (or empirical percentile points) for the data.
 		
@@ -1014,7 +1014,7 @@ package scipy.stats.mstats_basic;
 		Missing values are considered pair-wise: if a value is missing in x,
 		the corresponding value in y is masked.
 	**/
-	static public function pointbiserialr(x:Dynamic, y:Dynamic):Dynamic;
+	static public function pointbiserialr(x:Dynamic, y:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Returns the rank (also known as order statistics) of each data point
@@ -1165,7 +1165,7 @@ package scipy.stats.mstats_basic;
 		-----
 		The sample size must be at least 8.
 	**/
-	static public function skewtest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function skewtest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Calculates a Spearman rank-order correlation coefficient and the p-value
 		to test for non-correlation.
@@ -1207,7 +1207,7 @@ package scipy.stats.mstats_basic;
 		----------
 		[CRCProbStat2000] section 14.7
 	**/
-	static public function spearmanr(x:Dynamic, y:Dynamic, ?use_ties:Dynamic):Dynamic;
+	static public function spearmanr(x:Dynamic, y:Dynamic, ?use_ties:Dynamic):Float;
 	/**
 		Returns the McKean-Schrader estimate of the standard error of the sample
 		median along the given axis. masked values are discarded.
@@ -1299,7 +1299,7 @@ package scipy.stats.mstats_basic;
 		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
 		>>> plt.show()
 	**/
-	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
 		Clip array to a given value.
 		
@@ -1350,7 +1350,7 @@ package scipy.stats.mstats_basic;
 		-------
 		tmax : float
 	**/
-	static public function tmax(a:Dynamic, upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmax(a:Dynamic, upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed mean.
 		
@@ -1375,7 +1375,7 @@ package scipy.stats.mstats_basic;
 		-------
 		tmean : float
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed minimum
 		
@@ -1402,7 +1402,7 @@ package scipy.stats.mstats_basic;
 		-------
 		tmin : float
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Trims an array by masking the data outside some given limits.
 		
@@ -1636,7 +1636,7 @@ package scipy.stats.mstats_basic;
 		`tsem` uses unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
 		
@@ -1913,7 +1913,7 @@ package scipy.stats.mstats_basic;
 		`tvar` computes the unbiased sample variance, i.e. it uses a correction
 		factor ``n / (n - 1)``.
 	**/
-	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Computes the coefficient of variation, the ratio of the biased standard
 		deviation to the mean.

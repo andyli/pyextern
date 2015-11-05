@@ -195,7 +195,7 @@ package scipy.linalg.interpolative;
 		proj : :class:`numpy.ndarray`
 		    Interpolation coefficients.
 	**/
-	static public function interp_decomp(A:Dynamic, eps_or_k:Dynamic, ?rand:Dynamic):Dynamic;
+	static public function interp_decomp(A:Dynamic, eps_or_k:Dynamic, ?rand:Dynamic):Int;
 	/**
 		Generate standard uniform pseudorandom numbers via a very efficient lagged
 		Fibonacci method.

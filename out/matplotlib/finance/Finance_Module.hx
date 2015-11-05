@@ -43,7 +43,7 @@ package matplotlib.finance;
 		    returns (lines, patches) where lines is a list of lines
 		    added and patches is a list of the rectangle patches added
 	**/
-	static public function _candlestick(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic, ?ochl:Dynamic):Dynamic;
+	static public function _candlestick(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic, ?ochl:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Checks that *opens*, *highs*, *lows* and *closes* have the same length.
 		NOTE: this code assumes if any value open, high, low, close is
@@ -156,7 +156,7 @@ package matplotlib.finance;
 		lines : list
 		    list of tuples of the lines added (one tuple per quote)
 	**/
-	static public function _plot_day_summary(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?ochl:Dynamic):Dynamic;
+	static public function _plot_day_summary(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?ochl:Dynamic):Array<Dynamic>;
 	/**
 		Get historical data for ticker between date1 and date2.
 		
@@ -230,7 +230,7 @@ package matplotlib.finance;
 		ret : tuple
 		    (lineCollection, barCollection)
 	**/
-	static public function candlestick2_ochl(ax:Dynamic, opens:Dynamic, closes:Dynamic, highs:Dynamic, lows:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function candlestick2_ochl(ax:Dynamic, opens:Dynamic, closes:Dynamic, highs:Dynamic, lows:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Represent the open, close as a bar line and high low range as a
 		vertical line.
@@ -265,7 +265,7 @@ package matplotlib.finance;
 		ret : tuple
 		    (lineCollection, barCollection)
 	**/
-	static public function candlestick2_ohlc(ax:Dynamic, opens:Dynamic, highs:Dynamic, lows:Dynamic, closes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function candlestick2_ohlc(ax:Dynamic, opens:Dynamic, highs:Dynamic, lows:Dynamic, closes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Plot the time, open, close, high, low as a vertical line ranging
 		from low to high.  Use a rectangular bar to represent the
@@ -297,7 +297,7 @@ package matplotlib.finance;
 		    returns (lines, patches) where lines is a list of lines
 		    added and patches is a list of the rectangle patches added
 	**/
-	static public function candlestick_ochl(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function candlestick_ochl(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Plot the time, open, high, low, close as a vertical line ranging
 		from low to high.  Use a rectangular bar to represent the
@@ -329,7 +329,7 @@ package matplotlib.finance;
 		    returns (lines, patches) where lines is a list of lines
 		    added and patches is a list of the rectangle patches added
 	**/
-	static public function candlestick_ohlc(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function candlestick_ohlc(ax:Dynamic, quotes:Dynamic, ?width:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	static public var colorConverter : Dynamic;
 	/**
 		*d* is either a :class:`datetime` instance or a sequence of datetimes.
@@ -533,7 +533,7 @@ package matplotlib.finance;
 		ret : list
 		    a list of lines added to the axes
 	**/
-	static public function plot_day_summary2_ochl(ax:Dynamic, opens:Dynamic, closes:Dynamic, highs:Dynamic, lows:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Dynamic;
+	static public function plot_day_summary2_ochl(ax:Dynamic, opens:Dynamic, closes:Dynamic, highs:Dynamic, lows:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Array<Dynamic>;
 	/**
 		Represent the time, open, high, low, close as a vertical line
 		ranging from low to high.  The left tick is the open and the right
@@ -566,7 +566,7 @@ package matplotlib.finance;
 		ret : list
 		    a list of lines added to the axes
 	**/
-	static public function plot_day_summary2_ohlc(ax:Dynamic, opens:Dynamic, highs:Dynamic, lows:Dynamic, closes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Dynamic;
+	static public function plot_day_summary2_ohlc(ax:Dynamic, opens:Dynamic, highs:Dynamic, lows:Dynamic, closes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Array<Dynamic>;
 	/**
 		Plots day summary
 		
@@ -594,7 +594,7 @@ package matplotlib.finance;
 		lines : list
 		    list of tuples of the lines added (one tuple per quote)
 	**/
-	static public function plot_day_summary_oclh(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Dynamic;
+	static public function plot_day_summary_oclh(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Array<Dynamic>;
 	/**
 		Plots day summary
 		
@@ -622,7 +622,7 @@ package matplotlib.finance;
 		lines : list
 		    list of tuples of the lines added (one tuple per quote)
 	**/
-	static public function plot_day_summary_ohlc(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Dynamic;
+	static public function plot_day_summary_ohlc(ax:Dynamic, quotes:Dynamic, ?ticksize:Dynamic, ?colorup:Dynamic, ?colordown:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Get historical data for ticker between date1 and date2.

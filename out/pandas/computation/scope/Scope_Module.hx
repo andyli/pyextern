@@ -27,7 +27,7 @@ package pandas.computation.scope;
 		s : str
 		    Pretty print object repr
 	**/
-	static public function _get_pretty_string(obj:Dynamic):Dynamic;
+	static public function _get_pretty_string(obj:Dynamic):String;
 	/**
 		Return the padded hexadecimal id of ``obj``.
 	**/

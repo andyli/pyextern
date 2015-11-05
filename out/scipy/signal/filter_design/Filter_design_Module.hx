@@ -1149,7 +1149,7 @@ package scipy.signal.filter_design;
 		>>> plt.axis([10, 100, -60, 3])
 		>>> plt.show()
 	**/
-	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		ceil(x[, out])
 		
@@ -1256,7 +1256,7 @@ package scipy.signal.filter_design;
 		>>> plt.axis([0.08, 1, -60, 3])
 		>>> plt.show()
 	**/
-	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
 		
@@ -1336,7 +1336,7 @@ package scipy.signal.filter_design;
 		>>> plt.axis([0.06, 1, -80, 3])
 		>>> plt.show()
 	**/
-	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Chebyshev type I digital and analog filter design.
 		
@@ -1839,7 +1839,7 @@ package scipy.signal.filter_design;
 		>>> plt.axis([1, 300, -80, 3])
 		>>> plt.show()
 	**/
-	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		exp(x[, out])
 		
@@ -2484,7 +2484,7 @@ package scipy.signal.filter_design;
 		>>> np.mintypecode('abceh', default='G')
 		'G'
 	**/
-	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
 		Normalize polynomial representation of a transfer function.
 		

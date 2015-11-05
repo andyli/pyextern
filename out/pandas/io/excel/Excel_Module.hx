@@ -78,7 +78,7 @@ package pandas.io.excel;
 		isurl : bool
 		    If `url` has a valid protocol return True otherwise False.
 	**/
-	static public function _is_url(url:Dynamic):Dynamic;
+	static public function _is_url(url:Dynamic):Bool;
 	/**
 		(header, new_data) for header rows in MultiIndex parsing
 	**/

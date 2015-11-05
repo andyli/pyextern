@@ -316,7 +316,7 @@ package scipy.signal.fir_filter_design;
 		--------
 		kaiserord, kaiser_beta
 	**/
-	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Dynamic;
+	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Float;
 	/**
 		Compute the Kaiser parameter `beta`, given the attenuation `a`.
 		
@@ -335,7 +335,7 @@ package scipy.signal.fir_filter_design;
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
 	**/
-	static public function kaiser_beta(a:Dynamic):Dynamic;
+	static public function kaiser_beta(a:Dynamic):Float;
 	/**
 		Design a Kaiser window to limit ripple and width of transition region.
 		
@@ -373,7 +373,7 @@ package scipy.signal.fir_filter_design;
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
 	**/
-	static public function kaiserord(ripple:Dynamic, width:Dynamic):Dynamic;
+	static public function kaiserord(ripple:Dynamic, width:Dynamic):Int;
 	/**
 		log(x[, base])
 		

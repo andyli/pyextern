@@ -188,7 +188,7 @@ package pandas.core.reshape;
 		dummies : DataFrame
 		    Column names taken from chosen axis
 	**/
-	static public function make_axis_dummies(frame:Dynamic, ?axis:Dynamic, ?transform:Dynamic):Dynamic;
+	static public function make_axis_dummies(frame:Dynamic, ?axis:Dynamic, ?transform:Dynamic):pandas.DataFrame;
 	/**
 		"Unpivots" a DataFrame from wide format to long format, optionally leaving
 		identifier variables set.

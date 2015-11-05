@@ -317,7 +317,7 @@ package numpy.core.defchararray;
 		    '\x81\x82\xc2\xc1\xc2\x82\x81'],
 		    dtype='|S7')
 	**/
-	static public function decode(a:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function decode(a:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):numpy.Ndarray;
 	static public var division : Dynamic;
 	/**
 		Calls `str.encode` element-wise.
@@ -348,7 +348,7 @@ package numpy.core.defchararray;
 		-----
 		The type of the result will depend on the encoding specified.
 	**/
-	static public function encode(a:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function encode(a:Dynamic, ?encoding:Dynamic, ?errors:Dynamic):numpy.Ndarray;
 	/**
 		Returns a boolean array which is `True` where the string element
 		in `a` ends with `suffix`, otherwise `False`.

@@ -56,7 +56,7 @@ package scipy.sparse.csgraph._components;
 		>>> cs_graph_components(dok_matrix(D))
 		(3, array([0, 0, 1, 2]))
 	**/
-	static public function cs_graph_components(x:Dynamic):Dynamic;
+	static public function cs_graph_components(x:Dynamic):Int;
 	static public var division : Dynamic;
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

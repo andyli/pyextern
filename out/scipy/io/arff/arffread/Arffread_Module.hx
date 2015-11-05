@@ -67,7 +67,7 @@ package scipy.io.arff.arffread;
 		>>> get_nom_val("{floup, bouga, fl, ratata}")
 		('floup', 'bouga', 'fl', 'ratata')
 	**/
-	static public function get_nom_val(atrv:Dynamic):Dynamic;
+	static public function get_nom_val(atrv:Dynamic):python.Tuple<Dynamic>;
 	/**
 		If attribute is nominal, returns a list of the values
 	**/
@@ -146,7 +146,7 @@ package scipy.io.arff.arffread;
 		>>> maxnomlen("{floup, bouga, fl, ratata}")
 		6
 	**/
-	static public function maxnomlen(atrv:Dynamic):Dynamic;
+	static public function maxnomlen(atrv:Dynamic):Int;
 	/**
 		next(iterator[, default])
 		
@@ -204,7 +204,7 @@ package scipy.io.arff.arffread;
 		>>> safe_float('?\n')
 		nan
 	**/
-	static public function safe_float(x:Dynamic):Dynamic;
+	static public function safe_float(x:Dynamic):Float;
 	static public function safe_nominal(value:Dynamic, pvalue:Dynamic):Dynamic;
 	static public function test_weka(filename:Dynamic):Dynamic;
 	/**
@@ -247,7 +247,7 @@ package scipy.io.arff.arffread;
 		>>> tokenize_attribute(iterable, r"  @attribute 'floupi 2' real   ")
 		('floupi 2', 'real', 0)
 	**/
-	static public function tokenize_attribute(iterable:Dynamic, attribute:Dynamic):Dynamic;
+	static public function tokenize_attribute(iterable:Dynamic, attribute:Dynamic):String;
 	static public function tokenize_single_comma(val:Dynamic):Dynamic;
 	static public function tokenize_single_wcomma(val:Dynamic):Dynamic;
 }

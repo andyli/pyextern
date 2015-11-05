@@ -88,7 +88,7 @@ package scipy.io.matlab.mio5;
 		   ...
 		ValueError: 1D option "bizarre" is strange
 	**/
-	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):Dynamic;
+	static public function matdims(arr:Dynamic, ?oned_as:Dynamic):python.Tuple<Dynamic>;
 	static public var mclass_info : Dynamic;
 	static public var miCOMPRESSED : Dynamic;
 	static public var miINT8 : Dynamic;
@@ -179,5 +179,5 @@ package scipy.io.matlab.mio5;
 		>>> sorted([name for name, str_obj in varmats])
 		['a', 'b']
 	**/
-	static public function varmats_from_mat(file_obj:Dynamic):Dynamic;
+	static public function varmats_from_mat(file_obj:Dynamic):Array<Dynamic>;
 }

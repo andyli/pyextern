@@ -39,7 +39,7 @@ package scipy.stats._multivariate;
 		--------
 		scipy.linalg.cholesky : Cholesky factorization of a matrix
 	**/
-	static public function _cho_inv_batch(a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function _cho_inv_batch(a:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	static public function _dirichlet_check_input(alpha:Dynamic, x:Dynamic):Dynamic;
 	static public function _dirichlet_check_parameters(alpha:Dynamic):Dynamic;
 	static public var _dirichlet_doc_default_callparams : Dynamic;
@@ -73,7 +73,7 @@ package scipy.stats._multivariate;
 		eps : float
 		    Magnitude cutoff for numerical negligibility.
 	**/
-	static public function _eigvalsh_to_eps(spectrum:Dynamic, ?cond:Dynamic, ?rcond:Dynamic):Dynamic;
+	static public function _eigvalsh_to_eps(spectrum:Dynamic, ?cond:Dynamic, ?rcond:Dynamic):Float;
 	/**
 		Internal helper function to compute the log of the useful quotient
 		
@@ -393,7 +393,7 @@ package scipy.stats._multivariate;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		An inverse Wishart random variable.
 		

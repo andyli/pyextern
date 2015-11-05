@@ -1124,7 +1124,7 @@ package scipy.sparse.linalg._norm;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		sqrt(x[, out])
 		

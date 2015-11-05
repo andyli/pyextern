@@ -1639,7 +1639,7 @@ package scipy.special;
 		>>> factorialk(5, 3, exact=True)
 		10L
 	**/
-	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Dynamic;
+	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Int;
 	/**
 		fdtr(x1, x2, x3[, out])
 		
@@ -3128,7 +3128,7 @@ package scipy.special;
 		>>> -lambertw(-np.log(0.5)) / np.log(0.5)
 		(0.64118574450498589+0j)
 	**/
-	static public function lambertw(z:Dynamic, ?k:Dynamic, ?tol:Dynamic):Dynamic;
+	static public function lambertw(z:Dynamic, ?k:Dynamic, ?tol:Dynamic):Array<Dynamic>;
 	/**
 		Legendre polynomial coefficients
 		

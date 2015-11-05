@@ -978,5 +978,5 @@ package pandas.core.categorical;
 		view : Categorical
 		   Returns `self`!
 	**/
-	public function view():Dynamic;
+	public function view():pandas.Categorical;
 }

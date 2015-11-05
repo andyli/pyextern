@@ -822,7 +822,7 @@ package scipy.linalg.decomp;
 		The code and the dtype are stored in attributes `typecode` and `dtype`
 		of the returned functions.
 	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Return available LAPACK function objects from names.
 		
@@ -860,7 +860,7 @@ package scipy.linalg.decomp;
 		types {float32, float64, complex64, complex128} respectevely, and
 		are stored in attribute `typecode` of the returned functions.
 	**/
-	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
 		Compute Hessenberg form of a matrix.
 		
@@ -924,7 +924,7 @@ package scipy.linalg.decomp;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		isfinite(x[, out])
 		
@@ -1065,7 +1065,7 @@ package scipy.linalg.decomp;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Matrix or vector norm.
 		
@@ -1167,7 +1167,7 @@ package scipy.linalg.decomp;
 		>>> norm(a, -3)
 		nan
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
 	/**
 		Return a new array of given shape and type, filled with ones.
 		

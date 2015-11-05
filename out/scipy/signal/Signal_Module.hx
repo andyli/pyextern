@@ -34,7 +34,7 @@ package scipy.signal;
 		ValueError
 		    If not enough information on the system was provided.
 	**/
-	static public function abcd_normalize(?A:Dynamic, ?B:Dynamic, ?C:Dynamic, ?D:Dynamic):Dynamic;
+	static public function abcd_normalize(?A:Dynamic, ?B:Dynamic, ?C:Dynamic, ?D:Dynamic):Array<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		Calculate the relative extrema of `data`.
@@ -388,7 +388,7 @@ package scipy.signal;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Bessel/Thomson digital and analog filter design.
 		
@@ -915,7 +915,7 @@ package scipy.signal;
 		>>> plt.axis([10, 100, -60, 3])
 		>>> plt.show()
 	**/
-	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function buttord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Return (x, phi, psi) at dyadic points ``K/2**J`` from filter coefficients.
 		
@@ -1024,7 +1024,7 @@ package scipy.signal;
 		>>> plt.axis([0.08, 1, -60, 3])
 		>>> plt.show()
 	**/
-	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
 		
@@ -1104,7 +1104,7 @@ package scipy.signal;
 		>>> plt.axis([0.06, 1, -80, 3])
 		>>> plt.show()
 	**/
-	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function cheb2ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Return a Dolph-Chebyshev window.
 		
@@ -1666,7 +1666,7 @@ package scipy.signal;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function convolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Convolve two 2-dimensional arrays.
 		
@@ -1804,7 +1804,7 @@ package scipy.signal;
 		>>> fig.tight_layout()
 		>>> fig.show()
 	**/
-	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function correlate(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Cross-correlate two 2-dimensional arrays.
 		
@@ -2548,7 +2548,7 @@ package scipy.signal;
 		>>> plt.axis([1, 300, -80, 3])
 		>>> plt.show()
 	**/
-	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Dynamic;
+	static public function ellipord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
 		Return an exponential (or Poisson) window.
 		
@@ -2700,7 +2700,7 @@ package scipy.signal;
 		>>> ax_blurred.set_axis_off()
 		>>> fig.show()
 	**/
-	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	static public var filter_dict : Dynamic;
 	/**
 		A forward-backward filter.
@@ -4402,7 +4402,7 @@ package scipy.signal;
 		--------
 		kaiserord, kaiser_beta
 	**/
-	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Dynamic;
+	static public function kaiser_atten(numtaps:Dynamic, width:Dynamic):Float;
 	/**
 		Compute the Kaiser parameter `beta`, given the attenuation `a`.
 		
@@ -4421,7 +4421,7 @@ package scipy.signal;
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
 	**/
-	static public function kaiser_beta(a:Dynamic):Dynamic;
+	static public function kaiser_beta(a:Dynamic):Float;
 	/**
 		Design a Kaiser window to limit ripple and width of transition region.
 		
@@ -4459,7 +4459,7 @@ package scipy.signal;
 		----------
 		Oppenheim, Schafer, "Discrete-Time Signal Processing", p.475-476.
 	**/
-	static public function kaiserord(ripple:Dynamic, width:Dynamic):Dynamic;
+	static public function kaiserord(ripple:Dynamic, width:Dynamic):Int;
 	/**
 		Filter data along one-dimension with an IIR or FIR filter.
 		
@@ -4523,7 +4523,7 @@ package scipy.signal;
 		                         -1               -na
 		             a[0] + a[1]z  + ... + a[na] z
 	**/
-	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Dynamic;
+	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
 		Compute an initial state `zi` for the lfilter function that corresponds
 		to the steady state of the step response.

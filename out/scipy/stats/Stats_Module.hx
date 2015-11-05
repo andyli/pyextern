@@ -185,7 +185,7 @@ package scipy.stats;
 		       Based on the Empirical Distribution Function, Biometrika, Vol. 66,
 		       pp. 591-595.
 	**/
-	static public function anderson(x:Dynamic, ?dist:Dynamic):Dynamic;
+	static public function anderson(x:Dynamic, ?dist:Dynamic):Float;
 	/**
 		The Anderson-Darling test for k-samples.
 		
@@ -418,7 +418,7 @@ package scipy.stats;
 		.. [1] Sprent, Peter and N.C. Smeeton.  Applied nonparametric statistical
 		       methods.  3rd ed. Chapman and Hall/CRC. 2001.  Section 5.8.2.
 	**/
-	static public function ansari(x:Dynamic, y:Dynamic):Dynamic;
+	static public function ansari(x:Dynamic, y:Dynamic):Float;
 	/**
 		An arcsine continuous random variable.
 		
@@ -553,7 +553,7 @@ package scipy.stats;
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
 	**/
-	static public function bartlett(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function bartlett(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Bayesian confidence intervals for the mean, var, and std.
 		
@@ -596,7 +596,7 @@ package scipy.stats;
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
 		standard-deviation from data", http://hdl.handle.net/1877/438, 2006.
 	**/
-	static public function bayes_mvs(data:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function bayes_mvs(data:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
 		A Bernoulli discrete random variable.
 		
@@ -1334,7 +1334,7 @@ package scipy.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Binomial_test
 	**/
-	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic):Dynamic;
+	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic):Float;
 	/**
 		A Boltzmann (Truncated Discrete Exponential) random variable.
 		
@@ -2410,7 +2410,7 @@ package scipy.stats;
 		         [[ 15.54012004,  15.54012004],
 		          [ 18.10873492,  18.10873492]]]]))
 	**/
-	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Dynamic;
+	static public function chi2_contingency(observed:Dynamic, ?correction:Dynamic, ?lambda_:Dynamic):Float;
 	/**
 		Probability value (1-tail) for the Chi^2 probability distribution.
 		
@@ -2559,7 +2559,7 @@ package scipy.stats;
 		circmean : float
 		    Circular mean.
 	**/
-	static public function circmean(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circmean(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the circular standard deviation for samples assumed to be in the
 		range [low to high].
@@ -2587,7 +2587,7 @@ package scipy.stats;
 		This uses a definition of circular standard deviation that in the limit of
 		small angles returns a number close to the 'linear' standard deviation.
 	**/
-	static public function circstd(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circstd(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the circular variance for samples assumed to be in a range
 		
@@ -2613,7 +2613,7 @@ package scipy.stats;
 		This uses a definition of circular variance that in the limit of small
 		angles returns a number close to the 'linear' variance.
 	**/
-	static public function circvar(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function circvar(samples:Dynamic, ?high:Dynamic, ?low:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Methods for combining the p-values of independent tests bearing upon the
 		same hypothesis.
@@ -2855,7 +2855,7 @@ package scipy.stats;
 		--------
 		skew, kurtosis
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Int;
 	/**
 		A double gamma continuous random variable.
 		
@@ -3270,7 +3270,7 @@ package scipy.stats;
 		S : float
 		    The calculated entropy.
 	**/
-	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Dynamic;
+	static public function entropy(pk:Dynamic, ?qk:Dynamic, ?base:Dynamic):Float;
 	/**
 		An Erlang continuous random variable.
 		
@@ -3945,7 +3945,7 @@ package scipy.stats;
 		
 		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
 	**/
-	static public function f_oneway(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Returns an F-statistic for a restricted vs. unrestricted model.
 		
@@ -3991,7 +3991,7 @@ package scipy.stats;
 		fstat : float
 		    The computed F-statistic.
 	**/
-	static public function f_value_multivariate(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic):Dynamic;
+	static public function f_value_multivariate(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic):Float;
 	/**
 		Calculation of Wilks lambda F-statistic for multivarite data, per
 		Maxwell & Delaney p.657.
@@ -4157,7 +4157,7 @@ package scipy.stats;
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
 		(array([ 4., 5.]), array([2, 2], dtype=int32))
 	**/
-	static public function find_repeats(arr:Dynamic):Dynamic;
+	static public function find_repeats(arr:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Performs a Fisher exact test on a 2x2 contingency table.
 		
@@ -4216,7 +4216,7 @@ package scipy.stats;
 		statistically significant; whales prefer the Atlantic while sharks prefer
 		the Indian ocean.
 	**/
-	static public function fisher_exact(table:Dynamic, ?alternative:Dynamic):Dynamic;
+	static public function fisher_exact(table:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		A Fisk continuous random variable.
 		
@@ -4376,7 +4376,7 @@ package scipy.stats;
 		       tests for scale. 'Journal of the American Statistical Association.'
 		       71(353), 210-213.
 	**/
-	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		A folded Cauchy continuous random variable.
 		
@@ -4850,7 +4850,7 @@ package scipy.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Friedman_test
 	**/
-	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function friedmanchisquare(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		A gamma continuous random variable.
 		
@@ -7728,7 +7728,7 @@ package scipy.stats;
 		>>> stats.jarque_bera(y)
 		(6713.7098548143422, 0.0)
 	**/
-	static public function jarque_bera(x:Dynamic):Dynamic;
+	static public function jarque_bera(x:Dynamic):Float;
 	/**
 		A Johnson SB continuous random variable.
 		
@@ -8012,7 +8012,7 @@ package scipy.stats;
 		>>> p_value
 		0.24821309157521476
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic):Dynamic;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -8047,7 +8047,7 @@ package scipy.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
 	**/
-	static public function kruskal(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Computes the Kolmogorov-Smirnov statistic on 2 samples.
 		
@@ -8109,7 +8109,7 @@ package scipy.stats;
 		>>> stats.ks_2samp(rvs1, rvs4)
 		(0.07999999999999996, 0.41126949729859719)
 	**/
-	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Dynamic;
+	static public function ks_2samp(data1:Dynamic, data2:Dynamic):Float;
 	/**
 		General Kolmogorov-Smirnov one-sided test.
 		
@@ -8246,7 +8246,7 @@ package scipy.stats;
 		
 		http://mathworld.wolfram.com/Cumulant.html
 	**/
-	static public function kstat(data:Dynamic, ?n:Dynamic):Dynamic;
+	static public function kstat(data:Dynamic, ?n:Dynamic):Float;
 	/**
 		Returns an unbiased estimator of the variance of the k-statistic.
 		
@@ -8268,7 +8268,7 @@ package scipy.stats;
 		--------
 		kstat
 	**/
-	static public function kstatvar(data:Dynamic, ?n:Dynamic):Dynamic;
+	static public function kstatvar(data:Dynamic, ?n:Dynamic):Float;
 	/**
 		Perform the Kolmogorov-Smirnov test for goodness of fit.
 		
@@ -8372,7 +8372,7 @@ package scipy.stats;
 		>>> stats.kstest(stats.t.rvs(3,size=100),'norm')
 		(0.131016895759829, 0.058826222555312224)
 	**/
-	static public function kstest(rvs:Dynamic, cdf:Dynamic, ?args:Dynamic, ?N:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function kstest(rvs:Dynamic, cdf:Dynamic, ?args:Dynamic, ?N:Dynamic, ?alternative:Dynamic, ?mode:Dynamic):Float;
 	/**
 		Kolmogorov-Smirnov two-sided test for large N.
 		
@@ -8501,7 +8501,7 @@ package scipy.stats;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 	**/
-	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Array<Dynamic>;
 	/**
 		Tests whether a dataset has normal kurtosis
 		
@@ -8528,7 +8528,7 @@ package scipy.stats;
 		-----
 		Valid only for n>20.  The Z-score is set to 0 for bad entries.
 	**/
-	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		A Laplace continuous random variable.
 		
@@ -8679,7 +8679,7 @@ package scipy.stats;
 		.. [3]  Brown, M. B. and Forsythe, A. B. (1974), Journal of the American
 		          Statistical Association, 69, 364-367
 	**/
-	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function levene(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		A Levy continuous random variable.
 		
@@ -9054,7 +9054,7 @@ package scipy.stats;
 		>>> print("r-squared:", r_value**2)
 		r-squared: 0.15286643777
 	**/
-	static public function linregress(x:Dynamic, ?y:Dynamic):Dynamic;
+	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
 		A log gamma continuous random variable.
 		
@@ -9740,7 +9740,7 @@ package scipy.stats;
 		The reported p-value is for a one-sided hypothesis, to get the two-sided
 		p-value multiply the returned p-value by 2.
 	**/
-	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Dynamic;
+	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Float;
 	/**
 		A Maxwell continuous random variable.
 		
@@ -11601,7 +11601,7 @@ package scipy.stats;
 		>>> stats.percentileofscore([1, 2, 3, 3, 4], 3, kind='mean')
 		60.0
 	**/
-	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Dynamic;
+	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Float;
 	/**
 		A Planck discrete exponential random variable.
 		
@@ -11746,7 +11746,7 @@ package scipy.stats;
 		array([[ 1.       ,  0.8660254],
 		       [ 0.8660254,  1.       ]])
 	**/
-	static public function pointbiserialr(x:Dynamic, y:Dynamic):Dynamic;
+	static public function pointbiserialr(x:Dynamic, y:Dynamic):Float;
 	/**
 		A Poisson discrete random variable.
 		
@@ -12725,7 +12725,7 @@ package scipy.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_rank-sum_test
 	**/
-	static public function ranksums(x:Dynamic, y:Dynamic):Dynamic;
+	static public function ranksums(x:Dynamic, y:Dynamic):Float;
 	/**
 		A Rayleigh continuous random variable.
 		
@@ -13559,7 +13559,7 @@ package scipy.stats;
 		----------
 		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
 	**/
-	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Dynamic;
+	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
 	/**
 		Iterative sigma-clipping of array elements.
 		
@@ -13809,7 +13809,7 @@ package scipy.stats;
 		-----
 		The sample size must be at least 8.
 	**/
-	static public function skewtest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function skewtest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Calculates a Spearman rank-order correlation coefficient and the p-value
 		to test for non-correlation.
@@ -14217,7 +14217,7 @@ package scipy.stats;
 		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
 		>>> plt.show()
 	**/
-	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
 		Clip array to a given value.
 		
@@ -14316,7 +14316,7 @@ package scipy.stats;
 		-------
 		tmax : float
 	**/
-	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed mean.
 		
@@ -14341,7 +14341,7 @@ package scipy.stats;
 		-------
 		tmean : float
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed minimum
 		
@@ -14368,7 +14368,7 @@ package scipy.stats;
 		-------
 		tmin : float
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		A triangular continuous random variable.
 		
@@ -14835,7 +14835,7 @@ package scipy.stats;
 		`tsem` uses unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Compute the trimmed sample standard deviation
 		
@@ -14865,7 +14865,7 @@ package scipy.stats;
 		`tstd` computes the unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
 	**/
-	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
 		
@@ -15250,7 +15250,7 @@ package scipy.stats;
 		`tvar` computes the unbiased sample variance, i.e. it uses a correction
 		factor ``n / (n - 1)``.
 	**/
-	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Dynamic;
+	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
 	/**
 		A uniform continuous random variable.
 		
@@ -15983,7 +15983,7 @@ package scipy.stats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
 	**/
-	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Dynamic;
+	static public function wilcoxon(x:Dynamic, ?y:Dynamic, ?zero_method:Dynamic, ?correction:Dynamic):Float;
 	/**
 		A Wishart random variable.
 		

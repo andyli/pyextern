@@ -820,7 +820,7 @@ package scipy.interpolate.interpolate;
 		    Return a (`xk`, `cvals`, `k`) representation of a spline given
 		    data-points where the (internal) knots are at the data-points.
 	**/
-	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):Dynamic;
+	static public function splmake(xk:Dynamic, yk:Dynamic, ?order:Dynamic, ?kind:Dynamic, ?conds:Dynamic):python.Tuple<Dynamic>;
 	/**
 		Return a piece-wise polynomial object from a fixed-spline tuple.
 		    

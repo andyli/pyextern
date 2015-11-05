@@ -75,5 +75,5 @@ package seaborn.algorithms;
 		p_mat : float
 		    array of probabilites for actual correlation from null CDF
 	**/
-	static public function randomize_corrmat(a:Dynamic, ?tail:Dynamic, ?corrected:Dynamic, ?n_iter:Dynamic, ?random_seed:Dynamic, ?return_dist:Dynamic):Dynamic;
+	static public function randomize_corrmat(a:Dynamic, ?tail:Dynamic, ?corrected:Dynamic, ?n_iter:Dynamic, ?random_seed:Dynamic, ?return_dist:Dynamic):Float;
 }

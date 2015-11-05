@@ -30,7 +30,7 @@ package scipy.sparse.linalg._expm_multiply;
 		cost_div_m : int
 		    Required number of matrix products divided by m.
 	**/
-	static public function _compute_cost_div_m(m:Dynamic, p:Dynamic, norm_info:Dynamic):Dynamic;
+	static public function _compute_cost_div_m(m:Dynamic, p:Dynamic, norm_info:Dynamic):Int;
 	/**
 		Compute the largest positive integer p such that p*(p-1) <= m_max + 1.
 		
@@ -66,7 +66,7 @@ package scipy.sparse.linalg._expm_multiply;
 		-----
 		This is condition (3.13) in Al-Mohy and Higham (2011).
 	**/
-	static public function _condition_3_13(A_1_norm:Dynamic, n0:Dynamic, m_max:Dynamic, ell:Dynamic):Dynamic;
+	static public function _condition_3_13(A_1_norm:Dynamic, n0:Dynamic, m_max:Dynamic, ell:Dynamic):Bool;
 	static public function _exact_1_norm(A:Dynamic):Dynamic;
 	static public function _exact_inf_norm(A:Dynamic):Dynamic;
 	/**
@@ -182,7 +182,7 @@ package scipy.sparse.linalg._expm_multiply;
 		is given between the definitions of equation (3.11)
 		and the definition of equation (3.12).
 	**/
-	static public function _fragment_3_1(norm_info:Dynamic, n0:Dynamic, tol:Dynamic, ?m_max:Dynamic, ?ell:Dynamic):Dynamic;
+	static public function _fragment_3_1(norm_info:Dynamic, n0:Dynamic, tol:Dynamic, ?m_max:Dynamic, ?ell:Dynamic):Int;
 	static public function _ident_like(A:Dynamic):Dynamic;
 	/**
 		Efficiently estimate the 1-norm of A^p.
@@ -218,7 +218,7 @@ package scipy.sparse.linalg._expm_multiply;
 		    It can be thought of as an output of the linear operator
 		    that is relatively large in norm compared to the input.
 	**/
-	static public function _onenormest_matrix_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Dynamic;
+	static public function _onenormest_matrix_power(A:Dynamic, p:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var _theta : Dynamic;
 	static public function _trace(A:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;

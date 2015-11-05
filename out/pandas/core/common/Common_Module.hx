@@ -361,7 +361,7 @@ package pandas.core.common;
 		...     np.array([1, 2, np.nan]))
 		False
 	**/
-	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Dynamic;
+	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
 	static public function backfill_1d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function backfill_2d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
@@ -936,7 +936,7 @@ package pandas.core.common;
 		    If the data is invalid, or allow_pickle=False and the file contains
 		    an object array.
 	**/
-	static public function read_array(fp:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
+	static public function read_array(fp:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):numpy.Ndarray;
 	static public function sentinel_factory():Dynamic;
 	/**
 		Generates tuples of ranges which cover all True value in mask

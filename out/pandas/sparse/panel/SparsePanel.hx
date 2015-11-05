@@ -814,7 +814,7 @@ package pandas.sparse.panel;
 		--------
 		pandas.DataFrame.values
 	**/
-	public function as_matrix():Dynamic;
+	public function as_matrix():numpy.Ndarray;
 	/**
 		Convert all TimeSeries inside to specified frequency using DateOffset
 		objects. Optionally provide fill method to pad/backfill missing values.
@@ -1788,7 +1788,7 @@ package pandas.sparse.panel;
 		y : DataFrame
 		    index -> minor axis, columns -> items
 	**/
-	public function major_xs(key:Dynamic):Dynamic;
+	public function major_xs(key:Dynamic):pandas.DataFrame;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is False and otherwise are from other.
@@ -1914,7 +1914,7 @@ package pandas.sparse.panel;
 		y : SparseDataFrame
 		    index -> major axis, columns -> items
 	**/
-	public function minor_xs(key:Dynamic):Dynamic;
+	public function minor_xs(key:Dynamic):pandas.SparseDataFrame;
 	/**
 		wrapper around `__mod__` (only works for scalar values
 	**/

@@ -362,7 +362,7 @@ package scipy.misc;
 		>>> factorialk(5, 3, exact=True)
 		10L
 	**/
-	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Dynamic;
+	static public function factorialk(n:Dynamic, k:Dynamic, ?exact:Dynamic):Int;
 	/**
 		Return a copy of a PIL image as a numpy array.
 		
