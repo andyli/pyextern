@@ -501,7 +501,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -1225,7 +1225,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'left', 'color', 'linewidth', 'width', 'tick_label', 'ecolor', 'edgecolor', 'height', 'yerr', 'bottom', 'xerr'.
+		* All arguments with the following names: 'edgecolor', 'left', 'xerr', 'tick_label', 'bottom', 'ecolor', 'height', 'linewidth', 'color', 'yerr', 'width'.
 		
 		
 		
@@ -2089,7 +2089,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -3203,7 +3203,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -3437,7 +3437,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'xerr', 'yerr', 'y'.
+		* All arguments with the following names: 'xerr', 'yerr', 'y', 'x'.
 		
 		
 		
@@ -3548,7 +3548,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'colors', 'linestyles', 'linelengths', 'lineoffsets', 'linewidths', 'positions'.
+		* All arguments with the following names: 'linelengths', 'linestyles', 'colors', 'lineoffsets', 'linewidths', 'positions'.
 		
 		
 		
@@ -3695,7 +3695,7 @@ package matplotlib.pyplot;
 		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
 		  color: any matplotlib color         
 		  contains: a callable function         
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
 		  figure: a :class:`matplotlib.figure.Figure` instance         
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
 		  gid: an id string         
@@ -3849,7 +3849,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -3953,7 +3953,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y2', 'x', 'where', 'y1'.
+		* All arguments with the following names: 'where', 'y1', 'x', 'y2'.
 		
 		
 		
@@ -4053,7 +4053,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x1', 'where', 'x2', 'y'.
+		* All arguments with the following names: 'x2', 'where', 'y', 'x1'.
 		
 		
 		
@@ -4485,7 +4485,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -4683,7 +4683,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x'.
+		* All arguments with the following names: 'x', 'weights'.
 		
 		
 		
@@ -4770,7 +4770,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x', 'y'.
+		* All arguments with the following names: 'y', 'x', 'weights'.
 		
 		
 		
@@ -4819,7 +4819,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmax', 'xmin', 'y'.
+		* All arguments with the following names: 'xmin', 'xmax', 'y'.
 		
 		
 		
@@ -6211,7 +6211,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'colors', 'x', 'labels', 'explode'.
+		* All arguments with the following names: 'labels', 'explode', 'x', 'colors'.
 		
 		
 		
@@ -6404,7 +6404,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -6514,7 +6514,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -7462,7 +7462,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 's', 'color', 'x', 'edgecolors', 'y', 'facecolor', 'facecolors', 'c', 'linewidths'.
+		* All arguments with the following names: 'facecolor', 'y', 'x', 's', 'facecolors', 'color', 'linewidths', 'c', 'edgecolors'.
 		
 		
 		
@@ -8078,7 +8078,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -9343,7 +9343,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'colors', 'x', 'ymax', 'ymin'.
+		* All arguments with the following names: 'ymax', 'colors', 'x', 'ymin'.
 		
 		
 		
@@ -9427,7 +9427,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		

@@ -392,7 +392,7 @@ package pandas.core.groupby;
 		-------
 		correlation : float
 	**/
-	public var corr : Dynamic;
+	public var corr : Float;
 	/**
 		Compute count of group, excluding missing values 
 	**/
@@ -412,7 +412,7 @@ package pandas.core.groupby;
 		
 		Normalized by N-1 (unbiased estimator).
 	**/
-	public var cov : Dynamic;
+	public var cov : Float;
 	/**
 		Number each item in each group from 0 to the length of that group - 1.
 		
@@ -588,7 +588,7 @@ package pandas.core.groupby;
 		-------
 		diffed : Series
 	**/
-	public var diff : Dynamic;
+	public var diff : pandas.Series;
 	/**
 		return the dtype object of the underlying data 
 	**/
@@ -636,7 +636,7 @@ package pandas.core.groupby;
 		-------
 		filled : Series
 	**/
-	public var fillna : Dynamic;
+	public var fillna : pandas.Series;
 	/**
 		Return a copy of a Series excluding elements from groups that
 		do not satisfy the boolean criterion specified by func.
@@ -981,7 +981,7 @@ package pandas.core.groupby;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public var pct_change : Dynamic;
+	public var pct_change : pandas.core.frame.NDFrame;
 	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
@@ -1040,7 +1040,7 @@ package pandas.core.groupby;
 		-------
 		ranks : Series
 	**/
-	public var rank : Dynamic;
+	public var rank : pandas.Series;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -1197,7 +1197,7 @@ package pandas.core.groupby;
 		-------
 		shifted : Series
 	**/
-	public var shift : Dynamic;
+	public var shift : pandas.Series;
 	/**
 		Compute group sizes
 	**/
@@ -1275,7 +1275,7 @@ package pandas.core.groupby;
 		--------
 		numpy.ndarray.take
 	**/
-	public var take : Dynamic;
+	public var take : pandas.Series;
 	/**
 		Call function producing a like-indexed Series on each group and return
 		a Series with the transformed values
@@ -1316,7 +1316,7 @@ package pandas.core.groupby;
 		-------
 		shifted : NDFrame
 	**/
-	public var tshift : Dynamic;
+	public var tshift : pandas.core.frame.NDFrame;
 	/**
 		Return array of unique values in the object. Significantly faster than
 		numpy.unique. Includes NA values.
@@ -1325,7 +1325,7 @@ package pandas.core.groupby;
 		-------
 		uniques : ndarray
 	**/
-	public var unique : Dynamic;
+	public var unique : numpy.Ndarray;
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Compute variance of groups, excluding missing values

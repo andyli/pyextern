@@ -39,42 +39,40 @@ class Processor {
 			Xml.parse(document.asdom().toxml());
 		} catch (e:Dynamic) { null; }
 	}
-	public function docToFun(doc:String):Function {
+	public function docReturns(doc:String):ComplexType {
 		var xml = parseRst(doc);
+		if (xml != null) {
+			var sec =
+				new Fast(xml).node.document.nodes.section
+					.find(function(sec:Fast) return 
+						sec.hasNode.title && 
+						sec.node.title.innerHTML.toLowerCase() == "returns"
+					);
+			if (sec != null) {
+				if (
+					sec.hasNode.definition_list &&
+					sec.node.definition_list.node.definition_list_item.hasNode.classifier
+				) {
+					var retDoc = sec.node.definition_list.node.definition_list_item.node.classifier.innerHTML;
+					return hxType(retDoc);
+				}
 
-		function getRet() {
-			if (xml != null) {
-				var sec =
-					new Fast(xml).node.document.nodes.section
-						.find(function(sec:Fast) return 
-							sec.hasNode.title && 
-							sec.node.title.innerHTML.toLowerCase() == "returns"
-						);
-				if (sec != null) {
-					if (
-						sec.hasNode.definition_list &&
-						sec.node.definition_list.node.definition_list_item.hasNode.classifier
-					) {
-						var retDoc = sec.node.definition_list.node.definition_list_item.node.classifier.innerHTML;
-						return hxType(retDoc);
-					}
-
-					if (sec != null && sec.hasNode.paragraph) {
-						var retDoc = sec.node.paragraph.innerHTML;
-						var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
-						if (re.match(retDoc)) {
-							return hxType(re.matched(2));
-						}
+				if (sec != null && sec.hasNode.paragraph) {
+					var retDoc = sec.node.paragraph.innerHTML;
+					var re = ~/^([_a-z][A-Za-z0-9]*) ?: ? ([A-Za-z0-9]+)$/;
+					if (re.match(retDoc)) {
+						return hxType(re.matched(2));
 					}
 				}
 			}
-			return null;
 		}
-
+		return null;
+	}
+	public function docToFun(doc:String):Function {
 		return {
 			params: [],
 			args: null,
-			ret: switch (getRet()) {
+			ret: switch (docReturns(doc)) {
 				case null: macro:Dynamic;
 				case ret: ret;
 			},
@@ -267,12 +265,16 @@ class Processor {
 							}
 						} else { //not callable
 							var isInstanceField = Inspect.isdatadescriptor(clsMemObj) || Inspect.isgetsetdescriptor(clsMemObj);
+							var doc = getdoc(clsMemObj);
 							var field:Field = {
-								doc: getdoc(clsMemObj),
+								doc: doc,
 								meta: [],
 								access: isInstanceField ? [APublic] : [AStatic, APublic],
 								name: clsMemName,
-								kind: FVar(macro:Dynamic),
+								kind: FVar(switch (docReturns(doc)) {
+									case null: macro:Dynamic;
+									case ret: ret;
+								}),
 								pos: null
 							};
 							if (isHxKeyword(clsMemName)) {
@@ -359,12 +361,16 @@ class Processor {
 						td.fields.push(field);
 					}
 				} else {
+					var doc = getdoc(memObj);
 					var field:Field = {
-						doc: getdoc(memObj),
+						doc: doc,
 						meta: [],
 						access: [AStatic, APublic],
 						name: memName,
-						kind: FVar(macro:Dynamic),
+						kind: FVar(switch (docReturns(doc)) {
+							case null: macro:Dynamic;
+							case ret: ret;
+						}),
 						pos: null
 					};
 					if (isHxKeyword(memName)) {

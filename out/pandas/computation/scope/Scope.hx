@@ -161,7 +161,7 @@ package pandas.computation.scope;
 		-------
 		hr : bool
 	**/
-	public var has_resolvers : Dynamic;
+	public var has_resolvers : Bool;
 	public var level : Dynamic;
 	/**
 		The number of temporary variables in this scope

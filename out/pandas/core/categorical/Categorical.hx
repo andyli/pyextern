@@ -850,7 +850,7 @@ package pandas.core.categorical;
 		-------
 		shape : tuple
 	**/
-	public var shape : Dynamic;
+	public var shape : python.Tuple<Dynamic>;
 	/**
 		Shift Categorical by desired number of periods.
 		

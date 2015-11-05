@@ -26,7 +26,7 @@ package numpy.matrixlib.defmatrix;
 		       [ 4,  5,  6,  7],
 		       [ 8,  9, 10, 11]])
 	**/
-	public var A : Dynamic;
+	public var A : numpy.Ndarray;
 	/**
 		Return `self` as a flattened `ndarray`.
 		
@@ -50,7 +50,7 @@ package numpy.matrixlib.defmatrix;
 		>>> x.getA1()
 		array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
 	**/
-	public var A1 : Dynamic;
+	public var A1 : numpy.Ndarray;
 	/**
 		Returns the (complex) conjugate transpose of `self`.
 		

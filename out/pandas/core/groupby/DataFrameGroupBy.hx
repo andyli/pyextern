@@ -423,7 +423,7 @@ package pandas.core.groupby;
 		-------
 		y : DataFrame
 	**/
-	public var corr : Dynamic;
+	public var corr : pandas.DataFrame;
 	/**
 		Compute pairwise correlation between rows or columns of two DataFrame
 		objects.
@@ -440,7 +440,7 @@ package pandas.core.groupby;
 		-------
 		correls : Series
 	**/
-	public var corrwith : Dynamic;
+	public var corrwith : pandas.Series;
 	/**
 		Compute count of group, excluding missing values 
 	**/
@@ -463,7 +463,7 @@ package pandas.core.groupby;
 		`y` contains the covariance matrix of the DataFrame's time series.
 		The covariance is normalized by N-1 (unbiased estimator).
 	**/
-	public var cov : Dynamic;
+	public var cov : pandas.DataFrame;
 	/**
 		Number each item in each group from 0 to the length of that group - 1.
 		
@@ -523,7 +523,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	public var cummax : Dynamic;
+	public var cummax : pandas.Series;
 	/**
 		    Return cumulative min over requested axis.
 		
@@ -540,7 +540,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	public var cummin : Dynamic;
+	public var cummin : pandas.Series;
 	/**
 		    Return cumulative prod over requested axis.
 		
@@ -557,7 +557,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	public var cumprod : Dynamic;
+	public var cumprod : pandas.Series;
 	/**
 		    Return cumulative sum over requested axis.
 		
@@ -574,7 +574,7 @@ package pandas.core.groupby;
 		
 		    
 	**/
-	public var cumsum : Dynamic;
+	public var cumsum : pandas.Series;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -643,7 +643,7 @@ package pandas.core.groupby;
 		-------
 		diffed : DataFrame
 	**/
-	public var diff : Dynamic;
+	public var diff : pandas.DataFrame;
 	/**
 		Return the dtypes in this object 
 	**/
@@ -691,7 +691,7 @@ package pandas.core.groupby;
 		-------
 		filled : DataFrame
 	**/
-	public var fillna : Dynamic;
+	public var fillna : pandas.DataFrame;
 	/**
 		Return a copy of a DataFrame excluding elements from groups that
 		do not satisfy the boolean criterion specified by func.
@@ -822,7 +822,7 @@ package pandas.core.groupby;
 		--------
 		Series.idxmax
 	**/
-	public var idxmax : Dynamic;
+	public var idxmax : pandas.Series;
 	/**
 		Return index of first occurrence of minimum over requested axis.
 		NA/null values are excluded.
@@ -847,7 +847,7 @@ package pandas.core.groupby;
 		--------
 		Series.idxmin
 	**/
-	public var idxmin : Dynamic;
+	public var idxmin : pandas.Series;
 	/**
 		dict {group name -> group indices} 
 	**/
@@ -980,7 +980,7 @@ package pandas.core.groupby;
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
 	**/
-	public var pct_change : Dynamic;
+	public var pct_change : pandas.core.frame.NDFrame;
 	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
@@ -1054,7 +1054,7 @@ package pandas.core.groupby;
 		-------
 		ranks : DataFrame
 	**/
-	public var rank : Dynamic;
+	public var rank : pandas.DataFrame;
 	/**
 		Convenience method for frequency conversion and resampling of regular
 		time-series data.
@@ -1211,7 +1211,7 @@ package pandas.core.groupby;
 		-------
 		shifted : DataFrame
 	**/
-	public var shift : Dynamic;
+	public var shift : pandas.DataFrame;
 	/**
 		Compute group sizes
 	**/
@@ -1331,7 +1331,7 @@ package pandas.core.groupby;
 		-------
 		shifted : NDFrame
 	**/
-	public var tshift : Dynamic;
+	public var tshift : pandas.core.frame.NDFrame;
 	/**
 		Compute variance of groups, excluding missing values
 		
