@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "uint64") extern class Uint64 {
-
-}
+typedef Uint64 = numpy.Uint64;

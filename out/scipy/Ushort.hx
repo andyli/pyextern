@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "ushort") extern class Ushort {
-
-}
+typedef Ushort = numpy.Uint16;

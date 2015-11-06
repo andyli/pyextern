@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "half") extern class Half {
-
-}
+typedef Half = numpy.Float16;

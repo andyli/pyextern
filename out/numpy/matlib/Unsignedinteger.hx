@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "unsignedinteger") extern class Unsignedinteger {
-
-}
+typedef Unsignedinteger = numpy.Unsignedinteger;

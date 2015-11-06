@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "uint64") extern class Uint64 {
-
-}
+typedef Uint64 = numpy.Uint64;

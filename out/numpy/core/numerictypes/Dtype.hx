@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numerictypes;
-@:pythonImport("numpy.core.numerictypes", "dtype") extern class Dtype {
-
-}
+typedef Dtype = numpy.Dtype;

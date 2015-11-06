@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numeric;
-@:pythonImport("numpy.core.numeric", "bytes0") extern class Bytes0 {
-
-}
+typedef Bytes0 = numpy.Bytes_;

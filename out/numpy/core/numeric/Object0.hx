@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numeric;
-@:pythonImport("numpy.core.numeric", "object0") extern class Object0 {
-
-}
+typedef Object0 = numpy.Object_;

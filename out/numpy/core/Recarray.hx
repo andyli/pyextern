@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "recarray") extern class Recarray {
-
-}
+typedef Recarray = numpy.Recarray;

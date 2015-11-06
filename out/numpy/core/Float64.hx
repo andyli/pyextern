@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "float64") extern class Float64 {
-
-}
+typedef Float64 = numpy.Float64;

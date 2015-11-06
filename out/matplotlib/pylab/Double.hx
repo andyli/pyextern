@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "double") extern class Double {
-
-}
+typedef Double = numpy.Float64;

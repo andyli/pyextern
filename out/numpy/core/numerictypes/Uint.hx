@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numerictypes;
-@:pythonImport("numpy.core.numerictypes", "uint") extern class Uint {
-
-}
+typedef Uint = numpy.Uint64;

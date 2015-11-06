@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "uint16") extern class Uint16 {
-
-}
+typedef Uint16 = numpy.Uint16;

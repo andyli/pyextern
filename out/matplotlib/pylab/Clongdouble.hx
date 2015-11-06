@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "clongdouble") extern class Clongdouble {
-
-}
+typedef Clongdouble = numpy.Complex256;

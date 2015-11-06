@@ -14,6 +14,7 @@ package matplotlib;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	static public var __version__numpy__ : Dynamic;
+	static public var __warningregistry__ : Dynamic;
 	static public var _all_deprecated : Dynamic;
 	/**
 		If the config directory can not be created, create a temporary

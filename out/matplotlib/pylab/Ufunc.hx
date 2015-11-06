@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "ufunc") extern class Ufunc {
-
-}
+typedef Ufunc = numpy.Ufunc;

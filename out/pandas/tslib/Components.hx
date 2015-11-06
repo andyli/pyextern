@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package pandas.tslib;
-@:pythonImport("pandas.tslib", "Components") extern class Components {
-
-}
+typedef Components = importlib._bootstrap.Components;

@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numerictypes;
-@:pythonImport("numpy.core.numerictypes", "uint32") extern class Uint32 {
-
-}
+typedef Uint32 = numpy.Uint32;

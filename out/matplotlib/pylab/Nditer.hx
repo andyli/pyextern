@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "nditer") extern class Nditer {
-
-}
+typedef Nditer = numpy.Nditer;

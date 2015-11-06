@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "str_") extern class Str_ {
-
-}
+typedef Str_ = numpy.Str_;

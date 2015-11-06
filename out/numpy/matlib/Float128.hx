@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "float128") extern class Float128 {
-
-}
+typedef Float128 = numpy.Float128;

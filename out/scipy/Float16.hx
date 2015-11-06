@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "float16") extern class Float16 {
-
-}
+typedef Float16 = numpy.Float16;

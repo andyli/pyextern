@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "clongdouble") extern class Clongdouble {
-
-}
+typedef Clongdouble = numpy.Complex256;

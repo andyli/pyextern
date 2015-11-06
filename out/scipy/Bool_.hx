@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "bool_") extern class Bool_ {
-
-}
+typedef Bool_ = numpy.Bool_;

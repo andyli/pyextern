@@ -51,7 +51,7 @@ package pandas;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):Dynamic;
+	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.DatetimeIndex;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
 		along the other axes. Can also add a layer of hierarchical indexing on the
@@ -153,7 +153,7 @@ package pandas;
 		-------
 		crosstab : DataFrame
 	**/
-	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):Dynamic;
+	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
 	/**
 		Return indices of half-open bins to which each value of `x` belongs.
 		
@@ -248,7 +248,7 @@ package pandas;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):Dynamic;
+	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.DatetimeIndex;
 	/**
 		describe_option(pat, _print_desc=False)
 		
@@ -1710,7 +1710,7 @@ package pandas;
 		len(grouped) : int
 		    Number of groups
 	**/
-	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Int;
 	/**
 		Infer the most likely frequency given the input index. If the frequency is
 		uncertain, a warning will be printed.
@@ -1780,7 +1780,7 @@ package pandas;
 		-------
 		reshaped : DataFrame
 	**/
-	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):Dynamic;
+	static public function lreshape(data:Dynamic, groups:Dynamic, ?dropna:Dynamic, ?label:Dynamic):pandas.DataFrame;
 	/**
 		Compute locations of to_match into values
 		
@@ -2134,7 +2134,7 @@ package pandas;
 		    The output type will the be same as 'left', if it is a subclass
 		    of DataFrame.
 	**/
-	static public function ordered_merge(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic):Dynamic;
+	static public function ordered_merge(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_by:Dynamic, ?right_by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?fill_method:Dynamic, ?suffixes:Dynamic):pandas.DataFrame;
 	/**
 		Return a fixed frequency datetime index, with day (calendar) as the default
 		frequency
@@ -2155,7 +2155,7 @@ package pandas;
 		-------
 		prng : PeriodIndex
 	**/
-	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):Dynamic;
+	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
 	/**
 		Produce 'pivot' table based on 3 columns of this DataFrame.
 		Uses unique values from index / columns and fills with values.
@@ -2231,7 +2231,7 @@ package pandas;
 		-------
 		table : DataFrame
 	**/
-	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):Dynamic;
+	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
 	static public var plot_params : Dynamic;
 	static public function pnow(?freq:Dynamic):Dynamic;
 	/**
@@ -2290,7 +2290,7 @@ package pandas;
 		-------
 		parsed : DataFrame
 	**/
-	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_clipboard(?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Read CSV (comma-separated) file into DataFrame
 		
@@ -4559,7 +4559,7 @@ package pandas;
 		-------
 		rng : TimedeltaIndex
 	**/
-	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):Dynamic;
+	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**
 		Convert argument to datetime.
 		

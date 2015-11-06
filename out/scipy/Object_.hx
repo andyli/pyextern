@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "object_") extern class Object_ {
-
-}
+typedef Object_ = numpy.Object_;

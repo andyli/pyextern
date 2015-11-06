@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy.sparse.linalg;
-@:pythonImport("scipy.sparse.linalg", "single") extern class Single {
-
-}
+typedef Single = numpy.Float32;

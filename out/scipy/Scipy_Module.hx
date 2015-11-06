@@ -205,7 +205,7 @@ package scipy;
 		>>> np.alen(a)
 		7
 	**/
-	static public function alen(a:Dynamic):Dynamic;
+	static public function alen(a:Dynamic):Int;
 	/**
 		Test whether all array elements along a given axis evaluate to True.
 		
@@ -1740,7 +1740,7 @@ package scipy;
 		>>> np.array2string(x, formatter={'int':lambda x: hex(x)})
 		'[0x0L 0x1L 0x2L]'
 	**/
-	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):Dynamic;
+	static public function array2string(a:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic, ?separator:Dynamic, ?prefix:Dynamic, ?style:Dynamic, ?formatter:Dynamic):String;
 	/**
 		True if two arrays have the same shape and elements, False otherwise.
 		
@@ -1772,7 +1772,7 @@ package scipy;
 		>>> np.array_equal([1, 2], [1, 4])
 		False
 	**/
-	static public function array_equal(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equal(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Returns True if input arrays are shape consistent and all elements equal.
 		
@@ -1806,7 +1806,7 @@ package scipy;
 		>>> np.array_equiv([1, 2], [[1, 2], [1, 3]])
 		False
 	**/
-	static public function array_equiv(a1:Dynamic, a2:Dynamic):Dynamic;
+	static public function array_equiv(a1:Dynamic, a2:Dynamic):Bool;
 	/**
 		Return the string representation of an array.
 		
@@ -1847,7 +1847,7 @@ package scipy;
 		>>> np.array_repr(x, precision=6, suppress_small=True)
 		'array([ 0.000001,  0.      ,  2.      ,  3.      ])'
 	**/
-	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):Dynamic;
+	static public function array_repr(arr:Dynamic, ?max_line_width:Dynamic, ?precision:Dynamic, ?suppress_small:Dynamic):String;
 	/**
 		Split an array into multiple sub-arrays.
 		
@@ -2512,7 +2512,7 @@ package scipy;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function bartlett(M:Dynamic):Dynamic;
+	static public function bartlett(M:Dynamic):Array<Dynamic>;
 	/**
 		Return a string representation of a number in the given base system.
 		
@@ -2549,7 +2549,7 @@ package scipy;
 		>>> np.base_repr(32, base=16)
 		'20'
 	**/
-	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):Dynamic;
+	static public function base_repr(number:Dynamic, ?base:Dynamic, ?padding:Dynamic):String;
 	/**
 		Run benchmarks for module using nose.
 		
@@ -2603,7 +2603,7 @@ package scipy;
 		>>> success #doctest: +SKIP
 		True
 	**/
-	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Dynamic;
+	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Return the binary representation of the input number as a string.
 		
@@ -2660,7 +2660,7 @@ package scipy;
 		>>> np.binary_repr(-3, width=4)
 		'1101'
 	**/
-	static public function binary_repr(num:Dynamic, ?width:Dynamic):Dynamic;
+	static public function binary_repr(num:Dynamic, ?width:Dynamic):String;
 	/**
 		bincount(x, weights=None, minlength=None)
 		
@@ -3658,7 +3658,7 @@ package scipy;
 		        [-1, -2, -3, -4, -5],
 		        [-1, -2, -3, -4, -5]]])
 	**/
-	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function choose(a:Dynamic, choices:Dynamic, ?out:Dynamic, ?mode:Dynamic):Array<Dynamic>;
 	/**
 		Clip (limit) the values in an array.
 		
@@ -4907,7 +4907,7 @@ package scipy;
 		  warnings.warn(str1, DeprecationWarning)
 		6
 	**/
-	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public function deprecate_with_doc(msg:Dynamic):Dynamic;
 	/**
 		Extract a diagonal or construct a diagonal array.
@@ -7630,7 +7630,7 @@ package scipy;
 		--------
 		set_printoptions, set_string_function
 	**/
-	static public function get_printoptions():Dynamic;
+	static public function get_printoptions():python.Dict<Dynamic, Dynamic>;
 	/**
 		Return the size of the buffer used in ufuncs.
 		
@@ -7639,7 +7639,7 @@ package scipy;
 		getbufsize : int
 		    Size of ufunc buffer in bytes.
 	**/
-	static public function getbufsize():Dynamic;
+	static public function getbufsize():Int;
 	/**
 		Get the current way of handling floating-point errors.
 		
@@ -7675,7 +7675,7 @@ package scipy;
 		__main__:1: RuntimeWarning: invalid value encountered in divide
 		array([ NaN,   1.,   1.])
 	**/
-	static public function geterr():Dynamic;
+	static public function geterr():python.Dict<Dynamic, Dynamic>;
 	/**
 		Return the current callback function used on floating-point errors.
 		
@@ -8153,7 +8153,7 @@ package scipy;
 		>>> np.sum(hist*np.diff(bin_edges))
 		1.0
 	**/
-	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Dynamic;
+	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Array<Dynamic>;
 	/**
 		Compute the bi-dimensional histogram of two data samples.
 		
@@ -9318,7 +9318,7 @@ package scipy;
 		
 		(Compare with the Example given for numpy.lib.financial.npv)
 	**/
-	static public function irr(values:Dynamic):Dynamic;
+	static public function irr(values:Dynamic):Float;
 	/**
 		is_busday(dates, weekmask='1111100', holidays=None, busdaycal=None, out=None)
 		
@@ -9486,7 +9486,7 @@ package scipy;
 		>>> np.iscomplexobj([3, 1+0j, True])
 		True
 	**/
-	static public function iscomplexobj(x:Dynamic):Dynamic;
+	static public function iscomplexobj(x:Dynamic):Bool;
 	/**
 		isfinite(x[, out])
 		
@@ -9879,7 +9879,7 @@ package scipy;
 		>>> np.isrealobj([3, 1+0j, True])
 		False
 	**/
-	static public function isrealobj(x:Dynamic):Dynamic;
+	static public function isrealobj(x:Dynamic):Bool;
 	/**
 		Returns True if the type of `num` is a scalar type.
 		
@@ -9902,7 +9902,7 @@ package scipy;
 		>>> np.isscalar(False)
 		True
 	**/
-	static public function isscalar(num:Dynamic):Dynamic;
+	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Determines whether the given object represents a scalar data-type.
 		
@@ -9935,7 +9935,7 @@ package scipy;
 		>>> np.issctype(np.dtype('str'))
 		True
 	**/
-	static public function issctype(rep:Dynamic):Dynamic;
+	static public function issctype(rep:Dynamic):Bool;
 	/**
 		Determine if a class is a subclass of a second class.
 		
@@ -9967,7 +9967,7 @@ package scipy;
 		>>> np.issubclass_(np.int32, np.float)
 		False
 	**/
-	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubclass_(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Returns True if first argument is a typecode lower/equal in type hierarchy.
 		
@@ -9992,7 +9992,7 @@ package scipy;
 		>>> np.issubdtype(np.float64, np.float32)
 		False
 	**/
-	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubdtype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Determine if the first argument is a subclass of the second argument.
 		
@@ -10019,7 +10019,7 @@ package scipy;
 		>>> np.issubsctype(np.array([1]), np.float)
 		False
 	**/
-	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Dynamic;
+	static public function issubsctype(arg1:Dynamic, arg2:Dynamic):Bool;
 	/**
 		Check whether or not an object can be iterated over.
 		
@@ -10203,7 +10203,7 @@ package scipy;
 		(-0.5, 0.5, -100.0, ...)
 		>>> plt.show()
 	**/
-	static public function kaiser(M:Dynamic, beta:Dynamic):Dynamic;
+	static public function kaiser(M:Dynamic, beta:Dynamic):Array<Dynamic>;
 	/**
 		Kronecker product of two arrays.
 		
@@ -12110,7 +12110,7 @@ package scipy;
 		>>> np.mintypecode('abceh', default='G')
 		'G'
 	**/
-	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):Dynamic;
+	static public function mintypecode(typechars:Dynamic, ?typeset:Dynamic, ?_default:Dynamic):String;
 	/**
 		Modified internal rate of return.
 		
@@ -12130,7 +12130,7 @@ package scipy;
 		out : float
 		    Modified internal rate of return
 	**/
-	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Dynamic;
+	static public function mirr(values:Dynamic, finance_rate:Dynamic, reinvest_rate:Dynamic):Float;
 	/**
 		remainder(x1, x2[, out])
 		
@@ -13142,7 +13142,7 @@ package scipy;
 		>>> np.ndim(1)
 		0
 	**/
-	static public function ndim(a:Dynamic):Dynamic;
+	static public function ndim(a:Dynamic):Int;
 	/**
 		negative(x[, out])
 		
@@ -13268,7 +13268,7 @@ package scipy;
 		>>> (a > 3).nonzero()
 		(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))
 	**/
-	static public function nonzero(a:Dynamic):Dynamic;
+	static public function nonzero(a:Dynamic):python.Tuple<Dynamic>;
 	/**
 		not_equal(x1, x2[, out])
 		
@@ -13390,7 +13390,7 @@ package scipy;
 		
 		(Compare with the Example given for numpy.lib.financial.irr)
 	**/
-	static public function npv(rate:Dynamic, values:Dynamic):Dynamic;
+	static public function npv(rate:Dynamic, values:Dynamic):Float;
 	/**
 		Return the scalar dtype or NumPy equivalent of Python type of an object.
 		
@@ -15490,7 +15490,7 @@ package scipy;
 		>>> np.rank(1)
 		0
 	**/
-	static public function rank(a:Dynamic):Dynamic;
+	static public function rank(a:Dynamic):Int;
 	/**
 		Compute the rate of interest per period.
 		
@@ -16836,7 +16836,7 @@ package scipy;
 		>>> np.sctype2char(list)
 		'O'
 	**/
-	static public function sctype2char(sctype:Dynamic):Dynamic;
+	static public function sctype2char(sctype:Dynamic):String;
 	static public var sctypeDict : Dynamic;
 	static public var sctypeNA : Dynamic;
 	static public var sctypes : Dynamic;
@@ -17238,7 +17238,7 @@ package scipy;
 		Warning: overflow encountered in short_scalars
 		30464
 	**/
-	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):Dynamic;
+	static public function seterr(?all:Dynamic, ?divide:Dynamic, ?over:Dynamic, ?under:Dynamic, ?invalid:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Set the floating-point error callback function or log object.
 		
@@ -17713,7 +17713,7 @@ package scipy;
 		>>> np.size(a,0)
 		2
 	**/
-	static public function size(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function size(a:Dynamic, ?axis:Dynamic):Int;
 	/**
 		Check whether some values are true.
 		
@@ -18946,7 +18946,7 @@ package scipy;
 		>>> np.trapz(a, axis=1)
 		array([ 2.,  8.])
 	**/
-	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function trapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic):Float;
 	/**
 		An array with ones at and below the given diagonal and zeros elsewhere.
 		
@@ -19403,7 +19403,7 @@ package scipy;
 		l  :  long integer
 		q  :  long long integer
 	**/
-	static public function typename(char:Dynamic):Dynamic;
+	static public function typename(char:Dynamic):String;
 	/**
 		Find the union of two arrays.
 		

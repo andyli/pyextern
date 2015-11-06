@@ -102,6 +102,7 @@ class Main {
 		if (modules.exists(moduleName) || !filterModules(moduleName)) {
 			return;
 		}
+		Sys.println("process module: " + moduleName);
 		modules[moduleName] = module;
 
 		var proc:Processor = getProcessor(moduleName);
@@ -246,6 +247,7 @@ class Main {
 				main.filterModules = function(modname:String):Bool {
 					return moduleNames.exists(function(moduleName){
 						return
+							modname == moduleName ||
 							modname.startsWith(moduleName + ".") &&
 							(modname.toLowerCase().indexOf("test") == -1) &&
 							![
@@ -254,8 +256,6 @@ class Main {
 							].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
 					});
 				}
-				for (moduleName in moduleNames)
-					main.processModule(moduleName, moduleName);
 				for (pkg in (list(pkgutil.Pkgutil.walk_packages(null, "", function(x) return null)):Array<Tuple<Dynamic>>)) {
 					var modname:String = pkg[1];
 					if (main.filterModules(modname)) {

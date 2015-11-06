@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numerictypes;
-@:pythonImport("numpy.core.numerictypes", "cdouble") extern class Cdouble {
-
-}
+typedef Cdouble = numpy.Complex128;

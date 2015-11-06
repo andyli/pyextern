@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "flatiter") extern class Flatiter {
-
-}
+typedef Flatiter = numpy.Flatiter;

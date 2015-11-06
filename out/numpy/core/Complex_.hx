@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "complex_") extern class Complex_ {
-
-}
+typedef Complex_ = numpy.Complex128;

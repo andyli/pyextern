@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy;
-@:pythonImport("numpy", "singlecomplex") extern class Singlecomplex {
-
-}
+typedef Singlecomplex = numpy.Complex64;

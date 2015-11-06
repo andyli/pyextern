@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package scipy;
-@:pythonImport("scipy", "inexact") extern class Inexact {
-
-}
+typedef Inexact = numpy.Inexact;

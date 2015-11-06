@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "complex256") extern class Complex256 {
-
-}
+typedef Complex256 = numpy.Complex256;

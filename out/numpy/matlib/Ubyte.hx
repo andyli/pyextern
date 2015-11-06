@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "ubyte") extern class Ubyte {
-
-}
+typedef Ubyte = numpy.Uint8;

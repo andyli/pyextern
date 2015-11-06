@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "timedelta64") extern class Timedelta64 {
-
-}
+typedef Timedelta64 = numpy.Timedelta64;

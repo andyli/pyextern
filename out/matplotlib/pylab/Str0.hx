@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-@:pythonImport("matplotlib.pylab", "str0") extern class Str0 {
-
-}
+typedef Str0 = numpy.Str_;

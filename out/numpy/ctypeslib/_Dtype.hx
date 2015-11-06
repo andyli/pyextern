@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.ctypeslib;
-@:pythonImport("numpy.ctypeslib", "_dtype") extern class _Dtype {
-
-}
+typedef _Dtype = numpy.Dtype;

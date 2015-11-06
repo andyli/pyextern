@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "complexfloating") extern class Complexfloating {
-
-}
+typedef Complexfloating = numpy.Complexfloating;

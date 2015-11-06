@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core.numeric;
-@:pythonImport("numpy.core.numeric", "int8") extern class Int8 {
-
-}
+typedef Int8 = numpy.Int8;

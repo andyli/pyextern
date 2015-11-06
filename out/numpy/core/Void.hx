@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "void") extern class Void {
-
-}
+typedef Void = numpy.Void;

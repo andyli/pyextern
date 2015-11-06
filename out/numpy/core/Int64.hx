@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.core;
-@:pythonImport("numpy.core", "int64") extern class Int64 {
-
-}
+typedef Int64 = numpy.Int64;

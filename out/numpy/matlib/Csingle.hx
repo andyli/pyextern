@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "csingle") extern class Csingle {
-
-}
+typedef Csingle = numpy.Complex64;

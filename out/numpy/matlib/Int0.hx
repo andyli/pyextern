@@ -1,5 +1,3 @@
 /* This file is generated, do not edit! */
 package numpy.matlib;
-@:pythonImport("numpy.matlib", "int0") extern class Int0 {
-
-}
+typedef Int0 = numpy.Int64;
