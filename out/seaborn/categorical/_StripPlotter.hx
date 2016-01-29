@@ -106,9 +106,9 @@ package seaborn.categorical;
 	**/
 	public function _group_longform(vals:Dynamic, grouper:Dynamic, order:Dynamic):Dynamic;
 	/**
-		Add a dummy patch object so we can get legend data.
+		Add empty scatterplot artists with labels for the legend.
 	**/
-	public function add_legend_data(ax:Dynamic, color:Dynamic, label:Dynamic):Dynamic;
+	public function add_legend_data(ax:Dynamic):Dynamic;
 	/**
 		Add descriptive labels to an Axes object.
 	**/
@@ -141,5 +141,9 @@ package seaborn.categorical;
 		Make the plot.
 	**/
 	public function plot(ax:Dynamic, kws:Dynamic):Dynamic;
+	/**
+		Return a color for each scatter point based on group and hue.
+	**/
+	public var point_colors : Dynamic;
 	static public var width : Dynamic;
 }

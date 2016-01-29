@@ -42,11 +42,11 @@ package pandas.core.strings;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(series:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(series:Dynamic):Void;
+	public function new(data:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -80,7 +80,7 @@ package pandas.core.strings;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -103,7 +103,11 @@ package pandas.core.strings;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _wrap_result(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Prevents setting additional attributes
+	**/
+	public function _freeze():Dynamic;
+	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic):Dynamic;
 	public function _wrap_result_expand(result:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be capitalized.

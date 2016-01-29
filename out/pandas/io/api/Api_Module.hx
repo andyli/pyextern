@@ -31,6 +31,9 @@ package pandas.io.api;
 		Also supports optionally iterating or breaking of the file
 		into chunks.
 		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
+		
 		Parameters
 		----------
 		filepath_or_buffer : string or file handle / StringIO
@@ -135,9 +138,12 @@ package pandas.io.api;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -273,6 +279,9 @@ package pandas.io.api;
 		Also supports optionally iterating or breaking of the file
 		into chunks.
 		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
+		
 		Parameters
 		----------
 		filepath_or_buffer : string or file handle / StringIO
@@ -381,9 +390,12 @@ package pandas.io.api;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -767,8 +779,8 @@ package pandas.io.api;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -828,8 +840,8 @@ package pandas.io.api;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    Column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -882,8 +894,8 @@ package pandas.io.api;
 		schema : string, default None
 		    Name of SQL schema in database to query (if database flavor
 		    supports this). If None, use default schema (default).
-		index_col : string, optional, default: None
-		    Column to set as index
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point. Can result in loss of Precision.
@@ -972,6 +984,9 @@ package pandas.io.api;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -1076,9 +1091,12 @@ package pandas.io.api;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None

@@ -16,6 +16,12 @@ package scipy.sparse.linalg.matfuncs;
 		    Hermitian adjoint of self.
 	**/
 	public var H : Dynamic;
+	/**
+		Transpose this linear operator.
+		
+		Returns a LinearOperator that represents the transpose of this one.
+		Can be abbreviated self.T instead of self.transpose().
+	**/
 	public var T : Dynamic;
 	public function __add__(x:Dynamic):Dynamic;
 	/**
@@ -81,6 +87,7 @@ package scipy.sparse.linalg.matfuncs;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
+	public function __matmul__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(x:Dynamic):Dynamic;
 	/**
@@ -105,6 +112,7 @@ package scipy.sparse.linalg.matfuncs;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	public function __rmatmul__(other:Dynamic):Dynamic;
 	public function __rmul__(x:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).

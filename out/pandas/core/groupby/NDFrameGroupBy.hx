@@ -153,6 +153,7 @@ package pandas.core.groupby;
 	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
 	public function _cython_agg_blocks(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _decide_output_index(output:Dynamic, labels:Dynamic):Dynamic;
 	public function _define_paths(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -342,6 +343,14 @@ package pandas.core.groupby;
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
+		Cumulative product for each group
+	**/
+	public function cumprod(?axis:Dynamic):Dynamic;
+	/**
+		Cumulative sum for each group
+	**/
+	public function cumsum(?axis:Dynamic):Dynamic;
+	/**
 		Return a copy of a DataFrame excluding elements from groups that
 		do not satisfy the boolean criterion specified by func.
 		
@@ -505,6 +514,10 @@ package pandas.core.groupby;
 		For multiple groupings, the result index will be a MultiIndex
 	**/
 	public function sem(?ddof:Dynamic):Dynamic;
+	/**
+		Shift each group by periods observations
+	**/
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Compute group sizes
 	**/

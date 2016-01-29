@@ -187,10 +187,12 @@ package pandas.lib;
 		array([ True, False, False], dtype=bool)
 	**/
 	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function isneginf_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function isnullobj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function isnullobj2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function isnullobj2d_old(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function isnullobj_old(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function isposinf_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return True if given value is scalar.
 		
@@ -277,6 +279,11 @@ package pandas.lib;
 	**/
 	static public function maybe_convert_objects(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function maybe_indices_to_slice(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		return the memory usage of an object array in bytes,
+		does not include the actual bytes of the pointers 
+	**/
+	static public function memory_usage_of_objects(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var pandas_null : Dynamic;
 	/**
 		Paramaters

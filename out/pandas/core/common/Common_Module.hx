@@ -1,8 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.core.common;
 @:pythonImport("pandas.core.common") extern class Common_Module {
-	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _DATELIKE_DTYPES : Dynamic;
 	static public var _INT64_DTYPE : Dynamic;
 	static public var _NS_DTYPE : Dynamic;
@@ -25,11 +23,6 @@ package pandas.core.common;
 		need to be very careful as the result shape could change! 
 	**/
 	static public function _astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _backfill_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _backfill_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _clean_fill_method(method:Dynamic, ?allow_nearest:Dynamic):Dynamic;
-	static public function _clean_interp_method(method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _clean_reindex_fill_method(method:Dynamic):Dynamic;
 	/**
 		coerce the indexer input array to the smallest dtype possible 
 	**/
@@ -83,7 +76,6 @@ package pandas.core.common;
 	static public function _ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _fill_methods : Dynamic;
 	/**
 		if this is a reversed op, then flip x,y
 		
@@ -106,14 +98,6 @@ package pandas.core.common;
 	**/
 	static public function _get_dtype_from_object(dtype:Dynamic):Dynamic;
 	static public function _get_dtype_type(arr_or_dtype:Dynamic):Dynamic;
-	static public function _get_fill_func(method:Dynamic):Dynamic;
-	/**
-		Gets file handle for given path and mode.
-		NOTE: Under Python 3.2, getting a compressed file handle means reading in
-		the entire file, decompressing it and decoding it to ``str`` all at once
-		and then wrapping it in a StringIO.
-	**/
-	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	/**
 		Slice the info axis of `obj` with `indexer`.
 	**/
@@ -121,8 +105,7 @@ package pandas.core.common;
 	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
 	static public function _index_labels_to_array(labels:Dynamic):Dynamic;
 	/**
-		interpret the dtype from a scalar, upcast floats and ints
-		return the new value and the dtype 
+		interpret the dtype from a scalar 
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	/**
@@ -134,13 +117,6 @@ package pandas.core.common;
 	static public var _int32_max : Dynamic;
 	static public var _int64_max : Dynamic;
 	static public var _int8_max : Dynamic;
-	static public function _interp_wrapper(f:Dynamic, wrap_dtype:Dynamic, ?na_override:Dynamic):Dynamic;
-	/**
-		passed off to scipy.interpolate.interp1d. method is scipy's kind.
-		Returns an array interpolated at new_x.  Add any new methods to
-		the list in _clean_interp_method
-	**/
-	static public function _interpolate_scipy_wrapper(x:Dynamic, y:Dynamic, new_x:Dynamic, method:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Change string like dtypes to object for ``DataFrame.select_dtypes()``.
 	**/
@@ -214,8 +190,6 @@ package pandas.core.common;
 	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public function _mut_exclusive(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _pad_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _pad_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _pickle_array(arr:Dynamic):Dynamic;
 	static public function _possibly_cast_item(obj:Dynamic, item:Dynamic, dtype:Dynamic):Dynamic;
 	/**
@@ -362,8 +336,6 @@ package pandas.core.common;
 		False
 	**/
 	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
-	static public function backfill_1d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function backfill_2d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		Return 80-char width message declaration with = bars on top and bottom.
 	**/
@@ -581,9 +553,9 @@ package pandas.core.common;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -703,19 +675,6 @@ package pandas.core.common;
 	**/
 	static public function in_qtconsole():Dynamic;
 	static public function indent(string:Dynamic, ?spaces:Dynamic):Dynamic;
-	/**
-		Logic for the 1-d interpolation.  The result should be 1-d, inputs
-		xvalues and yvalues will each be 1-d arrays of the same length.
-		
-		Bounds_error is currently hardcoded to False since non-scipy ones don't
-		take it as an argumnet.
-	**/
-	static public function interpolate_1d(xvalues:Dynamic, yvalues:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?bounds_error:Dynamic, ?order:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		perform an actual interpolation of values, values will be make 2-d if
-		needed fills inplace, returns the result
-	**/
-	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function intersection(?seqs:python.VarArgs<Dynamic>):Dynamic;
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -784,6 +743,7 @@ package pandas.core.common;
 	static public function is_internal_type(value:Dynamic):Dynamic;
 	static public function is_iterator(obj:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_named_tuple(arg:Dynamic):Dynamic;
 	/**
 		test whether the object is a null datelike, e.g. Nat
 		but guard against passing a non-scalar 
@@ -795,6 +755,12 @@ package pandas.core.common;
 	static public function is_null_slice(obj:Dynamic):Dynamic;
 	static public function is_number(obj:Dynamic):Dynamic;
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		numpy doesn't like to compare numeric arrays vs scalar string-likes
+		
+		return a boolean result if this is the case for a,b or b,a
+	**/
+	static public function is_numeric_v_string_like(a:Dynamic, b:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		return if we are period arraylike / PeriodIndex 
@@ -807,6 +773,7 @@ package pandas.core.common;
 		return if we are a sparse array 
 	**/
 	static public function is_sparse(array:Dynamic):Dynamic;
+	static public function is_string_like(obj:Dynamic):Dynamic;
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -881,8 +848,6 @@ package pandas.core.common;
 		pandas.isnull : boolean inverse of pandas.notnull
 	**/
 	static public function notnull(obj:Dynamic):Dynamic;
-	static public function pad_1d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
-	static public function pad_2d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.

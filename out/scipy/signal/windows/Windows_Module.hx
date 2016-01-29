@@ -551,78 +551,6 @@ package scipy.signal.windows;
 	**/
 	static public function exponential(M:Dynamic, ?center:Dynamic, ?tau:Dynamic, ?sym:Dynamic):Dynamic;
 	/**
-		Return discrete Fourier transform of real or complex sequence.
-		
-		The returned complex array contains ``y(0), y(1),..., y(n-1)`` where
-		
-		``y(j) = (x * exp(-2*pi*sqrt(-1)*j*np.arange(n)/n)).sum()``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Array to Fourier transform.
-		n : int, optional
-		    Length of the Fourier transform.  If ``n < x.shape[axis]``, `x` is
-		    truncated.  If ``n > x.shape[axis]``, `x` is zero-padded. The
-		    default results in ``n = x.shape[axis]``.
-		axis : int, optional
-		    Axis along which the fft's are computed; the default is over the
-		    last axis (i.e., ``axis=-1``).
-		overwrite_x : bool, optional
-		    If True, the contents of `x` can be destroyed; the default is False.
-		
-		Returns
-		-------
-		z : complex ndarray
-		    with the elements::
-		
-		        [y(0),y(1),..,y(n/2),y(1-n/2),...,y(-1)]        if n is even
-		        [y(0),y(1),..,y((n-1)/2),y(-(n-1)/2),...,y(-1)]  if n is odd
-		
-		    where::
-		
-		        y(j) = sum[k=0..n-1] x[k] * exp(-sqrt(-1)*j*k* 2*pi/n), j = 0..n-1
-		
-		    Note that ``y(-j) = y(n-j).conjugate()``.
-		
-		See Also
-		--------
-		ifft : Inverse FFT
-		rfft : FFT of a real sequence
-		
-		Notes
-		-----
-		The packing of the result is "standard": If ``A = fft(a, n)``, then
-		``A[0]`` contains the zero-frequency term, ``A[1:n/2]`` contains the
-		positive-frequency terms, and ``A[n/2:]`` contains the negative-frequency
-		terms, in order of decreasingly negative frequency. So for an 8-point
-		transform, the frequencies of the result are [0, 1, 2, 3, -4, -3, -2, -1].
-		To rearrange the fft output so that the zero-frequency component is
-		centered, like [-4, -3, -2, -1,  0,  1,  2,  3], use `fftshift`.
-		
-		For `n` even, ``A[n/2]`` contains the sum of the positive and
-		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
-		always be real.
-		
-		This function is most efficient when `n` is a power of two, and least
-		efficient when `n` is prime.
-		
-		If the data type of `x` is real, a "real FFT" algorithm is automatically
-		used, which roughly halves the computation time.  To increase efficiency
-		a little further, use `rfft`, which does the same calculation, but only
-		outputs half of the symmetrical spectrum.  If the data is both real and
-		symmetrical, the `dct` can again double the efficiency, by generating
-		half of the spectrum from half of the signal.
-		
-		Examples
-		--------
-		>>> from scipy.fftpack import fft, ifft
-		>>> x = np.arange(5)
-		>>> np.allclose(fft(ifft(x)), x, atol=1e-15)  # within numerical accuracy.
-		True
-	**/
-	static public function fft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
-	/**
 		Return a flat top window.
 		
 		Parameters
@@ -787,8 +715,8 @@ package scipy.signal.windows;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with ifftshift
-		    and be multiplied by the result of an fft (SEE ALSO fftfreq).
+		    If True, create a "periodic" window ready to use with `ifftshift`
+		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
 		
 		Returns
 		-------
@@ -934,7 +862,7 @@ package scipy.signal.windows;
 		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
 		           \qquad 0 \leq n \leq M-1
 		
-		The window was named for Julius van Hann, an Austrian meteorologist. It is
+		The window was named for Julius von Hann, an Austrian meteorologist. It is
 		also known as the Cosine Bell. It is sometimes erroneously referred to as
 		the "Hanning" window, from the use of "hann" as a verb in the original
 		paper and confusion with the very similar Hamming window.
@@ -1010,7 +938,7 @@ package scipy.signal.windows;
 		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
 		           \qquad 0 \leq n \leq M-1
 		
-		The window was named for Julius van Hann, an Austrian meteorologist. It is
+		The window was named for Julius von Hann, an Austrian meteorologist. It is
 		also known as the Cosine Bell. It is sometimes erroneously referred to as
 		the "Hanning" window, from the use of "hann" as a verb in the original
 		paper and confusion with the very similar Hamming window.

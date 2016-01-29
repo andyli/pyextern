@@ -17,8 +17,7 @@ package pandas.core.panel;
 	static public function _ensure_like_indices(time:Dynamic, panels:Dynamic):Dynamic;
 	static public function _get_combined_index(indexes:Dynamic, ?intersect:Dynamic):Dynamic;
 	/**
-		interpret the dtype from a scalar, upcast floats and ints
-		return the new value and the dtype 
+		interpret the dtype from a scalar 
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	static public var _op_descriptions : Dynamic;
@@ -81,29 +80,7 @@ package pandas.core.panel;
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
-	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
-	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
-		
-		See also
-		--------
-		pandas.isnull : boolean inverse of pandas.notnull
-	**/
-	static public function notnull(obj:Dynamic):Dynamic;
 	/**
 		Returns a multi-index suitable for a panel-like DataFrame
 		

@@ -2,19 +2,19 @@
 package scipy.signal.ltisys;
 @:pythonImport("scipy.signal.ltisys", "TransferFunction") extern class TransferFunction {
 	/**
-		A matrix of the `StateSpace` system.
+		State matrix of the `StateSpace` system.
 	**/
 	public var A : Dynamic;
 	/**
-		B matrix of the `StateSpace` system.
+		Input matrix of the `StateSpace` system.
 	**/
 	public var B : Dynamic;
 	/**
-		C matrix of the `StateSpace` system.
+		Output matrix of the `StateSpace` system.
 	**/
 	public var C : Dynamic;
 	/**
-		D matrix of the `StateSpace` system.
+		Feedthrough matrix of the `StateSpace` system.
 	**/
 	public var D : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -152,6 +152,9 @@ package scipy.signal.ltisys;
 		>>> plt.show()
 	**/
 	public function bode(?w:Dynamic, ?n:Dynamic):Dynamic;
+	/**
+		Denominator of the `TransferFunction` system.
+	**/
 	public var den : Dynamic;
 	/**
 		Calculate the frequency response of a continuous-time system.
@@ -170,6 +173,9 @@ package scipy.signal.ltisys;
 		See `scipy.signal.impulse` for details.
 	**/
 	public function impulse(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
+	/**
+		Numerator of the `TransferFunction` system.
+	**/
 	public var num : Dynamic;
 	/**
 		Return the response of a continuous-time system to input `U`.

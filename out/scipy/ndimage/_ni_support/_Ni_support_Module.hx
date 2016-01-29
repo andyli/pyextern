@@ -24,7 +24,6 @@ package scipy.ndimage._ni_support;
 	static public function _normalize_sequence(input:Dynamic, rank:Dynamic, ?array_type:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
-	static public var integer_types : Dynamic;
 	static public var print_function : Dynamic;
 	static public var string_types : Dynamic;
 }

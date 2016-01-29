@@ -1,7 +1,11 @@
 /* This file is generated, do not edit! */
 package pandas.io.common;
 @:pythonImport("pandas.io.common") extern class Common_Module {
+	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function ZipFile(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _PATHLIB_INSTALLED : Dynamic;
+	static public var _PY_PATH_INSTALLED : Dynamic;
 	static public var _VALID_URLS : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -26,6 +30,11 @@ package pandas.io.common;
 	**/
 	static public function _expand_user(filepath_or_buffer:Dynamic):Dynamic;
 	/**
+		Gets file handle for given path and mode.
+		    
+	**/
+	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	/**
 		Check for an s3, s3n, or s3a url
 	**/
 	static public function _is_s3_url(url:Dynamic):Dynamic;
@@ -42,6 +51,19 @@ package pandas.io.common;
 		    If `url` has a valid protocol return True otherwise False.
 	**/
 	static public function _is_url(url:Dynamic):Bool;
+	/**
+		Return the argument coerced to a string if it was a pathlib.Path
+		   or a py.path.local
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : a the string version of the input path
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public function _urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	/**
@@ -90,7 +112,8 @@ package pandas.io.common;
 		
 		Parameters
 		----------
-		filepath_or_buffer : a url, filepath, or buffer
+		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
+		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
 		
 		Returns
@@ -98,6 +121,7 @@ package pandas.io.common;
 		a filepath_or_buffer, the encoding, the compression
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function is_number(obj:Dynamic):Dynamic;
 	/**
 		read an encoded stream from the reader and transform the bytes to
 		unicode if required based on the encoding
@@ -125,6 +149,32 @@ package pandas.io.common;
 		of the 'file' scheme; not recommended for general use.
 	**/
 	static public function pathname2url(pathname:Dynamic):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Encode a dict or sequence of two-element tuples into a URL query string.

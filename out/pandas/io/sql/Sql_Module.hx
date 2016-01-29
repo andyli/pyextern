@@ -103,8 +103,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -241,8 +241,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -298,8 +298,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -359,8 +359,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    Column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -413,8 +413,8 @@ package pandas.io.sql;
 		schema : string, default None
 		    Name of SQL schema in database to query (if database flavor
 		    supports this). If None, use default schema (default).
-		index_col : string, optional, default: None
-		    Column to set as index
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point. Can result in loss of Precision.

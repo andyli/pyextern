@@ -317,6 +317,7 @@ package scipy.interpolate.interpolate;
 		Examples
 		--------
 		
+		>>> from scipy.interpolate import BPoly
 		>>> BPoly.from_derivatives([0, 1], [[1, 2], [3, 4]])
 		
 		Creates a polynomial `f(x)` of degree 3, defined on `[0, 1]`

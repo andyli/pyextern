@@ -151,45 +151,31 @@ package scipy.integrate._ode;
 	**/
 	public function run_relax(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		y,t,istate = zvode(f,jac,y,t,tout,rtol,atol,itask,istate,zwork,rwork,iwork,mf,[f_extra_args,jac_extra_args,overwrite_y])
-		
-		Wrapper for ``zvode``.
-		
-		Parameters
-		----------
-		f : call-back function
-		jac : call-back function
-		y : input rank-1 array('D') with bounds (neq)
-		t : input float
-		tout : input float
-		rtol : input rank-1 array('d') with bounds (*)
-		atol : input rank-1 array('d') with bounds (*)
-		itask : input int
-		istate : input int
-		zwork : input rank-1 array('D') with bounds (lzw)
-		rwork : input rank-1 array('d') with bounds (lrw)
-		iwork : input rank-1 array('i') with bounds (liw)
-		mf : input int
-		
-		Other Parameters
-		----------------
-		f_extra_args : input tuple, optional
-		    Default: ()
-		jac_extra_args : input tuple, optional
-		    Default: ()
-		overwrite_y : input int, optional
-		    Default: 0
-		
-		Returns
-		-------
-		y : rank-1 array('D') with bounds (neq)
-		t : float
-		istate : int
-		
-		Notes
-		-----
-		Call-back functions::
-		
+		zvode - Function signature:
+		  y,t,istate = zvode(f,jac,y,t,tout,rtol,atol,itask,istate,zwork,rwork,iwork,mf,[f_extra_args,jac_extra_args,overwrite_y])
+		Required arguments:
+		  f : call-back function
+		  jac : call-back function
+		  y : input rank-1 array('D') with bounds (neq)
+		  t : input float
+		  tout : input float
+		  rtol : input rank-1 array('d') with bounds (*)
+		  atol : input rank-1 array('d') with bounds (*)
+		  itask : input int
+		  istate : input int
+		  zwork : input rank-1 array('D') with bounds (lzw)
+		  rwork : input rank-1 array('d') with bounds (lrw)
+		  iwork : input rank-1 array('i') with bounds (liw)
+		  mf : input int
+		Optional arguments:
+		  f_extra_args := () input tuple
+		  jac_extra_args := () input tuple
+		  overwrite_y := 0 input int
+		Return objects:
+		  y : rank-1 array('D') with bounds (neq)
+		  t : float
+		  istate : int
+		Call-back functions:
 		  def f(t,y): return ydot
 		  Required arguments:
 		    t : input float

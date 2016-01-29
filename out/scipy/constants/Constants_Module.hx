@@ -25,8 +25,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import C2F
-		>>> C2F(_np.array([-40, 40.0]))
+		>>> from scipy.constants import C2F
+		>>> C2F(np.array([-40, 40.0]))
 		array([ -40.,  104.])
 	**/
 	static public function C2F(C:Dynamic):Dynamic;
@@ -50,8 +50,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import C2K
-		>>> C2K(_np.array([-40, 40.0]))
+		>>> from scipy.constants import C2K
+		>>> C2K(np.array([-40, 40.0]))
 		array([ 233.15,  313.15])
 	**/
 	static public function C2K(C:Dynamic):Dynamic;
@@ -74,8 +74,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import F2C
-		>>> F2C(_np.array([-40, 40.0]))
+		>>> from scipy.constants import F2C
+		>>> F2C(np.array([-40, 40.0]))
 		array([-40.        ,   4.44444444])
 	**/
 	static public function F2C(F:Dynamic):Dynamic;
@@ -100,8 +100,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import F2K
-		>>> F2K(_np.array([-40, 104]))
+		>>> from scipy.constants import F2K
+		>>> F2K(np.array([-40, 104]))
 		array([ 233.15,  313.15])
 	**/
 	static public function F2K(F:Dynamic):Dynamic;
@@ -127,8 +127,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import K2C
-		>>> K2C(_np.array([233.15, 313.15]))
+		>>> from scipy.constants import K2C
+		>>> K2C(np.array([233.15, 313.15]))
 		array([-40.,  40.])
 	**/
 	static public function K2C(K:Dynamic):Dynamic;
@@ -153,8 +153,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import K2F
-		>>> K2F(_np.array([233.15,  313.15]))
+		>>> from scipy.constants import K2F
+		>>> K2F(np.array([233.15,  313.15]))
 		array([ -40.,  104.])
 	**/
 	static public function K2F(K:Dynamic):Dynamic;
@@ -218,7 +218,7 @@ package scipy.constants;
 	static public var femto : Dynamic;
 	static public var fermi : Dynamic;
 	/**
-		Return list of codata.physical_constant keys containing a given string.
+		Return list of physical_constant keys containing a given string.
 		
 		Parameters
 		----------
@@ -292,8 +292,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import lambda2nu
-		>>> lambda2nu(_np.array((1, speed_of_light)))
+		>>> from scipy.constants import lambda2nu, speed_of_light
+		>>> lambda2nu(np.array((1, speed_of_light)))
 		array([  2.99792458e+08,   1.00000000e+00])
 	**/
 	static public function lambda2nu(lambda_:Dynamic):Dynamic;
@@ -343,8 +343,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants.constants import nu2lambda
-		>>> nu2lambda(_np.array((1, speed_of_light)))
+		>>> from scipy.constants import nu2lambda, speed_of_light
+		>>> nu2lambda(np.array((1, speed_of_light)))
 		array([  2.99792458e+08,   1.00000000e+00])
 	**/
 	static public function nu2lambda(nu:Dynamic):Dynamic;
@@ -379,9 +379,9 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.precision(u'proton mass')
-		4.96226989798e-08
+		>>> from scipy import constants
+		>>> constants.precision(u'proton mass')
+		1.2555138746605121e-08
 	**/
 	static public function precision(key:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -482,8 +482,8 @@ package scipy.constants;
 		
 		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.unit(u'proton mass')
+		>>> from scipy import constants
+		>>> constants.unit(u'proton mass')
 		'kg'
 	**/
 	static public function unit(key:Dynamic):Dynamic;
@@ -505,13 +505,13 @@ package scipy.constants;
 		codata : Contains the description of `physical_constants`, which, as a
 		    dictionary literal object, does not itself possess a docstring.
 		
-		    Examples
+		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.value('elementary charge')
-		    1.602176487e-019
+		>>> from scipy import constants
+		>>> constants.value(u'elementary charge')
+		    1.6021766208e-19
 	**/
-	static public function value(key:Dynamic):Dynamic;
+	static public function value(key:Dynamic):Float;
 	static public var week : Dynamic;
 	static public var yard : Dynamic;
 	static public var year : Dynamic;

@@ -153,6 +153,7 @@ package pandas.core.groupby;
 	**/
 	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _def_str : Dynamic;
 	/**
 		add addtional __dir__ for this object 
@@ -203,6 +204,11 @@ package pandas.core.groupby;
 	public function _try_cast(result:Dynamic, obj:Dynamic):Dynamic;
 	public function _wrap_aggregated_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	public function _wrap_applied_output(keys:Dynamic, values:Dynamic, ?not_indexed_same:Dynamic):Dynamic;
+	/**
+		common agg/transform wrapping logic 
+	**/
+	public function _wrap_output(output:Dynamic, index:Dynamic, ?names:Dynamic):Dynamic;
+	public function _wrap_transformed_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	/**
 		Aggregate using input function or dict of {column -> function}
 		
@@ -288,8 +294,8 @@ package pandas.core.groupby;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -313,8 +319,8 @@ package pandas.core.groupby;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -491,39 +497,13 @@ package pandas.core.groupby;
 	**/
 	public var cummin : Dynamic;
 	/**
-		    Return cumulative prod over requested axis.
-		
-		Parameters
-		----------
-		axis : {index (0)}
-		skipna : boolean, default True
-		    Exclude NA/null values. If an entire row/column is NA, the result
-		    will be NA
-		
-		Returns
-		-------
-		prod : scalar
-		
-		    
+		Cumulative product for each group
 	**/
-	public var cumprod : Dynamic;
+	public function cumprod(?axis:Dynamic):Dynamic;
 	/**
-		    Return cumulative sum over requested axis.
-		
-		Parameters
-		----------
-		axis : {index (0)}
-		skipna : boolean, default True
-		    Exclude NA/null values. If an entire row/column is NA, the result
-		    will be NA
-		
-		Returns
-		-------
-		sum : scalar
-		
-		    
+		Cumulative sum for each group
 	**/
-	public var cumsum : Dynamic;
+	public function cumsum(?axis:Dynamic):Dynamic;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -802,8 +782,8 @@ package pandas.core.groupby;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1176,28 +1156,9 @@ package pandas.core.groupby;
 	**/
 	public function sem(?ddof:Dynamic):Dynamic;
 	/**
-		Shift index by desired number of periods with an optional time freq
-		
-		Parameters
-		----------
-		periods : int
-		    Number of periods to move, can be positive or negative
-		freq : DateOffset, timedelta, or time rule string, optional
-		    Increment to use from datetools module or time rule (e.g. 'EOM').
-		    See Notes.
-		axis : {0, 'index'}
-		
-		Notes
-		-----
-		If freq is specified then the index values are shifted but the data
-		is not realigned. That is, use freq if you would like to extend the
-		index when shifting and preserve the original data.
-		
-		Returns
-		-------
-		shifted : Series
+		Shift each group by periods observations
 	**/
-	public var shift : pandas.Series;
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Compute group sizes
 	**/
@@ -1215,8 +1176,8 @@ package pandas.core.groupby;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data

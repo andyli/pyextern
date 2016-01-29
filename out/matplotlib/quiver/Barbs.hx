@@ -177,40 +177,40 @@ package matplotlib.quiver;
 		arguments:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		        
 	**/
@@ -355,40 +355,40 @@ package matplotlib.quiver;
 		arguments:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		        
 	**/

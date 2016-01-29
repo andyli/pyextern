@@ -15,4 +15,5 @@ package scipy.special._ellip_harm_2;
 	static public var __test__ : Dynamic;
 	static public function _ellipsoid(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ellipsoid_norm(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var nan : Dynamic;
 }

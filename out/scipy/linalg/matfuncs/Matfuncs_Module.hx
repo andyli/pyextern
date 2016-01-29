@@ -997,15 +997,25 @@ package scipy.linalg.matfuncs;
 		Parameters
 		----------
 		a : (M,) or (M, N) array_like
-		    Input array.
+		    Input array.  If `axis` is None, `a` must be 1-D or 2-D.
 		ord : {non-zero int, inf, -inf, 'fro'}, optional
 		    Order of the norm (see table under ``Notes``). inf means numpy's
-		    `inf` object.
+		    `inf` object
+		axis : {int, 2-tuple of ints, None}, optional
+		    If `axis` is an integer, it specifies the axis of `a` along which to
+		    compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+		    axes that hold 2-D matrices, and the matrix norms of these matrices
+		    are computed.  If `axis` is None then either a vector norm (when `a`
+		    is 1-D) or a matrix norm (when `a` is 2-D) is returned.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are normed over are left in the
+		    result as dimensions with size one.  With this option the result will
+		    broadcast correctly against the original `a`.
 		
 		Returns
 		-------
-		norm : float
-		    Norm of the matrix or vector.
+		n : float or ndarray
+		    Norm of the matrix or vector(s).
 		
 		Notes
 		-----
@@ -1034,6 +1044,10 @@ package scipy.linalg.matfuncs;
 		
 		    :math:`||A||_F = [\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
 		
+		The ``axis`` and ``keepdims`` arguments are passed directly to
+		``numpy.linalg.norm`` and are only usable if they are supported
+		by the version of numpy in use.
+		
 		References
 		----------
 		.. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
@@ -1042,14 +1056,14 @@ package scipy.linalg.matfuncs;
 		Examples
 		--------
 		>>> from scipy.linalg import norm
-		>>> a = np.arange(9) - 4
+		>>> a = np.arange(9) - 4.0
 		>>> a
-		array([-4, -3, -2, -1,  0,  1,  2,  3,  4])
+		array([-4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])
 		>>> b = a.reshape((3, 3))
 		>>> b
-		array([[-4, -3, -2],
-		       [-1,  0,  1],
-		       [ 2,  3,  4]])
+		array([[-4., -3., -2.],
+		       [-1.,  0.,  1.],
+		       [ 2.,  3.,  4.]])
 		
 		>>> norm(a)
 		7.745966692414834
@@ -1080,15 +1094,15 @@ package scipy.linalg.matfuncs;
 		7.3484692283495345
 		
 		>>> norm(a, -2)
-		nan
+		0
 		>>> norm(b, -2)
 		1.8570331885190563e-016
 		>>> norm(a, 3)
 		5.8480354764257312
 		>>> norm(a, -3)
-		nan
+		0
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
+	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Return the product of array elements over a given axis.
@@ -1452,6 +1466,8 @@ package scipy.linalg.matfuncs;
 		------
 		LinAlgError
 		    If `a` is singular.
+		ValueError
+		    If `a` is not square
 		
 		Examples
 		--------

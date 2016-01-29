@@ -16,7 +16,8 @@ package scipy.linalg._decomp_qz;
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
 	static public var _double_precision : Dynamic;
-	static public function _select_function(sort:Dynamic, typ:Dynamic):Dynamic;
+	static public function _qz(A:Dynamic, B:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?sort:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function _select_function(sort:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert the input to an array, checking for NaNs or Infs.
@@ -118,6 +119,76 @@ package scipy.linalg._decomp_qz;
 		are stored in attribute `typecode` of the returned functions.
 	**/
 	static public function get_lapack_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
+	/**
+		QZ decomposition for a pair of matrices with reordering.
+		
+		.. versionadded:: 0.17.0
+		
+		Parameters
+		----------
+		A : (N, N) array_like
+		    2d array to decompose
+		B : (N, N) array_like
+		    2d array to decompose
+		sort : {callable, 'lhp', 'rhp', 'iuc', 'ouc'}, optional
+		    Specifies whether the upper eigenvalues should be sorted.  A callable
+		    may be passed that, given a eigenvalue, returns a boolean denoting
+		    whether the eigenvalue should be sorted to the top-left (True). For
+		    real matrix pairs, the sort function takes three real arguments
+		    (alphar, alphai, beta). The eigenvalue
+		    ``x = (alphar + alphai*1j)/beta``.  For complex matrix pairs or
+		    output='complex', the sort function takes two complex arguments
+		    (alpha, beta). The eigenvalue ``x = (alpha/beta)``.
+		    Alternatively, string parameters may be used:
+		
+		        - 'lhp'   Left-hand plane (x.real < 0.0)
+		        - 'rhp'   Right-hand plane (x.real > 0.0)
+		        - 'iuc'   Inside the unit circle (x*x.conjugate() < 1.0)
+		        - 'ouc'   Outside the unit circle (x*x.conjugate() > 1.0)
+		
+		output : str {'real','complex'}, optional
+		    Construct the real or complex QZ decomposition for real matrices.
+		    Default is 'real'.
+		overwrite_a : bool, optional
+		    If True, the contents of A are overwritten.
+		overwrite_b : bool, optional
+		    If True, the contents of B are overwritten.
+		check_finite : bool, optional
+		    If true checks the elements of `A` and `B` are finite numbers. If
+		    false does no checking and passes matrix through to
+		    underlying algorithm.
+		
+		Returns
+		-------
+		AA : (N, N) ndarray
+		    Generalized Schur form of A.
+		BB : (N, N) ndarray
+		    Generalized Schur form of B.
+		alpha : (N,) ndarray
+		    alpha = alphar + alphai * 1j. See notes.
+		beta : (N,) ndarray
+		    See notes.
+		Q : (N, N) ndarray
+		    The left Schur vectors.
+		Z : (N, N) ndarray
+		    The right Schur vectors.
+		
+		Notes
+		-----
+		On exit, ``(ALPHAR(j) + ALPHAI(j)*i)/BETA(j), j=1,...,N``, will be the
+		generalized eigenvalues.  ``ALPHAR(j) + ALPHAI(j)*i`` and
+		``BETA(j),j=1,...,N`` are the diagonals of the complex Schur form (S,T)
+		that would result if the 2-by-2 diagonal blocks of the real generalized
+		Schur form of (A,B) were further reduced to triangular form using complex
+		unitary transformations. If ALPHAI(j) is zero, then the j-th eigenvalue is
+		real; if positive, then the ``j``-th and ``(j+1)``-st eigenvalues are a complex
+		conjugate pair, with ``ALPHAI(j+1)`` negative.
+		
+		See also
+		--------
+		qz
+	**/
+	static public function ordqz(A:Dynamic, B:Dynamic, ?sort:Dynamic, ?output:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		QZ decomposition for generalized eigenvalues of a pair of matrices.
@@ -154,21 +225,21 @@ package scipy.linalg._decomp_qz;
 		lwork : int, optional
 		    Work array size.  If None or -1, it is automatically computed.
 		sort : {None, callable, 'lhp', 'rhp', 'iuc', 'ouc'}, optional
-		    NOTE: THIS INPUT IS DISABLED FOR NOW, IT DOESN'T WORK WELL ON WINDOWS.
+		    NOTE: THIS INPUT IS DISABLED FOR NOW. Use ordqz instead.
 		
 		    Specifies whether the upper eigenvalues should be sorted.  A callable
 		    may be passed that, given a eigenvalue, returns a boolean denoting
 		    whether the eigenvalue should be sorted to the top-left (True). For
 		    real matrix pairs, the sort function takes three real arguments
-		    (alphar, alphai, beta). The eigenvalue x = (alphar + alphai*1j)/beta.
-		    For complex matrix pairs or output='complex', the sort function
-		    takes two complex arguments (alpha, beta). The eigenvalue
-		    x = (alpha/beta).
-		    Alternatively, string parameters may be used:
+		    (alphar, alphai, beta). The eigenvalue
+		    ``x = (alphar + alphai*1j)/beta``.  For complex matrix pairs or
+		    output='complex', the sort function takes two complex arguments
+		    (alpha, beta). The eigenvalue ``x = (alpha/beta)``.  Alternatively,
+		    string parameters may be used:
 		
 		        - 'lhp'   Left-hand plane (x.real < 0.0)
 		        - 'rhp'   Right-hand plane (x.real > 0.0)
-		        - 'iuc'   Inside the unit circle (x*x.conjugate() <= 1.0)
+		        - 'iuc'   Inside the unit circle (x*x.conjugate() < 1.0)
 		        - 'ouc'   Outside the unit circle (x*x.conjugate() > 1.0)
 		
 		    Defaults to None (no sorting).
@@ -191,9 +262,6 @@ package scipy.linalg._decomp_qz;
 		    The left Schur vectors.
 		Z : (N, N) ndarray
 		    The right Schur vectors.
-		sdim : int, optional
-		    If sorting was requested, a fifth return value will contain the
-		    number of eigenvalues for which the sort condition was True.
 		
 		Notes
 		-----
@@ -225,6 +293,10 @@ package scipy.linalg._decomp_qz;
 		array([[-0.24900855, -0.51772687,  0.81850696],
 		       [-0.79813178,  0.58842606,  0.12938478],
 		       [-0.54861681, -0.6210585 , -0.55973739]])
+		
+		See also
+		--------
+		ordqz
 	**/
 	static public function qz(A:Dynamic, B:Dynamic, ?output:Dynamic, ?lwork:Dynamic, ?sort:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
 }

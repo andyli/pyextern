@@ -149,6 +149,7 @@ package matplotlib.animation;
 		Returns the place to which frames should be written.
 	**/
 	public function _frame_sink():Dynamic;
+	static public function _init_from_registry():Dynamic;
 	public function _run():Dynamic;
 	static public var args_key : Dynamic;
 	/**

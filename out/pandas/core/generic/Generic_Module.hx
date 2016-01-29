@@ -9,10 +9,22 @@ package pandas.core.generic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _bool_doc : Dynamic;
+	static public var _cnum_doc : Dynamic;
+	/**
+		return a tuple of the doc parms 
+	**/
+	static public function _doc_parms(cls:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _make_cum_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, mask_a:Dynamic, mask_b:Dynamic):Dynamic;
+	static public function _make_logical_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_stat_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_stat_function_ddof(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public var _name : Dynamic;
+	static public var _num_ddof_doc : Dynamic;
+	static public var _num_doc : Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;

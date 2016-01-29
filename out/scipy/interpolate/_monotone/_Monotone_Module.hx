@@ -11,6 +11,38 @@ package scipy.interpolate._monotone;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Helper function for scipy argument validation.
+		
+		Many scipy linear algebra functions do support arbitrary array-like
+		input arguments.  Examples of commonly unsupported inputs include
+		matrices containing inf/nan, sparse matrix representations, and
+		matrices with complicated elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    The array-like input.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default: True
+		sparse_ok : bool, optional
+		    True if scipy sparse matrices are allowed.
+		objects_ok : bool, optional
+		    True if arrays with dype('O') are allowed.
+		mask_ok : bool, optional
+		    True if masked arrays are allowed.
+		as_inexact : bool, optional
+		    True to convert the input array to a np.inexact dtype.
+		
+		Returns
+		-------
+		ret : ndarray
+		    The converted validated array.
+	**/
+	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
+	/**
 		Check whether x is if a scalar type, or 0-dim
 	**/
 	static public function _isscalar(x:Dynamic):Dynamic;

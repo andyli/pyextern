@@ -45,10 +45,6 @@ package scipy.stats._multivariate;
 	static public var _dirichlet_doc_default_callparams : Dynamic;
 	static public var _dirichlet_doc_frozen_callparams : Dynamic;
 	static public var _dirichlet_doc_frozen_callparams_note : Dynamic;
-	static public var _doc_callparams_note : Dynamic;
-	static public var _doc_default_callparams : Dynamic;
-	static public var _doc_frozen_callparams : Dynamic;
-	static public var _doc_frozen_callparams_note : Dynamic;
 	static public var _doc_random_state : Dynamic;
 	/**
 		Determine which eigenvalues are "small" given the spectrum.
@@ -91,6 +87,14 @@ package scipy.stats._multivariate;
 		    Helper quotient, internal use only
 	**/
 	static public function _lnB(alpha:Dynamic):Dynamic;
+	static public var _matnorm_doc_callparams_note : Dynamic;
+	static public var _matnorm_doc_default_callparams : Dynamic;
+	static public var _matnorm_doc_frozen_callparams : Dynamic;
+	static public var _matnorm_doc_frozen_callparams_note : Dynamic;
+	static public var _mvn_doc_callparams_note : Dynamic;
+	static public var _mvn_doc_default_callparams : Dynamic;
+	static public var _mvn_doc_frozen_callparams : Dynamic;
+	static public var _mvn_doc_frozen_callparams_note : Dynamic;
 	/**
 		A helper function for computing the pseudoinverse.
 		
@@ -107,16 +111,6 @@ package scipy.stats._multivariate;
 		    A vector of pseudo-inverted numbers.
 	**/
 	static public function _pinv_1d(v:Dynamic, ?eps:Dynamic):Dynamic;
-	/**
-		Infer dimensionality from mean or covariance matrix, ensure that
-		mean and covariance are full vector resp. matrix.
-	**/
-	static public function _process_parameters(dim:Dynamic, mean:Dynamic, cov:Dynamic):Dynamic;
-	/**
-		Adjust quantiles array so that last axis labels the components of
-		each data point.
-	**/
-	static public function _process_quantiles(x:Dynamic, dim:Dynamic):Dynamic;
 	/**
 		Remove single-dimensional entries from array and convert to scalar,
 		if necessary.
@@ -333,13 +327,15 @@ package scipy.stats._multivariate;
 		and :math:`\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_K)`, the
 		concentration parameters and :math:`K` is the dimension of the space
 		where :math:`x` takes values.
+		
+		Note that the dirichlet interface is somewhat inconsistent.
+		The array returned by the rvs function is transposed
+		with respect to the format expected by the pdf and logpdf.
 	**/
 	static public function dirichlet(alpha:Dynamic, ?seed:Dynamic):Dynamic;
 	static public var dirichlet_docdict_noparams : Dynamic;
 	static public var dirichlet_docdict_params : Dynamic;
 	static public var division : Dynamic;
-	static public var docdict_noparams : Dynamic;
-	static public var docdict_params : Dynamic;
 	/**
 		gammaln(x[, out])
 		
@@ -498,6 +494,124 @@ package scipy.stats._multivariate;
 		axis labels the components.
 	**/
 	static public function invwishart(?df:Dynamic, ?scale:Dynamic, ?seed:Dynamic):Dynamic;
+	static public var matnorm_docdict_noparams : Dynamic;
+	static public var matnorm_docdict_params : Dynamic;
+	/**
+		A matrix normal random variable.
+		
+		The `mean` keyword specifies the mean. The `rowcov` keyword specifies the
+		among-row covariance matrix. The 'colcov' keyword specifies the
+		among-column covariance matrix.
+		
+		Methods
+		-------
+		``pdf(X, mean=None, rowcov=1, colcov=1)``
+		    Probability density function.
+		``logpdf(X, mean=None, rowcov=1, colcov=1)``
+		    Log of the probability density function.
+		``rvs(mean=None, rowcov=1, colcov=1, size=1, random_state=None)``
+		    Draw random samples.
+		
+		Parameters
+		----------
+		X : array_like
+		    Quantiles, with the last two axes of `X` denoting the components.
+		mean : array_like, optional
+		    Mean of the distribution (default: `None`)
+		rowcov : array_like, optional
+		    Among-row covariance matrix of the distribution (default: `1`)
+		colcov : array_like, optional
+		    Among-column covariance matrix of the distribution (default: `1`)
+		random_state : None or int or np.random.RandomState instance, optional
+		    If int or RandomState, use it for drawing the random variates.
+		    If None (or np.random), the global np.random state is used.
+		    Default is None.
+		
+		Alternatively, the object may be called (as a function) to fix the mean
+		and covariance parameters, returning a "frozen" matrix normal
+		random variable:
+		
+		rv = matrix_normal(mean=None, rowcov=1, colcov=1)
+		    - Frozen object with the same methods but holding the given
+		      mean and covariance fixed.
+		
+		Notes
+		-----
+		If `mean` is set to `None` then a matrix of zeros is used for the mean.
+		    The dimensions of this matrix are inferred from the shape of `rowcov` and
+		    `colcov`, if these are provided, or set to `1` if ambiguous.
+		
+		    `rowcov` and `colcov` can be two-dimensional array_likes specifying the
+		    covariance matrices directly. Alternatively, a one-dimensional array will
+		    be be interpreted as the entries of a diagonal matrix, and a scalar or
+		    zero-dimensional array will be interpreted as this value times the
+		    identity matrix.
+		    
+		
+		The covariance matrices specified by `rowcov` and `colcov` must be
+		(symmetric) positive definite. If the samples in `X` are
+		:math:`m \times n`, then `rowcov` must be :math:`m \times m` and
+		`colcov` must be :math:`n \times n`. `mean` must be the same shape as `X`.
+		
+		The probability density function for `matrix_normal` is
+		
+		.. math::
+		
+		    f(X) = (2 \pi)^{-\frac{mn}{2}}|U|^{-\frac{n}{2}} |V|^{-\frac{m}{2}}
+		           \exp\left( -\frac{1}{2} \mathrm{Tr}\left[ U^{-1} (X-M) V^{-1}
+		           (X-M)^T \right] \right),
+		
+		where :math:`M` is the mean, :math:`U` the among-row covariance matrix,
+		:math:`V` the among-column covariance matrix.
+		
+		The `allow_singular` behaviour of the `multivariate_normal`
+		distribution is not currently supported. Covariance matrices must be
+		full rank.
+		
+		The `matrix_normal` distribution is closely related to the
+		`multivariate_normal` distribution. Specifically, :math:`\mathrm{Vec}(X)`
+		(the vector formed by concatenating the columns  of :math:`X`) has a
+		multivariate normal distribution with mean :math:`\mathrm{Vec}(M)` 
+		and covariance :math:`V \otimes U` (where :math:`\otimes` is the Kronecker
+		product). Sampling and pdf evaluation are
+		:math:`\mathcal{O}(m^3 + n^3 + m^2 n + m n^2)` for the matrix normal, but
+		:math:`\mathcal{O}(m^3 n^3)` for the equivalent multivariate normal,
+		making this equivalent form algorithmically inefficient.
+		
+		.. versionadded:: 0.17.0
+		
+		Examples
+		--------
+		
+		>>> from scipy.stats import matrix_normal
+		
+		>>> M = np.arange(6).reshape(3,2); M
+		array([[0, 1],
+		       [2, 3],
+		       [4, 5]])
+		>>> U = np.diag([1,2,3]); U
+		array([[1, 0, 0],
+		       [0, 2, 0],
+		       [0, 0, 3]])
+		>>> V = 0.3*np.identity(2); V
+		array([[ 0.3,  0. ],
+		       [ 0. ,  0.3]])
+		>>> X = M + 0.1; X
+		array([[ 0.1,  1.1],
+		       [ 2.1,  3.1],
+		       [ 4.1,  5.1]])
+		>>> matrix_normal.pdf(X, mean=M, rowcov=U, colcov=V)
+		0.023410202050005054
+		   
+		>>> # Equivalent multivariate normal
+		>>> from scipy.stats import multivariate_normal
+		>>> vectorised_X = X.T.flatten()
+		>>> equiv_mean = M.T.flatten()
+		>>> equiv_cov = np.kron(V,U)
+		>>> multivariate_normal.pdf(vectorised_X, mean=equiv_mean, cov=equiv_cov)
+		0.023410202050005054
+	**/
+	static public function matrix_normal(?mean:Dynamic, ?rowcov:Dynamic, ?colcov:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		Draw random samples from an inverse Wishart distribution.
 		
@@ -672,14 +786,15 @@ package scipy.stats._multivariate;
 		follows:
 		
 		>>> x, y = np.mgrid[-1:1:.01, -1:1:.01]
-		>>> pos = np.empty(x.shape + (2,))
-		>>> pos[:, :, 0] = x; pos[:, :, 1] = y
+		>>> pos = np.dstack((x, y))
 		>>> rv = multivariate_normal([0.5, -0.2], [[2.0, 0.3], [0.3, 0.5]])
 		>>> fig2 = plt.figure()
 		>>> ax2 = fig2.add_subplot(111)
 		>>> ax2.contourf(x, y, rv.pdf(pos))
 	**/
 	static public function multivariate_normal(?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic, ?seed:Dynamic):Dynamic;
+	static public var mvn_docdict_noparams : Dynamic;
+	static public var mvn_docdict_params : Dynamic;
 	static public var name : Dynamic;
 	static public var print_function : Dynamic;
 	/**
@@ -690,7 +805,7 @@ package scipy.stats._multivariate;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

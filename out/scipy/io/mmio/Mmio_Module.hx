@@ -11,10 +11,10 @@ package scipy.io.mmio;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		Check whether stream is compatible with numpy.fromfile.
+		Check whether `stream` is compatible with numpy.fromfile.
 		
-		Passing a gzipped file to fromfile/fromstring doesn't work
-		with Python3
+		Passing a gzipped file object to ``fromfile/fromstring`` doesn't work with
+		Python3.
 	**/
 	static public function _is_fromfile_compatible(stream:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -375,65 +375,69 @@ package scipy.io.mmio;
 		array([ 1. +8.j,  3.+10.j,  5.+12.j])
 	**/
 	static public function imag(val:Dynamic):Dynamic;
+	static public function isspmatrix(x:Dynamic):Dynamic;
 	/**
-		Queries the contents of the Matrix Market file 'filename' to
-		extract size and storage information.
+		Return size and storage parameters from Matrix Market file-like 'source'.
 		
 		Parameters
 		----------
-		
-		source : file
-		    Matrix Market filename (extension .mtx) or open file object
+		source : str or file-like
+		    Matrix Market filename (extension .mtx) or open file-like object
 		
 		Returns
 		-------
-		
-		rows,cols : int
-		   Number of matrix rows and columns
+		rows : int
+		    Number of matrix rows.
+		cols : int
+		    Number of matrix columns.
 		entries : int
 		    Number of non-zero entries of a sparse matrix
-		    or rows*cols for a dense matrix
+		    or rows*cols for a dense matrix.
 		format : str
 		    Either 'coordinate' or 'array'.
 		field : str
 		    Either 'real', 'complex', 'pattern', or 'integer'.
-		symm : str
+		symmetry : str
 		    Either 'general', 'symmetric', 'skew-symmetric', or 'hermitian'.
 	**/
 	static public function mminfo(source:Dynamic):Int;
 	/**
-		Reads the contents of a Matrix Market file 'filename' into a matrix.
+		Reads the contents of a Matrix Market file-like 'source' into a matrix.
 		
 		Parameters
 		----------
-		
-		source : file
+		source : str or file-like
 		    Matrix Market filename (extensions .mtx, .mtz.gz)
-		    or open file object.
+		    or open file-like object.
 		
 		Returns
 		-------
-		a:
-		    Sparse or full matrix
+		a : ndarray or coo_matrix
+		    Dense or sparse matrix depending on the matrix format in the
+		    Matrix Market file.
 	**/
 	static public function mmread(source:Dynamic):Dynamic;
 	/**
-		Writes the sparse or dense array `a` to a Matrix Market formatted file.
+		Writes the sparse or dense array `a` to Matrix Market file-like `target`.
 		
 		Parameters
 		----------
-		target : file
-		    Matrix Market filename (extension .mtx) or open file object
+		target : str or file-like
+		    Matrix Market filename (extension .mtx) or open file-like object.
 		a : array like
-		    Sparse or dense 2D array
+		    Sparse or dense 2D array.
 		comment : str, optional
-		    comments to be prepended to the Matrix Market file
+		    Comments to be prepended to the Matrix Market file.
 		field : None or str, optional
 		    Either 'real', 'complex', 'pattern', or 'integer'.
 		precision : None or int, optional
 		    Number of digits to display for real or complex values.
+		symmetry : None or str, optional
+		    Either 'general', 'symmetric', 'skew-symmetric', or 'hermitian'.
+		    If symmetry is None the symmetry type of 'a' is determined by its
+		    values.
 	**/
-	static public function mmwrite(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic):Dynamic;
+	static public function mmwrite(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic, ?symmetry:Dynamic):Dynamic;
 	/**
 		Return a new array of given shape and type, filled with ones.
 		

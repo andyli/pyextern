@@ -47,11 +47,11 @@ package scipy.io.netcdf;
 		Initialize netcdf_file from fileobj (str or file-like).
 	**/
 	@:native("__init__")
-	public function ___init__(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic):Dynamic;
+	public function ___init__(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic, ?maskandscale:Dynamic):Dynamic;
 	/**
 		Initialize netcdf_file from fileobj (str or file-like).
 	**/
-	public function new(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic):Void;
+	public function new(filename:Dynamic, ?mode:Dynamic, ?mmap:Dynamic, ?version:Dynamic, ?maskandscale:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/

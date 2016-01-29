@@ -16,7 +16,7 @@ package scipy.cluster.hierarchy;
 	/**
 		Return self==value.
 	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(node:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -32,11 +32,8 @@ package scipy.cluster.hierarchy;
 	/**
 		Return self>value.
 	**/
-	public function __gt__(value:Dynamic):Dynamic;
-	/**
-		Return hash(self).
-	**/
-	public function __hash__():Dynamic;
+	public function __gt__(node:Dynamic):Dynamic;
+	static public var __hash__ : Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
@@ -53,7 +50,7 @@ package scipy.cluster.hierarchy;
 	/**
 		Return self<value.
 	**/
-	public function __lt__(value:Dynamic):Dynamic;
+	public function __lt__(node:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.

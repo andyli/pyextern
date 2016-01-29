@@ -46,6 +46,23 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function _getargspec(func:Dynamic):Dynamic;
 	/**
+		Iterate from x0 to x1 in chunks of chunksize and steps inc.
+		
+		x0 must be finite, x1 need not be. In the latter case, the iterator is infinite.
+		Handles both x0 < x1 and x0 > x1. In the latter case, iterates downwards
+		(make sure to set inc < 0.)
+		
+		>>> [x for x in _iter_chunked(2, 5, inc=2)]
+		[array([2, 4])]
+		>>> [x for x in _iter_chunked(2, 11, inc=2)]
+		[array([2, 4, 6, 8]), array([10])]
+		>>> [x for x in _iter_chunked(2, -5, inc=-2)]
+		[array([ 2,  0, -2, -4])]
+		>>> [x for x in _iter_chunked(2, -9, inc=-2)]
+		[array([ 2,  0, -2, -4]), array([-6, -8])]
+	**/
+	static public function _iter_chunked(x0:Dynamic, x1:Dynamic, ?chunksize:Dynamic, ?inc:Dynamic):Dynamic;
+	/**
 		kurtosis is fourth central moment / variance**2 - 3
 	**/
 	static public function _kurtosis(data:Dynamic):Dynamic;
@@ -511,9 +528,9 @@ package scipy.stats._distn_infrastructure;
 		
 		Examples
 		--------
+		>>> from scipy.misc import derivative
 		>>> def f(x):
 		...     return x**3 + x**2
-		...
 		>>> derivative(f, 1.0, dx=1e-6)
 		4.9999999999217337
 	**/
@@ -585,7 +602,7 @@ package scipy.stats._distn_infrastructure;
 		Returns
 		-------
 		res : ndarray
-		    The value of the elementwise entropy function at the given points x.
+		    The value of the elementwise entropy function at the given points `x`.
 		
 		See Also
 		--------
@@ -770,29 +787,6 @@ package scipy.stats._distn_infrastructure;
 		    distributions, with a _gen suffix added.
 	**/
 	static public function get_distribution_names(namespace_pairs:Dynamic, rv_base_class:Dynamic):Dynamic;
-	/**
-		Confluent hypergeometric limit function 0F1.
-		
-		Parameters
-		----------
-		v, z : array_like
-		    Input values.
-		
-		Returns
-		-------
-		hyp0f1 : ndarray
-		    The confluent hypergeometric limit function.
-		
-		Notes
-		-----
-		This function is defined as:
-		
-		.. math:: _0F_1(v,z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
-		
-		It's also the limit as q -> infinity of ``1F1(q;v;z/q)``, and satisfies
-		the differential equation :math:`f''(z) + vf'(z) = f(z)`.
-	**/
-	static public function hyp0f1(v:Dynamic, z:Dynamic):Dynamic;
 	static public var inf : Dynamic;
 	static public function instancemethod(func:Dynamic, obj:Dynamic, cls:Dynamic):Dynamic;
 	/**
@@ -859,6 +853,18 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function isinf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		ive(x1, x2[, out])
+		
+		ive(v, z)
+		
+		Exponentially scaled modified Bessel function of the first kind
+		
+		Defined as::
+		
+		    ive(v, z) = iv(v, z) * exp(-abs(z.real))
+	**/
+	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		kl_div(x1, x2[, out])
 		
 		kl_div(x, y)
@@ -885,7 +891,7 @@ package scipy.stats._distn_infrastructure;
 		
 		Notes
 		-----
-		This function is non-negative and is jointly convex in x and y.
+		This function is non-negative and is jointly convex in `x` and `y`.
 		
 		.. versionadded:: 0.14.0
 	**/
@@ -1529,6 +1535,31 @@ package scipy.stats._distn_infrastructure;
 		    
 	**/
 	static public function valarray(shape:Dynamic, ?value:Dynamic, ?typecode:Dynamic):Dynamic;
+	/**
+		xlogy(x1, x2[, out])
+		
+		xlogy(x, y)
+		
+		Compute ``x*log(y)`` so that the result is 0 if ``x = 0``.
+		
+		Parameters
+		----------
+		x : array_like
+		    Multiplier
+		y : array_like
+		    Argument
+		
+		Returns
+		-------
+		z : array_like
+		    Computed x*log(y)
+		
+		Notes
+		-----
+		
+		.. versionadded:: 0.13.0
+	**/
+	static public function xlogy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

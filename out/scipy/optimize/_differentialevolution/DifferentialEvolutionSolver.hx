@@ -136,7 +136,7 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _scale_parameters(trial:Dynamic):Dynamic;
 	/**
-		obtain random integers from range(np.size(self.population, 0)),
+		obtain random integers from range(self.num_population_members),
 		without replacement.  You can't have the original candidate either.
 	**/
 	public function _select_samples(candidate:Dynamic, number_samples:Dynamic):Dynamic;
@@ -145,9 +145,9 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _unscale_parameters(parameters:Dynamic):Dynamic;
 	/**
-		Initializes the population with Latin Hypercube Sampling
-		Latin Hypercube Sampling ensures that the sampling of parameter space
-		is maximised.
+		Initializes the population with Latin Hypercube Sampling.
+		Latin Hypercube Sampling ensures that each parameter is uniformly
+		sampled over its range.
 	**/
 	public function init_population_lhs():Dynamic;
 	/**
@@ -165,9 +165,9 @@ package scipy.optimize._differentialevolution;
 		    Important attributes are: ``x`` the solution array, ``success`` a
 		    Boolean flag indicating if the optimizer exited successfully and
 		    ``message`` which describes the cause of the termination. See
-		    `OptimizeResult` for a description of other attributes. If polish
-		    was employed, then OptimizeResult also contains the ``hess_inv`` and
-		    ``jac`` attributes.
+		    `OptimizeResult` for a description of other attributes.  If `polish`
+		    was employed, and a lower minimum was obtained by the polishing,
+		    then OptimizeResult also contains the ``jac`` attribute.
 	**/
 	public function solve():Dynamic;
 	/**

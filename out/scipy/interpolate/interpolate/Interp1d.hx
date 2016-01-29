@@ -118,6 +118,7 @@ package scipy.interpolate.interpolate;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _call_linear(x_new:Dynamic):Dynamic;
+	public function _call_linear_np(x_new:Dynamic):Dynamic;
 	/**
 		Find nearest neighbour interpolated y_new = f(x_new).
 	**/
@@ -154,4 +155,5 @@ package scipy.interpolate.interpolate;
 	public var _y_axis : Dynamic;
 	public var _y_extra_shape : Dynamic;
 	public var dtype : Dynamic;
+	public var fill_value : Dynamic;
 }

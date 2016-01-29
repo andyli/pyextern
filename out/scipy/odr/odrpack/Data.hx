@@ -112,7 +112,9 @@ package scipy.odr.odrpack;
 		
 		Examples
 		--------
-		>>> data.set_meta(lab="Ph 7; Lab 26", title="Ag110 + Ag108 Decay")
+		::
+		
+		    data.set_meta(lab="Ph 7; Lab 26", title="Ag110 + Ag108 Decay")
 	**/
 	public function set_meta(?kwds:python.KwArgs<Dynamic>):Dynamic;
 }

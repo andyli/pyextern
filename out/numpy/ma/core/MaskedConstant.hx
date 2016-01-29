@@ -1283,29 +1283,39 @@ package numpy.ma.core;
 	/**
 		a.dot(b, out=None)
 		
-		Dot product of two arrays.
+		Masked dot product of two arrays. Note that `out` and `strict` are
+		located in different positions than in `ma.dot`. In order to
+		maintain compatibility with the functional version, it is
+		recommended that the optional arguments be treated as keyword only.
+		At some point that may be mandatory.
 		
-		Refer to `numpy.dot` for full documentation.
+		.. versionadded:: 1.10.0
+		
+		Parameters
+		----------
+		b : masked_array_like
+		    Inputs array.
+		out : masked_array, optional
+		    Output argument. This must have the exact kind that would be
+		    returned if it was not used. In particular, it must have the
+		    right type, must be C-contiguous, and its dtype must be the
+		    dtype that would be returned for `ma.dot(a,b)`. This is a
+		    performance feature. Therefore, if these conditions are not
+		    met, an exception is raised, instead of attempting to be
+		    flexible.
+		strict : bool, optional
+		    Whether masked data are propagated (True) or set to 0 (False)
+		    for the computation. Default is False.  Propagating the mask
+		    means that if a masked value appears in a row or column, the
+		    whole row or column is considered masked.
+		
+		    .. versionadded:: 1.10.2
 		
 		See Also
 		--------
-		numpy.dot : equivalent function
-		
-		Examples
-		--------
-		>>> a = np.eye(2)
-		>>> b = np.ones((2, 2)) * 2
-		>>> a.dot(b)
-		array([[ 2.,  2.],
-		       [ 2.,  2.]])
-		
-		This array method can be conveniently chained:
-		
-		>>> a.dot(b).dot(b)
-		array([[ 8.,  8.],
-		       [ 8.,  8.]])
+		numpy.ma.dot : equivalent function
 	**/
-	public function dot(other:Dynamic, ?out:Dynamic):Dynamic;
+	public function dot(b:Dynamic, ?out:Dynamic, ?strict:Dynamic):Dynamic;
 	/**
 		Data-type of the array's elements.
 		
@@ -1997,13 +2007,13 @@ package numpy.ma.core;
 		----------
 		new_order : string, optional
 		    Byte order to force; a value from the byte order specifications
-		    above. `new_order` codes can be any of::
+		    below. `new_order` codes can be any of:
 		
-		     * 'S' - swap dtype from current to opposite endian
-		     * {'<', 'L'} - little endian
-		     * {'>', 'B'} - big endian
-		     * {'=', 'N'} - native order
-		     * {'|', 'I'} - ignore (no change to byte order)
+		    * 'S' - swap dtype from current to opposite endian
+		    * {'<', 'L'} - little endian
+		    * {'>', 'B'} - big endian
+		    * {'=', 'N'} - native order
+		    * {'|', 'I'} - ignore (no change to byte order)
 		
 		    The default value ('S') results in swapping the current
 		    byte order. The code does a case-insensitive check on the first

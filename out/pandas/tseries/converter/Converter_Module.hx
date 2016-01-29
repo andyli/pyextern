@@ -62,7 +62,7 @@ package pandas.tseries.converter;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.DatetimeIndex;
+	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	static public function get_datevalue(date:Dynamic, freq:Dynamic):Dynamic;
 	static public function get_finder(freq:Dynamic):Dynamic;
 	/**

@@ -20,50 +20,60 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsinh(x[, out])
+		arcsin(x[, out])
 		
-		Inverse hyperbolic sine element-wise.
+		Inverse sine, element-wise.
 		
 		Parameters
 		----------
 		x : array_like
-		    Input array.
+		    `y`-coordinate on the unit circle.
+		
 		out : ndarray, optional
-		    Array into which the output is placed. Its type is preserved and it
-		    must be of the right shape to hold the output. See `doc.ufuncs`.
+		    Array of the same shape as `x`, in which to store the results.
+		    See `doc.ufuncs` (Section "Output arguments") for more details.
 		
 		Returns
 		-------
-		out : ndarray
-		    Array of of the same shape as `x`.
+		angle : ndarray
+		    The inverse sine of each element in `x`, in radians and in the
+		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
+		    is returned, otherwise an array.
+		
+		See Also
+		--------
+		sin, cos, arccos, tan, arctan, arctan2, emath.arcsin
 		
 		Notes
 		-----
-		`arcsinh` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that `sinh(z) = x`. The convention is to return the
-		`z` whose imaginary part lies in `[-pi/2, pi/2]`.
+		`arcsin` is a multivalued function: for each `x` there are infinitely
+		many numbers `z` such that :math:`sin(z) = x`.  The convention is to
+		return the angle `z` whose real part lies in [-pi/2, pi/2].
 		
-		For real-valued input data types, `arcsinh` always returns real output.
-		For each value that cannot be expressed as a real number or infinity, it
-		returns ``nan`` and sets the `invalid` floating point error flag.
+		For real-valued input data types, *arcsin* always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
 		
-		For complex-valued input, `arccos` is a complex analytical function that
-		has branch cuts `[1j, infj]` and `[-1j, -infj]` and is continuous from
-		the right on the former and from the left on the latter.
+		For complex-valued input, `arcsin` is a complex analytic function that
+		has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is
+		continuous from above on the former and from below on the latter.
 		
-		The inverse hyperbolic sine is also known as `asinh` or ``sinh^-1``.
+		The inverse sine is also known as `asin` or sin^{-1}.
 		
 		References
 		----------
-		.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-		       10th printing, 1964, pp. 86. http://www.math.sfu.ca/~cbm/aands/
-		.. [2] Wikipedia, "Inverse hyperbolic function",
-		       http://en.wikipedia.org/wiki/Arcsinh
+		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
+		10th printing, New York: Dover, 1964, pp. 79ff.
+		http://www.math.sfu.ca/~cbm/aands/
 		
 		Examples
 		--------
-		>>> np.arcsinh(np.array([np.e, 10.0]))
-		array([ 1.72538256,  2.99822295])
+		>>> np.arcsin(1)     # pi/2
+		1.5707963267948966
+		>>> np.arcsin(-1)    # -pi/2
+		-1.5707963267948966
+		>>> np.arcsin(0)
+		0.0
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

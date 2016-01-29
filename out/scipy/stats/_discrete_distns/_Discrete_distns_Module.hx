@@ -49,7 +49,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -60,7 +60,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -150,7 +150,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, n, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, n, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
@@ -161,7 +161,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(n, p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, n, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, p, loc=0)``
 		    Median of the distribution.
@@ -250,7 +250,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, lambda_, N, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, lambda_, N, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, N, loc=0)``
@@ -261,7 +261,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(lambda_, N, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, lambda_, N, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(lambda_, N, loc=0)``
 		    Median of the distribution.
@@ -410,7 +410,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, a, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
@@ -421,7 +421,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(a, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, a, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0)``
 		    Median of the distribution.
@@ -507,7 +507,7 @@ package scipy.stats._discrete_distns;
 		Returns
 		-------
 		res : ndarray
-		    The value of the elementwise entropy function at the given points x.
+		    The value of the elementwise entropy function at the given points `x`.
 		
 		See Also
 		--------
@@ -691,7 +691,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -702,7 +702,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -816,7 +816,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, M, n, N, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, M, n, N, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, M, n, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, M, n, N, loc=0)``
@@ -827,7 +827,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(M, n, N, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, M, n, N, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(M, n, N, loc=0)``
 		    Median of the distribution.
@@ -1009,7 +1009,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -1020,7 +1020,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -1090,6 +1090,82 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function logser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Compute the log of the sum of exponentials of input elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes over which the sum is taken. By default `axis` is None,
+		    and all elements are summed. Tuple of ints is not accepted if NumPy
+		    version is lower than 1.7.0.
+		
+		    .. versionadded:: 0.11.0
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the original array.
+		
+		    .. versionadded:: 0.15.0
+		b : array-like, optional
+		    Scaling factor for exp(`a`) must be of the same shape as `a` or
+		    broadcastable to `a`. These values may be negative in order to
+		    implement subtraction.
+		
+		    .. versionadded:: 0.12.0
+		return_sign : bool, optional
+		    If this is set to True, the result will be a pair containing sign
+		    information; if False, results that are negative will be returned
+		    as NaN. Default is False (no sign information).
+		
+		    .. versionadded:: 0.16.0
+		Returns
+		-------
+		res : ndarray
+		    The result, ``np.log(np.sum(np.exp(a)))`` calculated in a numerically
+		    more stable way. If `b` is given then ``np.log(np.sum(b*np.exp(a)))``
+		    is returned.
+		sgn : ndarray
+		    If return_sign is True, this will be an array of floating-point
+		    numbers matching res and +1, 0, or -1 depending on the sign
+		    of the result. If False, only one result is returned.
+		    
+		See Also
+		--------
+		numpy.logaddexp, numpy.logaddexp2
+		
+		Notes
+		-----
+		Numpy has a logaddexp function which is very similar to `logsumexp`, but
+		only handles two arguments. `logaddexp.reduce` is similar to this
+		function, but may be less stable.
+		
+		Examples
+		--------
+		>>> from scipy.misc import logsumexp
+		>>> a = np.arange(10)
+		>>> np.log(np.sum(np.exp(a)))
+		9.4586297444267107
+		>>> logsumexp(a)
+		9.4586297444267107
+		
+		With weights
+		
+		>>> a = np.arange(10)
+		>>> b = np.arange(10, 0, -1)
+		>>> logsumexp(a, b=b)
+		9.9170178533034665
+		>>> np.log(np.sum(b*np.exp(a)))
+		9.9170178533034647
+		
+		Returning a sign flag
+		
+		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
+		(1.5413248546129181, -1.0)
+	**/
+	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
+	/**
 		A negative binomial discrete random variable.
 		
 		As an instance of the `rv_discrete` class, `nbinom` object inherits from it
@@ -1109,7 +1185,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, n, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, n, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
@@ -1120,7 +1196,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(n, p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, n, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, p, loc=0)``
 		    Median of the distribution.
@@ -1210,7 +1286,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, lambda_, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, lambda_, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, loc=0)``
@@ -1221,7 +1297,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(lambda_, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, lambda_, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(lambda_, loc=0)``
 		    Median of the distribution.
@@ -1310,7 +1386,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, mu, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, mu, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0)``
@@ -1321,7 +1397,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(mu, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, mu, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu, loc=0)``
 		    Median of the distribution.
@@ -1411,7 +1487,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, low, high, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, low, high, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, low, high, loc=0)``
 		    Log of the survival function.
 		``ppf(q, low, high, loc=0)``
@@ -1422,7 +1498,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(low, high, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, low, high, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(low, high, loc=0)``
 		    Median of the distribution.
@@ -1571,7 +1647,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, mu1, mu2, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, mu1, mu2, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu1, mu2, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu1, mu2, loc=0)``
@@ -1582,7 +1658,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(mu1, mu2, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, mu1, mu2, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu1, mu2, loc=0)``
 		    Median of the distribution.
@@ -1782,7 +1858,7 @@ package scipy.stats._discrete_distns;
 		``logcdf(x, a, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
@@ -1793,7 +1869,7 @@ package scipy.stats._discrete_distns;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(a, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, a, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0)``
 		    Median of the distribution.

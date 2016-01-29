@@ -101,11 +101,12 @@ package scipy._lib.decorator;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _compile_count : Dynamic;
 	/**
 		Create a function from the strings name, signature and body.
-		evaldict is the evaluation dictionary. If addsource is true an attribute
-		__source__ is added to the result. The attributes attrs are added,
-		if any.
+		evaldict is the evaluation dictionary. If addsource is true an
+		attribute __source__ is added to the result. The attributes attrs
+		are added, if any.
 	**/
 	static public function create(obj:Dynamic, body:Dynamic, evaldict:Dynamic, ?defaults:Dynamic, ?doc:Dynamic, ?module:Dynamic, ?addsource:Dynamic, ?attrs:python.KwArgs<Dynamic>):Dynamic;
 	/**

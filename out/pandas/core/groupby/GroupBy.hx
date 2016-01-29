@@ -147,6 +147,7 @@ package pandas.core.groupby;
 	**/
 	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	/**
 		add addtional __dir__ for this object 
 	**/
@@ -306,6 +307,14 @@ package pandas.core.groupby;
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
+		Cumulative product for each group
+	**/
+	public function cumprod(?axis:Dynamic):Dynamic;
+	/**
+		Cumulative sum for each group
+	**/
+	public function cumsum(?axis:Dynamic):Dynamic;
+	/**
 		Compute first of group values
 	**/
 	public function first():Dynamic;
@@ -447,6 +456,10 @@ package pandas.core.groupby;
 		For multiple groupings, the result index will be a MultiIndex
 	**/
 	public function sem(?ddof:Dynamic):Dynamic;
+	/**
+		Shift each group by periods observations
+	**/
+	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Compute group sizes
 	**/

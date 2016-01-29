@@ -13,7 +13,7 @@ package scipy.integrate.quadrature;
 	static public function _basic_simps(y:Dynamic, start:Dynamic, stop:Dynamic, x:Dynamic, dx:Dynamic, axis:Dynamic):Dynamic;
 	static public var _builtincoeffs : Dynamic;
 	/**
-		Cache p_roots results for speeding up multiple calls of the fixed_quad function.
+		Cache p_roots results to speed up calls of the fixed_quad function.
 	**/
 	static public function _cached_p_roots(n:Dynamic):Dynamic;
 	/**
@@ -36,167 +36,6 @@ package scipy.integrate.quadrature;
 	**/
 	static public function _romberg_diff(b:Dynamic, c:Dynamic, k:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		add(x1, x2[, out])
-		
-		Add arguments element-wise.
-		
-		Parameters
-		----------
-		x1, x2 : array_like
-		    The arrays to be added.  If ``x1.shape != x2.shape``, they must be
-		    broadcastable to a common shape (which may be the shape of one or
-		    the other).
-		
-		Returns
-		-------
-		add : ndarray or scalar
-		    The sum of `x1` and `x2`, element-wise.  Returns a scalar if
-		    both  `x1` and `x2` are scalars.
-		
-		Notes
-		-----
-		Equivalent to `x1` + `x2` in terms of array broadcasting.
-		
-		Examples
-		--------
-		>>> np.add(1.0, 4.0)
-		5.0
-		>>> x1 = np.arange(9.0).reshape((3, 3))
-		>>> x2 = np.arange(3.0)
-		>>> np.add(x1, x2)
-		array([[  0.,   2.,   4.],
-		       [  3.,   5.,   7.],
-		       [  6.,   8.,  10.]])
-	**/
-	static public function add(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		arange([start,] stop[, step,], dtype=None)
-		
-		Return evenly spaced values within a given interval.
-		
-		Values are generated within the half-open interval ``[start, stop)``
-		(in other words, the interval including `start` but excluding `stop`).
-		For integer arguments the function is equivalent to the Python built-in
-		`range <http://docs.python.org/lib/built-in-funcs.html>`_ function,
-		but returns an ndarray rather than a list.
-		
-		When using a non-integer step, such as 0.1, the results will often not
-		be consistent.  It is better to use ``linspace`` for these cases.
-		
-		Parameters
-		----------
-		start : number, optional
-		    Start of interval.  The interval includes this value.  The default
-		    start value is 0.
-		stop : number
-		    End of interval.  The interval does not include this value, except
-		    in some cases where `step` is not an integer and floating point
-		    round-off affects the length of `out`.
-		step : number, optional
-		    Spacing between values.  For any output `out`, this is the distance
-		    between two adjacent values, ``out[i+1] - out[i]``.  The default
-		    step size is 1.  If `step` is specified, `start` must also be given.
-		dtype : dtype
-		    The type of the output array.  If `dtype` is not given, infer the data
-		    type from the other input arguments.
-		
-		Returns
-		-------
-		arange : ndarray
-		    Array of evenly spaced values.
-		
-		    For floating point arguments, the length of the result is
-		    ``ceil((stop - start)/step)``.  Because of floating point overflow,
-		    this rule may result in the last element of `out` being greater
-		    than `stop`.
-		
-		See Also
-		--------
-		linspace : Evenly spaced numbers with careful handling of endpoints.
-		ogrid: Arrays of evenly spaced numbers in N-dimensions.
-		mgrid: Grid-shaped arrays of evenly spaced numbers in N-dimensions.
-		
-		Examples
-		--------
-		>>> np.arange(3)
-		array([0, 1, 2])
-		>>> np.arange(3.0)
-		array([ 0.,  1.,  2.])
-		>>> np.arange(3,7)
-		array([3, 4, 5, 6])
-		>>> np.arange(3,7,2)
-		array([3, 5])
-	**/
-	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Cumulatively integrate y(x) using the composite trapezoidal rule.
 		
@@ -250,93 +89,7 @@ package scipy.integrate.quadrature;
 		>>> plt.show()
 	**/
 	static public function cumtrapz(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?initial:Dynamic):Dynamic;
-	/**
-		Calculate the n-th order discrete difference along given axis.
-		
-		The first order difference is given by ``out[n] = a[n+1] - a[n]`` along
-		the given axis, higher order differences are calculated by using `diff`
-		recursively.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array
-		n : int, optional
-		    The number of times values are differenced.
-		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
-		
-		Returns
-		-------
-		diff : ndarray
-		    The `n` order differences. The shape of the output is the same as `a`
-		    except along `axis` where the dimension is smaller by `n`.
-		
-		See Also
-		--------
-		gradient, ediff1d, cumsum
-		
-		Examples
-		--------
-		>>> x = np.array([1, 2, 4, 7, 0])
-		>>> np.diff(x)
-		array([ 1,  2,  3, -7])
-		>>> np.diff(x, n=2)
-		array([  1,   1, -10])
-		
-		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		>>> np.diff(x)
-		array([[2, 3, 4],
-		       [5, 1, 2]])
-		>>> np.diff(x, axis=0)
-		array([[-1,  2,  0, -2]])
-	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	/**
-		empty(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, without initializing entries.
-		
-		Parameters
-		----------
-		shape : int or tuple of int
-		    Shape of the empty array
-		dtype : data-type, optional
-		    Desired output data-type.
-		order : {'C', 'F'}, optional
-		    Whether to store multi-dimensional data in row-major
-		    (C-style) or column-major (Fortran-style) order in
-		    memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
-		
-		See Also
-		--------
-		empty_like, zeros, ones
-		
-		Notes
-		-----
-		`empty`, unlike `zeros`, does not set the array values to zero,
-		and may therefore be marginally faster.  On the other hand, it requires
-		the user to manually set all the values in the array, and should be
-		used with caution.
-		
-		Examples
-		--------
-		>>> np.empty([2, 2])
-		array([[ -9.74499359e+001,   6.69583040e-309],
-		       [  2.13182611e-314,   3.06959433e-309]])         #random
-		
-		>>> np.empty([2, 2], dtype=int)
-		array([[-1073741821, -1067949133],
-		       [  496041986,    19249760]])                     #random
-	**/
-	static public function empty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Compute a definite integral using fixed-order Gaussian quadrature.
 		
@@ -360,6 +113,9 @@ package scipy.integrate.quadrature;
 		-------
 		val : float
 		    Gaussian quadrature approximation to the integral
+		none : None
+		    Statically returned value of None
+		
 		
 		See Also
 		--------
@@ -392,92 +148,6 @@ package scipy.integrate.quadrature;
 	**/
 	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		isinf(x[, out])
-		
-		Test element-wise for positive or negative infinity.
-		
-		Returns a boolean array of the same shape as `x`, True where ``x ==
-		+/-inf``, otherwise False.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input values
-		out : array_like, optional
-		    An array with the same shape as `x` to store the result.
-		
-		Returns
-		-------
-		y : bool (scalar) or boolean ndarray
-		    For scalar input, the result is a new boolean with value True if
-		    the input is positive or negative infinity; otherwise the value is
-		    False.
-		
-		    For array input, the result is a boolean array with the same shape
-		    as the input and the values are True where the corresponding
-		    element of the input is positive or negative infinity; elsewhere
-		    the values are False.  If a second argument was supplied the result
-		    is stored there.  If the type of that array is a numeric type the
-		    result is represented as zeros and ones, if the type is boolean
-		    then as False and True, respectively.  The return value `y` is then
-		    a reference to that array.
-		
-		See Also
-		--------
-		isneginf, isposinf, isnan, isfinite
-		
-		Notes
-		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
-		(IEEE 754).
-		
-		Errors result if the second argument is supplied when the first
-		argument is a scalar, or if the first and second arguments have
-		different shapes.
-		
-		Examples
-		--------
-		>>> np.isinf(np.inf)
-		True
-		>>> np.isinf(np.nan)
-		False
-		>>> np.isinf(np.NINF)
-		True
-		>>> np.isinf([np.inf, -np.inf, 1.0, np.nan])
-		array([ True,  True, False, False], dtype=bool)
-		
-		>>> x = np.array([-np.inf, 0., np.inf])
-		>>> y = np.array([2, 2, 2])
-		>>> np.isinf(x, y)
-		array([1, 0, 1])
-		>>> y
-		array([1, 0, 1])
-	**/
-	static public function isinf(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Returns True if the type of `num` is a scalar type.
-		
-		Parameters
-		----------
-		num : any
-		    Input argument, can be of any type and shape.
-		
-		Returns
-		-------
-		val : bool
-		    True if `num` is a scalar type, False if it is not.
-		
-		Examples
-		--------
-		>>> np.isscalar(3.1)
-		True
-		>>> np.isscalar([3.1])
-		False
-		>>> np.isscalar(False)
-		True
-	**/
-	static public function isscalar(num:Dynamic):Bool;
-	/**
 		Return weights and error coefficient for Newton-Cotes integration.
 		
 		Suppose we have (N+1) samples of f at the positions
@@ -487,8 +157,8 @@ package scipy.integrate.quadrature;
 		:math:`\int_{x_0}^{x_N} f(x)dx = \Delta x \sum_{i=0}^{N} a_i f(x_i)
 		+ B_N (\Delta x)^{N+2} f^{N+1} (\xi)`
 		
-		where :math:`\xi \in [x_0,x_N]` and :math:`\Delta x = \frac{x_N-x_0}{N}`
-		is the averages samples spacing.
+		where :math:`\xi \in [x_0,x_N]`
+		and :math:`\Delta x = \frac{x_N-x_0}{N}` is the average samples spacing.
 		
 		If the samples are equally-spaced and N is even, then the error
 		term is :math:`B_N (\Delta x)^{N+3} f^{N+2}(\xi)`.
@@ -517,53 +187,12 @@ package scipy.integrate.quadrature;
 	**/
 	static public function newton_cotes(rn:Dynamic, ?equal:Dynamic):Dynamic;
 	/**
-		Return a new array of given shape and type, filled with ones.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of ones with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros, ones_like
-		
-		Examples
-		--------
-		>>> np.ones(5)
-		array([ 1.,  1.,  1.,  1.,  1.])
-		
-		>>> np.ones((5,), dtype=np.int)
-		array([1, 1, 1, 1, 1])
-		
-		>>> np.ones((2, 1))
-		array([[ 1.],
-		       [ 1.]])
-		
-		>>> s = (2,2)
-		>>> np.ones(s)
-		array([[ 1.,  1.],
-		       [ 1.,  1.]])
-	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		Gauss-Legendre quadrature
+		Gauss-Legendre quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the `n`th degree Legendre polynomial
+		The sample points are the roots of the n-th degree Legendre polynomial
 		:math:`P_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
+		polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
 		
 		Parameters
@@ -584,8 +213,8 @@ package scipy.integrate.quadrature;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.legendre.leggauss
 	**/
 	static public function p_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
@@ -638,37 +267,6 @@ package scipy.integrate.quadrature;
 		odeint: ODE integrator
 	**/
 	static public function quadrature(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?tol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?vec_func:Dynamic, ?miniter:Dynamic):Float;
-	/**
-		Return the real part of the elements of the array.
-		
-		Parameters
-		----------
-		val : array_like
-		    Input array.
-		
-		Returns
-		-------
-		out : ndarray
-		    Output array. If `val` is real, the type of `val` is used for the
-		    output.  If `val` has complex elements, the returned type is float.
-		
-		See Also
-		--------
-		real_if_close, imag, angle
-		
-		Examples
-		--------
-		>>> a = np.array([1+2j, 3+4j, 5+6j])
-		>>> a.real
-		array([ 1.,  3.,  5.])
-		>>> a.real = 9
-		>>> a
-		array([ 9.+2.j,  9.+4.j,  9.+6.j])
-		>>> a.real = np.array([9, 8, 7])
-		>>> a
-		array([ 9.+2.j,  8.+4.j,  7.+6.j])
-	**/
-	static public function real(val:Dynamic):Dynamic;
 	/**
 		Romberg integration using samples of a function.
 		
@@ -837,87 +435,6 @@ package scipy.integrate.quadrature;
 		if the function is a polynomial of order 2 or less.
 	**/
 	static public function simps(y:Dynamic, ?x:Dynamic, ?dx:Dynamic, ?axis:Dynamic, ?even:Dynamic):Dynamic;
-	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
-		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Integrate along the given axis using the composite trapezoidal rule.
 		

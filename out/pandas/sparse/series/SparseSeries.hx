@@ -212,6 +212,10 @@ package pandas.sparse.series;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
+	/**
+		add the series only operations to the cls; evaluate the doc strings again 
+	**/
+	static public function _add_series_only_operations():Dynamic;
 	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
@@ -307,7 +311,15 @@ package pandas.sparse.series;
 		return a tuple of (axes, kwargs) 
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
+	/**
+		Used when a manipulation result has the same dimesions as the
+		original.
+	**/
 	public var _constructor : Dynamic;
+	/**
+		Used when a manipulation result has one higher dimension as the
+		original, such as Series.to_frame() and DataFrame.to_panel()
+	**/
 	public var _constructor_expanddim : Dynamic;
 	/**
 		Used when a manipulation result has one lower dimension(s) as the
@@ -720,8 +732,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -741,8 +753,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -1266,8 +1278,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1620,7 +1632,7 @@ package pandas.sparse.series;
 		Returns a Series indexed like the original Series.
 		Raises TypeError if the Series does not contain datetimelike values.
 	**/
-	static public function dt(values:Dynamic, index:Dynamic, name:Dynamic):Dynamic;
+	static public function dt(values:Dynamic, index:Dynamic, name:Dynamic, ?orig:Dynamic):Dynamic;
 	/**
 		return the dtype object of the underlying data 
 	**/
@@ -2280,8 +2292,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2303,8 +2315,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2368,8 +2380,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2437,8 +2449,8 @@ package pandas.sparse.series;
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
 		This method returns the maximum of the values in the object. If you
-		want the *index* of the maximum, use ``idxmax``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmax``.
+		                                      want the *index* of the maximum, use ``idxmax``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmax``.
 		
 		Parameters
 		----------
@@ -2447,8 +2459,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2468,8 +2480,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2489,8 +2501,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2501,9 +2513,34 @@ package pandas.sparse.series;
 	**/
 	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Memory usage of the Series
+		
+		Parameters
+		----------
+		index : bool
+		    Specifies whether to include memory usage of Series index
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		scalar bytes of memory consumed
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?index:Dynamic, ?deep:Dynamic):Dynamic;
+	/**
 		This method returns the minimum of the values in the object. If you
-		want the *index* of the minimum, use ``idxmin``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmin``.
+		                                      want the *index* of the minimum, use ``idxmin``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmin``.
 		
 		Parameters
 		----------
@@ -2512,8 +2549,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2903,8 +2940,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2924,8 +2961,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2935,7 +2972,29 @@ package pandas.sparse.series;
 		prod : scalar or Series (if level specified)
 	**/
 	public function product(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function ptp(?axis:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		                                      Returns the difference between the maximum value and the minimum
+		                                      value in the object. This is the equivalent of the ``numpy.ndarray``
+		                                      method ``ptp``.
+		
+		Parameters
+		----------
+		axis : {index (0)}
+		skipna : boolean, default True
+		    Exclude NA/null values. If an entire row/column is NA, the result
+		    will be NA
+		level : int or level name, default None
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
+		numeric_only : boolean, default None
+		    Include only float, int, boolean data. If None, will attempt to use
+		    everything, then use only numeric data
+		
+		Returns
+		-------
+		ptp : scalar or Series (if level specified)
+	**/
+	public function ptp(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a ndarray with the values put
 		
@@ -3695,8 +3754,10 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3756,8 +3817,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3914,8 +3975,10 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3935,7 +3998,7 @@ package pandas.sparse.series;
 		>>> s.str.split('_')
 		>>> s.str.replace('_', '')
 	**/
-	static public function str(series:Dynamic):Dynamic;
+	static public function str(data:Dynamic):Dynamic;
 	/**
 		return the strides of the underlying data 
 	**/
@@ -4000,8 +4063,8 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -4620,8 +4683,10 @@ package pandas.sparse.series;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a scalar
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a scalar
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data

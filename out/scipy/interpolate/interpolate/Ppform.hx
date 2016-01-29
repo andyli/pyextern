@@ -300,7 +300,7 @@ package scipy.interpolate.interpolate;
 		``[-2, 1], [1, 2]``:
 		
 		>>> from scipy.interpolate import PPoly
-		>>> pp = PPoly(np.array([[1, 0, -1], [1, 0, 0]]).T, [-2, 1, 2])
+		>>> pp = PPoly(np.array([[1, -4, 3], [1, 0, 0]]).T, [-2, 1, 2])
 		>>> pp.roots()
 		array([-1.,  1.])
 	**/

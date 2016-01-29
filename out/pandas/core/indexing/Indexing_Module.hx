@@ -19,6 +19,18 @@ package pandas.core.indexing;
 	**/
 	static public function _infer_fill_value(val:Dynamic):Dynamic;
 	/**
+		want nice defaults for background_gradient that don't break
+		with non-numeric data. But if slice_ is passed go with that.
+	**/
+	static public function _maybe_numeric_slice(df:Dynamic, slice_:Dynamic, ?include_bool:Dynamic):Dynamic;
+	/**
+		Ensurse that a slice doesn't reduce to a Series or Scalar.
+		
+		Any user-paseed `subset` should have this called on it
+		to make sure we're always working with DataFrames.
+	**/
+	static public function _non_reducing_slice(slice_:Dynamic):Dynamic;
+	/**
 		return my values or the object if we are say an ndarray 
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;

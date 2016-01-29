@@ -21,6 +21,7 @@ package pandas.core.groupby;
 	static public function _compress_group_index(group_index:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _convert_grouper(axis:Dynamic, grouper:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
+	static public var _cython_transforms : Dynamic;
 	static public var _dataframe_apply_whitelist : Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _first_compat(x:Dynamic, ?axis:Dynamic):Dynamic;

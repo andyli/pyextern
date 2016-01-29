@@ -81,7 +81,10 @@ package scipy.optimize._basinhopping;
 		    The optimization result represented as a ``OptimizeResult`` object.  Important
 		    attributes are: ``x`` the solution array, ``fun`` the value of the
 		    function at the solution, and ``message`` which describes the cause of
-		    the termination. See `OptimizeResult` for a description of other attributes.
+		    the termination. The ``OptimzeResult`` object returned by the selected
+		    minimizer at the lowest minimum is also contained within this object
+		    and can be accessed through the ``lowest_optimization_result`` attribute.
+		    See `OptimizeResult` for a description of other attributes.
 		
 		See Also
 		--------

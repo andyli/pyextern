@@ -123,9 +123,25 @@ package scipy.io.mmio;
 	**/
 	public function _init_attrs(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return an open file stream for reading based on source.  If source is
-		a file name, open it (after trying to find it with mtx and gzipped mtx
-		extensions).  Otherwise, just return source.
+		Return an open file stream for reading based on source.
+		
+		If source is a file name, open it (after trying to find it with mtx and
+		gzipped mtx extensions).  Otherwise, just return source.
+		
+		Parameters
+		----------
+		filespec : str or file-like
+		    String giving file name or file-like object
+		mode : str, optional
+		    Mode with which to open file, if `filespec` is a file name.
+		
+		Returns
+		-------
+		fobj : file-like
+		    Open file-like object.
+		close_it : bool
+		    True if the calling function should close this file when done,
+		    false otherwise.
 	**/
 	static public function _open(filespec:Dynamic, ?mode:Dynamic):Dynamic;
 	public function _parse_body(stream:Dynamic):Dynamic;
@@ -135,17 +151,76 @@ package scipy.io.mmio;
 	static public function _validate_field(field:Dynamic):Dynamic;
 	static public function _validate_format(format:Dynamic):Dynamic;
 	static public function _validate_symmetry(symmetry:Dynamic):Dynamic;
-	public function _write(stream:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic):Dynamic;
+	public function _write(stream:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic, ?symmetry:Dynamic):Dynamic;
 	public var cols : Dynamic;
 	public var entries : Dynamic;
 	public var field : Dynamic;
 	public var format : Dynamic;
 	public var has_symmetry : Dynamic;
-	static public function info(source:Dynamic):Dynamic;
+	/**
+		Return size, storage parameters from Matrix Market file-like 'source'.
+		
+		Parameters
+		----------
+		source : str or file-like
+		    Matrix Market filename (extension .mtx) or open file-like object
+		
+		Returns
+		-------
+		rows : int
+		    Number of matrix rows.
+		cols : int
+		    Number of matrix columns.
+		entries : int
+		    Number of non-zero entries of a sparse matrix
+		    or rows*cols for a dense matrix.
+		format : str
+		    Either 'coordinate' or 'array'.
+		field : str
+		    Either 'real', 'complex', 'pattern', or 'integer'.
+		symmetry : str
+		    Either 'general', 'symmetric', 'skew-symmetric', or 'hermitian'.
+	**/
+	static public function info(source:Dynamic):Int;
+	/**
+		Reads the contents of a Matrix Market file-like 'source' into a matrix.
+		
+		Parameters
+		----------
+		source : str or file-like
+		    Matrix Market filename (extensions .mtx, .mtz.gz)
+		    or open file object.
+		
+		Returns
+		-------
+		a : ndarray or coo_matrix
+		    Dense or sparse matrix depending on the matrix format in the
+		    Matrix Market file.
+	**/
 	public function read(source:Dynamic):Dynamic;
 	static public function reader():Dynamic;
 	public var rows : Dynamic;
 	public var symmetry : Dynamic;
-	public function write(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic):Dynamic;
+	/**
+		Writes sparse or dense array `a` to Matrix Market file-like `target`.
+		
+		Parameters
+		----------
+		target : str or file-like
+		    Matrix Market filename (extension .mtx) or open file-like object.
+		a : array like
+		    Sparse or dense 2D array.
+		comment : str, optional
+		    Comments to be prepended to the Matrix Market file.
+		field : None or str, optional
+		    Either 'real', 'complex', 'pattern', or 'integer'.
+		precision : None or int, optional
+		    Number of digits to display for real or complex values.
+		symmetry : None or str, optional
+		    Either 'general', 'symmetric', 'skew-symmetric', or 'hermitian'.
+		    If symmetry is None the symmetry type of 'a' is determined by its
+		    values.
+	**/
+	public function write(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic, ?symmetry:Dynamic):Dynamic;
 	static public function writer():Dynamic;
 }

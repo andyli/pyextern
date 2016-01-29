@@ -50,8 +50,10 @@ package scipy.optimize.lbfgsb;
 		    Maximum number of function evaluations.
 		maxiter : int
 		    Maximum number of iterations.
+		maxls : int, optional
+		    Maximum number of line search steps (per iteration). Default is 20.
 	**/
-	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?maxls:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Finite-difference approximation of the gradient of a scalar function.
@@ -103,7 +105,7 @@ package scipy.optimize.lbfgsb;
 		
 		>>> x = np.ones(2)
 		>>> c0, c1 = (1, 200)
-		>>> eps = np.sqrt(np.finfo(np.float).eps)
+		>>> eps = np.sqrt(np.finfo(float).eps)
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
@@ -310,9 +312,11 @@ package scipy.optimize.lbfgsb;
 		    calculating the gradient
 		iprint : int, optional
 		    Controls the frequency of output. ``iprint < 0`` means no output;
-		    ``iprint == 0`` means write messages to stdout; ``iprint > 1`` in
-		    addition means write logging information to a file named
-		    ``iterate.dat`` in the current working directory.
+		    ``iprint = 0``    print only one line at the last iteration;
+		    ``0 < iprint < 99`` print also f and ``|proj g|`` every iprint iterations;
+		    ``iprint = 99``   print details of every iteration except n-vectors;
+		    ``iprint = 100``  print also the changes of active set and final x;
+		    ``iprint > 100``  print details of every iteration including x and g.
 		disp : int, optional
 		    If zero, then no output.  If a positive number, then this over-rides
 		    `iprint` (i.e., `iprint` gets the value of `disp`).
@@ -323,6 +327,8 @@ package scipy.optimize.lbfgsb;
 		callback : callable, optional
 		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
 		    current parameter vector.
+		maxls : int, optional
+		    Maximum number of line search steps (per iteration). Default is 20.
 		
 		Returns
 		-------
@@ -374,7 +380,7 @@ package scipy.optimize.lbfgsb;
 		  FORTRAN routines for large scale bound constrained optimization (2011),
 		  ACM Transactions on Mathematical Software, 38, 1.
 	**/
-	static public function fmin_l_bfgs_b(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?approx_grad:Dynamic, ?bounds:Dynamic, ?m:Dynamic, ?factr:Dynamic, ?pgtol:Dynamic, ?epsilon:Dynamic, ?iprint:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function fmin_l_bfgs_b(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?approx_grad:Dynamic, ?bounds:Dynamic, ?m:Dynamic, ?factr:Dynamic, ?pgtol:Dynamic, ?epsilon:Dynamic, ?iprint:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?maxls:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function wrap_function(_function:Dynamic, args:Dynamic):Dynamic;
 	/**

@@ -44,47 +44,47 @@ package matplotlib.text;
 		
 		Valid kwargs are
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 	**/
 	@:native("__init__")
 	public function ___init__(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -94,47 +94,47 @@ package matplotlib.text;
 		
 		Valid kwargs are
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 	**/
 	public function new(?x:Dynamic, ?y:Dynamic, ?text:Dynamic, ?color:Dynamic, ?verticalalignment:Dynamic, ?horizontalalignment:Dynamic, ?multialignment:Dynamic, ?fontproperties:Dynamic, ?rotation:Dynamic, ?linespacing:Dynamic, ?rotation_mode:Dynamic, ?usetex:Dynamic, ?wrap:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**

@@ -40,6 +40,12 @@ package matplotlib._path;
 	**/
 	static public function get_path_extents(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		is_sorted(array)
+		
+		Returns True if 1-D array is monotonically increasing, ignoring NaNs
+	**/
+	static public function is_sorted(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		path_in_path(path_a, trans_a, path_b, trans_b)
 	**/
 	static public function path_in_path(args:haxe.extern.Rest<Dynamic>):Dynamic;

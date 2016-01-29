@@ -527,6 +527,7 @@ package matplotlib.cbook;
 		reverse the dictionary -- may lose data if values are not unique!
 	**/
 	static public function reverse_dict(d:Dynamic):Dynamic;
+	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public function safe_masked_invalid(x:Dynamic):Dynamic;
 	/**
 		make sure *args* are equal len before zipping

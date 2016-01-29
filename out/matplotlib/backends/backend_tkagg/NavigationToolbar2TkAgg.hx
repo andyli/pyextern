@@ -1046,7 +1046,7 @@ package matplotlib.backends.backend_tkagg;
 	**/
 	public function unbind_all(sequence:Dynamic):Dynamic;
 	/**
-		Unbind for a all widgets with bindtag CLASSNAME for event SEQUENCE
+		Unbind for all widgets with bindtag CLASSNAME for event SEQUENCE
 		all functions.
 	**/
 	public function unbind_class(className:Dynamic, sequence:Dynamic):Dynamic;

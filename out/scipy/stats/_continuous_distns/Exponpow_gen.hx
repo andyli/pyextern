@@ -44,6 +44,7 @@ package scipy.stats._continuous_distns;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -94,6 +95,7 @@ package scipy.stats._continuous_distns;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -193,6 +195,13 @@ package scipy.stats._continuous_distns;
 	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _sf(x:Dynamic, b:Dynamic):Dynamic;
 	public function _stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return the current version of _ctor_param, possibly updated by user.
+		
+		Used by freezing and pickling.
+		Keep this in sync with the signature of __init__.
+	**/
+	public function _updated_ctor_param():Dynamic;
 	/**
 		Cumulative distribution function of the given RV.
 		
@@ -315,8 +324,9 @@ package scipy.stats._continuous_distns;
 		
 		    - f0...fn : hold respective shape parameters fixed.
 		      Alternatively, shape parameters to fix can be specified by name.
-		      For example, if ``self.shapes == "a, b"``, ``fa`` is equivalent to
-		      ``f0`` and ``fb`` is equivalent to ``f1``.
+		      For example, if ``self.shapes == "a, b"``, ``fa``and ``fix_a``
+		      are equivalent to ``f0``, and ``fb`` and ``fix_b`` are
+		      equivalent to ``f1``.
 		
 		    - floc : hold location parameter fixed to specified value.
 		

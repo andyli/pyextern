@@ -240,7 +240,7 @@ package scipy.optimize.optimize;
 		
 		>>> x = np.ones(2)
 		>>> c0, c1 = (1, 200)
-		>>> eps = np.sqrt(np.finfo(np.float).eps)
+		>>> eps = np.sqrt(np.finfo(float).eps)
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
@@ -473,11 +473,11 @@ package scipy.optimize.optimize;
 		args : tuple, optional
 		    Additional arguments (if present).
 		brack : tuple, optional
-		    Triple (a,b,c) where (a<b<c) and func(b) <
-		    func(a),func(c).  If bracket consists of two numbers (a,c)
-		    then they are assumed to be a starting interval for a
-		    downhill bracket search (see `bracket`); it doesn't always
-		    mean that the obtained solution will satisfy a<=x<=c.
+		    Either a triple (xa,xb,xc) where xa<xb<xc and func(xb) <
+		    func(xa), func(xc) or a pair (xa,xb) which are used as a
+		    starting interval for a downhill bracket search (see
+		    `bracket`). Providing the pair (xa,xb) does not always mean
+		    the obtained solution will satisfy xa<=x<=xb.
 		tol : float, optional
 		    Stop if between iteration change is less than `tol`.
 		full_output : bool, optional
@@ -1007,13 +1007,13 @@ package scipy.optimize.optimize;
 		>>> x0 = np.asarray((0, 0))  # Initial guess.
 		>>> from scipy import optimize
 		>>> res1 = optimize.fmin_cg(f, x0, fprime=gradf, args=args)
-		>>> print('res1 = ', res1)
 		Optimization terminated successfully.
 		         Current function value: 1.617021
 		         Iterations: 2
 		         Function evaluations: 5
 		         Gradient evaluations: 5
-		res1 =  [-1.80851064 -0.25531915]
+		>>> res1
+		array([-1.80851064, -0.25531915])
 		
 		Example 2: solve the same problem using the `minimize` function.
 		(This `myopts` dictionary shows all of the available options,
@@ -1033,7 +1033,7 @@ package scipy.optimize.optimize;
 		        Function evaluations: 5
 		        Gradient evaluations: 5
 		>>> res2.x  # minimum found
-		array([-1.80851064 -0.25531915])
+		array([-1.80851064, -0.25531915])
 	**/
 	static public function fmin_cg(f:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?epsilon:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
@@ -1191,7 +1191,7 @@ package scipy.optimize.optimize;
 		over each current direction in the direction set. At the end
 		of the inner loop, if certain conditions are met, the direction
 		that gave the largest decrease is dropped and replaced with
-		the difference between the current estiamted x and the estimated
+		the difference between the current estimated x and the estimated
 		x from the beginning of the inner-loop.
 		
 		The technical conditions for replacing the direction of greatest

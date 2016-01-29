@@ -315,7 +315,7 @@ package scipy.optimize._root;
 		    N positive entries that serve as a scale factors for the
 		    variables.
 	**/
-	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?full_output:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Options
 		-------
@@ -487,9 +487,9 @@ package scipy.optimize._root;
 		    in x0, otherwise the default `maxfev` is 200*(N+1).
 		epsfcn : float, optional
 		    A variable used in determining a suitable step length for the forward-
-		    difference approximation of the Jacobian (for Dfun=None). 
+		    difference approximation of the Jacobian (for Dfun=None).
 		    Normally the actual step length will be sqrt(epsfcn)*x
-		    If epsfcn is less than the machine precision, it is assumed that the 
+		    If epsfcn is less than the machine precision, it is assumed that the
 		    relative errors are of the order of the machine precision.
 		factor : float, optional
 		    A parameter determining the initial step bound

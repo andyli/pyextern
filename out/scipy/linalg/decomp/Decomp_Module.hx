@@ -44,6 +44,17 @@ package scipy.linalg.decomp;
 	**/
 	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	/**
+		Round floating-point lwork returned by lapack to integer.
+		
+		Several LAPACK routines compute optimal values for LWORK, which
+		they return in a floating-point variable. However, for large
+		values of LWORK, single-precision floating point is not sufficient
+		to hold the exact value --- some LAPACK versions (<= 3.5.0 at
+		least) truncate the returned integer to single precision and in
+		some cases this can be smaller than the required value.
+	**/
+	static public function _compute_lwork(routine:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Strict check for `arr` not sharing any data with `original`,
 		under the assumption that arr = asarray(original)
 	**/
@@ -145,134 +156,6 @@ package scipy.linalg.decomp;
 		        [3, 4]])
 	**/
 	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		Convert the input to an array, checking for NaNs or Infs.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.  Success requires no NaNs or Infs.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		     Whether to use row-major (C-style) or
-		     column-major (Fortran-style) memory representation.
-		     Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		Raises
-		------
-		ValueError
-		    Raises ValueError if `a` contains NaN (Not a Number) or Inf (Infinity).
-		
-		See Also
-		--------
-		asarray : Create and array.
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array.  If all elements are finite
-		``asarray_chkfinite`` is identical to ``asarray``.
-		
-		>>> a = [1, 2]
-		>>> np.asarray_chkfinite(a, dtype=float)
-		array([1., 2.])
-		
-		Raises ValueError if array_like contains Nans or Infs.
-		
-		>>> a = [1, 2, np.inf]
-		>>> try:
-		...     np.asarray_chkfinite(a)
-		... except ValueError:
-		...     print 'ValueError'
-		...
-		ValueError
-	**/
-	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	@:native("cast")
 	static public var _cast : Dynamic;
 	/**
@@ -304,59 +187,6 @@ package scipy.linalg.decomp;
 		       [ 0.-0.j,  1.-1.j]])
 	**/
 	static public function conj(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Extract a diagonal or construct a diagonal array.
-		
-		See the more detailed documentation for ``numpy.diagonal`` if you use this
-		function to extract a diagonal and wish to write to the resulting array;
-		whether it returns a copy or a view depends on what version of numpy you
-		are using.
-		
-		Parameters
-		----------
-		v : array_like
-		    If `v` is a 2-D array, return a copy of its `k`-th diagonal.
-		    If `v` is a 1-D array, return a 2-D array with `v` on the `k`-th
-		    diagonal.
-		k : int, optional
-		    Diagonal in question. The default is 0. Use `k>0` for diagonals
-		    above the main diagonal, and `k<0` for diagonals below the main
-		    diagonal.
-		
-		Returns
-		-------
-		out : ndarray
-		    The extracted diagonal or constructed diagonal array.
-		
-		See Also
-		--------
-		diagonal : Return specified diagonals.
-		diagflat : Create a 2-D array with the flattened input as a diagonal.
-		trace : Sum along diagonals.
-		triu : Upper triangle of an array.
-		tril : Lower triangle of an array.
-		
-		Examples
-		--------
-		>>> x = np.arange(9).reshape((3,3))
-		>>> x
-		array([[0, 1, 2],
-		       [3, 4, 5],
-		       [6, 7, 8]])
-		
-		>>> np.diag(x)
-		array([0, 4, 8])
-		>>> np.diag(x, k=1)
-		array([1, 5])
-		>>> np.diag(x, k=-1)
-		array([3, 7])
-		
-		>>> np.diag(np.diag(x))
-		array([[0, 0, 0],
-		       [0, 4, 0],
-		       [0, 0, 8]])
-	**/
-	static public function diag(v:Dynamic, ?k:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Solve an ordinary or generalized eigenvalue problem of a square matrix.
@@ -785,45 +615,6 @@ package scipy.linalg.decomp;
 	**/
 	static public function flatnonzero(a:Dynamic):Dynamic;
 	/**
-		Return available BLAS function objects from names.
-		
-		Arrays are used to determine the optimal prefix of BLAS routines.
-		
-		Parameters
-		----------
-		names : str or sequence of str
-		    Name(s) of BLAS functions without type prefix.
-		
-		arrays : sequence of ndarrays, optional
-		    Arrays can be given to determine optimal prefix of BLAS
-		    routines. If not given, double-precision routines will be
-		    used, otherwise the most generic type in arrays will be used.
-		
-		dtype : str or dtype, optional
-		    Data-type specifier. Not used if `arrays` is non-empty.
-		
-		
-		Returns
-		-------
-		funcs : list
-		    List containing the found function(s).
-		
-		
-		Notes
-		-----
-		This routine automatically chooses between Fortran/C
-		interfaces. Fortran code is used whenever possible for arrays with
-		column major order. In all other cases, C code is preferred.
-		
-		In BLAS, the naming convention is that all functions start with a
-		type prefix, which depends on the type of the principal
-		matrix. These can be one of {'s', 'd', 'c', 'z'} for the numpy
-		types {float32, float64, complex64, complex128} respectively.
-		The code and the dtype are stored in attributes `typecode` and `dtype`
-		of the returned functions.
-	**/
-	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
-	/**
 		Return available LAPACK function objects from names.
 		
 		Arrays are used to determine the optimal prefix of LAPACK routines.
@@ -1076,15 +867,25 @@ package scipy.linalg.decomp;
 		Parameters
 		----------
 		a : (M,) or (M, N) array_like
-		    Input array.
+		    Input array.  If `axis` is None, `a` must be 1-D or 2-D.
 		ord : {non-zero int, inf, -inf, 'fro'}, optional
 		    Order of the norm (see table under ``Notes``). inf means numpy's
-		    `inf` object.
+		    `inf` object
+		axis : {int, 2-tuple of ints, None}, optional
+		    If `axis` is an integer, it specifies the axis of `a` along which to
+		    compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+		    axes that hold 2-D matrices, and the matrix norms of these matrices
+		    are computed.  If `axis` is None then either a vector norm (when `a`
+		    is 1-D) or a matrix norm (when `a` is 2-D) is returned.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are normed over are left in the
+		    result as dimensions with size one.  With this option the result will
+		    broadcast correctly against the original `a`.
 		
 		Returns
 		-------
-		norm : float
-		    Norm of the matrix or vector.
+		n : float or ndarray
+		    Norm of the matrix or vector(s).
 		
 		Notes
 		-----
@@ -1113,6 +914,10 @@ package scipy.linalg.decomp;
 		
 		    :math:`||A||_F = [\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
 		
+		The ``axis`` and ``keepdims`` arguments are passed directly to
+		``numpy.linalg.norm`` and are only usable if they are supported
+		by the version of numpy in use.
+		
 		References
 		----------
 		.. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
@@ -1121,14 +926,14 @@ package scipy.linalg.decomp;
 		Examples
 		--------
 		>>> from scipy.linalg import norm
-		>>> a = np.arange(9) - 4
+		>>> a = np.arange(9) - 4.0
 		>>> a
-		array([-4, -3, -2, -1,  0,  1,  2,  3,  4])
+		array([-4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])
 		>>> b = a.reshape((3, 3))
 		>>> b
-		array([[-4, -3, -2],
-		       [-1,  0,  1],
-		       [ 2,  3,  4]])
+		array([[-4., -3., -2.],
+		       [-1.,  0.,  1.],
+		       [ 2.,  3.,  4.]])
 		
 		>>> norm(a)
 		7.745966692414834
@@ -1159,106 +964,14 @@ package scipy.linalg.decomp;
 		7.3484692283495345
 		
 		>>> norm(a, -2)
-		nan
+		0
 		>>> norm(b, -2)
 		1.8570331885190563e-016
 		>>> norm(a, 3)
 		5.8480354764257312
 		>>> norm(a, -3)
-		nan
+		0
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
-	/**
-		Return a new array of given shape and type, filled with ones.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of ones with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros, ones_like
-		
-		Examples
-		--------
-		>>> np.ones(5)
-		array([ 1.,  1.,  1.,  1.,  1.])
-		
-		>>> np.ones((5,), dtype=np.int)
-		array([1, 1, 1, 1, 1])
-		
-		>>> np.ones((2, 1))
-		array([[ 1.],
-		       [ 1.]])
-		
-		>>> s = (2,2)
-		>>> np.ones(s)
-		array([[ 1.,  1.],
-		       [ 1.,  1.]])
-	**/
-	static public function ones(shape:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
+	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		zeros(shape, dtype=float, order='C')
-		
-		Return a new array of given shape and type, filled with zeros.
-		
-		Parameters
-		----------
-		shape : int or sequence of ints
-		    Shape of the new array, e.g., ``(2, 3)`` or ``2``.
-		dtype : data-type, optional
-		    The desired data-type for the array, e.g., `numpy.int8`.  Default is
-		    `numpy.float64`.
-		order : {'C', 'F'}, optional
-		    Whether to store multidimensional data in C- or Fortran-contiguous
-		    (row- or column-wise) order in memory.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array of zeros with the given shape, dtype, and order.
-		
-		See Also
-		--------
-		zeros_like : Return an array of zeros with shape and type of input.
-		ones_like : Return an array of ones with shape and type of input.
-		empty_like : Return an empty array with shape and type of input.
-		ones : Return a new array setting values to one.
-		empty : Return a new uninitialized array.
-		
-		Examples
-		--------
-		>>> np.zeros(5)
-		array([ 0.,  0.,  0.,  0.,  0.])
-		
-		>>> np.zeros((5,), dtype=np.int)
-		array([0, 0, 0, 0, 0])
-		
-		>>> np.zeros((2, 1))
-		array([[ 0.],
-		       [ 0.]])
-		
-		>>> s = (2,2)
-		>>> np.zeros(s)
-		array([[ 0.,  0.],
-		       [ 0.,  0.]])
-		
-		>>> np.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype
-		array([(0, 0), (0, 0)],
-		      dtype=[('x', '<i4'), ('y', '<i4')])
-	**/
-	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

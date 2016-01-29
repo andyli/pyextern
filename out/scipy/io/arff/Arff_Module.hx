@@ -55,6 +55,31 @@ package scipy.io.arff;
 		files with sparse data ({} in the file).  However, this function can
 		read files with missing data (? in the file), representing the data
 		points as NaNs.
+		
+		Examples
+		--------
+		>>> from scipy.io import arff
+		>>> from cStringIO import StringIO
+		>>> content = """
+		... @relation foo
+		... @attribute width  numeric
+		... @attribute height numeric
+		... @attribute color  {red,green,blue,yellow,black}
+		... @data
+		... 5.0,3.25,blue
+		... 4.5,3.75,green
+		... 3.0,4.00,red
+		... """
+		>>> f = StringIO(content)
+		>>> data, meta = arff.loadarff(f)
+		>>> data
+		array([(5.0, 3.25, 'blue'), (4.5, 3.75, 'green'), (3.0, 4.0, 'red')],
+		      dtype=[('width', '<f8'), ('height', '<f8'), ('color', '|S6')])
+		>>> meta
+		Dataset: foo
+		    width's type is numeric
+		    height's type is numeric
+		    color's type is nominal, range is ('red', 'green', 'blue', 'yellow', 'black')
 	**/
 	static public function loadarff(f:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

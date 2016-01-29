@@ -281,6 +281,9 @@ package pandas.io.pytables;
 	**/
 	public function set_version():Dynamic;
 	public var shape : Dynamic;
+	/**
+		return my storable 
+	**/
 	public var storable : Dynamic;
 	public var storage_obj_type : Dynamic;
 	/**

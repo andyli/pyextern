@@ -68,6 +68,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewma(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic):Dynamic;
 	/**
@@ -137,6 +140,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmcorr(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -206,6 +212,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmcov(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -269,6 +278,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmstd(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -332,6 +344,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmvar(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -395,6 +410,9 @@ package pandas.stats.api;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmvol(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -586,8 +604,6 @@ package pandas.stats.api;
 	**/
 	static public function expanding_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		    O(N log(window)) implementation using skip list
-		    
 		Expanding median.
 		
 		Parameters
@@ -1121,8 +1137,6 @@ package pandas.stats.api;
 	**/
 	static public function rolling_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		    O(N log(window)) implementation using skip list
-		    
 		Moving median.
 		
 		Parameters

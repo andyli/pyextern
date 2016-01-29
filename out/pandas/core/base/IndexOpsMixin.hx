@@ -106,9 +106,6 @@ package pandas.core.base;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _dir_additions():Dynamic;
-	public function _dir_deletions():Dynamic;
-	public function _make_str_accessor():Dynamic;
 	/**
 		perform the reduction type operation if we can 
 	**/
@@ -210,6 +207,29 @@ package pandas.core.base;
 	**/
 	public function max():Dynamic;
 	/**
+		Memory usage of my values
+		
+		Parameters
+		----------
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		bytes used
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?deep:Dynamic):Dynamic;
+	/**
 		The minimum value of the object 
 	**/
 	public function min():Dynamic;
@@ -248,17 +268,6 @@ package pandas.core.base;
 		return the number of elements in the underlying data 
 	**/
 	public var size : Dynamic;
-	/**
-		Vectorized string functions for Series and Index. NAs stay NA unless
-		handled otherwise by a particular method. Patterned after Python's string
-		methods, with some inspiration from R's stringr package.
-		
-		Examples
-		--------
-		>>> s.str.split('_')
-		>>> s.str.replace('_', '')
-	**/
-	static public function str(series:Dynamic):Dynamic;
 	/**
 		return the strides of the underlying data 
 	**/

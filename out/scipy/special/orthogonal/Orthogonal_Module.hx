@@ -66,13 +66,14 @@ package scipy.special.orthogonal;
 	**/
 	static public function _gen_roots_and_weights(n:Dynamic, mu0:Dynamic, an_func:Dynamic, bn_func:Dynamic, f:Dynamic, df:Dynamic, symmetrize:Dynamic, mu:Dynamic):Dynamic;
 	/**
-		Gauss-Hermite (physicst's) quadrature for large n
+		Gauss-Hermite (physicst's) quadrature for large n.
 		
 		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the `n`th degree Hermite polynomial,
+		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`H_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-inf, inf]` with weight function :math:`f(x) = e^{-x^2}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
+		
 		This method relies on asymptotic expansions which work best for n > 150.
 		The algorithm has linear runtime making computation for very large n
 		feasible.
@@ -541,12 +542,12 @@ package scipy.special.orthogonal;
 	**/
 	static public function binom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind) quadrature
+		Gauss-Chebyshev (first kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the first kind, :math:`C_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-2, 2]` with weight function :math:`f(x) = 1/\sqrt{1 - (x/2)^2}`.
 		
 		Parameters
@@ -567,18 +568,19 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function c_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Gegenbauer quadrature
+		Gauss-Gegenbauer quadrature.
 		
 		Computes the sample points and weights for Gauss-Gegenbauer quadrature.
-		The sample points are the roots of the `n`th degree Gegenbauer polynomial,
+		The sample points are the roots of the n-th degree Gegenbauer polynomial,
 		:math:`C^{\alpha}_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-1, 1]` with weight function :math:`f(x) = (1-x^2)^{\alpha-1/2}`.
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function
+		:math:`f(x) = (1 - x^2)^{\alpha - 1/2}`.
 		
 		Parameters
 		----------
@@ -600,18 +602,20 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function cg_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of first kind, Cn(x).  Orthogonal
-		over [-2,2] with weight function (1-(x/2)**2)**(-1/2).
+		Return n-th order Chebyshev polynomial of first kind, :math:`C_n(x)`. 
+		Orthogonal over :math:`[-2, 2]` with weight function
+		:math:`f(x) = 1/\sqrt{1 - (x/2)^2}`
 	**/
 	static public function chebyc(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of second kind, Sn(x).  Orthogonal
-		over [-2,2] with weight function (1-(x/2)**2)**(1/2).
+		Return nth order Chebyshev polynomial of second kind, :math:`S_n(x)`.
+		Orthogonal over :math:`[-2, 2]` with weight function
+		:math:`f(x) = \sqrt{1 - (x/2)^2}`.
 	**/
 	static public function chebys(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
@@ -908,13 +912,13 @@ package scipy.special.orthogonal;
 	**/
 	static public function genlaguerre(n:Dynamic, alpha:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Gauss-Hermite (physicst's) quadrature
+		Gauss-Hermite (physicst's) quadrature.
 		
 		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the `n`th degree Hermite polynomial,
+		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`H_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-inf, inf]` with weight function :math:`f(x) = e^{-x^2}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
 		
 		Parameters
 		----------
@@ -946,9 +950,10 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.hermite.hermgauss
+		he_roots
 		
 		References
 		----------
@@ -966,13 +971,13 @@ package scipy.special.orthogonal;
 	**/
 	static public function h_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Hermite (statistician's) quadrature
+		Gauss-Hermite (statistician's) quadrature.
 		
 		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the `n`th degree Hermite polynomial,
+		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`He_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-inf, inf]` with weight function :math:`f(x) = e^{-(x/2)^2}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-(x/2)^2}`.
 		
 		Parameters
 		----------
@@ -1004,8 +1009,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.hermite_e.hermegauss
 	**/
 	static public function he_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
@@ -1063,12 +1068,12 @@ package scipy.special.orthogonal;
 	static public function hstack(tup:Dynamic):Dynamic;
 	static public var inf : Dynamic;
 	/**
-		Gauss-Jacobi quadrature
+		Gauss-Jacobi quadrature.
 		
 		Computes the sample points and weights for Gauss-Jacobi quadrature. The
-		sample points are the roots of the `n`th degree Jacobi polynomial,
+		sample points are the roots of the n-th degree Jacobi polynomial,
 		:math:`P^{\alpha, \beta}_n(x)`.  These sample points and weights
-		correctly integrate polynomials of degree :math:`2*n - 1` or less over the
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
 		interval :math:`[-1, 1]` with weight function
 		:math:`f(x) = (1 - x)^{\alpha} (1 + x)^{\beta}`.
 		
@@ -1094,8 +1099,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function j_roots(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -1105,12 +1110,12 @@ package scipy.special.orthogonal;
 	**/
 	static public function jacobi(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Gauss-Jacobi (shifted) quadrature
+		Gauss-Jacobi (shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Jacobi (shifted)
-		quadrature. The sample points are the roots of the `n`th degree shifted
+		quadrature. The sample points are the roots of the n-th degree shifted
 		Jacobi polynomial, :math:`G^{p,q}_n(x)`.  These sample points and weights
-		correctly integrate polynomials of degree :math:`2*n - 1` or less over the
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
 		interval :math:`[0, 1]` with weight function
 		:math:`f(x) = (1 - x)^{p-q} x^{q-1}`
 		
@@ -1136,18 +1141,18 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function js_roots(n:Dynamic, p1:Dynamic, q1:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Laguerre quadrature
+		Gauss-Laguerre quadrature.
 		
 		Computes the sample points and weights for Gauss-Laguerre quadrature.
-		The sample points are the roots of the `n`th degree Laguerre polynomial,
+		The sample points are the roots of the n-th degree Laguerre polynomial,
 		:math:`L_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[0, inf]` with weight function :math:`f(x) = e^{-x}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[0, \infty]` with weight function :math:`f(x) = e^{-x}`.
 		
 		Parameters
 		----------
@@ -1167,19 +1172,19 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.laguerre.laggauss
 	**/
 	static public function l_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-generalized Laguerre quadrature
+		Gauss-generalized Laguerre quadrature.
 		
 		Computes the sample points and weights for Gauss-generalized Laguerre
-		quadrature. The sample points are the roots of the `n`th degree generalized
+		quadrature. The sample points are the roots of the n-th degree generalized
 		Laguerre polynomial, :math:`L^{\alpha}_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
-		over the interval :math:`[0, inf]` with weight function
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
+		over the interval :math:`[0, \infty]` with weight function
 		:math:`f(x) = x^{\alpha} e^{-x}`.
 		
 		Parameters
@@ -1202,8 +1207,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function la_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -1234,17 +1239,18 @@ package scipy.special.orthogonal;
 		--------
 		Generate the 3rd-order Legendre polynomial 1/2*(5x^3 + 0x^2 - 3x + 0):
 		
+		>>> from scipy.special import legendre
 		>>> legendre(3)
-		poly1d([ 2.5,  0. , -1.5, -0. ])
+		poly1d([ 2.5,  0. , -1.5,  0. ])
 	**/
 	static public function legendre(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Gauss-Legendre quadrature
+		Gauss-Legendre quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the `n`th degree Legendre polynomial
+		The sample points are the roots of the n-th degree Legendre polynomial
 		:math:`P_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
+		polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
 		
 		Parameters
@@ -1265,8 +1271,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.legendre.leggauss
 	**/
 	static public function p_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
@@ -1289,12 +1295,12 @@ package scipy.special.orthogonal;
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Gauss-Legendre (shifted) quadrature
+		Gauss-Legendre (shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the `n`th degree shifted Legendre
+		The sample points are the roots of the n-th degree shifted Legendre
 		polynomial :math:`P^*_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[0, 1]` with weight function :math:`f(x) = 1.0`.
 		
 		Parameters
@@ -1315,17 +1321,17 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function ps_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind) quadrature
+		Gauss-Chebyshev (second kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the second kind, :math:`S_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-2, 2]` with weight function :math:`f(x) = \sqrt{1 - (x/2)^2}`.
 		
 		Parameters
@@ -1346,8 +1352,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function s_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -1475,12 +1481,12 @@ package scipy.special.orthogonal;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind) quadrature
+		Gauss-Chebyshev (first kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the first kind, :math:`T_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = 1/\sqrt{1 - x^2}`.
 		
 		Parameters
@@ -1501,18 +1507,18 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.chebyshev.chebgauss
 	**/
 	static public function t_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind, shifted) quadrature
+		Gauss-Chebyshev (first kind, shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree shifted Chebyshev
+		The sample points are the roots of the n-th degree shifted Chebyshev
 		polynomial of the first kind, :math:`T_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
 		over the interval :math:`[0, 1]` with weight function
 		:math:`f(x) = 1/\sqrt{x - x^2}`.
 		
@@ -1534,17 +1540,17 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function ts_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind) quadrature
+		Gauss-Chebyshev (second kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the second kind, :math:`U_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = \sqrt{1 - x^2}`.
 		
 		Parameters
@@ -1565,17 +1571,17 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function u_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind, shifted) quadrature
+		Gauss-Chebyshev (second kind, shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree shifted Chebyshev
+		The sample points are the roots of the n-th degree shifted Chebyshev
 		polynomial of the second kind, :math:`U_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
 		over the interval :math:`[0, 1]` with weight function
 		:math:`f(x) = \sqrt{x - x^2}`.
 		
@@ -1597,8 +1603,8 @@ package scipy.special.orthogonal;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function us_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 }

@@ -255,6 +255,8 @@ package scipy.linalg._solvers;
 		------
 		LinAlgError
 		    If `a` is singular.
+		ValueError
+		    If `a` is not square
 		
 		Examples
 		--------
@@ -271,9 +273,14 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve(a:Dynamic, b:Dynamic, ?sym_pos:Dynamic, ?lower:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?debug:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		Solves the continuous algebraic Riccati equation, or CARE, defined
-		as (A'X + XA - XBR^-1B'X+Q=0) directly using a Schur decomposition
-		method.
+		Solves the continuous algebraic Riccati equation (CARE).
+		
+		The CARE is defined as
+		
+		.. math::
+		    (A'X + XA - XBR^-1B'X+Q=0)
+		
+		It is solved directly using a Schur decomposition method.
 		
 		Parameters
 		----------
@@ -307,9 +314,14 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve_continuous_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
 	/**
-		Solves the disctrete algebraic Riccati equation, or DARE, defined as
-		(X = A'XA-(A'XB)(R+B'XB)^-1(B'XA)+Q), directly using a Schur decomposition
-		method.
+		Solves the discrete algebraic Riccati equation (DARE).
+		
+		The DARE is defined as
+		
+		.. math::
+		    X = A'XA-(A'XB)(R+B'XB)^-1(B'XA)+Q
+		
+		It is solved directly using a Schur decomposition method.
 		
 		Parameters
 		----------
@@ -343,7 +355,7 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
 	/**
-		Solves the discrete Lyapunov equation :math:`(A'XA-X=-Q)`.
+		Solves the discrete Lyapunov equation :math:`A'XA-X=-Q`.
 		
 		Parameters
 		----------
@@ -399,8 +411,9 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve_discrete_lyapunov(a:Dynamic, q:Dynamic, ?method:Dynamic):Dynamic;
 	/**
-		Solves the continuous Lyapunov equation (AX + XA^H = Q) given the values
-		of A and Q using the Bartels-Stewart algorithm.
+		Solves the continuous Lyapunov equation :math:`AX + XA^H = Q`.
+		
+		Uses the Bartels-Stewart algorithm to find :math:`X`.
 		
 		Parameters
 		----------
@@ -429,7 +442,7 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve_lyapunov(a:Dynamic, q:Dynamic):Dynamic;
 	/**
-		Computes a solution (X) to the Sylvester equation (AX + XB = Q).
+		Computes a solution (X) to the Sylvester equation :math:`AX + XB = Q`.
 		
 		Parameters
 		----------

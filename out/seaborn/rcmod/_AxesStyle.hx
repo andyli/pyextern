@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package seaborn.rcmod;
 @:pythonImport("seaborn.rcmod", "_AxesStyle") extern class _AxesStyle {
+	/**
+		Call self as a function.
+	**/
+	public function __call__(func:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
@@ -21,18 +25,12 @@ package seaborn.rcmod;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Open the context.
-	**/
 	public function __enter__():Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	/**
-		Close the context.
-	**/
-	public function __exit__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __exit__(exc_type:Dynamic, exc_value:Dynamic, exc_tb:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -129,6 +127,36 @@ package seaborn.rcmod;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _keys : Dynamic;
+	/**
+		Set the aesthetic style of the plots.
+		
+		This affects things like the color of the axes, whether a grid is
+		enabled by default, and other aesthetic elements.
+		
+		Parameters
+		----------
+		style : dict, None, or one of {darkgrid, whitegrid, dark, white, ticks}
+		    A dictionary of parameters or the name of a preconfigured set.
+		rc : dict, optional
+		    Parameter mappings to override the values in the preset seaborn
+		    style dictionaries. This only updates parameters that are
+		    considered part of the style definition.
+		
+		Examples
+		--------
+		>>> set_style("whitegrid")
+		
+		>>> set_style("ticks", {"xtick.major.size": 8, "ytick.major.size": 8})
+		
+		See Also
+		--------
+		axes_style : return a dict of parameters or use in a ``with`` statement
+		             to temporarily set the style.
+		set_context : set parameters to scale plot elements
+		set_palette : set the default color palette for figures
+	**/
+	static public function _set(?style:Dynamic, ?rc:Dynamic):Dynamic;
 	/**
 		D.clear() -> None.  Remove all items from D.
 	**/

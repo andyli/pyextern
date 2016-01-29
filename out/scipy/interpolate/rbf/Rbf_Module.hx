@@ -21,7 +21,7 @@ package scipy.interpolate.rbf;
 		
 		xlogy(x, y)
 		
-		Compute ``x*log(y)`` so that the result is 0 if `x = 0`.
+		Compute ``x*log(y)`` so that the result is 0 if ``x = 0``.
 		
 		Parameters
 		----------

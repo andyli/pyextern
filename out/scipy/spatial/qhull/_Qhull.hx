@@ -108,4 +108,5 @@ package scipy.spatial.qhull;
 	public var ndim : Dynamic;
 	public var options : Dynamic;
 	public function triangulate(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function volume_area(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

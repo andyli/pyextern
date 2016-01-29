@@ -123,13 +123,13 @@ package pandas.tools.plotting;
 	**/
 	static public function _get_ax_layer(ax:Dynamic, ?primary:Dynamic):Dynamic;
 	public function _get_ax_legend(ax:Dynamic):Dynamic;
-	public function _get_axes():Dynamic;
 	public function _get_axes_layout():Dynamic;
 	public function _get_colors(?num_colors:Dynamic, ?color_kwds:Dynamic):Dynamic;
 	public function _get_errorbars(?label:Dynamic, ?index:Dynamic, ?xerr:Dynamic, ?yerr:Dynamic):Dynamic;
 	public function _get_index_name():Dynamic;
 	static public function _get_stacked_values(ax:Dynamic, stacking_id:Dynamic, values:Dynamic, label:Dynamic):Dynamic;
 	public function _get_stacking_id():Dynamic;
+	public function _get_subplots():Dynamic;
 	public function _get_xticks(?convert_period:Dynamic):Dynamic;
 	/**
 		check whether ax has data

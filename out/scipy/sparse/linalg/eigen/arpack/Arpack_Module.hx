@@ -349,6 +349,7 @@ package scipy.sparse.linalg.eigen.arpack;
 		    Array to compute the SVD on, of shape (M, N)
 		k : int, optional
 		    Number of singular values and vectors to compute.
+		    Must be 1 <= k < min(A.shape).
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
@@ -365,8 +366,8 @@ package scipy.sparse.linalg.eigen.arpack;
 		    .. versionadded:: 0.12.0
 		v0 : ndarray, optional
 		    Starting vector for iteration, of length min(A.shape). Should be an
-		    (approximate) right singular vector if N > M and a right singular vector
-		    otherwise.
+		    (approximate) left singular vector if N > M and a right singular
+		    vector otherwise.
 		    Default: random
 		
 		    .. versionadded:: 0.12.0

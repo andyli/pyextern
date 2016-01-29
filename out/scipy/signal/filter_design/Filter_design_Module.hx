@@ -185,7 +185,7 @@ package scipy.signal.filter_design;
 		-----
 		This is derived from the s-plane substitution
 		
-		.. math:: s ightarrow rac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
+		.. math:: s \rightarrow \frac{s^2 + {\omega_0}^2}{s \cdot \mathrm{BW}}
 		
 		This is the "wideband" transformation, producing a passband with
 		geometric (log frequency) symmetry about `wo`.
@@ -226,7 +226,7 @@ package scipy.signal.filter_design;
 		-----
 		This is derived from the s-plane substitution
 		
-		.. math:: s ightarrow rac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
+		.. math:: s \rightarrow \frac{s \cdot \mathrm{BW}}{s^2 + {\omega_0}^2}
 		
 		This is the "wideband" transformation, producing a stopband with
 		geometric (log frequency) symmetry about `wo`.
@@ -264,7 +264,7 @@ package scipy.signal.filter_design;
 		-----
 		This is derived from the s-plane substitution
 		
-		.. math:: s ightarrow rac{\omega_0}{s}
+		.. math:: s \rightarrow \frac{\omega_0}{s}
 		
 		This maintains symmetry of the lowpass and highpass responses on a
 		logarithmic scale.
@@ -302,7 +302,7 @@ package scipy.signal.filter_design;
 		-----
 		This is derived from the s-plane substitution
 		
-		.. math:: s ightarrow rac{s}{\omega_0}
+		.. math:: s \rightarrow \frac{s}{\omega_0}
 	**/
 	static public function _zpklp2lp(z:Dynamic, p:Dynamic, k:Dynamic, ?wo:Dynamic):Dynamic;
 	/**
@@ -1928,7 +1928,8 @@ package scipy.signal.filter_design;
 		
 		    H(s) = s / (s^2 + 8s + 25)
 		
-		>>> findfreqs([1, 0], [1, 8, 25], N=9)
+		>>> from scipy import signal
+		>>> signal.findfreqs([1, 0], [1, 8, 25], N=9)
 		array([  1.00000000e-02,   3.16227766e-02,   1.00000000e-01,
 		         3.16227766e-01,   1.00000000e+00,   3.16227766e+00,
 		         1.00000000e+01,   3.16227766e+01,   1.00000000e+02])

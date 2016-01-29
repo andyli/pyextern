@@ -144,6 +144,6 @@ package seaborn.categorical;
 	/**
 		Take a drawn matplotlib boxplot and make it look nice.
 	**/
-	public function restyle_boxplot(artist_dict:Dynamic, color:Dynamic, kws:Dynamic):Dynamic;
+	public function restyle_boxplot(artist_dict:Dynamic, color:Dynamic, props:Dynamic):Dynamic;
 	static public var width : Dynamic;
 }

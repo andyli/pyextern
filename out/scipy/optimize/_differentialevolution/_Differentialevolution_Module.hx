@@ -62,9 +62,9 @@ package scipy.optimize._differentialevolution;
 		
 		    The default is 'best1bin'.
 		maxiter : int, optional
-		    The maximum number of times the entire population is evolved.
-		    The maximum number of function evaluations is:
-		    ``maxiter * popsize * len(x)``
+		    The maximum number of generations over which the entire population is
+		    evolved. The maximum number of function evaluations (with no polishing)
+		    is: ``(maxiter + 1) * popsize * len(x)``
 		popsize : int, optional
 		    A multiplier for setting the total population size.  The population has
 		    ``popsize * len(x)`` individuals.
@@ -74,7 +74,8 @@ package scipy.optimize._differentialevolution;
 		    is greater than 1 the solving process terminates:
 		    ``convergence = mean(pop) * tol / stdev(pop) > 1``
 		mutation : float or tuple(float, float), optional
-		    The mutation constant.
+		    The mutation constant. In the literature this is also known as
+		    differential weight, being denoted by F.
 		    If specified as a float it should be in the range [0, 2].
 		    If specified as a tuple ``(min, max)`` dithering is employed. Dithering
 		    randomly changes the mutation constant on a generation by generation
@@ -83,9 +84,11 @@ package scipy.optimize._differentialevolution;
 		    Increasing the mutation constant increases the search radius, but will
 		    slow down convergence.
 		recombination : float, optional
-		    The recombination constant, should be in the range [0, 1]. Increasing
-		    this value allows a larger number of mutants to progress into the next
-		    generation, but at the risk of population stability.
+		    The recombination constant, should be in the range [0, 1]. In the
+		    literature this is also known as the crossover probability, being
+		    denoted by CR. Increasing this value allows a larger number of mutants
+		    to progress into the next generation, but at the risk of population
+		    stability.
 		seed : int or `np.random.RandomState`, optional
 		    If `seed` is not specified the `np.RandomState` singleton is used.
 		    If `seed` is an int, a new `np.random.RandomState` instance is used,
@@ -124,8 +127,9 @@ package scipy.optimize._differentialevolution;
 		    Important attributes are: ``x`` the solution array, ``success`` a
 		    Boolean flag indicating if the optimizer exited successfully and
 		    ``message`` which describes the cause of the termination. See
-		    `OptimizeResult` for a description of other attributes. If `polish`
-		    was employed, then OptimizeResult also contains the `jac` attribute.
+		    `OptimizeResult` for a description of other attributes.  If `polish`
+		    was employed, and a lower minimum was obtained by the polishing, then
+		    OptimizeResult also contains the ``jac`` attribute.
 		
 		Notes
 		-----
@@ -199,16 +203,14 @@ package scipy.optimize._differentialevolution;
 	/**
 		Minimization of scalar function of one or more variables.
 		
-		In general, the optimization problems are of the form:
+		In general, the optimization problems are of the form::
 		
-		minimize f(x)
+		    minimize f(x) subject to
 		
-		subject to:
+		    g_i(x) >= 0,  i = 1,...,m
+		    h_j(x)  = 0,  j = 1,...,p
 		
-		    ``g_i(x) >= 0``, i = 1,...,m
-		    ``h_j(x)  = 0``, j = 1,...,p
-		
-		Where x is a vector of one or more variables.
+		where x is a vector of one or more variables.
 		``g_i(x)`` are the inequality constraints.
 		``h_j(x)`` are the equality constrains.
 		
@@ -268,6 +270,7 @@ package scipy.optimize._differentialevolution;
 		constraints : dict or sequence of dict, optional
 		    Constraints definition (only for COBYLA and SLSQP).
 		    Each constraint is defined in a dictionary with fields:
+		
 		        type : str
 		            Constraint type: 'eq' for equality, 'ineq' for inequality.
 		        fun : callable
@@ -276,6 +279,7 @@ package scipy.optimize._differentialevolution;
 		            The Jacobian of `fun` (only for SLSQP).
 		        args : sequence, optional
 		            Extra arguments to be passed to the function and Jacobian.
+		
 		    Equality constraint means that the constraint function result is to
 		    be zero whereas inequality means that it is to be non-negative.
 		    Note that COBYLA only supports inequality constraints.
@@ -285,10 +289,12 @@ package scipy.optimize._differentialevolution;
 		options : dict, optional
 		    A dictionary of solver options. All methods accept the following
 		    generic options:
+		
 		        maxiter : int
 		            Maximum number of iterations to perform.
 		        disp : bool
 		            Set to True to print convergence messages.
+		
 		    For method-specific options, see :func:`show_options()`.
 		callback : callable, optional
 		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
@@ -318,10 +324,11 @@ package scipy.optimize._differentialevolution;
 		**Unconstrained minimization**
 		
 		Method :ref:`Nelder-Mead <optimize.minimize-neldermead>` uses the
-		Simplex algorithm [1]_, [2]_. This algorithm has been successful
-		in many applications but other algorithms using the first and/or
-		second derivatives information might be preferred for their better
-		performances and robustness in general.
+		Simplex algorithm [1]_, [2]_. This algorithm is robust in many
+		applications. However, if numerical computation of derivative can be
+		trusted, other algorithms using the first and/or second derivatives
+		information might be preferred for their better performance in
+		general.
 		
 		Method :ref:`Powell <optimize.minimize-powell>` is a modification
 		of Powell's method [3]_, [4]_ which is a conjugate direction
@@ -460,9 +467,9 @@ package scipy.optimize._differentialevolution;
 		A simple application of the *Nelder-Mead* method is:
 		
 		>>> x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-		>>> res = minimize(rosen, x0, method='Nelder-Mead')
+		>>> res = minimize(rosen, x0, method='Nelder-Mead', tol=1e-6)
 		>>> res.x
-		[ 1.  1.  1.  1.  1.]
+		array([ 1.,  1.,  1.,  1.,  1.])
 		
 		Now using the *BFGS* algorithm, using the first derivative and a few
 		options:
@@ -475,15 +482,15 @@ package scipy.optimize._differentialevolution;
 		         Function evaluations: 64
 		         Gradient evaluations: 64
 		>>> res.x
-		array([ 1.  1.  1.  1.  1.])
+		array([ 1.,  1.,  1.,  1.,  1.])
 		>>> print(res.message)
 		Optimization terminated successfully.
 		>>> res.hess_inv
-		[[ 0.00749589  0.01255155  0.02396251  0.04750988  0.09495377]
-		 [ 0.01255155  0.02510441  0.04794055  0.09502834  0.18996269]
-		 [ 0.02396251  0.04794055  0.09631614  0.19092151  0.38165151]
-		 [ 0.04750988  0.09502834  0.19092151  0.38341252  0.7664427 ]
-		 [ 0.09495377  0.18996269  0.38165151  0.7664427   1.53713523]]
+		array([[ 0.00749589,  0.01255155,  0.02396251,  0.04750988,  0.09495377],  # may vary
+		       [ 0.01255155,  0.02510441,  0.04794055,  0.09502834,  0.18996269],
+		       [ 0.02396251,  0.04794055,  0.09631614,  0.19092151,  0.38165151],
+		       [ 0.04750988,  0.09502834,  0.19092151,  0.38341252,  0.7664427 ],
+		       [ 0.09495377,  0.18996269,  0.38165151,  0.7664427,   1.53713523]])
 		
 		
 		Next, consider a minimization problem with several constraints (namely

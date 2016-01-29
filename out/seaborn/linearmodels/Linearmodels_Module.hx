@@ -222,12 +222,12 @@ package seaborn.linearmodels;
 		----------
 		data : 1d array-like
 		    Input data.
-		data2: 1d array-like
+		data2: 1d array-like, optional
 		    Second input data. If present, a bivariate KDE will be estimated.
 		shade : bool, optional
 		    If True, shade in the area under the KDE curve (or draw with filled
 		    contours when data is bivariate).
-		vertical : bool
+		vertical : bool, optional
 		    If True, density is on x-axis.
 		kernel : {'gau' | 'cos' | 'biw' | 'epa' | 'tri' | 'triw' }, optional
 		    Code for shape of kernel to fit with. Bivariate KDE can only use
@@ -242,11 +242,11 @@ package seaborn.linearmodels;
 		clip : pair of scalars, or pair of pair of scalars, optional
 		    Lower and upper bounds for datapoints used to fit KDE. Can provide
 		    a pair of (low, high) bounds for bivariate plots.
-		legend : bool, optinal
+		legend : bool, optional
 		    If True, add a legend or label the axes when possible.
-		cumulative : bool
+		cumulative : bool, optional
 		    If True, draw the cumulative distribution estimated by the kde.
-		shade_lowest : bool
+		shade_lowest : bool, optional
 		    If True, shade the lowest contour of a bivariate KDE plot. Not
 		    relevant when drawing a univariate plot or when ``shade=False``.
 		    Setting this to ``False`` can be useful when you want multiple
@@ -392,7 +392,7 @@ package seaborn.linearmodels;
 		markers : matplotlib marker code or list of marker codes, optional
 		    Markers for the scatterplot. If a list, each marker in the list will be
 		    used for each level of the ``hue`` variable.
-		share_{x,y} : bool, optional
+		share{x,y} : bool, optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		{hue,col,row}_order : lists, optional

@@ -119,7 +119,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((5,5), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((5,5), dtype=int)
 		>>> a[1:-1, 1:-1] = 1; a[2,2] = 0
 		>>> a
 		array([[0, 0, 0, 0, 0],
@@ -128,20 +129,20 @@ package scipy.ndimage;
 		       [0, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> # Closing removes small holes
-		>>> ndimage.binary_closing(a).astype(np.int)
+		>>> ndimage.binary_closing(a).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> # Closing is the erosion of the dilation of the input
-		>>> ndimage.binary_dilation(a).astype(np.int)
+		>>> ndimage.binary_dilation(a).astype(int)
 		array([[0, 1, 1, 1, 0],
 		       [1, 1, 1, 1, 1],
 		       [1, 1, 1, 1, 1],
 		       [1, 1, 1, 1, 1],
 		       [0, 1, 1, 1, 0]])
-		>>> ndimage.binary_erosion(ndimage.binary_dilation(a)).astype(np.int)
+		>>> ndimage.binary_erosion(ndimage.binary_dilation(a)).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 0],
@@ -149,7 +150,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 0, 0]])
 		
 		
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[1:6, 2:5] = 1; a[1:3,3] = 0
 		>>> a
 		array([[0, 0, 0, 0, 0, 0, 0],
@@ -161,7 +162,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 0, 0, 0, 0]])
 		>>> # In addition to removing holes, closing can also
 		>>> # coarsen boundaries with fine hollows.
-		>>> ndimage.binary_closing(a).astype(np.int)
+		>>> ndimage.binary_closing(a).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 1, 0, 1, 0, 0],
 		       [0, 0, 1, 1, 1, 0, 0],
@@ -169,7 +170,7 @@ package scipy.ndimage;
 		       [0, 0, 1, 1, 1, 0, 0],
 		       [0, 0, 1, 1, 1, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0]])
-		>>> ndimage.binary_closing(a, structure=np.ones((2,2))).astype(np.int)
+		>>> ndimage.binary_closing(a, structure=np.ones((2,2))).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 1, 1, 1, 0, 0],
 		       [0, 0, 1, 1, 1, 0, 0],
@@ -231,6 +232,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.zeros((5, 5))
 		>>> a[2, 2] = 1
 		>>> a
@@ -339,7 +341,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[1:6, 2:5] = 1
 		>>> a
 		array([[0, 0, 0, 0, 0, 0, 0],
@@ -413,6 +416,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.zeros((5, 5), dtype=int)
 		>>> a[1:4, 1:4] = 1
 		>>> a[2,2] = 0
@@ -482,7 +486,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[1, 1] = 1; a[2:4, 2:4] = 1; a[4:6, 4:6] = 1
 		>>> a
 		array([[0, 0, 0, 0, 0, 0, 0],
@@ -498,7 +503,7 @@ package scipy.ndimage;
 		       [0, 1, 1],
 		       [0, 1, 1]])
 		>>> # Find the matches of structure1 in the array a
-		>>> ndimage.binary_hit_or_miss(a, structure1=structure1).astype(np.int)
+		>>> ndimage.binary_hit_or_miss(a, structure1=structure1).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 1, 0, 0, 0, 0],
@@ -509,7 +514,7 @@ package scipy.ndimage;
 		>>> # Change the origin of the filter
 		>>> # origin1=1 is equivalent to origin1=(1,1) here
 		>>> ndimage.binary_hit_or_miss(a, structure1=structure1,\
-		... origin1=1).astype(np.int)
+		... origin1=1).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0],
@@ -574,7 +579,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((5,5), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((5,5), dtype=int)
 		>>> a[1:4, 1:4] = 1; a[4, 4] = 1
 		>>> a
 		array([[0, 0, 0, 0, 0],
@@ -583,27 +589,27 @@ package scipy.ndimage;
 		       [0, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 1]])
 		>>> # Opening removes small objects
-		>>> ndimage.binary_opening(a, structure=np.ones((3,3))).astype(np.int)
+		>>> ndimage.binary_opening(a, structure=np.ones((3,3))).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> # Opening can also smooth corners
-		>>> ndimage.binary_opening(a).astype(np.int)
+		>>> ndimage.binary_opening(a).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 0, 1, 0, 0],
 		       [0, 1, 1, 1, 0],
 		       [0, 0, 1, 0, 0],
 		       [0, 0, 0, 0, 0]])
 		>>> # Opening is the dilation of the erosion of the input
-		>>> ndimage.binary_erosion(a).astype(np.int)
+		>>> ndimage.binary_erosion(a).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0],
 		       [0, 0, 1, 0, 0],
 		       [0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0]])
-		>>> ndimage.binary_dilation(ndimage.binary_erosion(a)).astype(np.int)
+		>>> ndimage.binary_dilation(ndimage.binary_erosion(a)).astype(int)
 		array([[0, 0, 0, 0, 0],
 		       [0, 0, 1, 0, 0],
 		       [0, 1, 1, 1, 0],
@@ -657,9 +663,10 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> input = np.zeros((8, 8), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> input = np.zeros((8, 8), dtype=int)
 		>>> input[2, 2] = 1
-		>>> mask = np.zeros((8, 8), dtype=np.int)
+		>>> mask = np.zeros((8, 8), dtype=int)
 		>>> mask[1:4, 1:4] = mask[4, 4]  = mask[6:8, 6:8] = 1
 		>>> input
 		array([[0, 0, 0, 0, 0, 0, 0, 0],
@@ -679,7 +686,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 1, 1],
 		       [0, 0, 0, 0, 0, 0, 1, 1]])
-		>>> ndimage.binary_propagation(input, mask=mask).astype(np.int)
+		>>> ndimage.binary_propagation(input, mask=mask).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0, 0, 0, 0],
@@ -689,7 +696,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0, 0, 0]])
 		>>> ndimage.binary_propagation(input, mask=mask,\
-		... structure=np.ones((3,3))).astype(np.int)
+		... structure=np.ones((3,3))).astype(int)
 		array([[0, 0, 0, 0, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0, 0, 0, 0],
 		       [0, 1, 1, 1, 0, 0, 0, 0],
@@ -700,7 +707,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 0, 0, 0, 0, 0]])
 		
 		>>> # Comparison between opening and erosion+propagation
-		>>> a = np.zeros((6,6), dtype=np.int)
+		>>> a = np.zeros((6,6), dtype=int)
 		>>> a[2:5, 2:5] = 1; a[0, 0] = 1; a[5, 5] = 1
 		>>> a
 		array([[1, 0, 0, 0, 0, 0],
@@ -709,7 +716,7 @@ package scipy.ndimage;
 		       [0, 0, 1, 1, 1, 0],
 		       [0, 0, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 0, 1]])
-		>>> ndimage.binary_opening(a).astype(np.int)
+		>>> ndimage.binary_opening(a).astype(int)
 		array([[0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 1, 0, 0],
@@ -724,7 +731,7 @@ package scipy.ndimage;
 		       [0, 0, 0, 1, 0, 0],
 		       [0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0]])
-		>>> ndimage.binary_propagation(b, mask=a).astype(np.int)
+		>>> ndimage.binary_propagation(b, mask=a).astype(int)
 		array([[0, 0, 0, 0, 0, 0],
 		       [0, 0, 0, 0, 0, 0],
 		       [0, 0, 1, 1, 1, 0],
@@ -794,9 +801,9 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array(([0,0,0,0],
-		                  [0,1,1,0],
-		                  [0,1,1,0],
-		                  [0,1,1,0]))
+		...               [0,1,1,0],
+		...               [0,1,1,0],
+		...               [0,1,1,0]))
 		>>> from scipy import ndimage
 		>>> ndimage.measurements.center_of_mass(a)
 		(2.0, 1.5)
@@ -804,10 +811,10 @@ package scipy.ndimage;
 		Calculation of multiple objects in an image
 		
 		>>> b = np.array(([0,1,1,0],
-		                  [0,1,0,0],
-		                  [0,0,0,0],
-		                  [0,0,1,1],
-		                  [0,0,1,1]))
+		...               [0,1,0,0],
+		...               [0,0,0,0],
+		...               [0,0,1,1],
+		...               [0,0,1,1]))
 		>>> lbl = ndimage.label(b)[0]
 		>>> ndimage.measurements.center_of_mass(b, lbl, [1,2])
 		[(0.33333333333333331, 1.3333333333333333), (3.5, 2.5)]
@@ -835,8 +842,9 @@ package scipy.ndimage;
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		origin : array_like, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default is 0.
+		    The `origin` parameter controls the placement of the filter, 
+		    relative to the centre of the current element of the input.  
+		    Default of 0 is equivalent to ``(0,)*input.ndim``.
 		
 		Returns
 		-------
@@ -849,7 +857,7 @@ package scipy.ndimage;
 		
 		Notes
 		-----
-		Each value in result is :math:`C_i = \sum_j{I_{i+j-k} W_j}`, where
+		Each value in result is :math:`C_i = \sum_j{I_{i+k-j} W_j}`, where
 		W is the `weights` kernel,
 		j is the n-D spatial index over :math:`W`,
 		I is the `input` and k is the coordinate of the center of
@@ -862,9 +870,9 @@ package scipy.ndimage;
 		on any one value, extends beyond an edge of `input`.
 		
 		>>> a = np.array([[1, 2, 0, 0],
-		....    [5, 3, 0, 4],
-		....    [0, 0, 0, 7],
-		....    [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> k = np.array([[1,1,1],[1,1,0],[1,0,0]])
 		>>> from scipy import ndimage
 		>>> ndimage.convolve(a, k, mode='constant', cval=0.0)
@@ -886,9 +894,9 @@ package scipy.ndimage;
 		edge of `input` to fill in missing values.
 		
 		>>> b = np.array([[2, 0, 0],
-		                  [1, 0, 0],
-		                  [0, 0, 0]])
-		>>> k = np.array([[0,1,0],[0,1,0],[0,1,0]])
+		...               [1, 0, 0],
+		...               [0, 0, 0]])
+		>>> k = np.array([[0,1,0], [0,1,0], [0,1,0]])
 		>>> ndimage.convolve(b, k, mode='reflect')
 		array([[5, 0, 0],
 		       [3, 0, 0],
@@ -907,13 +915,13 @@ package scipy.ndimage;
 		`weights`.
 		
 		>>> c = np.array([[2, 0, 1],
-		                  [1, 0, 0],
-		                  [0, 0, 0]])
+		...               [1, 0, 0],
+		...               [0, 0, 0]])
 		>>> k = np.array([[0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0]])
+		...               [0, 1, 0],
+		...               [0, 1, 0],
+		...               [0, 1, 0],
+		...               [0, 1, 0]])
 		>>> ndimage.convolve(c, k, mode='nearest')
 		array([[7, 0, 3],
 		       [5, 0, 2],
@@ -1151,12 +1159,12 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.array(([0,1,1,1,1],
-		                  [0,0,1,1,1],
-		                  [0,1,1,1,1],
-		                  [0,1,1,1,0],
-		                  [0,1,1,0,0]))
 		>>> from scipy import ndimage
+		>>> a = np.array(([0,1,1,1,1],
+		...               [0,0,1,1,1],
+		...               [0,1,1,1,1],
+		...               [0,1,1,1,0],
+		...               [0,1,1,0,0]))
 		>>> ndimage.distance_transform_edt(a)
 		array([[ 0.    ,  1.    ,  1.4142,  2.2361,  3.    ],
 		       [ 0.    ,  0.    ,  1.    ,  2.    ,  2.    ],
@@ -1241,9 +1249,9 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array([[1, 2, 0, 0],
-		                  [5, 3, 0, 4],
-		                  [0, 0, 0, 7],
-		                  [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> from scipy import ndimage
 		>>> ndimage.extrema(a)
 		(0, 9, (0, 2), (3, 0))
@@ -1294,7 +1302,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((6,6), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((6,6), dtype=int)
 		>>> a[2:4, 2:4] = 1
 		>>> a[4, 4] = 1
 		>>> a[:2, :3] = 2
@@ -1315,8 +1324,8 @@ package scipy.ndimage;
 		
 		>>> loc = ndimage.find_objects(a)[0]
 		>>> a[loc]
-		array([[1, 1, 0]
-		       [1, 1, 0]
+		array([[1, 1, 0],
+		       [1, 1, 0],
 		       [0, 0, 1]])
 	**/
 	static public function find_objects(input:Dynamic, ?max_label:Dynamic):Dynamic;
@@ -1622,6 +1631,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> struct = ndimage.generate_binary_structure(2, 1)
 		>>> struct
 		array([[False,  True, False],
@@ -1931,6 +1941,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.arange(36).reshape((6,6))
 		>>> a[3,3] = 0
 		>>> a
@@ -2015,7 +2026,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[2:5, 2:5] = 1
 		>>> a[4,4] = 2; a[2,3] = 3
 		>>> a
@@ -2130,7 +2142,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[1:6, 1:6] = 3
 		>>> a[4,4] = 2; a[2,3] = 1
 		>>> a
@@ -2218,6 +2231,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.arange(36).reshape((6,6))
 		>>> a[3, 3] = 50
 		>>> a
@@ -2268,10 +2282,10 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array([[ 0.    ,  0.2146,  0.5962,  0.    ],
-		                  [ 0.    ,  0.7778,  0.    ,  0.    ],
-		                  [ 0.    ,  0.    ,  0.    ,  0.    ],
-		                  [ 0.    ,  0.    ,  0.7181,  0.2787],
-		                  [ 0.    ,  0.    ,  0.6573,  0.3094]])
+		...               [ 0.    ,  0.7778,  0.    ,  0.    ],
+		...               [ 0.    ,  0.    ,  0.    ,  0.    ],
+		...               [ 0.    ,  0.    ,  0.7181,  0.2787],
+		...               [ 0.    ,  0.    ,  0.6573,  0.3094]])
 		>>> from scipy import ndimage
 		>>> ndimage.measurements.histogram(a, 0, 1, 10)
 		array([13,  0,  2,  1,  0,  1,  1,  2,  0,  0])
@@ -2293,25 +2307,48 @@ package scipy.ndimage;
 		
 		Parameters
 		----------
-		fname : str
-		    Image file name, e.g. ``test.jpg``, or a file object.
+		fname : str or file object
+		    The file name or file object to be read.
 		flatten : bool, optional
-		    If true, convert the output to grey-scale. Default is False.
+		    If True, flattens the color layers into a single gray-scale layer.
 		mode : str, optional
-		    mode to convert image to, e.g. ``RGB``.
-		
+		    Mode to convert image to, e.g. ``'RGB'``.  See the Notes for more
+		    details.
 		
 		Returns
 		-------
-		img_array : ndarray
-		    The different colour bands/channels are stored in the
-		    third dimension, such that a grey-image is MxN, an
-		    RGB-image MxNx3 and an RGBA-image MxNx4.
+		imread : ndarray
+		    The array obtained by reading the image.
 		
-		Raises
-		------
-		ImportError
-		    If the Python Imaging Library (PIL) can not be imported.
+		Notes
+		-----
+		`imread` uses the Python Imaging Library (PIL) to read an image.
+		The following notes are from the PIL documentation.
+		
+		`mode` can be one of the following strings:
+		
+		* 'L' (8-bit pixels, black and white)
+		* 'P' (8-bit pixels, mapped to any other mode using a color palette)
+		* 'RGB' (3x8-bit pixels, true color)
+		* 'RGBA' (4x8-bit pixels, true color with transparency mask)
+		* 'CMYK' (4x8-bit pixels, color separation)
+		* 'YCbCr' (3x8-bit pixels, color video format)
+		* 'I' (32-bit signed integer pixels)
+		* 'F' (32-bit floating point pixels)
+		
+		PIL also provides limited support for a few special modes, including
+		'LA' ('L' with alpha), 'RGBX' (true color with padding) and 'RGBa'
+		(true color with premultiplied alpha).
+		
+		When translating a color image to black and white (mode 'L', 'I' or
+		'F'), the library uses the ITU-R 601-2 luma transform::
+		
+		    L = R * 299/1000 + G * 587/1000 + B * 114/1000
+		
+		When `flatten` is True, the image is converted using mode 'F'.
+		When `mode` is not None and `flatten` is True, the image is first
+		converted according to `mode`, and the result is then flattened using
+		mode 'F'.
 	**/
 	static public function imread(fname:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
@@ -2341,6 +2378,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> struct = ndimage.generate_binary_structure(2, 1)
 		>>> struct.astype(int)
 		array([[0, 1, 0],
@@ -2416,6 +2454,7 @@ package scipy.ndimage;
 		Create an image with some features, then label it using the default
 		(cross-shaped) structuring element:
 		
+		>>> from scipy.ndimage import label, generate_binary_structure
 		>>> a = np.array([[0,0,1,1,0,0],
 		...               [0,0,0,1,0,0],
 		...               [1,1,0,0,1,0],
@@ -2424,9 +2463,9 @@ package scipy.ndimage;
 		
 		Each of the 4 features are labeled with a different integer:
 		
-		>>> print(num_features)
+		>>> num_features
 		4
-		>>> print(labeled_array)
+		>>> labeled_array
 		array([[0, 0, 1, 1, 0, 0],
 		       [0, 0, 0, 1, 0, 0],
 		       [2, 2, 0, 0, 3, 0],
@@ -2440,8 +2479,8 @@ package scipy.ndimage;
 		or,
 		
 		>>> s = [[1,1,1],
-		         [1,1,1],
-		         [1,1,1]]
+		...      [1,1,1],
+		...      [1,1,1]]
 		
 		Label the image using the new structuring element:
 		
@@ -2450,9 +2489,9 @@ package scipy.ndimage;
 		Show the 2 labeled features (note that features 1, 3, and 4 from above are
 		now considered a single feature):
 		
-		>>> print(num_features)
+		>>> num_features
 		2
-		>>> print(labeled_array)
+		>>> labeled_array
 		array([[0, 0, 1, 1, 0, 0],
 		       [0, 0, 0, 1, 0, 0],
 		       [2, 2, 0, 0, 1, 0],
@@ -2498,9 +2537,9 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array([[1, 2, 0, 0],
-		                  [5, 3, 0, 4],
-		                  [0, 0, 0, 7],
-		                  [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> from scipy import ndimage
 		>>> lbl, nlbl = ndimage.label(a)
 		>>> lbls = np.arange(1, nlbl+1)
@@ -2521,9 +2560,9 @@ package scipy.ndimage;
 		...
 		>>> ndimage.labeled_comprehension(a, lbl, lbls, fn, float, 0, True)
 		fn says: [1 2 5 3] : [0 1 4 5]
-		fn says: [4 7] : [7 11]
+		fn says: [4 7] : [ 7 11]
 		fn says: [9 3] : [12 13]
-		array([ 11.,  11., -12.])
+		array([ 11.,  11., -12.,   0.])
 	**/
 	static public function labeled_comprehension(input:Dynamic, labels:Dynamic, index:Dynamic, func:Dynamic, out_dtype:Dynamic, _default:Dynamic, ?pass_positions:Dynamic):Dynamic;
 	/**
@@ -2603,7 +2642,7 @@ package scipy.ndimage;
 		       [  6.,   7.,   8.],
 		       [  9.,  10.,  11.]])
 		>>> ndimage.map_coordinates(a, [[0.5, 2], [0.5, 1]], order=1)
-		[ 2.  7.]
+		array([ 2.,  7.])
 		
 		Above, the interpolated value of a[0.5, 0.5] gives output[0], while
 		a[2, 1] is output[1].
@@ -2614,7 +2653,7 @@ package scipy.ndimage;
 		>>> ndimage.map_coordinates(a, inds, order=1, mode='nearest')
 		array([ 2.,  8.])
 		>>> ndimage.map_coordinates(a, inds, order=1, cval=0, output=bool)
-		array([ True, False], dtype=bool
+		array([ True, False], dtype=bool)
 	**/
 	static public function map_coordinates(input:Dynamic, coordinates:Dynamic, ?output:Dynamic, ?order:Dynamic, ?mode:Dynamic, ?cval:Dynamic, ?prefilter:Dynamic):Dynamic;
 	/**
@@ -2679,9 +2718,9 @@ package scipy.ndimage;
 		14.0
 		
 		>>> b = np.array([[1, 2, 0, 0],
-		                  [5, 3, 0, 4],
-		                  [0, 0, 0, 7],
-		                  [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> labels, labels_nb = ndimage.label(b)
 		>>> labels
 		array([[1, 1, 0, 0],
@@ -2846,6 +2885,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.arange(25).reshape((5,5))
 		>>> labels = np.zeros_like(a)
 		>>> labels[3:5,3:5] = 1
@@ -2900,6 +2940,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.array([[1, 2, 0, 1],
 		...               [5, 3, 0, 4],
 		...               [0, 0, 0, 7],
@@ -2997,6 +3038,7 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> a = np.array([[1, 2, 0, 0],
 		...               [5, 3, 0, 4],
 		...               [0, 0, 0, 7],
@@ -3185,7 +3227,8 @@ package scipy.ndimage;
 		
 		Examples
 		--------
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> from scipy import ndimage
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[2:5, 2:5] = 1
 		>>> ndimage.morphological_gradient(a, size=(3,3))
 		array([[0, 0, 0, 0, 0, 0, 0],
@@ -3206,7 +3249,7 @@ package scipy.ndimage;
 		       [0, 1, 1, 1, 1, 1, 0],
 		       [0, 1, 1, 1, 1, 1, 0],
 		       [0, 0, 0, 0, 0, 0, 0]])
-		>>> a = np.zeros((7,7), dtype=np.int)
+		>>> a = np.zeros((7,7), dtype=int)
 		>>> a[2:5, 2:5] = 1
 		>>> a[4,4] = 2; a[2,3] = 3
 		>>> a
@@ -3533,9 +3576,9 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array([[1, 2, 0, 0],
-		                  [5, 3, 0, 4],
-		                  [0, 0, 0, 7],
-		                  [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> from scipy import ndimage
 		>>> ndimage.standard_deviation(a)
 		2.7585095613392387
@@ -3580,13 +3623,14 @@ package scipy.ndimage;
 		
 		Examples
 		--------
+		>>> from scipy import ndimage
 		>>> input =  [0,1,2,3]
 		>>> labels = [1,1,2,2]
-		>>> sum(input, labels, index=[1,2])
+		>>> ndimage.sum(input, labels, index=[1,2])
 		[1.0, 5.0]
-		>>> sum(input, labels, index=1)
+		>>> ndimage.sum(input, labels, index=1)
 		1
-		>>> sum(input, labels)
+		>>> ndimage.sum(input, labels)
 		6
 	**/
 	static public function sum(input:Dynamic, ?labels:Dynamic, ?index:Dynamic):Dynamic;
@@ -3741,9 +3785,9 @@ package scipy.ndimage;
 		Examples
 		--------
 		>>> a = np.array([[1, 2, 0, 0],
-		                  [5, 3, 0, 4],
-		                  [0, 0, 0, 7],
-		                  [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> from scipy import ndimage
 		>>> ndimage.variance(a)
 		7.609375

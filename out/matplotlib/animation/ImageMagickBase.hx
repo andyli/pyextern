@@ -101,6 +101,7 @@ package matplotlib.animation;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public function _init_from_registry():Dynamic;
 	static public var args_key : Dynamic;
 	public var delay : Dynamic;
 	static public var exec_key : Dynamic;

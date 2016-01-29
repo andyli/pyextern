@@ -9,11 +9,11 @@ package pandas.tools.pivot;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _add_margins(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic):Dynamic;
-	static public function _compute_grand_margin(data:Dynamic, values:Dynamic, aggfunc:Dynamic):Dynamic;
+	static public function _add_margins(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, ?margins_name:Dynamic):Dynamic;
+	static public function _compute_grand_margin(data:Dynamic, values:Dynamic, aggfunc:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _convert_by(by:Dynamic):Dynamic;
-	static public function _generate_marginal_results(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, grand_margin:Dynamic):Dynamic;
-	static public function _generate_marginal_results_without_values(table:Dynamic, data:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic):Dynamic;
+	static public function _generate_marginal_results(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, grand_margin:Dynamic, ?margins_name:Dynamic):Dynamic;
+	static public function _generate_marginal_results_without_values(table:Dynamic, data:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _get_names(arrs:Dynamic, names:Dynamic, ?prefix:Dynamic):Dynamic;
 	/**
 		Numpy version of itertools.product or pandas.compat.product.
@@ -128,46 +128,6 @@ package pandas.tools.pivot;
 		crosstab : DataFrame
 	**/
 	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
-	/**
-		Decorator to deprecate a keyword argument of a function
-		
-		Parameters
-		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of prefered argument in function
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
-		
-		Examples
-		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the
@@ -194,6 +154,9 @@ package pandas.tools.pivot;
 		    Add all row / columns (e.g. for subtotal / grand totals)
 		dropna : boolean, default True
 		    Do not include columns whose entries are all NaN
+		margins_name : string, default 'All'
+		    Name of the row / column that will contain the totals
+		    when margins is True.
 		
 		Examples
 		--------
@@ -222,5 +185,5 @@ package pandas.tools.pivot;
 		-------
 		table : DataFrame
 	**/
-	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
+	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?margins_name:Dynamic):pandas.DataFrame;
 }

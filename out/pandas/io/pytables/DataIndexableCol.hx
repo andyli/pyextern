@@ -123,7 +123,6 @@ package pandas.io.pytables;
 		if we can)
 	**/
 	public function convert(values:Dynamic, nan_rep:Dynamic, encoding:Dynamic):Dynamic;
-	public function convert_string_data(data:Dynamic, itemsize:Dynamic, encoding:Dynamic):Dynamic;
 	public function copy():Dynamic;
 	/**
 		return a new datacol with the block i 

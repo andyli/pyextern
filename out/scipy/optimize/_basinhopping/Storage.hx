@@ -41,11 +41,11 @@ package scipy.optimize._basinhopping;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, f:Dynamic):Dynamic;
+	public function ___init__(minres:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(x:Dynamic, f:Dynamic):Void;
+	public function new(minres:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -101,7 +101,7 @@ package scipy.optimize._basinhopping;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _add(x:Dynamic, f:Dynamic):Dynamic;
+	public function _add(minres:Dynamic):Dynamic;
 	public function get_lowest():Dynamic;
-	public function update(x:Dynamic, f:Dynamic):Dynamic;
+	public function update(minres:Dynamic):Dynamic;
 }

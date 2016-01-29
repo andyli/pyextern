@@ -160,7 +160,7 @@ package scipy.signal.wavelets;
 		wavelet : function
 		    Wavelet function, which should take 2 arguments.
 		    The first argument is the number of points that the returned vector
-		    will have (len(wavelet(width,length)) == length).
+		    will have (len(wavelet(length,width)) == length).
 		    The second is a width parameter, defining the size of the wavelet
 		    (e.g. standard deviation of a gaussian). See `ricker`, which
 		    satisfies these requirements.
@@ -174,9 +174,11 @@ package scipy.signal.wavelets;
 		
 		Notes
 		-----
-		>>> length = min(10 * width[ii], len(data))
-		>>> cwt[ii,:] = scipy.signal.convolve(data, wavelet(length,
-		...                                       width[ii]), mode='same')
+		::
+		
+		    length = min(10 * width[ii], len(data))
+		    cwt[ii,:] = signal.convolve(data, wavelet(length,
+		                                width[ii]), mode='same')
 		
 		Examples
 		--------
@@ -186,7 +188,7 @@ package scipy.signal.wavelets;
 		>>> sig  = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
 		>>> widths = np.arange(1, 31)
 		>>> cwtmatr = signal.cwt(sig, signal.ricker, widths)
-		>>> plt.imshow(cwtmatr, extent=[-1, 1, 1, 31], cmap='PRGn', aspect='auto',
+		>>> plt.imshow(cwtmatr, extent=[-1, 1, 31, 1], cmap='PRGn', aspect='auto',
 		...            vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
 		>>> plt.show()
 	**/

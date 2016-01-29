@@ -736,6 +736,10 @@ package pandas.core.panel;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
+	/**
+		add the series only operations to the cls; evaluate the doc strings again 
+	**/
+	static public function _add_series_only_operations():Dynamic;
 	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
@@ -826,7 +830,15 @@ package pandas.core.panel;
 		return a tuple of (axes, kwargs) 
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
+	/**
+		Used when a manipulation result has the same dimesions as the
+		original.
+	**/
 	public var _constructor : Dynamic;
+	/**
+		Used when a manipulation result has one higher dimension as the
+		original, such as Series.to_frame() and DataFrame.to_panel()
+	**/
 	public var _constructor_expanddim : Dynamic;
 	/**
 		One-dimensional ndarray with axis labels (including time series).
@@ -1296,8 +1308,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -1317,8 +1329,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -1400,6 +1412,11 @@ package pandas.core.panel;
 		broadcast : boolean, default False
 		    For aggregation functions, return object of same size with values
 		    propagated
+		raw : boolean, default False
+		    If False, convert each row or column into a Series. If raw=True the
+		    passed function will receive ndarray objects instead. If you are
+		    just applying a NumPy reduction function this will achieve much
+		    better performance
 		reduce : boolean or None, default None
 		    Try to apply reduction procedures. If the DataFrame is empty,
 		    apply will use reduce to determine whether the result should be a
@@ -1408,11 +1425,6 @@ package pandas.core.panel;
 		    while guessing, exceptions raised by func will be ignored). If
 		    reduce is True a Series will always be returned, and if False a
 		    DataFrame will always be returned.
-		raw : boolean, default False
-		    If False, convert each row or column into a Series. If raw=True the
-		    passed function will receive ndarray objects instead. If you are
-		    just applying a NumPy reduction function this will achieve much
-		    better performance
 		args : tuple
 		    Positional arguments to pass to function in addition to the
 		    array/series
@@ -1887,8 +1899,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2287,7 +2299,7 @@ package pandas.core.panel;
 		subset : array-like
 		    Labels along other axis to consider, e.g. if you are dropping rows
 		    these would be a list of columns to include
-		inplace : boolean, defalt False
+		inplace : boolean, default False
 		    If True, do operation inplace and return None.
 		
 		Returns
@@ -2844,11 +2856,12 @@ package pandas.core.panel;
 		max_cols : int, default None
 		    Determines whether full summary or short summary is printed.
 		    None follows the `display.max_info_columns` setting.
-		memory_usage : boolean, default None
+		memory_usage : boolean/string, default None
 		    Specifies whether total memory usage of the DataFrame
 		    elements (including index) should be displayed. None follows
 		    the `display.memory_usage` setting. True or False overrides
-		    the `display.memory_usage` setting. Memory usage is shown in
+		    the `display.memory_usage` setting. A value of 'deep' is equivalent
+		    of True, with deep introspection. Memory usage is shown in
 		    human-readable units (base-2 representation).
 		null_counts : boolean, default None
 		    Whether to show the non-null counts
@@ -3009,7 +3022,7 @@ package pandas.core.panel;
 		See also
 		--------
 		iterrows : Iterate over the rows of a DataFrame as (index, Series) pairs.
-		itertuples : Iterate over the rows of a DataFrame as tuples of the values.
+		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
 	**/
 	public function items():Dynamic;
 	/**
@@ -3018,7 +3031,7 @@ package pandas.core.panel;
 		See also
 		--------
 		iterrows : Iterate over the rows of a DataFrame as (index, Series) pairs.
-		itertuples : Iterate over the rows of a DataFrame as tuples of the values.
+		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
 	**/
 	public function iteritems():Dynamic;
 	/**
@@ -3047,7 +3060,7 @@ package pandas.core.panel;
 		   int64
 		
 		   To preserve dtypes while iterating over the rows, it is better
-		   to use :meth:`itertuples` which returns tuples of the values
+		   to use :meth:`itertuples` which returns namedtuples of the values
 		   and which is generally faster as ``iterrows``.
 		
 		2. You should **never modify** something you are iterating over.
@@ -3062,18 +3075,26 @@ package pandas.core.panel;
 		
 		See also
 		--------
-		itertuples : Iterate over the rows of a DataFrame as tuples of the values.
+		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
 		iteritems : Iterate over (column name, Series) pairs.
 	**/
 	public function iterrows():python.NativeIterable<Dynamic>;
 	/**
-		Iterate over the rows of DataFrame as tuples, with index value
+		Iterate over the rows of DataFrame as namedtuples, with index value
 		as first element of the tuple.
 		
 		Parameters
 		----------
 		index : boolean, default True
 		    If True, return the index as the first element of the tuple.
+		name : string, default "Pandas"
+		    The name of the returned namedtuples or None to return regular tuples.
+		
+		Notes
+		-----
+		The columns names will be renamed to positional names if they are
+		invalid Python identifiers, repeated, or start with an underscore.
+		With a large number of columns (>255), regular tuples are returned.
 		
 		See also
 		--------
@@ -3090,10 +3111,11 @@ package pandas.core.panel;
 		b     2   0.2
 		>>> for row in df.itertuples():
 		...     print(row)
-		('a', 1, 0.10000000000000001)
-		('b', 2, 0.20000000000000001)
+		...
+		Pandas(Index='a', col1=1, col2=0.10000000000000001)
+		Pandas(Index='b', col1=2, col2=0.20000000000000001)
 	**/
-	public function itertuples(?index:Dynamic):Dynamic;
+	public function itertuples(?index:Dynamic, ?name:Dynamic):Dynamic;
 	/**
 		A primarily label-location based indexer, with integer position
 		fallback.
@@ -3175,8 +3197,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3198,8 +3220,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3295,8 +3317,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3331,8 +3353,8 @@ package pandas.core.panel;
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
 		This method returns the maximum of the values in the object. If you
-		want the *index* of the maximum, use ``idxmax``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmax``.
+		                                      want the *index* of the maximum, use ``idxmax``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmax``.
 		
 		Parameters
 		----------
@@ -3341,8 +3363,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3362,8 +3384,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3383,8 +3405,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3403,6 +3425,9 @@ package pandas.core.panel;
 		    Specifies whether to include memory usage of DataFrame's
 		    index in returned Series. If `index=True` (default is False)
 		    the first index of the Series is `Index`.
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
 		
 		Returns
 		-------
@@ -3413,13 +3438,13 @@ package pandas.core.panel;
 		Notes
 		-----
 		Memory usage does not include memory consumed by elements that
-		are not components of the array.
+		are not components of the array if deep=False
 		
 		See Also
 		--------
 		numpy.ndarray.nbytes
 	**/
-	public function memory_usage(?index:Dynamic):pandas.Series;
+	public function memory_usage(?index:Dynamic, ?deep:Dynamic):pandas.Series;
 	/**
 		Merge DataFrame objects by performing a database-style join operation by
 		columns or indexes.
@@ -3501,8 +3526,8 @@ package pandas.core.panel;
 	public function merge(right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):Dynamic;
 	/**
 		This method returns the minimum of the values in the object. If you
-		want the *index* of the minimum, use ``idxmin``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmin``.
+		                                      want the *index* of the minimum, use ``idxmin``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmin``.
 		
 		Parameters
 		----------
@@ -3511,8 +3536,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3881,6 +3906,9 @@ package pandas.core.panel;
 		    Add all row / columns (e.g. for subtotal / grand totals)
 		dropna : boolean, default True
 		    Do not include columns whose entries are all NaN
+		margins_name : string, default 'All'
+		    Name of the row / column that will contain the totals
+		    when margins is True.
 		
 		Examples
 		--------
@@ -3909,7 +3937,7 @@ package pandas.core.panel;
 		-------
 		table : DataFrame
 	**/
-	public function pivot_table(?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
+	public function pivot_table(?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?margins_name:Dynamic):pandas.DataFrame;
 	/**
 		DataFrame plotting accessor and method
 		
@@ -3969,8 +3997,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3990,8 +4018,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -4209,7 +4237,9 @@ package pandas.core.panel;
 		    New labels / index to conform to. Preferably an Index object to
 		    avoid duplicating data
 		method : {None, 'backfill'/'bfill', 'pad'/'ffill', 'nearest'}, optional
-		    Method to use for filling holes in reindexed DataFrame:
+		    method to use for filling holes in reindexed DataFrame.
+		    Please note: this is only  applicable to DataFrames/Series with a
+		    monotonically increasing/decreasing index.
 		      * default: don't fill gaps
 		      * pad / ffill: propagate last valid observation forward to next valid
 		      * backfill / bfill: use next valid observation to fill gap
@@ -4233,7 +4263,118 @@ package pandas.core.panel;
 		
 		Examples
 		--------
-		>>> df.reindex(index=[date1, date2, date3], columns=['A', 'B', 'C'])
+		
+		Create a dataframe with some fictional data.
+		
+		>>> index = ['Firefox', 'Chrome', 'Safari', 'IE10', 'Konqueror']
+		>>> df = pd.DataFrame({
+		...      'http_status': [200,200,404,404,301],
+		...      'response_time': [0.04, 0.02, 0.07, 0.08, 1.0]},
+		...       index=index)
+		>>> df
+		            http_status  response_time
+		Firefox            200           0.04
+		Chrome             200           0.02
+		Safari             404           0.07
+		IE10               404           0.08
+		Konqueror          301           1.00
+		
+		Create a new index and reindex the dataframe. By default
+		values in the new index that do not have corresponding
+		records in the dataframe are assigned ``NaN``.
+		
+		>>> new_index= ['Safari', 'Iceweasel', 'Comodo Dragon', 'IE10',
+		...             'Chrome']
+		>>> df.reindex(new_index)
+		               http_status  response_time
+		Safari                 404           0.07
+		Iceweasel              NaN            NaN
+		Comodo Dragon          NaN            NaN
+		IE10                   404           0.08
+		Chrome                 200           0.02
+		
+		We can fill in the missing values by passing a value to
+		the keyword ``fill_value``. Because the index is not monotonically
+		increasing or decreasing, we cannot use arguments to the keyword
+		``method`` to fill the ``NaN`` values.
+		
+		>>> df.reindex(new_index, fill_value=0)
+		               http_status  response_time
+		Safari                 404           0.07
+		Iceweasel                0           0.00
+		Comodo Dragon            0           0.00
+		IE10                   404           0.08
+		Chrome                 200           0.02
+		
+		>>> df.reindex(new_index, fill_value='missing')
+		              http_status response_time
+		Safari                404          0.07
+		Iceweasel         missing       missing
+		Comodo Dragon     missing       missing
+		IE10                  404          0.08
+		Chrome                200          0.02
+		
+		To further illustrate the filling functionality in
+		``reindex``, we will create a dataframe with a
+		monotonically increasing index (for example, a sequence
+		of dates).
+		
+		>>> date_index = pd.date_range('1/1/2010', periods=6, freq='D')
+		>>> df2 = pd.DataFrame({"prices": [100, 101, np.nan, 100, 89, 88]},
+		        index=date_index)
+		>>> df2
+		            prices
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		
+		Suppose we decide to expand the dataframe to cover a wider
+		date range.
+		
+		>>> date_index2 = pd.date_range('12/29/2009', periods=10, freq='D')
+		>>> df2.reindex(date_index2)
+		            prices
+		2009-12-29     NaN
+		2009-12-30     NaN
+		2009-12-31     NaN
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		2010-01-07     NaN
+		
+		The index entries that did not have a value in the original data frame
+		(for example, '2009-12-29') are by default filled with ``NaN``.
+		If desired, we can fill in the missing values using one of several
+		options.
+		
+		For example, to backpropagate the last valid value to fill the ``NaN``
+		values, pass ``bfill`` as an argument to the ``method`` keyword.
+		
+		>>> df2.reindex(date_index2, method='bfill')
+		            prices
+		2009-12-29     100
+		2009-12-30     100
+		2009-12-31     100
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		2010-01-07     NaN
+		
+		Please note that the ``NaN`` value present in the original dataframe
+		(at index value 2010-01-03) will not be filled by any of the
+		value propagation schemes. This is because filling while reindexing
+		does not look at dataframe values, but only compares the original and
+		desired indexes. If you do want to fill in the ``NaN`` values present
+		in the original dataframe, use the ``fillna()`` method.
 		
 		Returns
 		-------
@@ -4989,8 +5130,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -5092,8 +5235,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -5283,8 +5426,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -5294,6 +5439,15 @@ package pandas.core.panel;
 		std : Series or DataFrame (if level specified)
 	**/
 	public function std(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Property returning a Styler object containing methods for
+		building a styled HTML representation fo the DataFrame.
+		
+		See Also
+		--------
+		pandas.core.Styler
+	**/
+	public var style : Dynamic;
 	/**
 		Subtraction of dataframe and other, element-wise (binary operator `sub`).
 		
@@ -5366,8 +5520,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -5473,6 +5627,10 @@ package pandas.core.panel;
 		encoding : string, optional
 		    A string representing the encoding to use in the output file,
 		    defaults to 'ascii' on Python 2 and 'utf-8' on Python 3.
+		compression : string, optional
+		    a string representing the compression to use in the output file,
+		    allowed values are 'gzip', 'bz2',
+		    only used when the first argument is a filename
 		line_terminator : string, default '\n'
 		    The newline character or character sequence to use in the output
 		    file
@@ -5496,7 +5654,7 @@ package pandas.core.panel;
 		
 		    .. versionadded:: 0.16.0
 	**/
-	public function to_csv(?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?columns:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?quoting:Dynamic, ?quotechar:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function to_csv(?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?columns:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?quotechar:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return dense representation of NDFrame (as opposed to sparse)
 	**/
@@ -6248,8 +6406,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a Series
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a Series
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data

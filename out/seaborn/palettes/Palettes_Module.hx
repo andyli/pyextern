@@ -35,18 +35,6 @@ package seaborn.palettes;
 	**/
 	static public function _flat_palette(color:Dynamic, ?n_colors:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
 	/**
-		Create a matplotlib colormap that will be updated by the widgets.
-	**/
-	static public function _init_mutable_colormap():Dynamic;
-	/**
-		Show a continuous matplotlib colormap.
-	**/
-	static public function _show_cmap(cmap:Dynamic):Dynamic;
-	/**
-		Change the LUT values in a matplotlib colormap in-place.
-	**/
-	static public function _update_lut(cmap:Dynamic, colors:Dynamic):Dynamic;
-	/**
 		Make a palette that blends between a list of colors.
 		
 		Parameters
@@ -66,155 +54,6 @@ package seaborn.palettes;
 		    ``as_cmap`` parameter.
 	**/
 	static public function blend_palette(colors:Dynamic, ?n_colors:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
-	/**
-		Select a palette from the ColorBrewer set.
-		
-		These palettes are built into matplotlib and can be used by name in
-		many seaborn functions, or by passing the object returned by this function.
-		
-		Parameters
-		----------
-		data_type : {'sequential', 'diverging', 'qualitative'}
-		    This describes the kind of data you want to visualize. See the seaborn
-		    color palette docs for more information about how to choose this value.
-		    Note that you can pass substrings (e.g. 'q' for 'qualitative.
-		
-		as_cmap : bool
-		    If True, the return value is a matplotlib colormap rather than a
-		    list of discrete colors.
-		
-		Returns
-		-------
-		pal or cmap : list of colors or matplotlib colormap
-		    Object that can be passed to plotting functions.
-		
-		See Also
-		--------
-		dark_palette : Create a sequential palette with dark low values.
-		light_palette : Create a sequential palette with bright low values.
-		diverging_palette : Create a diverging palette from selected colors.
-		cubehelix_palette : Create a sequential palette or colormap using the
-		                    cubehelix system.
-	**/
-	static public function choose_colorbrewer_palette(data_type:Dynamic, ?as_cmap:Dynamic):Dynamic;
-	/**
-		Launch an interactive widget to create a sequential cubehelix palette.
-		
-		This corresponds with the :func:`cubehelix_palette` function. This kind
-		of palette is good for data that range between relatively uninteresting
-		low values and interesting high values. The cubehelix system allows the
-		palette to have more hue variance across the range, which can be helpful
-		for distinguishing a wider range of values.
-		
-		Requires IPython 2+ and must be used in the notebook.
-		
-		Parameters
-		----------
-		as_cmap : bool
-		    If True, the return value is a matplotlib colormap rather than a
-		    list of discrete colors.
-		
-		Returns
-		-------
-		pal or cmap : list of colors or matplotlib colormap
-		    Object that can be passed to plotting functions.
-		
-		See Also
-		--------
-		cubehelix_palette : Create a sequential palette or colormap using the
-		                    cubehelix system.
-	**/
-	static public function choose_cubehelix_palette(?as_cmap:Dynamic):Dynamic;
-	/**
-		Launch an interactive widget to create a dark sequential palette.
-		
-		This corresponds with the :func:`dark_palette` function. This kind
-		of palette is good for data that range between relatively uninteresting
-		low values and interesting high values.
-		
-		Requires IPython 2+ and must be used in the notebook.
-		
-		Parameters
-		----------
-		input : {'husl', 'hls', 'rgb'}
-		    Color space for defining the seed value. Note that the default is
-		    different than the default input for :func:`dark_palette`.
-		as_cmap : bool
-		    If True, the return value is a matplotlib colormap rather than a
-		    list of discrete colors.
-		
-		Returns
-		-------
-		pal or cmap : list of colors or matplotlib colormap
-		    Object that can be passed to plotting functions.
-		
-		See Also
-		--------
-		dark_palette : Create a sequential palette with dark low values.
-		light_palette : Create a sequential palette with bright low values.
-		cubehelix_palette : Create a sequential palette or colormap using the
-		                    cubehelix system.
-	**/
-	static public function choose_dark_palette(?input:Dynamic, ?as_cmap:Dynamic):Dynamic;
-	/**
-		Launch an interactive widget to choose a diverging color palette.
-		
-		This corresponds with the :func:`diverging_palette` function. This kind
-		of palette is good for data that range between interesting low values
-		and interesting high values with a meaningful midpoint. (For example,
-		change scores relative to some baseline value).
-		
-		Requires IPython 2+ and must be used in the notebook.
-		
-		Parameters
-		----------
-		as_cmap : bool
-		    If True, the return value is a matplotlib colormap rather than a
-		    list of discrete colors.
-		
-		Returns
-		-------
-		pal or cmap : list of colors or matplotlib colormap
-		    Object that can be passed to plotting functions.
-		
-		See Also
-		--------
-		diverging_palette : Create a diverging color palette or colormap.
-		choose_colorbrewer_palette : Interactively choose palettes from the
-		                             colorbrewer set, including diverging palettes.
-	**/
-	static public function choose_diverging_palette(?as_cmap:Dynamic):Dynamic;
-	/**
-		Launch an interactive widget to create a light sequential palette.
-		
-		This corresponds with the :func:`light_palette` function. This kind
-		of palette is good for data that range between relatively uninteresting
-		low values and interesting high values.
-		
-		Requires IPython 2+ and must be used in the notebook.
-		
-		Parameters
-		----------
-		input : {'husl', 'hls', 'rgb'}
-		    Color space for defining the seed value. Note that the default is
-		    different than the default input for :func:`light_palette`.
-		as_cmap : bool
-		    If True, the return value is a matplotlib colormap rather than a
-		    list of discrete colors.
-		
-		Returns
-		-------
-		pal or cmap : list of colors or matplotlib colormap
-		    Object that can be passed to plotting functions.
-		
-		See Also
-		--------
-		light_palette : Create a sequential palette with bright low values.
-		dark_palette : Create a sequential palette with dark low values.
-		cubehelix_palette : Create a sequential palette or colormap using the
-		                    cubehelix system.
-	**/
-	static public function choose_light_palette(?input:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	/**
 		Return a list of colors defining a color palette.
 		
@@ -601,6 +440,7 @@ package seaborn.palettes;
 	**/
 	static public function diverging_palette(h_neg:Dynamic, h_pos:Dynamic, ?s:Dynamic, ?l:Dynamic, ?sep:Dynamic, ?n:Dynamic, ?center:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function get_color_cycle():Dynamic;
 	/**
 		Get a set of evenly spaced colors in HLS hue space.
 		
@@ -857,17 +697,6 @@ package seaborn.palettes;
 		    >>> sns.palplot(sns.mpl_palette("GnBu_d"))
 	**/
 	static public function mpl_palette(name:Dynamic, ?n_colors:Dynamic):Dynamic;
-	/**
-		Plot the values in a color palette as a horizontal array.
-		
-		Parameters
-		----------
-		pal : sequence of matplotlib colors
-		    colors, i.e. as returned by seaborn.color_palette()
-		size :
-		    scaling factor for size of plot
-	**/
-	static public function palplot(pal:Dynamic, ?size:Dynamic):Dynamic;
 	/**
 		Change how matplotlib color shorthands are interpreted.
 		

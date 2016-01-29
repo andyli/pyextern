@@ -55,6 +55,7 @@ package pandas.io.parsers;
 		    round-trip converter.
 	**/
 	static public function TextParser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _NA_VALUES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -75,6 +76,11 @@ package pandas.io.parsers;
 	static public var _fwf_widths : Dynamic;
 	static public function _get_col_names(colspec:Dynamic, columns:Dynamic):Dynamic;
 	static public function _get_empty_meta(columns:Dynamic, index_col:Dynamic, index_names:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Gets file handle for given path and mode.
+		    
+	**/
+	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	static public function _get_na_values(col:Dynamic, na_values:Dynamic, na_fvalues:Dynamic):Dynamic;
 	static public function _is_index_col(col:Dynamic):Dynamic;
 	static public function _make_date_converter(?date_parser:Dynamic, ?dayfirst:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
@@ -112,7 +118,8 @@ package pandas.io.parsers;
 		
 		Parameters
 		----------
-		filepath_or_buffer : a url, filepath, or buffer
+		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
+		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
 		
 		Returns
@@ -271,9 +278,9 @@ package pandas.io.parsers;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -373,6 +380,9 @@ package pandas.io.parsers;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -478,9 +488,12 @@ package pandas.io.parsers;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -532,6 +545,9 @@ package pandas.io.parsers;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -641,9 +657,12 @@ package pandas.io.parsers;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -699,6 +718,9 @@ package pandas.io.parsers;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -803,9 +825,12 @@ package pandas.io.parsers;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None

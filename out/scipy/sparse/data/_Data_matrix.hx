@@ -64,6 +64,7 @@ package scipy.sparse.data;
 		Return self<value.
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
+	public function __matmul__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		interpret other and call one of the following
@@ -104,6 +105,7 @@ package scipy.sparse.data;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	public function __rmatmul__(other:Dynamic):Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
 	public function __rtruediv__(other:Dynamic):Dynamic;

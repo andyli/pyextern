@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package matplotlib.figure;
 @:pythonImport("matplotlib.figure", "Figure") extern class Figure {
+	public function _Figure__remove_ax(ax:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -219,56 +220,56 @@ package matplotlib.figure;
 		
 		In addition to *projection*, the following kwargs are supported:
 		
-		  adjustable: [ 'box' | 'datalim' | 'box-forced']         
+		  adjustable: [ 'box' | 'datalim' | 'box-forced'] 
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
 		  anchor: unknown
-		  animated: [True | False]         
+		  animated: [True | False] 
 		  aspect: unknown
 		  autoscale_on: unknown
 		  autoscalex_on: unknown
 		  autoscaley_on: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see         :func:`~matplotlib.pyplot.colors`         
-		  axisbelow: [ *True* | *False* ]         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
+		  axisbelow: [ *True* | *False* ] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
-		  contains: a callable function         
+		  contains: a callable function 
 		  figure: unknown
-		  frame_on: [ *True* | *False* ]         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  navigate: [ *True* | *False* ]         
+		  frame_on: [ *True* | *False* ] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  navigate: [ *True* | *False* ] 
 		  navigate_mode: unknown
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  position: unknown
 		  rasterization_zorder: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
 		  title: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats         
+		  xlim: length 2 sequence of floats 
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
-		  xticks: sequence of floats         
+		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats         
+		  ylim: length 2 sequence of floats 
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
-		  zorder: any number         
+		  zorder: any number 
 	**/
 	public function add_axes(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -320,56 +321,56 @@ package matplotlib.figure;
 		
 		The following kwargs are supported:
 		
-		  adjustable: [ 'box' | 'datalim' | 'box-forced']         
+		  adjustable: [ 'box' | 'datalim' | 'box-forced'] 
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
 		  anchor: unknown
-		  animated: [True | False]         
+		  animated: [True | False] 
 		  aspect: unknown
 		  autoscale_on: unknown
 		  autoscalex_on: unknown
 		  autoscaley_on: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see         :func:`~matplotlib.pyplot.colors`         
-		  axisbelow: [ *True* | *False* ]         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
+		  axisbelow: [ *True* | *False* ] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
-		  contains: a callable function         
+		  contains: a callable function 
 		  figure: unknown
-		  frame_on: [ *True* | *False* ]         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  navigate: [ *True* | *False* ]         
+		  frame_on: [ *True* | *False* ] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  navigate: [ *True* | *False* ] 
 		  navigate_mode: unknown
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  position: unknown
 		  rasterization_zorder: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
 		  title: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats         
+		  xlim: length 2 sequence of floats 
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
-		  xticks: sequence of floats         
+		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats         
+		  ylim: length 2 sequence of floats 
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
-		  zorder: any number         
+		  zorder: any number 
 	**/
 	public function add_subplot(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var aname : Dynamic;
@@ -688,56 +689,56 @@ package matplotlib.figure;
 		adheres to the given projection etc., and for axes creation if
 		the active axes does not exist:
 		
-		  adjustable: [ 'box' | 'datalim' | 'box-forced']         
+		  adjustable: [ 'box' | 'datalim' | 'box-forced'] 
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
 		  anchor: unknown
-		  animated: [True | False]         
+		  animated: [True | False] 
 		  aspect: unknown
 		  autoscale_on: unknown
 		  autoscalex_on: unknown
 		  autoscaley_on: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
 		  axes_locator: unknown
-		  axis_bgcolor: any matplotlib color - see         :func:`~matplotlib.pyplot.colors`         
-		  axisbelow: [ *True* | *False* ]         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  axis_bgcolor: any matplotlib color - see :func:`~matplotlib.pyplot.colors` 
+		  axisbelow: [ *True* | *False* ] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color_cycle: unknown
-		  contains: a callable function         
+		  contains: a callable function 
 		  figure: unknown
-		  frame_on: [ *True* | *False* ]         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  navigate: [ *True* | *False* ]         
+		  frame_on: [ *True* | *False* ] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  navigate: [ *True* | *False* ] 
 		  navigate_mode: unknown
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  position: unknown
 		  rasterization_zorder: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
 		  title: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
 		  xbound: unknown
 		  xlabel: unknown
-		  xlim: length 2 sequence of floats         
+		  xlim: length 2 sequence of floats 
 		  xmargin: unknown
 		  xscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  xticklabels: sequence of strings
-		  xticks: sequence of floats         
+		  xticks: sequence of floats 
 		  ybound: unknown
 		  ylabel: unknown
-		  ylim: length 2 sequence of floats         
+		  ylim: length 2 sequence of floats 
 		  ymargin: unknown
 		  yscale: ['linear' | 'log' | 'logit' | 'symlog']
 		  yticklabels: sequence of strings
 		  yticks: sequence of floats
-		  zorder: any number         
+		  zorder: any number 
 	**/
 	public function gca(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1549,47 +1550,47 @@ package matplotlib.figure;
 		kwargs control the :class:`~matplotlib.text.Text` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 	**/
 	public function text(x:Dynamic, y:Dynamic, s:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

@@ -75,7 +75,7 @@ package seaborn.axisgrid;
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		share_{x,y} : bool, optional
+		share{x,y} : bool, optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		size : scalar, optional
@@ -256,7 +256,8 @@ package seaborn.axisgrid;
 		    >>> df = pd.DataFrame(
 		    ...     data=np.random.randn(90, 4),
 		    ...     columns=pd.Series(list("ABCD"), name="walk"),
-		    ...     index=pd.date_range("Jan 1", "March 31", name="date"))
+		    ...     index=pd.date_range("2015-01-01", "2015-03-31",
+		    ...                         name="date"))
 		    >>> df = df.cumsum(axis=0).stack().reset_index(name="val")
 		    >>> def dateplot(x, y, **kwargs):
 		    ...     ax = plt.gca()
@@ -289,7 +290,7 @@ package seaborn.axisgrid;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips.sort("size"), col="size", col_wrap=3)
+		    >>> g = sns.FacetGrid(tips, col="size", col_wrap=3)
 		    >>> g = (g.map(plt.hist, "tip", bins=np.arange(0, 13), color="c")
 		    ...       .set_titles("{col_name} diners"))
 		
@@ -345,7 +346,7 @@ package seaborn.axisgrid;
 		col_wrap : int, optional
 		    "Wrap" the column variable at this width, so that the column facets
 		    span multiple rows. Incompatible with a ``row`` facet.    
-		share_{x,y} : bool, optional
+		share{x,y} : bool, optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		size : scalar, optional
@@ -526,7 +527,8 @@ package seaborn.axisgrid;
 		    >>> df = pd.DataFrame(
 		    ...     data=np.random.randn(90, 4),
 		    ...     columns=pd.Series(list("ABCD"), name="walk"),
-		    ...     index=pd.date_range("Jan 1", "March 31", name="date"))
+		    ...     index=pd.date_range("2015-01-01", "2015-03-31",
+		    ...                         name="date"))
 		    >>> df = df.cumsum(axis=0).stack().reset_index(name="val")
 		    >>> def dateplot(x, y, **kwargs):
 		    ...     ax = plt.gca()
@@ -559,7 +561,7 @@ package seaborn.axisgrid;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> g = sns.FacetGrid(tips.sort("size"), col="size", col_wrap=3)
+		    >>> g = sns.FacetGrid(tips, col="size", col_wrap=3)
 		    >>> g = (g.map(plt.hist, "tip", bins=np.arange(0, 13), color="c")
 		    ...       .set_titles("{col_name} diners"))
 		

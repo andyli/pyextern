@@ -283,9 +283,9 @@ package pandas.core.categorical;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -384,6 +384,11 @@ package pandas.core.categorical;
 		IPython zmq frontends, or IDLE do not run in a terminal,
 	**/
 	static public function get_terminal_size():Dynamic;
+	/**
+		perform an actual interpolation of values, values will be make 2-d if
+		needed fills inplace, returns the result
+	**/
+	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**

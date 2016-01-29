@@ -46,10 +46,6 @@ package pandas.msgpack;
 	**/
 	public function __getnewargs__():Dynamic;
 	/**
-		Exclude the OrderedDict from pickling
-	**/
-	public function __getstate__():Dynamic;
-	/**
 		Return self>value.
 	**/
 	public function __gt__(value:Dynamic):Dynamic;

@@ -42,11 +42,11 @@ package scipy.io.netcdf;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic):Dynamic;
+	public function ___init__(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic, ?maskandscale:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic):Void;
+	public function new(data:Dynamic, typecode:Dynamic, size:Dynamic, shape:Dynamic, dimensions:Dynamic, ?attributes:Dynamic, ?maskandscale:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/

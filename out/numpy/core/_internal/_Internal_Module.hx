@@ -14,53 +14,27 @@ package numpy.core._internal;
 	**/
 	static public function _add_trailing_padding(value:Dynamic, padding:Dynamic):Dynamic;
 	static public function _array_descr(descriptor:Dynamic):Dynamic;
+	static public function _commastring(astr:Dynamic):Dynamic;
+	static public var _convorder : Dynamic;
 	/**
-		Perform object memory overlap tests for two data-types (see
-		_view_is_safe).
-		
-		This function checks that new fields only access memory contained in old
-		fields, and that non-object fields are not interpreted as objects and vice
-		versa.
+		Return copy of structured array with padding between fields removed.
 		
 		Parameters
 		----------
-		new_fields : list of (data-type, int) pairs
-		    Flat list of (dtype, byte offset) pairs for the new data type, as
-		    returned by _get_all_field_offsets.
-		old_fields: list of (data-type, int) pairs
-		    Flat list of (dtype, byte offset) pairs for the old data type, as
-		    returned by _get_all_field_offsets.
+		ary : ndarray
+		   Structured array from which to remove padding bytes
 		
-		Raises
-		------
-		TypeError
-		    If the new fields are incompatible with the old fields
+		Returns
+		-------
+		ary_copy : ndarray
+		   Copy of ary with padding bytes removed
 	**/
-	static public function _check_field_overlap(new_fields:Dynamic, old_fields:Dynamic):Dynamic;
-	static public function _commastring(astr:Dynamic):Dynamic;
-	static public var _convorder : Dynamic;
+	static public function _copy_fields(ary:Dynamic):numpy.Ndarray;
 	static public function _dtype_from_pep3118(spec:Dynamic, ?byteorder:Dynamic, ?is_subdtype:Dynamic):Dynamic;
 	/**
 		Calculate the greatest common divisor of a and b
 	**/
 	static public function _gcd(a:Dynamic, b:Dynamic):Dynamic;
-	/**
-		Returns the types and offsets of all fields in a (possibly structured)
-		data type, including nested fields and subarrays.
-		
-		Parameters
-		----------
-		dtype : data-type
-		    Data type to extract fields from.
-		base_offset : int, optional
-		    Additional offset to add to all field offsets.
-		
-		Returns
-		-------
-		fields : list of (data-type, int) pairs
-		    A flat list of (dtype, byte offset) pairs.
-	**/
-	static public function _get_all_field_offsets(dtype:Dynamic, ?base_offset:Dynamic):Dynamic;
 	/**
 		Checks safety of getfield for object arrays.
 		
@@ -83,31 +57,6 @@ package numpy.core._internal;
 	**/
 	static public function _getfield_is_safe(oldtype:Dynamic, newtype:Dynamic, offset:Dynamic):Dynamic;
 	static public function _getintp_ctype():Dynamic;
-	/**
-		Given a structured array and a sequence of field names
-		construct new array with just those fields.
-		
-		Parameters
-		----------
-		ary : ndarray
-		    Structured array being subscripted
-		names : string or list of strings
-		    Either a single field name, or a list of field names
-		
-		Returns
-		-------
-		sub_ary : ndarray
-		    If `names` is a single field name, the return value is identical to
-		    ary.getfield, a writeable view into `ary`. If `names` is a list of
-		    field names the return value is a copy of `ary` containing only those
-		    fields. This is planned to return a view in the future.
-		
-		Raises
-		------
-		ValueError
-		    If `ary` does not contain a field given in `names`.
-	**/
-	static public function _index_fields(ary:Dynamic, names:Dynamic):numpy.Ndarray;
 	static public function _makenames_list(adict:Dynamic, align:Dynamic):Dynamic;
 	static public var _nbo : Dynamic;
 	static public function _newnames(datatype:Dynamic, order:Dynamic):Dynamic;
@@ -123,13 +72,6 @@ package numpy.core._internal;
 		doing::
 		
 		    np.zeros(10, dtype=oldtype).view(newtype)
-		
-		We need to check that
-		1) No memory that is not an object will be interpreted as a object,
-		2) No memory containing an object will be interpreted as an arbitrary type.
-		Both cases can cause segfaults, eg in the case the view is written to.
-		Strategy here is to also disallow views where newtype has any field in a
-		place oldtype doesn't.
 		
 		Parameters
 		----------

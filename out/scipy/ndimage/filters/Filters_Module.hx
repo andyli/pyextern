@@ -45,8 +45,9 @@ package scipy.ndimage.filters;
 		    Value to fill past edges of input if `mode` is 'constant'. Default
 		    is 0.0
 		origin : array_like, optional
-		    The `origin` parameter controls the placement of the filter.
-		    Default is 0.
+		    The `origin` parameter controls the placement of the filter, 
+		    relative to the centre of the current element of the input.  
+		    Default of 0 is equivalent to ``(0,)*input.ndim``.
 		
 		Returns
 		-------
@@ -59,7 +60,7 @@ package scipy.ndimage.filters;
 		
 		Notes
 		-----
-		Each value in result is :math:`C_i = \sum_j{I_{i+j-k} W_j}`, where
+		Each value in result is :math:`C_i = \sum_j{I_{i+k-j} W_j}`, where
 		W is the `weights` kernel,
 		j is the n-D spatial index over :math:`W`,
 		I is the `input` and k is the coordinate of the center of
@@ -72,9 +73,9 @@ package scipy.ndimage.filters;
 		on any one value, extends beyond an edge of `input`.
 		
 		>>> a = np.array([[1, 2, 0, 0],
-		....    [5, 3, 0, 4],
-		....    [0, 0, 0, 7],
-		....    [9, 3, 0, 0]])
+		...               [5, 3, 0, 4],
+		...               [0, 0, 0, 7],
+		...               [9, 3, 0, 0]])
 		>>> k = np.array([[1,1,1],[1,1,0],[1,0,0]])
 		>>> from scipy import ndimage
 		>>> ndimage.convolve(a, k, mode='constant', cval=0.0)
@@ -96,9 +97,9 @@ package scipy.ndimage.filters;
 		edge of `input` to fill in missing values.
 		
 		>>> b = np.array([[2, 0, 0],
-		                  [1, 0, 0],
-		                  [0, 0, 0]])
-		>>> k = np.array([[0,1,0],[0,1,0],[0,1,0]])
+		...               [1, 0, 0],
+		...               [0, 0, 0]])
+		>>> k = np.array([[0,1,0], [0,1,0], [0,1,0]])
 		>>> ndimage.convolve(b, k, mode='reflect')
 		array([[5, 0, 0],
 		       [3, 0, 0],
@@ -117,13 +118,13 @@ package scipy.ndimage.filters;
 		`weights`.
 		
 		>>> c = np.array([[2, 0, 1],
-		                  [1, 0, 0],
-		                  [0, 0, 0]])
+		...               [1, 0, 0],
+		...               [0, 0, 0]])
 		>>> k = np.array([[0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0],
-		                  [0, 1, 0]])
+		...               [0, 1, 0],
+		...               [0, 1, 0],
+		...               [0, 1, 0],
+		...               [0, 1, 0]])
 		>>> ndimage.convolve(c, k, mode='nearest')
 		array([[7, 0, 3],
 		       [5, 0, 2],

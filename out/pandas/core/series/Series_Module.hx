@@ -35,8 +35,7 @@ package pandas.core.series;
 	static public function _dict_compat(d:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		interpret the dtype from a scalar, upcast floats and ints
-		return the new value and the dtype 
+		interpret the dtype from a scalar 
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
@@ -371,9 +370,9 @@ package pandas.core.series;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool

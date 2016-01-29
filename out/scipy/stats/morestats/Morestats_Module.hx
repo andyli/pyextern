@@ -69,9 +69,59 @@ package scipy.stats.morestats;
 	static public function _apply_func(x:Dynamic, g:Dynamic, func:Dynamic):Dynamic;
 	static public function _boxcox_conf_interval(x:Dynamic, lmax:Dynamic, alpha:Dynamic):Dynamic;
 	/**
-		See Notes section of `probplot` for details.
+		Approximations of uniform order statistic medians.
+		
+		Parameters
+		----------
+		n : int
+		    Sample size.
+		
+		Returns
+		-------
+		v : 1d float array
+		    Approximations of the order statistic medians.
+		
+		References
+		----------
+		.. [1] James J. Filliben, "The Probability Plot Correlation Coefficient
+		       Test for Normality", Technometrics, Vol. 17, pp. 111-117, 1975.
+		
+		Examples
+		--------
+		Order statistics of the uniform distribution on the unit interval
+		are marginally distributed according to beta distributions.
+		The expectations of these order statistic are evenly spaced across
+		the interval, but the distributions are skewed in a way that
+		pushes the medians slightly towards the endpoints of the unit interval:
+		
+		>>> n = 4
+		>>> k = np.arange(1, n+1)
+		>>> from scipy.stats import beta
+		>>> a = k
+		>>> b = n-k+1
+		>>> beta.mean(a, b)
+		array([ 0.2,  0.4,  0.6,  0.8])
+		>>> beta.median(a, b)
+		array([ 0.15910358,  0.38572757,  0.61427243,  0.84089642])
+		
+		The Filliben approximation uses the exact medians of the smallest
+		and greatest order statistics, and the remaining medians are approximated
+		by points spread evenly across a sub-interval of the unit interval:
+		
+		>>> from scipy.morestats import _calc_uniform_order_statistic_medians
+		>>> _calc_uniform_order_statistic_medians(n)
+		array([ 0.15910358,  0.38545246,  0.61454754,  0.84089642])
+		
+		This plot shows the skewed distributions of the order statistics
+		of a sample of size four from a uniform distribution on the unit interval:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0.0, 1.0, num=50, endpoint=True)
+		>>> pdfs = [beta.pdf(x, a[i], b[i]) for i in range(n)]
+		>>> plt.figure()
+		>>> plt.plot(x, pdfs[0], x, pdfs[1], x, pdfs[2], x, pdfs[3])
 	**/
-	static public function _calc_uniform_order_statistic_medians(x:Dynamic):Dynamic;
+	static public function _calc_uniform_order_statistic_medians(n:Dynamic):Dynamic;
 	static public function _circfuncs_common(samples:Dynamic, high:Dynamic, low:Dynamic):Dynamic;
 	static public function _hermnorm(N:Dynamic):Dynamic;
 	/**
@@ -879,12 +929,33 @@ package scipy.stats.morestats;
 		pvalue : float
 		    The p-value of the test.
 		
+		See Also
+		--------
+		fligner : A non-parametric test for the equality of k variances
+		levene : A robust parametric test for equality of k variances
+		
+		Notes
+		-----
+		Conover et al. (1981) examine many of the existing parametric and
+		nonparametric tests by extensive simulations and they conclude that the
+		tests proposed by Fligner and Killeen (1976) and Levene (1960) appear to be
+		superior in terms of robustness of departures from normality and power [3]_.
+		
 		References
 		----------
 		.. [1]  http://www.itl.nist.gov/div898/handbook/eda/section3/eda357.htm
 		
 		.. [2]  Snedecor, George W. and Cochran, William G. (1989), Statistical
 		          Methods, Eighth Edition, Iowa State University Press.
+		
+		.. [3] Park, C. and Lindsay, B. G. (1999). Robust Scale Estimation and
+		       Hypothesis Testing based on Quadratic Inference Function. Technical
+		       Report #99-03, Center for Likelihood Studies, Pennsylvania State
+		       University.
+		
+		.. [4] Bartlett, M. S. (1937). Properties of Sufficiency and Statistical
+		       Tests. Proceedings of the Royal Society of London. Series A,
+		       Mathematical and Physical Sciences, Vol. 160, No.901, pp. 268-282.
 	**/
 	static public function bartlett(?args:python.VarArgs<Dynamic>):Float;
 	/**
@@ -911,6 +982,10 @@ package scipy.stats.morestats;
 		    data, and `(lower, upper)` a confidence interval, centered on the
 		    median, containing the estimate to a probability ``alpha``.
 		
+		See Also
+		--------
+		mvsdist
+		
 		Notes
 		-----
 		Each tuple of mean, variance, and standard deviation estimates represent
@@ -927,7 +1002,46 @@ package scipy.stats.morestats;
 		References
 		----------
 		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
-		standard-deviation from data", http://hdl.handle.net/1877/438, 2006.
+		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		2006.
+		
+		Examples
+		--------
+		First a basic example to demonstrate the outputs:
+		
+		>>> from scipy import stats
+		>>> data = [6, 9, 12, 7, 8, 8, 13]
+		>>> mean, var, std = stats.bayes_mvs(data)
+		>>> mean
+		Mean(statistic=9.0, minmax=(7.1036502226125329, 10.896349777387467))
+		>>> var
+		Variance(statistic=10.0, minmax=(3.1767242068607087, 24.459103821334018))
+		>>> std
+		Std_dev(statistic=2.9724954732045084, minmax=(1.7823367265645143, 4.9456146050146295))
+		
+		Now we generate some normally distributed random data, and get estimates of
+		mean and standard deviation with 95% confidence intervals for those
+		estimates:
+		
+		>>> n_samples = 100000
+		>>> data = stats.norm.rvs(size=n_samples)
+		>>> res_mean, res_var, res_std = stats.bayes_mvs(data, alpha=0.95)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> ax = fig.add_subplot(111)
+		>>> ax.hist(data, bins=100, normed=True, label='Histogram of data')
+		>>> ax.vlines(res_mean.statistic, 0, 0.5, colors='r', label='Estimated mean')
+		>>> ax.axvspan(res_mean.minmax[0],res_mean.minmax[1], facecolor='r',
+		...            alpha=0.2, label=r'Estimated mean (95% limits)')
+		>>> ax.vlines(res_std.statistic, 0, 0.5, colors='g', label='Estimated scale')
+		>>> ax.axvspan(res_std.minmax[0],res_std.minmax[1], facecolor='g', alpha=0.2,
+		...            label=r'Estimated scale (95% limits)')
+		
+		>>> ax.legend(fontsize=10)
+		>>> ax.set_xlim([-4, 4])
+		>>> ax.set_ylim([0, 0.5])
+		>>> plt.show()
 	**/
 	static public function bayes_mvs(data:Dynamic, ?alpha:Dynamic):python.Tuple<Dynamic>;
 	/**
@@ -958,7 +1072,7 @@ package scipy.stats.morestats;
 		----------
 		.. [1] http://en.wikipedia.org/wiki/Binomial_test
 	**/
-	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic):Float;
+	static public function binom_test(x:Dynamic, ?n:Dynamic, ?p:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		Return a positive dataset transformed by a Box-Cox power transformation.
 		
@@ -1030,7 +1144,7 @@ package scipy.stats.morestats;
 		>>> fig = plt.figure()
 		>>> ax1 = fig.add_subplot(211)
 		>>> x = stats.loggamma.rvs(5, size=500) + 5
-		>>> stats.probplot(x, dist=stats.norm, plot=ax1)
+		>>> prob = stats.probplot(x, dist=stats.norm, plot=ax1)
 		>>> ax1.set_xlabel('')
 		>>> ax1.set_title('Probplot against normal distribution')
 		
@@ -1038,7 +1152,7 @@ package scipy.stats.morestats;
 		
 		>>> ax2 = fig.add_subplot(212)
 		>>> xt, _ = stats.boxcox(x)
-		>>> stats.probplot(xt, dist=stats.norm, plot=ax2)
+		>>> prob = stats.probplot(xt, dist=stats.norm, plot=ax2)
 		>>> ax2.set_title('Probplot after Box-Cox transformation')
 		
 		>>> plt.show()
@@ -1089,7 +1203,7 @@ package scipy.stats.morestats;
 		
 		>>> x = stats.loggamma.rvs(5, loc=10, size=1000)
 		>>> lmbdas = np.linspace(-2, 10)
-		>>> llf = np.zeros(lmbdas.shape, dtype=np.float)
+		>>> llf = np.zeros(lmbdas.shape, dtype=float)
 		>>> for ii, lmbda in enumerate(lmbdas):
 		...     llf[ii] = stats.boxcox_llf(lmbda, x)
 		
@@ -1182,7 +1296,7 @@ package scipy.stats.morestats;
 		
 		>>> fig = plt.figure()
 		>>> ax = fig.add_subplot(111)
-		>>> stats.boxcox_normplot(x, -10, 10, plot=ax)
+		>>> prob = stats.boxcox_normplot(x, -10, 10, plot=ax)
 		>>> ax.axvline(lmax_mle, color='r')
 		>>> ax.axvline(lmax_pearsonr, color='g', ls='--')
 		
@@ -1243,7 +1357,7 @@ package scipy.stats.morestats;
 		>>> x = stats.loggamma.rvs(5, size=500) + 5
 		>>> fig = plt.figure()
 		>>> ax = fig.add_subplot(111)
-		>>> stats.boxcox_normplot(x, -20, 20, plot=ax)
+		>>> prob = stats.boxcox_normplot(x, -20, 20, plot=ax)
 		
 		Determine and plot the optimal ``lmbda`` to transform ``x`` and plot it in
 		the same plot:
@@ -1645,33 +1759,37 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		arr : array_like
-		    Input array
+		    Input array. This is cast to float64.
 		
 		Returns
 		-------
-		find_repeats : tuple
-		    Returns a tuple of two 1-D ndarrays.  The first ndarray are the repeats
-		    as sorted, unique values that are repeated in `arr`.  The second
-		    ndarray are the counts mapped one-to-one of the repeated values
-		    in the first ndarray.
+		values : ndarray
+		    The unique values from the (flattened) input that are repeated.
+		
+		counts : ndarray
+		    Number of times the corresponding 'value' is repeated.
+		
+		Notes
+		-----
+		In numpy >= 1.9 `numpy.unique` provides similar functionality. The main
+		difference is that `find_repeats` only returns repeated values.
 		
 		Examples
 		--------
 		>>> from scipy import stats
 		>>> stats.find_repeats([2, 1, 2, 3, 2, 2, 5])
-		(array([ 2. ]), array([ 4 ], dtype=int32)
+		RepeatedResults(values=array([ 2.]), counts=array([4]))
 		
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
-		(array([ 4., 5.]), array([2, 2], dtype=int32))
+		RepeatedResults(values=array([ 4.,  5.]), counts=array([2, 2]))
 	**/
-	static public function find_repeats(arr:Dynamic):python.Tuple<Dynamic>;
+	static public function find_repeats(arr:Dynamic):Dynamic;
 	/**
-		Perform Fligner's test for equal variances.
+		Perform Fligner-Killeen test for equality of variance.
 		
 		Fligner's test tests the null hypothesis that all input samples
-		are from populations with equal variances.  Fligner's test is
-		non-parametric in contrast to Bartlett's test `bartlett` and
-		Levene's test `levene`.
+		are from populations with equal variances.  Fligner-Killeen's test is
+		distribution free when populations are identical [2]_.
 		
 		Parameters
 		----------
@@ -1687,16 +1805,26 @@ package scipy.stats.morestats;
 		
 		Returns
 		-------
-		Xsq : float
+		statistic : float
 		    The test statistic.
-		p-value : float
+		pvalue : float
 		    The p-value for the hypothesis test.
+		
+		See Also
+		--------
+		bartlett : A parametric test for equality of k variances in normal samples
+		levene : A robust parametric test for equality of k variances
 		
 		Notes
 		-----
 		As with Levene's test there are three variants of Fligner's test that
 		differ by the measure of central tendency used in the test.  See `levene`
 		for more information.
+		
+		Conover et al. (1981) examine many of the existing parametric and
+		nonparametric tests by extensive simulations and they conclude that the
+		tests proposed by Fligner and Killeen (1976) and Levene (1960) appear to be
+		superior in terms of robustness of departures from normality and power [3]_.
 		
 		References
 		----------
@@ -1705,6 +1833,16 @@ package scipy.stats.morestats;
 		.. [2] Fligner, M.A. and Killeen, T.J. (1976). Distribution-free two-sample
 		       tests for scale. 'Journal of the American Statistical Association.'
 		       71(353), 210-213.
+		
+		.. [3] Park, C. and Lindsay, B. G. (1999). Robust Scale Estimation and
+		       Hypothesis Testing based on Quadratic Inference Function. Technical
+		       Report #99-03, Center for Likelihood Studies, Pennsylvania State
+		       University.
+		
+		.. [4] Conover, W. J., Johnson, M. E. and Johnson M. M. (1981). A
+		       comparative study of tests for homogeneity of variances, with
+		       applications to the outer continental shelf biding data.
+		       Technometrics, 23(4), 351-361.
 	**/
 	static public function fligner(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
@@ -1768,13 +1906,13 @@ package scipy.stats.morestats;
 	/**
 		Return the nth k-statistic (1<=n<=4 so far).
 		
-		The nth k-statistic is the unique symmetric unbiased estimator of the nth
-		cumulant kappa_n.
+		The nth k-statistic k_n is the unique symmetric unbiased estimator of the
+		nth cumulant kappa_n.
 		
 		Parameters
 		----------
 		data : array_like
-		    Input array.
+		    Input array. Note that n-D input gets flattened.
 		n : int, {1, 2, 3, 4}, optional
 		    Default is equal to 2.
 		
@@ -1786,29 +1924,47 @@ package scipy.stats.morestats;
 		See Also
 		--------
 		kstatvar: Returns an unbiased estimator of the variance of the k-statistic.
+		moment: Returns the n-th central moment about the mean for a sample.
 		
 		Notes
 		-----
-		The cumulants are related to central moments but are specifically defined
-		using a power series expansion of the logarithm of the characteristic
-		function (which is the Fourier transform of the PDF).
-		In particular let phi(t) be the characteristic function, then::
+		For a sample size n, the first few k-statistics are given by:
 		
-		    ln phi(t) = > kappa_n (it)^n / n!    (sum from n=0 to inf)
+		.. math::
 		
-		The first few cumulants (kappa_n)  in terms of central moments (mu_n) are::
+		    k_{1} = \mu
+		    k_{2} = \frac{n}{n-1} m_{2}
+		    k_{3} = \frac{ n^{2} } {(n-1) (n-2)} m_{3}
+		    k_{4} = \frac{ n^{2} [(n + 1)m_{4} - 3(n - 1) m^2_{2}]} {(n-1) (n-2) (n-3)}
 		
-		    kappa_1 = mu_1
-		    kappa_2 = mu_2
-		    kappa_3 = mu_3
-		    kappa_4 = mu_4 - 3*mu_2**2
-		    kappa_5 = mu_5 - 10*mu_2 * mu_3
+		where ``:math:\mu`` is the sample mean, ``:math:m_2`` is the sample
+		variance, and ``:math:m_i`` is the i-th sample central moment.
 		
 		References
 		----------
 		http://mathworld.wolfram.com/k-Statistic.html
 		
 		http://mathworld.wolfram.com/Cumulant.html
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> rndm = np.random.RandomState(1234)
+		
+		As sample size increases, n-th moment and n-th k-statistic converge to the
+		same number (although they aren't identical). In the case of the normal
+		distribution, they converge to zero.
+		
+		>>> for n in [2, 3, 4, 5, 6, 7]:
+		...     x = rndm.normal(size=10**n)
+		...     m, k = stats.moment(x, 3), stats.kstat(x, 3)
+		...     print("%.3g %.3g %.3g" % (m, k, m-k))
+		-0.631 -0.651 0.0194
+		0.0282 0.0283 -8.49e-05
+		-0.0454 -0.0454 1.36e-05
+		7.53e-05 7.53e-05 -2.26e-09
+		0.00166 0.00166 -4.99e-09
+		-2.88e-06 -2.88e-06 8.63e-13
 	**/
 	static public function kstat(data:Dynamic, ?n:Dynamic):Float;
 	/**
@@ -1819,7 +1975,7 @@ package scipy.stats.morestats;
 		Parameters
 		----------
 		data : array_like
-		    Input array.
+		    Input array. Note that n-D input gets flattened.
 		n : int, {1, 2}, optional
 		    Default is equal to 2.
 		
@@ -1830,7 +1986,25 @@ package scipy.stats.morestats;
 		
 		See Also
 		--------
-		kstat
+		kstat: Returns the n-th k-statistic.
+		moment: Returns the n-th central moment about the mean for a sample.
+		
+		Notes
+		-----
+		The variances of the first few k-statistics are given by:
+		
+		.. math::
+		
+		    var(k_{1}) = \frac{\kappa^2}{n}
+		    var(k_{2}) = \frac{\kappa^4}{n} + \frac{2\kappa^2_{2}}{n - 1}
+		    var(k_{3}) = \frac{\kappa^6}{n} + \frac{9 \kappa_2 \kappa_4}{n - 1} +
+		                 \frac{9 \kappa^2_{3}}{n - 1} +
+		                 \frac{6 n \kappa^3_{2}}{(n-1) (n-2)}
+		    var(k_{4}) = \frac{\kappa^8}{n} + \frac{16 \kappa_2 \kappa_6}{n - 1} +
+		                 \frac{48 \kappa_{3} \kappa_5}{n - 1} +
+		                 \frac{34 \kappa^2_{4}}{n-1} + \frac{72 n \kappa^2_{2} \kappa_4}{(n - 1) (n - 2)} +
+		                 \frac{144 n \kappa_{2} \kappa^2_{3}}{(n - 1) (n - 2)} +
+		                 \frac{24 (n + 1) n \kappa^4_{2}}{(n - 1) (n - 2) (n - 3)}
 	**/
 	static public function kstatvar(data:Dynamic, ?n:Dynamic):Float;
 	/**
@@ -2108,6 +2282,7 @@ package scipy.stats.morestats;
 		Examples
 		--------
 		>>> from scipy import stats
+		>>> np.random.seed(1234)
 		>>> x2 = np.random.randn(2, 45, 6, 7)
 		>>> x1 = np.random.randn(2, 30, 6, 7)
 		>>> z, p = stats.mood(x1, x2, axis=1)
@@ -2124,7 +2299,7 @@ package scipy.stats.morestats;
 		>>> x1 = np.random.randn(2, 30)
 		>>> x2 = np.random.randn(2, 35) * 10.0
 		>>> stats.mood(x1, x2, axis=1)
-		(array([-5.84332354, -5.6840814 ]), array([5.11694980e-09, 1.31517628e-08]))
+		(array([-5.7178125 , -5.25342163]), array([  1.07904114e-08,   1.49299218e-07]))
 	**/
 	static public function mood(x:Dynamic, y:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -2145,14 +2320,24 @@ package scipy.stats.morestats;
 		sdist : "frozen" distribution object
 		    Distribution object representing the standard deviation of the data
 		
+		See Also
+		--------
+		bayes_mvs
+		
 		Notes
 		-----
-		The return values from bayes_mvs(data) is equivalent to
+		The return values from ``bayes_mvs(data)`` is equivalent to
 		``tuple((x.mean(), x.interval(0.90)) for x in mvsdist(data))``.
 		
 		In other words, calling ``<dist>.mean()`` and ``<dist>.interval(0.90)``
 		on the three distribution objects returned from this function will give
 		the same results that are returned from `bayes_mvs`.
+		
+		References
+		----------
+		T.E. Oliphant, "A Bayesian perspective on estimating mean, variance, and
+		standard-deviation from data", http://scholarsarchive.byu.edu/facpub/278,
+		2006.
 		
 		Examples
 		--------
@@ -2201,13 +2386,79 @@ package scipy.stats.morestats;
 	static public function pdf_fromgamma(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var pi : Dynamic;
 	/**
-		Returns the shape parameter that maximizes the probability plot
-		correlation coefficient for the given data to a one-parameter
-		family of distributions.
+		Calculate the shape parameter that maximizes the PPCC
 		
-		See also ppcc_plot
+		The probability plot correlation coefficient (PPCC) plot can be used to
+		determine the optimal shape parameter for a one-parameter family of
+		distributions.  ppcc_max returns the shape parameter that would maximize the
+		probability plot correlation coefficient for the given data to a
+		one-parameter family of distributions.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array.
+		brack : tuple, optional
+		    Triple (a,b,c) where (a<b<c). If bracket consists of two numbers (a, c)
+		    then they are assumed to be a starting interval for a downhill bracket
+		    search (see `scipy.optimize.brent`).
+		dist : str or stats.distributions instance, optional
+		    Distribution or distribution function name.  Objects that look enough
+		    like a stats.distributions instance (i.e. they have a ``ppf`` method)
+		    are also accepted.  The default is ``'tukeylambda'``.
+		
+		Returns
+		-------
+		shape_value : float
+		    The shape parameter at which the probability plot correlation
+		    coefficient reaches its max value.
+		
+		See also
+		--------
+		ppcc_plot, probplot, boxcox
+		
+		Notes
+		-----
+		The brack keyword serves as a starting point which is useful in corner
+		cases. One can use a plot to obtain a rough visual estimate of the location
+		for the maximum to start the search near it.
+		
+		References
+		----------
+		.. [1] J.J. Filliben, "The Probability Plot Correlation Coefficient Test for
+		       Normality", Technometrics, Vol. 17, pp. 111-117, 1975.
+		
+		.. [2] http://www.itl.nist.gov/div898/handbook/eda/section3/ppccplot.htm
+		
+		Examples
+		--------
+		First we generate some random data from a Tukey-Lambda distribution,
+		with shape parameter -0.7:
+		
+		>>> from scipy import stats
+		>>> x = stats.tukeylambda.rvs(-0.7, loc=2, scale=0.5, size=10000,
+		...                           random_state=1234567) + 1e4
+		
+		Now we explore this data with a PPCC plot as well as the related
+		probability plot and Box-Cox normplot.  A red line is drawn where we
+		expect the PPCC value to be maximal (at the shape parameter -0.7 used
+		above):
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure(figsize=(8, 6))
+		>>> ax = fig.add_subplot(111)
+		>>> res = stats.ppcc_plot(x, -5, 5, plot=ax)
+		
+		We calculate the value where the shape should reach its maximum and a red
+		line is drawn there. The line should coincide with the highest point in the
+		ppcc_plot.
+		
+		>>> max = stats.ppcc_max(x)
+		>>> ax.vlines(max, 0, 1, colors='r', label='Expected shape value')
+		
+		>>> plt.show()
 	**/
-	static public function ppcc_max(x:Dynamic, ?brack:Dynamic, ?dist:Dynamic):Dynamic;
+	static public function ppcc_max(x:Dynamic, ?brack:Dynamic, ?dist:Dynamic):Float;
 	/**
 		Calculate and optionally plot probability plot correlation coefficient.
 		
@@ -2276,9 +2527,9 @@ package scipy.stats.morestats;
 		>>> ax1 = fig.add_subplot(131)
 		>>> ax2 = fig.add_subplot(132)
 		>>> ax3 = fig.add_subplot(133)
-		>>> stats.probplot(x, plot=ax1)
-		>>> stats.boxcox_normplot(x, -5, 5, plot=ax2)
-		>>> stats.ppcc_plot(x, -5, 5, plot=ax3)
+		>>> res = stats.probplot(x, plot=ax1)
+		>>> res = stats.boxcox_normplot(x, -5, 5, plot=ax2)
+		>>> res = stats.ppcc_plot(x, -5, 5, plot=ax3)
 		>>> ax3.vlines(-0.7, 0, 1, colors='r', label='Expected shape value')
 		>>> plt.show()
 	**/
@@ -2371,7 +2622,7 @@ package scipy.stats.morestats;
 		
 		>>> ax3 = plt.subplot(223)
 		>>> x = stats.norm.rvs(loc=[0,5], scale=[1,1.5],
-		...                    size=(nsample/2.,2)).ravel()
+		...                    size=(nsample//2,2)).ravel()
 		>>> res = stats.probplot(x, plot=plt)
 		
 		A standard normal distribution:
@@ -2386,7 +2637,7 @@ package scipy.stats.morestats;
 		>>> fig = plt.figure()
 		>>> ax = fig.add_subplot(111)
 		>>> x = stats.loggamma.rvs(c=2.5, size=500)
-		>>> stats.probplot(x, dist=stats.loggamma, sparams=(2.5,), plot=ax)
+		>>> res = stats.probplot(x, dist=stats.loggamma, sparams=(2.5,), plot=ax)
 		>>> ax.set_title("Probplot for loggamma dist with shape parameter 2.5")
 		
 		Show the results with Matplotlib:
@@ -2554,10 +2805,34 @@ package scipy.stats.morestats;
 		See Also
 		--------
 		anderson : The Anderson-Darling test for normality
+		kstest : The Kolmogorov-Smirnov test for goodness of fit.
+		
+		Notes
+		-----
+		The algorithm used is described in [4]_ but censoring parameters as
+		described are not implemented. For N > 5000 the W test statistic is accurate
+		but the p-value may not be.
+		
+		The chance of rejecting the null hypothesis when it is true is close to 5%
+		regardless of sample size.
 		
 		References
 		----------
 		.. [1] http://www.itl.nist.gov/div898/handbook/prc/section2/prc213.htm
+		.. [2] Shapiro, S. S. & Wilk, M.B (1965). An analysis of variance test for
+		       normality (complete samples), Biometrika, Vol. 52, pp. 591-611.
+		.. [3] Razali, N. M. & Wah, Y. B. (2011) Power comparisons of Shapiro-Wilk,
+		       Kolmogorov-Smirnov, Lilliefors and Anderson-Darling tests, Journal of
+		       Statistical Modeling and Analytics, Vol. 2, pp. 21-33.
+		.. [4] ALGORITHM AS R94 APPL. STATIST. (1995) VOL. 44, NO. 4.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> np.random.seed(12345678)
+		>>> x = stats.norm.rvs(loc=5, scale=3, size=100)
+		>>> stats.shapiro(x)
+		(0.9772805571556091, 0.08144091814756393)
 	**/
 	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
 	/**
@@ -2709,87 +2984,6 @@ package scipy.stats.morestats;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
-	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
-		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Find the unique elements of an array.
 		

@@ -42,12 +42,50 @@ package scipy.sparse.linalg.isolve.lsmr;
 		
 		Examples
 		--------
-		>>> from scipy import matrix
-		>>> M = matrix( [[1,2,3],[4,5,6]], dtype='int32' )
-		>>> aslinearoperator( M )
-		<2x3 LinearOperator with dtype=int32>
+		>>> from scipy.sparse.linalg import aslinearoperator
+		>>> M = np.array([[1,2,3],[4,5,6]], dtype=np.int32)
+		>>> aslinearoperator(M)
+		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
+	/**
+		Convert inputs to arrays with at least one dimension.
+		
+		Scalar inputs are converted to 1-dimensional arrays, whilst
+		higher-dimensional inputs are preserved.
+		
+		Parameters
+		----------
+		arys1, arys2, ... : array_like
+		    One or more input arrays.
+		
+		Returns
+		-------
+		ret : ndarray
+		    An array, or sequence of arrays, each with ``a.ndim >= 1``.
+		    Copies are made only if necessary.
+		
+		See Also
+		--------
+		atleast_2d, atleast_3d
+		
+		Examples
+		--------
+		>>> np.atleast_1d(1.0)
+		array([ 1.])
+		
+		>>> x = np.arange(9.0).reshape(3,3)
+		>>> np.atleast_1d(x)
+		array([[ 0.,  1.,  2.],
+		       [ 3.,  4.,  5.],
+		       [ 6.,  7.,  8.]])
+		>>> np.atleast_1d(x) is x
+		True
+		
+		>>> np.atleast_1d(1, [3, 4])
+		[array([1]), array([3, 4])]
+	**/
+	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public var infty : Dynamic;
 	/**
@@ -63,7 +101,7 @@ package scipy.sparse.linalg.isolve.lsmr;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
-		b : (m,) ndarray
+		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
 		    Damping factor for regularized least-squares. `lsmr` solves

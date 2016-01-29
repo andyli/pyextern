@@ -337,6 +337,48 @@ package scipy.misc.common;
 	**/
 	static public function ascent():Dynamic;
 	/**
+		Broadcast any number of arrays against each other.
+		
+		Parameters
+		----------
+		`*args` : array_likes
+		    The arrays to broadcast.
+		
+		subok : bool, optional
+		    If True, then sub-classes will be passed-through, otherwise
+		    the returned arrays will be forced to be a base-class array (default).
+		
+		Returns
+		-------
+		broadcasted : list of arrays
+		    These arrays are views on the original arrays.  They are typically
+		    not contiguous.  Furthermore, more than one element of a
+		    broadcasted array may refer to a single memory location.  If you
+		    need to write to the arrays, make copies first.
+		
+		Examples
+		--------
+		>>> x = np.array([[1,2,3]])
+		>>> y = np.array([[1],[2],[3]])
+		>>> np.broadcast_arrays(x, y)
+		[array([[1, 2, 3],
+		       [1, 2, 3],
+		       [1, 2, 3]]), array([[1, 1, 1],
+		       [2, 2, 2],
+		       [3, 3, 3]])]
+		
+		Here is a useful idiom for getting contiguous copies instead of
+		non-contiguous views.
+		
+		>>> [np.array(a) for a in np.broadcast_arrays(x, y)]
+		[array([[1, 2, 3],
+		       [1, 2, 3],
+		       [1, 2, 3]]), array([[1, 1, 1],
+		       [2, 2, 2],
+		       [3, 3, 3]])]
+	**/
+	static public function broadcast_arrays(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Return weights for an Np-point central derivative.
 		
 		Assumes equally-spaced function points.
@@ -383,9 +425,9 @@ package scipy.misc.common;
 		
 		Examples
 		--------
+		>>> from scipy.misc import derivative
 		>>> def f(x):
 		...     return x**3 + x**2
-		...
 		>>> derivative(f, 1.0, dx=1e-6)
 		4.9999999999217337
 	**/
@@ -514,7 +556,7 @@ package scipy.misc.common;
 		>>> face.shape
 		(768, 1024, 3)
 		>>> face.max()
-		230
+		255
 		>>> face.dtype
 		dtype('uint8')
 		
@@ -684,8 +726,9 @@ package scipy.misc.common;
 	**/
 	static public function isfinite(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Get classic image processing example image, Lena, at 8-bit grayscale
-		bit-depth, 512 x 512 size.
+		Function that previously returned an example image
+		
+		.. note:: Removed in 0.17
 		
 		Parameters
 		----------
@@ -693,32 +736,21 @@ package scipy.misc.common;
 		
 		Returns
 		-------
-		lena : ndarray
-		    Lena image
+		None
+		
+		Raises
+		------
+		RuntimeError
+		    This functionality has been removed due to licensing reasons.
 		
 		Notes
 		-----
-		Though safe for work in most places, this sexualized image is drawn from
-		Playboy and makes some viewers uncomfortable.  It has been very widely
-		used as an example in image processing and is therefore made available
-		for compatibility.  For new code that needs an example image we recommend
-		`face` or `ascent`.
+		The image previously returned by this function has an incompatible license
+		and has been removed from SciPy. Please use `face` or `ascent` instead.
 		
-		Examples
+		See Also
 		--------
-		>>> import scipy.misc
-		>>> lena = scipy.misc.lena()
-		>>> lena.shape
-		(512, 512)
-		>>> lena.max()
-		245
-		>>> lena.dtype
-		dtype('int32')
-		
-		>>> import matplotlib.pyplot as plt
-		>>> plt.gray()
-		>>> plt.imshow(lena)
-		>>> plt.show()
+		face, ascent
 	**/
 	static public function lena():Dynamic;
 	/**
@@ -792,17 +824,27 @@ package scipy.misc.common;
 		    .. versionadded:: 0.15.0
 		b : array-like, optional
 		    Scaling factor for exp(`a`) must be of the same shape as `a` or
-		    broadcastable to `a`.
+		    broadcastable to `a`. These values may be negative in order to
+		    implement subtraction.
 		
 		    .. versionadded:: 0.12.0
+		return_sign : bool, optional
+		    If this is set to True, the result will be a pair containing sign
+		    information; if False, results that are negative will be returned
+		    as NaN. Default is False (no sign information).
 		
+		    .. versionadded:: 0.16.0
 		Returns
 		-------
 		res : ndarray
 		    The result, ``np.log(np.sum(np.exp(a)))`` calculated in a numerically
 		    more stable way. If `b` is given then ``np.log(np.sum(b*np.exp(a)))``
 		    is returned.
-		
+		sgn : ndarray
+		    If return_sign is True, this will be an array of floating-point
+		    numbers matching res and +1, 0, or -1 depending on the sign
+		    of the result. If False, only one result is returned.
+		    
 		See Also
 		--------
 		numpy.logaddexp, numpy.logaddexp2
@@ -830,8 +872,13 @@ package scipy.misc.common;
 		9.9170178533034665
 		>>> np.log(np.sum(b*np.exp(a)))
 		9.9170178533034647
+		
+		Returning a sign flag
+		
+		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
+		(1.5413248546129181, -1.0)
 	**/
-	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
 	/**
 		Return Pade approximation to a polynomial as the ratio of two polynomials.
@@ -970,6 +1017,31 @@ package scipy.misc.common;
 		       [5, 6]])
 	**/
 	static public function reshape(a:Dynamic, newshape:Dynamic, ?order:Dynamic):Dynamic;
+	/**
+		sign(x[, out])
+		
+		Returns an element-wise indication of the sign of a number.
+		
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		
+		Parameters
+		----------
+		x : array_like
+		  Input values.
+		
+		Returns
+		-------
+		y : ndarray
+		  The sign of `x`.
+		
+		Examples
+		--------
+		>>> np.sign([-5., 4.5])
+		array([-1.,  1.])
+		>>> np.sign(0)
+		0
+	**/
+	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Remove single-dimensional entries from the shape of an array.
 		

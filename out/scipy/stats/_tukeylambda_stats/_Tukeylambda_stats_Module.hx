@@ -27,7 +27,7 @@ package scipy.stats._tukeylambda_stats;
 		
 		::
 		
-		    beta(a,b) =  gamma(a) * gamma(b) / gamma(a+b)
+		    beta(a, b) =  gamma(a) * gamma(b) / gamma(a+b)
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;

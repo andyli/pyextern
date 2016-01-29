@@ -198,6 +198,15 @@ package matplotlib.transforms;
 		    x_isdata, y_isdata = trans.contains_branch_seperately(ax.transData)
 	**/
 	public function contains_branch_seperately(other_transform:Dynamic):Dynamic;
+	/**
+		Returns the number of transforms which have been chained
+		together to form this Transform instance.
+		
+		.. note::
+		
+		    For the special case of a Composite transform, the maximum depth
+		    of the two is returned.
+	**/
 	public var depth : Dynamic;
 	/**
 		Returns a frozen copy of this transform node.  The frozen copy

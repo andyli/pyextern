@@ -137,6 +137,9 @@ package scipy.integrate;
 		-------
 		val : float
 		    Gaussian quadrature approximation to the integral
+		none : None
+		    Statically returned value of None
+		
 		
 		See Also
 		--------
@@ -162,8 +165,8 @@ package scipy.integrate;
 		:math:`\int_{x_0}^{x_N} f(x)dx = \Delta x \sum_{i=0}^{N} a_i f(x_i)
 		+ B_N (\Delta x)^{N+2} f^{N+1} (\xi)`
 		
-		where :math:`\xi \in [x_0,x_N]` and :math:`\Delta x = \frac{x_N-x_0}{N}`
-		is the averages samples spacing.
+		where :math:`\xi \in [x_0,x_N]`
+		and :math:`\Delta x = \frac{x_N-x_0}{N}` is the average samples spacing.
 		
 		If the samples are equally-spaced and N is even, then the error
 		term is :math:`B_N (\Delta x)^{N+3} f^{N+2}(\xi)`.
@@ -316,9 +319,13 @@ package scipy.integrate;
 		Solves the initial value problem for stiff or non-stiff systems
 		of first order ode-s::
 		
-		    dy/dt = func(y,t0,...)
+		    dy/dt = func(y, t0, ...)
 		
 		where y can be a vector.
+		
+		*Note*: The first two arguments of ``func(y, t0, ...)`` are in the
+		opposite order of the arguments in the system definition function used
+		by the `scipy.integrate.ode` class.
 		
 		Parameters
 		----------
@@ -420,6 +427,65 @@ package scipy.integrate;
 		--------
 		ode : a more object-oriented integrator based on VODE.
 		quad : for finding the area under a curve.
+		
+		Examples
+		--------
+		The second order differential equation for the angle `theta` of a
+		pendulum acted on by gravity with friction can be written::
+		
+		    theta''(t) + b*theta'(t) + c*sin(theta(t)) = 0
+		
+		where `b` and `c` are positive constants, and a prime (') denotes a
+		derivative.  To solve this equation with `odeint`, we must first convert
+		it to a system of first order equations.  By defining the angular
+		velocity ``omega(t) = theta'(t)``, we obtain the system::
+		
+		    theta'(t) = omega(t)
+		    omega'(t) = -b*omega(t) - c*sin(theta(t))
+		
+		Let `y` be the vector [`theta`, `omega`].  We implement this system
+		in python as:
+		
+		>>> def pend(y, t, b, c):
+		...     theta, omega = y
+		...     dydt = [omega, -b*omega - c*np.sin(theta)]
+		...     return dydt
+		...
+		
+		We assume the constants are `b` = 0.25 and `c` = 5.0:
+		
+		>>> b = 0.25
+		>>> c = 5.0
+		
+		For initial conditions, we assume the pendulum is nearly vertical
+		with `theta(0)` = `pi` - 0.1, and it initially at rest, so
+		`omega(0)` = 0.  Then the vector of initial conditions is
+		
+		>>> y0 = [np.pi - 0.1, 0.0]
+		
+		We generate a solution 101 evenly spaced samples in the interval
+		0 <= `t` <= 10.  So our array of times is:
+		
+		>>> t = np.linspace(0, 10, 101)
+		
+		Call `odeint` to generate the solution.  To pass the parameters
+		`b` and `c` to `pend`, we give them to `odeint` using the `args`
+		argument.
+		
+		>>> from scipy.integrate import odeint
+		>>> sol = odeint(pend, y0, t, args=(b, c))
+		
+		The solution is an array with shape (101, 2).  The first column
+		is `theta(t)`, and the second is `omega(t)`.  The following code
+		plots both components.
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(t, sol[:, 0], 'b', label='theta(t)')
+		>>> plt.plot(t, sol[:, 1], 'g', label='omega(t)')
+		>>> plt.legend(loc='best')
+		>>> plt.xlabel('t')
+		>>> plt.grid()
+		>>> plt.show()
 	**/
 	static public function odeint(func:Dynamic, y0:Dynamic, t:Dynamic, ?args:Dynamic, ?Dfun:Dynamic, ?col_deriv:Dynamic, ?full_output:Dynamic, ?ml:Dynamic, ?mu:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?tcrit:Dynamic, ?h0:Dynamic, ?hmax:Dynamic, ?hmin:Dynamic, ?ixpr:Dynamic, ?mxstep:Dynamic, ?mxhnil:Dynamic, ?mxordn:Dynamic, ?mxords:Dynamic, ?printmessg:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
@@ -674,15 +740,17 @@ package scipy.integrate;
 		            return args[0]*args[0] + args[1]*args[1];}
 		    compile to library testlib.*
 		
-		>>> from scipy import integrate
-		>>> import ctypes
-		>>> lib = ctypes.CDLL('/home/.../testlib.*') #use absolute path
-		>>> lib.func.restype = ctypes.c_double
-		>>> lib.func.argtypes = (ctypes.c_int,ctypes.c_double)
-		>>> integrate.quad(lib.func,0,1,(1))
-		(1.3333333333333333, 1.4802973661668752e-14)
-		>>> print((1.0**3/3.0 + 1.0) - (0.0**3/3.0 + 0.0)) #Analytic result
-		1.3333333333333333
+		::
+		
+		   from scipy import integrate
+		   import ctypes
+		   lib = ctypes.CDLL('/home/.../testlib.*') #use absolute path
+		   lib.func.restype = ctypes.c_double
+		   lib.func.argtypes = (ctypes.c_int,ctypes.c_double)
+		   integrate.quad(lib.func,0,1,(1))
+		   #(1.3333333333333333, 1.4802973661668752e-14)
+		   print((1.0**3/3.0 + 1.0) - (0.0**3/3.0 + 0.0)) #Analytic result
+		   # 1.3333333333333333
 	**/
 	static public function quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?full_output:Dynamic, ?epsabs:Dynamic, ?epsrel:Dynamic, ?limit:Dynamic, ?points:Dynamic, ?weight:Dynamic, ?wvar:Dynamic, ?wopts:Dynamic, ?maxp1:Dynamic, ?limlst:Dynamic):Float;
 	/**

@@ -42,10 +42,10 @@ package scipy.sparse.linalg.isolve.lsqr;
 		
 		Examples
 		--------
-		>>> from scipy import matrix
-		>>> M = matrix( [[1,2,3],[4,5,6]], dtype='int32' )
-		>>> aslinearoperator( M )
-		<2x3 LinearOperator with dtype=int32>
+		>>> from scipy.sparse.linalg import aslinearoperator
+		>>> M = np.array([[1,2,3],[4,5,6]], dtype=np.int32)
+		>>> aslinearoperator(M)
+		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -76,7 +76,7 @@ package scipy.sparse.linalg.isolve.lsqr;
 		A : {sparse matrix, ndarray, LinearOperator}
 		    Representation of an m-by-n matrix.  It is required that
 		    the linear operator can produce ``Ax`` and ``A^T x``.
-		b : (m,) ndarray
+		b : array_like, shape (m,)
 		    Right-hand side vector ``b``.
 		damp : float
 		    Damping coefficient.

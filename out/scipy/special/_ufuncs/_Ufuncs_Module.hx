@@ -25,7 +25,7 @@ package scipy.special._ufuncs;
 		
 		_struve_asymp_large_z(v, z, is_h)
 		
-		Internal function for testing struve & modstruve
+		Internal function for testing `struve` & `modstruve`
 		
 		Evaluates using asymptotic expansion
 		
@@ -39,7 +39,7 @@ package scipy.special._ufuncs;
 		
 		_struve_bessel_series(v, z, is_h)
 		
-		Internal function for testing struve & modstruve
+		Internal function for testing `struve` & `modstruve`
 		
 		Evaluates using Bessel function series
 		
@@ -53,7 +53,7 @@ package scipy.special._ufuncs;
 		
 		_struve_power_series(v, z, is_h)
 		
-		Internal function for testing struve & modstruve
+		Internal function for testing `struve` & `modstruve`
 		
 		Evaluates using power series
 		
@@ -116,11 +116,11 @@ package scipy.special._ufuncs;
 		
 		Binomial distribution cumulative distribution function.
 		
-		Sum of the terms 0 through k of the Binomial probability density.
+		Sum of the terms 0 through `k` of the Binomial probability density.
 		
 		::
 		
-		    y = sum(nCj p**j (1-p)**(n-j),j=0..k)
+		    y = sum(nCj p**j (1-p)**(n-j), j=0..k)
 		
 		Parameters
 		----------
@@ -142,7 +142,7 @@ package scipy.special._ufuncs;
 		
 		Binomial distribution survival function.
 		
-		Sum of the terms k+1 through n of the Binomial probability density
+		Sum of the terms k+1 through `n` of the Binomial probability density
 		
 		::
 		
@@ -166,7 +166,7 @@ package scipy.special._ufuncs;
 		
 		bdtri(k, n, y)
 		
-		Inverse function to bdtr vs. p
+		Inverse function to `bdtr` vs. `p`
 		
 		Finds probability `p` such that for the cumulative binomial
 		probability ``bdtr(k, n, p) == y``.
@@ -177,7 +177,7 @@ package scipy.special._ufuncs;
 		
 		bdtrik(y, n, p)
 		
-		Inverse function to bdtr vs k
+		Inverse function to `bdtr` vs `k`
 	**/
 	static public function bdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -185,7 +185,7 @@ package scipy.special._ufuncs;
 		
 		bdtrin(k, y, p)
 		
-		Inverse function to bdtr vs n
+		Inverse function to `bdtr` vs `n`
 	**/
 	static public function bdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -201,7 +201,7 @@ package scipy.special._ufuncs;
 		
 		beip(x)
 		
-		Derivative of the Kelvin function bei
+		Derivative of the Kelvin function `bei`
 	**/
 	static public function beip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -217,7 +217,7 @@ package scipy.special._ufuncs;
 		
 		berp(x)
 		
-		Derivative of the Kelvin function ber
+		Derivative of the Kelvin function `ber`
 	**/
 	static public function berp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -225,13 +225,13 @@ package scipy.special._ufuncs;
 		
 		besselpoly(a, lmb, nu)
 		
-		Weighed integral of a Bessel function.
+		Weighted integral of a Bessel function.
 		
 		.. math::
 		
-		   \int_0^1 x^\lambda J_v(\nu, 2 a x) \, dx
+		   \int_0^1 x^\lambda J_\nu(2 a x) \, dx
 		
-		where :math:`J_v` is a Bessel function and :math:`\lambda=lmb`,
+		where :math:`J_\nu` is a Bessel function and :math:`\lambda=lmb`,
 		:math:`\nu=nu`.
 	**/
 	static public function besselpoly(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -244,7 +244,7 @@ package scipy.special._ufuncs;
 		
 		::
 		
-		    beta(a,b) =  gamma(a) * gamma(b) / gamma(a+b)
+		    beta(a, b) =  gamma(a) * gamma(b) / gamma(a+b)
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -255,7 +255,7 @@ package scipy.special._ufuncs;
 		Incomplete beta integral.
 		
 		Compute the incomplete beta integral of the arguments, evaluated
-		from zero to x::
+		from zero to `x`::
 		
 		    gamma(a+b) / (gamma(a)*gamma(b)) * integral(t**(a-1) (1-t)**(b-1), t=0..x).
 		
@@ -274,7 +274,7 @@ package scipy.special._ufuncs;
 		
 		Inverse function to beta integral.
 		
-		Compute x such that betainc(a,b,x) = y.
+		Compute `x` such that betainc(a, b, x) = y.
 	**/
 	static public function betaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -329,6 +329,7 @@ package scipy.special._ufuncs;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox
 		>>> boxcox([1, 4, 10], 2.5)
 		array([   0.        ,   12.4       ,  126.09110641])
 		>>> boxcox(2, [0, 1, 2])
@@ -369,6 +370,7 @@ package scipy.special._ufuncs;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox1p
 		>>> boxcox1p(1e-4, [0, 0.5, 1])
 		array([  9.99950003e-05,   9.99975001e-05,   1.00000000e-04])
 		>>> boxcox1p([0.01, 0.1], 0.25)
@@ -378,11 +380,11 @@ package scipy.special._ufuncs;
 	/**
 		btdtr(x1, x2, x3[, out])
 		
-		btdtr(a,b,x)
+		btdtr(a, b, x)
 		
 		Cumulative beta distribution.
 		
-		Returns the area from zero to x under the beta density function::
+		Returns the area from zero to `x` under the beta density function::
 		
 		    gamma(a+b)/(gamma(a)*gamma(b)))*integral(t**(a-1) (1-t)**(b-1), t=0..x)
 		
@@ -394,12 +396,12 @@ package scipy.special._ufuncs;
 	/**
 		btdtri(x1, x2, x3[, out])
 		
-		btdtri(a,b,p)
+		btdtri(a, b, p)
 		
 		p-th quantile of the beta distribution.
 		
-		This is effectively the inverse of btdtr returning the value of x for which
-		``btdtr(a,b,x) = p``
+		This is effectively the inverse of `btdtr` returning the value of `x` for which
+		``btdtr(a, b, x) = p``
 		
 		See Also
 		--------
@@ -411,7 +413,7 @@ package scipy.special._ufuncs;
 		
 		btdtria(p, b, x)
 		
-		Inverse of btdtr vs a
+		Inverse of `btdtr` vs `a`
 	**/
 	static public function btdtria(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -419,7 +421,7 @@ package scipy.special._ufuncs;
 		
 		btdtria(a, p, x)
 		
-		Inverse of btdtr vs b
+		Inverse of `btdtr` vs `b`
 	**/
 	static public function btdtrib(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -427,7 +429,7 @@ package scipy.special._ufuncs;
 		
 		cbrt(x)
 		
-		Cube root of x
+		Cube root of `x`
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -437,8 +439,8 @@ package scipy.special._ufuncs;
 		
 		Chi square cumulative distribution function
 		
-		Returns the area under the left hand tail (from 0 to x) of the Chi
-		square probability density function with v degrees of freedom::
+		Returns the area under the left hand tail (from 0 to `x`) of the Chi
+		square probability density function with `v` degrees of freedom::
 		
 		    1/(2**(v/2) * gamma(v/2)) * integral(t**(v/2-1) * exp(-t/2), t=0..x)
 	**/
@@ -446,12 +448,12 @@ package scipy.special._ufuncs;
 	/**
 		chdtrc(x1, x2[, out])
 		
-		chdtrc(v,x)
+		chdtrc(v, x)
 		
 		Chi square survival function
 		
-		Returns the area under the right hand tail (from x to
-		infinity) of the Chi square probability density function with v
+		Returns the area under the right hand tail (from `x` to
+		infinity) of the Chi square probability density function with `v`
 		degrees of freedom::
 		
 		    1/(2**(v/2) * gamma(v/2)) * integral(t**(v/2-1) * exp(-t/2), t=x..inf)
@@ -460,11 +462,11 @@ package scipy.special._ufuncs;
 	/**
 		chdtri(x1, x2[, out])
 		
-		chdtri(v,p)
+		chdtri(v, p)
 		
-		Inverse to chdtrc
+		Inverse to `chdtrc`
 		
-		Returns the argument x such that ``chdtrc(v,x) == p``.
+		Returns the argument x such that ``chdtrc(v, x) == p``.
 	**/
 	static public function chdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -472,7 +474,7 @@ package scipy.special._ufuncs;
 		
 		chdtri(p, x)
 		
-		Inverse to chdtr vs v
+		Inverse to `chdtr` vs `v`
 		
 		Returns the argument v such that ``chdtr(v, x) == p``.
 	**/
@@ -490,7 +492,7 @@ package scipy.special._ufuncs;
 		
 		chndtridf(x, p, nc)
 		
-		Inverse to chndtr vs df
+		Inverse to `chndtr` vs `df`
 	**/
 	static public function chndtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -498,7 +500,7 @@ package scipy.special._ufuncs;
 		
 		chndtrinc(x, df, p)
 		
-		Inverse to chndtr vs nc
+		Inverse to `chndtr` vs `nc`
 	**/
 	static public function chndtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -506,7 +508,7 @@ package scipy.special._ufuncs;
 		
 		chndtrix(p, df, nc)
 		
-		Inverse to chndtr vs x
+		Inverse to `chndtr` vs `x`
 	**/
 	static public function chndtrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -514,7 +516,7 @@ package scipy.special._ufuncs;
 		
 		cosdg(x)
 		
-		Cosine of the angle x given in degrees.
+		Cosine of the angle `x` given in degrees.
 	**/
 	static public function cosdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -522,7 +524,7 @@ package scipy.special._ufuncs;
 		
 		cosm1(x)
 		
-		cos(x) - 1 for use when x is near zero.
+		cos(x) - 1 for use when `x` is near zero.
 	**/
 	static public function cosm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -530,7 +532,7 @@ package scipy.special._ufuncs;
 		
 		cotdg(x)
 		
-		Cotangent of the angle x given in degrees.
+		Cotangent of the angle `x` given in degrees.
 	**/
 	static public function cotdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -542,7 +544,7 @@ package scipy.special._ufuncs;
 		
 		Computes::
 		
-		    exp(-x**2) * integral(exp(t**2),t=0..x).
+		    exp(-x**2) * integral(exp(t**2), t=0..x).
 		
 		References
 		----------
@@ -573,7 +575,7 @@ package scipy.special._ufuncs;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near  m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipeinc : Incomplete elliptic integral of the second kind
@@ -605,7 +607,7 @@ package scipy.special._ufuncs;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
@@ -618,8 +620,8 @@ package scipy.special._ufuncs;
 		
 		Jacobian elliptic functions
 		
-		Calculates the Jacobian elliptic functions of parameter m between
-		0 and 1, and real u.
+		Calculates the Jacobian elliptic functions of parameter `m` between
+		0 and 1, and real `u`.
 		
 		Parameters
 		----------
@@ -667,7 +669,7 @@ package scipy.special._ufuncs;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near  m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
@@ -678,7 +680,7 @@ package scipy.special._ufuncs;
 		
 		ellipkm1(p)
 		
-		Complete elliptic integral of the first kind around m = 1
+		Complete elliptic integral of the first kind around `m` = 1
 		
 		This function is defined as
 		
@@ -689,7 +691,7 @@ package scipy.special._ufuncs;
 		Parameters
 		----------
 		p : array_like
-		    Defines the parameter of the elliptic integral as m = 1 - p.
+		    Defines the parameter of the elliptic integral as `m` = 1 - p.
 		
 		Returns
 		-------
@@ -721,7 +723,7 @@ package scipy.special._ufuncs;
 		Returns
 		-------
 		res : ndarray
-		    The value of the elementwise entropy function at the given points x.
+		    The value of the elementwise entropy function at the given points `x`.
 		
 		See Also
 		--------
@@ -751,7 +753,7 @@ package scipy.special._ufuncs;
 		Returns
 		-------
 		res : ndarray
-		    The values of the error function at the given points x.
+		    The values of the error function at the given points `x`.
 		
 		See Also
 		--------
@@ -972,7 +974,7 @@ package scipy.special._ufuncs;
 		
 		::
 		
-		    integral(exp(-z*t)/t,t=1..inf).
+		    integral(exp(-z*t)/t, t=1..inf).
 	**/
 	static public function exp1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1000,7 +1002,7 @@ package scipy.special._ufuncs;
 		
 		Defined as::
 		
-		    integral(exp(t)/t,t=-inf..x)
+		    integral(exp(t)/t, t=-inf..x)
 		
 		See `expn` for a different exponential integral.
 	**/
@@ -1040,7 +1042,7 @@ package scipy.special._ufuncs;
 		
 		expm1(x)
 		
-		exp(x) - 1 for use when x is near zero.
+		exp(x) - 1 for use when `x` is near zero.
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1050,11 +1052,36 @@ package scipy.special._ufuncs;
 		
 		Exponential integral E_n
 		
-		Returns the exponential integral for integer n and non-negative x and n::
+		Returns the exponential integral for integer `n` and non-negative `x` and
+		`n`::
 		
 		    integral(exp(-x*t) / t**n, t=1..inf).
 	**/
 	static public function expn(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		exprel(x[, out])
+		
+		exprel(x)
+		
+		Relative error exponential, (exp(x)-1)/x, for use when `x` is near zero.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Input array.
+		
+		Returns
+		-------
+		res : ndarray
+		    Output array.
+		
+		See Also
+		--------
+		expm1
+		
+		.. versionadded:: 0.17.0
+	**/
+	static public function exprel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		fdtr(x1, x2, x3[, out])
 		
@@ -1062,7 +1089,7 @@ package scipy.special._ufuncs;
 		
 		F cumulative distribution function
 		
-		Returns the area from zero to x under the F density function (also
+		Returns the area from zero to `x` under the F density function (also
 		known as Snedcor's density or the variance ratio density).  This
 		is the density of X = (unum/dfn)/(uden/dfd), where unum and uden
 		are random variables having Chi square distributions with dfn and
@@ -1084,9 +1111,9 @@ package scipy.special._ufuncs;
 		
 		fdtri(dfn, dfd, p)
 		
-		Inverse to fdtr vs x
+		Inverse to `fdtr` vs x
 		
-		Finds the F density argument x such that ``fdtr(dfn, dfd, x) == p``.
+		Finds the F density argument `x` such that ``fdtr(dfn, dfd, x) == p``.
 	**/
 	static public function fdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1094,9 +1121,9 @@ package scipy.special._ufuncs;
 		
 		fdtridfd(dfn, p, x)
 		
-		Inverse to fdtr vs dfd
+		Inverse to `fdtr` vs dfd
 		
-		Finds the F density argument dfd such that ``fdtr(dfn,dfd,x) == p``.
+		Finds the F density argument dfd such that ``fdtr(dfn, dfd, x) == p``.
 	**/
 	static public function fdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1108,8 +1135,8 @@ package scipy.special._ufuncs;
 		
 		Defined as::
 		
-		    ssa = integral(sin(pi/2 * t**2),t=0..z)
-		    csa = integral(cos(pi/2 * t**2),t=0..z)
+		    ssa = integral(sin(pi/2 * t**2), t=0..z)
+		    csa = integral(cos(pi/2 * t**2), t=0..z)
 		
 		Parameters
 		----------
@@ -1151,13 +1178,13 @@ package scipy.special._ufuncs;
 	/**
 		gammaincc(x1, x2[, out])
 		
-		gammaincc(a,x)
+		gammaincc(a, x)
 		
 		Complemented incomplete gamma integral
 		
 		Defined as::
 		
-		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=x..inf) = 1 - gammainc(a,x)
+		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=x..inf) = 1 - gammainc(a, x)
 		
 		`a` must be positive and `x` must be >= 0.
 	**/
@@ -1165,11 +1192,11 @@ package scipy.special._ufuncs;
 	/**
 		gammainccinv(x1, x2[, out])
 		
-		gammainccinv(a,y)
+		gammainccinv(a, y)
 		
-		Inverse to gammaincc
+		Inverse to `gammaincc`
 		
-		Returns `x` such that ``gammaincc(a,x) == y``.
+		Returns `x` such that ``gammaincc(a, x) == y``.
 	**/
 	static public function gammainccinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1177,7 +1204,7 @@ package scipy.special._ufuncs;
 		
 		gammaincinv(a, y)
 		
-		Inverse to gammainc
+		Inverse to `gammainc`
 		
 		Returns `x` such that ``gammainc(a, x) = y``.
 	**/
@@ -1213,27 +1240,27 @@ package scipy.special._ufuncs;
 	/**
 		gdtr(x1, x2, x3[, out])
 		
-		gdtr(a,b,x)
+		gdtr(a, b, x)
 		
 		Gamma distribution cumulative density function.
 		
-		Returns the integral from zero to x of the gamma probability
+		Returns the integral from zero to `x` of the gamma probability
 		density function::
 		
-		    a**b / gamma(b) * integral(t**(b-1) exp(-at),t=0..x).
+		    a**b / gamma(b) * integral(t**(b-1) exp(-at), t=0..x).
 		
-		The arguments a and b are used differently here than in other
+		The arguments `a` and `b` are used differently here than in other
 		definitions.
 	**/
 	static public function gdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gdtrc(x1, x2, x3[, out])
 		
-		gdtrc(a,b,x)
+		gdtrc(a, b, x)
 		
 		Gamma distribution survival function.
 		
-		Integral from x to infinity of the gamma probability density
+		Integral from `x` to infinity of the gamma probability density
 		function.
 		
 		See Also
@@ -1246,7 +1273,7 @@ package scipy.special._ufuncs;
 		
 		gdtria(p, b, x, out=None)
 		
-		Inverse of gdtr vs a.
+		Inverse of `gdtr` vs a.
 		
 		Returns the inverse with respect to the parameter `a` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1282,6 +1309,7 @@ package scipy.special._ufuncs;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtria
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -1297,7 +1325,7 @@ package scipy.special._ufuncs;
 		
 		gdtrib(a, p, x, out=None)
 		
-		Inverse of gdtr vs b.
+		Inverse of `gdtr` vs b.
 		
 		Returns the inverse with respect to the parameter `b` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1333,6 +1361,7 @@ package scipy.special._ufuncs;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtrib
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -1348,7 +1377,7 @@ package scipy.special._ufuncs;
 		
 		gdtrix(a, b, p, out=None)
 		
-		Inverse of gdtr vs x.
+		Inverse of `gdtr` vs x.
 		
 		Returns the inverse with respect to the parameter `x` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1385,6 +1414,7 @@ package scipy.special._ufuncs;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtrix
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -1419,7 +1449,7 @@ package scipy.special._ufuncs;
 		
 		Defined as::
 		
-		    hankel1e(v,z) = hankel1(v,z) * exp(-1j * z)
+		    hankel1e(v, z) = hankel1(v, z) * exp(-1j * z)
 		
 		Parameters
 		----------
@@ -1453,7 +1483,7 @@ package scipy.special._ufuncs;
 		
 		Defined as::
 		
-		    hankel1e(v,z) = hankel1(v,z) * exp(1j * z)
+		    hankel1e(v, z) = hankel1(v, z) * exp(1j * z)
 		
 		Parameters
 		----------
@@ -1596,7 +1626,7 @@ package scipy.special._ufuncs;
 		
 		i1e(x)
 		
-		Exponentially scaled modified Bessel function of order 0.
+		Exponentially scaled modified Bessel function of order 1.
 		
 		Defined as::
 		
@@ -1634,6 +1664,7 @@ package scipy.special._ufuncs;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox, inv_boxcox
 		>>> y = boxcox([1, 4, 10], 2.5)
 		>>> inv_boxcox(y, 2.5)
 		array([1., 4., 10.])
@@ -1670,6 +1701,7 @@ package scipy.special._ufuncs;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox1p, inv_boxcox1p
 		>>> y = boxcox1p([1, 4, 10], 2.5)
 		>>> inv_boxcox1p(y, 2.5)
 		array([1., 4., 10.])
@@ -1687,7 +1719,7 @@ package scipy.special._ufuncs;
 		ii0
 		    ``integral((i0(t)-1)/t, t=0..x)``
 		ik0
-		    ``int(k0(t)/t,t=x..inf)``
+		    ``int(k0(t)/t, t=x..inf)``
 	**/
 	static public function it2i0k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1723,9 +1755,9 @@ package scipy.special._ufuncs;
 		
 		itairy(x)
 		
-		Integrals of Airy functios
+		Integrals of Airy functions
 		
-		Calculates the integral of Airy functions from 0 to x
+		Calculates the integral of Airy functions from 0 to `x`
 		
 		Returns
 		-------
@@ -1742,8 +1774,8 @@ package scipy.special._ufuncs;
 		
 		Integrals of modified Bessel functions of order 0
 		
-		Returns simple integrals from 0 to x of the zeroth order modified
-		Bessel functions i0 and k0.
+		Returns simple integrals from 0 to `x` of the zeroth order modified
+		Bessel functions `i0` and `k0`.
 		
 		Returns
 		-------
@@ -1757,8 +1789,8 @@ package scipy.special._ufuncs;
 		
 		Integrals of Bessel functions of order 0
 		
-		Returns simple integrals from 0 to x of the zeroth order Bessel
-		functions j0 and y0.
+		Returns simple integrals from 0 to `x` of the zeroth order Bessel
+		functions `j0` and `y0`.
 		
 		Returns
 		-------
@@ -1794,14 +1826,14 @@ package scipy.special._ufuncs;
 	/**
 		iv(x1, x2[, out])
 		
-		iv(v,z)
+		iv(v, z)
 		
 		Modified Bessel function of the first kind  of real order
 		
 		Parameters
 		----------
 		v
-		    Order. If z is of real type and negative, v must be integer valued.
+		    Order. If `z` is of real type and negative, `v` must be integer valued.
 		z
 		    Argument.
 	**/
@@ -1809,13 +1841,13 @@ package scipy.special._ufuncs;
 	/**
 		ive(x1, x2[, out])
 		
-		ive(v,z)
+		ive(v, z)
 		
 		Exponentially scaled modified Bessel function of the first kind
 		
 		Defined as::
 		
-		    ive(v,z) = iv(v,z) * exp(-abs(z.real))
+		    ive(v, z) = iv(v, z) * exp(-abs(z.real))
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1839,7 +1871,7 @@ package scipy.special._ufuncs;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order v
+		Bessel function of the first kind of real order `v`
 	**/
 	static public function jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1847,7 +1879,7 @@ package scipy.special._ufuncs;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order v
+		Bessel function of the first kind of real order `v`
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1855,11 +1887,11 @@ package scipy.special._ufuncs;
 		
 		jve(v, z)
 		
-		Exponentially scaled Bessel function of order v
+		Exponentially scaled Bessel function of order `v`
 		
 		Defined as::
 		
-		    jve(v,z) = jv(v,z) * exp(-abs(z.imag))
+		    jve(v, z) = jv(v, z) * exp(-abs(z.imag))
 	**/
 	static public function jve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1933,7 +1965,7 @@ package scipy.special._ufuncs;
 		Be, Ke, Bep, Kep
 		    The tuple (Be, Ke, Bep, Kep) contains complex numbers
 		    representing the real and imaginary Kelvin functions and their
-		    derivatives evaluated at x.  For example, kelvin(x)[0].real =
+		    derivatives evaluated at `x`.  For example, kelvin(x)[0].real =
 		    ber x and kelvin(x)[0].imag = bei x with similar relationships
 		    for ker and kei.
 	**/
@@ -1981,7 +2013,7 @@ package scipy.special._ufuncs;
 		
 		Notes
 		-----
-		This function is non-negative and is jointly convex in x and y.
+		This function is non-negative and is jointly convex in `x` and `y`.
 		
 		.. versionadded:: 0.14.0
 	**/
@@ -1991,9 +2023,49 @@ package scipy.special._ufuncs;
 		
 		kn(n, x)
 		
-		Modified Bessel function of the second kind of integer order n
+		Modified Bessel function of the second kind of integer order `n`
 		
-		These are also sometimes called functions of the third kind.
+		Returns the modified Bessel function of the second kind for integer order
+		`n` at real `z`.
+		
+		These are also sometimes called functions of the third kind, Basset
+		functions, or Macdonald functions.
+		
+		Parameters
+		----------
+		n : array_like of int
+		    Order of Bessel functions (floats will truncate with a warning)
+		z : array_like of float
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The results
+		
+		See Also
+		--------
+		kv : Same function, but accepts real order and complex argument
+		kvp : Derivative of this function
+		
+		Examples
+		--------
+		Plot the function of several orders for real input:
+		
+		>>> from scipy.special import kn
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 5, 1000)
+		>>> for N in range(6):
+		...     plt.plot(x, kn(N, x), label='$K_{}(x)$'.format(N))
+		>>> plt.ylim(0, 10)
+		>>> plt.legend()
+		>>> plt.title(r'Modified Bessel function of the second kind $K_n(x)$')
+		>>> plt.show()
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kn([4, 5, 6], 1)
+		array([   44.23241585,   360.9605896 ,  3653.83831186])
 	**/
 	static public function kn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2023,26 +2095,65 @@ package scipy.special._ufuncs;
 	/**
 		kv(x1, x2[, out])
 		
-		kv(v,z)
+		kv(v, z)
 		
-		Modified Bessel function of the second kind of real order v
+		Modified Bessel function of the second kind of real order `v`
 		
-		Returns the modified Bessel function of the second kind (sometimes
-		called the third kind) for real order v at complex z.
+		Returns the modified Bessel function of the second kind for real order
+		`v` at complex `z`.
+		
+		These are also sometimes called functions of the third kind, Basset
+		functions, or Macdonald functions.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel functions
+		z : array_like of complex
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The results. Note that input must be of complex type to get complex
+		    output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``.
+		
+		See Also
+		--------
+		kvp : Derivative of this function
+		
+		Examples
+		--------
+		Plot the function of several orders for real input:
+		
+		>>> from scipy.special import kv
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 5, 1000)
+		>>> for N in np.linspace(0, 6, 5):
+		...     plt.plot(x, kv(N, x), label='$K_{{{}}}(x)$'.format(N))
+		>>> plt.ylim(0, 10)
+		>>> plt.legend()
+		>>> plt.title(r'Modified Bessel function of the second kind $K_\nu(x)$')
+		>>> plt.show()
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kv([4, 4.5, 5], 1+2j)
+		array([ 0.1992+2.3892j,  2.3493+3.6j   ,  7.2827+3.8104j])
 	**/
 	static public function kv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		kve(x1, x2[, out])
 		
-		kve(v,z)
+		kve(v, z)
 		
 		Exponentially scaled modified Bessel function of the second kind.
 		
 		Returns the exponentially scaled, modified Bessel function of the
-		second kind (sometimes called the third kind) for real order v at
-		complex z::
+		second kind (sometimes called the third kind) for real order `v` at
+		complex `z`::
 		
-		    kve(v,z) = kv(v,z) * exp(z)
+		    kve(v, z) = kv(v, z) * exp(z)
 	**/
 	static public function kve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2050,7 +2161,7 @@ package scipy.special._ufuncs;
 		
 		log1p(x)
 		
-		Calculates log(1+x) for use when x is near zero
+		Calculates log(1+x) for use when `x` is near zero
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2061,7 +2172,7 @@ package scipy.special._ufuncs;
 		Logarithm of Gaussian cumulative distribution function
 		
 		Returns the log of the area under the standard Gaussian probability
-		density function, integrated from minus infinity to x::
+		density function, integrated from minus infinity to `x`::
 		
 		    log(1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x))
 	**/
@@ -2108,44 +2219,59 @@ package scipy.special._ufuncs;
 		----------
 		m : int
 		    Order
-		v : real
-		    Degree. Must be ``v>-m-1`` or ``v<m``
-		x : complex
+		v : float
+		    Degree.
+		x : float
 		    Argument. Must be ``|x| <= 1``.
+		
+		Returns
+		-------
+		res : float
+		    The value of the function.
+		
+		See Also
+		--------
+		lpmn : Similar, but computes values for all orders 0..m and degrees 0..n.
+		clpmn : Similar to `lpmn` but allows a complex argument.
+		
+		Notes
+		-----
+		It is possible to extend the domain of this function to all
+		complex m, v, x, but this is not yet implemented.
 	**/
 	static public function lpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_a(x1, x2[, out])
 		
-		mathieu_a(m,q)
+		mathieu_a(m, q)
 		
 		Characteristic value of even Mathieu functions
 		
 		Returns the characteristic value for the even solution,
-		``ce_m(z,q)``, of Mathieu's equation.
+		``ce_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_a(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_b(x1, x2[, out])
 		
-		mathieu_b(m,q)
+		mathieu_b(m, q)
 		
 		Characteristic value of odd Mathieu functions
 		
 		Returns the characteristic value for the odd solution,
-		``se_m(z,q)``, of Mathieu's equation.
+		``se_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_b(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_cem(x1, x2, x3[, out1, out2])
 		
-		mathieu_cem(m,q,x)
+		mathieu_cem(m, q, x)
 		
 		Even Mathieu function and its derivative
 		
-		Returns the even Mathieu function, ``ce_m(x,q)``, of order m and
-		parameter q evaluated at x (given in degrees).  Also returns the
-		derivative with respect to x of ce_m(x,q)
+		Returns the even Mathieu function, ``ce_m(x, q)``, of order `m` and
+		parameter `q` evaluated at `x` (given in degrees).  Also returns the
+		derivative with respect to `x` of ce_m(x, q)
 		
 		Parameters
 		----------
@@ -2172,7 +2298,7 @@ package scipy.special._ufuncs;
 		Even modified Mathieu function of the first kind and its derivative
 		
 		Evaluates the even modified Mathieu function of the first kind,
-		``Mc1m(x,q)``, and its derivative at `x` for order m and parameter
+		``Mc1m(x, q)``, and its derivative at `x` for order `m` and parameter
 		`q`.
 		
 		Returns
@@ -2191,8 +2317,8 @@ package scipy.special._ufuncs;
 		Even modified Mathieu function of the second kind and its derivative
 		
 		Evaluates the even modified Mathieu function of the second kind,
-		Mc2m(x,q), and its derivative at x (given in degrees) for order m
-		and parameter q.
+		Mc2m(x, q), and its derivative at `x` (given in degrees) for order `m`
+		and parameter `q`.
 		
 		Returns
 		-------
@@ -2205,13 +2331,13 @@ package scipy.special._ufuncs;
 	/**
 		mathieu_modsem1(x1, x2, x3[, out1, out2])
 		
-		mathieu_modsem1(m,q,x)
+		mathieu_modsem1(m, q, x)
 		
 		Odd modified Mathieu function of the first kind and its derivative
 		
 		Evaluates the odd modified Mathieu function of the first kind,
-		Ms1m(x,q), and its derivative at x (given in degrees) for order m
-		and parameter q.
+		Ms1m(x, q), and its derivative at `x` (given in degrees) for order `m`
+		and parameter `q`.
 		
 		Returns
 		-------
@@ -2229,7 +2355,7 @@ package scipy.special._ufuncs;
 		Odd modified Mathieu function of the second kind and its derivative
 		
 		Evaluates the odd modified Mathieu function of the second kind,
-		Ms2m(x,q), and its derivative at x (given in degrees) for order m
+		Ms2m(x, q), and its derivative at `x` (given in degrees) for order `m`
 		and parameter q.
 		
 		Returns
@@ -2247,9 +2373,9 @@ package scipy.special._ufuncs;
 		
 		Odd Mathieu function and its derivative
 		
-		Returns the odd Mathieu function, se_m(x,q), of order m and
-		parameter q evaluated at x (given in degrees).  Also returns the
-		derivative with respect to x of se_m(x,q).
+		Returns the odd Mathieu function, se_m(x, q), of order `m` and
+		parameter `q` evaluated at `x` (given in degrees).  Also returns the
+		derivative with respect to `x` of se_m(x, q).
 		
 		Parameters
 		----------
@@ -2278,7 +2404,7 @@ package scipy.special._ufuncs;
 		Returns
 		-------
 		fm
-		    Integral ``F_-(x)``: ``integral(exp(-1j*t*t),t=x..inf)``
+		    Integral ``F_-(x)``: ``integral(exp(-1j*t*t), t=x..inf)``
 		km
 		    Integral ``K_-(x)``: ``1/sqrt(pi)*exp(1j*(x*x+pi/4))*fp``
 	**/
@@ -2293,7 +2419,7 @@ package scipy.special._ufuncs;
 		Returns
 		-------
 		fp
-		    Integral ``F_+(x)``: ``integral(exp(1j*t*t),t=x..inf)``
+		    Integral ``F_+(x)``: ``integral(exp(1j*t*t), t=x..inf)``
 		kp
 		    Integral ``K_+(x)``: ``1/sqrt(pi)*exp(-1j*(x*x+pi/4))*fp``
 	**/
@@ -2305,8 +2431,8 @@ package scipy.special._ufuncs;
 		
 		Modified Struve function
 		
-		Returns the modified Struve function Lv(x) of order v at x, x must
-		be positive unless v is an integer.
+		Returns the modified Struve function Lv(x) of order `v` at `x`, `x` must
+		be positive unless `v` is an integer.
 	**/
 	static public function modstruve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2316,10 +2442,10 @@ package scipy.special._ufuncs;
 		
 		Negative binomial cumulative distribution function
 		
-		Returns the sum of the terms 0 through k of the negative binomial
+		Returns the sum of the terms 0 through `k` of the negative binomial
 		distribution::
 		
-		    sum((n+j-1)Cj p**n (1-p)**j,j=0..k).
+		    sum((n+j-1)Cj p**n (1-p)**j, j=0..k).
 		
 		In a sequence of Bernoulli trials this is the probability that k
 		or fewer failures precede the nth success.
@@ -2328,7 +2454,7 @@ package scipy.special._ufuncs;
 	/**
 		nbdtrc(x1, x2, x3[, out])
 		
-		nbdtrc(k,n,p)
+		nbdtrc(k, n, p)
 		
 		Negative binomial survival function
 		
@@ -2341,29 +2467,29 @@ package scipy.special._ufuncs;
 		
 		nbdtri(k, n, y)
 		
-		Inverse of nbdtr vs p
+		Inverse of `nbdtr` vs `p`
 		
-		Finds the argument p such that ``nbdtr(k,n,p) = y``.
+		Finds the argument p such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		nbdtrik(x1, x2, x3[, out])
 		
-		nbdtrik(y,n,p)
+		nbdtrik(y, n, p)
 		
-		Inverse of nbdtr vs k
+		Inverse of `nbdtr` vs `k`
 		
-		Finds the argument k such that ``nbdtr(k,n,p) = y``.
+		Finds the argument k such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		nbdtrin(x1, x2, x3[, out])
 		
-		nbdtrin(k,y,p)
+		nbdtrin(k, y, p)
 		
-		Inverse of nbdtr vs n
+		Inverse of `nbdtr` vs `n`
 		
-		Finds the argument n such that ``nbdtr(k,n,p) = y``.
+		Finds the argument `n` such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2464,7 +2590,7 @@ package scipy.special._ufuncs;
 		
 		nctdtr(df, nc, t)
 		
-		Cumulative distribution function of the non-central t distribution.
+		Cumulative distribution function of the non-central `t` distribution.
 		
 		Parameters
 		----------
@@ -2573,9 +2699,9 @@ package scipy.special._ufuncs;
 		Gaussian cumulative distribution function
 		
 		Returns the area under the standard Gaussian probability
-		density function, integrated from minus infinity to x::
+		density function, integrated from minus infinity to `x`::
 		
-		    1/sqrt(2*pi) * integral(exp(-t**2 / 2),t=-inf..x)
+		    1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x)
 	**/
 	static public function ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2583,10 +2709,10 @@ package scipy.special._ufuncs;
 		
 		ndtri(y)
 		
-		Inverse of ndtr vs x
+		Inverse of `ndtr` vs x
 		
 		Returns the argument x for which the area under the Gaussian
-		probability density function (integrated from minus infinity to x)
+		probability density function (integrated from minus infinity to `x`)
 		is equal to y.
 	**/
 	static public function ndtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -2650,8 +2776,8 @@ package scipy.special._ufuncs;
 		Oblate spheroidal angular function of the first kind and its derivative
 		
 		Computes the oblate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -2669,8 +2795,8 @@ package scipy.special._ufuncs;
 		Oblate spheroidal angular function obl_ang1 for precomputed characteristic value
 		
 		Computes the oblate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -2689,19 +2815,19 @@ package scipy.special._ufuncs;
 		Characteristic value of oblate spheroidal function
 		
 		Computes the characteristic value of oblate spheroidal wave
-		functions of order m,n (n>=m) and spheroidal parameter c.
+		functions of order `m`, `n` (n>=m) and spheroidal parameter `c`.
 	**/
 	static public function obl_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		obl_rad1(x1, x2, x3, x4[, out1, out2])
 		
-		obl_rad1(m,n,c,x)
+		obl_rad1(m, n, c, x)
 		
 		Oblate spheroidal radial function of the first kind and its derivative
 		
 		Computes the oblate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -2714,13 +2840,13 @@ package scipy.special._ufuncs;
 	/**
 		obl_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		obl_rad1_cv(m,n,c,cv,x)
+		obl_rad1_cv(m, n, c, cv, x)
 		
 		Oblate spheroidal radial function obl_rad1 for precomputed characteristic value
 		
 		Computes the oblate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -2734,13 +2860,13 @@ package scipy.special._ufuncs;
 	/**
 		obl_rad2(x1, x2, x3, x4[, out1, out2])
 		
-		obl_rad2(m,n,c,x)
+		obl_rad2(m, n, c, x)
 		
 		Oblate spheroidal radial function of the second kind and its derivative.
 		
 		Computes the oblate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -2753,13 +2879,13 @@ package scipy.special._ufuncs;
 	/**
 		obl_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		obl_rad2_cv(m,n,c,cv,x)
+		obl_rad2_cv(m, n, c, cv, x)
 		
 		Oblate spheroidal radial function obl_rad2 for precomputed characteristic value
 		
 		Computes the oblate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -2777,7 +2903,7 @@ package scipy.special._ufuncs;
 		
 		Parabolic cylinder function D
 		
-		Returns (d,dp) the parabolic cylinder function Dv(x) in d and the
+		Returns (d, dp) the parabolic cylinder function Dv(x) in d and the
 		derivative, Dv'(x) in dp.
 		
 		Returns
@@ -2791,7 +2917,7 @@ package scipy.special._ufuncs;
 	/**
 		pbvv(x1, x2[, out1, out2])
 		
-		pbvv(v,x)
+		pbvv(v, x)
 		
 		Parabolic cylinder function V
 		
@@ -2809,12 +2935,12 @@ package scipy.special._ufuncs;
 	/**
 		pbwa(x1, x2[, out1, out2])
 		
-		pbwa(a,x)
+		pbwa(a, x)
 		
 		Parabolic cylinder function W
 		
-		Returns the parabolic cylinder function W(a,x) in w and the
-		derivative, W'(a,x) in wp.
+		Returns the parabolic cylinder function W(a, x) in w and the
+		derivative, W'(a, x) in wp.
 		
 		.. warning::
 		
@@ -2835,9 +2961,9 @@ package scipy.special._ufuncs;
 		
 		Poisson cumulative distribution function
 		
-		Returns the sum of the first k terms of the Poisson distribution:
+		Returns the sum of the first `k` terms of the Poisson distribution:
 		sum(exp(-m) * m**j / j!, j=0..k) = gammaincc( k+1, m).  Arguments
-		must both be positive and k an integer.
+		must both be positive and `k` an integer.
 	**/
 	static public function pdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2849,28 +2975,28 @@ package scipy.special._ufuncs;
 		
 		Returns the sum of the terms from k+1 to infinity of the Poisson
 		distribution: sum(exp(-m) * m**j / j!, j=k+1..inf) = gammainc(
-		k+1, m).  Arguments must both be positive and k an integer.
+		k+1, m).  Arguments must both be positive and `k` an integer.
 	**/
 	static public function pdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pdtri(x1, x2[, out])
 		
-		pdtri(k,y)
+		pdtri(k, y)
 		
-		Inverse to pdtr vs m
+		Inverse to `pdtr` vs m
 		
-		Returns the Poisson variable m such that the sum from 0 to k of
-		the Poisson density is equal to the given probability y:
-		calculated by gammaincinv(k+1, y).  k must be a nonnegative
-		integer and y between 0 and 1.
+		Returns the Poisson variable `m` such that the sum from 0 to `k` of
+		the Poisson density is equal to the given probability `y`:
+		calculated by gammaincinv(k+1, y). `k` must be a nonnegative
+		integer and `y` between 0 and 1.
 	**/
 	static public function pdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pdtrik(x1, x2[, out])
 		
-		pdtrik(p,m)
+		pdtrik(p, m)
 		
-		Inverse to pdtr vs k
+		Inverse to `pdtr` vs k
 		
 		Returns the quantile k such that ``pdtr(k, m) = p``
 	**/
@@ -2894,13 +3020,13 @@ package scipy.special._ufuncs;
 	/**
 		pro_ang1(x1, x2, x3, x4[, out1, out2])
 		
-		pro_ang1(m,n,c,x)
+		pro_ang1(m, n, c, x)
 		
 		Prolate spheroidal angular function of the first kind and its derivative
 		
 		Computes the prolate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -2913,13 +3039,13 @@ package scipy.special._ufuncs;
 	/**
 		pro_ang1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_ang1_cv(m,n,c,cv,x)
+		pro_ang1_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal angular function pro_ang1 for precomputed characteristic value
 		
 		Computes the prolate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -2933,24 +3059,24 @@ package scipy.special._ufuncs;
 	/**
 		pro_cv(x1, x2, x3[, out])
 		
-		pro_cv(m,n,c)
+		pro_cv(m, n, c)
 		
 		Characteristic value of prolate spheroidal function
 		
 		Computes the characteristic value of prolate spheroidal wave
-		functions of order m,n (n>=m) and spheroidal parameter c.
+		functions of order `m`, `n` (n>=m) and spheroidal parameter `c`.
 	**/
 	static public function pro_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pro_rad1(x1, x2, x3, x4[, out1, out2])
 		
-		pro_rad1(m,n,c,x)
+		pro_rad1(m, n, c, x)
 		
 		Prolate spheroidal radial function of the first kind and its derivative
 		
 		Computes the prolate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -2963,13 +3089,13 @@ package scipy.special._ufuncs;
 	/**
 		pro_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_rad1_cv(m,n,c,cv,x)
+		pro_rad1_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal radial function pro_rad1 for precomputed characteristic value
 		
 		Computes the prolate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -2983,13 +3109,13 @@ package scipy.special._ufuncs;
 	/**
 		pro_rad2(x1, x2, x3, x4[, out1, out2])
 		
-		pro_rad2(m,n,c,x)
+		pro_rad2(m, n, c, x)
 		
 		Prolate spheroidal radial function of the secon kind and its derivative
 		
 		Computes the prolate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -3002,13 +3128,13 @@ package scipy.special._ufuncs;
 	/**
 		pro_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_rad2_cv(m,n,c,cv,x)
+		pro_rad2_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal radial function pro_rad2 for precomputed characteristic value
 		
 		Computes the prolate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -3055,7 +3181,7 @@ package scipy.special._ufuncs;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3118,8 +3244,8 @@ package scipy.special._ufuncs;
 		
 		Round to nearest integer
 		
-		Returns the nearest integer to x as a double precision floating
-		point result.  If x ends in 0.5 exactly, the nearest even integer
+		Returns the nearest integer to `x` as a double precision floating
+		point result.  If `x` ends in 0.5 exactly, the nearest even integer
 		is chosen.
 	**/
 	static public function round(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3174,7 +3300,7 @@ package scipy.special._ufuncs;
 		distribution function (Dn+ or Dn-) for a one-sided test of
 		equality between an empirical and a theoretical distribution. It
 		is equal to the probability that the maximum difference between a
-		theoretical distribution and an empirical one based on n samples
+		theoretical distribution and an empirical one based on `n` samples
 		is greater than e.
 	**/
 	static public function smirnov(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3183,7 +3309,7 @@ package scipy.special._ufuncs;
 		
 		smirnovi(n, y)
 		
-		Inverse to smirnov
+		Inverse to `smirnov`
 		
 		Returns ``e`` such that ``smirnov(n, e) = y``.
 	**/
@@ -3197,7 +3323,7 @@ package scipy.special._ufuncs;
 		
 		Returns the dilogarithm integral::
 		
-		    -integral(log t / (t-1),t=1..x)
+		    -integral(log t / (t-1), t=1..x)
 	**/
 	static public function spence(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3242,7 +3368,7 @@ package scipy.special._ufuncs;
 	/**
 		stdtr(x1, x2[, out])
 		
-		stdtr(df,t)
+		stdtr(df, t)
 		
 		Student t distribution cumulative density function
 		
@@ -3256,32 +3382,32 @@ package scipy.special._ufuncs;
 	/**
 		stdtridf(x1, x2[, out])
 		
-		stdtridf(p,t)
+		stdtridf(p, t)
 		
-		Inverse of stdtr vs df
+		Inverse of `stdtr` vs df
 		
-		Returns the argument df such that stdtr(df,t) is equal to p.
+		Returns the argument df such that stdtr(df, t) is equal to `p`.
 	**/
 	static public function stdtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		stdtrit(x1, x2[, out])
 		
-		stdtrit(df,p)
+		stdtrit(df, p)
 		
-		Inverse of stdtr vs t
+		Inverse of `stdtr` vs `t`
 		
-		Returns the argument t such that stdtr(df,t) is equal to p.
+		Returns the argument `t` such that stdtr(df, t) is equal to `p`.
 	**/
 	static public function stdtrit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		struve(x1, x2[, out])
 		
-		struve(v,x)
+		struve(v, x)
 		
 		Struve function
 		
-		Computes the struve function Hv(x) of order v at x, x must be
-		positive unless v is an integer.
+		Computes the struve function Hv(x) of order `v` at `x`, `x` must be
+		positive unless `v` is an integer.
 	**/
 	static public function struve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3322,7 +3448,7 @@ package scipy.special._ufuncs;
 		
 		xlog1py(x, y)
 		
-		Compute ``x*log1p(y)`` so that the result is 0 if `x = 0`.
+		Compute ``x*log1p(y)`` so that the result is 0 if ``x = 0``.
 		
 		Parameters
 		----------
@@ -3347,7 +3473,7 @@ package scipy.special._ufuncs;
 		
 		xlogy(x, y)
 		
-		Compute ``x*log(y)`` so that the result is 0 if `x = 0`.
+		Compute ``x*log(y)`` so that the result is 0 if ``x = 0``.
 		
 		Parameters
 		----------
@@ -3374,7 +3500,7 @@ package scipy.special._ufuncs;
 		
 		Bessel function of the second kind of order 0
 		
-		Returns the Bessel function of the second kind of order 0 at x.
+		Returns the Bessel function of the second kind of order 0 at `x`.
 	**/
 	static public function y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3384,42 +3510,42 @@ package scipy.special._ufuncs;
 		
 		Bessel function of the second kind of order 1
 		
-		Returns the Bessel function of the second kind of order 1 at x.
+		Returns the Bessel function of the second kind of order 1 at `x`.
 	**/
 	static public function y1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		yn(x1, x2[, out])
 		
-		yn(n,x)
+		yn(n, x)
 		
 		Bessel function of the second kind of integer order
 		
-		Returns the Bessel function of the second kind of integer order n
-		at x.
+		Returns the Bessel function of the second kind of integer order `n`
+		at `x`.
 	**/
 	static public function yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		yv(x1, x2[, out])
 		
-		yv(v,z)
+		yv(v, z)
 		
 		Bessel function of the second kind of real order
 		
-		Returns the Bessel function of the second kind of real order v at
-		complex z.
+		Returns the Bessel function of the second kind of real order `v` at
+		complex `z`.
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		yve(x1, x2[, out])
 		
-		yve(v,z)
+		yve(v, z)
 		
 		Exponentially scaled Bessel function of the second kind of real order
 		
 		Returns the exponentially scaled Bessel function of the second
-		kind of real order v at complex z::
+		kind of real order `v` at complex `z`::
 		
-		    yve(v,z) = yv(v,z) * exp(-abs(z.imag))
+		    yve(v, z) = yv(v, z) * exp(-abs(z.imag))
 	**/
 	static public function yve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3430,7 +3556,7 @@ package scipy.special._ufuncs;
 		Hurwitz zeta function
 		
 		The Riemann zeta function of two arguments (also known as the
-		Hurwitz zeta funtion).
+		Hurwitz zeta function).
 		
 		This function is defined as
 		

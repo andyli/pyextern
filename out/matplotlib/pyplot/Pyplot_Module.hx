@@ -281,46 +281,46 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -365,21 +365,22 @@ package matplotlib.pyplot;
 		    label
 		
 		xy : (x, y)
-		    position of element to annotate
+		    position of element to annotate. See *xycoords* to control what
+		    coordinate system this value is interpretated in.
 		
 		xytext : (x, y) , optional, default: None
-		    position of the label `s`
+		    position of the label `s`. See *textcoords* to control what
+		    coordinate system this value is interpreted in.
 		
 		xycoords : string, optional, default: "data"
 		    string that indicates what type of coordinates `xy` is. Examples:
 		    "figure points", "figure pixels", "figure fraction", "axes
 		    points", .... See `matplotlib.text.Annotation` for more details.
 		
-		textcoords : string, optional
+		textcoords : string, optional, default: None
 		    string that indicates what type of coordinates `text` is. Examples:
 		    "figure points", "figure pixels", "figure fraction", "axes
 		    points", .... See `matplotlib.text.Annotation` for more details.
-		    Default is None.
 		
 		arrowprops : `matplotlib.lines.Line2D` properties, optional
 		    Dictionary of line properties for the arrow that connects
@@ -491,47 +492,47 @@ package matplotlib.pyplot;
 		Additional kwargs are `~matplotlib.text.Text` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 		
 		Examples
 		--------
@@ -585,35 +586,35 @@ package matplotlib.pyplot;
 		
 		Other valid kwargs (inherited from :class:`Patch`) are:
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -738,46 +739,46 @@ package matplotlib.pyplot;
 		with the exception of 'transform':
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		See also
 		--------
@@ -819,35 +820,35 @@ package matplotlib.pyplot;
 		Valid kwargs are :class:`~matplotlib.patches.Polygon` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -964,46 +965,46 @@ package matplotlib.pyplot;
 		with the exception of 'transform':
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		See also
 		--------
@@ -1045,35 +1046,35 @@ package matplotlib.pyplot;
 		properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		.. seealso::
 		
@@ -1177,35 +1178,35 @@ package matplotlib.pyplot;
 		Other optional kwargs:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		See also
 		--------
@@ -1225,7 +1226,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'height', 'left', 'xerr', 'tick_label', 'bottom', 'color', 'linewidth', 'edgecolor', 'yerr', 'width', 'ecolor'.
+		* All arguments with the following names: 'yerr', 'edgecolor', 'tick_label', 'width', 'left', 'linewidth', 'bottom', 'xerr', 'color', 'height', 'ecolor'.
 		
 		
 		
@@ -1368,40 +1369,40 @@ package matplotlib.pyplot;
 		arguments:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		
 		**Example:**
@@ -1506,35 +1507,35 @@ package matplotlib.pyplot;
 		Other optional kwargs:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		See also
 		--------
@@ -1578,116 +1579,115 @@ package matplotlib.pyplot;
 		
 		Parameters
 		----------
+		x : Array or a sequence of vectors.
+		   The input data.
 		
-		  x : Array or a sequence of vectors.
-		    The input data.
+		notch : bool, default = False
+		   If False, produces a rectangular box plot.
+		   If True, will produce a notched box plot
 		
-		  notch : bool, default = False
-		    If False, produces a rectangular box plot.
-		    If True, will produce a notched box plot
+		sym : str or None, default = None
+		   The default symbol for flier points.
+		   Enter an empty string ('') if you don't want to show fliers.
+		   If `None`, then the fliers default to 'b+'  If you want more
+		   control use the flierprops kwarg.
 		
-		  sym : str or None, default = None
-		    The default symbol for flier points.
-		    Enter an empty string ('') if you don't want to show fliers.
-		    If `None`, then the fliers default to 'b+'  If you want more
-		    control use the flierprops kwarg.
+		vert : bool, default = True
+		   If True (default), makes the boxes vertical.
+		   If False, makes horizontal boxes.
 		
-		  vert : bool, default = True
-		    If True (default), makes the boxes vertical.
-		    If False, makes horizontal boxes.
+		whis : float, sequence (default = 1.5) or string
+		   As a float, determines the reach of the whiskers past the first
+		   and third quartiles (e.g., Q3 + whis*IQR, IQR = interquartile
+		   range, Q3-Q1). Beyond the whiskers, data are considered outliers
+		   and are plotted as individual points. Set this to an unreasonably
+		   high value to force the whiskers to show the min and max values.
+		   Alternatively, set this to an ascending sequence of percentile
+		   (e.g., [5, 95]) to set the whiskers at specific percentiles of
+		   the data. Finally, *whis* can be the string 'range' to force the
+		   whiskers to the min and max of the data. In the edge case that
+		   the 25th and 75th percentiles are equivalent, *whis* will be
+		   automatically set to 'range'.
 		
-		  whis : float, sequence (default = 1.5) or string
-		    As a float, determines the reach of the whiskers past the first
-		    and third quartiles (e.g., Q3 + whis*IQR, IQR = interquartile
-		    range, Q3-Q1). Beyond the whiskers, data are considered outliers
-		    and are plotted as individual points. Set this to an unreasonably
-		    high value to force the whiskers to show the min and max values.
-		    Alternatively, set this to an ascending sequence of percentile
-		    (e.g., [5, 95]) to set the whiskers at specific percentiles of
-		    the data. Finally, *whis* can be the string 'range' to force the
-		    whiskers to the min and max of the data. In the edge case that
-		    the 25th and 75th percentiles are equivalent, *whis* will be
-		    automatically set to 'range'.
+		bootstrap : None (default) or integer
+		   Specifies whether to bootstrap the confidence intervals
+		   around the median for notched boxplots. If bootstrap==None,
+		   no bootstrapping is performed, and notches are calculated
+		   using a Gaussian-based asymptotic approximation  (see McGill, R.,
+		   Tukey, J.W., and Larsen, W.A., 1978, and Kendall and Stuart,
+		   1967). Otherwise, bootstrap specifies the number of times to
+		   bootstrap the median to determine it's 95% confidence intervals.
+		   Values between 1000 and 10000 are recommended.
 		
-		  bootstrap : None (default) or integer
-		    Specifies whether to bootstrap the confidence intervals
-		    around the median for notched boxplots. If bootstrap==None,
-		    no bootstrapping is performed, and notches are calculated
-		    using a Gaussian-based asymptotic approximation  (see McGill, R.,
-		    Tukey, J.W., and Larsen, W.A., 1978, and Kendall and Stuart,
-		    1967). Otherwise, bootstrap specifies the number of times to
-		    bootstrap the median to determine it's 95% confidence intervals.
-		    Values between 1000 and 10000 are recommended.
+		usermedians : array-like or None (default)
+		   An array or sequence whose first dimension (or length) is
+		   compatible with *x*. This overrides the medians computed by
+		   matplotlib for each element of *usermedians* that is not None.
+		   When an element of *usermedians* == None, the median will be
+		   computed by matplotlib as normal.
 		
-		  usermedians : array-like or None (default)
-		    An array or sequence whose first dimension (or length) is
-		    compatible with *x*. This overrides the medians computed by
-		    matplotlib for each element of *usermedians* that is not None.
-		    When an element of *usermedians* == None, the median will be
-		    computed by matplotlib as normal.
+		conf_intervals : array-like or None (default)
+		   Array or sequence whose first dimension (or length) is compatible
+		   with *x* and whose second dimension is 2. When the current element
+		   of *conf_intervals* is not None, the notch locations computed by
+		   matplotlib are overridden (assuming notch is True). When an
+		   element of *conf_intervals* is None, boxplot compute notches the
+		   method specified by the other kwargs (e.g., *bootstrap*).
 		
-		  conf_intervals : array-like or None (default)
-		    Array or sequence whose first dimension (or length) is compatible
-		    with *x* and whose second dimension is 2. When the current element
-		    of *conf_intervals* is not None, the notch locations computed by
-		    matplotlib are overridden (assuming notch is True). When an
-		    element of *conf_intervals* is None, boxplot compute notches the
-		    method specified by the other kwargs (e.g., *bootstrap*).
+		positions : array-like, default = [1, 2, ..., n]
+		   Sets the positions of the boxes. The ticks and limits
+		   are automatically set to match the positions.
 		
-		  positions : array-like, default = [1, 2, ..., n]
-		    Sets the positions of the boxes. The ticks and limits
-		    are automatically set to match the positions.
+		widths : array-like, default = 0.5
+		   Either a scalar or a vector and sets the width of each box. The
+		   default is 0.5, or ``0.15*(distance between extreme positions)``
+		   if that is smaller.
 		
-		  widths : array-like, default = 0.5
-		    Either a scalar or a vector and sets the width of each box. The
-		    default is 0.5, or ``0.15*(distance between extreme positions)``
-		    if that is smaller.
+		labels : sequence or None (default)
+		   Labels for each dataset. Length must be compatible with
+		   dimensions  of *x*
 		
-		  labels : sequence or None (default)
-		        Labels for each dataset. Length must be compatible with
-		        dimensions  of *x*
+		patch_artist : bool, default = False
+		   If False produces boxes with the Line2D artist
+		   If True produces boxes with the Patch artist
 		
-		  patch_artist : bool, default = False
-		    If False produces boxes with the Line2D artist
-		    If True produces boxes with the Patch artist
+		showmeans : bool, default = False
+		   If True, will toggle one the rendering of the means
 		
-		  showmeans : bool, default = False
-		    If True, will toggle one the rendering of the means
+		showcaps : bool, default = True
+		   If True, will toggle one the rendering of the caps
 		
-		  showcaps : bool, default = True
-		    If True, will toggle one the rendering of the caps
+		showbox : bool, default = True
+		   If True, will toggle one the rendering of box
 		
-		  showbox : bool, default = True
-		    If True, will toggle one the rendering of box
+		showfliers : bool, default = True
+		   If True, will toggle one the rendering of the fliers
 		
-		  showfliers : bool, default = True
-		    If True, will toggle one the rendering of the fliers
+		boxprops : dict or None (default)
+		   If provided, will set the plotting style of the boxes
 		
-		  boxprops : dict or None (default)
-		    If provided, will set the plotting style of the boxes
+		whiskerprops : dict or None (default)
+		   If provided, will set the plotting style of the whiskers
 		
-		  whiskerprops : dict or None (default)
-		    If provided, will set the plotting style of the whiskers
+		capprops : dict or None (default)
+		   If provided, will set the plotting style of the caps
 		
-		  capprops : dict or None (default)
-		    If provided, will set the plotting style of the caps
+		flierprops : dict or None (default)
+		   If provided, will set the plotting style of the fliers
 		
-		  flierprops : dict or None (default)
-		    If provided, will set the plotting style of the fliers
+		medianprops : dict or None (default)
+		   If provided, will set the plotting style of the medians
 		
-		  medianprops : dict or None (default)
-		    If provided, will set the plotting style of the medians
-		
-		  meanprops : dict or None (default)
+		meanprops : dict or None (default)
 		    If provided, will set the plotting style of the means
 		
-		  meanline : bool, default = False
+		meanline : bool, default = False
 		    If True (and *showmeans* is True), will try to render the mean
 		    as a line spanning the full width of the box according to
 		    *meanprops*. Not recommended if *shownotches* is also True.
 		    Otherwise, means will be shown as points.
 		
-		  manage_xticks : bool, default = True
+		manage_xticks : bool, default = True
 		    If the function should adjust the xlim and xtick locations.
 		
 		Returns
@@ -1753,40 +1753,40 @@ package matplotlib.pyplot;
 		properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		these can either be a single argument, i.e.,::
 		
@@ -2037,46 +2037,46 @@ package matplotlib.pyplot;
 		properties of the coherence plot:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -2089,7 +2089,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -2617,13 +2617,15 @@ package matplotlib.pyplot;
 		  contour(Z,V)
 		  contour(X,Y,Z,V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  contourf(..., V)
 		
-		fill the ``len(V)-1`` regions between the values in *V*
+		fill the ``len(V)-1`` regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -2686,8 +2688,8 @@ package matplotlib.pyplot;
 		
 		  *levels*: [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
@@ -2834,13 +2836,15 @@ package matplotlib.pyplot;
 		  contour(Z,V)
 		  contour(X,Y,Z,V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  contourf(..., V)
 		
-		fill the ``len(V)-1`` regions between the values in *V*
+		fill the ``len(V)-1`` regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -2903,8 +2907,8 @@ package matplotlib.pyplot;
 		
 		  *levels*: [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
@@ -3146,46 +3150,46 @@ package matplotlib.pyplot;
 		kwargs control the Line2D properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -3203,7 +3207,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -3374,46 +3378,46 @@ package matplotlib.pyplot;
 		valid kwargs for the marker properties are
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		Returns (*plotline*, *caplines*, *barlinecols*):
 		
@@ -3437,7 +3441,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xerr', 'yerr', 'x', 'y'.
+		* All arguments with the following names: 'xerr', 'y', 'yerr', 'x'.
 		
 		
 		
@@ -3499,43 +3503,43 @@ package matplotlib.pyplot;
 		kwargs are :class:`~matplotlib.collections.LineCollection` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
-		  color: matplotlib color arg or sequence of rgba tuples         
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
+		  color: matplotlib color arg or sequence of rgba tuples 
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
 		  paths: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  segments: unknown
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
 		  verts: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -3548,7 +3552,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'lineoffsets', 'linelengths', 'colors', 'linewidths', 'linestyles', 'positions'.
+		* All arguments with the following names: 'linewidths', 'linestyles', 'positions', 'colors', 'linelengths', 'lineoffsets'.
 		
 		
 		
@@ -3685,47 +3689,47 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.text.Text` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 	**/
 	static public function figtext(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3808,35 +3812,35 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]  or None for default         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  capstyle: ['butt' | 'round' | 'projecting']         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False]  or None for default 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  capstyle: ['butt' | 'round' | 'projecting'] 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: matplotlib color spec
-		  contains: a callable function         
-		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color         
-		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fill: [True | False]         
-		  gid: an id string         
-		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*']         
-		  joinstyle: ['miter' | 'round' | 'bevel']         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float or None for default         
+		  contains: a callable function 
+		  edgecolor or ec: mpl color spec, or None for default, or 'none' for no color 
+		  facecolor or fc: mpl color spec, or None for default, or 'none' for no color 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fill: [True | False] 
+		  gid: an id string 
+		  hatch: ['/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*'] 
+		  joinstyle: ['miter' | 'round' | 'bevel'] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float or None for default 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -3849,7 +3853,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -3900,40 +3904,40 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		Examples
 		--------
@@ -3953,7 +3957,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y2', 'y1', 'x', 'where'.
+		* All arguments with the following names: 'y2', 'x', 'y1', 'where'.
 		
 		
 		
@@ -4000,40 +4004,40 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.patches.Polygon` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		Examples
 		--------
@@ -4053,7 +4057,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x2', 'y', 'x1', 'where'.
+		* All arguments with the following names: 'y', 'x2', 'x1', 'where'.
 		
 		
 		
@@ -4276,46 +4280,46 @@ package matplotlib.pyplot;
 		Valid :class:`~matplotlib.lines.Line2D` kwargs are
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 	**/
 	static public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4430,40 +4434,40 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.collections.Collection` kwargs:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		The return value is a
 		:class:`~matplotlib.collections.PolyCollection` instance; use
@@ -4485,7 +4489,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -4683,7 +4687,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x'.
+		* All arguments with the following names: 'x', 'weights'.
 		
 		
 		
@@ -4770,7 +4774,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x', 'y'.
+		* All arguments with the following names: 'y', 'x', 'weights'.
 		
 		
 		
@@ -4819,7 +4823,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmin', 'y', 'xmax'.
+		* All arguments with the following names: 'y', 'xmax', 'xmin'.
 		
 		
 		
@@ -5333,46 +5337,46 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -5461,46 +5465,46 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -5772,40 +5776,40 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.collections.PolyCollection` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		.. note::
 		
@@ -5908,40 +5912,40 @@ package matplotlib.pyplot;
 		:class:`matplotlib.collections.QuadMesh` properties:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		.. seealso::
 		
@@ -6031,46 +6035,46 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -6211,7 +6215,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'labels', 'colors', 'x', 'explode'.
+		* All arguments with the following names: 'labels', 'x', 'explode', 'colors'.
 		
 		
 		
@@ -6334,7 +6338,7 @@ package matplotlib.pyplot;
 		If you make multiple lines with one plot command, the kwargs
 		apply to all those lines, e.g.::
 		
-		    plot(x1, y1, x2, y2, antialised=False)
+		    plot(x1, y1, x2, y2, antialiased=False)
 		
 		Neither line will be antialiased.
 		
@@ -6351,46 +6355,46 @@ package matplotlib.pyplot;
 		The kwargs are :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		kwargs *scalex* and *scaley*, if defined, are passed on to
 		:meth:`~matplotlib.axes.Axes.autoscale_view` to determine
@@ -6404,7 +6408,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -6457,46 +6461,46 @@ package matplotlib.pyplot;
 		Valid kwargs are :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		.. seealso::
 		
@@ -6514,7 +6518,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -6852,46 +6856,46 @@ package matplotlib.pyplot;
 		kwargs control the :class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		**Example:**
 		
@@ -7055,40 +7059,40 @@ package matplotlib.pyplot;
 		keyword arguments:
 		
 		  agg_filter: unknown
-		  alpha: float or None         
-		  animated: [True | False]         
-		  antialiased or antialiaseds: Boolean or sequence of booleans         
+		  alpha: float or None 
+		  animated: [True | False] 
+		  antialiased or antialiaseds: Boolean or sequence of booleans 
 		  array: unknown
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clim: a length 2 sequence of floats         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  cmap: a colormap or registered colormap name         
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clim: a length 2 sequence of floats 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  cmap: a colormap or registered colormap name 
 		  color: matplotlib color arg or sequence of rgba tuples
-		  contains: a callable function         
-		  edgecolor or edgecolors: matplotlib color spec or sequence of specs         
-		  facecolor or facecolors: matplotlib color spec or sequence of specs         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  gid: an id string         
-		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats         
+		  contains: a callable function 
+		  edgecolor or edgecolors: matplotlib color spec or sequence of specs 
+		  facecolor or facecolors: matplotlib color spec or sequence of specs 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  gid: an id string 
+		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
-		  offsets: float or sequence of floats         
+		  offsets: float or sequence of floats 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
+		  picker: [None|float|boolean|callable] 
 		  pickradius: unknown
-		  rasterized: [True | False | None]         
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  urls: unknown
-		  visible: [True | False]         
-		  zorder: any number         
+		  visible: [True | False] 
+		  zorder: any number 
 		
 		
 		
@@ -7462,7 +7466,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 's', 'facecolors', 'edgecolors', 'x', 'y', 'linewidths', 'c', 'color', 'facecolor'.
+		* All arguments with the following names: 'linewidths', 'c', 'edgecolors', 'facecolors', 's', 'x', 'facecolor', 'color', 'y'.
 		
 		
 		
@@ -7508,46 +7512,46 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		.. seealso::
 		
@@ -7589,46 +7593,46 @@ package matplotlib.pyplot;
 		:class:`~matplotlib.lines.Line2D` properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 		
 		.. seealso::
 		
@@ -8078,7 +8082,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		
@@ -8432,26 +8436,26 @@ package matplotlib.pyplot;
 		properties:
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  contains: a callable function         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontsize: a float in points         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  contains: a callable function 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontsize: a float in points 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  rasterized: [True | False | None]         
+		  picker: [None|float|boolean|callable] 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  zorder: any number         
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  zorder: any number 
 	**/
 	static public function table(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -8751,13 +8755,15 @@ package matplotlib.pyplot;
 		
 		  tricontour(..., Z, V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  tricontourf(..., Z, V)
 		
-		fill the (len(*V*)-1) regions between the values in *V*
+		fill the (len(*V*)-1) regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -8796,8 +8802,8 @@ package matplotlib.pyplot;
 		
 		  *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
@@ -8930,13 +8936,15 @@ package matplotlib.pyplot;
 		
 		  tricontour(..., Z, V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  tricontourf(..., Z, V)
 		
-		fill the (len(*V*)-1) regions between the values in *V*
+		fill the (len(*V*)-1) regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -8975,8 +8983,8 @@ package matplotlib.pyplot;
 		
 		  *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
@@ -9254,27 +9262,27 @@ package matplotlib.pyplot;
 		              :class:`matplotlib.collections.PolyCollection` instances
 		              containing the filled area of each violin.
 		
-		            - ``means``: A
+		            - ``cmeans``: A
 		              :class:`matplotlib.collections.LineCollection` instance
 		              created to identify the mean values of each of the
 		              violin's distribution.
 		
-		            - ``mins``: A
+		            - ``cmins``: A
 		              :class:`matplotlib.collections.LineCollection` instance
 		              created to identify the bottom of each violin's
 		              distribution.
 		
-		            - ``maxes``: A
+		            - ``cmaxes``: A
 		              :class:`matplotlib.collections.LineCollection` instance
 		              created to identify the top of each violin's
 		              distribution.
 		
-		            - ``bars``: A
+		            - ``cbars``: A
 		              :class:`matplotlib.collections.LineCollection` instance
 		              created to identify the centers of each violin's
 		              distribution.
 		
-		            - ``medians``: A
+		            - ``cmedians``: A
 		              :class:`matplotlib.collections.LineCollection` instance
 		              created to identify the median values of each of the
 		              violin's distribution.
@@ -9343,7 +9351,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'x', 'ymax', 'colors'.
+		* All arguments with the following names: 'x', 'ymin', 'colors', 'ymax'.
 		
 		
 		
@@ -9427,7 +9435,7 @@ package matplotlib.pyplot;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y'.
+		* All arguments with the following names: 'y', 'x'.
 		
 		
 		

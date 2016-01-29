@@ -58,10 +58,10 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		
 		Examples
 		--------
-		>>> from scipy import matrix
-		>>> M = matrix( [[1,2,3],[4,5,6]], dtype='int32' )
-		>>> aslinearoperator( M )
-		<2x3 LinearOperator with dtype=int32>
+		>>> from scipy.sparse.linalg import aslinearoperator
+		>>> M = np.array([[1,2,3],[4,5,6]], dtype=np.int32)
+		>>> aslinearoperator(M)
+		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -400,14 +400,14 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		
 		Parameters
 		----------
-		n : int
+		m : int
 		    Number of rows in the matrix.
-		m : int, optional
-		    Number of columns. Default: n
+		n : int, optional
+		    Number of columns. Default: `m`.
 		k : int, optional
-		    Diagonal to place ones on. Default: 0 (main diagonal)
+		    Diagonal to place ones on. Default: 0 (main diagonal).
 		dtype : dtype, optional
-		    Data type of the matrix
+		    Data type of the matrix.
 		format : str, optional
 		    Sparse format of the result, e.g. format="csr", etc.
 		
@@ -638,6 +638,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		    Array to compute the SVD on, of shape (M, N)
 		k : int, optional
 		    Number of singular values and vectors to compute.
+		    Must be 1 <= k < min(A.shape).
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
@@ -654,8 +655,8 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		    .. versionadded:: 0.12.0
 		v0 : ndarray, optional
 		    Starting vector for iteration, of length min(A.shape). Should be an
-		    (approximate) right singular vector if N > M and a right singular vector
-		    otherwise.
+		    (approximate) left singular vector if N > M and a right singular
+		    vector otherwise.
 		    Default: random
 		
 		    .. versionadded:: 0.12.0

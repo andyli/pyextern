@@ -130,6 +130,7 @@ package seaborn.utils;
 	**/
 	static public function despine(?fig:Dynamic, ?ax:Dynamic, ?top:Dynamic, ?right:Dynamic, ?left:Dynamic, ?bottom:Dynamic, ?offset:Dynamic, ?trim:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	static public function get_color_cycle():Dynamic;
 	/**
 		Return the path of the seaborn data directory.
 		
@@ -167,6 +168,7 @@ package seaborn.utils;
 		    Passed to pandas.read_csv
 	**/
 	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
+	static public var mpl_ge_150 : Dynamic;
 	/**
 		Simple function to offset spines away from axes.
 		

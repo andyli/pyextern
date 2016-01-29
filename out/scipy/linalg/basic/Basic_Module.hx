@@ -43,6 +43,17 @@ package scipy.linalg.basic;
 	**/
 	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	/**
+		Round floating-point lwork returned by lapack to integer.
+		
+		Several LAPACK routines compute optimal values for LWORK, which
+		they return in a floating-point variable. However, for large
+		values of LWORK, single-precision floating point is not sufficient
+		to hold the exact value --- some LAPACK versions (<= 3.5.0 at
+		least) truncate the returned integer to single precision and in
+		some cases this can be smaller than the required value.
+	**/
+	static public function _compute_lwork(routine:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Strict check for `arr` not sharing any data with `original`,
 		under the assumption that arr = asarray(original)
 	**/
@@ -233,6 +244,14 @@ package scipy.linalg.basic;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver: str, optional
+		    Which LAPACK driver is used to solve the least-squares problem.
+		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
+		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
+		    faster on many problems.  ``'gelss'`` was used historically.  It is
+		    generally slow but uses less memory.
+		
+		    .. versionadded:: 0.17.0
 		
 		Returns
 		-------
@@ -240,25 +259,28 @@ package scipy.linalg.basic;
 		    Least-squares solution.  Return shape matches shape of `b`.
 		residues : () or (1,) or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is < N or > M this is an empty array.
-		    If b was 1-D, this is an (1,) shape array, otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
+		    this is an empty array. If b was 1-D, this is an (1,) shape array,
+		    otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray
+		s : (min(M,N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0]/s[-1])``.
+		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
 		
 		Raises
 		------
 		LinAlgError :
 		    If computation does not converge.
 		
+		ValueError :
+		    When parameters are wrong.
 		
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
 	**/
-	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
 		
@@ -436,6 +458,8 @@ package scipy.linalg.basic;
 		------
 		LinAlgError
 		    If `a` is singular.
+		ValueError
+		    If `a` is not square
 		
 		Examples
 		--------

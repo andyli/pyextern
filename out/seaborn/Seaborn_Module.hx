@@ -116,9 +116,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -198,20 +198,13 @@ package seaborn;
 		
 		    >>> ax = sns.barplot(x="tip", y="day", data=tips)
 		
-		Control bar order by sorting the input data:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> ax = sns.barplot(x="size", y="tip", data=tips.sort("size"))
-		
 		Control bar order by passing an explicit order:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.barplot(x="size", y="tip", data=tips,
-		    ...                  order=np.arange(1, 7), palette="Blues_d")
+		    >>> ax = sns.barplot(x="time", y="tip", data=tips,
+		    ...                  order=["Dinner", "Lunch"])
 		
 		Use median as the estimate of central tendency:
 		
@@ -233,7 +226,7 @@ package seaborn;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.barplot("size", y="total_bill", data=tips.sort("size"),
+		    >>> ax = sns.barplot("size", y="total_bill", data=tips,
 		    ...                  palette="Blues_d")
 		
 		Plot all bars in a single color:
@@ -241,7 +234,7 @@ package seaborn;
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.barplot("size", y="total_bill", data=tips.sort("size"),
+		    >>> ax = sns.barplot("size", y="total_bill", data=tips,
 		    ...                  color="salmon", saturation=.5)
 		
 		Use ``plt.bar`` keyword arguments to further change the aesthetic:
@@ -333,9 +326,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -387,7 +380,9 @@ package seaborn;
 		--------
 		violinplot : A combination of boxplot and kernel density estimation.    
 		stripplot : A scatterplot where one variable is categorical. Can be used
-		            in conjunction with a other plots to show each observation.    
+		            in conjunction with other plots to show each observation.    
+		swarmplot : A categorical scatterplot where the points do not overlap. Can
+		            be used with other plots to show each observation.    
 		
 		Examples
 		--------
@@ -425,20 +420,13 @@ package seaborn;
 		    >>> ax = sns.boxplot(x="day", y="total_bill", hue="time",
 		    ...                  data=tips, linewidth=2.5)
 		
-		Control box order by sorting the input data:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> ax = sns.boxplot(x="size", y="tip", data=tips.sort("size"))
-		
 		Control box order by passing an explicit order:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.boxplot(x="size", y="tip", data=tips,
-		    ...                  order=np.arange(1, 7), palette="Blues_d")
+		    >>> ax = sns.boxplot(x="time", y="tip", data=tips,
+		    ...                  order=["Dinner", "Lunch"])
 		
 		Draw a boxplot for each numeric variable in a DataFrame:
 		
@@ -448,14 +436,13 @@ package seaborn;
 		    >>> iris = sns.load_dataset("iris")
 		    >>> ax = sns.boxplot(data=iris, orient="h", palette="Set2")
 		
-		Use :func:`stripplot` to show the datapoints on top of the boxes:
+		Use :func:`swarmplot` to show the datapoints on top of the boxes:
 		
 		.. plot::
 		    :context: close-figs
 		
 		    >>> ax = sns.boxplot(x="day", y="total_bill", data=tips)
-		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
-		    ...                    size=4, jitter=True, edgecolor="gray")
+		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips, color=".25")
 		
 		Draw a box plot on to a :class:`FacetGrid` to group within an additional
 		categorical variable:
@@ -972,9 +959,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -1377,7 +1364,7 @@ package seaborn;
 		    Color to plot everything but the fitted curve in.
 		vertical : bool, optional
 		    If True, oberved values are on y-axis.
-		norm_hist : bool, otional
+		norm_hist : bool, optional
 		    If True, the histogram height shows a density rather than a count.
 		    This is implied if a KDE or fitted density is plotted.
 		axlabel : string, False, or None, optional
@@ -1621,7 +1608,7 @@ package seaborn;
 		legend_out : bool, optional
 		    If ``True``, the figure size will be extended, and the legend will be
 		    drawn outside the plot on the center right.    
-		share_{x,y} : bool, optional
+		share{x,y} : bool, optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		margin_titles : bool, optional
@@ -1715,6 +1702,7 @@ package seaborn;
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
 	static public function factorplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?col_wrap:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?kind:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?margin_titles:Dynamic, ?facet_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function get_color_cycle():Dynamic;
 	/**
 		Return the path of the seaborn data directory.
 		
@@ -2083,7 +2071,7 @@ package seaborn;
 		    DataFrame when ``x`` and ``y`` are variable names.
 		kind : { "scatter" | "reg" | "resid" | "kde" | "hex" }, optional
 		    Kind of plot to draw.
-		stat_func : callable or None
+		stat_func : callable or None, optional
 		    Function used to calculate a statistic about the relationship and
 		    annotate the plot. Should map `x` and `y` either to a single value
 		    or to a (value, p) tuple. Set to ``None`` if you don't want to
@@ -2100,9 +2088,9 @@ package seaborn;
 		    If True, remove observations that are missing from ``x`` and ``y``.
 		{x, y}lim : two-tuples, optional
 		    Axis limits to set before plotting.
-		{joint, marginal, annot}_kws : dicts
+		{joint, marginal, annot}_kws : dicts, optional
 		    Additional keyword arguments for the plot components.
-		kwargs : key, value pairs
+		kwargs : key, value pairings
 		    Additional keyword arguments are passed to the function used to
 		    draw the plot on the joint Axes, superseding items in the
 		    ``joint_kws`` dictionary.
@@ -2207,12 +2195,12 @@ package seaborn;
 		----------
 		data : 1d array-like
 		    Input data.
-		data2: 1d array-like
+		data2: 1d array-like, optional
 		    Second input data. If present, a bivariate KDE will be estimated.
 		shade : bool, optional
 		    If True, shade in the area under the KDE curve (or draw with filled
 		    contours when data is bivariate).
-		vertical : bool
+		vertical : bool, optional
 		    If True, density is on x-axis.
 		kernel : {'gau' | 'cos' | 'biw' | 'epa' | 'tri' | 'triw' }, optional
 		    Code for shape of kernel to fit with. Bivariate KDE can only use
@@ -2227,11 +2215,11 @@ package seaborn;
 		clip : pair of scalars, or pair of pair of scalars, optional
 		    Lower and upper bounds for datapoints used to fit KDE. Can provide
 		    a pair of (low, high) bounds for bivariate plots.
-		legend : bool, optinal
+		legend : bool, optional
 		    If True, add a legend or label the axes when possible.
-		cumulative : bool
+		cumulative : bool, optional
 		    If True, draw the cumulative distribution estimated by the kde.
-		shade_lowest : bool
+		shade_lowest : bool, optional
 		    If True, shade the lowest contour of a bivariate KDE plot. Not
 		    relevant when drawing a univariate plot or when ``shade=False``.
 		    Setting this to ``False`` can be useful when you want multiple
@@ -2453,7 +2441,7 @@ package seaborn;
 		markers : matplotlib marker code or list of marker codes, optional
 		    Markers for the scatterplot. If a list, each marker in the list will be
 		    used for each level of the ``hue`` variable.
-		share_{x,y} : bool, optional
+		share{x,y} : bool, optional
 		    If true, the facets will share y axes across columns and/or x axes
 		    across rows.    
 		{hue,col,row}_order : lists, optional
@@ -2678,6 +2666,170 @@ package seaborn;
 		    Passed to pandas.read_csv
 	**/
 	static public function load_dataset(name:Dynamic, ?cache:Dynamic, ?data_home:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a letter value plot
+		
+		Letter value (LV) plots are non-parametric estimates of the distribution of
+		a dataset, similar to boxplots. LV plots are also similar to violin plots
+		but without the need to fit a kernel density estimate. Thus, LV plots are
+		fast to generate, directly interpretable in terms of the distribution of
+		data, and easy to understand. For a more extensive explanation of letter
+		value plots and their properties, see Hadley Wickham's excellent paper on
+		the topic:
+		
+		http://vita.had.co.nz/papers/letter-value-plot.html
+		
+		Input data can be passed in a variety of formats, including:
+		
+		- Vectors of data represented as lists, numpy arrays, or pandas Series
+		  objects passed directly to the ``x``, ``y``, and/or ``hue`` parameters.
+		- A "long-form" DataFrame, in which case the ``x``, ``y``, and ``hue``
+		  variables will determine how the data are plotted.
+		- A "wide-form" DataFrame, such that each numeric column will be plotted.
+		- Anything accepted by ``plt.boxplot`` (e.g. a 2d array or list of vectors)
+		
+		In most cases, it is possible to use numpy or Python objects, but pandas
+		objects are preferable because the associated names will be used to
+		annotate the axes. Additionally, you can use Categorical types for the
+		grouping variables to control the order of plot elements.    
+		
+		Parameters
+		----------
+		x, y, hue : names of variables in ``data`` or vector data, optional
+		    Inputs for plotting long-form data. See examples for interpretation.        
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
+		order, hue_order : lists of strings, optional
+		    Order to plot the categorical levels in, otherwise the levels are
+		    inferred from the data objects.        
+		orient : "v" | "h", optional
+		    Orientation of the plot (vertical or horizontal). This is usually
+		    inferred from the dtype of the input variables, but can be used to
+		    specify when the "categorical" variable is a numeric or when plotting
+		    wide-form data.    
+		color : matplotlib color, optional
+		    Color for all of the elements, or seed for :func:`light_palette` when
+		    using hue nesting.    
+		palette : seaborn color palette or dict, optional
+		    Colors to use for the different levels of the ``hue`` variable. Should
+		    be something that can be interpreted by :func:`color_palette`, or a
+		    dictionary mapping hue levels to matplotlib colors.    
+		saturation : float, optional
+		    Proportion of the original saturation to draw colors at. Large patches
+		    often look better with slightly desaturated colors, but set this to
+		    ``1`` if you want the plot colors to perfectly match the input color
+		    spec.    
+		width : float, optional
+		    Width of a full element when not using hue nesting, or width of all the
+		    elements for one level of the major grouping variable.    
+		k_depth : "proportion" | "tukey" | "trustworthy", optional
+		    The number of boxes, and by extension number of percentiles, to draw.
+		    All methods are detailed in Wickham's paper. Each makes different
+		    assumptions about the number of outliers and leverages different
+		    statistical properties.
+		linewidth : float, optional
+		    Width of the gray lines that frame the plot elements.    
+		scale : "linear" | "exonential" | "area"
+		    Method to use for the width of the letter value boxes. All give similar
+		    results visually. "linear" reduces the width by a constant linear
+		    factor, "exponential" uses the proportion of data not covered, "area"
+		    is proportional to the percentage of data covered.
+		outlier_prop : float, optional
+		    Proportion of data believed to be outliers. Is used in conjuction with
+		    k_depth to determine the number of percentiles to draw. Defaults to
+		    0.007 as a proportion of outliers. Should be in range [0, 1].
+		ax : matplotlib Axes, optional
+		    Axes object to draw the plot onto, otherwise uses the current Axes.    
+		kwargs : key, value mappings
+		    Other keyword arguments are passed through to ``plt.plot`` and
+		    ``plt.scatter`` at draw time.
+		
+		Returns
+		-------
+		ax : matplotlib Axes
+		    Returns the Axes object with the boxplot drawn onto it.    
+		
+		See Also
+		--------
+		violinplot : A combination of boxplot and kernel density estimation.    
+		boxplot : A traditional box-and-whisker plot with a similar API.    
+		
+		Examples
+		--------
+		
+		Draw a single horizontal letter value plot:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> import seaborn as sns
+		    >>> sns.set_style("whitegrid")
+		    >>> tips = sns.load_dataset("tips")
+		    >>> ax = sns.lvplot(x=tips["total_bill"])
+		
+		Draw a vertical letter value plot grouped by a categorical variable:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.lvplot(x="day", y="total_bill", data=tips)
+		
+		Draw a letter value plot with nested grouping by two categorical variables:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.lvplot(x="day", y="total_bill", hue="smoker",
+		    ...                 data=tips, palette="Set3")
+		
+		Draw a letter value plot with nested grouping when some bins are empty:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.lvplot(x="day", y="total_bill", hue="time",
+		    ...                 data=tips, linewidth=2.5)
+		
+		Control box order by passing an explicit order:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.lvplot(x="time", y="tip", data=tips,
+		    ...                 order=["Dinner", "Lunch"])
+		
+		Draw a letter value plot for each numeric variable in a DataFrame:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> iris = sns.load_dataset("iris")
+		    >>> ax = sns.lvplot(data=iris, orient="h", palette="Set2")
+		
+		Use :func:`stripplot` to show the datapoints on top of the boxes:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.lvplot(x="day", y="total_bill", data=tips)
+		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
+		    ...                    size=4, jitter=True, edgecolor="gray")
+		
+		Draw a letter value plot on to a :class:`FacetGrid` to group within an
+		additional categorical variable:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> g = sns.FacetGrid(tips, col="time", size=4, aspect=.7)
+		    >>> (g.map(sns.lvplot, "sex", "total_bill", "smoker")
+		    ...   .despine(left=True)
+		    ...   .add_legend(title="smoker"))  #doctest: +ELLIPSIS
+		    <seaborn.axisgrid.FacetGrid object at 0x...>
+	**/
+	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var mpl_ge_150 : Dynamic;
 	/**
 		Return discrete colors from a matplotlib palette.
 		
@@ -3041,9 +3193,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -3165,20 +3317,13 @@ package seaborn;
 		    >>> ax = sns.pointplot(x="time", y="total_bill", hue="smoker",
 		    ...                    data=tips, palette="Set2")
 		
-		Control point order by sorting the input data:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> ax = sns.pointplot(x="size", y="tip", data=tips.sort("size"))
-		
 		Control point order by passing an explicit order:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.pointplot(x="size", y="tip", data=tips,
-		    ...                    order=np.arange(1, 7), palette="Blues_d")
+		    >>> ax = sns.pointplot(x="time", y="tip", data=tips,
+		    ...                    order=["Dinner", "Lunch"])
 		
 		Use median as the estimate of central tendency:
 		
@@ -3518,9 +3663,9 @@ package seaborn;
 		    Height of ticks as proportion of the axis.
 		axis : {'x' | 'y'}, optional
 		    Axis to draw rugplot on.
-		ax : matplotlib axes
+		ax : matplotlib axes, optional
 		    Axes to draw plot into; otherwise grabs current axes.
-		kwargs : key, value mappings
+		kwargs : key, value pairings
 		    Other keyword arguments are passed to ``axvline`` or ``axhline``.
 		
 		Returns
@@ -3754,9 +3899,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -3803,6 +3948,8 @@ package seaborn;
 		
 		See Also
 		--------
+		swarmplot : A categorical scatterplot where the points do not overlap. Can
+		            be used with other plots to show each observation.    
 		boxplot : A traditional box-and-whisker plot with a similar API.    
 		violinplot : A combination of boxplot and kernel density estimation.    
 		
@@ -3848,6 +3995,14 @@ package seaborn;
 		    >>> ax = sns.stripplot(x="total_bill", y="day", data=tips,
 		    ...                    jitter=True)
 		
+		Draw outlines around the points:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.stripplot(x="total_bill", y="day", data=tips,
+		    ...                    jitter=True, linewidth=1)
+		
 		Nest the strips within a second categorical variable:
 		
 		.. plot::
@@ -3856,7 +4011,7 @@ package seaborn;
 		    >>> ax = sns.stripplot(x="sex", y="total_bill", hue="day",
 		    ...                    data=tips, jitter=True)
 		
-		Draw each level of the ``hue`` variable at the same location on the
+		Draw each level of the ``hue`` variable at different locations on the
 		major categorical axis:
 		
 		.. plot::
@@ -3864,22 +4019,15 @@ package seaborn;
 		
 		    >>> ax = sns.stripplot(x="day", y="total_bill", hue="smoker",
 		    ...                    data=tips, jitter=True,
-		    ...                    palette="Set2", split=False)
-		
-		Control strip order by sorting the input data:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> ax = sns.stripplot(x="size", y="tip", data=tips.sort("size"))
+		    ...                    palette="Set2", split=True)
 		
 		Control strip order by passing an explicit order:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.stripplot(x="size", y="tip", data=tips,
-		    ...                    order=np.arange(1, 7), palette="Blues_d")
+		    >>> ax = sns.stripplot(x="time", y="tip", data=tips,
+		    ...                    order=["Dinner", "Lunch"])
 		
 		Draw strips with large points and different aesthetics:
 		
@@ -3896,18 +4044,181 @@ package seaborn;
 		    :context: close-figs
 		
 		    >>> ax = sns.boxplot(x="tip", y="day", data=tips, whis=np.inf)
-		    >>> ax = sns.stripplot(x="tip", y="day", data=tips, jitter=True)
+		    >>> ax = sns.stripplot(x="tip", y="day", data=tips,
+		    ...                    jitter=True, color=".3")
 		
 		Draw strips of observations on top of a violin plot:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips, inner=None)
-		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips,
-		    ...                    jitter=True, color="white", edgecolor="gray")
+		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips,
+		    ...                     inner=None, color=".8")
+		    >>> ax = sns.stripplot(x="day", y="total_bill", data=tips, jitter=True)
 	**/
 	static public function stripplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?jitter:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Draw a categorical scatterplot with non-overlapping points.
+		
+		This function is similar to :func:`stripplot`, but the points are adjusted
+		(only along the categorical axis) so that they don't overlap. This gives a
+		better representation of the distribution of values, although it does not
+		scale as well to large numbers of observations (both in terms of the
+		ability to show all the points and in terms of the computation needed
+		to arrange them).
+		
+		This style of plot is often called a "beeswarm".
+		
+		A swarm plot can be drawn on its own, but it is also a good complement
+		to a box or violin plot in cases where you want to show all observations
+		along with some representation of the underlying distribution.
+		
+		Note that arranging the points properly requires an accurate transformation
+		between data and point coordinates. This means that non-default axis limits
+		should be set *before* drawing the swarm plot.
+		
+		Input data can be passed in a variety of formats, including:
+		
+		- Vectors of data represented as lists, numpy arrays, or pandas Series
+		  objects passed directly to the ``x``, ``y``, and/or ``hue`` parameters.
+		- A "long-form" DataFrame, in which case the ``x``, ``y``, and ``hue``
+		  variables will determine how the data are plotted.
+		- A "wide-form" DataFrame, such that each numeric column will be plotted.
+		- Anything accepted by ``plt.boxplot`` (e.g. a 2d array or list of vectors)
+		
+		In most cases, it is possible to use numpy or Python objects, but pandas
+		objects are preferable because the associated names will be used to
+		annotate the axes. Additionally, you can use Categorical types for the
+		grouping variables to control the order of plot elements.    
+		
+		Parameters
+		----------
+		x, y, hue : names of variables in ``data`` or vector data, optional
+		    Inputs for plotting long-form data. See examples for interpretation.        
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
+		order, hue_order : lists of strings, optional
+		    Order to plot the categorical levels in, otherwise the levels are
+		    inferred from the data objects.        
+		split : bool, optional
+		    When using ``hue`` nesting, setting this to ``True`` will separate
+		    the strips for different hue levels along the categorical axis.
+		    Otherwise, the points for each level will be plotted in one swarm.
+		orient : "v" | "h", optional
+		    Orientation of the plot (vertical or horizontal). This is usually
+		    inferred from the dtype of the input variables, but can be used to
+		    specify when the "categorical" variable is a numeric or when plotting
+		    wide-form data.    
+		color : matplotlib color, optional
+		    Color for all of the elements, or seed for :func:`light_palette` when
+		    using hue nesting.    
+		palette : seaborn color palette or dict, optional
+		    Colors to use for the different levels of the ``hue`` variable. Should
+		    be something that can be interpreted by :func:`color_palette`, or a
+		    dictionary mapping hue levels to matplotlib colors.    
+		size : float, optional
+		    Diameter of the markers, in points. (Although ``plt.scatter`` is used
+		    to draw the points, the ``size`` argument here takes a "normal"
+		    markersize and not size^2 like ``plt.scatter``.
+		edgecolor : matplotlib color, "gray" is special-cased, optional
+		    Color of the lines around each point. If you pass ``"gray"``, the
+		    brightness is determined by the color palette used for the body
+		    of the points.
+		linewidth : float, optional
+		    Width of the gray lines that frame the plot elements.    
+		ax : matplotlib Axes, optional
+		    Axes object to draw the plot onto, otherwise uses the current Axes.    
+		
+		Returns
+		-------
+		ax : matplotlib Axes
+		    Returns the Axes object with the boxplot drawn onto it.    
+		
+		See Also
+		--------
+		boxplot : A traditional box-and-whisker plot with a similar API.    
+		violinplot : A combination of boxplot and kernel density estimation.    
+		stripplot : A scatterplot where one variable is categorical. Can be used
+		            in conjunction with other plots to show each observation.    
+		factorplot : Combine categorical plots and a class:`FacetGrid`.    
+		
+		Examples
+		--------
+		
+		Draw a single horizontal swarm plot:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> import seaborn as sns
+		    >>> sns.set_style("whitegrid")
+		    >>> tips = sns.load_dataset("tips")
+		    >>> ax = sns.swarmplot(x=tips["total_bill"])
+		
+		Group the swarms by a categorical variable:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips)
+		
+		Draw horizontal swarms:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="total_bill", y="day", data=tips)
+		
+		Color the points using a second categorical variable:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="day", y="total_bill", hue="sex", data=tips)
+		
+		Split each level of the ``hue`` variable along the categorical axis:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="day", y="total_bill", hue="smoker",
+		    ...                    data=tips, palette="Set2", split=True)
+		
+		Control swarm order by passing an explicit order:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="time", y="tip", data=tips,
+		    ...                    order=["Dinner", "Lunch"])
+		
+		Plot using larger points:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.swarmplot(x="time", y="tip", data=tips, size=6)
+		
+		
+		Draw swarms of observations on top of a box plot:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.boxplot(x="tip", y="day", data=tips, whis=np.inf)
+		    >>> ax = sns.swarmplot(x="tip", y="day", data=tips)
+		
+		Draw swarms of observations on top of a violin plot:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.violinplot(x="day", y="total_bill", data=tips, inner=None)
+		    >>> ax = sns.swarmplot(x="day", y="total_bill", data=tips,
+		    ...                    color="white", edgecolor="gray")
+	**/
+	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot a symmetric matrix with colormap and statistic values.
 		
@@ -3958,7 +4269,7 @@ package seaborn;
 		    {ci_band, ci_bars, boot_traces, boot_kde, unit_traces, unit_points}.
 		    Can use one or more than one method.
 		ci : float or list of floats in [0, 100]
-		    Confidence interaval size(s). If a list, it will stack the error
+		    Confidence interval size(s). If a list, it will stack the error
 		    plots for each confidence interval. Only relevant for error styles
 		    with "ci" in the name.
 		interpolate : boolean
@@ -4112,9 +4423,9 @@ package seaborn;
 		----------
 		x, y, hue : names of variables in ``data`` or vector data, optional
 		    Inputs for plotting long-form data. See examples for interpretation.        
-		data : DataFrame
-		    Tidy ("long-form") dataframe where each column is a variable and each
-		    row is an observation.    
+		data : DataFrame, array, or list of arrays, optional
+		    Dataset for plotting. If ``x`` and ``y`` are absent, this is
+		    interpreted as wide-form. Otherwise it is expected to be long-form.    
 		order, hue_order : lists of strings, optional
 		    Order to plot the categorical levels in, otherwise the levels are
 		    inferred from the data objects.        
@@ -4184,7 +4495,9 @@ package seaborn;
 		--------
 		boxplot : A traditional box-and-whisker plot with a similar API.    
 		stripplot : A scatterplot where one variable is categorical. Can be used
-		            in conjunction with a other plots to show each observation.    
+		            in conjunction with other plots to show each observation.    
+		swarmplot : A categorical scatterplot where the points do not overlap. Can
+		            be used with other plots to show each observation.    
 		
 		Examples
 		--------
@@ -4222,20 +4535,13 @@ package seaborn;
 		    >>> ax = sns.violinplot(x="day", y="total_bill", hue="smoker",
 		    ...                     data=tips, palette="muted", split=True)
 		
-		Control violin order by sorting the input data:
-		
-		.. plot::
-		    :context: close-figs
-		
-		    >>> ax = sns.violinplot(x="size", y="tip", data=tips.sort("size"))
-		
 		Control violin order by passing an explicit order:
 		
 		.. plot::
 		    :context: close-figs
 		
-		    >>> ax = sns.violinplot(x="size", y="tip", data=tips,
-		    ...                     order=np.arange(1, 7), palette="Blues_d")
+		    >>> ax = sns.violinplot(x="time", y="tip", data=tips,
+		    ...                     order=["Dinner", "Lunch"])
 		
 		Scale the violin width by the number of observations in each bin:
 		

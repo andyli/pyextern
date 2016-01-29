@@ -223,10 +223,9 @@ package scipy.sparse.linalg.isolve.iterative;
 	static public var common_doc1 : Dynamic;
 	static public var common_doc2 : Dynamic;
 	/**
-		decorator(caller) converts a caller function into a decorator;
-		decorator(caller, func) decorates a function using a caller.
+		decorator(caller) converts a caller function into a decorator
 	**/
-	static public function decorator(caller:Dynamic, ?func:Dynamic):Dynamic;
+	static public function decorator(caller:Dynamic, ?_func:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Use Generalized Minimal RESidual iteration to solve A x = b.

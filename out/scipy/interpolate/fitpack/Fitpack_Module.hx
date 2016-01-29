@@ -18,7 +18,6 @@ package scipy.interpolate.fitpack;
 		cannot fit.
 	**/
 	static public function _intc_overflow(x:Dynamic, ?msg:Dynamic):Dynamic;
-	static public function _ntlist(l:Dynamic):Dynamic;
 	static public var _parcur_cache : Dynamic;
 	static public var _surfit_cache : Dynamic;
 	static public var absolute_import : Dynamic;

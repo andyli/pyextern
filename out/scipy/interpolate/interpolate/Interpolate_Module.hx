@@ -11,6 +11,14 @@ package scipy.interpolate.interpolate;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Helper to check that arr_from broadcasts up to shape_to
+	**/
+	static public function _check_broadcast_up_to(arr_from:Dynamic, shape_to:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Helper to check if fill_value == "extrapolate" without warnings
+	**/
+	static public function _do_extrapolate(fill_value:Dynamic):Dynamic;
+	/**
 		Similar to numpy.dot, but sum over last axis of a and 1st axis of b
 	**/
 	static public function _dot0(a:Dynamic, b:Dynamic):Dynamic;
@@ -826,6 +834,7 @@ package scipy.interpolate.interpolate;
 		    
 	**/
 	static public function spltopp(xk:Dynamic, cvals:Dynamic, k:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
 	/**
 		Permute the dimensions of an array.
 		

@@ -613,10 +613,10 @@ package numpy;
 		
 		The `new_order` code can be any from the following:
 		
+		* 'S' - swap dtype from current to opposite endian
 		* {'<', 'L'} - little endian
 		* {'>', 'B'} - big endian
 		* {'=', 'N'} - native order
-		* 'S' - swap dtype from current to opposite endian
 		* {'|', 'I'} - ignore (no change to byte order)
 		
 		Parameters

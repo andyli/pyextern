@@ -127,13 +127,13 @@ package pandas.tools.plotting;
 	**/
 	static public function _get_ax_layer(ax:Dynamic, ?primary:Dynamic):Dynamic;
 	public function _get_ax_legend(ax:Dynamic):Dynamic;
-	public function _get_axes():Dynamic;
 	public function _get_axes_layout():Dynamic;
 	public function _get_colors(?num_colors:Dynamic, ?color_kwds:Dynamic):Dynamic;
 	public function _get_errorbars(?label:Dynamic, ?index:Dynamic, ?xerr:Dynamic, ?yerr:Dynamic):Dynamic;
 	public function _get_index_name():Dynamic;
 	static public function _get_stacked_values(ax:Dynamic, stacking_id:Dynamic, values:Dynamic, label:Dynamic):Dynamic;
 	public function _get_stacking_id():Dynamic;
+	public function _get_subplots():Dynamic;
 	public function _get_xticks(?convert_period:Dynamic):Dynamic;
 	/**
 		check whether ax has data
@@ -186,7 +186,22 @@ package pandas.tools.plotting;
 	static public function mpl_ge_1_5_0():Dynamic;
 	public var nseries : Dynamic;
 	public function on_right(i:Dynamic):Dynamic;
+	/**
+		str(object='') -> str
+		str(bytes_or_buffer[, encoding[, errors]]) -> str
+		
+		Create a new string object from the given object. If encoding or
+		errors is specified, then the object must expose a data buffer
+		that will be decoded using the given encoding and error handler.
+		Otherwise, returns the result of object.__str__() (if defined)
+		or repr(object).
+		encoding defaults to sys.getdefaultencoding().
+		errors defaults to 'strict'.
+	**/
 	public var orientation : Dynamic;
 	static public var plt : Dynamic;
+	/**
+		Return result axes
+	**/
 	public var result : Dynamic;
 }

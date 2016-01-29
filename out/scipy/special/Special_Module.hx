@@ -13,30 +13,49 @@ package scipy.special;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Arithmetic, Geometric Mean
+		Arithmetic, Geometric Mean.
 		
 		Start with a_0=a and b_0=b and iteratively compute
 		
 		a_{n+1} = (a_n+b_n)/2
 		b_{n+1} = sqrt(a_n*b_n)
 		
-		until a_n=b_n.   The result is agm(a,b)
+		until a_n=b_n.   The result is agm(a, b)
 		
-		agm(a,b)=agm(b,a)
-		agm(a,a) = a
-		min(a,b) < agm(a,b) < max(a,b)
+		agm(a, b)=agm(b, a)
+		agm(a, a) = a
+		min(a, b) < agm(a, b) < max(a, b)
 	**/
 	static public function agm(a:Dynamic, b:Dynamic):Dynamic;
 	/**
-		Compute the zeros of Airy Functions Ai(x) and Ai'(x), a and a'
-		respectively, and the associated values of Ai(a') and Ai'(a).
+		Compute `nt` zeros and values of the Airy function Ai and its derivative.
+		
+		Computes the first `nt` zeros, `a`, of the Airy function Ai(x);
+		first `nt` zeros, `ap`, of the derivative of the Airy function Ai'(x);
+		the corresponding values Ai(a');
+		and the corresponding values Ai'(a).
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to compute
 		
 		Returns
 		-------
-		a[l-1]   -- the lth zero of Ai(x)
-		ap[l-1]  -- the lth zero of Ai'(x)
-		ai[l-1]  -- Ai(ap[l-1])
-		aip[l-1] -- Ai'(a[l-1])
+		a : ndarray
+		    First `nt` zeros of Ai(x)
+		ap : ndarray
+		    First `nt` zeros of Ai'(x)
+		ai : ndarray
+		    Values of Ai(x) evaluated at first `nt` zeros of Ai'(x)
+		aip : ndarray
+		    Values of Ai'(x) evaluated at first `nt` zeros of Ai(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ai_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -87,7 +106,7 @@ package scipy.special;
 	**/
 	static public function airye(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns the n-th order generalized (associated) Laguerre polynomial.
+		Compute nth-order generalized (associated) Laguerre polynomial.
 		
 		The polynomial :math:`L^(alpha)_n(x)` is orthogonal over ``[0, inf)``,
 		with weighting function ``exp(-x) * x**alpha`` with ``alpha > -1``.
@@ -105,11 +124,11 @@ package scipy.special;
 		
 		Binomial distribution cumulative distribution function.
 		
-		Sum of the terms 0 through k of the Binomial probability density.
+		Sum of the terms 0 through `k` of the Binomial probability density.
 		
 		::
 		
-		    y = sum(nCj p**j (1-p)**(n-j),j=0..k)
+		    y = sum(nCj p**j (1-p)**(n-j), j=0..k)
 		
 		Parameters
 		----------
@@ -131,7 +150,7 @@ package scipy.special;
 		
 		Binomial distribution survival function.
 		
-		Sum of the terms k+1 through n of the Binomial probability density
+		Sum of the terms k+1 through `n` of the Binomial probability density
 		
 		::
 		
@@ -155,7 +174,7 @@ package scipy.special;
 		
 		bdtri(k, n, y)
 		
-		Inverse function to bdtr vs. p
+		Inverse function to `bdtr` vs. `p`
 		
 		Finds probability `p` such that for the cumulative binomial
 		probability ``bdtr(k, n, p) == y``.
@@ -166,7 +185,7 @@ package scipy.special;
 		
 		bdtrik(y, n, p)
 		
-		Inverse function to bdtr vs k
+		Inverse function to `bdtr` vs `k`
 	**/
 	static public function bdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -174,7 +193,7 @@ package scipy.special;
 		
 		bdtrin(k, y, p)
 		
-		Inverse function to bdtr vs n
+		Inverse function to `bdtr` vs `n`
 	**/
 	static public function bdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -186,8 +205,13 @@ package scipy.special;
 	**/
 	static public function bei(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function bei x
-		    
+		Compute nt zeros of the Kelvin function bei(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bei_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -195,12 +219,17 @@ package scipy.special;
 		
 		beip(x)
 		
-		Derivative of the Kelvin function bei
+		Derivative of the Kelvin function `bei`
 	**/
 	static public function beip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function bei' x
-		    
+		Compute nt zeros of the Kelvin function bei'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function beip_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -212,13 +241,23 @@ package scipy.special;
 	**/
 	static public function ber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ber x
-		    
+		Compute nt zeros of the Kelvin function ber(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ber_zeros(nt:Dynamic):Dynamic;
 	/**
-		Return an array of the Bernoulli numbers B0..Bn
-		    
+		Bernoulli numbers B0..Bn (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bernoulli(n:Dynamic):Dynamic;
 	/**
@@ -226,12 +265,17 @@ package scipy.special;
 		
 		berp(x)
 		
-		Derivative of the Kelvin function ber
+		Derivative of the Kelvin function `ber`
 	**/
 	static public function berp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ber' x
-		    
+		Compute nt zeros of the Kelvin function ber'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function berp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -244,13 +288,13 @@ package scipy.special;
 		
 		besselpoly(a, lmb, nu)
 		
-		Weighed integral of a Bessel function.
+		Weighted integral of a Bessel function.
 		
 		.. math::
 		
-		   \int_0^1 x^\lambda J_v(\nu, 2 a x) \, dx
+		   \int_0^1 x^\lambda J_\nu(2 a x) \, dx
 		
-		where :math:`J_v` is a Bessel function and :math:`\lambda=lmb`,
+		where :math:`J_\nu` is a Bessel function and :math:`\lambda=lmb`,
 		:math:`\nu=nu`.
 	**/
 	static public function besselpoly(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -263,7 +307,7 @@ package scipy.special;
 		
 		::
 		
-		    beta(a,b) =  gamma(a) * gamma(b) / gamma(a+b)
+		    beta(a, b) =  gamma(a) * gamma(b) / gamma(a+b)
 	**/
 	static public function beta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -274,7 +318,7 @@ package scipy.special;
 		Incomplete beta integral.
 		
 		Compute the incomplete beta integral of the arguments, evaluated
-		from zero to x::
+		from zero to `x`::
 		
 		    gamma(a+b) / (gamma(a)*gamma(b)) * integral(t**(a-1) (1-t)**(b-1), t=0..x).
 		
@@ -293,7 +337,7 @@ package scipy.special;
 		
 		Inverse function to beta integral.
 		
-		Compute x such that betainc(a,b,x) = y.
+		Compute `x` such that betainc(a, b, x) = y.
 	**/
 	static public function betaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -307,15 +351,34 @@ package scipy.special;
 	**/
 	static public function betaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute the zeros of Airy Functions Bi(x) and Bi'(x), b and b'
-		respectively, and the associated values of Ai(b') and Ai'(b).
+		Compute `nt` zeros and values of the Airy function Bi and its derivative.
+		
+		Computes the first `nt` zeros, b, of the Airy function Bi(x);
+		first `nt` zeros, b', of the derivative of the Airy function Bi'(x);
+		the corresponding values Bi(b');
+		and the corresponding values Bi'(b).
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to compute
 		
 		Returns
 		-------
-		b[l-1]   -- the lth zero of Bi(x)
-		bp[l-1]  -- the lth zero of Bi'(x)
-		bi[l-1]  -- Bi(bp[l-1])
-		bip[l-1] -- Bi'(b[l-1])
+		b : ndarray
+		    First `nt` zeros of Bi(x)
+		bp : ndarray
+		    First `nt` zeros of Bi'(x)
+		bi : ndarray
+		    Values of Bi(x) evaluated at first `nt` zeros of Bi'(x)
+		bip : ndarray
+		    Values of Bi'(x) evaluated at first `nt` zeros of Bi(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bi_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -360,6 +423,7 @@ package scipy.special;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox
 		>>> boxcox([1, 4, 10], 2.5)
 		array([   0.        ,   12.4       ,  126.09110641])
 		>>> boxcox(2, [0, 1, 2])
@@ -400,6 +464,7 @@ package scipy.special;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox1p
 		>>> boxcox1p(1e-4, [0, 0.5, 1])
 		array([  9.99950003e-05,   9.99975001e-05,   1.00000000e-04])
 		>>> boxcox1p([0.01, 0.1], 0.25)
@@ -409,11 +474,11 @@ package scipy.special;
 	/**
 		btdtr(x1, x2, x3[, out])
 		
-		btdtr(a,b,x)
+		btdtr(a, b, x)
 		
 		Cumulative beta distribution.
 		
-		Returns the area from zero to x under the beta density function::
+		Returns the area from zero to `x` under the beta density function::
 		
 		    gamma(a+b)/(gamma(a)*gamma(b)))*integral(t**(a-1) (1-t)**(b-1), t=0..x)
 		
@@ -425,12 +490,12 @@ package scipy.special;
 	/**
 		btdtri(x1, x2, x3[, out])
 		
-		btdtri(a,b,p)
+		btdtri(a, b, p)
 		
 		p-th quantile of the beta distribution.
 		
-		This is effectively the inverse of btdtr returning the value of x for which
-		``btdtr(a,b,x) = p``
+		This is effectively the inverse of `btdtr` returning the value of `x` for which
+		``btdtr(a, b, x) = p``
 		
 		See Also
 		--------
@@ -442,7 +507,7 @@ package scipy.special;
 		
 		btdtria(p, b, x)
 		
-		Inverse of btdtr vs a
+		Inverse of `btdtr` vs `a`
 	**/
 	static public function btdtria(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -450,16 +515,16 @@ package scipy.special;
 		
 		btdtria(a, p, x)
 		
-		Inverse of btdtr vs b
+		Inverse of `btdtr` vs `b`
 	**/
 	static public function btdtrib(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind) quadrature
+		Gauss-Chebyshev (first kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the first kind, :math:`C_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-2, 2]` with weight function :math:`f(x) = 1/\sqrt{1 - (x/2)^2}`.
 		
 		Parameters
@@ -480,8 +545,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function c_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -489,17 +554,18 @@ package scipy.special;
 		
 		cbrt(x)
 		
-		Cube root of x
+		Cube root of `x`
 	**/
 	static public function cbrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Gegenbauer quadrature
+		Gauss-Gegenbauer quadrature.
 		
 		Computes the sample points and weights for Gauss-Gegenbauer quadrature.
-		The sample points are the roots of the `n`th degree Gegenbauer polynomial,
+		The sample points are the roots of the n-th degree Gegenbauer polynomial,
 		:math:`C^{\alpha}_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-1, 1]` with weight function :math:`f(x) = (1-x^2)^{\alpha-1/2}`.
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-1, 1]` with weight function
+		:math:`f(x) = (1 - x^2)^{\alpha - 1/2}`.
 		
 		Parameters
 		----------
@@ -521,8 +587,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function cg_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -532,8 +598,8 @@ package scipy.special;
 		
 		Chi square cumulative distribution function
 		
-		Returns the area under the left hand tail (from 0 to x) of the Chi
-		square probability density function with v degrees of freedom::
+		Returns the area under the left hand tail (from 0 to `x`) of the Chi
+		square probability density function with `v` degrees of freedom::
 		
 		    1/(2**(v/2) * gamma(v/2)) * integral(t**(v/2-1) * exp(-t/2), t=0..x)
 	**/
@@ -541,12 +607,12 @@ package scipy.special;
 	/**
 		chdtrc(x1, x2[, out])
 		
-		chdtrc(v,x)
+		chdtrc(v, x)
 		
 		Chi square survival function
 		
-		Returns the area under the right hand tail (from x to
-		infinity) of the Chi square probability density function with v
+		Returns the area under the right hand tail (from `x` to
+		infinity) of the Chi square probability density function with `v`
 		degrees of freedom::
 		
 		    1/(2**(v/2) * gamma(v/2)) * integral(t**(v/2-1) * exp(-t/2), t=x..inf)
@@ -555,11 +621,11 @@ package scipy.special;
 	/**
 		chdtri(x1, x2[, out])
 		
-		chdtri(v,p)
+		chdtri(v, p)
 		
-		Inverse to chdtrc
+		Inverse to `chdtrc`
 		
-		Returns the argument x such that ``chdtrc(v,x) == p``.
+		Returns the argument x such that ``chdtrc(v, x) == p``.
 	**/
 	static public function chdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -567,19 +633,21 @@ package scipy.special;
 		
 		chdtri(p, x)
 		
-		Inverse to chdtr vs v
+		Inverse to `chdtr` vs `v`
 		
 		Returns the argument v such that ``chdtr(v, x) == p``.
 	**/
 	static public function chdtriv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of first kind, Cn(x).  Orthogonal
-		over [-2,2] with weight function (1-(x/2)**2)**(-1/2).
+		Return n-th order Chebyshev polynomial of first kind, :math:`C_n(x)`. 
+		Orthogonal over :math:`[-2, 2]` with weight function
+		:math:`f(x) = 1/\sqrt{1 - (x/2)^2}`
 	**/
 	static public function chebyc(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return nth order Chebyshev polynomial of second kind, Sn(x).  Orthogonal
-		over [-2,2] with weight function (1-(x/2)**2)**(1/2).
+		Return nth order Chebyshev polynomial of second kind, :math:`S_n(x)`.
+		Orthogonal over :math:`[-2, 2]` with weight function
+		:math:`f(x) = \sqrt{1 - (x/2)^2}`.
 	**/
 	static public function chebys(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
@@ -605,7 +673,7 @@ package scipy.special;
 		
 		chndtridf(x, p, nc)
 		
-		Inverse to chndtr vs df
+		Inverse to `chndtr` vs `df`
 	**/
 	static public function chndtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -613,7 +681,7 @@ package scipy.special;
 		
 		chndtrinc(x, df, p)
 		
-		Inverse to chndtr vs nc
+		Inverse to `chndtr` vs `nc`
 	**/
 	static public function chndtrinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -621,20 +689,16 @@ package scipy.special;
 		
 		chndtrix(p, df, nc)
 		
-		Inverse to chndtr vs x
+		Inverse to `chndtr` vs `x`
 	**/
 	static public function chndtrix(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z)
+		Associated Legendre function of the first kind, Pmn(z).
 		
-		Computes the (associated) Legendre function of the first kind
-		of order m and degree n,::
-		
-		    Pmn(z) = P_n^m(z)
-		
-		and its derivative, ``Pmn'(z)``.  Returns two arrays of size
-		``(m+1, n+1)`` containing ``Pmn(z)`` and ``Pmn'(z)`` for all
-		orders from ``0..m`` and degrees from ``0..n``.
+		Computes the associated Legendre function of the first kind of order m and
+		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Pmn(z)`` and
+		``Pmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
 		
 		Parameters
 		----------
@@ -676,7 +740,10 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] NIST Digital Library of Mathematical Functions
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.21
 	**/
 	static public function clpmn(m:Dynamic, n:Dynamic, z:Dynamic, ?type:Dynamic):Dynamic;
@@ -726,7 +793,7 @@ package scipy.special;
 		
 		cosdg(x)
 		
-		Cosine of the angle x given in degrees.
+		Cosine of the angle `x` given in degrees.
 	**/
 	static public function cosdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -734,7 +801,7 @@ package scipy.special;
 		
 		cosm1(x)
 		
-		cos(x) - 1 for use when x is near zero.
+		cos(x) - 1 for use when `x` is near zero.
 	**/
 	static public function cosm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -742,7 +809,7 @@ package scipy.special;
 		
 		cotdg(x)
 		
-		Cotangent of the angle x given in degrees.
+		Cotangent of the angle `x` given in degrees.
 	**/
 	static public function cotdg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -754,7 +821,7 @@ package scipy.special;
 		
 		Computes::
 		
-		    exp(-x**2) * integral(exp(t**2),t=0..x).
+		    exp(-x**2) * integral(exp(t**2), t=0..x).
 		
 		References
 		----------
@@ -770,17 +837,17 @@ package scipy.special;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the periodic sinc function, also called the Dirichlet function.
+		Periodic sinc function, also called the Dirichlet function.
 		
 		The Dirichlet function is defined as::
 		
 		    diric(x) = sin(x * n/2) / (n * sin(x / 2)),
 		
-		where n is a positive integer.
+		where `n` is a positive integer.
 		
 		Parameters
 		----------
@@ -799,12 +866,43 @@ package scipy.special;
 		>>> import matplotlib.pyplot as plt
 		
 		>>> x = np.linspace(-8*np.pi, 8*np.pi, num=201)
-		>>> plt.figure(figsize=(8,8));
-		>>> for idx, n in enumerate([2,3,4,9]):
+		>>> plt.figure(figsize=(8, 8));
+		>>> for idx, n in enumerate([2, 3, 4, 9]):
 		...     plt.subplot(2, 2, idx+1)
 		...     plt.plot(x, special.diric(x, n))
 		...     plt.title('diric, n={}'.format(n))
 		>>> plt.show()
+		
+		The following example demonstrates that `diric` gives the magnitudes
+		(modulo the sign and scaling) of the Fourier coefficients of a
+		rectangular pulse.
+		
+		Suppress output of values that are effectively 0:
+		
+		>>> np.set_printoptions(suppress=True)
+		
+		Create a signal `x` of length `m` with `k` ones:
+		
+		>>> m = 8
+		>>> k = 3
+		>>> x = np.zeros(m)
+		>>> x[:k] = 1
+		
+		Use the FFT to compute the Fourier transform of `x`, and
+		inspect the magnitudes of the coefficients:
+		
+		>>> np.abs(np.fft.fft(x))
+		array([ 3.        ,  2.41421356,  1.        ,  0.41421356,  1.        ,
+		        0.41421356,  1.        ,  2.41421356])
+		
+		Now find the same values (up to sign) using `diric`.  We multiply
+		by `k` to account for the different scaling conventions of
+		`numpy.fft.fft` and `diric`:
+		
+		>>> theta = np.linspace(0, 2*np.pi, m, endpoint=False)
+		>>> k * special.diric(theta, k)
+		array([ 3.        ,  2.41421356,  1.        , -0.41421356, -1.        ,
+		       -0.41421356,  1.        ,  2.41421356])
 	**/
 	static public function diric(x:Dynamic, n:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -1010,7 +1108,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near  m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipeinc : Incomplete elliptic integral of the second kind
@@ -1042,7 +1140,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
@@ -1055,8 +1153,8 @@ package scipy.special;
 		
 		Jacobian elliptic functions
 		
-		Calculates the Jacobian elliptic functions of parameter m between
-		0 and 1, and real u.
+		Calculates the Jacobian elliptic functions of parameter `m` between
+		0 and 1, and real `u`.
 		
 		Parameters
 		----------
@@ -1075,7 +1173,7 @@ package scipy.special;
 	**/
 	static public function ellipj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Complete elliptic integral of the first kind
+		Complete elliptic integral of the first kind.
 		
 		This function is defined as
 		
@@ -1133,7 +1231,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		ellipkm1 : Complete elliptic integral of the first kind, near  m = 1
+		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
@@ -1144,7 +1242,7 @@ package scipy.special;
 		
 		ellipkm1(p)
 		
-		Complete elliptic integral of the first kind around m = 1
+		Complete elliptic integral of the first kind around `m` = 1
 		
 		This function is defined as
 		
@@ -1155,7 +1253,7 @@ package scipy.special;
 		Parameters
 		----------
 		p : array_like
-		    Defines the parameter of the elliptic integral as m = 1 - p.
+		    Defines the parameter of the elliptic integral as `m` = 1 - p.
 		
 		Returns
 		-------
@@ -1187,7 +1285,7 @@ package scipy.special;
 		Returns
 		-------
 		res : ndarray
-		    The value of the elementwise entropy function at the given points x.
+		    The value of the elementwise entropy function at the given points `x`.
 		
 		See Also
 		--------
@@ -1217,7 +1315,7 @@ package scipy.special;
 		Returns
 		-------
 		res : ndarray
-		    The values of the error function at the given points x.
+		    The values of the error function at the given points `x`.
 		
 		See Also
 		--------
@@ -1240,8 +1338,13 @@ package scipy.special;
 	**/
 	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of the error function erf(z).
-		    
+		Compute nt complex zeros of error function erf(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function erf_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -1258,7 +1361,8 @@ package scipy.special;
 	**/
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Inverse function for erfc
+		Inverse function for erfc.
+		    
 	**/
 	static public function erfcinv(y:Dynamic):Dynamic;
 	/**
@@ -1298,7 +1402,8 @@ package scipy.special;
 	**/
 	static public function erfi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Inverse function for erf
+		Inverse function for erf.
+		    
 	**/
 	static public function erfinv(y:Dynamic):Dynamic;
 	/**
@@ -1320,8 +1425,13 @@ package scipy.special;
 	**/
 	static public function errprint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return an array of the Euler numbers E0..En (inclusive)
-		    
+		Euler numbers E0..En (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function euler(n:Dynamic):Dynamic;
 	/**
@@ -1456,7 +1566,7 @@ package scipy.special;
 		
 		::
 		
-		    integral(exp(-z*t)/t,t=1..inf).
+		    integral(exp(-z*t)/t, t=1..inf).
 	**/
 	static public function exp1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1484,7 +1594,7 @@ package scipy.special;
 		
 		Defined as::
 		
-		    integral(exp(t)/t,t=-inf..x)
+		    integral(exp(t)/t, t=-inf..x)
 		
 		See `expn` for a different exponential integral.
 	**/
@@ -1524,7 +1634,7 @@ package scipy.special;
 		
 		expm1(x)
 		
-		exp(x) - 1 for use when x is near zero.
+		exp(x) - 1 for use when `x` is near zero.
 	**/
 	static public function expm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1534,11 +1644,36 @@ package scipy.special;
 		
 		Exponential integral E_n
 		
-		Returns the exponential integral for integer n and non-negative x and n::
+		Returns the exponential integral for integer `n` and non-negative `x` and
+		`n`::
 		
 		    integral(exp(-x*t) / t**n, t=1..inf).
 	**/
 	static public function expn(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		exprel(x[, out])
+		
+		exprel(x)
+		
+		Relative error exponential, (exp(x)-1)/x, for use when `x` is near zero.
+		
+		Parameters
+		----------
+		x : ndarray
+		    Input array.
+		
+		Returns
+		-------
+		res : ndarray
+		    Output array.
+		
+		See Also
+		--------
+		expm1
+		
+		.. versionadded:: 0.17.0
+	**/
+	static public function exprel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		The factorial function, n! = special.gamma(n+1).
 		
@@ -1566,7 +1701,7 @@ package scipy.special;
 		Examples
 		--------
 		>>> from scipy.special import factorial
-		>>> arr = np.array([3,4,5])
+		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
 		>>> factorial(5, exact=True)
@@ -1576,8 +1711,8 @@ package scipy.special;
 	/**
 		Double factorial.
 		
-		This is the factorial with every second value skipped, i.e.,
-		``7!! = 7 * 5 * 3 * 1``.  It can be approximated numerically as::
+		This is the factorial with every second value skipped.  E.g., ``7!! = 7 * 5
+		* 3 * 1``.  It can be approximated numerically as::
 		
 		  n!! = special.gamma(n/2+1)*2**((m+1)/2)/sqrt(pi)  n odd
 		      = 2**(n/2) * (n/2)!                           n even
@@ -1608,8 +1743,17 @@ package scipy.special;
 	**/
 	static public function factorial2(n:Dynamic, ?exact:Dynamic):Dynamic;
 	/**
-		n(!!...!)  = multifactorial of order k
-		k times
+		Multifactorial of n of order k, n(!!...!).
+		
+		This is the multifactorial of n skipping k values.  For example,
+		
+		  factorialk(17, 4) = 17!!!! = 17 * 13 * 9 * 5 * 1
+		
+		In particular, for any integer ``n``, we have
+		
+		  factorialk(n, 1) = factorial(n)
+		
+		  factorialk(n, 2) = factorial2(n)
 		
 		Parameters
 		----------
@@ -1624,7 +1768,7 @@ package scipy.special;
 		Returns
 		-------
 		val : int
-		    Multi factorial of `n`.
+		    Multifactorial of `n`.
 		
 		Raises
 		------
@@ -1647,7 +1791,7 @@ package scipy.special;
 		
 		F cumulative distribution function
 		
-		Returns the area from zero to x under the F density function (also
+		Returns the area from zero to `x` under the F density function (also
 		known as Snedcor's density or the variance ratio density).  This
 		is the density of X = (unum/dfn)/(uden/dfd), where unum and uden
 		are random variables having Chi square distributions with dfn and
@@ -1669,9 +1813,9 @@ package scipy.special;
 		
 		fdtri(dfn, dfd, p)
 		
-		Inverse to fdtr vs x
+		Inverse to `fdtr` vs x
 		
-		Finds the F density argument x such that ``fdtr(dfn, dfd, x) == p``.
+		Finds the F density argument `x` such that ``fdtr(dfn, dfd, x) == p``.
 	**/
 	static public function fdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1679,9 +1823,9 @@ package scipy.special;
 		
 		fdtridfd(dfn, p, x)
 		
-		Inverse to fdtr vs dfd
+		Inverse to `fdtr` vs dfd
 		
-		Finds the F density argument dfd such that ``fdtr(dfn,dfd,x) == p``.
+		Finds the F density argument dfd such that ``fdtr(dfn, dfd, x) == p``.
 	**/
 	static public function fdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1693,8 +1837,8 @@ package scipy.special;
 		
 		Defined as::
 		
-		    ssa = integral(sin(pi/2 * t**2),t=0..z)
-		    csa = integral(cos(pi/2 * t**2),t=0..z)
+		    ssa = integral(sin(pi/2 * t**2), t=0..z)
+		    csa = integral(cos(pi/2 * t**2), t=0..z)
 		
 		Parameters
 		----------
@@ -1708,18 +1852,33 @@ package scipy.special;
 	**/
 	static public function fresnel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of the sine and cosine Fresnel integrals
-		S(z) and C(z).
+		Compute nt complex zeros of sine and cosine Fresnel integrals S(z) and C(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnel_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt complex zeros of the cosine Fresnel integral C(z).
-		    
+		Compute nt complex zeros of cosine Fresnel integral C(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnelc_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt complex zeros of the sine Fresnel integral S(z).
-		    
+		Compute nt complex zeros of sine Fresnel integral S(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnels_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -1751,13 +1910,13 @@ package scipy.special;
 	/**
 		gammaincc(x1, x2[, out])
 		
-		gammaincc(a,x)
+		gammaincc(a, x)
 		
 		Complemented incomplete gamma integral
 		
 		Defined as::
 		
-		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=x..inf) = 1 - gammainc(a,x)
+		    1 / gamma(a) * integral(exp(-t) * t**(a-1), t=x..inf) = 1 - gammainc(a, x)
 		
 		`a` must be positive and `x` must be >= 0.
 	**/
@@ -1765,11 +1924,11 @@ package scipy.special;
 	/**
 		gammainccinv(x1, x2[, out])
 		
-		gammainccinv(a,y)
+		gammainccinv(a, y)
 		
-		Inverse to gammaincc
+		Inverse to `gammaincc`
 		
-		Returns `x` such that ``gammaincc(a,x) == y``.
+		Returns `x` such that ``gammaincc(a, x) == y``.
 	**/
 	static public function gammainccinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1777,7 +1936,7 @@ package scipy.special;
 		
 		gammaincinv(a, y)
 		
-		Inverse to gammainc
+		Inverse to `gammainc`
 		
 		Returns `x` such that ``gammainc(a, x) = y``.
 	**/
@@ -1813,27 +1972,27 @@ package scipy.special;
 	/**
 		gdtr(x1, x2, x3[, out])
 		
-		gdtr(a,b,x)
+		gdtr(a, b, x)
 		
 		Gamma distribution cumulative density function.
 		
-		Returns the integral from zero to x of the gamma probability
+		Returns the integral from zero to `x` of the gamma probability
 		density function::
 		
-		    a**b / gamma(b) * integral(t**(b-1) exp(-at),t=0..x).
+		    a**b / gamma(b) * integral(t**(b-1) exp(-at), t=0..x).
 		
-		The arguments a and b are used differently here than in other
+		The arguments `a` and `b` are used differently here than in other
 		definitions.
 	**/
 	static public function gdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		gdtrc(x1, x2, x3[, out])
 		
-		gdtrc(a,b,x)
+		gdtrc(a, b, x)
 		
 		Gamma distribution survival function.
 		
-		Integral from x to infinity of the gamma probability density
+		Integral from `x` to infinity of the gamma probability density
 		function.
 		
 		See Also
@@ -1846,7 +2005,7 @@ package scipy.special;
 		
 		gdtria(p, b, x, out=None)
 		
-		Inverse of gdtr vs a.
+		Inverse of `gdtr` vs a.
 		
 		Returns the inverse with respect to the parameter `a` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1882,6 +2041,7 @@ package scipy.special;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtria
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -1897,7 +2057,7 @@ package scipy.special;
 		
 		gdtrib(a, p, x, out=None)
 		
-		Inverse of gdtr vs b.
+		Inverse of `gdtr` vs b.
 		
 		Returns the inverse with respect to the parameter `b` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1933,6 +2093,7 @@ package scipy.special;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtrib
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -1948,7 +2109,7 @@ package scipy.special;
 		
 		gdtrix(a, b, p, out=None)
 		
-		Inverse of gdtr vs x.
+		Inverse of `gdtr` vs x.
 		
 		Returns the inverse with respect to the parameter `x` of ``p =
 		gdtr(a, b, x)``, the cumulative distribution function of the gamma
@@ -1985,6 +2146,7 @@ package scipy.special;
 		--------
 		First evaluate `gdtr`.
 		
+		>>> from scipy.special import gdtr, gdtrix
 		>>> p = gdtr(1.2, 3.4, 5.6)
 		>>> print(p)
 		0.94378087442
@@ -2008,23 +2170,51 @@ package scipy.special;
 	**/
 	static public function genlaguerre(n:Dynamic, alpha:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Return the nth derivative of H1v(z) with respect to z.
-		    
+		Compute nth derivative of Hankel function H1v(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Hankel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Return the nth derivative of H2v(z) with respect to z.
-		    
+		Compute nth derivative of Hankel function H2v(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Hankel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Gauss-Hermite (physicst's) quadrature
+		Gauss-Hermite (physicst's) quadrature.
 		
 		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the `n`th degree Hermite polynomial,
+		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`H_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-inf, inf]` with weight function :math:`f(x) = e^{-x^2}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-x^2}`.
 		
 		Parameters
 		----------
@@ -2056,9 +2246,10 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.hermite.hermgauss
+		he_roots
 		
 		References
 		----------
@@ -2099,7 +2290,7 @@ package scipy.special;
 		
 		Defined as::
 		
-		    hankel1e(v,z) = hankel1(v,z) * exp(-1j * z)
+		    hankel1e(v, z) = hankel1(v, z) * exp(-1j * z)
 		
 		Parameters
 		----------
@@ -2133,7 +2324,7 @@ package scipy.special;
 		
 		Defined as::
 		
-		    hankel1e(v,z) = hankel1(v,z) * exp(1j * z)
+		    hankel1e(v, z) = hankel1(v, z) * exp(1j * z)
 		
 		Parameters
 		----------
@@ -2144,13 +2335,13 @@ package scipy.special;
 	**/
 	static public function hankel2e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Hermite (statistician's) quadrature
+		Gauss-Hermite (statistician's) quadrature.
 		
 		Computes the sample points and weights for Gauss-Hermite quadrature.
-		The sample points are the roots of the `n`th degree Hermite polynomial,
+		The sample points are the roots of the n-th degree Hermite polynomial,
 		:math:`He_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[-inf, inf]` with weight function :math:`f(x) = e^{-(x/2)^2}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[-\infty, \infty]` with weight function :math:`f(x) = e^{-(x/2)^2}`.
 		
 		Parameters
 		----------
@@ -2182,8 +2373,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.hermite_e.hermegauss
 	**/
 	static public function he_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
@@ -2242,7 +2433,7 @@ package scipy.special;
 		-----
 		This function is defined as:
 		
-		.. math:: _0F_1(v,z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
+		.. math:: _0F_1(v, z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
 		
 		It's also the limit as q -> infinity of ``1F1(q;v;z/q)``, and satisfies
 		the differential equation :math:`f''(z) + vf'(z) = f(z)`.
@@ -2353,7 +2544,7 @@ package scipy.special;
 		
 		i1e(x)
 		
-		Exponentially scaled modified Bessel function of order 0.
+		Exponentially scaled modified Bessel function of order 1.
 		
 		Defined as::
 		
@@ -2391,6 +2582,7 @@ package scipy.special;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox, inv_boxcox
 		>>> y = boxcox([1, 4, 10], 2.5)
 		>>> inv_boxcox(y, 2.5)
 		array([1., 4., 10.])
@@ -2427,6 +2619,7 @@ package scipy.special;
 		
 		Examples
 		--------
+		>>> from scipy.special import boxcox1p, inv_boxcox1p
 		>>> y = boxcox1p([1, 4, 10], 2.5)
 		>>> inv_boxcox1p(y, 2.5)
 		array([1., 4., 10.])
@@ -2444,7 +2637,7 @@ package scipy.special;
 		ii0
 		    ``integral((i0(t)-1)/t, t=0..x)``
 		ik0
-		    ``int(k0(t)/t,t=x..inf)``
+		    ``int(k0(t)/t, t=x..inf)``
 	**/
 	static public function it2i0k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2480,9 +2673,9 @@ package scipy.special;
 		
 		itairy(x)
 		
-		Integrals of Airy functios
+		Integrals of Airy functions
 		
-		Calculates the integral of Airy functions from 0 to x
+		Calculates the integral of Airy functions from 0 to `x`
 		
 		Returns
 		-------
@@ -2499,8 +2692,8 @@ package scipy.special;
 		
 		Integrals of modified Bessel functions of order 0
 		
-		Returns simple integrals from 0 to x of the zeroth order modified
-		Bessel functions i0 and k0.
+		Returns simple integrals from 0 to `x` of the zeroth order modified
+		Bessel functions `i0` and `k0`.
 		
 		Returns
 		-------
@@ -2514,8 +2707,8 @@ package scipy.special;
 		
 		Integrals of Bessel functions of order 0
 		
-		Returns simple integrals from 0 to x of the zeroth order Bessel
-		functions j0 and y0.
+		Returns simple integrals from 0 to `x` of the zeroth order Bessel
+		functions `j0` and `y0`.
 		
 		Returns
 		-------
@@ -2551,14 +2744,14 @@ package scipy.special;
 	/**
 		iv(x1, x2[, out])
 		
-		iv(v,z)
+		iv(v, z)
 		
 		Modified Bessel function of the first kind  of real order
 		
 		Parameters
 		----------
 		v
-		    Order. If z is of real type and negative, v must be integer valued.
+		    Order. If `z` is of real type and negative, `v` must be integer valued.
 		z
 		    Argument.
 	**/
@@ -2566,18 +2759,46 @@ package scipy.special;
 	/**
 		ive(x1, x2[, out])
 		
-		ive(v,z)
+		ive(v, z)
 		
 		Exponentially scaled modified Bessel function of the first kind
 		
 		Defined as::
 		
-		    ive(v,z) = iv(v,z) * exp(-abs(z.real))
+		    ive(v, z) = iv(v, z) * exp(-abs(z.real))
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Iv(z) with respect to z.
-		    
+		Compute nth derivative of modified Bessel function Iv(z) with respect
+		to `z`.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel function
+		z : array_like of complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 6.
+		       http://jin.ece.illinois.edu/specfunc.html
+		
+		Examples
+		--------
+		Calculate multiple values at order 5:
+		
+		>>> from scipy.special import kvp
+		>>> kvp(5, (1, 2, 3+5j))
+		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kvp((4, 4.5, 5), 1)
+		array([ -184.0309,  -568.9585, -1849.0354])
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2597,12 +2818,12 @@ package scipy.special;
 	**/
 	static public function j1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Jacobi quadrature
+		Gauss-Jacobi quadrature.
 		
 		Computes the sample points and weights for Gauss-Jacobi quadrature. The
-		sample points are the roots of the `n`th degree Jacobi polynomial,
+		sample points are the roots of the n-th degree Jacobi polynomial,
 		:math:`P^{\alpha, \beta}_n(x)`.  These sample points and weights
-		correctly integrate polynomials of degree :math:`2*n - 1` or less over the
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
 		interval :math:`[-1, 1]` with weight function
 		:math:`f(x) = (1 - x)^{\alpha} (1 + x)^{\beta}`.
 		
@@ -2628,8 +2849,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function j_roots(n:Dynamic, alpha:Dynamic, beta:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -2643,17 +2864,35 @@ package scipy.special;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order v
+		Bessel function of the first kind of real order `v`
 	**/
 	static public function jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Jn(x).
-		    
+		Compute zeros of integer-order Bessel function Jn(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt (<=1200) zeros of the Bessel functions Jn and Jn'
-		and arange them in order of their magnitudes.
+		Compute zeros of integer-order Bessel functions Jn and Jn'.
+		
+		Results are arranged in order of the magnitudes of the zeros.
+		
+		Parameters
+		----------
+		nt : int
+		    Number (<=1200) of zeros to compute
 		
 		Returns
 		-------
@@ -2671,27 +2910,60 @@ package scipy.special;
 		See Also
 		--------
 		jn_zeros, jnp_zeros : to get separated arrays of zeros.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnjnp_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Jn'(x).
-		    
+		Compute zeros of integer-order Bessel function derivative Jn'(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel functions Jn(x), Jn'(x), Yn(x), and
-		Yn'(x), respectively. Returns 4 arrays of length nt.
+		Compute nt zeros of Bessel functions Jn(x), Jn'(x), Yn(x), and Yn'(x).
+		
+		Returns 4 arrays of length `nt`, corresponding to the first `nt` zeros of
+		Jn(x), Jn'(x), Yn(x), and Yn'(x), respectively.
+		
+		Parameters
+		----------
+		n : int
+		    Order of the Bessel functions
+		nt : int
+		    Number (<=1200) of zeros to compute
 		
 		See jn_zeros, jnp_zeros, yn_zeros, ynp_zeros to get separate arrays.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnyn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Gauss-Jacobi (shifted) quadrature
+		Gauss-Jacobi (shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Jacobi (shifted)
-		quadrature. The sample points are the roots of the `n`th degree shifted
+		quadrature. The sample points are the roots of the n-th degree shifted
 		Jacobi polynomial, :math:`G^{p,q}_n(x)`.  These sample points and weights
-		correctly integrate polynomials of degree :math:`2*n - 1` or less over the
+		correctly integrate polynomials of degree :math:`2n - 1` or less over the
 		interval :math:`[0, 1]` with weight function
 		:math:`f(x) = (1 - x)^{p-q} x^{q-1}`
 		
@@ -2717,8 +2989,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function js_roots(n:Dynamic, p1:Dynamic, q1:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -2726,7 +2998,7 @@ package scipy.special;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order v
+		Bessel function of the first kind of real order `v`
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2734,16 +3006,30 @@ package scipy.special;
 		
 		jve(v, z)
 		
-		Exponentially scaled Bessel function of order v
+		Exponentially scaled Bessel function of order `v`
 		
 		Defined as::
 		
-		    jve(v,z) = jv(v,z) * exp(-abs(z.imag))
+		    jve(v, z) = jv(v, z) * exp(-abs(z.imag))
 	**/
 	static public function jve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Jv(z) with respect to z.
-		    
+		Compute nth derivative of Bessel function Jv(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Bessel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2798,7 +3084,7 @@ package scipy.special;
 	**/
 	static public function kei(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function kei x
+		Compute nt zeros of the Kelvin function kei(x).
 		    
 	**/
 	static public function kei_zeros(nt:Dynamic):Dynamic;
@@ -2811,8 +3097,13 @@ package scipy.special;
 	**/
 	static public function keip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function kei' x
-		    
+		Compute nt zeros of the Kelvin function kei'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function keip_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -2827,16 +3118,22 @@ package scipy.special;
 		Be, Ke, Bep, Kep
 		    The tuple (Be, Ke, Bep, Kep) contains complex numbers
 		    representing the real and imaginary Kelvin functions and their
-		    derivatives evaluated at x.  For example, kelvin(x)[0].real =
+		    derivatives evaluated at `x`.  For example, kelvin(x)[0].real =
 		    ber x and kelvin(x)[0].imag = bei x with similar relationships
 		    for ker and kei.
 	**/
 	static public function kelvin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of all the Kelvin functions returned in a
-		length 8 tuple of arrays of length nt.
-		The tuple containse the arrays of zeros of
-		(ber, bei, ker, kei, ber', bei', ker', kei')
+		Compute nt zeros of all Kelvin functions.
+		
+		Returned in a length-8 tuple of arrays of length nt.  The tuple contains
+		the arrays of zeros of (ber, bei, ker, kei, ber', bei', ker', kei').
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kelvin_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -2848,8 +3145,13 @@ package scipy.special;
 	**/
 	static public function ker(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ker x
-		    
+		Compute nt zeros of the Kelvin function ker(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ker_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -2861,8 +3163,13 @@ package scipy.special;
 	**/
 	static public function kerp(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ker' x
-		    
+		Compute nt zeros of the Kelvin function ker'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kerp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -2892,7 +3199,7 @@ package scipy.special;
 		
 		Notes
 		-----
-		This function is non-negative and is jointly convex in x and y.
+		This function is non-negative and is jointly convex in `x` and `y`.
 		
 		.. versionadded:: 0.14.0
 	**/
@@ -2902,9 +3209,49 @@ package scipy.special;
 		
 		kn(n, x)
 		
-		Modified Bessel function of the second kind of integer order n
+		Modified Bessel function of the second kind of integer order `n`
 		
-		These are also sometimes called functions of the third kind.
+		Returns the modified Bessel function of the second kind for integer order
+		`n` at real `z`.
+		
+		These are also sometimes called functions of the third kind, Basset
+		functions, or Macdonald functions.
+		
+		Parameters
+		----------
+		n : array_like of int
+		    Order of Bessel functions (floats will truncate with a warning)
+		z : array_like of float
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The results
+		
+		See Also
+		--------
+		kv : Same function, but accepts real order and complex argument
+		kvp : Derivative of this function
+		
+		Examples
+		--------
+		Plot the function of several orders for real input:
+		
+		>>> from scipy.special import kn
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 5, 1000)
+		>>> for N in range(6):
+		...     plt.plot(x, kn(N, x), label='$K_{}(x)$'.format(N))
+		>>> plt.ylim(0, 10)
+		>>> plt.legend()
+		>>> plt.title(r'Modified Bessel function of the second kind $K_n(x)$')
+		>>> plt.show()
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kn([4, 5, 6], 1)
+		array([   44.23241585,   360.9605896 ,  3653.83831186])
 	**/
 	static public function kn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2934,41 +3281,102 @@ package scipy.special;
 	/**
 		kv(x1, x2[, out])
 		
-		kv(v,z)
+		kv(v, z)
 		
-		Modified Bessel function of the second kind of real order v
+		Modified Bessel function of the second kind of real order `v`
 		
-		Returns the modified Bessel function of the second kind (sometimes
-		called the third kind) for real order v at complex z.
+		Returns the modified Bessel function of the second kind for real order
+		`v` at complex `z`.
+		
+		These are also sometimes called functions of the third kind, Basset
+		functions, or Macdonald functions.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel functions
+		z : array_like of complex
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The results. Note that input must be of complex type to get complex
+		    output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``.
+		
+		See Also
+		--------
+		kvp : Derivative of this function
+		
+		Examples
+		--------
+		Plot the function of several orders for real input:
+		
+		>>> from scipy.special import kv
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 5, 1000)
+		>>> for N in np.linspace(0, 6, 5):
+		...     plt.plot(x, kv(N, x), label='$K_{{{}}}(x)$'.format(N))
+		>>> plt.ylim(0, 10)
+		>>> plt.legend()
+		>>> plt.title(r'Modified Bessel function of the second kind $K_\nu(x)$')
+		>>> plt.show()
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kv([4, 4.5, 5], 1+2j)
+		array([ 0.1992+2.3892j,  2.3493+3.6j   ,  7.2827+3.8104j])
 	**/
 	static public function kv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		kve(x1, x2[, out])
 		
-		kve(v,z)
+		kve(v, z)
 		
 		Exponentially scaled modified Bessel function of the second kind.
 		
 		Returns the exponentially scaled, modified Bessel function of the
-		second kind (sometimes called the third kind) for real order v at
-		complex z::
+		second kind (sometimes called the third kind) for real order `v` at
+		complex `z`::
 		
-		    kve(v,z) = kv(v,z) * exp(z)
+		    kve(v, z) = kv(v, z) * exp(z)
 	**/
 	static public function kve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Kv(z) with respect to z.
-		    
+		Compute nth derivative of real-order modified Bessel function Kv(z)
+		
+		Kv(z) is the modified Bessel function of the second kind.
+		Derivative is calculated with respect to `z`.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel function
+		z : array_like of complex
+		    Argument at which to evaluate the derivative
+		n : int
+		    Order of derivative.  Default is first derivative.
+		
+		Returns
+		-------
+		out : ndarray
+		    The results
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 6.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Gauss-Laguerre quadrature
+		Gauss-Laguerre quadrature.
 		
 		Computes the sample points and weights for Gauss-Laguerre quadrature.
-		The sample points are the roots of the `n`th degree Laguerre polynomial,
+		The sample points are the roots of the n-th degree Laguerre polynomial,
 		:math:`L_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
-		:math:`[0, inf]` with weight function :math:`f(x) = e^{-x}`.
+		polynomials of degree :math:`2n - 1` or less over the interval
+		:math:`[0, \infty]` with weight function :math:`f(x) = e^{-x}`.
 		
 		Parameters
 		----------
@@ -2988,19 +3396,19 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.laguerre.laggauss
 	**/
 	static public function l_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-generalized Laguerre quadrature
+		Gauss-generalized Laguerre quadrature.
 		
 		Computes the sample points and weights for Gauss-generalized Laguerre
-		quadrature. The sample points are the roots of the `n`th degree generalized
+		quadrature. The sample points are the roots of the n-th degree generalized
 		Laguerre polynomial, :math:`L^{\alpha}_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
-		over the interval :math:`[0, inf]` with weight function
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
+		over the interval :math:`[0, \infty]` with weight function
 		:math:`f(x) = x^{\alpha} e^{-x}`.
 		
 		Parameters
@@ -3023,8 +3431,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function la_roots(n:Dynamic, alpha:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -3152,13 +3560,33 @@ package scipy.special;
 		--------
 		Generate the 3rd-order Legendre polynomial 1/2*(5x^3 + 0x^2 - 3x + 0):
 		
+		>>> from scipy.special import legendre
 		>>> legendre(3)
-		poly1d([ 2.5,  0. , -1.5, -0. ])
+		poly1d([ 2.5,  0. , -1.5,  0. ])
 	**/
 	static public function legendre(n:Dynamic, ?monic:Dynamic):Dynamic;
 	/**
-		Compute sequence of lambda functions with arbitrary order v
-		and their derivatives.  Lv0(x)..Lv(x) are computed with v0=v-int(v).
+		Jahnke-Emden Lambda function, Lambdav(x).
+		
+		Parameters
+		----------
+		v : float
+		    Order of the Lambda function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		vl : ndarray
+		    Values of Lambda_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dl : ndarray
+		    Derivatives Lambda_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lmbda(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -3166,7 +3594,7 @@ package scipy.special;
 		
 		log1p(x)
 		
-		Calculates log(1+x) for use when x is near zero
+		Calculates log(1+x) for use when `x` is near zero
 	**/
 	static public function log1p(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3177,7 +3605,7 @@ package scipy.special;
 		Logarithm of Gaussian cumulative distribution function
 		
 		Returns the log of the area under the standard Gaussian probability
-		density function, integrated from minus infinity to x::
+		density function, integrated from minus infinity to `x`::
 		
 		    log(1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x))
 	**/
@@ -3214,16 +3642,12 @@ package scipy.special;
 	**/
 	static public function logit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z)
+		Associated Legendre function of the first kind, Pmn(z).
 		
-		Computes the associated Legendre function of the first kind
-		of order m and degree n,::
-		
-		    Pmn(z) = P_n^m(z)
-		
-		and its derivative, ``Pmn'(z)``.  Returns two arrays of size
-		``(m+1, n+1)`` containing ``Pmn(z)`` and ``Pmn'(z)`` for all
-		orders from ``0..m`` and degrees from ``0..n``.
+		Computes the associated Legendre function of the first kind of order m and
+		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Pmn(z)`` and
+		``Pmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
 		
 		This function takes a real argument ``z``. For complex arguments ``z``
 		use clpmn instead.
@@ -3258,7 +3682,10 @@ package scipy.special;
 		
 		References
 		----------
-		.. [1] NIST Digital Library of Mathematical Functions
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.3
 	**/
 	static public function lpmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
@@ -3273,65 +3700,120 @@ package scipy.special;
 		----------
 		m : int
 		    Order
-		v : real
-		    Degree. Must be ``v>-m-1`` or ``v<m``
-		x : complex
+		v : float
+		    Degree.
+		x : float
 		    Argument. Must be ``|x| <= 1``.
+		
+		Returns
+		-------
+		res : float
+		    The value of the function.
+		
+		See Also
+		--------
+		lpmn : Similar, but computes values for all orders 0..m and degrees 0..n.
+		clpmn : Similar to `lpmn` but allows a complex argument.
+		
+		Notes
+		-----
+		It is possible to extend the domain of this function to all
+		complex m, v, x, but this is not yet implemented.
 	**/
 	static public function lpmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Legendre functions of the first kind, Pn(z).
+		
 		Compute sequence of Legendre functions of the first kind (polynomials),
 		Pn(z) and derivatives for all degrees from 0 to n (inclusive).
 		
-		See also special.legendre  for polynomial class.
+		See also special.legendre for polynomial class.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lpn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Associated Legendre functions of the second kind, Qmn(z) and its
-		derivative, ``Qmn'(z)`` of order m and degree n.  Returns two
-		arrays of size ``(m+1, n+1)`` containing ``Qmn(z)`` and ``Qmn'(z)`` for
-		all orders from ``0..m`` and degrees from ``0..n``.
+		Associated Legendre function of the second kind, Qmn(z).
 		
-		z can be complex.
+		Computes the associated Legendre function of the second kind of order m and
+		degree n, ``Qmn(z)`` = :math:`Q_n^m(z)`, and its derivative, ``Qmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Qmn(z)`` and
+		``Qmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
+		
+		Parameters
+		----------
+		m : int
+		   ``|m| <= n``; the order of the Legendre function.
+		n : int
+		   where ``n >= 0``; the degree of the Legendre function.  Often
+		   called ``l`` (lower case L) in descriptions of the associated
+		   Legendre function
+		z : complex
+		    Input value.
+		
+		Returns
+		-------
+		Qmn_z : (m+1, n+1) array
+		   Values for all orders 0..m and degrees 0..n
+		Qmn_d_z : (m+1, n+1) array
+		   Derivatives for all orders 0..m and degrees 0..n
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lqmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute sequence of Legendre functions of the second kind,
-		Qn(z) and derivatives for all degrees from 0 to n (inclusive).
+		Legendre functions of the second kind, Qn(z).
+		
+		Compute sequence of Legendre functions of the second kind, Qn(z) and
+		derivatives for all degrees from 0 to n (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lqn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
 		mathieu_a(x1, x2[, out])
 		
-		mathieu_a(m,q)
+		mathieu_a(m, q)
 		
 		Characteristic value of even Mathieu functions
 		
 		Returns the characteristic value for the even solution,
-		``ce_m(z,q)``, of Mathieu's equation.
+		``ce_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_a(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_b(x1, x2[, out])
 		
-		mathieu_b(m,q)
+		mathieu_b(m, q)
 		
 		Characteristic value of odd Mathieu functions
 		
 		Returns the characteristic value for the odd solution,
-		``se_m(z,q)``, of Mathieu's equation.
+		``se_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_b(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_cem(x1, x2, x3[, out1, out2])
 		
-		mathieu_cem(m,q,x)
+		mathieu_cem(m, q, x)
 		
 		Even Mathieu function and its derivative
 		
-		Returns the even Mathieu function, ``ce_m(x,q)``, of order m and
-		parameter q evaluated at x (given in degrees).  Also returns the
-		derivative with respect to x of ce_m(x,q)
+		Returns the even Mathieu function, ``ce_m(x, q)``, of order `m` and
+		parameter `q` evaluated at `x` (given in degrees).  Also returns the
+		derivative with respect to `x` of ce_m(x, q)
 		
 		Parameters
 		----------
@@ -3351,8 +3833,38 @@ package scipy.special;
 	**/
 	static public function mathieu_cem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute expansion coefficients for even Mathieu functions and
-		modified Mathieu functions.
+		Fourier coefficients for even Mathieu and modified Mathieu functions.
+		
+		The Fourier series of the even solutions of the Mathieu differential
+		equation are of the form
+		
+		.. math:: \mathrm{ce}_{2n}(z, q) = \sum_{k=0}^{\infty} A_{(2n)}^{(2k)} \cos 2kz
+		
+		.. math:: \mathrm{ce}_{2n+1}(z, q) = \sum_{k=0}^{\infty} A_{(2n+1)}^{(2k+1)} \cos (2k+1)z
+		
+		This function returns the coefficients :math:`A_{(2n)}^{(2k)}` for even
+		input m=2n, and the coefficients :math:`A_{(2n+1)}^{(2k+1)}` for odd input
+		m=2n+1.
+		
+		Parameters
+		----------
+		m : int
+		    Order of Mathieu functions.  Must be non-negative.
+		q : float (>=0)
+		    Parameter of Mathieu functions.  Must be non-negative.
+		
+		Returns
+		-------
+		Ak : ndarray
+		    Even or odd Fourier coefficients, corresponding to even or odd m.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/28.4#i
 	**/
 	static public function mathieu_even_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -3363,7 +3875,7 @@ package scipy.special;
 		Even modified Mathieu function of the first kind and its derivative
 		
 		Evaluates the even modified Mathieu function of the first kind,
-		``Mc1m(x,q)``, and its derivative at `x` for order m and parameter
+		``Mc1m(x, q)``, and its derivative at `x` for order `m` and parameter
 		`q`.
 		
 		Returns
@@ -3382,8 +3894,8 @@ package scipy.special;
 		Even modified Mathieu function of the second kind and its derivative
 		
 		Evaluates the even modified Mathieu function of the second kind,
-		Mc2m(x,q), and its derivative at x (given in degrees) for order m
-		and parameter q.
+		Mc2m(x, q), and its derivative at `x` (given in degrees) for order `m`
+		and parameter `q`.
 		
 		Returns
 		-------
@@ -3396,13 +3908,13 @@ package scipy.special;
 	/**
 		mathieu_modsem1(x1, x2, x3[, out1, out2])
 		
-		mathieu_modsem1(m,q,x)
+		mathieu_modsem1(m, q, x)
 		
 		Odd modified Mathieu function of the first kind and its derivative
 		
 		Evaluates the odd modified Mathieu function of the first kind,
-		Ms1m(x,q), and its derivative at x (given in degrees) for order m
-		and parameter q.
+		Ms1m(x, q), and its derivative at `x` (given in degrees) for order `m`
+		and parameter `q`.
 		
 		Returns
 		-------
@@ -3420,7 +3932,7 @@ package scipy.special;
 		Odd modified Mathieu function of the second kind and its derivative
 		
 		Evaluates the odd modified Mathieu function of the second kind,
-		Ms2m(x,q), and its derivative at x (given in degrees) for order m
+		Ms2m(x, q), and its derivative at `x` (given in degrees) for order `m`
 		and parameter q.
 		
 		Returns
@@ -3432,8 +3944,36 @@ package scipy.special;
 	**/
 	static public function mathieu_modsem2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute expansion coefficients for even Mathieu functions and
-		modified Mathieu functions.
+		Fourier coefficients for even Mathieu and modified Mathieu functions.
+		
+		The Fourier series of the odd solutions of the Mathieu differential
+		equation are of the form
+		
+		.. math:: \mathrm{se}_{2n+1}(z, q) = \sum_{k=0}^{\infty} B_{(2n+1)}^{(2k+1)} \sin (2k+1)z
+		
+		.. math:: \mathrm{se}_{2n+2}(z, q) = \sum_{k=0}^{\infty} B_{(2n+2)}^{(2k+2)} \sin (2k+2)z
+		
+		This function returns the coefficients :math:`B_{(2n+2)}^{(2k+2)}` for even
+		input m=2n+2, and the coefficients :math:`B_{(2n+1)}^{(2k+1)}` for odd
+		input m=2n+1.
+		
+		Parameters
+		----------
+		m : int
+		    Order of Mathieu functions.  Must be non-negative.
+		q : float (>=0)
+		    Parameter of Mathieu functions.  Must be non-negative.
+		
+		Returns
+		-------
+		Bk : ndarray
+		    Even or odd Fourier coefficients, corresponding to even or odd m.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function mathieu_odd_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -3443,9 +3983,9 @@ package scipy.special;
 		
 		Odd Mathieu function and its derivative
 		
-		Returns the odd Mathieu function, se_m(x,q), of order m and
-		parameter q evaluated at x (given in degrees).  Also returns the
-		derivative with respect to x of se_m(x,q).
+		Returns the odd Mathieu function, se_m(x, q), of order `m` and
+		parameter `q` evaluated at `x` (given in degrees).  Also returns the
+		derivative with respect to `x` of se_m(x, q).
 		
 		Parameters
 		----------
@@ -3474,7 +4014,7 @@ package scipy.special;
 		Returns
 		-------
 		fm
-		    Integral ``F_-(x)``: ``integral(exp(-1j*t*t),t=x..inf)``
+		    Integral ``F_-(x)``: ``integral(exp(-1j*t*t), t=x..inf)``
 		km
 		    Integral ``K_-(x)``: ``1/sqrt(pi)*exp(1j*(x*x+pi/4))*fp``
 	**/
@@ -3489,7 +4029,7 @@ package scipy.special;
 		Returns
 		-------
 		fp
-		    Integral ``F_+(x)``: ``integral(exp(1j*t*t),t=x..inf)``
+		    Integral ``F_+(x)``: ``integral(exp(1j*t*t), t=x..inf)``
 		kp
 		    Integral ``K_+(x)``: ``1/sqrt(pi)*exp(-1j*(x*x+pi/4))*fp``
 	**/
@@ -3501,8 +4041,8 @@ package scipy.special;
 		
 		Modified Struve function
 		
-		Returns the modified Struve function Lv(x) of order v at x, x must
-		be positive unless v is an integer.
+		Returns the modified Struve function Lv(x) of order `v` at `x`, `x` must
+		be positive unless `v` is an integer.
 	**/
 	static public function modstruve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3550,10 +4090,10 @@ package scipy.special;
 		
 		Negative binomial cumulative distribution function
 		
-		Returns the sum of the terms 0 through k of the negative binomial
+		Returns the sum of the terms 0 through `k` of the negative binomial
 		distribution::
 		
-		    sum((n+j-1)Cj p**n (1-p)**j,j=0..k).
+		    sum((n+j-1)Cj p**n (1-p)**j, j=0..k).
 		
 		In a sequence of Bernoulli trials this is the probability that k
 		or fewer failures precede the nth success.
@@ -3562,7 +4102,7 @@ package scipy.special;
 	/**
 		nbdtrc(x1, x2, x3[, out])
 		
-		nbdtrc(k,n,p)
+		nbdtrc(k, n, p)
 		
 		Negative binomial survival function
 		
@@ -3575,29 +4115,29 @@ package scipy.special;
 		
 		nbdtri(k, n, y)
 		
-		Inverse of nbdtr vs p
+		Inverse of `nbdtr` vs `p`
 		
-		Finds the argument p such that ``nbdtr(k,n,p) = y``.
+		Finds the argument p such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		nbdtrik(x1, x2, x3[, out])
 		
-		nbdtrik(y,n,p)
+		nbdtrik(y, n, p)
 		
-		Inverse of nbdtr vs k
+		Inverse of `nbdtr` vs `k`
 		
-		Finds the argument k such that ``nbdtr(k,n,p) = y``.
+		Finds the argument k such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		nbdtrin(x1, x2, x3[, out])
 		
-		nbdtrin(k,y,p)
+		nbdtrin(k, y, p)
 		
-		Inverse of nbdtr vs n
+		Inverse of `nbdtr` vs `n`
 		
-		Finds the argument n such that ``nbdtr(k,n,p) = y``.
+		Finds the argument `n` such that ``nbdtr(k, n, p) = y``.
 	**/
 	static public function nbdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3698,7 +4238,7 @@ package scipy.special;
 		
 		nctdtr(df, nc, t)
 		
-		Cumulative distribution function of the non-central t distribution.
+		Cumulative distribution function of the non-central `t` distribution.
 		
 		Parameters
 		----------
@@ -3807,9 +4347,9 @@ package scipy.special;
 		Gaussian cumulative distribution function
 		
 		Returns the area under the standard Gaussian probability
-		density function, integrated from minus infinity to x::
+		density function, integrated from minus infinity to `x`::
 		
-		    1/sqrt(2*pi) * integral(exp(-t**2 / 2),t=-inf..x)
+		    1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x)
 	**/
 	static public function ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3817,10 +4357,10 @@ package scipy.special;
 		
 		ndtri(y)
 		
-		Inverse of ndtr vs x
+		Inverse of `ndtr` vs x
 		
 		Returns the argument x for which the area under the Gaussian
-		probability density function (integrated from minus infinity to x)
+		probability density function (integrated from minus infinity to `x`)
 		is equal to y.
 	**/
 	static public function ndtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -3884,8 +4424,8 @@ package scipy.special;
 		Oblate spheroidal angular function of the first kind and its derivative
 		
 		Computes the oblate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -3903,8 +4443,8 @@ package scipy.special;
 		Oblate spheroidal angular function obl_ang1 for precomputed characteristic value
 		
 		Computes the oblate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -3923,25 +4463,33 @@ package scipy.special;
 		Characteristic value of oblate spheroidal function
 		
 		Computes the characteristic value of oblate spheroidal wave
-		functions of order m,n (n>=m) and spheroidal parameter c.
+		functions of order `m`, `n` (n>=m) and spheroidal parameter `c`.
 	**/
 	static public function obl_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Characteristic values for oblate spheroidal wave functions.
+		
 		Compute a sequence of characteristic values for the oblate
 		spheroidal wave functions for mode m and n'=m..n and spheroidal
 		parameter c.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function obl_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
 		obl_rad1(x1, x2, x3, x4[, out1, out2])
 		
-		obl_rad1(m,n,c,x)
+		obl_rad1(m, n, c, x)
 		
 		Oblate spheroidal radial function of the first kind and its derivative
 		
 		Computes the oblate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -3954,13 +4502,13 @@ package scipy.special;
 	/**
 		obl_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		obl_rad1_cv(m,n,c,cv,x)
+		obl_rad1_cv(m, n, c, cv, x)
 		
 		Oblate spheroidal radial function obl_rad1 for precomputed characteristic value
 		
 		Computes the oblate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -3974,13 +4522,13 @@ package scipy.special;
 	/**
 		obl_rad2(x1, x2, x3, x4[, out1, out2])
 		
-		obl_rad2(m,n,c,x)
+		obl_rad2(m, n, c, x)
 		
 		Oblate spheroidal radial function of the second kind and its derivative.
 		
 		Computes the oblate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -3993,13 +4541,13 @@ package scipy.special;
 	/**
 		obl_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		obl_rad2_cv(m,n,c,cv,x)
+		obl_rad2_cv(m, n, c, cv, x)
 		
 		Oblate spheroidal radial function obl_rad2 for precomputed characteristic value
 		
 		Computes the oblate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -4011,12 +4559,12 @@ package scipy.special;
 	**/
 	static public function obl_rad2_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Legendre quadrature
+		Gauss-Legendre quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the `n`th degree Legendre polynomial
+		The sample points are the roots of the n-th degree Legendre polynomial
 		:math:`P_n(x)`.  These sample points and weights correctly integrate
-		polynomials of degree :math:`2*n - 1` or less over the interval
+		polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = 1.0`.
 		
 		Parameters
@@ -4037,14 +4585,33 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.legendre.leggauss
 	**/
 	static public function p_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dn(z) and
-		their derivatives for D0(z)..Dn(z).
+		Parabolic cylinder functions Dn(z) and derivatives.
+		
+		Parameters
+		----------
+		n : int
+		    Order of the parabolic cylinder function
+		z : complex
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of D_i(z), for i=0, ..., i=n.
+		dp : ndarray
+		    Derivatives D_i'(z), for i=0, ..., i=n.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbdn_seq(n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -4054,7 +4621,7 @@ package scipy.special;
 		
 		Parabolic cylinder function D
 		
-		Returns (d,dp) the parabolic cylinder function Dv(x) in d and the
+		Returns (d, dp) the parabolic cylinder function Dv(x) in d and the
 		derivative, Dv'(x) in dp.
 		
 		Returns
@@ -4066,14 +4633,33 @@ package scipy.special;
 	**/
 	static public function pbdv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dv(x) and
-		their derivatives for Dv0(x)..Dv(x) with v0=v-int(v).
+		Parabolic cylinder functions Dv(x) and derivatives.
+		
+		Parameters
+		----------
+		v : float
+		    Order of the parabolic cylinder function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of D_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dp : ndarray
+		    Derivatives D_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbdv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
 		pbvv(x1, x2[, out1, out2])
 		
-		pbvv(v,x)
+		pbvv(v, x)
 		
 		Parabolic cylinder function V
 		
@@ -4089,19 +4675,38 @@ package scipy.special;
 	**/
 	static public function pbvv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dv(x) and
-		their derivatives for Dv0(x)..Dv(x) with v0=v-int(v).
+		Parabolic cylinder functions Vv(x) and derivatives.
+		
+		Parameters
+		----------
+		v : float
+		    Order of the parabolic cylinder function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of V_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dp : ndarray
+		    Derivatives V_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbvv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
 		pbwa(x1, x2[, out1, out2])
 		
-		pbwa(a,x)
+		pbwa(a, x)
 		
 		Parabolic cylinder function W
 		
-		Returns the parabolic cylinder function W(a,x) in w and the
-		derivative, W'(a,x) in wp.
+		Returns the parabolic cylinder function W(a, x) in w and the
+		derivative, W'(a, x) in wp.
 		
 		.. warning::
 		
@@ -4122,9 +4727,9 @@ package scipy.special;
 		
 		Poisson cumulative distribution function
 		
-		Returns the sum of the first k terms of the Poisson distribution:
+		Returns the sum of the first `k` terms of the Poisson distribution:
 		sum(exp(-m) * m**j / j!, j=0..k) = gammaincc( k+1, m).  Arguments
-		must both be positive and k an integer.
+		must both be positive and `k` an integer.
 	**/
 	static public function pdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4136,28 +4741,28 @@ package scipy.special;
 		
 		Returns the sum of the terms from k+1 to infinity of the Poisson
 		distribution: sum(exp(-m) * m**j / j!, j=k+1..inf) = gammainc(
-		k+1, m).  Arguments must both be positive and k an integer.
+		k+1, m).  Arguments must both be positive and `k` an integer.
 	**/
 	static public function pdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pdtri(x1, x2[, out])
 		
-		pdtri(k,y)
+		pdtri(k, y)
 		
-		Inverse to pdtr vs m
+		Inverse to `pdtr` vs m
 		
-		Returns the Poisson variable m such that the sum from 0 to k of
-		the Poisson density is equal to the given probability y:
-		calculated by gammaincinv(k+1, y).  k must be a nonnegative
-		integer and y between 0 and 1.
+		Returns the Poisson variable `m` such that the sum from 0 to `k` of
+		the Poisson density is equal to the given probability `y`:
+		calculated by gammaincinv(k+1, y). `k` must be a nonnegative
+		integer and `y` between 0 and 1.
 	**/
 	static public function pdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		pdtrik(x1, x2[, out])
 		
-		pdtrik(p,m)
+		pdtrik(p, m)
 		
-		Inverse to pdtr vs k
+		Inverse to `pdtr` vs k
 		
 		Returns the quantile k such that ``pdtr(k, m) = p``
 	**/
@@ -4215,8 +4820,9 @@ package scipy.special;
 	**/
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Polygamma function which is the nth derivative of the digamma (psi)
-		function.
+		Polygamma function n.
+		
+		This is the nth derivative of the digamma (psi) function.
 		
 		Parameters
 		----------
@@ -4244,13 +4850,13 @@ package scipy.special;
 	/**
 		pro_ang1(x1, x2, x3, x4[, out1, out2])
 		
-		pro_ang1(m,n,c,x)
+		pro_ang1(m, n, c, x)
 		
 		Prolate spheroidal angular function of the first kind and its derivative
 		
 		Computes the prolate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -4263,13 +4869,13 @@ package scipy.special;
 	/**
 		pro_ang1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_ang1_cv(m,n,c,cv,x)
+		pro_ang1_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal angular function pro_ang1 for precomputed characteristic value
 		
 		Computes the prolate spheroidal angular function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -4283,30 +4889,38 @@ package scipy.special;
 	/**
 		pro_cv(x1, x2, x3[, out])
 		
-		pro_cv(m,n,c)
+		pro_cv(m, n, c)
 		
 		Characteristic value of prolate spheroidal function
 		
 		Computes the characteristic value of prolate spheroidal wave
-		functions of order m,n (n>=m) and spheroidal parameter c.
+		functions of order `m`, `n` (n>=m) and spheroidal parameter `c`.
 	**/
 	static public function pro_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Characteristic values for prolate spheroidal wave functions.
+		
 		Compute a sequence of characteristic values for the prolate
 		spheroidal wave functions for mode m and n'=m..n and spheroidal
 		parameter c.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pro_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
 		pro_rad1(x1, x2, x3, x4[, out1, out2])
 		
-		pro_rad1(m,n,c,x)
+		pro_rad1(m, n, c, x)
 		
 		Prolate spheroidal radial function of the first kind and its derivative
 		
 		Computes the prolate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -4319,13 +4933,13 @@ package scipy.special;
 	/**
 		pro_rad1_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_rad1_cv(m,n,c,cv,x)
+		pro_rad1_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal radial function pro_rad1 for precomputed characteristic value
 		
 		Computes the prolate spheroidal radial function of the first kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -4339,13 +4953,13 @@ package scipy.special;
 	/**
 		pro_rad2(x1, x2, x3, x4[, out1, out2])
 		
-		pro_rad2(m,n,c,x)
+		pro_rad2(m, n, c, x)
 		
 		Prolate spheroidal radial function of the secon kind and its derivative
 		
 		Computes the prolate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``.
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``.
 		
 		Returns
 		-------
@@ -4358,13 +4972,13 @@ package scipy.special;
 	/**
 		pro_rad2_cv(x1, x2, x3, x4, x5[, out1, out2])
 		
-		pro_rad2_cv(m,n,c,cv,x)
+		pro_rad2_cv(m, n, c, cv, x)
 		
 		Prolate spheroidal radial function pro_rad2 for precomputed characteristic value
 		
 		Computes the prolate spheroidal radial function of the second kind
-		and its derivative (with respect to x) for mode parameters m>=0
-		and n>=m, spheroidal parameter c and ``|x| < 1.0``. Requires
+		and its derivative (with respect to `x`) for mode parameters m>=0
+		and n>=m, spheroidal parameter `c` and ``|x| < 1.0``. Requires
 		pre-computed characteristic value.
 		
 		Returns
@@ -4376,12 +4990,12 @@ package scipy.special;
 	**/
 	static public function pro_rad2_cv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Legendre (shifted) quadrature
+		Gauss-Legendre (shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Legendre quadrature.
-		The sample points are the roots of the `n`th degree shifted Legendre
+		The sample points are the roots of the n-th degree shifted Legendre
 		polynomial :math:`P^*_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[0, 1]` with weight function :math:`f(x) = 1.0`.
 		
 		Parameters
@@ -4402,8 +5016,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function ps_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -4442,7 +5056,7 @@ package scipy.special;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4499,13 +5113,57 @@ package scipy.special;
 	**/
 	static public function rgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute the Ricatti-Bessel function of the first kind and its
-		derivative for all orders up to and including n.
+		Compute Ricatti-Bessel function of the first kind and derivative.
+		
+		This function computes the value and first derivative of the function for
+		all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of function to compute
+		x : float
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(x), ..., jn(x)
+		jnp : ndarray
+		    First derivative j0'(x), ..., jn'(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Compute the Ricatti-Bessel function of the second kind and its
-		derivative for all orders up to and including n.
+		Compute Ricatti-Bessel function of the second kind and derivative.
+		
+		This function computes the value and first derivative of the function for
+		all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of function to compute
+		x : float
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		yn : ndarray
+		    Value of y0(x), ..., yn(x)
+		ynp : ndarray
+		    First derivative y0'(x), ..., yn'(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -4515,18 +5173,18 @@ package scipy.special;
 		
 		Round to nearest integer
 		
-		Returns the nearest integer to x as a double precision floating
-		point result.  If x ends in 0.5 exactly, the nearest even integer
+		Returns the nearest integer to `x` as a double precision floating
+		point result.  If `x` ends in 0.5 exactly, the nearest even integer
 		is chosen.
 	**/
 	static public function round(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind) quadrature
+		Gauss-Chebyshev (second kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the second kind, :math:`S_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-2, 2]` with weight function :math:`f(x) = \sqrt{1 - (x/2)^2}`.
 		
 		Parameters
@@ -4547,8 +5205,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function s_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -4696,7 +5354,7 @@ package scipy.special;
 		distribution function (Dn+ or Dn-) for a one-sided test of
 		equality between an empirical and a theoretical distribution. It
 		is equal to the probability that the maximum difference between a
-		theoretical distribution and an empirical one based on n samples
+		theoretical distribution and an empirical one based on `n` samples
 		is greater than e.
 	**/
 	static public function smirnov(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -4705,7 +5363,7 @@ package scipy.special;
 		
 		smirnovi(n, y)
 		
-		Inverse to smirnov
+		Inverse to `smirnov`
 		
 		Returns ``e`` such that ``smirnov(n, e) = y``.
 	**/
@@ -4719,7 +5377,7 @@ package scipy.special;
 		
 		Returns the dilogarithm integral::
 		
-		    -integral(log t / (t-1),t=1..x)
+		    -integral(log t / (t-1), t=1..x)
 	**/
 	static public function spence(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4762,39 +5420,179 @@ package scipy.special;
 	**/
 	static public function sph_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute the spherical Bessel function in(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function in(z) and derivative.
+		
+		This function computes the value and first derivative of in(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of in to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		in : ndarray
+		    Value of i0(z), ..., in(z)
+		inp : ndarray
+		    First derivative i0'(z), ..., in'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_in(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel functions, in(z) and kn(z) and their
-		derivatives for all orders up to and including n.
+		Compute spherical Bessel functions in(z), kn(z), and derivatives.
+		
+		This function computes the value and first derivative of in(z) and kn(z)
+		for all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of in and kn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		in : ndarray
+		    Value of i0(z), ..., in(z)
+		inp : ndarray
+		    First derivative i0'(z), ..., in'(z)
+		kn : ndarray
+		    Value of k0(z), ..., kn(z)
+		knp : ndarray
+		    First derivative k0'(z), ..., kn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_inkn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function jn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function jn(z) and derivative.
+		
+		This function computes the value and first derivative of jn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of jn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(z), ..., jn(z)
+		jnp : ndarray
+		    First derivative j0'(z), ..., jn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_jn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel functions, jn(z) and yn(z) and their
-		derivatives for all orders up to and including n.
+		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
+		
+		This function computes the value and first derivative of jn(z) and yn(z)
+		for all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of jn and yn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(z), ..., jn(z)
+		jnp : ndarray
+		    First derivative j0'(z), ..., jn'(z)
+		yn : ndarray
+		    Value of y0(z), ..., yn(z)
+		ynp : ndarray
+		    First derivative y0'(z), ..., yn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_jnyn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function kn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function kn(z) and derivative.
+		
+		This function computes the value and first derivative of kn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of kn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		kn : ndarray
+		    Value of k0(z), ..., kn(z)
+		knp : ndarray
+		    First derivative k0'(z), ..., kn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_kn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function yn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function yn(z) and derivative.
+		
+		This function computes the value and first derivative of yn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of yn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		yn : ndarray
+		    Value of y0(z), ..., yn(z)
+		ynp : ndarray
+		    First derivative y0'(z), ..., yn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_yn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
 		stdtr(x1, x2[, out])
 		
-		stdtr(df,t)
+		stdtr(df, t)
 		
 		Student t distribution cumulative density function
 		
@@ -4808,41 +5606,41 @@ package scipy.special;
 	/**
 		stdtridf(x1, x2[, out])
 		
-		stdtridf(p,t)
+		stdtridf(p, t)
 		
-		Inverse of stdtr vs df
+		Inverse of `stdtr` vs df
 		
-		Returns the argument df such that stdtr(df,t) is equal to p.
+		Returns the argument df such that stdtr(df, t) is equal to `p`.
 	**/
 	static public function stdtridf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		stdtrit(x1, x2[, out])
 		
-		stdtrit(df,p)
+		stdtrit(df, p)
 		
-		Inverse of stdtr vs t
+		Inverse of `stdtr` vs `t`
 		
-		Returns the argument t such that stdtr(df,t) is equal to p.
+		Returns the argument `t` such that stdtr(df, t) is equal to `p`.
 	**/
 	static public function stdtrit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		struve(x1, x2[, out])
 		
-		struve(v,x)
+		struve(v, x)
 		
 		Struve function
 		
-		Computes the struve function Hv(x) of order v at x, x must be
-		positive unless v is an integer.
+		Computes the struve function Hv(x) of order `v` at `x`, `x` must be
+		positive unless `v` is an integer.
 	**/
 	static public function struve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind) quadrature
+		Gauss-Chebyshev (first kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the first kind, :math:`T_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = 1/\sqrt{1 - x^2}`.
 		
 		Parameters
@@ -4863,8 +5661,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 		numpy.polynomial.chebyshev.chebgauss
 	**/
 	static public function t_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
@@ -4945,12 +5743,12 @@ package scipy.special;
 	**/
 	static public function tklmbda(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Gauss-Chebyshev (first kind, shifted) quadrature
+		Gauss-Chebyshev (first kind, shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree shifted Chebyshev
+		The sample points are the roots of the n-th degree shifted Chebyshev
 		polynomial of the first kind, :math:`T_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
 		over the interval :math:`[0, 1]` with weight function
 		:math:`f(x) = 1/\sqrt{x - x^2}`.
 		
@@ -4972,17 +5770,17 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function ts_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind) quadrature
+		Gauss-Chebyshev (second kind) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree Chebyshev polynomial of
+		The sample points are the roots of the n-th degree Chebyshev polynomial of
 		the second kind, :math:`U_n(x)`.  These sample points and weights correctly
-		integrate polynomials of degree :math:`2*n - 1` or less over the interval
+		integrate polynomials of degree :math:`2n - 1` or less over the interval
 		:math:`[-1, 1]` with weight function :math:`f(x) = \sqrt{1 - x^2}`.
 		
 		Parameters
@@ -5003,17 +5801,17 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function u_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
-		Gauss-Chebyshev (second kind, shifted) quadrature
+		Gauss-Chebyshev (second kind, shifted) quadrature.
 		
 		Computes the sample points and weights for Gauss-Chebyshev quadrature.
-		The sample points are the roots of the `n`th degree shifted Chebyshev
+		The sample points are the roots of the n-th degree shifted Chebyshev
 		polynomial of the second kind, :math:`U_n(x)`.  These sample points and
-		weights correctly integrate polynomials of degree :math:`2*n - 1` or less
+		weights correctly integrate polynomials of degree :math:`2n - 1` or less
 		over the interval :math:`[0, 1]` with weight function
 		:math:`f(x) = \sqrt{x - x^2}`.
 		
@@ -5035,8 +5833,8 @@ package scipy.special;
 		
 		See Also
 		--------
-		integrate.quadrature
-		integrate.fixed_quad
+		scipy.integrate.quadrature
+		scipy.integrate.fixed_quad
 	**/
 	static public function us_roots(n:Dynamic, ?mu:Dynamic):Dynamic;
 	/**
@@ -5061,7 +5859,7 @@ package scipy.special;
 		
 		xlog1py(x, y)
 		
-		Compute ``x*log1p(y)`` so that the result is 0 if `x = 0`.
+		Compute ``x*log1p(y)`` so that the result is 0 if ``x = 0``.
 		
 		Parameters
 		----------
@@ -5086,7 +5884,7 @@ package scipy.special;
 		
 		xlogy(x, y)
 		
-		Compute ``x*log(y)`` so that the result is 0 if `x = 0`.
+		Compute ``x*log(y)`` so that the result is 0 if ``x = 0``.
 		
 		Parameters
 		----------
@@ -5113,12 +5911,36 @@ package scipy.special;
 		
 		Bessel function of the second kind of order 0
 		
-		Returns the Bessel function of the second kind of order 0 at x.
+		Returns the Bessel function of the second kind of order 0 at `x`.
 	**/
 	static public function y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y0(z), z0, and the value
-		of Y0'(z0) = -Y1(z0) at each zero.
+		Compute nt zeros of Bessel function Y0(z), and derivative at each zero.
+		
+		The derivatives are given by Y0'(z0) = -Y1(z0) at each zero z0.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z0n : ndarray
+		    Location of nth zero of Y0(z)
+		y0pz0n : ndarray
+		    Value of derivative Y0'(z0) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y0_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
@@ -5128,67 +5950,153 @@ package scipy.special;
 		
 		Bessel function of the second kind of order 1
 		
-		Returns the Bessel function of the second kind of order 1 at x.
+		Returns the Bessel function of the second kind of order 1 at `x`.
 	**/
 	static public function y1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y1(z), z1, and the value
-		of Y1'(z1) = Y0(z1) at each zero.
+		Compute nt zeros of Bessel function Y1(z), and derivative at each zero.
+		
+		The derivatives are given by Y1'(z1) = Y0(z1) at each zero z1.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z1n : ndarray
+		    Location of nth zero of Y1(z)
+		y1pz1n : ndarray
+		    Value of derivative Y1'(z1) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y1_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y1'(z), z1', and the value
-		of Y1(z1') at each zero.
+		Compute nt zeros of Bessel derivative Y1'(z), and value at each zero.
+		
+		The values are given by Y1(z1) at each z1 where Y1'(z1)=0.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z1pn : ndarray
+		    Location of nth zero of Y1'(z)
+		y1z1pn : ndarray
+		    Value of derivative Y1(z1) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y1p_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
 		yn(x1, x2[, out])
 		
-		yn(n,x)
+		yn(n, x)
 		
 		Bessel function of the second kind of integer order
 		
-		Returns the Bessel function of the second kind of integer order n
-		at x.
+		Returns the Bessel function of the second kind of integer order `n`
+		at `x`.
 	**/
 	static public function yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Yn(x).
-		    
+		Compute zeros of integer-order Bessel function Yn(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function yn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Yn'(x).
-		    
+		Compute zeros of integer-order Bessel function derivative Yn'(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ynp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
 		yv(x1, x2[, out])
 		
-		yv(v,z)
+		yv(v, z)
 		
 		Bessel function of the second kind of real order
 		
-		Returns the Bessel function of the second kind of real order v at
-		complex z.
+		Returns the Bessel function of the second kind of real order `v` at
+		complex `z`.
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		yve(x1, x2[, out])
 		
-		yve(v,z)
+		yve(v, z)
 		
 		Exponentially scaled Bessel function of the second kind of real order
 		
 		Returns the exponentially scaled Bessel function of the second
-		kind of real order v at complex z::
+		kind of real order `v` at complex `z`::
 		
-		    yve(v,z) = yv(v,z) * exp(-abs(z.imag))
+		    yve(v, z) = yv(v, z) * exp(-abs(z.imag))
 	**/
 	static public function yve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Yv(z) with respect to z.
-		    
+		Compute nth derivative of Bessel function Yv(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Bessel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -5199,7 +6107,7 @@ package scipy.special;
 		Hurwitz zeta function
 		
 		The Riemann zeta function of two arguments (also known as the
-		Hurwitz zeta funtion).
+		Hurwitz zeta function).
 		
 		This function is defined as
 		

@@ -138,7 +138,7 @@ package scipy.sparse.csgraph._traversal;
 		    from i to j and from j to i.  Nodes i and j are weakly connected if
 		    only one of these paths exists.  If directed == False, this keyword
 		    is not referenced.
-		return_labels : str, optional
+		return_labels : bool, optional
 		    If True (default), then return the labels for each of the connected
 		    components.
 		

@@ -43,6 +43,7 @@ package scipy.sparse.csr;
 		if it can be cast safely to a machine int.
 	**/
 	static public function isintlike(x:Dynamic):Dynamic;
+	static public function ismatrix(t:Dynamic):Dynamic;
 	static public function issequence(t:Dynamic):Dynamic;
 	static public function isspmatrix_csr(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

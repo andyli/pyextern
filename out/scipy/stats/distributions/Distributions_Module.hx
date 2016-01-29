@@ -31,7 +31,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -46,7 +46,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -69,7 +69,6 @@ package scipy.stats.distributions;
 		
 		`alpha` takes ``a`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``alpha.pdf(x, a, loc, scale)`` is identically
@@ -140,7 +139,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -155,7 +154,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -176,7 +175,6 @@ package scipy.stats.distributions;
 		
 		for ``-pi/4 <= x <= pi/4``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``anglit.pdf(x, loc, scale)`` is identically
@@ -247,7 +245,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -262,7 +260,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -283,7 +281,6 @@ package scipy.stats.distributions;
 		
 		for ``0 < x < 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``arcsine.pdf(x, loc, scale)`` is identically
@@ -354,7 +351,7 @@ package scipy.stats.distributions;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -365,7 +362,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -455,7 +452,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -470,7 +467,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -496,7 +493,6 @@ package scipy.stats.distributions;
 		
 		`beta` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``beta.pdf(x, a, b, loc, scale)`` is identically
@@ -567,7 +563,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -582,7 +578,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -606,7 +602,6 @@ package scipy.stats.distributions;
 		
 		`betaprime` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``betaprime.pdf(x, a, b, loc, scale)`` is identically
@@ -677,7 +672,7 @@ package scipy.stats.distributions;
 		``logcdf(x, n, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, n, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
@@ -688,7 +683,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(n, p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, n, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, p, loc=0)``
 		    Median of the distribution.
@@ -777,7 +772,7 @@ package scipy.stats.distributions;
 		``logcdf(x, lambda_, N, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, lambda_, N, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, N, loc=0)``
@@ -788,7 +783,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(lambda_, N, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, lambda_, N, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(lambda_, N), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(lambda_, N, loc=0)``
 		    Median of the distribution.
@@ -877,7 +872,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -892,7 +887,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -915,7 +910,6 @@ package scipy.stats.distributions;
 		
 		`bradford` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``bradford.pdf(x, c, loc, scale)`` is identically
@@ -967,7 +961,7 @@ package scipy.stats.distributions;
 	**/
 	static public function bradford(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		A Burr continuous random variable.
+		A Burr (Type III) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `burr` object inherits from it
 		a collection of generic methods (see below for the full list),
@@ -986,7 +980,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, d, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, d, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, d, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, d, loc=0, scale=1)``
@@ -1001,7 +995,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, d, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, d, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, d, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1028,12 +1022,19 @@ package scipy.stats.distributions;
 		
 		`burr` takes ``c`` and ``d`` as shape parameters.
 		
-		\  
+		This is the PDF corresponding to the third CDF given in Burr's list;
+		specifically, it is equation (11) in Burr's paper [1]_.
+		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``burr.pdf(x, c, d, loc, scale)`` is identically
 		equivalent to ``burr.pdf(y, c, d) / scale`` with
 		``y = (x - loc) / scale``.
+		
+		References
+		----------
+		.. [1] Burr, I. W. "Cumulative frequency functions", Annals of
+		   Mathematical Statistics, 13(2), pp 215-232 (1942).
 		
 		Examples
 		--------
@@ -1099,7 +1100,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -1114,7 +1115,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -1133,7 +1134,6 @@ package scipy.stats.distributions;
 		
 		    cauchy.pdf(x) = 1 / (pi * (1 + x**2))
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``cauchy.pdf(x, loc, scale)`` is identically
@@ -1204,7 +1204,7 @@ package scipy.stats.distributions;
 		``logcdf(x, df, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, loc=0, scale=1)``
@@ -1219,7 +1219,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, df, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1248,7 +1248,6 @@ package scipy.stats.distributions;
 		
 		`chi` takes ``df`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``chi.pdf(x, df, loc, scale)`` is identically
@@ -1319,7 +1318,7 @@ package scipy.stats.distributions;
 		``logcdf(x, df, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, loc=0, scale=1)``
@@ -1334,7 +1333,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, df, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1355,7 +1354,6 @@ package scipy.stats.distributions;
 		
 		`chi2` takes ``df`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``chi2.pdf(x, df, loc, scale)`` is identically
@@ -1426,7 +1424,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -1441,7 +1439,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -1463,7 +1461,6 @@ package scipy.stats.distributions;
 		
 		for ``-pi <= x <= pi``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``cosine.pdf(x, loc, scale)`` is identically
@@ -1534,7 +1531,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -1549,7 +1546,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1572,7 +1569,6 @@ package scipy.stats.distributions;
 		
 		`dgamma` takes ``a`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``dgamma.pdf(x, a, loc, scale)`` is identically
@@ -1644,7 +1640,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
@@ -1655,7 +1651,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(a, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, a, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0)``
 		    Median of the distribution.
@@ -1744,7 +1740,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -1759,7 +1755,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1780,7 +1776,6 @@ package scipy.stats.distributions;
 		
 		`dweibull` takes ``d`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``dweibull.pdf(x, c, loc, scale)`` is identically
@@ -1879,7 +1874,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -1894,7 +1889,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -1941,7 +1936,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -1956,7 +1951,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -1977,7 +1972,6 @@ package scipy.stats.distributions;
 		
 		for ``x >= 0``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``expon.pdf(x, loc, scale)`` is identically
@@ -2052,7 +2046,7 @@ package scipy.stats.distributions;
 		``logcdf(x, K, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, K, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, K, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, K, loc=0, scale=1)``
@@ -2067,7 +2061,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, K, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, K, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(K,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(K, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2085,7 +2079,7 @@ package scipy.stats.distributions;
 		The probability density function for `exponnorm` is::
 		
 		    exponnorm.pdf(x, K) = 1/(2*K) exp(1/(2 * K**2)) exp(-x / K) * erfc(-(x - 1/K) / sqrt(2))
-		       
+		
 		where the shape parameter ``K > 0``.
 		
 		It can be thought of as the sum of a normally distributed random
@@ -2093,7 +2087,6 @@ package scipy.stats.distributions;
 		distributed random number with a pdf proportional to ``exp(-lambda * x)``
 		where ``lambda = (K * scale)**(-1)``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``exponnorm.pdf(x, K, loc, scale)`` is identically
@@ -2173,7 +2166,7 @@ package scipy.stats.distributions;
 		``logcdf(x, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, b, loc=0, scale=1)``
@@ -2188,7 +2181,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2213,7 +2206,6 @@ package scipy.stats.distributions;
 		
 		`exponpow` takes ``b`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``exponpow.pdf(x, b, loc, scale)`` is identically
@@ -2288,7 +2280,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, c, loc=0, scale=1)``
@@ -2303,7 +2295,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2327,7 +2319,6 @@ package scipy.stats.distributions;
 		
 		`exponweib` takes ``a`` and ``c`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``exponweib.pdf(x, a, c, loc, scale)`` is identically
@@ -2398,7 +2389,7 @@ package scipy.stats.distributions;
 		``logcdf(x, dfn, dfd, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, dfn, dfd, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, dfn, dfd, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, dfn, dfd, loc=0, scale=1)``
@@ -2413,7 +2404,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, dfn, dfd, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, dfn, dfd, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(dfn, dfd), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(dfn, dfd, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2438,7 +2429,6 @@ package scipy.stats.distributions;
 		
 		`f` takes ``dfn`` and ``dfd`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``f.pdf(x, dfn, dfd, loc, scale)`` is identically
@@ -2509,7 +2499,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -2524,7 +2514,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2548,7 +2538,6 @@ package scipy.stats.distributions;
 		
 		`fatiguelife` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``fatiguelife.pdf(x, c, loc, scale)`` is identically
@@ -2629,7 +2618,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -2644,7 +2633,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2667,7 +2656,6 @@ package scipy.stats.distributions;
 		
 		`fisk` takes ``c`` as a shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``fisk.pdf(x, c, loc, scale)`` is identically
@@ -2742,7 +2730,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -2757,7 +2745,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2844,7 +2832,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -2859,7 +2847,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2882,7 +2870,6 @@ package scipy.stats.distributions;
 		
 		`foldnorm` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``foldnorm.pdf(x, c, loc, scale)`` is identically
@@ -2953,7 +2940,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -2968,7 +2955,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -2996,7 +2983,6 @@ package scipy.stats.distributions;
 		
 		`frechet_l` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``frechet_l.pdf(x, c, loc, scale)`` is identically
@@ -3067,7 +3053,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -3082,7 +3068,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3110,7 +3096,6 @@ package scipy.stats.distributions;
 		
 		`frechet_r` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``frechet_r.pdf(x, c, loc, scale)`` is identically
@@ -3181,7 +3166,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -3196,7 +3181,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3226,7 +3211,6 @@ package scipy.stats.distributions;
 		When ``a`` is an integer, `gamma` reduces to the Erlang
 		distribution, and when ``a=1`` to the exponential distribution.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gamma.pdf(x, a, loc, scale)`` is identically
@@ -3297,7 +3281,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, c, z, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, c, z, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, c, z, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, c, z, loc=0, scale=1)``
@@ -3312,7 +3296,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, c, z, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, c, z, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b, c, z), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, c, z, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3337,7 +3321,6 @@ package scipy.stats.distributions;
 		
 		`gausshyper` takes ``a``, ``b``, ``c`` and ``z`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gausshyper.pdf(x, a, b, c, z, loc, scale)`` is identically
@@ -3408,7 +3391,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, c, loc=0, scale=1)``
@@ -3423,7 +3406,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3446,7 +3429,6 @@ package scipy.stats.distributions;
 		
 		`genexpon` takes ``a``, ``b`` and ``c`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``genexpon.pdf(x, a, b, c, loc, scale)`` is identically
@@ -3525,7 +3507,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -3540,7 +3522,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3571,7 +3553,6 @@ package scipy.stats.distributions;
 		
 		`genextreme` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``genextreme.pdf(x, c, loc, scale)`` is identically
@@ -3642,7 +3623,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, c, loc=0, scale=1)``
@@ -3657,7 +3638,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, c), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3680,7 +3661,6 @@ package scipy.stats.distributions;
 		
 		`gengamma` takes ``a`` and ``c`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gengamma.pdf(x, a, c, loc, scale)`` is identically
@@ -3695,7 +3675,7 @@ package scipy.stats.distributions;
 		
 		Calculate a few first moments:
 		
-		>>> a, c = 4.42, 3.12
+		>>> a, c = 4.42, -3.12
 		>>> mean, var, skew, kurt = gengamma.stats(a, c, moments='mvsk')
 		
 		Display the probability density function (``pdf``):
@@ -3751,7 +3731,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -3766,7 +3746,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3789,7 +3769,6 @@ package scipy.stats.distributions;
 		
 		`genhalflogistic` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``genhalflogistic.pdf(x, c, loc, scale)`` is identically
@@ -3860,7 +3839,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -3875,7 +3854,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -3898,7 +3877,6 @@ package scipy.stats.distributions;
 		
 		`genlogistic` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``genlogistic.pdf(x, c, loc, scale)`` is identically
@@ -3969,7 +3947,7 @@ package scipy.stats.distributions;
 		``logcdf(x, beta, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, beta, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, beta, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, beta, loc=0, scale=1)``
@@ -3984,7 +3962,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, beta, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, beta, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(beta, loc=0, scale=1)``
 		    Median of the distribution.
@@ -4085,7 +4063,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -4100,7 +4078,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -4133,7 +4111,6 @@ package scipy.stats.distributions;
 		
 		    genpareto.cdf(x, c=-1) = x
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``genpareto.pdf(x, c, loc, scale)`` is identically
@@ -4204,7 +4181,7 @@ package scipy.stats.distributions;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -4215,7 +4192,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -4304,7 +4281,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -4319,7 +4296,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -4340,7 +4317,6 @@ package scipy.stats.distributions;
 		
 		`gilbrat` is a special case of `lognorm` with ``s = 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gilbrat.pdf(x, loc, scale)`` is identically
@@ -4411,7 +4387,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -4426,7 +4402,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -4449,7 +4425,6 @@ package scipy.stats.distributions;
 		
 		`gompertz` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gompertz.pdf(x, c, loc, scale)`` is identically
@@ -4520,7 +4495,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -4535,7 +4510,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -4562,7 +4537,6 @@ package scipy.stats.distributions;
 		distribution.  It is also related to the extreme value distribution,
 		log-Weibull and Gompertz distributions.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gumbel_l.pdf(x, loc, scale)`` is identically
@@ -4633,7 +4607,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -4648,7 +4622,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -4675,7 +4649,6 @@ package scipy.stats.distributions;
 		distribution.  It is also related to the extreme value distribution,
 		log-Weibull and Gompertz distributions.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``gumbel_r.pdf(x, loc, scale)`` is identically
@@ -4746,7 +4719,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -4761,7 +4734,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -4782,7 +4755,6 @@ package scipy.stats.distributions;
 		
 		for ``x >= 0``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``halfcauchy.pdf(x, loc, scale)`` is identically
@@ -4853,7 +4825,7 @@ package scipy.stats.distributions;
 		``logcdf(x, beta, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, beta, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, beta, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, beta, loc=0, scale=1)``
@@ -4868,7 +4840,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, beta, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, beta, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(beta,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(beta, loc=0, scale=1)``
 		    Median of the distribution.
@@ -4970,7 +4942,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -4985,7 +4957,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -5006,7 +4978,6 @@ package scipy.stats.distributions;
 		
 		for ``x >= 0``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``halflogistic.pdf(x, loc, scale)`` is identically
@@ -5077,7 +5048,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -5092,7 +5063,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -5115,7 +5086,6 @@ package scipy.stats.distributions;
 		
 		`halfnorm` is a special case of `chi` with ``df == 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``halfnorm.pdf(x, loc, scale)`` is identically
@@ -5191,7 +5161,7 @@ package scipy.stats.distributions;
 		``logcdf(x, M, n, N, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, M, n, N, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, M, n, N, loc=0)``
 		    Log of the survival function.
 		``ppf(q, M, n, N, loc=0)``
@@ -5202,7 +5172,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(M, n, N, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, M, n, N, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(M, n, N), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(M, n, N, loc=0)``
 		    Median of the distribution.
@@ -5281,7 +5251,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -5296,7 +5266,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -5315,7 +5285,6 @@ package scipy.stats.distributions;
 		
 		    hypsecant.pdf(x) = 1/pi * sech(x)
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``hypsecant.pdf(x, loc, scale)`` is identically
@@ -5386,7 +5355,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -5401,7 +5370,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5426,7 +5395,6 @@ package scipy.stats.distributions;
 		
 		`invgamma` is a special case of `gengamma` with ``c == -1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``invgamma.pdf(x, a, loc, scale)`` is identically
@@ -5497,7 +5465,7 @@ package scipy.stats.distributions;
 		``logcdf(x, mu, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, mu, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0, scale=1)``
@@ -5512,7 +5480,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, mu, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, mu, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5535,7 +5503,6 @@ package scipy.stats.distributions;
 		
 		`invgauss` takes ``mu`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``invgauss.pdf(x, mu, loc, scale)`` is identically
@@ -5610,7 +5577,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -5625,7 +5592,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5648,7 +5615,6 @@ package scipy.stats.distributions;
 		
 		`invweibull` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``invweibull.pdf(x, c, loc, scale)`` is identically
@@ -5724,7 +5690,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -5739,7 +5705,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5766,7 +5732,6 @@ package scipy.stats.distributions;
 		
 		`johnsonsb` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``johnsonsb.pdf(x, a, b, loc, scale)`` is identically
@@ -5837,7 +5802,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -5852,7 +5817,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5880,7 +5845,6 @@ package scipy.stats.distributions;
 		
 		`johnsonsu` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``johnsonsu.pdf(x, a, b, loc, scale)`` is identically
@@ -5951,7 +5915,7 @@ package scipy.stats.distributions;
 		``logcdf(x, n, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, n, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, n, loc=0, scale=1)``
@@ -5966,7 +5930,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, n, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, n, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(n,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, loc=0, scale=1)``
 		    Median of the distribution.
@@ -5978,6 +5942,7 @@ package scipy.stats.distributions;
 		    Standard deviation of the distribution.
 		``interval(alpha, n, loc=0, scale=1)``
 		    Endpoints of the range that contains alpha percent of the distribution
+		
 		Examples
 		--------
 		>>> from scipy.stats import ksone
@@ -6042,7 +6007,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -6057,7 +6022,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -6069,6 +6034,7 @@ package scipy.stats.distributions;
 		    Standard deviation of the distribution.
 		``interval(alpha, loc=0, scale=1)``
 		    Endpoints of the range that contains alpha percent of the distribution
+		
 		Examples
 		--------
 		>>> from scipy.stats import kstwobign
@@ -6133,7 +6099,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -6148,7 +6114,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -6167,7 +6133,6 @@ package scipy.stats.distributions;
 		
 		    laplace.pdf(x) = 1/2 * exp(-abs(x))
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``laplace.pdf(x, loc, scale)`` is identically
@@ -6238,7 +6203,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -6253,7 +6218,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -6280,7 +6245,6 @@ package scipy.stats.distributions;
 		
 		This is the same as the Levy-stable distribution with a=1/2 and b=1.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``levy.pdf(x, loc, scale)`` is identically
@@ -6351,7 +6315,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -6366,7 +6330,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -6393,7 +6357,6 @@ package scipy.stats.distributions;
 		
 		This is the same as the Levy-stable distribution with a=1/2 and b=-1.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``levy_l.pdf(x, loc, scale)`` is identically
@@ -6464,7 +6427,7 @@ package scipy.stats.distributions;
 		``logcdf(x, alpha, beta, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, alpha, beta, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, alpha, beta, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, alpha, beta, loc=0, scale=1)``
@@ -6479,7 +6442,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, alpha, beta, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, alpha, beta, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(alpha, beta), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(alpha, beta, loc=0, scale=1)``
 		    Median of the distribution.
@@ -6501,7 +6464,6 @@ package scipy.stats.distributions;
 		Levy-stable distribution (only random variates available -- ignore other
 		docs)
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``levy_stable.pdf(x, alpha, beta, loc, scale)`` is identically
@@ -6572,7 +6534,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -6587,7 +6549,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -6610,7 +6572,6 @@ package scipy.stats.distributions;
 		
 		`loggamma` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``loggamma.pdf(x, c, loc, scale)`` is identically
@@ -6681,7 +6642,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -6696,7 +6657,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -6717,7 +6678,6 @@ package scipy.stats.distributions;
 		
 		`logistic` is a special case of `genlogistic` with ``c == 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``logistic.pdf(x, loc, scale)`` is identically
@@ -6788,7 +6748,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -6803,7 +6763,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -6827,7 +6787,6 @@ package scipy.stats.distributions;
 		
 		`loglaplace` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``loglaplace.pdf(x, c, loc, scale)`` is identically
@@ -6903,7 +6862,7 @@ package scipy.stats.distributions;
 		``logcdf(x, s, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, s, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, s, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, s, loc=0, scale=1)``
@@ -6918,7 +6877,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, s, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, s, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(s,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(s, loc=0, scale=1)``
 		    Median of the distribution.
@@ -6941,16 +6900,17 @@ package scipy.stats.distributions;
 		
 		`lognorm` takes ``s`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``lognorm.pdf(x, s, loc, scale)`` is identically
 		equivalent to ``lognorm.pdf(y, s) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		If ``log(x)`` is normally distributed with mean ``mu`` and variance
-		``sigma**2``, then ``x`` is log-normally distributed with shape parameter
-		sigma and scale parameter ``exp(mu)``.
+		A common parametrization for a lognormal random variable ``Y`` is in
+		terms of the mean, ``mu``, and standard deviation, ``sigma``, of the
+		unique normally distributed random variable ``X`` such that exp(X) = Y.
+		This parametrization corresponds to setting ``s = sigma`` and ``scale =
+		exp(mu)``.
 		
 		Examples
 		--------
@@ -7016,7 +6976,7 @@ package scipy.stats.distributions;
 		``logcdf(x, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, p, loc=0)``
@@ -7027,7 +6987,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(p,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(p, loc=0)``
 		    Median of the distribution.
@@ -7116,7 +7076,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -7131,7 +7091,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7157,7 +7117,6 @@ package scipy.stats.distributions;
 		
 		`lomax` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``lomax.pdf(x, c, loc, scale)`` is identically
@@ -7228,7 +7187,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -7243,7 +7202,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -7268,7 +7227,6 @@ package scipy.stats.distributions;
 		
 		for ``x > 0``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``maxwell.pdf(x, loc, scale)`` is identically
@@ -7343,7 +7301,7 @@ package scipy.stats.distributions;
 		``logcdf(x, k, s, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, k, s, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, k, s, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, k, s, loc=0, scale=1)``
@@ -7358,7 +7316,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, k, s, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, k, s, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(k, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(k, s, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7381,7 +7339,6 @@ package scipy.stats.distributions;
 		
 		`mielke` takes ``k`` and ``s`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``mielke.pdf(x, k, s, loc, scale)`` is identically
@@ -7452,7 +7409,7 @@ package scipy.stats.distributions;
 		``logcdf(x, nu, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, nu, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, nu, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, nu, loc=0, scale=1)``
@@ -7467,7 +7424,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, nu, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, nu, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(nu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(nu, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7491,7 +7448,6 @@ package scipy.stats.distributions;
 		
 		`nakagami` takes ``nu`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``nakagami.pdf(x, nu, loc, scale)`` is identically
@@ -7562,7 +7518,7 @@ package scipy.stats.distributions;
 		``logcdf(x, n, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, n, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
@@ -7573,7 +7529,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(n, p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, n, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, p, loc=0)``
 		    Median of the distribution.
@@ -7662,7 +7618,7 @@ package scipy.stats.distributions;
 		``logcdf(x, dfn, dfd, nc, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, dfn, dfd, nc, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, dfn, dfd, nc, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, dfn, dfd, nc, loc=0, scale=1)``
@@ -7677,7 +7633,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, dfn, dfd, nc, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, dfn, dfd, nc, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(dfn, dfd, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(dfn, dfd, nc, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7705,7 +7661,6 @@ package scipy.stats.distributions;
 		
 		`ncf` takes ``df1``, ``df2`` and ``nc`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``ncf.pdf(x, dfn, dfd, nc, loc, scale)`` is identically
@@ -7776,7 +7731,7 @@ package scipy.stats.distributions;
 		``logcdf(x, df, nc, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, nc, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, nc, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, nc, loc=0, scale=1)``
@@ -7791,7 +7746,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, df, nc, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, nc, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, nc, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7816,7 +7771,6 @@ package scipy.stats.distributions;
 		
 		`nct` takes ``df`` and ``nc`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``nct.pdf(x, df, nc, loc, scale)`` is identically
@@ -7887,7 +7841,7 @@ package scipy.stats.distributions;
 		``logcdf(x, df, nc, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, nc, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, nc, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, nc, loc=0, scale=1)``
@@ -7902,7 +7856,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, df, nc, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, nc, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df, nc), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, nc, loc=0, scale=1)``
 		    Median of the distribution.
@@ -7926,7 +7880,6 @@ package scipy.stats.distributions;
 		
 		`ncx2` takes ``df`` and ``nc`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``ncx2.pdf(x, df, nc, loc, scale)`` is identically
@@ -8000,7 +7953,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -8015,7 +7968,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -8034,7 +7987,6 @@ package scipy.stats.distributions;
 		
 		    norm.pdf(x) = exp(-x**2/2)/sqrt(2*pi)
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``norm.pdf(x, loc, scale)`` is identically
@@ -8105,7 +8057,7 @@ package scipy.stats.distributions;
 		``logcdf(x, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, b, loc=0, scale=1)``
@@ -8120,7 +8072,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -8143,7 +8095,6 @@ package scipy.stats.distributions;
 		
 		`pareto` takes ``b`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``pareto.pdf(x, b, loc, scale)`` is identically
@@ -8214,7 +8165,7 @@ package scipy.stats.distributions;
 		``logcdf(x, skew, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, skew, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, skew, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, skew, loc=0, scale=1)``
@@ -8229,7 +8180,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, skew, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, skew, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(skew,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(skew, loc=0, scale=1)``
 		    Median of the distribution.
@@ -8257,7 +8208,6 @@ package scipy.stats.distributions;
 		
 		`pearson3` takes ``skew`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``pearson3.pdf(x, skew, loc, scale)`` is identically
@@ -8341,7 +8291,7 @@ package scipy.stats.distributions;
 		``logcdf(x, lambda_, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, lambda_, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, loc=0)``
 		    Log of the survival function.
 		``ppf(q, lambda_, loc=0)``
@@ -8352,7 +8302,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(lambda_, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, lambda_, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(lambda_,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(lambda_, loc=0)``
 		    Median of the distribution.
@@ -8441,7 +8391,7 @@ package scipy.stats.distributions;
 		``logcdf(x, mu, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, mu, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0)``
@@ -8452,7 +8402,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(mu, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, mu, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(mu,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu, loc=0)``
 		    Median of the distribution.
@@ -8541,7 +8491,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0, scale=1)``
@@ -8556,7 +8506,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0, scale=1)``
 		    Median of the distribution.
@@ -8579,7 +8529,6 @@ package scipy.stats.distributions;
 		
 		`powerlaw` takes ``a`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``powerlaw.pdf(x, a, loc, scale)`` is identically
@@ -8652,7 +8601,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, s, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, s, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, s, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, s, loc=0, scale=1)``
@@ -8667,7 +8616,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, s, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, s, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c, s), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, s, loc=0, scale=1)``
 		    Median of the distribution.
@@ -8692,7 +8641,6 @@ package scipy.stats.distributions;
 		
 		`powerlognorm` takes ``c`` and ``s`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``powerlognorm.pdf(x, c, s, loc, scale)`` is identically
@@ -8763,7 +8711,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -8778,7 +8726,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -8802,7 +8750,6 @@ package scipy.stats.distributions;
 		
 		`powernorm` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``powernorm.pdf(x, c, loc, scale)`` is identically
@@ -8874,7 +8821,7 @@ package scipy.stats.distributions;
 		``logcdf(x, low, high, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, low, high, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, low, high, loc=0)``
 		    Log of the survival function.
 		``ppf(q, low, high, loc=0)``
@@ -8885,7 +8832,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(low, high, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, low, high, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(low, high), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(low, high, loc=0)``
 		    Median of the distribution.
@@ -8977,7 +8924,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -8992,7 +8939,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -9015,7 +8962,6 @@ package scipy.stats.distributions;
 		
 		`rayleigh` is a special case of `chi` with ``df == 2``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``rayleigh.pdf(x, loc, scale)`` is identically
@@ -9086,7 +9032,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -9101,7 +9047,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9124,7 +9070,6 @@ package scipy.stats.distributions;
 		
 		`rdist` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``rdist.pdf(x, c, loc, scale)`` is identically
@@ -9195,7 +9140,7 @@ package scipy.stats.distributions;
 		``logcdf(x, mu, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, mu, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, mu, loc=0, scale=1)``
@@ -9210,7 +9155,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, mu, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, mu, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(mu,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9233,7 +9178,6 @@ package scipy.stats.distributions;
 		
 		`recipinvgauss` takes ``mu`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``recipinvgauss.pdf(x, mu, loc, scale)`` is identically
@@ -9304,7 +9248,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -9319,7 +9263,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9342,7 +9286,6 @@ package scipy.stats.distributions;
 		
 		`reciprocal` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``reciprocal.pdf(x, a, b, loc, scale)`` is identically
@@ -9413,7 +9356,7 @@ package scipy.stats.distributions;
 		``logcdf(x, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, b, loc=0, scale=1)``
@@ -9428,7 +9371,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9451,7 +9394,6 @@ package scipy.stats.distributions;
 		
 		`rice` takes ``b`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``rice.pdf(x, b, loc, scale)`` is identically
@@ -9528,7 +9470,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -9543,7 +9485,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -9564,7 +9506,6 @@ package scipy.stats.distributions;
 		
 		for ``-1 <= x <= 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``semicircular.pdf(x, loc, scale)`` is identically
@@ -9635,7 +9576,7 @@ package scipy.stats.distributions;
 		``logcdf(x, mu1, mu2, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, mu1, mu2, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu1, mu2, loc=0)``
 		    Log of the survival function.
 		``ppf(q, mu1, mu2, loc=0)``
@@ -9646,7 +9587,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(mu1, mu2, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, mu1, mu2, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(mu1, mu2), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(mu1, mu2, loc=0)``
 		    Median of the distribution.
@@ -9743,7 +9684,7 @@ package scipy.stats.distributions;
 		``logcdf(x, df, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, loc=0, scale=1)``
@@ -9758,7 +9699,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, df, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9783,7 +9724,6 @@ package scipy.stats.distributions;
 		
 		`t` takes ``df`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``t.pdf(x, df, loc, scale)`` is identically
@@ -9854,7 +9794,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -9869,7 +9809,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -9890,7 +9830,6 @@ package scipy.stats.distributions;
 		
 		`triang` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``triang.pdf(x, c, loc, scale)`` is identically
@@ -9965,7 +9904,7 @@ package scipy.stats.distributions;
 		``logcdf(x, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, b, loc=0, scale=1)``
@@ -9980,7 +9919,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(b,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10003,7 +9942,6 @@ package scipy.stats.distributions;
 		
 		`truncexpon` takes ``b`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``truncexpon.pdf(x, b, loc, scale)`` is identically
@@ -10074,7 +10012,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -10089,7 +10027,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10113,7 +10051,6 @@ package scipy.stats.distributions;
 		
 		`truncnorm` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``truncnorm.pdf(x, a, b, loc, scale)`` is identically
@@ -10184,7 +10121,7 @@ package scipy.stats.distributions;
 		``logcdf(x, lam, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, lam, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lam, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, lam, loc=0, scale=1)``
@@ -10199,7 +10136,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, lam, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, lam, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(lam,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(lam, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10225,7 +10162,6 @@ package scipy.stats.distributions;
 		
 		`tukeylambda` takes ``lam`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``tukeylambda.pdf(x, lam, loc, scale)`` is identically
@@ -10298,7 +10234,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -10313,7 +10249,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -10390,7 +10326,7 @@ package scipy.stats.distributions;
 		``logcdf(x, kappa, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, kappa, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, kappa, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, kappa, loc=0, scale=1)``
@@ -10405,7 +10341,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, kappa, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, kappa, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(kappa, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10431,7 +10367,6 @@ package scipy.stats.distributions;
 		
 		`vonmises` takes ``kappa`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises.pdf(x, kappa, loc, scale)`` is identically
@@ -10507,7 +10442,7 @@ package scipy.stats.distributions;
 		``logcdf(x, kappa, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, kappa, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, kappa, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, kappa, loc=0, scale=1)``
@@ -10522,7 +10457,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, kappa, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, kappa, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(kappa,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(kappa, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10548,7 +10483,6 @@ package scipy.stats.distributions;
 		
 		`vonmises` takes ``kappa`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``vonmises_line.pdf(x, kappa, loc, scale)`` is identically
@@ -10624,7 +10558,7 @@ package scipy.stats.distributions;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -10639,7 +10573,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -10662,7 +10596,6 @@ package scipy.stats.distributions;
 		
 		`wald` is a special case of `invgauss` with ``mu == 1``.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``wald.pdf(x, loc, scale)`` is identically
@@ -10733,7 +10666,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -10748,7 +10681,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10776,7 +10709,6 @@ package scipy.stats.distributions;
 		
 		`frechet_l` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``weibull_max.pdf(x, c, loc, scale)`` is identically
@@ -10847,7 +10779,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -10862,7 +10794,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10890,7 +10822,6 @@ package scipy.stats.distributions;
 		
 		`frechet_r` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``weibull_min.pdf(x, c, loc, scale)`` is identically
@@ -10961,7 +10892,7 @@ package scipy.stats.distributions;
 		``logcdf(x, c, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, c, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, c, loc=0, scale=1)``
@@ -10976,7 +10907,7 @@ package scipy.stats.distributions;
 		    (Differential) entropy of the RV.
 		``fit(data, c, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, c, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(c,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(c, loc=0, scale=1)``
 		    Median of the distribution.
@@ -10999,7 +10930,6 @@ package scipy.stats.distributions;
 		
 		`wrapcauchy` takes ``c`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``wrapcauchy.pdf(x, c, loc, scale)`` is identically
@@ -11070,7 +11000,7 @@ package scipy.stats.distributions;
 		``logcdf(x, a, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, a, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
 		    Log of the survival function.
 		``ppf(q, a, loc=0)``
@@ -11081,7 +11011,7 @@ package scipy.stats.distributions;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(a, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, a, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(a,), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, loc=0)``
 		    Median of the distribution.

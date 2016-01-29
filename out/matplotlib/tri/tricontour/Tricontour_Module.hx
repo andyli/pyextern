@@ -56,13 +56,15 @@ package matplotlib.tri.tricontour;
 		
 		  tricontour(..., Z, V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  tricontourf(..., Z, V)
 		
-		fill the (len(*V*)-1) regions between the values in *V*
+		fill the (len(*V*)-1) regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -101,8 +103,8 @@ package matplotlib.tri.tricontour;
 		
 		  *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the
@@ -231,13 +233,15 @@ package matplotlib.tri.tricontour;
 		
 		  tricontour(..., Z, V)
 		
-		draw contour lines at the values specified in sequence *V*
+		draw contour lines at the values specified in sequence *V*,
+		which must be in increasing order.
 		
 		::
 		
 		  tricontourf(..., Z, V)
 		
-		fill the (len(*V*)-1) regions between the values in *V*
+		fill the (len(*V*)-1) regions between the values in *V*,
+		which must be in increasing order.
 		
 		::
 		
@@ -276,8 +280,8 @@ package matplotlib.tri.tricontour;
 		
 		  *levels* [level0, level1, ..., leveln]
 		    A list of floating point numbers indicating the level
-		    curves to draw; e.g., to draw just the zero contour pass
-		    ``levels=[0]``
+		    curves to draw, in increasing order; e.g., to draw just
+		    the zero contour pass ``levels=[0]``
 		
 		  *origin*: [ *None* | 'upper' | 'lower' | 'image' ]
 		    If *None*, the first value of *Z* will correspond to the

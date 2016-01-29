@@ -490,6 +490,8 @@ package pandas.tools.plotting;
 		    Colormap to use for line colors.
 		axvlines: bool, optional
 		    If true, vertical lines will be added at each xtick
+		axvlines_kwds: keywords, optional
+		    Options to be passed to axvline method for vertical lines
 		kwds: keywords
 		    Options to pass to matplotlib plotting method
 		
@@ -506,7 +508,7 @@ package pandas.tools.plotting;
 		>>> parallel_coordinates(df, 'Name', color=('#556270', '#4ECDC4', '#C7F464'))
 		>>> plt.show()
 	**/
-	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, ?axvlines_kwds:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make plots of DataFrame using matplotlib / pylab.
 		

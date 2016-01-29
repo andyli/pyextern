@@ -117,9 +117,10 @@ package scipy.misc;
 		
 		Examples
 		--------
-		>>> img = array([[ 91.06794177,   3.39058326,  84.4221549 ],
-		                 [ 73.88003259,  80.91433048,   4.88878881],
-		                 [ 51.53875334,  34.45808177,  27.5873488 ]])
+		>>> from scipy.misc import bytescale
+		>>> img = np.array([[ 91.06794177,   3.39058326,  84.4221549 ],
+		...                 [ 73.88003259,  80.91433048,   4.88878881],
+		...                 [ 51.53875334,  34.45808177,  27.5873488 ]])
 		>>> bytescale(img)
 		array([[255,   0, 236],
 		       [205, 225,   4],
@@ -222,9 +223,9 @@ package scipy.misc;
 		
 		Examples
 		--------
+		>>> from scipy.misc import derivative
 		>>> def f(x):
 		...     return x**3 + x**2
-		...
 		>>> derivative(f, 1.0, dx=1e-6)
 		4.9999999999217337
 	**/
@@ -252,7 +253,7 @@ package scipy.misc;
 		>>> face.shape
 		(768, 1024, 3)
 		>>> face.max()
-		230
+		255
 		>>> face.dtype
 		dtype('uint8')
 		
@@ -289,7 +290,7 @@ package scipy.misc;
 		Examples
 		--------
 		>>> from scipy.special import factorial
-		>>> arr = np.array([3,4,5])
+		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
 		>>> factorial(5, exact=True)
@@ -299,8 +300,8 @@ package scipy.misc;
 	/**
 		Double factorial.
 		
-		This is the factorial with every second value skipped, i.e.,
-		``7!! = 7 * 5 * 3 * 1``.  It can be approximated numerically as::
+		This is the factorial with every second value skipped.  E.g., ``7!! = 7 * 5
+		* 3 * 1``.  It can be approximated numerically as::
 		
 		  n!! = special.gamma(n/2+1)*2**((m+1)/2)/sqrt(pi)  n odd
 		      = 2**(n/2) * (n/2)!                           n even
@@ -331,8 +332,17 @@ package scipy.misc;
 	**/
 	static public function factorial2(n:Dynamic, ?exact:Dynamic):Dynamic;
 	/**
-		n(!!...!)  = multifactorial of order k
-		k times
+		Multifactorial of n of order k, n(!!...!).
+		
+		This is the multifactorial of n skipping k values.  For example,
+		
+		  factorialk(17, 4) = 17!!!! = 17 * 13 * 9 * 5 * 1
+		
+		In particular, for any integer ``n``, we have
+		
+		  factorialk(n, 1) = factorial(n)
+		
+		  factorialk(n, 2) = factorial2(n)
 		
 		Parameters
 		----------
@@ -347,7 +357,7 @@ package scipy.misc;
 		Returns
 		-------
 		val : int
-		    Multi factorial of `n`.
+		    Multifactorial of `n`.
 		
 		Raises
 		------
@@ -372,6 +382,9 @@ package scipy.misc;
 		    Input image.
 		flatten : bool
 		    If true, convert the output to grey-scale.
+		mode : str, optional
+		    Mode to convert image to, e.g. ``'RGB'``.  See the Notes of the
+		    `imread` docstring for more details.
 		
 		Returns
 		-------
@@ -380,7 +393,7 @@ package scipy.misc;
 		    third dimension, such that a grey-image is MxN, an
 		    RGB-image MxNx3 and an RGBA-image MxNx4.
 	**/
-	static public function fromimage(im:Dynamic, ?flatten:Dynamic):Dynamic;
+	static public function fromimage(im:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Simple filtering of an image.
 		
@@ -414,18 +427,46 @@ package scipy.misc;
 		    The file name or file object to be read.
 		flatten : bool, optional
 		    If True, flattens the color layers into a single gray-scale layer.
+		mode : str, optional
+		    Mode to convert image to, e.g. ``'RGB'``.  See the Notes for more
+		    details.
 		
 		Returns
 		-------
 		imread : ndarray
-		    The array obtained by reading image from file `imfile`.
+		    The array obtained by reading the image.
 		
 		Notes
 		-----
-		The image is flattened by calling convert('F') on
-		the resulting image object.
+		`imread` uses the Python Imaging Library (PIL) to read an image.
+		The following notes are from the PIL documentation.
+		
+		`mode` can be one of the following strings:
+		
+		* 'L' (8-bit pixels, black and white)
+		* 'P' (8-bit pixels, mapped to any other mode using a color palette)
+		* 'RGB' (3x8-bit pixels, true color)
+		* 'RGBA' (4x8-bit pixels, true color with transparency mask)
+		* 'CMYK' (4x8-bit pixels, color separation)
+		* 'YCbCr' (3x8-bit pixels, color video format)
+		* 'I' (32-bit signed integer pixels)
+		* 'F' (32-bit floating point pixels)
+		
+		PIL also provides limited support for a few special modes, including
+		'LA' ('L' with alpha), 'RGBX' (true color with padding) and 'RGBa'
+		(true color with premultiplied alpha).
+		
+		When translating a color image to black and white (mode 'L', 'I' or
+		'F'), the library uses the ITU-R 601-2 luma transform::
+		
+		    L = R * 299/1000 + G * 587/1000 + B * 114/1000
+		
+		When `flatten` is True, the image is converted using mode 'F'.
+		When `mode` is not None and `flatten` is True, the image is first
+		converted according to `mode`, and the result is then flattened using
+		mode 'F'.
 	**/
-	static public function imread(name:Dynamic, ?flatten:Dynamic):Dynamic;
+	static public function imread(name:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Resize an image.
 		
@@ -501,10 +542,11 @@ package scipy.misc;
 		--------
 		Construct an array of gradient intensity values and save to file:
 		
+		>>> from scipy.misc import imsave
 		>>> x = np.zeros((255, 255))
 		>>> x = np.zeros((255, 255), dtype=np.uint8)
 		>>> x[:] = np.arange(255)
-		>>> imsave('/tmp/gradient.png', x)
+		>>> imsave('gradient.png', x)
 		
 		Construct an array with three colour bands (R, G, B) and store to file:
 		
@@ -512,7 +554,7 @@ package scipy.misc;
 		>>> rgb[..., 0] = np.arange(255)
 		>>> rgb[..., 1] = 55
 		>>> rgb[..., 2] = 1 - np.arange(255)
-		>>> imsave('/tmp/rgb_gradient.png', rgb)
+		>>> imsave('rgb_gradient.png', rgb)
 	**/
 	static public function imsave(name:Dynamic, arr:Dynamic, ?format:Dynamic):Dynamic;
 	/**
@@ -535,7 +577,7 @@ package scipy.misc;
 		--------
 		>>> a = np.tile(np.arange(255), (255,1))
 		>>> from scipy import misc
-		>>> misc.pilutil.imshow(a)
+		>>> misc.imshow(a)
 	**/
 	static public function imshow(arr:Dynamic):Dynamic;
 	/**
@@ -587,8 +629,9 @@ package scipy.misc;
 	**/
 	static public function info(?object:Dynamic, ?maxwidth:Dynamic, ?output:Dynamic, ?toplevel:Dynamic):Dynamic;
 	/**
-		Get classic image processing example image, Lena, at 8-bit grayscale
-		bit-depth, 512 x 512 size.
+		Function that previously returned an example image
+		
+		.. note:: Removed in 0.17
 		
 		Parameters
 		----------
@@ -596,32 +639,21 @@ package scipy.misc;
 		
 		Returns
 		-------
-		lena : ndarray
-		    Lena image
+		None
+		
+		Raises
+		------
+		RuntimeError
+		    This functionality has been removed due to licensing reasons.
 		
 		Notes
 		-----
-		Though safe for work in most places, this sexualized image is drawn from
-		Playboy and makes some viewers uncomfortable.  It has been very widely
-		used as an example in image processing and is therefore made available
-		for compatibility.  For new code that needs an example image we recommend
-		`face` or `ascent`.
+		The image previously returned by this function has an incompatible license
+		and has been removed from SciPy. Please use `face` or `ascent` instead.
 		
-		Examples
+		See Also
 		--------
-		>>> import scipy.misc
-		>>> lena = scipy.misc.lena()
-		>>> lena.shape
-		(512, 512)
-		>>> lena.max()
-		245
-		>>> lena.dtype
-		dtype('int32')
-		
-		>>> import matplotlib.pyplot as plt
-		>>> plt.gray()
-		>>> plt.imshow(lena)
-		>>> plt.show()
+		face, ascent
 	**/
 	static public function lena():Dynamic;
 	/**
@@ -645,17 +677,27 @@ package scipy.misc;
 		    .. versionadded:: 0.15.0
 		b : array-like, optional
 		    Scaling factor for exp(`a`) must be of the same shape as `a` or
-		    broadcastable to `a`.
+		    broadcastable to `a`. These values may be negative in order to
+		    implement subtraction.
 		
 		    .. versionadded:: 0.12.0
+		return_sign : bool, optional
+		    If this is set to True, the result will be a pair containing sign
+		    information; if False, results that are negative will be returned
+		    as NaN. Default is False (no sign information).
 		
+		    .. versionadded:: 0.16.0
 		Returns
 		-------
 		res : ndarray
 		    The result, ``np.log(np.sum(np.exp(a)))`` calculated in a numerically
 		    more stable way. If `b` is given then ``np.log(np.sum(b*np.exp(a)))``
 		    is returned.
-		
+		sgn : ndarray
+		    If return_sign is True, this will be an array of floating-point
+		    numbers matching res and +1, 0, or -1 depending on the sign
+		    of the result. If False, only one result is returned.
+		    
 		See Also
 		--------
 		numpy.logaddexp, numpy.logaddexp2
@@ -683,8 +725,13 @@ package scipy.misc;
 		9.9170178533034665
 		>>> np.log(np.sum(b*np.exp(a)))
 		9.9170178533034647
+		
+		Returning a sign flag
+		
+		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
+		(1.5413248546129181, -1.0)
 	**/
-	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	/**
 		Return Pade approximation to a polynomial as the ratio of two polynomials.
 		

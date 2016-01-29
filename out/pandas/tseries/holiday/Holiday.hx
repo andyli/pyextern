@@ -154,12 +154,11 @@ package pandas.tseries.holiday;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Apply the given offset/observance to an
-		iterable of dates.
+		Apply the given offset/observance to a DatetimeIndex of dates.
 		
 		Parameters
 		----------
-		dates : array-like
+		dates : DatetimeIndex
 		    Dates to apply the given offset/observance rule
 		
 		Returns
@@ -168,7 +167,16 @@ package pandas.tseries.holiday;
 	**/
 	public function _apply_rule(dates:Dynamic):Dynamic;
 	/**
-		Calculate holidays between start date and end date
+		Get reference dates for the holiday.
+		
+		Return reference dates for the holiday also returning the year
+		prior to the start_date and year following the end_date.  This ensures
+		that any offsets to be applied will yield the holidays within
+		the passed in dates.
+	**/
+	public function _reference_dates(start_date:Dynamic, end_date:Dynamic):Dynamic;
+	/**
+		Calculate holidays observed between start date and end date
 		
 		Parameters
 		----------

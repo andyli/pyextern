@@ -204,9 +204,14 @@ package pandas.core.index;
 	static public var _allow_index_ops : Dynamic;
 	static public var _allow_period_index_ops : Dynamic;
 	static public function _arrmap(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check value is valid for scalar op 
+	**/
+	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _box_scalars : Dynamic;
+	static public var _can_hold_na : Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -241,6 +246,10 @@ package pandas.core.index;
 	**/
 	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Convert value to be insertable to ndarray 
+	**/
+	public function _convert_for_op(value:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
 		and we have a mixed index (e.g. number/labels). figure out
@@ -340,6 +349,7 @@ package pandas.core.index;
 	**/
 	public function _invalid_indexer(form:Dynamic, key:Dynamic):Dynamic;
 	static public var _is_numeric_dtype : Dynamic;
+	static public var _isnan : Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -384,6 +394,7 @@ package pandas.core.index;
 	public function _maybe_update_attributes(attrs:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
+	static public var _nan_idxs : Dynamic;
 	static public function _outer_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _possibly_promote(other:Dynamic):Dynamic;
 	/**
@@ -447,6 +458,10 @@ package pandas.core.index;
 		return an array repr of this object, potentially casting to object
 	**/
 	public function _to_embed(?keep_tz:Dynamic):Dynamic;
+	/**
+		convert to object if we are a categorical 
+	**/
+	public function _to_safe_for_reshape():Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Necessary for making this object picklable
@@ -581,7 +596,9 @@ package pandas.core.index;
 	public function delete(loc:Dynamic):Dynamic;
 	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute sorted set difference of two Index objects
+		Return a new Index with elements from the index that are not in `other`.
+		
+		This is the sorted set difference of two Index objects.
 		
 		Parameters
 		----------
@@ -589,13 +606,15 @@ package pandas.core.index;
 		
 		Returns
 		-------
-		diff : Index
+		difference : Index
 		
-		Notes
-		-----
-		One can do either of these and achieve the same result
+		Examples
+		--------
 		
-		>>> index.difference(index2)
+		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx2 = pd.Index([3, 4, 5, 6])
+		>>> idx1.difference(idx2)
+		Int64Index([1, 2], dtype='int64')
 	**/
 	public function difference(other:Dynamic):pandas.Index;
 	/**
@@ -668,6 +687,24 @@ package pandas.core.index;
 		uniques : the unique Index
 	**/
 	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	/**
+		Fill NA/NaN values with the specified value
+		
+		Parameters
+		----------
+		value : scalar
+		    Scalar value to use to fill holes (e.g. 0).
+		    This value cannot be a list-likes.
+		downcast : dict, default is None
+		    a dict of item->dtype of what to downcast if possible,
+		    or the string 'infer' which will try to downcast to an appropriate
+		    equal type (e.g. float64 to int64 if possible)
+		
+		Returns
+		-------
+		filled : Index
+	**/
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
@@ -822,8 +859,10 @@ package pandas.core.index;
 	**/
 	public function insert(loc:Dynamic, item:Dynamic):Dynamic;
 	/**
-		Form the intersection of two Index objects. Sortedness of the result is
-		not guaranteed
+		Form the intersection of two Index objects.
+		
+		This returns a new Index with elements common to the index and `other`.
+		Sortedness of the result is not guaranteed.
 		
 		Parameters
 		----------
@@ -832,6 +871,14 @@ package pandas.core.index;
 		Returns
 		-------
 		intersection : Index
+		
+		Examples
+		--------
+		
+		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx2 = pd.Index([3, 4, 5, 6])
+		>>> idx1.intersection(idx2)
+		Int64Index([3, 4], dtype='int64')
 	**/
 	public function intersection(other:Dynamic):pandas.Index;
 	/**
@@ -933,6 +980,29 @@ package pandas.core.index;
 		The maximum value of the object 
 	**/
 	public function max():Dynamic;
+	/**
+		Memory usage of my values
+		
+		Parameters
+		----------
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		bytes used
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
 		The minimum value of the object 
 	**/
@@ -1157,7 +1227,7 @@ package pandas.core.index;
 		>>> s.str.split('_')
 		>>> s.str.replace('_', '')
 	**/
-	static public function str(series:Dynamic):Dynamic;
+	static public function str(data:Dynamic):Dynamic;
 	/**
 		return the strides of the underlying data 
 	**/
@@ -1168,7 +1238,6 @@ package pandas.core.index;
 		
 		Parameters
 		----------
-		
 		other : Index or array-like
 		result_name : str
 		
@@ -1238,7 +1307,7 @@ package pandas.core.index;
 	**/
 	public function transpose():Dynamic;
 	/**
-		Form the union of two Index objects and sorts if possible
+		Form the union of two Index objects and sorts if possible.
 		
 		Parameters
 		----------
@@ -1247,6 +1316,14 @@ package pandas.core.index;
 		Returns
 		-------
 		union : Index
+		
+		Examples
+		--------
+		
+		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx2 = pd.Index([3, 4, 5, 6])
+		>>> idx1.union(idx2)
+		Int64Index([1, 2, 3, 4, 5, 6], dtype='int64')
 	**/
 	public function union(other:Dynamic):pandas.Index;
 	/**

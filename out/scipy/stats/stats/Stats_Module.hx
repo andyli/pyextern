@@ -10,9 +10,11 @@ package scipy.stats.stats;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _betai(a:Dynamic, b:Dynamic, x:Dynamic):Dynamic;
 	static public function _chk2_asarray(a:Dynamic, b:Dynamic, axis:Dynamic):Dynamic;
 	static public function _chk_asarray(a:Dynamic, axis:Dynamic):Dynamic;
 	static public function _compute_qth_percentile(sorted:Dynamic, per:Dynamic, interpolation_method:Dynamic, axis:Dynamic):Dynamic;
+	static public function _contains_nan(a:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Count the number of non-masked elements of an array.
 		
@@ -21,6 +23,51 @@ package scipy.stats.stats;
 	**/
 	static public function _count(a:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _equal_var_ttest_denom(v1:Dynamic, n1:Dynamic, v2:Dynamic, n2:Dynamic):Dynamic;
+	static public function _find_repeats(arr:Dynamic):Dynamic;
+	/**
+		Separates the range into several bins and returns the number of instances
+		in each bin.
+		
+		Parameters
+		----------
+		a : array_like
+		    Array of scores which will be put into bins.
+		numbins : int, optional
+		    The number of bins to use for the histogram. Default is 10.
+		defaultlimits : tuple (lower, upper), optional
+		    The lower and upper values for the range of the histogram.
+		    If no value is given, a range slightly larger than the range of the
+		    values in a is used. Specifically ``(a.min() - s, a.max() + s)``,
+		    where ``s = (1/2)(a.max() - a.min()) / (numbins - 1)``.
+		weights : array_like, optional
+		    The weights for each value in `a`. Default is None, which gives each
+		    value a weight of 1.0
+		printextras : bool, optional
+		    If True, if there are extra points (i.e. the points that fall outside
+		    the bin limits) a warning is raised saying how many of those points
+		    there are.  Default is False.
+		
+		Returns
+		-------
+		count : ndarray
+		    Number of points (or sum of weights) in each bin.
+		lowerlimit : float
+		    Lowest value of histogram, the lower limit of the first bin.
+		binsize : float
+		    The size of the bins (all bins have the same size).
+		extrapoints : int
+		    The number of points outside the range of the histogram.
+		
+		See Also
+		--------
+		numpy.histogram
+		
+		Notes
+		-----
+		This histogram is based on numpy's histogram but has a larger range by
+		default if default limits is not set.
+	**/
+	static public function _histogram(a:Dynamic, ?numbins:Dynamic, ?defaultlimits:Dynamic, ?weights:Dynamic, ?printextras:Dynamic):Dynamic;
 	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
 		This one only evaluates f(arr1[cond], arr2[cond], ...).
@@ -36,6 +83,32 @@ package scipy.stats.stats;
 	**/
 	static public function _lazywhere(cond:Dynamic, arrays:Dynamic, f:Dynamic, ?fillvalue:Dynamic, ?f2:Dynamic):Dynamic;
 	/**
+		Mask an array for values outside of given limits.
+		
+		This is primarily a utility function.
+		
+		Parameters
+		----------
+		a : array
+		limits : (float or None, float or None)
+		    A tuple consisting of the (lower limit, upper limit).  Values in the
+		    input array less than the lower limit or greater than the upper limit
+		    will be masked out. None implies no limit.
+		inclusive : (bool, bool)
+		    A tuple consisting of the (lower flag, upper flag).  These flags
+		    determine whether values exactly equal to lower or upper are allowed.
+		
+		Returns
+		-------
+		A MaskedArray.
+		
+		Raises
+		------
+		A ValueError if there are no values within the given limits.
+	**/
+	static public function _mask_to_limits(a:Dynamic, limits:Dynamic, inclusive:Dynamic):Dynamic;
+	static public function _moment(a:Dynamic, moment:Dynamic, axis:Dynamic):Dynamic;
+	/**
 		Private function for rank a arrays. Compute the median ignoring Nan.
 		
 		Parameters
@@ -50,6 +123,49 @@ package scipy.stats.stats;
 	**/
 	static public function _nanmedian(arr1d:Dynamic):Dynamic;
 	static public var _power_div_lambda_names : Dynamic;
+	/**
+		Sums elements of the input array, and returns the square(s) of that sum.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int or None, optional
+		    Axis along which to calculate. Default is 0. If None, compute over
+		    the whole array `a`.
+		
+		Returns
+		-------
+		square_of_sums : float or ndarray
+		    The square of the sum over `axis`.
+		
+		See also
+		--------
+		_sum_of_squares : The sum of squares (the opposite of `square_of_sums`).
+	**/
+	static public function _square_of_sums(a:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Squares each element of the input array, and returns the sum(s) of that.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array.
+		axis : int or None, optional
+		    Axis along which to calculate. Default is 0. If None, compute over
+		    the whole array `a`.
+		
+		Returns
+		-------
+		sum_of_squares : ndarray
+		    The sum along the given axis for (a**2).
+		
+		See also
+		--------
+		_square_of_sums : The square(s) of the sum(s) (the opposite of
+		`_sum_of_squares`).
+	**/
+	static public function _sum_of_squares(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Common code between all 3 t-test functions.
 	**/
@@ -216,49 +332,61 @@ package scipy.stats.stats;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Returns the incomplete beta function.
+		`betai` is deprecated!
+		stats.betai is deprecated in scipy 0.17.0; use special.betainc instead
 		
-		I_x(a,b) = 1/B(a,b)*(Integral(0,x) of t^(a-1)(1-t)^(b-1) dt)
 		
-		where a,b>0 and B(a,b) = G(a)*G(b)/(G(a+b)) where G(a) is the gamma
-		function of a.
+		    Returns the incomplete beta function.
 		
-		The standard broadcasting rules apply to a, b, and x.
+		    I_x(a,b) = 1/B(a,b)*(Integral(0,x) of t^(a-1)(1-t)^(b-1) dt)
 		
-		Parameters
-		----------
-		a : array_like or float > 0
+		    where a,b>0 and B(a,b) = G(a)*G(b)/(G(a+b)) where G(a) is the gamma
+		    function of a.
 		
-		b : array_like or float > 0
+		    The standard broadcasting rules apply to a, b, and x.
 		
-		x : array_like or float
-		    x will be clipped to be no greater than 1.0 .
+		    Parameters
+		    ----------
+		    a : array_like or float > 0
 		
-		Returns
-		-------
-		betai : ndarray
-		    Incomplete beta function.
+		    b : array_like or float > 0
+		
+		    x : array_like or float
+		        x will be clipped to be no greater than 1.0 .
+		
+		    Returns
+		    -------
+		    betai : ndarray
+		        Incomplete beta function.
+		
+		    
 	**/
-	static public function betai(a:Dynamic, b:Dynamic, x:Dynamic):Dynamic;
+	static public function betai(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function callable(obj:Dynamic):Dynamic;
 	/**
-		Probability value (1-tail) for the Chi^2 probability distribution.
+		`chisqprob` is deprecated!
+		stats.chisqprob is deprecated in scipy 0.17.0; use stats.distributions.chi2.sf instead.
 		
-		Broadcasting rules apply.
 		
-		Parameters
-		----------
-		chisq : array_like or float > 0
+		    Probability value (1-tail) for the Chi^2 probability distribution.
 		
-		df : array_like or float, probably int >= 1
+		    Broadcasting rules apply.
 		
-		Returns
-		-------
-		chisqprob : ndarray
-		    The area from `chisq` to infinity under the Chi^2 probability
-		    distribution with degrees of freedom `df`.
+		    Parameters
+		    ----------
+		    chisq : array_like or float > 0
+		
+		    df : array_like or float, probably int >= 1
+		
+		    Returns
+		    -------
+		    chisqprob : ndarray
+		        The area from `chisq` to infinity under the Chi^2 probability
+		        distribution with degrees of freedom `df`.
+		
+		    
 	**/
-	static public function chisqprob(chisq:Dynamic, df:Dynamic):Dynamic;
+	static public function chisqprob(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculates a one-way chi square test.
 		
@@ -380,6 +508,7 @@ package scipy.stats.stats;
 		method : {'fisher', 'stouffer'}, optional
 		    Name of method to use to combine p-values. The following methods are
 		    available:
+		
 		    - "fisher": Fisher's method (Fisher's combined probability test),
 		      the default.
 		    - "stouffer": Stouffer's Z-score method.
@@ -426,6 +555,9 @@ package scipy.stats.stats;
 	/**
 		Returns a cumulative frequency histogram, using the histogram function.
 		
+		A cumulative histogram is a mapping that counts the cumulative number of
+		observations in all of the bins up to the specified bin.
+		
 		Parameters
 		----------
 		a : array_like
@@ -454,16 +586,41 @@ package scipy.stats.stats;
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
 		>>> x = [1, 4, 2, 1, 3, 1]
-		>>> cumfreqs, lowlim, binsize, extrapoints = stats.cumfreq(x, numbins=4)
-		>>> cumfreqs
-		array([ 3.,  4.,  5.,  6.])
-		>>> cumfreqs, lowlim, binsize, extrapoints =     ...     stats.cumfreq(x, numbins=4, defaultreallimits=(1.5, 5))
-		>>> cumfreqs
+		>>> res = stats.cumfreq(x, numbins=4, defaultreallimits=(1.5, 5))
+		>>> res.cumcount
 		array([ 1.,  2.,  3.,  3.])
-		>>> extrapoints
+		>>> res.extrapoints
 		3
+		
+		Create a normal distribution with 1000 random values
+		
+		>>> rng = np.random.RandomState(seed=12345)
+		>>> samples = stats.norm.rvs(size=1000, random_state=rng)
+		
+		Calculate cumulative frequencies
+		
+		>>> res = stats.cumfreq(samples, numbins=25)
+		
+		Calculate space of values for x
+		
+		>>> x = res.lowerlimit + np.linspace(0, res.binsize*res.cumcount.size,
+		...                                  res.cumcount.size)
+		
+		Plot histogram and cumulative histogram
+		
+		>>> fig = plt.figure(figsize=(10, 4))
+		>>> ax1 = fig.add_subplot(1, 2, 1)
+		>>> ax2 = fig.add_subplot(1, 2, 2)
+		>>> ax1.hist(samples, bins=25)
+		>>> ax1.set_title('Histogram')
+		>>> ax2.bar(x, res.cumcount, width=res.binsize)
+		>>> ax2.set_title('Cumulative histogram')
+		>>> ax2.set_xlim([x.min(), x.max()])
+		
+		>>> plt.show()
 	**/
 	static public function cumfreq(a:Dynamic, ?numbins:Dynamic, ?defaultreallimits:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
@@ -477,7 +634,14 @@ package scipy.stats.stats;
 		   Axis along which statistics are calculated. Default is 0.
 		   If None, compute over the whole array `a`.
 		ddof : int, optional
-		    Delta degrees of freedom.  Default is 1.
+		    Delta degrees of freedom (only for variance).  Default is 1.
+		bias : bool, optional
+		    If False, then the skewness and kurtosis calculations are corrected for
+		    statistical bias.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -491,18 +655,30 @@ package scipy.stats.stats;
 		   Unbiased variance of the data along axis, denominator is number of
 		   observations minus one.
 		skewness : ndarray or float
-		   Biased skewness, based on moment calculations with denominator equal to
+		   Skewness, based on moment calculations with denominator equal to
 		   the number of observations, i.e. no degrees of freedom correction.
 		kurtosis : ndarray or float
-		   Biased kurtosis (Fisher).  The kurtosis is normalized so that it is
-		   zero for the normal distribution.  No degrees of freedom or bias
-		   correction is used.
+		   Kurtosis (Fisher).  The kurtosis is normalized so that it is
+		   zero for the normal distribution.  No degrees of freedom are used.
 		
 		See Also
 		--------
 		skew, kurtosis
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> a = np.arange(10)
+		>>> stats.describe(a)
+		DescribeResult(nobs=10, minmax=(0, 9), mean=4.5, variance=9.1666666666666661,
+		               skewness=0.0, kurtosis=-1.2242424242424244)
+		>>> b = [[1, 2], [3, 4]]
+		>>> stats.describe(b)
+		DescribeResult(nobs=2, minmax=(array([1, 2]), array([3, 4])),
+		               mean=array([ 2., 3.]), variance=array([ 2., 2.]),
+		               skewness=array([ 0., 0.]), kurtosis=array([-2., -2.]))
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Int;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Int;
 	static public var division : Dynamic;
 	/**
 		Performs a 1-way ANOVA.
@@ -547,59 +723,99 @@ package scipy.stats.stats;
 		       http://faculty.vassar.edu/lowry/ch14pt1.html
 		
 		.. [2] Heiman, G.W.  Research Methods in Statistics. 2002.
+		
+		.. [3] McDonald, G. H. "Handbook of Biological Statistics", One-way ANOVA.
+		       http://http://www.biostathandbook.com/onewayanova.html
+		
+		Examples
+		--------
+		>>> import scipy.stats as stats
+		
+		[3]_ Here are some data on a shell measurement (the length of the anterior
+		adductor muscle scar, standardized by dividing by length) in the mussel
+		Mytilus trossulus from five locations: Tillamook, Oregon; Newport, Oregon;
+		Petersburg, Alaska; Magadan, Russia; and Tvarminne, Finland, taken from a
+		much larger data set used in McDonald et al. (1991).
+		
+		>>> tillamook = [0.0571, 0.0813, 0.0831, 0.0976, 0.0817, 0.0859, 0.0735,
+		...              0.0659, 0.0923, 0.0836]
+		>>> newport = [0.0873, 0.0662, 0.0672, 0.0819, 0.0749, 0.0649, 0.0835,
+		...            0.0725]
+		>>> petersburg = [0.0974, 0.1352, 0.0817, 0.1016, 0.0968, 0.1064, 0.105]
+		>>> magadan = [0.1033, 0.0915, 0.0781, 0.0685, 0.0677, 0.0697, 0.0764,
+		...            0.0689]
+		>>> tvarminne = [0.0703, 0.1026, 0.0956, 0.0973, 0.1039, 0.1045]
+		>>> stats.f_oneway(tillamook, newport, petersburg, magadan, tvarminne)
+		(7.1210194716424473, 0.00028122423145345439)
 	**/
 	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
-		Returns an F-statistic for a restricted vs. unrestricted model.
+		`f_value` is deprecated!
+		stats.f_value deprecated in scipy 0.17.0
 		
-		Parameters
-		----------
-		ER : float
-		     `ER` is the sum of squared residuals for the restricted model
-		      or null hypothesis
 		
-		EF : float
-		     `EF` is the sum of squared residuals for the unrestricted model
-		      or alternate hypothesis
+		    Returns an F-statistic for a restricted vs. unrestricted model.
 		
-		dfR : int
-		      `dfR` is the degrees of freedom in the restricted model
+		    Parameters
+		    ----------
+		    ER : float
+		         `ER` is the sum of squared residuals for the restricted model
+		          or null hypothesis
 		
-		dfF : int
-		      `dfF` is the degrees of freedom in the unrestricted model
+		    EF : float
+		         `EF` is the sum of squared residuals for the unrestricted model
+		          or alternate hypothesis
 		
-		Returns
-		-------
-		F-statistic : float
+		    dfR : int
+		          `dfR` is the degrees of freedom in the restricted model
+		
+		    dfF : int
+		          `dfF` is the degrees of freedom in the unrestricted model
+		
+		    Returns
+		    -------
+		    F-statistic : float
+		
+		    
 	**/
-	static public function f_value(ER:Dynamic, EF:Dynamic, dfR:Dynamic, dfF:Dynamic):Dynamic;
+	static public function f_value(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Returns a multivariate F-statistic.
+		`f_value_multivariate` is deprecated!
+		stats.f_value_multivariate deprecated in scipy 0.17.0
 		
-		Parameters
-		----------
-		ER : ndarray
-		    Error associated with the null hypothesis (the Restricted model).
-		    From a multivariate F calculation.
-		EF : ndarray
-		    Error associated with the alternate hypothesis (the Full model)
-		    From a multivariate F calculation.
-		dfnum : int
-		    Degrees of freedom the Restricted model.
-		dfden : int
-		    Degrees of freedom associated with the Restricted model.
 		
-		Returns
-		-------
-		fstat : float
-		    The computed F-statistic.
+		    Returns a multivariate F-statistic.
+		
+		    Parameters
+		    ----------
+		    ER : ndarray
+		        Error associated with the null hypothesis (the Restricted model).
+		        From a multivariate F calculation.
+		    EF : ndarray
+		        Error associated with the alternate hypothesis (the Full model)
+		        From a multivariate F calculation.
+		    dfnum : int
+		        Degrees of freedom the Restricted model.
+		    dfden : int
+		        Degrees of freedom associated with the Restricted model.
+		
+		    Returns
+		    -------
+		    fstat : float
+		        The computed F-statistic.
+		
+		    
 	**/
-	static public function f_value_multivariate(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic):Float;
+	static public function f_value_multivariate(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`f_value_wilks_lambda` is deprecated!
+		stats.f_value_wilks_lambda deprecated in scipy 0.17.0
+		
 		Calculation of Wilks lambda F-statistic for multivarite data, per
-		Maxwell & Delaney p.657.
+		    Maxwell & Delaney p.657.
+		    
 	**/
-	static public function f_value_wilks_lambda(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic, a:Dynamic, b:Dynamic):Dynamic;
+	static public function f_value_wilks_lambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`fastsort` is deprecated!
 		scipy.stats.fastsort is deprecated in scipy 0.16.0
@@ -626,26 +842,31 @@ package scipy.stats.stats;
 		Parameters
 		----------
 		arr : array_like
-		    Input array
+		    Input array. This is cast to float64.
 		
 		Returns
 		-------
-		find_repeats : tuple
-		    Returns a tuple of two 1-D ndarrays.  The first ndarray are the repeats
-		    as sorted, unique values that are repeated in `arr`.  The second
-		    ndarray are the counts mapped one-to-one of the repeated values
-		    in the first ndarray.
+		values : ndarray
+		    The unique values from the (flattened) input that are repeated.
+		
+		counts : ndarray
+		    Number of times the corresponding 'value' is repeated.
+		
+		Notes
+		-----
+		In numpy >= 1.9 `numpy.unique` provides similar functionality. The main
+		difference is that `find_repeats` only returns repeated values.
 		
 		Examples
 		--------
 		>>> from scipy import stats
 		>>> stats.find_repeats([2, 1, 2, 3, 2, 2, 5])
-		(array([ 2. ]), array([ 4 ], dtype=int32)
+		RepeatedResults(values=array([ 2.]), counts=array([4]))
 		
 		>>> stats.find_repeats([[10, 20, 1, 2], [5, 5, 4, 4]])
-		(array([ 4., 5.]), array([2, 2], dtype=int32))
+		RepeatedResults(values=array([ 4.,  5.]), counts=array([2, 2]))
 	**/
-	static public function find_repeats(arr:Dynamic):python.Tuple<Dynamic>;
+	static public function find_repeats(arr:Dynamic):Dynamic;
 	/**
 		Performs a Fisher exact test on a 2x2 contingency table.
 		
@@ -783,49 +1004,10 @@ package scipy.stats.stats;
 	**/
 	static public function gmean(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
-		Separates the range into several bins and returns the number of instances
-		in each bin.
-		
-		Parameters
-		----------
-		a : array_like
-		    Array of scores which will be put into bins.
-		numbins : int, optional
-		    The number of bins to use for the histogram. Default is 10.
-		defaultlimits : tuple (lower, upper), optional
-		    The lower and upper values for the range of the histogram.
-		    If no value is given, a range slightly larger than the range of the
-		    values in a is used. Specifically ``(a.min() - s, a.max() + s)``,
-		    where ``s = (1/2)(a.max() - a.min()) / (numbins - 1)``.
-		weights : array_like, optional
-		    The weights for each value in `a`. Default is None, which gives each
-		    value a weight of 1.0
-		printextras : bool, optional
-		    If True, if there are extra points (i.e. the points that fall outside
-		    the bin limits) a warning is raised saying how many of those points
-		    there are.  Default is False.
-		
-		Returns
-		-------
-		count : ndarray
-		    Number of points (or sum of weights) in each bin.
-		lowerlimit : float
-		    Lowest value of histogram, the lower limit of the first bin.
-		binsize : float
-		    The size of the bins (all bins have the same size).
-		extrapoints : int
-		    The number of points outside the range of the histogram.
-		
-		See Also
-		--------
-		numpy.histogram
-		
-		Notes
-		-----
-		This histogram is based on numpy's histogram but has a larger range by
-		default if default limits is not set.
+		`histogram` is deprecated!
+		scipy.stats.histogram is deprecated in scipy 0.17.0; use np.histogram instead
 	**/
-	static public function histogram(a:Dynamic, ?numbins:Dynamic, ?defaultlimits:Dynamic, ?weights:Dynamic, ?printextras:Dynamic):Dynamic;
+	static public function histogram(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		`histogram2` is deprecated!
 		scipy.stats.histogram2 is deprecated in scipy 0.16.0; use np.histogram2d instead
@@ -990,6 +1172,10 @@ package scipy.stats.stats;
 		    `kendalltau` is of complexity O(n log(n)). If False, the complexity is
 		    O(n^2), but with a smaller pre-factor (so quicksort may be faster for
 		    small arrays).
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -998,6 +1184,11 @@ package scipy.stats.stats;
 		pvalue : float
 		   The two-sided p-value for a hypothesis test whose null hypothesis is
 		   an absence of association, tau = 0.
+		
+		See also
+		--------
+		spearmanr : Calculates a Spearman rank-order correlation coefficient.
+		theilslopes : Computes the Theil-Sen estimator for a set of points (x, y).
 		
 		Notes
 		-----
@@ -1027,7 +1218,7 @@ package scipy.stats.stats;
 		>>> p_value
 		0.24821309157521476
 	**/
-	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic):Float;
+	static public function kendalltau(x:Dynamic, y:Dynamic, ?initial_lexsort:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
@@ -1043,6 +1234,10 @@ package scipy.stats.stats;
 		sample1, sample2, ... : array_like
 		   Two or more arrays with the sample measurements can be given as
 		   arguments.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -1052,6 +1247,12 @@ package scipy.stats.stats;
 		   The p-value for the test using the assumption that H has a chi
 		   square distribution
 		
+		See Also
+		--------
+		f_oneway : 1-way ANOVA
+		mannwhitneyu : Mann-Whitney rank test on two samples.
+		friedmanchisquare : Friedman test for repeated measurements
+		
 		Notes
 		-----
 		Due to the assumption that H has a chi square distribution, the number
@@ -1060,9 +1261,26 @@ package scipy.stats.stats;
 		
 		References
 		----------
-		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		.. [1] W. H. Kruskal & W. W. Wallis, "Use of Ranks in
+		   One-Criterion Variance Analysis", Journal of the American Statistical
+		   Association, Vol. 47, Issue 260, pp. 583-621, 1952.
+		.. [2] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = [1, 3, 5, 7, 9]
+		>>> y = [2, 4, 6, 8, 10]
+		>>> stats.kruskal(x, y)
+		KruskalResult(statistic=0.27272727272727337, pvalue=0.60150813444058948)
+		
+		>>> x = [1, 1, 1]
+		>>> y = [2, 2, 2]
+		>>> z = [2, 2]
+		>>> stats.kruskal(x, y, z)
+		KruskalResult(statistic=7.0, pvalue=0.030197383422318501)
 	**/
-	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
+	static public function kruskal(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		Computes the Kolmogorov-Smirnov statistic on 2 samples.
 		
@@ -1253,6 +1471,10 @@ package scipy.stats.stats;
 		    Pearson's definition is used (normal ==> 3.0).
 		bias : bool, optional
 		    If False, then the calculations are corrected for statistical bias.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -1266,7 +1488,7 @@ package scipy.stats.stats;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 	**/
-	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Array<Dynamic>;
+	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Array<Dynamic>;
 	/**
 		Tests whether a dataset has normal kurtosis
 		
@@ -1281,6 +1503,10 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		   Axis along which to compute test. Default is 0. If None,
 		   compute over the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -1293,16 +1519,14 @@ package scipy.stats.stats;
 		-----
 		Valid only for n>20.  The Z-score is set to 0 for bad entries.
 	**/
-	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
+	static public function kurtosistest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
-		Calculate a regression line
-		
-		This computes a least-squares regression for two sets of measurements.
+		Calculate a linear least-squares regression for two sets of measurements.
 		
 		Parameters
 		----------
 		x, y : array_like
-		    two sets of measurements.  Both arrays should have the same length.
+		    Two sets of measurements.  Both arrays should have the same length.
 		    If only x is given (and y=None), then it must be a two-dimensional
 		    array where one dimension has length 2.  The two sets of measurements
 		    are then found by splitting the array along the length-2 dimension.
@@ -1321,10 +1545,15 @@ package scipy.stats.stats;
 		stderr : float
 		    Standard error of the estimate
 		
+		See also
+		--------
+		optimize.curve_fit : Use non-linear least squares to fit a function to data.
+		optimize.leastsq : Minimize the sum of squares of a set of equations.
 		
 		Examples
 		--------
 		>>> from scipy import stats
+		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
 		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
@@ -1332,7 +1561,7 @@ package scipy.stats.stats;
 		# To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		r-squared: 0.15286643777
+		('r-squared:', 0.080402268539028335)
 	**/
 	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
@@ -1364,33 +1593,7 @@ package scipy.stats.stats;
 		The reported p-value is for a one-sided hypothesis, to get the two-sided
 		p-value multiply the returned p-value by 2.
 	**/
-	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic):Float;
-	/**
-		Mask an array for values outside of given limits.
-		
-		This is primarily a utility function.
-		
-		Parameters
-		----------
-		a : array
-		limits : (float or None, float or None)
-		    A tuple consisting of the (lower limit, upper limit).  Values in the
-		    input array less than the lower limit or greater than the upper limit
-		    will be masked out. None implies no limit.
-		inclusive : (bool, bool)
-		    A tuple consisting of the (lower flag, upper flag).  These flags
-		    determine whether values exactly equal to lower or upper are allowed.
-		
-		Returns
-		-------
-		A MaskedArray.
-		
-		Raises
-		------
-		A ValueError if there are no values within the given limits.
-	**/
-	static public function mask_to_limits(a:Dynamic, limits:Dynamic, inclusive:Dynamic):Dynamic;
-	static public function masked_var(am:Dynamic):Dynamic;
+	static public function mannwhitneyu(x:Dynamic, y:Dynamic, ?use_continuity:Dynamic, ?alternative:Dynamic):Float;
 	/**
 		Returns an array of the modal (most common) value in the passed array.
 		
@@ -1404,6 +1607,10 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		    Axis along which to operate. Default is 0. If None, compute over
 		    the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -1428,22 +1635,28 @@ package scipy.stats.stats;
 		>>> stats.mode(a, axis=None)
 		(array([3]), array([3]))
 	**/
-	static public function mode(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function mode(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Calculates the nth moment about the mean for a sample.
 		
-		Generally used to calculate coefficients of skewness and
-		kurtosis.
+		A moment is a specific quantitative measure of the shape of a set of points.
+		It is often used to calculate coefficients of skewness and kurtosis due
+		to its close relationship with them.
+		
 		
 		Parameters
 		----------
 		a : array_like
 		   data
-		moment : int, optional
-		   order of central moment that is returned
+		moment : int or array_like of ints, optional
+		   order of central moment that is returned. Default is 1.
 		axis : int or None, optional
 		   Axis along which the central moment is computed. Default is 0.
 		   If None, compute over the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -1451,8 +1664,27 @@ package scipy.stats.stats;
 		   The appropriate moment along the given axis or over all values if axis
 		   is None. The denominator for the moment calculation is the number of
 		   observations, no degrees of freedom correction is done.
+		
+		See also
+		--------
+		kurtosis, skew, describe
+		
+		Notes
+		-----
+		The k-th central moment of a data sample is:
+		
+		.. math::
+		
+		    m_k = \frac{1}{n} \sum_{i = 1}^n (x_i - \bar{x})^k
+		
+		Where n is the number of samples and x-bar is the mean. This function uses
+		exponentiation by squares [1]_ for efficiency.
+		
+		References
+		----------
+		.. [1] http://eli.thegreenplace.net/2009/03/21/efficient-integer-exponentiation-algorithms
 	**/
-	static public function moment(a:Dynamic, ?moment:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function moment(a:Dynamic, ?moment:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Returns a new subclass of tuple with named fields.
 		
@@ -1626,12 +1858,16 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		    Axis along which to compute test. Default is 0. If None,
 		    compute over the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
 		statistic : float or array
-		    `s^2 + k^2`, where `s` is the z-score returned by `skewtest` and
-		    `k` is the z-score returned by `kurtosistest`.
+		    ``s^2 + k^2``, where ``s`` is the z-score returned by `skewtest` and
+		    ``k`` is the z-score returned by `kurtosistest`.
 		pvalue : float or array
 		   A 2-sided chi squared probability for the hypothesis test.
 		
@@ -1643,7 +1879,7 @@ package scipy.stats.stats;
 		.. [2] D'Agostino, R. and Pearson, E. S. (1973), "Testing for
 		       departures from normality," Biometrika, 60, 613-622
 	**/
-	static public function normaltest(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function normaltest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Computes the O'Brien transform on input data (any number of arrays).
 		
@@ -1701,11 +1937,11 @@ package scipy.stats.stats;
 		
 		The Pearson correlation coefficient measures the linear relationship
 		between two datasets. Strictly speaking, Pearson's correlation requires
-		that each dataset be normally distributed. Like other correlation
-		coefficients, this one varies between -1 and +1 with 0 implying no
-		correlation. Correlations of -1 or +1 imply an exact linear
-		relationship. Positive correlations imply that as x increases, so does
-		y. Negative correlations imply that as x increases, y decreases.
+		that each dataset be normally distributed, and not necessarily zero-mean.
+		Like other correlation coefficients, this one varies between -1 and +1
+		with 0 implying no correlation. Correlations of -1 or +1 imply an exact
+		linear relationship. Positive correlations imply that as x increases, so
+		does y. Negative correlations imply that as x increases, y decreases.
 		
 		The p-value roughly indicates the probability of an uncorrelated system
 		producing datasets that have a Pearson correlation at least as extreme
@@ -1800,8 +2036,7 @@ package scipy.stats.stats;
 	**/
 	static public function percentileofscore(a:Dynamic, score:Dynamic, ?kind:Dynamic):Float;
 	/**
-		Calculates a point biserial correlation coefficient and the associated
-		p-value.
+		Calculates a point biserial correlation coefficient and its p-value.
 		
 		The point biserial correlation is used to measure the relationship
 		between a binary variable, x, and a continuous variable, y. Like other
@@ -1826,9 +2061,45 @@ package scipy.stats.stats;
 		pvalue : float
 		    2-tailed p-value
 		
+		Notes
+		-----
+		`pointbiserialr` uses a t-test with ``n-1`` degrees of freedom.
+		It is equivalent to `pearsonr.`
+		
+		The value of the point-biserial correlation can be calculated from:
+		
+		.. math::
+		
+		    r_{pb} = \frac{\overline{Y_{1}} -
+		             \overline{Y_{0}}}{s_{y}}\sqrt{\frac{N_{1} N_{2}}{N (N - 1))}}
+		
+		Where :math:`Y_{0}` and :math:`Y_{1}` are means of the metric
+		observations coded 0 and 1 respectively; :math:`N_{0}` and :math:`N_{1}`
+		are number of observations coded 0 and 1 respectively; :math:`N` is the
+		total number of observations and :math:`s_{y}` is the standard
+		deviation of all the metric observations.
+		
+		A value of :math:`r_{pb}` that is significantly different from zero is
+		completely equivalent to a significant difference in means between the two
+		groups. Thus, an independent groups t Test with :math:`N-2` degrees of
+		freedom may be used to test whether :math:`r_{pb}` is nonzero. The
+		relation between the t-statistic for comparing two independent groups and
+		:math:`r_{pb}` is given by:
+		
+		.. math::
+		
+		    t = \sqrt{N - 2}\frac{r_{pb}}{\sqrt{1 - r^{2}_{pb}}}
+		
 		References
 		----------
-		http://en.wikipedia.org/wiki/Point-biserial_correlation_coefficient
+		.. [1] J. Lev, "The Point Biserial Coefficient of Correlation", Ann. Math.
+		       Statist., Vol. 20, no.1, pp. 125-126, 1949.
+		
+		.. [2] R.F. Tate, "Correlation Between a Discrete and a Continuous
+		       Variable. Point-Biserial Correlation.", Ann. Math. Statist., Vol. 25,
+		       np. 3, pp. 603-607, 1954.
+		
+		.. [3] http://onlinelibrary.wiley.com/doi/10.1002/9781118445112.stat06227/full
 		
 		Examples
 		--------
@@ -1956,7 +2227,7 @@ package scipy.stats.stats;
 		>>> power_divergence([16, 18, 16, 14, 12, 12],
 		...                  f_exp=[16, 16, 16, 16, 16, 8],
 		...                  lambda_='log-likelihood')
-		(3.5, 0.62338762774958223)
+		(3.3281031458963746, 0.6495419288047497)
 		
 		When `f_obs` is 2-D, by default the test is applied to each column.
 		
@@ -2039,12 +2310,6 @@ package scipy.stats.stats;
 		     An array of length equal to the size of `a`, containing rank
 		     scores.
 		
-		Notes
-		-----
-		All floating point types are converted to numpy.float64 before ranking.
-		This may result in spurious ties if an input array of floats has a wider
-		data type than numpy.float64 (e.g. numpy.float128).
-		
 		References
 		----------
 		.. [1] "Ranking", http://en.wikipedia.org/wiki/Ranking
@@ -2055,15 +2320,15 @@ package scipy.stats.stats;
 		>>> rankdata([0, 2, 3, 2])
 		array([ 1. ,  2.5,  4. ,  2.5])
 		>>> rankdata([0, 2, 3, 2], method='min')
-		array([ 1.,  2.,  4.,  2.])
+		array([ 1,  2,  4,  2])
 		>>> rankdata([0, 2, 3, 2], method='max')
-		array([ 1.,  3.,  4.,  3.])
+		array([ 1,  3,  4,  3])
 		>>> rankdata([0, 2, 3, 2], method='dense')
-		array([ 1.,  2.,  3.,  2.])
+		array([ 1,  2,  3,  2])
 		>>> rankdata([0, 2, 3, 2], method='ordinal')
-		array([ 1.,  2.,  4.,  3.])
+		array([ 1,  2,  4,  3])
 	**/
-	static public function rankdata(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rankdata(a:Dynamic, ?method:Dynamic):Dynamic;
 	/**
 		Compute the Wilcoxon rank-sum statistic for two samples.
 		
@@ -2098,6 +2363,9 @@ package scipy.stats.stats;
 	/**
 		Returns a relative frequency histogram, using the histogram function.
 		
+		A relative frequency  histogram is a mapping of the number of
+		observations in each of the bins relative to the total of observations.
+		
 		Parameters
 		----------
 		a : array_like
@@ -2126,13 +2394,38 @@ package scipy.stats.stats;
 		
 		Examples
 		--------
+		>>> import matplotlib.pyplot as plt
 		>>> from scipy import stats
-		>>> a = np.array([1, 4, 2, 1, 3, 1])
-		>>> relfreqs, lowlim, binsize, extrapoints = stats.relfreq(a, numbins=4)
-		>>> relfreqs
-		array([ 0.5       ,  0.16666667,  0.16666667,  0.16666667])
-		>>> np.sum(relfreqs)  # relative frequencies should add up to 1
-		0.99999999999999989
+		>>> a = np.array([2, 4, 1, 2, 3, 2])
+		>>> res = stats.relfreq(a, numbins=4)
+		>>> res.frequency
+		array([ 0.16666667, 0.5       , 0.16666667,  0.16666667])
+		>>> np.sum(res.frequency)  # relative frequencies should add up to 1
+		1.0
+		
+		Create a normal distribution with 1000 random values
+		
+		>>> rng = np.random.RandomState(seed=12345)
+		>>> samples = stats.norm.rvs(size=1000, random_state=rng)
+		
+		Calculate relative frequencies
+		
+		>>> res = stats.relfreq(samples, numbins=25)
+		
+		Calculate space of values for x
+		
+		>>> x = res.lowerlimit + np.linspace(0, res.binsize*res.frequency.size,
+		...                                  res.frequency.size)
+		
+		Plot relative frequency histogram
+		
+		>>> fig = plt.figure(figsize=(5, 4))
+		>>> ax = fig.add_subplot(1, 1, 1)
+		>>> ax.bar(x, res.frequency, width=res.binsize)
+		>>> ax.set_title('Relative frequency histogram')
+		>>> ax.set_xlim([x.min(), x.max()])
+		
+		>>> plt.show()
 	**/
 	static public function relfreq(a:Dynamic, ?numbins:Dynamic, ?defaultreallimits:Dynamic, ?weights:Dynamic):Dynamic;
 	/**
@@ -2208,6 +2501,10 @@ package scipy.stats.stats;
 		    Delta degrees-of-freedom. How many degrees of freedom to adjust
 		    for bias in limited samples relative to the population estimate
 		    of variance. Defaults to 1.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2233,7 +2530,7 @@ package scipy.stats.stats;
 		>>> stats.sem(a, axis=None, ddof=0)
 		1.2893796958227628
 	**/
-	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Iterative sigma-clipping of array elements.
 		
@@ -2333,6 +2630,10 @@ package scipy.stats.stats;
 		    If None, compute over the whole array `a`.
 		bias : bool, optional
 		    If False, then the calculations are corrected for statistical bias.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2348,7 +2649,7 @@ package scipy.stats.stats;
 		   York. 2000.
 		   Section 2.2.24.1
 	**/
-	static public function skew(a:Dynamic, ?axis:Dynamic, ?bias:Dynamic):Dynamic;
+	static public function skew(a:Dynamic, ?axis:Dynamic, ?bias:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Tests whether the skew is different from the normal distribution.
 		
@@ -2363,6 +2664,10 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		   Axis along which statistics are calculated. Default is 0.
 		   If None, compute over the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2375,7 +2680,7 @@ package scipy.stats.stats;
 		-----
 		The sample size must be at least 8.
 	**/
-	static public function skewtest(a:Dynamic, ?axis:Dynamic):Float;
+	static public function skewtest(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Float;
 	/**
 		Calculates a Spearman rank-order correlation coefficient and the p-value
 		to test for non-correlation.
@@ -2398,15 +2703,19 @@ package scipy.stats.stats;
 		----------
 		a, b : 1D or 2D array_like, b is optional
 		    One or two 1-D or 2-D arrays containing multiple variables and
-		    observations. Each column of `a` and `b` represents a variable, and
-		    each row entry a single observation of those variables. See also
-		    `axis`. Both arrays need to have the same length in the `axis`
-		    dimension.
+		    observations. When these are 1-D, each represents a vector of
+		    observations of a single variable. For the behavior in the 2-D case,
+		    see under ``axis``, below.
+		    Both arrays need to have the same length in the ``axis`` dimension.
 		axis : int or None, optional
 		    If axis=0 (default), then each column represents a variable, with
-		    observations in the rows. If axis=0, the relationship is transposed:
+		    observations in the rows. If axis=1, the relationship is transposed:
 		    each row represents a variable, while the columns contain observations.
 		    If axis=None, then both arrays will be raveled.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2469,71 +2778,17 @@ package scipy.stats.stats;
 		>>> stats.spearmanr(xint)
 		(0.052760927029710199, 0.60213045837062351)
 	**/
-	static public function spearmanr(a:Dynamic, ?b:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function spearmanr(a:Dynamic, ?b:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Sums elements of the input array, and returns the square(s) of that sum.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		axis : int or None, optional
-		    Axis along which to calculate. Default is 0. If None, compute over
-		    the whole array `a`.
-		
-		Returns
-		-------
-		square_of_sums : float or ndarray
-		    The square of the sum over `axis`.
-		
-		See also
-		--------
-		ss : The sum of squares (the opposite of `square_of_sums`).
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> a = np.arange(20).reshape(5,4)
-		>>> stats.square_of_sums(a)
-		array([ 1600.,  2025.,  2500.,  3025.])
-		>>> stats.square_of_sums(a, axis=None)
-		36100.0
+		`square_of_sums` is deprecated!
+		scipy.stats.square_of_sums is deprecated in scipy 0.17.0
 	**/
-	static public function square_of_sums(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function square_of_sums(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Squares each element of the input array, and returns the sum(s) of that.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		axis : int or None, optional
-		    Axis along which to calculate. Default is 0. If None, compute over
-		    the whole array `a`.
-		
-		Returns
-		-------
-		ss : ndarray
-		    The sum along the given axis for (a**2).
-		
-		See also
-		--------
-		square_of_sums : The square(s) of the sum(s) (the opposite of `ss`).
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> a = np.array([1., 2., 5.])
-		>>> stats.ss(a)
-		30.0
-		
-		And calculating along an axis:
-		
-		>>> b = np.array([[1., 2., 5.], [2., 5., 6.]])
-		>>> stats.ss(b, axis=1)
-		array([ 30., 65.])
+		`ss` is deprecated!
+		scipy.stats.ss is deprecated in scipy 0.17.0
 	**/
-	static public function ss(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function ss(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Computes the Theil-Sen estimator for a set of points (x, y).
@@ -2615,38 +2870,44 @@ package scipy.stats.stats;
 	**/
 	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
-		Clip array to a given value.
+		`threshold` is deprecated!
+		stats.threshold is deprecated in scipy 0.17.0
 		
-		Similar to numpy.clip(), except that values less than `threshmin` or
-		greater than `threshmax` are replaced by `newval`, instead of by
-		`threshmin` and `threshmax` respectively.
 		
-		Parameters
-		----------
-		a : array_like
-		    Data to threshold.
-		threshmin : float, int or None, optional
-		    Minimum threshold, defaults to None.
-		threshmax : float, int or None, optional
-		    Maximum threshold, defaults to None.
-		newval : float or int, optional
-		    Value to put in place of values in `a` outside of bounds.
-		    Defaults to 0.
+		    Clip array to a given value.
 		
-		Returns
-		-------
-		out : ndarray
-		    The clipped input array, with values less than `threshmin` or
-		    greater than `threshmax` replaced with `newval`.
+		    Similar to numpy.clip(), except that values less than `threshmin` or
+		    greater than `threshmax` are replaced by `newval`, instead of by
+		    `threshmin` and `threshmax` respectively.
 		
-		Examples
-		--------
-		>>> a = np.array([9, 9, 6, 3, 1, 6, 1, 0, 0, 8])
-		>>> from scipy import stats
-		>>> stats.threshold(a, threshmin=2, threshmax=8, newval=-1)
-		array([-1, -1,  6,  3, -1,  6, -1, -1, -1,  8])
+		    Parameters
+		    ----------
+		    a : array_like
+		        Data to threshold.
+		    threshmin : float, int or None, optional
+		        Minimum threshold, defaults to None.
+		    threshmax : float, int or None, optional
+		        Maximum threshold, defaults to None.
+		    newval : float or int, optional
+		        Value to put in place of values in `a` outside of bounds.
+		        Defaults to 0.
+		
+		    Returns
+		    -------
+		    out : ndarray
+		        The clipped input array, with values less than `threshmin` or
+		        greater than `threshmax` replaced with `newval`.
+		
+		    Examples
+		    --------
+		    >>> a = np.array([9, 9, 6, 3, 1, 6, 1, 0, 0, 8])
+		    >>> from scipy import stats
+		    >>> stats.threshold(a, threshmin=2, threshmax=8, newval=-1)
+		    array([-1, -1,  6,  3, -1,  6, -1, -1, -1,  8])
+		
+		    
 	**/
-	static public function threshold(a:Dynamic, ?threshmin:Dynamic, ?threshmax:Dynamic, ?newval:Dynamic):Dynamic;
+	static public function threshold(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		tiecorrect(rankvals)
 		
@@ -2707,12 +2968,29 @@ package scipy.stats.stats;
 		inclusive : {True, False}, optional
 		    This flag determines whether values exactly equal to the upper limit
 		    are included.  The default value is True.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
-		tmax : float
+		tmax : float, int or ndarray
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tmax(x)
+		19
+		
+		>>> stats.tmax(x, 13)
+		13
+		
+		>>> stats.tmax(x, 13, inclusive=False)
+		12
 	**/
-	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Compute the trimmed mean.
 		
@@ -2732,12 +3010,27 @@ package scipy.stats.stats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to compute test. Default is None.
 		
 		Returns
 		-------
 		tmean : float
+		
+		See also
+		--------
+		trim_mean : returns mean after trimming a proportion from both tails.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tmean(x)
+		9.5
+		>>> stats.tmean(x, (3,17))
+		10.0
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the trimmed minimum
 		
@@ -2754,24 +3047,42 @@ package scipy.stats.stats;
 		    When lowerlimit is None, then all values are used. The default value
 		    is None.
 		axis : int or None, optional
-		    Axis along which to operate. Default is 0. If None, compute over the whole
-		    array `a`.
+		    Axis along which to operate. Default is 0. If None, compute over the
+		    whole array `a`.
 		inclusive : {True, False}, optional
 		    This flag determines whether values exactly equal to the lower limit
 		    are included.  The default value is True.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
-		tmin : float
+		tmin : float, int or ndarray
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tmin(x)
+		0
+		
+		>>> stats.tmin(x, 13)
+		13
+		
+		>>> stats.tmin(x, 13, inclusive=False)
+		14
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
-		Slices off a proportion of items from ONE end of the passed array
-		distribution.
+		Slices off a proportion from ONE end of the passed array distribution.
 		
 		If `proportiontocut` = 0.1, slices off 'leftmost' or 'rightmost'
-		10% of scores.  Slices off LESS if proportion results in a non-integer
-		slice index (i.e., conservatively slices off `proportiontocut` ).
+		10% of scores. The lowest or highest values are trimmed (depending on
+		the tail).
+		Slices off less if proportion results in a non-integer slice index
+		(i.e., conservatively slices off `proportiontocut` ).
 		
 		Parameters
 		----------
@@ -2781,20 +3092,24 @@ package scipy.stats.stats;
 		    Fraction to cut off of 'left' or 'right' of distribution
 		tail : {'left', 'right'}, optional
 		    Defaults to 'right'.
+		axis : int or None, optional
+		    Axis along which to trim data. Default is 0. If None, compute over
+		    the whole array `a`.
 		
 		Returns
 		-------
 		trim1 : ndarray
-		    Trimmed version of array `a`
+		    Trimmed version of array `a`. The order of the trimmed content is
+		    undefined.
 	**/
-	static public function trim1(a:Dynamic, proportiontocut:Dynamic, ?tail:Dynamic):Dynamic;
+	static public function trim1(a:Dynamic, proportiontocut:Dynamic, ?tail:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Return mean of array after trimming distribution from both lower and upper
-		tails.
+		Return mean of array after trimming distribution from both tails.
 		
 		If `proportiontocut` = 0.1, slices off 'leftmost' and 'rightmost' 10% of
-		scores. Slices off LESS if proportion results in a non-integer slice
-		index (i.e., conservatively slices off `proportiontocut` ).
+		scores. The input is sorted before slicing. Slices off less if proportion
+		results in a non-integer slice index (i.e., conservatively slices off
+		`proportiontocut` ).
 		
 		Parameters
 		----------
@@ -2814,6 +3129,7 @@ package scipy.stats.stats;
 		See Also
 		--------
 		trimboth
+		tmean : compute the trimmed mean ignoring values outside given `limits`.
 		
 		Examples
 		--------
@@ -2839,10 +3155,10 @@ package scipy.stats.stats;
 		
 		Slices off the passed proportion of items from both ends of the passed
 		array (i.e., with `proportiontocut` = 0.1, slices leftmost 10% **and**
-		rightmost 10% of scores).  You must pre-sort the array if you want
-		'proper' trimming.  Slices off less if proportion results in a
-		non-integer slice index (i.e., conservatively slices off
-		`proportiontocut`).
+		rightmost 10% of scores). The trimmed values are the lowest and
+		highest ones.
+		Slices off less if proportion results in a non-integer slice index (i.e.,
+		conservatively slices off`proportiontocut`).
 		
 		Parameters
 		----------
@@ -2857,7 +3173,8 @@ package scipy.stats.stats;
 		Returns
 		-------
 		out : ndarray
-		    Trimmed version of array `a`.
+		    Trimmed version of array `a`. The order of the trimmed content
+		    is undefined.
 		
 		See Also
 		--------
@@ -2891,6 +3208,11 @@ package scipy.stats.stats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. Default is 0. If None, compute over the
+		    whole array `a`.
+		ddof : int, optional
+		    Delta degrees of freedom.  Default is 1.
 		
 		Returns
 		-------
@@ -2900,8 +3222,17 @@ package scipy.stats.stats;
 		-----
 		`tsem` uses unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tsem(x)
+		1.3228756555322954
+		>>> stats.tsem(x, (3,17))
+		1.1547005383792515
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
 		Compute the trimmed sample standard deviation
 		
@@ -2921,6 +3252,11 @@ package scipy.stats.stats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. Default is 0. If None, compute over the
+		    whole array `a`.
+		ddof : int, optional
+		    Delta degrees of freedom.  Default is 1.
 		
 		Returns
 		-------
@@ -2930,8 +3266,17 @@ package scipy.stats.stats;
 		-----
 		`tstd` computes the unbiased sample standard deviation, i.e. it uses a
 		correction factor ``n / (n - 1)``.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tstd(x)
+		5.9160797830996161
+		>>> stats.tstd(x, (3,17))
+		4.4721359549995796
 	**/
-	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tstd(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
 		
@@ -2949,6 +3294,10 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		    Axis along which to compute test. If None, compute over the whole
 		    array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -2984,7 +3333,7 @@ package scipy.stats.stats;
 		       [ 2.77025808,  4.11038784]]), array([[  4.99613833e-01,   9.65686743e-01],
 		       [  7.89094663e-03,   1.49986458e-04]]))
 	**/
-	static public function ttest_1samp(a:Dynamic, popmean:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function ttest_1samp(a:Dynamic, popmean:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Calculates the T-test for the means of TWO INDEPENDENT samples of scores.
 		
@@ -3006,6 +3355,10 @@ package scipy.stats.stats;
 		    If False, perform Welch's t-test, which does not assume equal
 		    population variance [2]_.
 		    .. versionadded:: 0.11.0
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		
 		Returns
@@ -3071,7 +3424,7 @@ package scipy.stats.stats;
 		>>> stats.ttest_ind(rvs1, rvs5, equal_var = False)
 		(-0.94365973617132992, 0.34744170334794122)
 	**/
-	static public function ttest_ind(a:Dynamic, b:Dynamic, ?axis:Dynamic, ?equal_var:Dynamic):Dynamic;
+	static public function ttest_ind(a:Dynamic, b:Dynamic, ?axis:Dynamic, ?equal_var:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		T-test for means of two independent samples from descriptive statistics.
 		
@@ -3134,6 +3487,10 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		    Axis along which to compute test. If None, compute over the whole
 		    arrays, `a`, and `b`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
 		
 		Returns
 		-------
@@ -3173,7 +3530,7 @@ package scipy.stats.stats;
 		>>> stats.ttest_rel(rvs1,rvs3)
 		(-3.9995108708727933, 7.3082402191726459e-005)
 	**/
-	static public function ttest_rel(a:Dynamic, b:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function ttest_rel(a:Dynamic, b:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		Compute the trimmed variance
 		
@@ -3193,6 +3550,11 @@ package scipy.stats.stats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. Default is 0. If None, compute over the
+		    whole array `a`.
+		ddof : int, optional
+		    Delta degrees of freedom.  Default is 1.
 		
 		Returns
 		-------
@@ -3203,8 +3565,17 @@ package scipy.stats.stats;
 		-----
 		`tvar` computes the unbiased sample variance, i.e. it uses a correction
 		factor ``n / (n - 1)``.
+		
+		Examples
+		--------
+		>>> from scipy import stats
+		>>> x = np.arange(20)
+		>>> stats.tvar(x)
+		35.0
+		>>> stats.tvar(x, (3,17))
+		20.0
 	**/
-	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
 		Computes the coefficient of variation, the ratio of the biased standard
 		deviation to the mean.
@@ -3216,6 +3587,15 @@ package scipy.stats.stats;
 		axis : int or None, optional
 		    Axis along which to calculate the coefficient of variation. Default
 		    is 0. If None, compute over the whole array `a`.
+		nan_policy : {'propagate', 'raise', 'omit'}, optional
+		    Defines how to handle when input contains nan. 'propagate' returns nan,
+		    'raise' throws an error, 'omit' performs the calculations ignoring nan
+		    values. Default is 'propagate'.
+		
+		Returns
+		-------
+		variation : ndarray
+		    The calculated variation along the requested axis.
 		
 		References
 		----------
@@ -3223,7 +3603,7 @@ package scipy.stats.stats;
 		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
 		   York. 2000.
 	**/
-	static public function variation(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function variation(a:Dynamic, ?axis:Dynamic, ?nan_policy:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

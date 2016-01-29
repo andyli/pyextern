@@ -138,6 +138,9 @@ package pandas.io.pytables;
 	public function infer(handler:Dynamic):Dynamic;
 	static public var is_an_indexable : Dynamic;
 	static public var is_data_indexable : Dynamic;
+	/**
+		return whether I am an indexed column 
+	**/
 	public var is_indexed : Dynamic;
 	/**
 		maybe set a string col itemsize:

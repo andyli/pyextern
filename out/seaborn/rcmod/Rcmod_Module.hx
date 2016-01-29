@@ -47,6 +47,7 @@ package seaborn.rcmod;
 		color_palette : define the color palette for a plot
 	**/
 	static public function axes_style(?style:Dynamic, ?rc:Dynamic):Dynamic;
+	static public var mpl_ge_150 : Dynamic;
 	/**
 		Return a parameter dict to scale elements of the figure.
 		

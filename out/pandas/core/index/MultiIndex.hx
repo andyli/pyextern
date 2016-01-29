@@ -207,6 +207,10 @@ package pandas.core.index;
 	static public var _allow_index_ops : Dynamic;
 	static public var _allow_period_index_ops : Dynamic;
 	static public function _arrmap(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check value is valid for scalar op 
+	**/
+	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
 	/**
@@ -215,6 +219,7 @@ package pandas.core.index;
 	**/
 	public var _bounds : Dynamic;
 	static public var _box_scalars : Dynamic;
+	static public var _can_hold_na : Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -244,8 +249,15 @@ package pandas.core.index;
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
+	/**
+		class constructor (for this class it's just `__class__`
+	**/
 	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Convert value to be insertable to ndarray 
+	**/
+	public function _convert_for_op(value:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
 		and we have a mixed index (e.g. number/labels). figure out
@@ -352,6 +364,7 @@ package pandas.core.index;
 	static public var _is_numeric_dtype : Dynamic;
 	public var _is_v1 : Dynamic;
 	public var _is_v2 : Dynamic;
+	static public var _isnan : Dynamic;
 	/**
 		The join method *only* affects the level of the resulting
 		MultiIndex. Otherwise it just exactly aligns the Index data to the
@@ -399,6 +412,7 @@ package pandas.core.index;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
 	static public var _names : Dynamic;
+	static public var _nan_idxs : Dynamic;
 	static public function _outer_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _partial_tup_index(tup:Dynamic, ?side:Dynamic):Dynamic;
 	public function _possibly_promote(other:Dynamic):Dynamic;
@@ -475,6 +489,10 @@ package pandas.core.index;
 		return an array repr of this object, potentially casting to object
 	**/
 	public function _to_embed(?keep_tz:Dynamic):Dynamic;
+	/**
+		convert to object if we are a categorical 
+	**/
+	public function _to_safe_for_reshape():Dynamic;
 	static public var _tuple_index : Dynamic;
 	static public var _tuples : Dynamic;
 	static public var _typ : Dynamic;
@@ -698,6 +716,24 @@ package pandas.core.index;
 		uniques : the unique Index
 	**/
 	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	/**
+		Fill NA/NaN values with the specified value
+		
+		Parameters
+		----------
+		value : scalar
+		    Scalar value to use to fill holes (e.g. 0).
+		    This value cannot be a list-likes.
+		downcast : dict, default is None
+		    a dict of item->dtype of what to downcast if possible,
+		    or the string 'infer' which will try to downcast to an appropriate
+		    equal type (e.g. float64 to int64 if possible)
+		
+		Returns
+		-------
+		filled : Index
+	**/
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
@@ -1094,6 +1130,29 @@ package pandas.core.index;
 	**/
 	public function max():Dynamic;
 	/**
+		Memory usage of my values
+		
+		Parameters
+		----------
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		bytes used
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?deep:Dynamic):Dynamic;
+	/**
 		The minimum value of the object 
 	**/
 	public function min():Dynamic;
@@ -1435,7 +1494,7 @@ package pandas.core.index;
 		>>> s.str.split('_')
 		>>> s.str.replace('_', '')
 	**/
-	static public function str(series:Dynamic):Dynamic;
+	static public function str(data:Dynamic):Dynamic;
 	/**
 		return the strides of the underlying data 
 	**/
@@ -1459,7 +1518,6 @@ package pandas.core.index;
 		
 		Parameters
 		----------
-		
 		other : Index or array-like
 		result_name : str
 		
@@ -1624,6 +1682,9 @@ package pandas.core.index;
 		counts : Series
 	**/
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):pandas.Series;
+	/**
+		return the underlying data as an ndarray 
+	**/
 	public var values : Dynamic;
 	/**
 		this is defined as a copy with the same identity 

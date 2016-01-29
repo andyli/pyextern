@@ -30,6 +30,10 @@ package pandas.core.internals;
 	static public function _consolidate(blocks:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
+		return a new extended blocks, givin the result 
+	**/
+	static public function _extend_blocks(result:Dynamic, ?blocks:Dynamic):Dynamic;
+	/**
 		given a tuple of shape and a list of Categorical labels, return the
 		expanded label indexer
 	**/
@@ -52,8 +56,7 @@ package pandas.core.internals;
 	**/
 	static public function _get_blkno_placements(blknos:Dynamic, blk_count:Dynamic, ?group:Dynamic):Dynamic;
 	/**
-		interpret the dtype from a scalar, upcast floats and ints
-		return the new value and the dtype 
+		interpret the dtype from a scalar 
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	static public function _interleaved_dtype(blocks:Dynamic):Dynamic;
@@ -216,6 +219,12 @@ package pandas.core.internals;
 		we have a null slice 
 	**/
 	static public function is_null_slice(obj:Dynamic):Dynamic;
+	/**
+		numpy doesn't like to compare numeric arrays vs scalar string-likes
+		
+		return a boolean result if this is the case for a,b or b,a
+	**/
+	static public function is_numeric_v_string_like(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		return if we are a sparse array 
 	**/

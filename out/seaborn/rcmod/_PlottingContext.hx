@@ -1,6 +1,10 @@
 /* This file is generated, do not edit! */
 package seaborn.rcmod;
 @:pythonImport("seaborn.rcmod", "_PlottingContext") extern class _PlottingContext {
+	/**
+		Call self as a function.
+	**/
+	public function __call__(func:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		True if D has a key k, else False.
@@ -21,18 +25,12 @@ package seaborn.rcmod;
 	**/
 	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Open the context.
-	**/
 	public function __enter__():Dynamic;
 	/**
 		Return self==value.
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
-	/**
-		Close the context.
-	**/
-	public function __exit__(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function __exit__(exc_type:Dynamic, exc_value:Dynamic, exc_tb:Dynamic):Dynamic;
 	/**
 		default object formatter
 	**/
@@ -129,6 +127,44 @@ package seaborn.rcmod;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _keys : Dynamic;
+	/**
+		Set the plotting context parameters.
+		
+		This affects things like the size of the labels, lines, and other
+		elements of the plot, but not the overall style. The base context
+		is "notebook", and the other contexts are "paper", "talk", and "poster",
+		which are version of the notebook parameters scaled by .8, 1.3, and 1.6,
+		respectively.
+		
+		Parameters
+		----------
+		context : dict, None, or one of {paper, notebook, talk, poster}
+		    A dictionary of parameters or the name of a preconfigured set.
+		font_scale : float, optional
+		    Separate scaling factor to independently scale the size of the
+		    font elements.
+		rc : dict, optional
+		    Parameter mappings to override the values in the preset seaborn
+		    context dictionaries. This only updates parameters that are
+		    considered part of the context definition.
+		
+		Examples
+		--------
+		>>> set_context("paper")
+		
+		>>> set_context("talk", font_scale=1.4)
+		
+		>>> set_context("talk", rc={"lines.linewidth": 2})
+		
+		See Also
+		--------
+		plotting_context : return a dictionary of rc parameters, or use in
+		                   a ``with`` statement to temporarily set the context.
+		set_style : set the default parameters for figure style
+		set_palette : set the default color palette for figures
+	**/
+	static public function _set(?context:Dynamic, ?font_scale:Dynamic, ?rc:Dynamic):Dynamic;
 	/**
 		D.clear() -> None.  Remove all items from D.
 	**/

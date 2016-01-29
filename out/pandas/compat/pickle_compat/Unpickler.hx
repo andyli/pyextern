@@ -46,7 +46,7 @@ package pandas.compat.pickle_compat;
 		The argument *file* must have two methods, a read() method that
 		takes an integer argument, and a readline() method that requires
 		no arguments.  Both methods should return bytes.  Thus *file*
-		can be a binary file object opened for reading, a io.BytesIO
+		can be a binary file object opened for reading, an io.BytesIO
 		object, or any other custom object that meets this interface.
 		
 		The file-like object must have two methods, a read() method
@@ -76,7 +76,7 @@ package pandas.compat.pickle_compat;
 		The argument *file* must have two methods, a read() method that
 		takes an integer argument, and a readline() method that requires
 		no arguments.  Both methods should return bytes.  Thus *file*
-		can be a binary file object opened for reading, a io.BytesIO
+		can be a binary file object opened for reading, an io.BytesIO
 		object, or any other custom object that meets this interface.
 		
 		The file-like object must have two methods, a read() method
@@ -166,6 +166,7 @@ package pandas.compat.pickle_compat;
 	public function load_append():Dynamic;
 	public function load_appends():Dynamic;
 	public function load_binbytes():Dynamic;
+	public function load_binbytes8():Dynamic;
 	public function load_binfloat():Dynamic;
 	public function load_binget():Dynamic;
 	public function load_binint():Dynamic;

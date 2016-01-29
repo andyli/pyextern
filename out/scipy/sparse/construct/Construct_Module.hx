@@ -46,6 +46,7 @@ package scipy.sparse.construct;
 		
 		Examples
 		--------
+		>>> from scipy.sparse import coo_matrix, block_diag
 		>>> A = coo_matrix([[1, 2], [3, 4]])
 		>>> B = coo_matrix([[5], [6]])
 		>>> C = coo_matrix([[7]])
@@ -106,9 +107,9 @@ package scipy.sparse.construct;
 		diagonals : sequence of array_like
 		    Sequence of arrays containing the matrix diagonals,
 		    corresponding to `offsets`.
-		offsets : sequence of int
+		offsets : sequence of int or an int, optional
 		    Diagonals to set:
-		      - k = 0  the main diagonal
+		      - k = 0  the main diagonal (default)
 		      - k > 0  the k-th upper diagonal
 		      - k < 0  the k-th lower diagonal
 		shape : tuple of int, optional
@@ -142,6 +143,7 @@ package scipy.sparse.construct;
 		
 		Examples
 		--------
+		>>> from scipy.sparse import diags
 		>>> diagonals = [[1, 2, 3, 4], [1, 2, 3], [1, 2]]
 		>>> diags(diagonals, [0, -1, 2]).toarray()
 		array([[1, 0, 1, 0],
@@ -168,7 +170,7 @@ package scipy.sparse.construct;
 		       [ 0.,  0.,  0.,  3.],
 		       [ 0.,  0.,  0.,  0.]])
 	**/
-	static public function diags(diagonals:Dynamic, offsets:Dynamic, ?shape:Dynamic, ?format:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function diags(diagonals:Dynamic, ?offsets:Dynamic, ?shape:Dynamic, ?format:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Sparse matrix with ones on diagonal
@@ -178,14 +180,14 @@ package scipy.sparse.construct;
 		
 		Parameters
 		----------
-		n : int
+		m : int
 		    Number of rows in the matrix.
-		m : int, optional
-		    Number of columns. Default: n
+		n : int, optional
+		    Number of columns. Default: `m`.
 		k : int, optional
-		    Diagonal to place ones on. Default: 0 (main diagonal)
+		    Diagonal to place ones on. Default: 0 (main diagonal).
 		dtype : dtype, optional
-		    Data type of the matrix
+		    Data type of the matrix.
 		format : str, optional
 		    Sparse format of the result, e.g. format="csr", etc.
 		
@@ -267,6 +269,7 @@ package scipy.sparse.construct;
 		
 		Examples
 		--------
+		>>> from scipy.sparse import identity
 		>>> identity(3).toarray()
 		array([[ 1.,  0.,  0.],
 		       [ 0.,  1.,  0.],
@@ -393,7 +396,7 @@ package scipy.sparse.construct;
 		
 		Examples
 		--------
-		>>> from scipy.sparse import construct
+		>>> from scipy.sparse import random
 		>>> from scipy import stats
 		>>> class CustomRandomState(object):
 		...     def randint(self, k):
@@ -401,9 +404,9 @@ package scipy.sparse.construct;
 		...         return i - i % 2
 		>>> rs = CustomRandomState()
 		>>> rvs = stats.poisson(25, loc=10).rvs
-		>>> S = construct.random(3, 4, density=0.25, random_state=rs, data_rvs=rvs)
+		>>> S = random(3, 4, density=0.25, random_state=rs, data_rvs=rvs)
 		>>> S.A
-		array([[ 36.,   0.,  33.,   0.],
+		array([[ 36.,   0.,  33.,   0.],   # random
 		       [  0.,   0.,   0.,   0.],
 		       [  0.,   0.,  36.,   0.]])
 		
@@ -436,6 +439,7 @@ package scipy.sparse.construct;
 		
 		Examples
 		--------
+		>>> from scipy.sparse import spdiags
 		>>> data = np.array([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]])
 		>>> diags = np.array([0, -1, 2])
 		>>> spdiags(data, diags, 4, 4).toarray()

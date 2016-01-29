@@ -159,6 +159,7 @@ package pandas.tseries.holiday;
 		other : AbstractHolidayCalendar instance/subclass or array of Holiday objects
 	**/
 	static public function merge_class(base:Dynamic, other:Dynamic):Dynamic;
+	public function rule_from_name(name:Dynamic):Dynamic;
 	static public var rules : Dynamic;
 	static public var start_date : Dynamic;
 }

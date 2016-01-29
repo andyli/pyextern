@@ -104,6 +104,10 @@ package matplotlib.axes._base;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		        
+	**/
+	public function _add_text(txt:Dynamic):Dynamic;
+	/**
 		Helper for :func:`~matplotlib.pyplot.gci`;
 		do not use elsewhere.
 	**/
@@ -995,46 +999,46 @@ package matplotlib.axes._base;
 		Valid :class:`~matplotlib.lines.Line2D` kwargs are
 		
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  antialiased or aa: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color or c: any matplotlib color         
-		  contains: a callable function         
-		  dash_capstyle: ['butt' | 'round' | 'projecting']         
-		  dash_joinstyle: ['miter' | 'round' | 'bevel']         
-		  dashes: sequence of on/off ink in points         
-		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' |                   'steps-post']         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none']         
-		  gid: an id string         
-		  label: string or anything printable with '%s' conversion.         
-		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' |                    (offset, on-off-dash-seq) |                    ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` |                    ``' '`` | ``''``]
-		  linewidth or lw: float value in points         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  antialiased or aa: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color or c: any matplotlib color 
+		  contains: a callable function 
+		  dash_capstyle: ['butt' | 'round' | 'projecting'] 
+		  dash_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  dashes: sequence of on/off ink in points 
+		  drawstyle: ['default' | 'steps' | 'steps-pre' | 'steps-mid' | 'steps-post'] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fillstyle: ['full' | 'left' | 'right' | 'bottom' | 'top' | 'none'] 
+		  gid: an id string 
+		  label: string or anything printable with '%s' conversion. 
+		  linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw: float value in points 
 		  marker: :mod:`A valid marker style <matplotlib.markers>`
-		  markeredgecolor or mec: any matplotlib color         
-		  markeredgewidth or mew: float value in points         
-		  markerfacecolor or mfc: any matplotlib color         
-		  markerfacecoloralt or mfcalt: any matplotlib color         
-		  markersize or ms: float         
-		  markevery: [None | int | length-2 tuple of int | slice |         list/array of int | float | length-2 tuple of float]
+		  markeredgecolor or mec: any matplotlib color 
+		  markeredgewidth or mew: float value in points 
+		  markerfacecolor or mfc: any matplotlib color 
+		  markerfacecoloralt or mfcalt: any matplotlib color 
+		  markersize or ms: float 
+		  markevery: [None | int | length-2 tuple of int | slice | list/array of int | float | length-2 tuple of float]
 		  path_effects: unknown
-		  picker: float distance in points or callable pick function         ``fn(artist, event)``         
-		  pickradius: float distance in points         
-		  rasterized: [True | False | None]         
+		  picker: float distance in points or callable pick function ``fn(artist, event)`` 
+		  pickradius: float distance in points 
+		  rasterized: [True | False | None] 
 		  sketch_params: unknown
 		  snap: unknown
-		  solid_capstyle: ['butt' | 'round' |  'projecting']         
-		  solid_joinstyle: ['miter' | 'round' | 'bevel']         
-		  transform: a :class:`matplotlib.transforms.Transform` instance         
-		  url: a url string         
-		  visible: [True | False]         
-		  xdata: 1D array         
-		  ydata: 1D array         
-		  zorder: any number         
+		  solid_capstyle: ['butt' | 'round' |  'projecting'] 
+		  solid_joinstyle: ['miter' | 'round' | 'bevel'] 
+		  transform: a :class:`matplotlib.transforms.Transform` instance 
+		  url: a url string 
+		  visible: [True | False] 
+		  xdata: 1D array 
+		  ydata: 1D array 
+		  zorder: any number 
 	**/
 	public function grid(?b:Dynamic, ?which:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1581,7 +1585,7 @@ package matplotlib.axes._base;
 		    Can also be `None` to reset to the cycle defined by the
 		    current style.
 		
-		label : name
+		label : str
 		    The property key. Must be a valid `Artist` property.
 		    For example, 'color' or 'linestyle'. Aliases are allowed,
 		    such as 'c' for 'color' and 'lw' for 'linewidth'.
@@ -1799,47 +1803,47 @@ package matplotlib.axes._base;
 		*kwargs* set the :class:`~matplotlib.text.Text` properties.
 		Valid properties are
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 		
 		ACCEPTS: sequence of strings
 	**/
@@ -1987,47 +1991,47 @@ package matplotlib.axes._base;
 		*kwargs* set :class:`~matplotlib.text.Text` properties for the labels.
 		Valid properties are
 		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque)         
-		  animated: [True | False]         
-		  axes: an :class:`~matplotlib.axes.Axes` instance         
-		  backgroundcolor: any matplotlib color         
-		  bbox: FancyBboxPatch prop dict         
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance         
-		  clip_on: [True | False]         
-		  clip_path: [ (:class:`~matplotlib.path.Path`,         :class:`~matplotlib.transforms.Transform`) |         :class:`~matplotlib.patches.Patch` | None ]         
-		  color: any matplotlib color         
-		  contains: a callable function         
-		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' |                   'monospace' ]         
-		  figure: a :class:`matplotlib.figure.Figure` instance         
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance         
-		  gid: an id string         
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ]         
-		  label: string or anything printable with '%s' conversion.         
-		  linespacing: float (multiple of font size)         
-		  multialignment: ['left' | 'right' | 'center' ]         
+		  alpha: float (0.0 transparent through 1.0 opaque) 
+		  animated: [True | False] 
+		  axes: an :class:`~matplotlib.axes.Axes` instance 
+		  backgroundcolor: any matplotlib color 
+		  bbox: FancyBboxPatch prop dict 
+		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
+		  clip_on: [True | False] 
+		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
+		  color: any matplotlib color 
+		  contains: a callable function 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  figure: a :class:`matplotlib.figure.Figure` instance 
+		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
+		  gid: an id string 
+		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
+		  label: string or anything printable with '%s' conversion. 
+		  linespacing: float (multiple of font size) 
+		  multialignment: ['left' | 'right' | 'center' ] 
 		  path_effects: unknown
-		  picker: [None|float|boolean|callable]         
-		  position: (x,y)         
-		  rasterized: [True | False | None]         
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ]         
+		  picker: [None|float|boolean|callable] 
+		  position: (x,y) 
+		  rasterized: [True | False | None] 
+		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
 		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' |                   'medium' | 'large' | 'x-large' | 'xx-large' ]         
+		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
 		  sketch_params: unknown
 		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' |                   'extra-condensed' | 'condensed' | 'semi-condensed' |                   'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' |                   'ultra-expanded' ]         
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique']         
-		  text: string or anything printable with '%s' conversion.         
-		  transform: :class:`~matplotlib.transforms.Transform` instance         
-		  url: a url string         
+		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
+		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
+		  text: string or anything printable with '%s' conversion. 
+		  transform: :class:`~matplotlib.transforms.Transform` instance 
+		  url: a url string 
 		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ]         
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ]         
-		  visible: [True | False]         
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' |                   'normal' | 'regular' | 'book' | 'medium' | 'roman' |                   'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' |                   'extra bold' | 'black' ]         
+		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  visible: [True | False] 
+		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
-		  x: float         
-		  y: float         
-		  zorder: any number         
+		  x: float 
+		  y: float 
+		  zorder: any number 
 		
 		ACCEPTS: sequence of strings
 	**/

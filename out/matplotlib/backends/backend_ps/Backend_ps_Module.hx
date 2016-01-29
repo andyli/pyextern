@@ -87,22 +87,22 @@ package matplotlib.backends.backend_ps;
 		file.  The return value is a pair (fd, name) where fd is the
 		file descriptor returned by os.open, and name is the filename.
 		
-		If 'suffix' is specified, the file name will end with that suffix,
+		If 'suffix' is not None, the file name will end with that suffix,
 		otherwise there will be no suffix.
 		
-		If 'prefix' is specified, the file name will begin with that prefix,
+		If 'prefix' is not None, the file name will begin with that prefix,
 		otherwise a default prefix is used.
 		
-		If 'dir' is specified, the file will be created in that directory,
+		If 'dir' is not None, the file will be created in that directory,
 		otherwise a default directory is used.
 		
 		If 'text' is specified and true, the file is opened in text
 		mode.  Else (the default) the file is opened in binary mode.  On
 		some operating systems, this makes no difference.
 		
-		suffix, prefix and dir must all contain the same type if specified.
-		If they are bytes, the returned name will be bytes; str otherwise.
-		A value of None will cause an appropriate default to be used.
+		If any of 'suffix', 'prefix' and 'dir' are not None, they must be the
+		same type.  If they are bytes, the returned name will be bytes; str
+		otherwise.
 		
 		The file is readable and writable only by the creating user ID.
 		If the operating system uses permission bits to indicate whether a

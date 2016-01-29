@@ -66,7 +66,9 @@ package pandas.core.strings;
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -635,4 +637,32 @@ package pandas.core.strings;
 		1    another line\nto be\nwrapped
 	**/
 	static public function str_wrap(arr:Dynamic, width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Specialized Cython take which sets NaN values in one pass
+		
+		Parameters
+		----------
+		arr : ndarray
+		    Input array
+		indexer : ndarray
+		    1-D array of indices to take, subarrays corresponding to -1 value
+		    indicies are filed with fill_value
+		axis : int, default 0
+		    Axis to take from
+		out : ndarray or None, default None
+		    Optional output array, must be appropriate type to hold input and
+		    fill_value together, if indexer has any -1 value entries; call
+		    common._maybe_promote to determine this type for any fill_value
+		fill_value : any, default np.nan
+		    Fill value to replace -1 values with
+		mask_info : tuple of (ndarray, boolean)
+		    If provided, value should correspond to:
+		        (indexer != -1, (indexer != -1).any())
+		    If not provided, it will be computed internally if necessary
+		allow_fill : boolean, default True
+		    If False, indexer is assumed to contain no -1 values so no filling
+		    will be done.  This short-circuits computation of a mask.  Result is
+		    undefined if allow_fill == False and -1 is present in indexer.
+	**/
+	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 }

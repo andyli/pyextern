@@ -14,7 +14,6 @@ package inspect;
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
-	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
 		default dir() implementation
@@ -45,10 +44,6 @@ package inspect;
 		Return self as a plain tuple.  Used by copy and pickle.
 	**/
 	public function __getnewargs__():Dynamic;
-	/**
-		Exclude the OrderedDict from pickling
-	**/
-	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/

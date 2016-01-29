@@ -51,7 +51,7 @@ package pandas;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.DatetimeIndex;
+	static public function bdate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
 		along the other axes. Can also add a layer of hierarchical indexing on the
@@ -248,7 +248,7 @@ package pandas;
 		-------
 		rng : DatetimeIndex
 	**/
-	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.DatetimeIndex;
+	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
 		describe_option(pat, _print_desc=False)
 		
@@ -400,9 +400,9 @@ package pandas;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -630,6 +630,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewma(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic):Dynamic;
 	/**
@@ -699,6 +702,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmcorr(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -768,6 +774,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmcov(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -831,6 +840,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmstd(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -894,6 +906,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmvar(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -957,6 +972,9 @@ package pandas;
 		relative positions. For example, the weights of x and y used in calculating
 		the final weighted average of [x, None, y] are 1-alpha and 1 (if adjust is
 		True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
 	**/
 	static public function ewmvol(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
@@ -1148,8 +1166,6 @@ package pandas;
 	**/
 	static public function expanding_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		    O(N log(window)) implementation using skip list
-		    
 		Expanding median.
 		
 		Parameters
@@ -1546,9 +1562,9 @@ package pandas;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -2203,6 +2219,9 @@ package pandas;
 		    Add all row / columns (e.g. for subtotal / grand totals)
 		dropna : boolean, default True
 		    Do not include columns whose entries are all NaN
+		margins_name : string, default 'All'
+		    Name of the row / column that will contain the totals
+		    when margins is True.
 		
 		Examples
 		--------
@@ -2231,7 +2250,7 @@ package pandas;
 		-------
 		table : DataFrame
 	**/
-	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
+	static public function pivot_table(data:Dynamic, ?values:Dynamic, ?index:Dynamic, ?columns:Dynamic, ?aggfunc:Dynamic, ?fill_value:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?margins_name:Dynamic):pandas.DataFrame;
 	static public var plot_params : Dynamic;
 	static public function pnow(?freq:Dynamic):Dynamic;
 	/**
@@ -2296,6 +2315,9 @@ package pandas;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -2401,9 +2423,12 @@ package pandas;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -2539,6 +2564,9 @@ package pandas;
 		Also supports optionally iterating or breaking of the file
 		into chunks.
 		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
+		
 		Parameters
 		----------
 		filepath_or_buffer : string or file handle / StringIO
@@ -2647,9 +2675,12 @@ package pandas;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -3033,8 +3064,8 @@ package pandas;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -3094,8 +3125,8 @@ package pandas;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		index_col : string, optional, default: None
-		    Column name to use as index for the returned DataFrame object.
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point, useful for SQL result sets
@@ -3148,8 +3179,8 @@ package pandas;
 		schema : string, default None
 		    Name of SQL schema in database to query (if database flavor
 		    supports this). If None, use default schema (default).
-		index_col : string, optional, default: None
-		    Column to set as index
+		index_col : string or list of strings, optional, default: None
+		    Column(s) to set as index(MultiIndex)
 		coerce_float : boolean, default True
 		    Attempt to convert values to non-string, non-numeric objects (like
 		    decimal.Decimal) to floating point. Can result in loss of Precision.
@@ -3238,6 +3269,9 @@ package pandas;
 		
 		Also supports optionally iterating or breaking of the file
 		into chunks.
+		
+		Additional help can be found in the `online docs for IO Tools
+		<http://pandas.pydata.org/pandas-docs/stable/io.html>`_.
 		
 		Parameters
 		----------
@@ -3342,9 +3376,12 @@ package pandas;
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
 		iterator : boolean, default False
-		    Return TextFileReader object
+		    Return TextFileReader object for iteration or getting chunks with ``get_chunk()``.
 		chunksize : int, default None
-		    Return TextFileReader object for iteration
+		    Return TextFileReader object for iteration. `See IO Tools docs for more
+		    information
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
+		    ``iterator`` and ``chunksize``.
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
 		converters : dict, default None
@@ -3540,9 +3577,9 @@ package pandas;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -3934,8 +3971,6 @@ package pandas;
 	**/
 	static public function rolling_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		    O(N log(window)) implementation using skip list
-		    
 		Moving median.
 		
 		Parameters
@@ -4436,9 +4471,9 @@ package pandas;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool

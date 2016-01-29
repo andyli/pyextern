@@ -75,12 +75,21 @@ package scipy.signal.cont2discrete;
 	/**
 		State-space to transfer function.
 		
+		A, B, C, D defines a linear state-space system with `p` inputs,
+		`q` outputs, and `n` state variables.
+		
 		Parameters
 		----------
-		A, B, C, D : ndarray
-		    State-space representation of linear system.
+		A : array_like
+		    State (or system) matrix of shape ``(n, n)``
+		B : array_like
+		    Input matrix of shape ``(n, p)``
+		C : array_like
+		    Output matrix of shape ``(q, n)``
+		D : array_like
+		    Feedthrough (or feedforward) matrix of shape ``(q, p)``
 		input : int, optional
-		    For multiple-input systems, the input to use.
+		    For multiple-input systems, the index of the input to use.
 		
 		Returns
 		-------
@@ -91,17 +100,52 @@ package scipy.signal.cont2discrete;
 		den : 1-D ndarray
 		    Denominator of the resulting transfer function(s).  `den` is a sequence
 		    representation of the denominator polynomial.
+		
+		Examples
+		--------
+		Convert the state-space representation:
+		
+		.. math::
+		
+		    \dot{\textbf{x}}(t) =
+		    \begin{bmatrix} -2 & -1 \\ 1 & 0 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \\ 0 \end{bmatrix} \textbf{u}(t) \\
+		
+		    \textbf{y}(t) = \begin{bmatrix} 1 & 2 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \end{bmatrix} \textbf{u}(t)
+		
+		>>> A = [[-2, -1], [1, 0]]
+		>>> B = [[1], [0]]  # 2-dimensional column vector
+		>>> C = [[1, 2]]    # 2-dimensional row vector
+		>>> D = 1
+		
+		to the transfer function:
+		
+		.. math:: H(s) = \frac{s^2 + 3s + 3}{s^2 + 2s + 1}
+		
+		>>> from scipy.signal import ss2tf
+		>>> ss2tf(A, B, C, D)
+		(array([[1, 3, 3]]), array([ 1.,  2.,  1.]))
 	**/
 	static public function ss2tf(A:Dynamic, B:Dynamic, C:Dynamic, D:Dynamic, ?input:Dynamic):Dynamic;
 	/**
 		State-space representation to zero-pole-gain representation.
 		
+		A, B, C, D defines a linear state-space system with `p` inputs,
+		`q` outputs, and `n` state variables.
+		
 		Parameters
 		----------
-		A, B, C, D : ndarray
-		    State-space representation of linear system.
+		A : array_like
+		    State (or system) matrix of shape ``(n, n)``
+		B : array_like
+		    Input matrix of shape ``(n, p)``
+		C : array_like
+		    Output matrix of shape ``(q, n)``
+		D : array_like
+		    Feedthrough (or feedforward) matrix of shape ``(q, p)``
 		input : int, optional
-		    For multiple-input systems, the input to use.
+		    For multiple-input systems, the index of the input to use.
 		
 		Returns
 		-------
@@ -125,6 +169,39 @@ package scipy.signal.cont2discrete;
 		A, B, C, D : ndarray
 		    State space representation of the system, in controller canonical
 		    form.
+		
+		Examples
+		--------
+		Convert the transfer function:
+		
+		.. math:: H(s) = \frac{s^2 + 3s + 3}{s^2 + 2s + 1}
+		
+		>>> num = [1, 3, 3]
+		>>> den = [1, 2, 1]
+		
+		to the state-space representation:
+		
+		.. math::
+		
+		    \dot{\textbf{x}}(t) =
+		    \begin{bmatrix} -2 & -1 \\ 1 & 0 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \\ 0 \end{bmatrix} \textbf{u}(t) \\
+		
+		    \textbf{y}(t) = \begin{bmatrix} 1 & 2 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \end{bmatrix} \textbf{u}(t)
+		
+		>>> from scipy.signal import tf2ss
+		>>> A, B, C, D = tf2ss(num, den)
+		>>> A
+		array([[-2., -1.],
+		       [ 1.,  0.]])
+		>>> B
+		array([[ 1.],
+		       [ 0.]])
+		>>> C
+		array([[ 1.,  2.]])
+		>>> D
+		array([ 1.])
 	**/
 	static public function tf2ss(num:Dynamic, den:Dynamic):Dynamic;
 	/**

@@ -133,6 +133,14 @@ package scipy.signal._savitzky_golay;
 		    Whether to check that the input matrices contain only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver: str, optional
+		    Which LAPACK driver is used to solve the least-squares problem.
+		    Options are ``'gelsd'``, ``'gelsy'``, ``'gelss'``. Default
+		    (``'gelsd'``) is a good choice.  However, ``'gelsy'`` can be slightly
+		    faster on many problems.  ``'gelss'`` was used historically.  It is
+		    generally slow but uses less memory.
+		
+		    .. versionadded:: 0.17.0
 		
 		Returns
 		-------
@@ -140,25 +148,28 @@ package scipy.signal._savitzky_golay;
 		    Least-squares solution.  Return shape matches shape of `b`.
 		residues : () or (1,) or (K,) ndarray
 		    Sums of residues, squared 2-norm for each column in ``b - a x``.
-		    If rank of matrix a is < N or > M this is an empty array.
-		    If b was 1-D, this is an (1,) shape array, otherwise the shape is (K,).
+		    If rank of matrix a is ``< N`` or ``> M``, or ``'gelsy'`` is used,
+		    this is an empty array. If b was 1-D, this is an (1,) shape array,
+		    otherwise the shape is (K,).
 		rank : int
 		    Effective rank of matrix `a`.
-		s : (min(M,N),) ndarray
+		s : (min(M,N),) ndarray or None
 		    Singular values of `a`. The condition number of a is
-		    ``abs(s[0]/s[-1])``.
+		    ``abs(s[0] / s[-1])``. None is returned when ``'gelsy'`` is used.
 		
 		Raises
 		------
 		LinAlgError :
 		    If computation does not converge.
 		
+		ValueError :
+		    When parameters are wrong.
 		
 		See Also
 		--------
 		optimize.nnls : linear least squares with non-negativity constraint
 	**/
-	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function lstsq(a:Dynamic, b:Dynamic, ?cond:Dynamic, ?overwrite_a:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Compute the coefficients for a 1-d Savitzky-Golay FIR filter.
@@ -315,13 +326,14 @@ package scipy.signal._savitzky_golay;
 		
 		Examples
 		--------
+		>>> from scipy.signal import savgol_filter
 		>>> np.set_printoptions(precision=2)  # For compact display.
 		>>> x = np.array([2, 2, 5, 2, 1, 0, 1, 4, 9])
 		
 		Filter with a window length of 5 and a degree 2 polynomial.  Use
 		the defaults for all other parameters.
 		
-		>>> y = savgol_filter(x, 5, 2)
+		>>> savgol_filter(x, 5, 2)
 		array([ 1.66,  3.17,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.  ,  9.  ])
 		
 		Note that the last five values in x are samples of a parabola, so

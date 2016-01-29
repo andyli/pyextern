@@ -18,13 +18,14 @@ package scipy.constants.codata;
 	static public var _physical_constants_2002 : Dynamic;
 	static public var _physical_constants_2006 : Dynamic;
 	static public var _physical_constants_2010 : Dynamic;
+	static public var _physical_constants_2014 : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var c : Dynamic;
 	static public var division : Dynamic;
 	static public var epsilon0 : Dynamic;
 	static public var exact_values : Dynamic;
 	/**
-		Return list of codata.physical_constant keys containing a given string.
+		Return list of physical_constant keys containing a given string.
 		
 		Parameters
 		----------
@@ -72,9 +73,9 @@ package scipy.constants.codata;
 		
 		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.precision(u'proton mass')
-		4.96226989798e-08
+		>>> from scipy import constants
+		>>> constants.precision(u'proton mass')
+		1.2555138746605121e-08
 	**/
 	static public function precision(key:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -87,6 +88,7 @@ package scipy.constants.codata;
 	static public var txt2002 : Dynamic;
 	static public var txt2006 : Dynamic;
 	static public var txt2010 : Dynamic;
+	static public var txt2014 : Dynamic;
 	/**
 		Unit in physical_constants indexed by key
 		
@@ -107,8 +109,8 @@ package scipy.constants.codata;
 		
 		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.unit(u'proton mass')
+		>>> from scipy import constants
+		>>> constants.unit(u'proton mass')
 		'kg'
 	**/
 	static public function unit(key:Dynamic):Dynamic;
@@ -132,11 +134,11 @@ package scipy.constants.codata;
 		codata : Contains the description of `physical_constants`, which, as a
 		    dictionary literal object, does not itself possess a docstring.
 		
-		    Examples
+		Examples
 		--------
-		>>> from scipy.constants import codata
-		>>> codata.value('elementary charge')
-		    1.602176487e-019
+		>>> from scipy import constants
+		>>> constants.value(u'elementary charge')
+		    1.6021766208e-19
 	**/
-	static public function value(key:Dynamic):Dynamic;
+	static public function value(key:Dynamic):Float;
 }

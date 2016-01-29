@@ -43,139 +43,22 @@ package scipy.linalg.decomp_svd;
 	**/
 	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	/**
+		Round floating-point lwork returned by lapack to integer.
+		
+		Several LAPACK routines compute optimal values for LWORK, which
+		they return in a floating-point variable. However, for large
+		values of LWORK, single-precision floating point is not sufficient
+		to hold the exact value --- some LAPACK versions (<= 3.5.0 at
+		least) truncate the returned integer to single precision and in
+		some cases this can be smaller than the required value.
+	**/
+	static public function _compute_lwork(routine:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Strict check for `arr` not sharing any data with `original`,
 		under the assumption that arr = asarray(original)
 	**/
 	static public function _datacopied(arr:Dynamic, original:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Convert the input to an array.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		    Whether to use row-major (C-style) or
-		    column-major (Fortran-style) memory representation.
-		    Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		See Also
-		--------
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		asarray_chkfinite : Similar function which checks input for NaNs and Infs.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array:
-		
-		>>> a = [1, 2]
-		>>> np.asarray(a)
-		array([1, 2])
-		
-		Existing arrays are not copied:
-		
-		>>> a = np.array([1, 2])
-		>>> np.asarray(a) is a
-		True
-		
-		If `dtype` is set, array is copied only if dtype does not match:
-		
-		>>> a = np.array([1, 2], dtype=np.float32)
-		>>> np.asarray(a, dtype=np.float32) is a
-		True
-		>>> np.asarray(a, dtype=np.float64) is a
-		False
-		
-		Contrary to `asanyarray`, ndarray subclasses are not passed through:
-		
-		>>> issubclass(np.matrix, np.ndarray)
-		True
-		>>> a = np.matrix([[1, 2]])
-		>>> np.asarray(a) is a
-		False
-		>>> np.asanyarray(a) is a
-		True
-	**/
-	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
-	/**
-		Convert the input to an array, checking for NaNs or Infs.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input data, in any form that can be converted to an array.  This
-		    includes lists, lists of tuples, tuples, tuples of tuples, tuples
-		    of lists and ndarrays.  Success requires no NaNs or Infs.
-		dtype : data-type, optional
-		    By default, the data-type is inferred from the input data.
-		order : {'C', 'F'}, optional
-		     Whether to use row-major (C-style) or
-		     column-major (Fortran-style) memory representation.
-		     Defaults to 'C'.
-		
-		Returns
-		-------
-		out : ndarray
-		    Array interpretation of `a`.  No copy is performed if the input
-		    is already an ndarray.  If `a` is a subclass of ndarray, a base
-		    class ndarray is returned.
-		
-		Raises
-		------
-		ValueError
-		    Raises ValueError if `a` contains NaN (Not a Number) or Inf (Infinity).
-		
-		See Also
-		--------
-		asarray : Create and array.
-		asanyarray : Similar function which passes through subclasses.
-		ascontiguousarray : Convert input to a contiguous array.
-		asfarray : Convert input to a floating point ndarray.
-		asfortranarray : Convert input to an ndarray with column-major
-		                 memory order.
-		fromiter : Create an array from an iterator.
-		fromfunction : Construct an array by executing a function on grid
-		               positions.
-		
-		Examples
-		--------
-		Convert a list into an array.  If all elements are finite
-		``asarray_chkfinite`` is identical to ``asarray``.
-		
-		>>> a = [1, 2]
-		>>> np.asarray_chkfinite(a, dtype=float)
-		array([1., 2.])
-		
-		Raises ValueError if array_like contains Nans or Infs.
-		
-		>>> a = [1, 2, np.inf]
-		>>> try:
-		...     np.asarray_chkfinite(a)
-		... except ValueError:
-		...     print 'ValueError'
-		...
-		ValueError
-	**/
-	static public function asarray_chkfinite(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Extract a diagonal or construct a diagonal array.
 		

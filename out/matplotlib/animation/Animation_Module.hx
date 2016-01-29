@@ -12,6 +12,11 @@ package matplotlib.animation;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
+		Encode a bytestring into a bytestring containing multiple lines
+		of base-64 data.
+	**/
+	static public function encodebytes(s:Dynamic):Dynamic;
+	/**
 		Return True if *obj* looks like a string
 	**/
 	static public function is_string_like(obj:Dynamic):Dynamic;
@@ -21,6 +26,7 @@ package matplotlib.animation;
 	static public function iterable(obj:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var rcParams : Dynamic;
+	static public var rcParamsDefault : Dynamic;
 	static public var subprocess_creation_flags : Dynamic;
 	static public var unicode_literals : Dynamic;
 	static public var verbose : Dynamic;

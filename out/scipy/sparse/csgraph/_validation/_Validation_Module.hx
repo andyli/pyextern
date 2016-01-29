@@ -32,7 +32,7 @@ package scipy.sparse.csgraph._validation;
 		Returns
 		-------
 		csgraph : csr_matrix
-		    Compressed sparse representation of graph, 
+		    Compressed sparse representation of graph,
 	**/
 	static public function csgraph_from_dense(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -50,7 +50,7 @@ package scipy.sparse.csgraph._validation;
 		Returns
 		-------
 		csgraph : csr_matrix
-		    Compressed sparse representation of graph, 
+		    Compressed sparse representation of graph,
 	**/
 	static public function csgraph_from_masked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -111,7 +111,7 @@ package scipy.sparse.csgraph._validation;
 		graph with multiple edges from node 0 to node 1, of weights 2 and 3.
 		This illustrates the difference in behavior:
 		
-		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse import csr_matrix, csgraph
 		>>> data = np.array([2, 3])
 		>>> indices = np.array([1, 1])
 		>>> indptr = np.array([0, 2, 2])
@@ -119,9 +119,9 @@ package scipy.sparse.csgraph._validation;
 		>>> M.toarray()
 		array([[0, 5],
 		       [0, 0]])
-		>>> csgraph_to_dense(M)
-		array([[0, 2],
-		       [0, 0]])
+		>>> csgraph.csgraph_to_dense(M)
+		array([[0., 2.],
+		       [0., 0.]])
 		
 		The reason for this difference is to allow a compressed sparse graph to
 		represent multiple edges between any two nodes.  As most sparse graph
@@ -133,17 +133,17 @@ package scipy.sparse.csgraph._validation;
 		zero-weight edges.  Let's look at the example of a two-node directed
 		graph, connected by an edge of weight zero:
 		
-		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse import csr_matrix, csgraph
 		>>> data = np.array([0.0])
 		>>> indices = np.array([1])
-		>>> indptr = np.array([0, 2, 2])
+		>>> indptr = np.array([0, 1, 1])
 		>>> M = csr_matrix((data, indices, indptr), shape=(2, 2))
 		>>> M.toarray()
 		array([[0, 0],
 		       [0, 0]])
-		>>> csgraph_to_dense(M, np.inf)
-		array([[ Inf,   0.],
-		       [ Inf,  Inf]])
+		>>> csgraph.csgraph_to_dense(M, np.inf)
+		array([[ inf,   0.],
+		       [ inf,  inf]])
 		
 		In the first case, the zero-weight edge gets lost in the dense
 		representation.  In the second case, we can choose a different null value

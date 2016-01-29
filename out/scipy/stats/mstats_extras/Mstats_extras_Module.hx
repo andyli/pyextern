@@ -31,7 +31,7 @@ package scipy.stats.mstats_extras;
 		``logcdf(x, a, b, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, a, b, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, a, b, loc=0, scale=1)``
@@ -46,7 +46,7 @@ package scipy.stats.mstats_extras;
 		    (Differential) entropy of the RV.
 		``fit(data, a, b, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, a, b, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(a, b), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(a, b, loc=0, scale=1)``
 		    Median of the distribution.
@@ -72,7 +72,6 @@ package scipy.stats.mstats_extras;
 		
 		`beta` takes ``a`` and ``b`` as shape parameters.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``beta.pdf(x, a, b, loc, scale)`` is identically
@@ -143,7 +142,7 @@ package scipy.stats.mstats_extras;
 		``logcdf(x, n, p, loc=0)``
 		    Log of the cumulative density function.
 		``sf(x, n, p, loc=0)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
 		    Log of the survival function.
 		``ppf(q, n, p, loc=0)``
@@ -154,7 +153,7 @@ package scipy.stats.mstats_extras;
 		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
 		``entropy(n, p, loc=0)``
 		    (Differential) entropy of the RV.
-		``expect(func, n, p, loc=0, lb=None, ub=None, conditional=False)``
+		``expect(func, args=(n, p), loc=0, lb=None, ub=None, conditional=False)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(n, p, loc=0)``
 		    Median of the distribution.
@@ -406,7 +405,7 @@ package scipy.stats.mstats_extras;
 		``logcdf(x, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, loc=0, scale=1)``
@@ -421,7 +420,7 @@ package scipy.stats.mstats_extras;
 		    (Differential) entropy of the RV.
 		``fit(data, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(loc=0, scale=1)``
 		    Median of the distribution.
@@ -440,7 +439,6 @@ package scipy.stats.mstats_extras;
 		
 		    norm.pdf(x) = exp(-x**2/2)/sqrt(2*pi)
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``norm.pdf(x, loc, scale)`` is identically
@@ -525,7 +523,7 @@ package scipy.stats.mstats_extras;
 		``logcdf(x, df, loc=0, scale=1)``
 		    Log of the cumulative density function.
 		``sf(x, df, loc=0, scale=1)``
-		    Survival function (``1 - cdf`` --- sometimes more accurate).
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
 		    Log of the survival function.
 		``ppf(q, df, loc=0, scale=1)``
@@ -540,7 +538,7 @@ package scipy.stats.mstats_extras;
 		    (Differential) entropy of the RV.
 		``fit(data, df, loc=0, scale=1)``
 		    Parameter estimates for generic data.
-		``expect(func, df, loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		``expect(func, args=(df,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
 		    Expected value of a function (of one argument) with respect to the distribution.
 		``median(df, loc=0, scale=1)``
 		    Median of the distribution.
@@ -565,7 +563,6 @@ package scipy.stats.mstats_extras;
 		
 		`t` takes ``df`` as a shape parameter.
 		
-		\  
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``t.pdf(x, df, loc, scale)`` is identically

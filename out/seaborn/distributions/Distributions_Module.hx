@@ -188,7 +188,7 @@ package seaborn.distributions;
 		    Color to plot everything but the fitted curve in.
 		vertical : bool, optional
 		    If True, oberved values are on y-axis.
-		norm_hist : bool, otional
+		norm_hist : bool, optional
 		    If True, the histogram height shows a density rather than a count.
 		    This is implied if a KDE or fitted density is plotted.
 		axlabel : string, False, or None, optional
@@ -297,7 +297,7 @@ package seaborn.distributions;
 		    DataFrame when ``x`` and ``y`` are variable names.
 		kind : { "scatter" | "reg" | "resid" | "kde" | "hex" }, optional
 		    Kind of plot to draw.
-		stat_func : callable or None
+		stat_func : callable or None, optional
 		    Function used to calculate a statistic about the relationship and
 		    annotate the plot. Should map `x` and `y` either to a single value
 		    or to a (value, p) tuple. Set to ``None`` if you don't want to
@@ -314,9 +314,9 @@ package seaborn.distributions;
 		    If True, remove observations that are missing from ``x`` and ``y``.
 		{x, y}lim : two-tuples, optional
 		    Axis limits to set before plotting.
-		{joint, marginal, annot}_kws : dicts
+		{joint, marginal, annot}_kws : dicts, optional
 		    Additional keyword arguments for the plot components.
-		kwargs : key, value pairs
+		kwargs : key, value pairings
 		    Additional keyword arguments are passed to the function used to
 		    draw the plot on the joint Axes, superseding items in the
 		    ``joint_kws`` dictionary.
@@ -421,12 +421,12 @@ package seaborn.distributions;
 		----------
 		data : 1d array-like
 		    Input data.
-		data2: 1d array-like
+		data2: 1d array-like, optional
 		    Second input data. If present, a bivariate KDE will be estimated.
 		shade : bool, optional
 		    If True, shade in the area under the KDE curve (or draw with filled
 		    contours when data is bivariate).
-		vertical : bool
+		vertical : bool, optional
 		    If True, density is on x-axis.
 		kernel : {'gau' | 'cos' | 'biw' | 'epa' | 'tri' | 'triw' }, optional
 		    Code for shape of kernel to fit with. Bivariate KDE can only use
@@ -441,11 +441,11 @@ package seaborn.distributions;
 		clip : pair of scalars, or pair of pair of scalars, optional
 		    Lower and upper bounds for datapoints used to fit KDE. Can provide
 		    a pair of (low, high) bounds for bivariate plots.
-		legend : bool, optinal
+		legend : bool, optional
 		    If True, add a legend or label the axes when possible.
-		cumulative : bool
+		cumulative : bool, optional
 		    If True, draw the cumulative distribution estimated by the kde.
-		shade_lowest : bool
+		shade_lowest : bool, optional
 		    If True, shade the lowest contour of a bivariate KDE plot. Not
 		    relevant when drawing a univariate plot or when ``shade=False``.
 		    Setting this to ``False`` can be useful when you want multiple
@@ -555,9 +555,9 @@ package seaborn.distributions;
 		    Height of ticks as proportion of the axis.
 		axis : {'x' | 'y'}, optional
 		    Axis to draw rugplot on.
-		ax : matplotlib axes
+		ax : matplotlib axes, optional
 		    Axes to draw plot into; otherwise grabs current axes.
-		kwargs : key, value mappings
+		kwargs : key, value pairings
 		    Other keyword arguments are passed to ``axvline`` or ``axhline``.
 		
 		Returns

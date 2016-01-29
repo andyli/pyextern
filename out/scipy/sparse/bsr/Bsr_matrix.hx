@@ -65,6 +65,7 @@ package scipy.sparse.bsr;
 		Return self<value.
 	**/
 	public function __lt__(other:Dynamic):Dynamic;
+	public function __matmul__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
 		interpret other and call one of the following
@@ -105,6 +106,7 @@ package scipy.sparse.bsr;
 		Return repr(self).
 	**/
 	public function __repr__():Dynamic;
+	public function __rmatmul__(other:Dynamic):Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
 	public function __rtruediv__(other:Dynamic):Dynamic;
@@ -147,15 +149,6 @@ package scipy.sparse.bsr;
 		Process indices with Ellipsis. Returns modified index.
 	**/
 	public function _check_ellipsis(index:Dynamic):Dynamic;
-	/**
-		Copy data, with all nonzeros replaced with constant for binopt
-		
-		Adopts the dtype of const to avoid removing sign or magnitude before
-		comparison.
-		
-		Warning: does not make a copy of indices and indptr
-	**/
-	public function _copy_with_const(const:Dynamic):Dynamic;
 	/**
 		Determine whether the matrix has sorted indices and no duplicates
 		
@@ -232,6 +225,11 @@ package scipy.sparse.bsr;
 	public function _mul_vector(other:Dynamic):Dynamic;
 	public function _process_toarray_args(order:Dynamic, out:Dynamic):Dynamic;
 	public function _real():Dynamic;
+	/**
+		Scalar version of self._binopt, for cases in which no new nonzeros
+		are added. Produces a new spmatrix in canonical form.
+	**/
+	public function _scalar_binopt(other:Dynamic, op:Dynamic):Dynamic;
 	public function _set_dtype(newtype:Dynamic):Dynamic;
 	/**
 		Sets value at each (i, j) to x

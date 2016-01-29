@@ -30,7 +30,7 @@ package scipy.sparse.extract;
 		
 		Examples
 		--------
-		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse import csr_matrix, find
 		>>> A = csr_matrix([[7.0, 8.0, 0],[0, 0, 9.0]])
 		>>> find(A)
 		(array([0, 0, 1], dtype=int32), array([0, 1, 2], dtype=int32), array([ 7.,  8.,  9.]))
@@ -65,7 +65,7 @@ package scipy.sparse.extract;
 		
 		Examples
 		--------
-		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse import csr_matrix, tril
 		>>> A = csr_matrix([[1, 2, 0, 0, 3], [4, 5, 0, 6, 7], [0, 0, 8, 9, 0]],
 		...                dtype='int32')
 		>>> A.toarray()
@@ -119,7 +119,7 @@ package scipy.sparse.extract;
 		
 		Examples
 		--------
-		>>> from scipy.sparse import csr_matrix
+		>>> from scipy.sparse import csr_matrix, triu
 		>>> A = csr_matrix([[1, 2, 0, 0, 3], [4, 5, 0, 6, 7], [0, 0, 8, 9, 0]],
 		...                dtype='int32')
 		>>> A.toarray()

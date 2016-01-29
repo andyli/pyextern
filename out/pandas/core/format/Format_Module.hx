@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.format;
 @:pythonImport("pandas.core.format") extern class Format_Module {
+	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -11,6 +12,20 @@ package pandas.core.format;
 	static public var __spec__ : Dynamic;
 	static public function _binify(cols:Dynamic, line_width:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Return the argument with an initial component of ~ or ~user
+		   replaced by that user's home directory.
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted if possible
+		
+		Returns
+		-------
+		expanded_filepath_or_buffer : an expanded filepath or the
+		                              input if not expandable
+	**/
+	static public function _expand_user(filepath_or_buffer:Dynamic):Dynamic;
 	static public function _format_datetime64(x:Dynamic, ?tz:Dynamic, ?nat_rep:Dynamic):Dynamic;
 	static public function _format_datetime64_dateonly(x:Dynamic, ?nat_rep:Dynamic, ?date_format:Dynamic):Dynamic;
 	static public function _get_adjustment():Dynamic;
@@ -26,6 +41,11 @@ package pandas.core.format;
 		If box, then show the return in quotes
 	**/
 	static public function _get_format_timedelta64(values:Dynamic, ?nat_rep:Dynamic, ?box:Dynamic):Dynamic;
+	/**
+		Gets file handle for given path and mode.
+		    
+	**/
+	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	static public function _get_level_lengths(levels:Dynamic, ?sentinel:Dynamic):Dynamic;
 	static public function _has_names(index:Dynamic):Dynamic;
 	static public var _initial_defencoding : Dynamic;
@@ -230,9 +250,9 @@ package pandas.core.format;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool
@@ -529,9 +549,9 @@ package pandas.core.format;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool

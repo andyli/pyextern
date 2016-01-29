@@ -292,6 +292,8 @@ package scipy.sparse.linalg.matfuncs;
 		------
 		LinAlgError
 		    If `a` is singular.
+		ValueError
+		    If `a` is not square
 		
 		Examples
 		--------
@@ -362,14 +364,14 @@ package scipy.sparse.linalg.matfuncs;
 		
 		Parameters
 		----------
-		n : int
+		m : int
 		    Number of rows in the matrix.
-		m : int, optional
-		    Number of columns. Default: n
+		n : int, optional
+		    Number of columns. Default: `m`.
 		k : int, optional
-		    Diagonal to place ones on. Default: 0 (main diagonal)
+		    Diagonal to place ones on. Default: 0 (main diagonal).
 		dtype : dtype, optional
-		    Data type of the matrix
+		    Data type of the matrix.
 		format : str, optional
 		    Sparse format of the result, e.g. format="csr", etc.
 		

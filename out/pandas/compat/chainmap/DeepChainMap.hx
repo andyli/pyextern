@@ -154,8 +154,8 @@ package pandas.compat.chainmap;
 	**/
 	public function keys():Dynamic;
 	/**
-		New ChainMap with a new map followed by all previous maps. If no
-		map is provided, an empty dict is used.
+		New ChainMap with a new map followed by all previous maps.
+		If no map is provided, an empty dict is used.
 	**/
 	public function new_child(?m:Dynamic):Dynamic;
 	/**

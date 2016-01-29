@@ -136,6 +136,7 @@ package pandas.tseries.base;
 	public function _format_attrs():Dynamic;
 	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _formatter_func : Dynamic;
+	static public var _isnan : Dynamic;
 	/**
 		create the join wrapper methods 
 	**/
@@ -242,7 +243,7 @@ package pandas.tseries.base;
 	/**
 		Analogous to ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		return a list of the underlying data
 	**/

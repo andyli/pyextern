@@ -116,6 +116,24 @@ package pandas.core.internals;
 	**/
 	public function get_values(?dtype:Dynamic):Dynamic;
 	public function iget(col:Dynamic):Dynamic;
+	/**
+		putmask the data to the block; we must be a single block and not generate
+		other blocks
+		
+		return the resulting block
+		
+		Parameters
+		----------
+		mask  : the condition to respect
+		new : a ndarray/object
+		align : boolean, perform alignment on other/cond, default is True
+		inplace : perform inplace modification, default is False
+		
+		Returns
+		-------
+		a new block(s), the result of the putmask
+	**/
+	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 	public function set(locs:Dynamic, values:Dynamic, ?check:Dynamic):Dynamic;
 	public var shape : Dynamic;
 	public function should_store(value:Dynamic):Dynamic;

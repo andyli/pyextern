@@ -437,7 +437,7 @@ package scipy.sparse.linalg.isolve;
 		----------
 		A : {matrix, sparse matrix, ndarray, LinearOperator}
 		    Matrix A in the linear system.
-		b : (m,) ndarray
+		b : array_like, shape (m,)
 		    Vector b in the linear system.
 		damp : float
 		    Damping factor for regularized least-squares. `lsmr` solves
@@ -555,7 +555,7 @@ package scipy.sparse.linalg.isolve;
 		A : {sparse matrix, ndarray, LinearOperator}
 		    Representation of an m-by-n matrix.  It is required that
 		    the linear operator can produce ``Ax`` and ``A^T x``.
-		b : (m,) ndarray
+		b : array_like, shape (m,)
 		    Right-hand side vector ``b``.
 		damp : float
 		    Damping coefficient.

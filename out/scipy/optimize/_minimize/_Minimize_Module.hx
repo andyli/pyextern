@@ -121,8 +121,10 @@ package scipy.optimize._minimize;
 		    Maximum number of function evaluations.
 		maxiter : int
 		    Maximum number of iterations.
+		maxls : int, optional
+		    Maximum number of line search steps (per iteration). Default is 20.
 	**/
-	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_lbfgsb(fun:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?disp:Dynamic, ?maxcor:Dynamic, ?ftol:Dynamic, ?gtol:Dynamic, ?eps:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?iprint:Dynamic, ?callback:Dynamic, ?maxls:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Nelder-Mead algorithm.
@@ -312,16 +314,14 @@ package scipy.optimize._minimize;
 	/**
 		Minimization of scalar function of one or more variables.
 		
-		In general, the optimization problems are of the form:
+		In general, the optimization problems are of the form::
 		
-		minimize f(x)
+		    minimize f(x) subject to
 		
-		subject to:
+		    g_i(x) >= 0,  i = 1,...,m
+		    h_j(x)  = 0,  j = 1,...,p
 		
-		    ``g_i(x) >= 0``, i = 1,...,m
-		    ``h_j(x)  = 0``, j = 1,...,p
-		
-		Where x is a vector of one or more variables.
+		where x is a vector of one or more variables.
 		``g_i(x)`` are the inequality constraints.
 		``h_j(x)`` are the equality constrains.
 		
@@ -381,6 +381,7 @@ package scipy.optimize._minimize;
 		constraints : dict or sequence of dict, optional
 		    Constraints definition (only for COBYLA and SLSQP).
 		    Each constraint is defined in a dictionary with fields:
+		
 		        type : str
 		            Constraint type: 'eq' for equality, 'ineq' for inequality.
 		        fun : callable
@@ -389,6 +390,7 @@ package scipy.optimize._minimize;
 		            The Jacobian of `fun` (only for SLSQP).
 		        args : sequence, optional
 		            Extra arguments to be passed to the function and Jacobian.
+		
 		    Equality constraint means that the constraint function result is to
 		    be zero whereas inequality means that it is to be non-negative.
 		    Note that COBYLA only supports inequality constraints.
@@ -398,10 +400,12 @@ package scipy.optimize._minimize;
 		options : dict, optional
 		    A dictionary of solver options. All methods accept the following
 		    generic options:
+		
 		        maxiter : int
 		            Maximum number of iterations to perform.
 		        disp : bool
 		            Set to True to print convergence messages.
+		
 		    For method-specific options, see :func:`show_options()`.
 		callback : callable, optional
 		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
@@ -431,10 +435,11 @@ package scipy.optimize._minimize;
 		**Unconstrained minimization**
 		
 		Method :ref:`Nelder-Mead <optimize.minimize-neldermead>` uses the
-		Simplex algorithm [1]_, [2]_. This algorithm has been successful
-		in many applications but other algorithms using the first and/or
-		second derivatives information might be preferred for their better
-		performances and robustness in general.
+		Simplex algorithm [1]_, [2]_. This algorithm is robust in many
+		applications. However, if numerical computation of derivative can be
+		trusted, other algorithms using the first and/or second derivatives
+		information might be preferred for their better performance in
+		general.
 		
 		Method :ref:`Powell <optimize.minimize-powell>` is a modification
 		of Powell's method [3]_, [4]_ which is a conjugate direction
@@ -573,9 +578,9 @@ package scipy.optimize._minimize;
 		A simple application of the *Nelder-Mead* method is:
 		
 		>>> x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-		>>> res = minimize(rosen, x0, method='Nelder-Mead')
+		>>> res = minimize(rosen, x0, method='Nelder-Mead', tol=1e-6)
 		>>> res.x
-		[ 1.  1.  1.  1.  1.]
+		array([ 1.,  1.,  1.,  1.,  1.])
 		
 		Now using the *BFGS* algorithm, using the first derivative and a few
 		options:
@@ -588,15 +593,15 @@ package scipy.optimize._minimize;
 		         Function evaluations: 64
 		         Gradient evaluations: 64
 		>>> res.x
-		array([ 1.  1.  1.  1.  1.])
+		array([ 1.,  1.,  1.,  1.,  1.])
 		>>> print(res.message)
 		Optimization terminated successfully.
 		>>> res.hess_inv
-		[[ 0.00749589  0.01255155  0.02396251  0.04750988  0.09495377]
-		 [ 0.01255155  0.02510441  0.04794055  0.09502834  0.18996269]
-		 [ 0.02396251  0.04794055  0.09631614  0.19092151  0.38165151]
-		 [ 0.04750988  0.09502834  0.19092151  0.38341252  0.7664427 ]
-		 [ 0.09495377  0.18996269  0.38165151  0.7664427   1.53713523]]
+		array([[ 0.00749589,  0.01255155,  0.02396251,  0.04750988,  0.09495377],  # may vary
+		       [ 0.01255155,  0.02510441,  0.04794055,  0.09502834,  0.18996269],
+		       [ 0.02396251,  0.04794055,  0.09631614,  0.19092151,  0.38165151],
+		       [ 0.04750988,  0.09502834,  0.19092151,  0.38341252,  0.7664427 ],
+		       [ 0.09495377,  0.18996269,  0.38165151,  0.7664427,   1.53713523]])
 		
 		
 		Next, consider a minimization problem with several constraints (namely

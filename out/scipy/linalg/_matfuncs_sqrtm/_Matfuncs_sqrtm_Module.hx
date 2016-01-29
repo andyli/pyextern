@@ -11,6 +11,38 @@ package scipy.linalg._matfuncs_sqrtm;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Helper function for scipy argument validation.
+		
+		Many scipy linear algebra functions do support arbitrary array-like
+		input arguments.  Examples of commonly unsupported inputs include
+		matrices containing inf/nan, sparse matrix representations, and
+		matrices with complicated elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    The array-like input.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default: True
+		sparse_ok : bool, optional
+		    True if scipy sparse matrices are allowed.
+		objects_ok : bool, optional
+		    True if arrays with dype('O') are allowed.
+		mask_ok : bool, optional
+		    True if masked arrays are allowed.
+		as_inexact : bool, optional
+		    True to convert the input array to a np.inexact dtype.
+		
+		Returns
+		-------
+		ret : ndarray
+		    The converted validated array.
+	**/
+	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
+	/**
 		Matrix square root of an upper triangular matrix.
 		
 		This is a helper function for `sqrtm` and `logm`.
@@ -38,32 +70,21 @@ package scipy.linalg._matfuncs_sqrtm;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		x,scale,info = dtrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
-		
-		Wrapper for ``dtrsyl``.
-		
-		Parameters
-		----------
-		a : input rank-2 array('d') with bounds (m,m)
-		b : input rank-2 array('d') with bounds (n,n)
-		c : input rank-2 array('d') with bounds (m,n)
-		
-		Other Parameters
-		----------------
-		trana : input string(len=1), optional
-		    Default: 'N'
-		tranb : input string(len=1), optional
-		    Default: 'N'
-		isgn : input int, optional
-		    Default: 1
-		overwrite_c : input int, optional
-		    Default: 0
-		
-		Returns
-		-------
-		x : rank-2 array('d') with bounds (m,n) and c storage
-		scale : float
-		info : int
+		dtrsyl - Function signature:
+		  x,scale,info = dtrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
+		Required arguments:
+		  a : input rank-2 array('d') with bounds (m,m)
+		  b : input rank-2 array('d') with bounds (n,n)
+		  c : input rank-2 array('d') with bounds (m,n)
+		Optional arguments:
+		  trana := 'N' input string(len=1)
+		  tranb := 'N' input string(len=1)
+		  isgn := 1 input int
+		  overwrite_c := 0 input int
+		Return objects:
+		  x : rank-2 array('d') with bounds (m,n) and c storage
+		  scale : float
+		  info : int
 	**/
 	static public function dtrsyl(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -76,15 +97,25 @@ package scipy.linalg._matfuncs_sqrtm;
 		Parameters
 		----------
 		a : (M,) or (M, N) array_like
-		    Input array.
+		    Input array.  If `axis` is None, `a` must be 1-D or 2-D.
 		ord : {non-zero int, inf, -inf, 'fro'}, optional
 		    Order of the norm (see table under ``Notes``). inf means numpy's
-		    `inf` object.
+		    `inf` object
+		axis : {int, 2-tuple of ints, None}, optional
+		    If `axis` is an integer, it specifies the axis of `a` along which to
+		    compute the vector norms.  If `axis` is a 2-tuple, it specifies the
+		    axes that hold 2-D matrices, and the matrix norms of these matrices
+		    are computed.  If `axis` is None then either a vector norm (when `a`
+		    is 1-D) or a matrix norm (when `a` is 2-D) is returned.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are normed over are left in the
+		    result as dimensions with size one.  With this option the result will
+		    broadcast correctly against the original `a`.
 		
 		Returns
 		-------
-		norm : float
-		    Norm of the matrix or vector.
+		n : float or ndarray
+		    Norm of the matrix or vector(s).
 		
 		Notes
 		-----
@@ -113,6 +144,10 @@ package scipy.linalg._matfuncs_sqrtm;
 		
 		    :math:`||A||_F = [\sum_{i,j} abs(a_{i,j})^2]^{1/2}`
 		
+		The ``axis`` and ``keepdims`` arguments are passed directly to
+		``numpy.linalg.norm`` and are only usable if they are supported
+		by the version of numpy in use.
+		
 		References
 		----------
 		.. [1] G. H. Golub and C. F. Van Loan, *Matrix Computations*,
@@ -121,14 +156,14 @@ package scipy.linalg._matfuncs_sqrtm;
 		Examples
 		--------
 		>>> from scipy.linalg import norm
-		>>> a = np.arange(9) - 4
+		>>> a = np.arange(9) - 4.0
 		>>> a
-		array([-4, -3, -2, -1,  0,  1,  2,  3,  4])
+		array([-4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])
 		>>> b = a.reshape((3, 3))
 		>>> b
-		array([[-4, -3, -2],
-		       [-1,  0,  1],
-		       [ 2,  3,  4]])
+		array([[-4., -3., -2.],
+		       [-1.,  0.,  1.],
+		       [ 2.,  3.,  4.]])
 		
 		>>> norm(a)
 		7.745966692414834
@@ -159,15 +194,15 @@ package scipy.linalg._matfuncs_sqrtm;
 		7.3484692283495345
 		
 		>>> norm(a, -2)
-		nan
+		0
 		>>> norm(b, -2)
 		1.8570331885190563e-016
 		>>> norm(a, 3)
 		5.8480354764257312
 		>>> norm(a, -3)
-		nan
+		0
 	**/
-	static public function norm(a:Dynamic, ?ord:Dynamic):Float;
+	static public function norm(a:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Convert real Schur form to complex Schur form.
@@ -310,32 +345,21 @@ package scipy.linalg._matfuncs_sqrtm;
 	**/
 	static public function sqrtm(A:Dynamic, ?disp:Dynamic, ?blocksize:Dynamic):Dynamic;
 	/**
-		x,scale,info = ztrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
-		
-		Wrapper for ``ztrsyl``.
-		
-		Parameters
-		----------
-		a : input rank-2 array('D') with bounds (m,m)
-		b : input rank-2 array('D') with bounds (n,n)
-		c : input rank-2 array('D') with bounds (m,n)
-		
-		Other Parameters
-		----------------
-		trana : input string(len=1), optional
-		    Default: 'N'
-		tranb : input string(len=1), optional
-		    Default: 'N'
-		isgn : input int, optional
-		    Default: 1
-		overwrite_c : input int, optional
-		    Default: 0
-		
-		Returns
-		-------
-		x : rank-2 array('D') with bounds (m,n) and c storage
-		scale : float
-		info : int
+		ztrsyl - Function signature:
+		  x,scale,info = ztrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
+		Required arguments:
+		  a : input rank-2 array('D') with bounds (m,m)
+		  b : input rank-2 array('D') with bounds (n,n)
+		  c : input rank-2 array('D') with bounds (m,n)
+		Optional arguments:
+		  trana := 'N' input string(len=1)
+		  tranb := 'N' input string(len=1)
+		  isgn := 1 input int
+		  overwrite_c := 0 input int
+		Return objects:
+		  x : rank-2 array('D') with bounds (m,n) and c storage
+		  scale : float
+		  info : int
 	**/
 	static public function ztrsyl(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

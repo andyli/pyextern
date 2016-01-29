@@ -67,13 +67,26 @@ package pandas.io.pytables;
 		get/create the info for this name 
 	**/
 	static public function _get_info(info:Dynamic, name:Dynamic):Dynamic;
+	/**
+		for a tz-aware type, return an encoded zone 
+	**/
+	static public function _get_tz(tz:Dynamic):Dynamic;
 	static public function _maybe_convert(values:Dynamic, val_kind:Dynamic, encoding:Dynamic):Dynamic;
 	static public function _need_convert(kind:Dynamic):Dynamic;
 	static public function _reindex_axis(obj:Dynamic, axis:Dynamic, labels:Dynamic, ?other:Dynamic):Dynamic;
 	/**
-		set the timezone if values are an Index 
+		coerce the values to a DatetimeIndex if tz is set
+		preserve the input shape if possible
+		
+		Parameters
+		----------
+		values : ndarray
+		tz : string/pickled tz object
+		preserve_UTC : boolean,
+		    preserve the UTC of the result
+		coerce : if we do not have a passed timezone, coerce to M8[ns] ndarray
 	**/
-	static public function _set_tz(values:Dynamic, tz:Dynamic, ?preserve_UTC:Dynamic):Dynamic;
+	static public function _set_tz(values:Dynamic, tz:Dynamic, ?preserve_UTC:Dynamic, ?coerce:Dynamic):Dynamic;
 	static public var _table_file_open_policy_is_strict : Dynamic;
 	static public var _table_mod : Dynamic;
 	static public function _tables():Dynamic;
@@ -343,9 +356,9 @@ package pandas.io.pytables;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool

@@ -208,6 +208,10 @@ package pandas.core.panel;
 		add the operations to the cls; evaluate the doc strings again 
 	**/
 	static public function _add_numeric_operations():Dynamic;
+	/**
+		add the series only operations to the cls; evaluate the doc strings again 
+	**/
+	static public function _add_series_only_operations():Dynamic;
 	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
@@ -296,6 +300,10 @@ package pandas.core.panel;
 		return the type for the ndim of the result 
 	**/
 	public function _construct_return_type(result:Dynamic, ?axes:Dynamic):Dynamic;
+	/**
+		Used when a manipulation result has the same dimesions as the
+		original.
+	**/
 	public var _constructor : Dynamic;
 	/**
 		Used when a manipulation result has one higher dimension as the
@@ -699,8 +707,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -720,8 +728,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		bool_only : boolean, default None
 		    Include only boolean data. If None, will attempt to use everything,
 		    then use only boolean data
@@ -732,27 +740,41 @@ package pandas.core.panel;
 	**/
 	public function any(?axis:Dynamic, ?bool_only:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Applies function along input axis of the Panel
+		Applies function along axis (or axes) of the Panel
 		
 		Parameters
 		----------
 		func : function
 		    Function to apply to each combination of 'other' axes
-		    e.g. if axis = 'items', then the combination of major_axis/minor_axis
-		    will be passed a Series
-		axis : {'major', 'minor', 'items'}
+		    e.g. if axis = 'items', the combination of major_axis/minor_axis
+		    will each be passed as a Series; if axis = ('items', 'major'), DataFrames
+		    of items & major axis will be passed
+		axis : {'items', 'minor', 'major'}, or {0, 1, 2}, or a tuple with two axes
 		Additional keyword arguments will be passed as keywords to the function
 		
 		Examples
 		--------
-		>>> p.apply(numpy.sqrt) # returns a Panel
-		>>> p.apply(lambda x: x.sum(), axis=0) # equiv to p.sum(0)
-		>>> p.apply(lambda x: x.sum(), axis=1) # equiv to p.sum(1)
-		>>> p.apply(lambda x: x.sum(), axis=2) # equiv to p.sum(2)
+		
+		Returns a Panel with the square root of each element
+		
+		>>> p = pd.Panel(np.random.rand(4,3,2))
+		>>> p.apply(np.sqrt)
+		
+		Equivalent to p.sum(1), returning a DataFrame
+		
+		>>> p.apply(lambda x: x.sum(), axis=1)
+		
+		Equivalent to previous:
+		
+		>>> p.apply(lambda x: x.sum(), axis='minor')
+		
+		Return the shapes of each DataFrame over axis 2 (i.e the shapes of items x major), as a Series
+		
+		>>> p.apply(lambda x: x.shape, axis=(0,1))
 		
 		Returns
 		-------
-		result : Pandas Object
+		result : Panel, DataFrame, or Series
 	**/
 	public function apply(func:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -991,8 +1013,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1691,8 +1713,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1714,8 +1736,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1781,8 +1803,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1841,8 +1863,8 @@ package pandas.core.panel;
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
 		This method returns the maximum of the values in the object. If you
-		want the *index* of the maximum, use ``idxmax``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmax``.
+		                                      want the *index* of the maximum, use ``idxmax``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmax``.
 		
 		Parameters
 		----------
@@ -1851,8 +1873,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1872,8 +1894,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1893,8 +1915,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -1906,8 +1928,8 @@ package pandas.core.panel;
 	public function median(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This method returns the minimum of the values in the object. If you
-		want the *index* of the minimum, use ``idxmin``. This is the
-		equivalent of the ``numpy.ndarray`` method ``argmin``.
+		                                      want the *index* of the minimum, use ``idxmin``. This is the
+		                                      equivalent of the ``numpy.ndarray`` method ``argmin``.
 		
 		Parameters
 		----------
@@ -1916,8 +1938,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2135,8 +2157,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2156,8 +2178,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2218,7 +2240,9 @@ package pandas.core.panel;
 		    New labels / index to conform to. Preferably an Index object to
 		    avoid duplicating data
 		method : {None, 'backfill'/'bfill', 'pad'/'ffill', 'nearest'}, optional
-		    Method to use for filling holes in reindexed DataFrame:
+		    method to use for filling holes in reindexed DataFrame.
+		    Please note: this is only  applicable to DataFrames/Series with a
+		    monotonically increasing/decreasing index.
 		      * default: don't fill gaps
 		      * pad / ffill: propagate last valid observation forward to next valid
 		      * backfill / bfill: use next valid observation to fill gap
@@ -2242,7 +2266,118 @@ package pandas.core.panel;
 		
 		Examples
 		--------
-		>>> df.reindex(index=[date1, date2, date3], columns=['A', 'B', 'C'])
+		
+		Create a dataframe with some fictional data.
+		
+		>>> index = ['Firefox', 'Chrome', 'Safari', 'IE10', 'Konqueror']
+		>>> df = pd.DataFrame({
+		...      'http_status': [200,200,404,404,301],
+		...      'response_time': [0.04, 0.02, 0.07, 0.08, 1.0]},
+		...       index=index)
+		>>> df
+		            http_status  response_time
+		Firefox            200           0.04
+		Chrome             200           0.02
+		Safari             404           0.07
+		IE10               404           0.08
+		Konqueror          301           1.00
+		
+		Create a new index and reindex the dataframe. By default
+		values in the new index that do not have corresponding
+		records in the dataframe are assigned ``NaN``.
+		
+		>>> new_index= ['Safari', 'Iceweasel', 'Comodo Dragon', 'IE10',
+		...             'Chrome']
+		>>> df.reindex(new_index)
+		               http_status  response_time
+		Safari                 404           0.07
+		Iceweasel              NaN            NaN
+		Comodo Dragon          NaN            NaN
+		IE10                   404           0.08
+		Chrome                 200           0.02
+		
+		We can fill in the missing values by passing a value to
+		the keyword ``fill_value``. Because the index is not monotonically
+		increasing or decreasing, we cannot use arguments to the keyword
+		``method`` to fill the ``NaN`` values.
+		
+		>>> df.reindex(new_index, fill_value=0)
+		               http_status  response_time
+		Safari                 404           0.07
+		Iceweasel                0           0.00
+		Comodo Dragon            0           0.00
+		IE10                   404           0.08
+		Chrome                 200           0.02
+		
+		>>> df.reindex(new_index, fill_value='missing')
+		              http_status response_time
+		Safari                404          0.07
+		Iceweasel         missing       missing
+		Comodo Dragon     missing       missing
+		IE10                  404          0.08
+		Chrome                200          0.02
+		
+		To further illustrate the filling functionality in
+		``reindex``, we will create a dataframe with a
+		monotonically increasing index (for example, a sequence
+		of dates).
+		
+		>>> date_index = pd.date_range('1/1/2010', periods=6, freq='D')
+		>>> df2 = pd.DataFrame({"prices": [100, 101, np.nan, 100, 89, 88]},
+		        index=date_index)
+		>>> df2
+		            prices
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		
+		Suppose we decide to expand the dataframe to cover a wider
+		date range.
+		
+		>>> date_index2 = pd.date_range('12/29/2009', periods=10, freq='D')
+		>>> df2.reindex(date_index2)
+		            prices
+		2009-12-29     NaN
+		2009-12-30     NaN
+		2009-12-31     NaN
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		2010-01-07     NaN
+		
+		The index entries that did not have a value in the original data frame
+		(for example, '2009-12-29') are by default filled with ``NaN``.
+		If desired, we can fill in the missing values using one of several
+		options.
+		
+		For example, to backpropagate the last valid value to fill the ``NaN``
+		values, pass ``bfill`` as an argument to the ``method`` keyword.
+		
+		>>> df2.reindex(date_index2, method='bfill')
+		            prices
+		2009-12-29     100
+		2009-12-30     100
+		2009-12-31     100
+		2010-01-01     100
+		2010-01-02     101
+		2010-01-03     NaN
+		2010-01-04     100
+		2010-01-05      89
+		2010-01-06      88
+		2010-01-07     NaN
+		
+		Please note that the ``NaN`` value present in the original dataframe
+		(at index value 2010-01-03) will not be filled by any of the
+		value propagation schemes. This is because filling while reindexing
+		does not look at dataframe values, but only compares the original and
+		desired indexes. If you do want to fill in the ``NaN`` values present
+		in the original dataframe, use the ``fillna()`` method.
 		
 		Returns
 		-------
@@ -2766,8 +2901,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2836,8 +2973,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2911,8 +3048,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -2970,8 +3109,8 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data
@@ -3451,8 +3590,10 @@ package pandas.core.panel;
 		    Exclude NA/null values. If an entire row/column is NA, the result
 		    will be NA
 		level : int or level name, default None
-		        If the axis is a MultiIndex (hierarchical), count along a
-		        particular level, collapsing into a DataFrame
+		    If the axis is a MultiIndex (hierarchical), count along a
+		    particular level, collapsing into a DataFrame
+		ddof : int, default 1
+		    degrees of freedom
 		numeric_only : boolean, default None
 		    Include only float, int, boolean data. If None, will attempt to use
 		    everything, then use only numeric data

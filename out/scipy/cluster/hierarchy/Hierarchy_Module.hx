@@ -67,7 +67,7 @@ package scipy.cluster.hierarchy;
 		
 		  * h is the height of the subtree in dependent variable units
 		
-		  * md is the max(Z[*,2]) for all nodes * below and including
+		  * md is the ``max(Z[*,2]``) for all nodes ``*`` below and including
 		    the target node.
 	**/
 	static public function _dendrogram_calculate_info(Z:Dynamic, p:Dynamic, truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?i:Dynamic, ?iv:Dynamic, ?ivl:Dynamic, ?n:Dynamic, ?icoord_list:Dynamic, ?dcoord_list:Dynamic, ?lvs:Dynamic, ?mhr:Dynamic, ?current_color:Dynamic, ?color_list:Dynamic, ?currently_below_threshold:Dynamic, ?leaf_label_func:Dynamic, ?level:Dynamic, ?contraction_marks:Dynamic, ?link_color_func:Dynamic, ?above_threshold_color:Dynamic):Dynamic;
@@ -77,10 +77,21 @@ package scipy.cluster.hierarchy;
 	static public var _dtextsortedkeys : Dynamic;
 	static public function _get_tick_rotation(p:Dynamic):Dynamic;
 	static public function _get_tick_text_size(p:Dynamic):Dynamic;
-	static public function _leader_identify(tr:Dynamic, T:Dynamic):Dynamic;
-	static public function _leaders_test(Z:Dynamic, T:Dynamic):Dynamic;
-	static public function _leaders_test_recurs_mark(tr:Dynamic, T:Dynamic):Dynamic;
 	static public var _link_line_colors : Dynamic;
+	/**
+		Returns clustering nodes in bottom-up order by distance.
+		
+		Parameters
+		----------
+		Z : scipy.cluster.linkage array
+		    The linkage matrix.
+		
+		Returns
+		-------
+		nodes : list
+		    A list of ClusterNode objects.
+	**/
+	static public function _order_cluster_tree(Z:Dynamic):Array<Dynamic>;
 	static public function _plot_dendrogram(icoords:Dynamic, dcoords:Dynamic, ivl:Dynamic, p:Dynamic, n:Dynamic, mh:Dynamic, orientation:Dynamic, no_labels:Dynamic, color_list:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?contraction_marks:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):Dynamic;
 	/**
 		Generates a random distance matrix stored in condensed form. A
@@ -193,8 +204,7 @@ package scipy.cluster.hierarchy;
 		----------
 		Z : ndarray
 		    The hierarchical clustering encoded as an array
-		    (see ``linkage`` function).
-		
+		    (see `linkage` function).
 		Y : ndarray (optional)
 		    Calculates the cophenetic correlation coefficient ``c`` of a
 		    hierarchical clustering defined by the linkage matrix `Z`
@@ -236,6 +246,49 @@ package scipy.cluster.hierarchy;
 		    matrix could possibly correspond to one another.
 	**/
 	static public function correspond(Z:Dynamic, Y:Dynamic):Bool;
+	/**
+		Given a linkage matrix Z, return the cut tree.
+		
+		Parameters
+		----------
+		Z : scipy.cluster.linkage array
+		    The linkage matrix.
+		n_clusters : array_like, optional
+		    Number of clusters in the tree at the cut point.
+		height : array_like, optional
+		    The height at which to cut the tree.  Only possible for ultrametric
+		    trees.
+		
+		Returns
+		-------
+		cutree : array
+		    An array indicating group membership at each agglomeration step.  I.e.,
+		    for a full cut tree, in the first column each data point is in its own
+		    cluster.  At the next step, two nodes are merged.  Finally all singleton
+		    and non-singleton clusters are in one group.  If `n_clusters` or
+		    `height` is given, the columns correspond to the columns of `n_clusters` or
+		    `height`.
+		
+		Examples
+		--------
+		>>> from scipy import cluster
+		>>> np.random.seed(23)
+		>>> X = np.random.randn(50, 4)
+		>>> Z = cluster.hierarchy.ward(X)
+		>>> cutree = cluster.hierarchy.cut_tree(Z, n_clusters=[5, 10])
+		>>> cutree[:10]
+		array([[0, 0],
+		       [1, 1],
+		       [2, 2],
+		       [3, 3],
+		       [3, 4],
+		       [2, 2],
+		       [0, 0],
+		       [1, 5],
+		       [3, 6],
+		       [4, 7]])
+	**/
+	static public function cut_tree(Z:Dynamic, ?n_clusters:Dynamic, ?height:Dynamic):Array<Dynamic>;
 	/**
 		Plots the hierarchical clustering as a dendrogram.
 		
@@ -381,18 +434,17 @@ package scipy.cluster.hierarchy;
 		
 		    For example, to label singletons with their node id and
 		    non-singletons with their id, count, and inconsistency
-		    coefficient, simply do:
+		    coefficient, simply do::
 		
-		    >>> # First define the leaf label function.
-		    >>> def llf(id):
-		    ...       if id < n:
-		    ...           return str(id)
-		    ...       else:
-		    >>>           return '[%d %d %1.2f]' % (id, count, R[n-id,3])
-		    >>>
-		    >>>  # The text for the leaf nodes is going to be big so force
-		    >>>  # a rotation of 90 degrees.
-		    >>>  dendrogram(Z, leaf_label_func=llf, leaf_rotation=90)
+		        # First define the leaf label function.
+		        def llf(id):
+		            if id < n:
+		                return str(id)
+		            else:
+		                return '[%d %d %1.2f]' % (id, count, R[n-id,3])
+		        # The text for the leaf nodes is going to be big so force
+		        # a rotation of 90 degrees.
+		        dendrogram(Z, leaf_label_func=llf, leaf_rotation=90)
 		
 		show_contracted : bool, optional
 		    When True the heights of non-singleton nodes contracted
@@ -403,9 +455,9 @@ package scipy.cluster.hierarchy;
 		    If given, `link_color_function` is called with each non-singleton id
 		    corresponding to each U-shaped link it will paint. The function is
 		    expected to return the color to paint the link, encoded as a matplotlib
-		    color string code. For example:
+		    color string code. For example::
 		
-		    >>> dendrogram(Z, link_color_func=lambda k: colors[k])
+		        dendrogram(Z, link_color_func=lambda k: colors[k])
 		
 		    colors the direct links below each untruncated non-singleton node
 		    ``k`` using ``colors[k]``.
@@ -443,8 +495,37 @@ package scipy.cluster.hierarchy;
 		      :math:`j < 2n-1` and :math:`i < n`. If ``j`` is less than ``n``, the
 		      ``i``-th leaf node corresponds to an original observation.
 		      Otherwise, it corresponds to a non-singleton cluster.
+		
+		See Also
+		--------
+		linkage, set_link_color_palette
+		
+		Examples
+		--------
+		>>> from scipy.cluster import hierarchy
+		>>> import matplotlib.pyplot as plt
+		
+		A very basic example:
+		
+		>>> ytdist = np.array([662., 877., 255., 412., 996., 295., 468., 268.,
+		...                    400., 754., 564., 138., 219., 869., 669.])
+		>>> Z = hierarchy.linkage(ytdist, 'single')
+		>>> plt.figure()
+		>>> dn = hierarchy.dendrogram(Z)
+		
+		Now plot in given axes, improve the color scheme and use both vertical and
+		horizontal orientations:
+		
+		>>> hierarchy.set_link_color_palette(['m', 'c', 'y', 'k'])
+		>>> fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+		>>> dn1 = hierarchy.dendrogram(Z, ax=axes[0], above_threshold_color='y',
+		...                            orientation='top')
+		>>> dn2 = hierarchy.dendrogram(Z, ax=axes[1], above_threshold_color='#bcbddc',
+		...                            orientation='right')
+		>>> hierarchy.set_link_color_palette(None)  # reset to default after use
+		>>> plt.show()
 	**/
-	static public function dendrogram(Z:Dynamic, ?p:Dynamic, ?truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?no_plot:Dynamic, ?no_labels:Dynamic, ?color_list:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?leaf_label_func:Dynamic, ?no_leaves:Dynamic, ?show_contracted:Dynamic, ?link_color_func:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):python.Dict<Dynamic, Dynamic>;
+	static public function dendrogram(Z:Dynamic, ?p:Dynamic, ?truncate_mode:Dynamic, ?color_threshold:Dynamic, ?get_leaves:Dynamic, ?orientation:Dynamic, ?labels:Dynamic, ?count_sort:Dynamic, ?distance_sort:Dynamic, ?show_leaf_counts:Dynamic, ?no_plot:Dynamic, ?no_labels:Dynamic, ?leaf_font_size:Dynamic, ?leaf_rotation:Dynamic, ?leaf_label_func:Dynamic, ?show_contracted:Dynamic, ?link_color_func:Dynamic, ?ax:Dynamic, ?above_threshold_color:Dynamic):python.Dict<Dynamic, Dynamic>;
 	static public var division : Dynamic;
 	/**
 		Forms flat clusters from the hierarchical clustering defined by
@@ -482,11 +563,10 @@ package scipy.cluster.hierarchy;
 		
 		          For example, to threshold on the maximum mean distance
 		          as computed in the inconsistency matrix R with a
-		          threshold of 0.8 do:
+		          threshold of 0.8 do::
 		
-		            MR = maxRstat(Z, R, 3)
-		
-		            cluster(Z, t=0.8, criterion='monocrit', monocrit=MR)
+		              MR = maxRstat(Z, R, 3)
+		              cluster(Z, t=0.8, criterion='monocrit', monocrit=MR)
 		
 		      ``maxclust_monocrit`` : Forms a flat cluster from a
 		          non-singleton cluster node ``c`` when ``monocrit[i] <=
@@ -495,11 +575,10 @@ package scipy.cluster.hierarchy;
 		          flat clusters are formed. monocrit must be
 		          monotonic. For example, to minimize the threshold t on
 		          maximum inconsistency values so that no more than 3 flat
-		          clusters are formed, do:
+		          clusters are formed, do::
 		
-		            MI = maxinconsts(Z, R)
-		
-		            cluster(Z, t=3, criterion='maxclust_monocrit', monocrit=MI)
+		              MI = maxinconsts(Z, R)
+		              cluster(Z, t=3, criterion='maxclust_monocrit', monocrit=MI)
 		
 		depth : int, optional
 		    The maximum depth to perform the inconsistency calculation.
@@ -512,7 +591,7 @@ package scipy.cluster.hierarchy;
 		    statistics upon which non-singleton i is thresholded. The
 		    monocrit vector must be monotonic, i.e. given a node c with
 		    index i, for all node indices j corresponding to nodes
-		    below c, `monocrit[i] >= monocrit[j]`.
+		    below c, ``monocrit[i] >= monocrit[j]``.
 		
 		Returns
 		-------
@@ -606,26 +685,24 @@ package scipy.cluster.hierarchy;
 		Parameters
 		----------
 		Z : ndarray
-		    The :math:`(n-1)` by 4 matrix encoding the linkage
-		    (hierarchical clustering).  See ``linkage`` documentation
-		    for more information on its form.
+		    The :math:`(n-1)` by 4 matrix encoding the linkage (hierarchical
+		    clustering).  See `linkage` documentation for more information on its
+		    form.
 		d : int, optional
-		    The number of links up to `d` levels below each
-		    non-singleton cluster.
+		    The number of links up to `d` levels below each non-singleton cluster.
 		
 		Returns
 		-------
 		R : ndarray
-		    A :math:`(n-1)` by 5 matrix where the ``i``'th row
-		    contains the link statistics for the non-singleton cluster
-		    ``i``. The link statistics are computed over the link
-		    heights for links :math:`d` levels below the cluster
-		    ``i``. ``R[i,0]`` and ``R[i,1]`` are the mean and standard
-		    deviation of the link heights, respectively; ``R[i,2]`` is
-		    the number of links included in the calculation; and
-		    ``R[i,3]`` is the inconsistency coefficient,
+		    A :math:`(n-1)` by 5 matrix where the ``i``'th row contains the link
+		    statistics for the non-singleton cluster ``i``. The link statistics are
+		    computed over the link heights for links :math:`d` levels below the
+		    cluster ``i``. ``R[i,0]`` and ``R[i,1]`` are the mean and standard
+		    deviation of the link heights, respectively; ``R[i,2]`` is the number
+		    of links included in the calculation; and ``R[i,3]`` is the
+		    inconsistency coefficient,
 		
-		    .. math:: \frac{\mathtt{Z[i,2]}-\mathtt{R[i,0]}} {R[i,1]}
+		    .. math:: \frac{\mathtt{Z[i,2]} - \mathtt{R[i,0]}} {R[i,1]}
 	**/
 	static public function inconsistent(Z:Dynamic, ?d:Dynamic):Dynamic;
 	/**
@@ -693,14 +770,18 @@ package scipy.cluster.hierarchy;
 	/**
 		Checks the validity of a linkage matrix.
 		
-		A linkage matrix is valid if it is a two dimensional
-		ndarray (type double) with :math:`n`
-		rows and 4 columns.  The first two columns must contain indices
-		between 0 and :math:`2n-1`. For a given row ``i``,
-		:math:`0 \leq \mathtt{Z[i,0]} \leq i+n-1`
-		and :math:`0 \leq Z[i,1] \leq i+n-1`
-		(i.e. a cluster cannot join another cluster unless the cluster
-		being joined has been generated.)
+		A linkage matrix is valid if it is a two dimensional array (type double)
+		with :math:`n` rows and 4 columns.  The first two columns must contain
+		indices between 0 and :math:`2n-1`. For a given row ``i``, the following
+		two expressions have to hold:
+		
+		.. math::
+		
+		    0 \leq \mathtt{Z[i,0]} \leq i+n-1
+		    0 \leq Z[i,1] \leq i+n-1
+		
+		I.e. a cluster cannot join another cluster unless the cluster being joined
+		has been generated.
 		
 		Parameters
 		----------
@@ -719,7 +800,7 @@ package scipy.cluster.hierarchy;
 		Returns
 		-------
 		b : bool
-		    True iff the inconsistency matrix is valid.
+		    True if the inconsistency matrix is valid.
 	**/
 	static public function is_valid_linkage(Z:Dynamic, ?warning:Dynamic, ?_throw:Dynamic, ?name:Dynamic):Bool;
 	/**
@@ -799,7 +880,7 @@ package scipy.cluster.hierarchy;
 		in the distance matrix. The behavior of this function is very
 		similar to the MATLAB linkage function.
 		
-		A 4 by :math:`(n-1)` matrix ``Z`` is returned. At the
+		An :math:`(n-1)` by 4  matrix ``Z`` is returned. At the
 		:math:`i`-th iteration, clusters with indices ``Z[i, 0]`` and
 		``Z[i, 1]`` are combined to form cluster :math:`n + i`. A
 		cluster with an index less than :math:`n` corresponds to one of
@@ -929,9 +1010,11 @@ package scipy.cluster.hierarchy;
 		    The linkage algorithm to use. See the ``Linkage Methods`` section below
 		    for full descriptions.
 		metric : str or function, optional
-		    The distance metric to use. See the ``distance.pdist`` function for a
-		    list of valid distance metrics. The customized distance can also be
-		    used. See the ``distance.pdist`` function for details.
+		    The distance metric to use in the case that y is a collection of
+		    observation vectors; ignored otherwise. See the ``distance.pdist``
+		    function for a list of valid distance metrics. A custom distance
+		    function can also be used. See the ``distance.pdist`` function for
+		    details.
 		
 		Returns
 		-------
@@ -946,8 +1029,8 @@ package scipy.cluster.hierarchy;
 		Parameters
 		----------
 		Z : array_like
-		    The hierarchical clustering encoded as a matrix. See
-		    ``linkage`` for more information.
+		    The hierarchical clustering encoded as a matrix. See `linkage` for more
+		    information.
 		R : array_like
 		    The inconsistency matrix.
 		i : int
@@ -1057,14 +1140,58 @@ package scipy.cluster.hierarchy;
 	static public function num_obs_linkage(Z:Dynamic):Int;
 	static public var print_function : Dynamic;
 	/**
-		Set list of matplotlib color codes for dendrogram color_threshold.
+		Set list of matplotlib color codes for use by dendrogram.
+		
+		Note that this palette is global (i.e. setting it once changes the colors
+		for all subsequent calls to `dendrogram`) and that it affects only the
+		the colors below ``color_threshold``.
+		
+		Note that `dendrogram` also accepts a custom coloring function through its
+		``link_color_func`` keyword, which is more flexible and non-global.
 		
 		Parameters
 		----------
-		palette : list
-		    A list of matplotlib color codes. The order of
-		    the color codes is the order in which the colors are cycled
-		    through when color thresholding in the dendrogram.
+		palette : list of str or None
+		    A list of matplotlib color codes.  The order of the color codes is the
+		    order in which the colors are cycled through when color thresholding in
+		    the dendrogram.
+		
+		    If ``None``, resets the palette to its default (which is
+		    ``['g', 'r', 'c', 'm', 'y', 'k']``).
+		
+		Returns
+		-------
+		None
+		
+		See Also
+		--------
+		dendrogram
+		
+		Notes
+		-----
+		Ability to reset the palette with ``None`` added in Scipy 0.17.0.
+		
+		Examples
+		--------
+		>>> from scipy.cluster import hierarchy
+		>>> ytdist = np.array([662., 877., 255., 412., 996., 295., 468., 268., 400.,
+		...                    754., 564., 138., 219., 869., 669.])
+		>>> Z = hierarchy.linkage(ytdist, 'single')
+		>>> dn = hierarchy.dendrogram(Z, no_plot=True)
+		>>> dn['color_list']
+		['g', 'b', 'b', 'b', 'b']
+		>>> hierarchy.set_link_color_palette(['c', 'm', 'y', 'k'])
+		>>> dn = hierarchy.dendrogram(Z, no_plot=True)
+		>>> dn['color_list']
+		['c', 'b', 'b', 'b', 'b']
+		>>> dn = hierarchy.dendrogram(Z, no_plot=True, color_threshold=267,
+		...                           above_threshold_color='k')
+		>>> dn['color_list']
+		['c', 'm', 'm', 'k', 'k']
+		
+		Now reset the color palette to its default:
+		
+		>>> hierarchy.set_link_color_palette(None)
 	**/
 	static public function set_link_color_palette(palette:Dynamic):Dynamic;
 	/**
@@ -1131,7 +1258,6 @@ package scipy.cluster.hierarchy;
 		Z : ndarray
 		    The linkage matrix in proper form (see the ``linkage``
 		    function documentation).
-		
 		rd : bool, optional
 		    When False, a reference to the root ClusterNode object is
 		    returned.  Otherwise, a tuple (r,d) is returned. ``r`` is a

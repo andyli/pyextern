@@ -10,122 +10,105 @@ package scipy.ndimage.io;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var absolute_import : Dynamic;
+	static public var _have_pil : Dynamic;
 	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
-		
-		Create an array.
+		Read an image from a file as an array.
 		
 		Parameters
 		----------
-		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
-		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
-		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
-		subok : bool, optional
-		    If True, then sub-classes will be passed-through, otherwise
-		    the returned array will be forced to be a base-class array (default).
-		ndmin : int, optional
-		    Specifies the minimum number of dimensions that the resulting
-		    array should have.  Ones will be pre-pended to the shape as
-		    needed to meet this requirement.
+		name : str or file object
+		    The file name or file object to be read.
+		flatten : bool, optional
+		    If True, flattens the color layers into a single gray-scale layer.
+		mode : str, optional
+		    Mode to convert image to, e.g. ``'RGB'``.  See the Notes for more
+		    details.
 		
 		Returns
 		-------
-		out : ndarray
-		    An array object satisfying the specified requirements.
+		imread : ndarray
+		    The array obtained by reading the image.
 		
-		See Also
-		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
+		Notes
+		-----
+		`imread` uses the Python Imaging Library (PIL) to read an image.
+		The following notes are from the PIL documentation.
 		
-		Examples
-		--------
-		>>> np.array([1, 2, 3])
-		array([1, 2, 3])
+		`mode` can be one of the following strings:
 		
-		Upcasting:
+		* 'L' (8-bit pixels, black and white)
+		* 'P' (8-bit pixels, mapped to any other mode using a color palette)
+		* 'RGB' (3x8-bit pixels, true color)
+		* 'RGBA' (4x8-bit pixels, true color with transparency mask)
+		* 'CMYK' (4x8-bit pixels, color separation)
+		* 'YCbCr' (3x8-bit pixels, color video format)
+		* 'I' (32-bit signed integer pixels)
+		* 'F' (32-bit floating point pixels)
 		
-		>>> np.array([1, 2, 3.0])
-		array([ 1.,  2.,  3.])
+		PIL also provides limited support for a few special modes, including
+		'LA' ('L' with alpha), 'RGBX' (true color with padding) and 'RGBa'
+		(true color with premultiplied alpha).
 		
-		More than one dimension:
+		When translating a color image to black and white (mode 'L', 'I' or
+		'F'), the library uses the ITU-R 601-2 luma transform::
 		
-		>>> np.array([[1, 2], [3, 4]])
-		array([[1, 2],
-		       [3, 4]])
+		    L = R * 299/1000 + G * 587/1000 + B * 114/1000
 		
-		Minimum dimensions 2:
-		
-		>>> np.array([1, 2, 3], ndmin=2)
-		array([[1, 2, 3]])
-		
-		Type provided:
-		
-		>>> np.array([1, 2, 3], dtype=complex)
-		array([ 1.+0.j,  2.+0.j,  3.+0.j])
-		
-		Data-type consisting of more than one element:
-		
-		>>> x = np.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])
-		>>> x['a']
-		array([1, 3])
-		
-		Creating an array from sub-classes:
-		
-		>>> np.array(np.mat('1 2; 3 4'))
-		array([[1, 2],
-		       [3, 4]])
-		
-		>>> np.array(np.mat('1 2; 3 4'), subok=True)
-		matrix([[1, 2],
-		        [3, 4]])
+		When `flatten` is True, the image is converted using mode 'F'.
+		When `mode` is not None and `flatten` is True, the image is first
+		converted according to `mode`, and the result is then flattened using
+		mode 'F'.
 	**/
-	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _imread(name:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
+	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
 		Read an image from a file as an array.
 		
 		Parameters
 		----------
-		fname : str
-		    Image file name, e.g. ``test.jpg``, or a file object.
+		fname : str or file object
+		    The file name or file object to be read.
 		flatten : bool, optional
-		    If true, convert the output to grey-scale. Default is False.
+		    If True, flattens the color layers into a single gray-scale layer.
 		mode : str, optional
-		    mode to convert image to, e.g. ``RGB``.
-		
+		    Mode to convert image to, e.g. ``'RGB'``.  See the Notes for more
+		    details.
 		
 		Returns
 		-------
-		img_array : ndarray
-		    The different colour bands/channels are stored in the
-		    third dimension, such that a grey-image is MxN, an
-		    RGB-image MxNx3 and an RGBA-image MxNx4.
+		imread : ndarray
+		    The array obtained by reading the image.
 		
-		Raises
-		------
-		ImportError
-		    If the Python Imaging Library (PIL) can not be imported.
+		Notes
+		-----
+		`imread` uses the Python Imaging Library (PIL) to read an image.
+		The following notes are from the PIL documentation.
+		
+		`mode` can be one of the following strings:
+		
+		* 'L' (8-bit pixels, black and white)
+		* 'P' (8-bit pixels, mapped to any other mode using a color palette)
+		* 'RGB' (3x8-bit pixels, true color)
+		* 'RGBA' (4x8-bit pixels, true color with transparency mask)
+		* 'CMYK' (4x8-bit pixels, color separation)
+		* 'YCbCr' (3x8-bit pixels, color video format)
+		* 'I' (32-bit signed integer pixels)
+		* 'F' (32-bit floating point pixels)
+		
+		PIL also provides limited support for a few special modes, including
+		'LA' ('L' with alpha), 'RGBX' (true color with padding) and 'RGBa'
+		(true color with premultiplied alpha).
+		
+		When translating a color image to black and white (mode 'L', 'I' or
+		'F'), the library uses the ITU-R 601-2 luma transform::
+		
+		    L = R * 299/1000 + G * 587/1000 + B * 114/1000
+		
+		When `flatten` is True, the image is converted using mode 'F'.
+		When `mode` is not None and `flatten` is True, the image is first
+		converted according to `mode`, and the result is then flattened using
+		mode 'F'.
 	**/
 	static public function imread(fname:Dynamic, ?flatten:Dynamic, ?mode:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

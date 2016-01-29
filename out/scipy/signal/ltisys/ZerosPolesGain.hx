@@ -2,19 +2,19 @@
 package scipy.signal.ltisys;
 @:pythonImport("scipy.signal.ltisys", "ZerosPolesGain") extern class ZerosPolesGain {
 	/**
-		A matrix of the `StateSpace` system.
+		State matrix of the `StateSpace` system.
 	**/
 	public var A : Dynamic;
 	/**
-		B matrix of the `StateSpace` system.
+		Input matrix of the `StateSpace` system.
 	**/
 	public var B : Dynamic;
 	/**
-		C matrix of the `StateSpace` system.
+		Output matrix of the `StateSpace` system.
 	**/
 	public var C : Dynamic;
 	/**
-		D matrix of the `StateSpace` system.
+		Feedthrough matrix of the `StateSpace` system.
 	**/
 	public var D : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -164,6 +164,9 @@ package scipy.signal.ltisys;
 		See `scipy.signal.freqresp` for details.
 	**/
 	public function freqresp(?w:Dynamic, ?n:Dynamic):Dynamic;
+	/**
+		Gain of the `ZerosPolesGain` system.
+	**/
 	public var gain : Dynamic;
 	/**
 		Return the impulse response of a continuous-time system.
@@ -179,6 +182,9 @@ package scipy.signal.ltisys;
 		See `scipy.signal.lsim` for details.
 	**/
 	public function output(U:Dynamic, T:Dynamic, ?X0:Dynamic):Dynamic;
+	/**
+		Poles of the `ZerosPolesGain` system.
+	**/
 	public var poles : Dynamic;
 	/**
 		Return the step response of a continuous-time system.
@@ -212,5 +218,8 @@ package scipy.signal.ltisys;
 		    The current system (copy)
 	**/
 	public function to_zpk():Dynamic;
+	/**
+		Zeros of the `ZerosPolesGain` system.
+	**/
 	public var zeros : Dynamic;
 }

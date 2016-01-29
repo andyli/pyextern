@@ -234,10 +234,10 @@ package scipy.sparse.linalg.isolve.utils;
 		
 		Examples
 		--------
-		>>> from scipy import matrix
-		>>> M = matrix( [[1,2,3],[4,5,6]], dtype='int32' )
-		>>> aslinearoperator( M )
-		<2x3 LinearOperator with dtype=int32>
+		>>> from scipy.sparse.linalg import aslinearoperator
+		>>> M = np.array([[1,2,3],[4,5,6]], dtype=np.int32)
+		>>> aslinearoperator(M)
+		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
 	/**

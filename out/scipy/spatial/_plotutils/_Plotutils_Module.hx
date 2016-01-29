@@ -12,10 +12,9 @@ package scipy.spatial._plotutils;
 	static public var __spec__ : Dynamic;
 	static public function _adjust_bounds(ax:Dynamic, points:Dynamic):Dynamic;
 	/**
-		decorator(caller) converts a caller function into a decorator;
-		decorator(caller, func) decorates a function using a caller.
+		decorator(caller) converts a caller function into a decorator
 	**/
-	static public function _decorator(caller:Dynamic, ?func:Dynamic):Dynamic;
+	static public function _decorator(caller:Dynamic, ?_func:Dynamic):Dynamic;
 	static public function _held_figure(func:Dynamic, obj:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
@@ -78,6 +77,8 @@ package scipy.spatial._plotutils;
 		    Diagram to plot
 		ax : matplotlib.axes.Axes instance, optional
 		    Axes to plot on
+		show_vertices : bool, optional
+		    Add the Voronoi vertices to the plot.
 		
 		Returns
 		-------
@@ -92,5 +93,5 @@ package scipy.spatial._plotutils;
 		-----
 		Requires Matplotlib.
 	**/
-	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic):Dynamic;
+	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 }

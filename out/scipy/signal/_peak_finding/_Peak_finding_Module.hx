@@ -167,6 +167,7 @@ package scipy.signal._peak_finding;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelextrema
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelextrema(x, np.greater)
 		(array([3, 6]),)
@@ -215,6 +216,7 @@ package scipy.signal._peak_finding;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelmax
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelmax(x)
 		(array([3, 6]),)
@@ -263,6 +265,7 @@ package scipy.signal._peak_finding;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelmin
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelmin(x)
 		(array([1, 5]),)
@@ -289,7 +292,7 @@ package scipy.signal._peak_finding;
 		wavelet : function
 		    Wavelet function, which should take 2 arguments.
 		    The first argument is the number of points that the returned vector
-		    will have (len(wavelet(width,length)) == length).
+		    will have (len(wavelet(length,width)) == length).
 		    The second is a width parameter, defining the size of the wavelet
 		    (e.g. standard deviation of a gaussian). See `ricker`, which
 		    satisfies these requirements.
@@ -303,9 +306,11 @@ package scipy.signal._peak_finding;
 		
 		Notes
 		-----
-		>>> length = min(10 * width[ii], len(data))
-		>>> cwt[ii,:] = scipy.signal.convolve(data, wavelet(length,
-		...                                       width[ii]), mode='same')
+		::
+		
+		    length = min(10 * width[ii], len(data))
+		    cwt[ii,:] = signal.convolve(data, wavelet(length,
+		                                width[ii]), mode='same')
 		
 		Examples
 		--------
@@ -315,7 +320,7 @@ package scipy.signal._peak_finding;
 		>>> sig  = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
 		>>> widths = np.arange(1, 31)
 		>>> cwtmatr = signal.cwt(sig, signal.ricker, widths)
-		>>> plt.imshow(cwtmatr, extent=[-1, 1, 1, 31], cmap='PRGn', aspect='auto',
+		>>> plt.imshow(cwtmatr, extent=[-1, 1, 31, 1], cmap='PRGn', aspect='auto',
 		...            vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
 		>>> plt.show()
 	**/
@@ -337,8 +342,10 @@ package scipy.signal._peak_finding;
 		    1-D array of widths to use for calculating the CWT matrix. In general,
 		    this range should cover the expected width of peaks of interest.
 		wavelet : callable, optional
-		    Should take a single variable and return a 1-D array to convolve
-		    with `vector`.  Should be normalized to unit area.
+		    Should take two parameters and return a 1-D array to convolve
+		    with `vector`. The first parameter determines the number of points 
+		    of the returned wavelet array, the second parameter is the scale 
+		    (`width`) of the wavelet. Should be normalized and symmetric.
 		    Default is the ricker wavelet.
 		max_distances : ndarray, optional
 		    At each row, a ridge line is only connected if the relative max at

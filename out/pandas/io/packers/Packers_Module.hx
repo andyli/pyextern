@@ -40,7 +40,8 @@ package pandas.io.packers;
 		
 		Parameters
 		----------
-		filepath_or_buffer : a url, filepath, or buffer
+		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
+		                     or buffer
 		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
 		
 		Returns

@@ -2,18 +2,18 @@
 package scipy.signal._max_len_seq;
 @:pythonImport("scipy.signal._max_len_seq") extern class _Max_len_seq_Module {
 	static public var __all__ : Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __test__ : Dynamic;
+	static public function _max_len_seq_inner(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _mls_taps : Dynamic;
 	/**
-		max_len_seq(nbits, state=None, length=None, taps=None)
-		
-		Maximum Length Sequence (MLS) generator
+		Maximum length sequence (MLS) generator.
 		
 		Parameters
 		----------
@@ -45,7 +45,7 @@ package scipy.signal._max_len_seq;
 		-----
 		The algorithm for MLS generation is generically described in:
 		
-		    http://en.wikipedia.org/wiki/Maximum_length_sequence
+		    https://en.wikipedia.org/wiki/Maximum_length_sequence
 		
 		The default values for taps are specifically taken from the first
 		option listed for each value of ``nbits`` in:
@@ -55,5 +55,5 @@ package scipy.signal._max_len_seq;
 		
 		.. versionadded:: 0.15.0
 	**/
-	static public function max_len_seq(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Dynamic;
 }

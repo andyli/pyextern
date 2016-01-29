@@ -127,7 +127,7 @@ package scipy.optimize;
 		
 		>>> x = np.ones(2)
 		>>> c0, c1 = (1, 200)
-		>>> eps = np.sqrt(np.finfo(np.float).eps)
+		>>> eps = np.sqrt(np.finfo(float).eps)
 		>>> optimize.approx_fprime(x, func, [eps, np.sqrt(200) * eps], c0, c1)
 		array([   2.        ,  400.00004198])
 	**/
@@ -200,7 +200,10 @@ package scipy.optimize;
 		    The optimization result represented as a ``OptimizeResult`` object.  Important
 		    attributes are: ``x`` the solution array, ``fun`` the value of the
 		    function at the solution, and ``message`` which describes the cause of
-		    the termination. See `OptimizeResult` for a description of other attributes.
+		    the termination. The ``OptimzeResult`` object returned by the selected
+		    minimizer at the lowest minimum is also contained within this object
+		    and can be accessed through the ``lowest_optimization_result`` attribute.
+		    See `OptimizeResult` for a description of other attributes.
 		
 		See Also
 		--------
@@ -544,11 +547,11 @@ package scipy.optimize;
 		args : tuple, optional
 		    Additional arguments (if present).
 		brack : tuple, optional
-		    Triple (a,b,c) where (a<b<c) and func(b) <
-		    func(a),func(c).  If bracket consists of two numbers (a,c)
-		    then they are assumed to be a starting interval for a
-		    downhill bracket search (see `bracket`); it doesn't always
-		    mean that the obtained solution will satisfy a<=x<=c.
+		    Either a triple (xa,xb,xc) where xa<xb<xc and func(xb) <
+		    func(xa), func(xc) or a pair (xa,xb) which are used as a
+		    starting interval for a downhill bracket search (see
+		    `bracket`). Providing the pair (xa,xb) does not always mean
+		    the obtained solution will satisfy xa<=x<=xb.
 		tol : float, optional
 		    Stop if between iteration change is less than `tol`.
 		full_output : bool, optional
@@ -1161,8 +1164,26 @@ package scipy.optimize;
 		    If True, check that the input arrays do not contain nans of infs,
 		    and raise a ValueError if they do. Setting this parameter to
 		    False may silently produce nonsensical results if the input arrays
-		    do contain nans.
-		    Default is True.
+		    do contain nans. Default is True.
+		bounds : 2-tuple of array_like, optional
+		    Lower and upper bounds on independent variables. Defaults to no bounds.        
+		    Each element of the tuple must be either an array with the length equal
+		    to the number of parameters, or a scalar (in which case the bound is
+		    taken to be the same for all parameters.) Use ``np.inf`` with an
+		    appropriate sign to disable bounds on all or some parameters.
+		
+		    .. versionadded:: 0.17
+		method : {'lm', 'trf', 'dogbox'}, optional
+		    Method to use for optimization.  See `least_squares` for more details.
+		    Default is 'lm' for unconstrained problems and 'trf' if `bounds` are
+		    provided. The method 'lm' won't work when the number of observations
+		    is less than the number of variables, use 'trf' or 'dogbox' in this
+		    case.
+		
+		    .. versionadded:: 0.17
+		kwargs
+		    Keyword arguments passed to `leastsq` for ``method='lm'`` or
+		    `least_squares` otherwise.
 		
 		Returns
 		-------
@@ -1177,22 +1198,33 @@ package scipy.optimize;
 		    How the `sigma` parameter affects the estimated covariance
 		    depends on `absolute_sigma` argument, as described above.
 		
+		    If the Jacobian matrix at the solution doesn't have a full rank, then
+		    'lm' method returns a matrix filled with ``np.inf``, on the other hand
+		    'trf'  and 'dogbox' methods use Moore-Penrose pseudoinverse to compute
+		    the covariance matrix.
+		
 		Raises
 		------
 		OptimizeWarning
 		    if covariance of the parameters can not be estimated.
 		
 		ValueError
-		    if ydata and xdata contain NaNs.
+		    if either `ydata` or `xdata` contain NaNs.
 		
 		See Also
 		--------
-		leastsq
+		least_squares : Minimize the sum of squares of nonlinear functions.
+		stats.linregress : Calculate a linear least squares regression for two sets
+		                   of measurements.
 		
 		Notes
 		-----
-		The algorithm uses the Levenberg-Marquardt algorithm through `leastsq`.
-		Additional keyword arguments are passed directly to that algorithm.
+		With ``method='lm'``, the algorithm uses the Levenberg-Marquardt algorithm
+		through `leastsq`. Note that this algorithm can only deal with
+		unconstrained problems.
+		
+		Box constraints can be handled by methods 'trf' and 'dogbox'. Refer to
+		the docstring of `least_squares` for more information.
 		
 		Examples
 		--------
@@ -1206,8 +1238,13 @@ package scipy.optimize;
 		>>> ydata = y + 0.2 * np.random.normal(size=len(xdata))
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata)
+		
+		Constrain the optimization to the region of ``0 < a < 3``, ``0 < b < 2``
+		and ``0 < c < 1``:
+		
+		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?kw:python.KwArgs<Dynamic>):Array<Dynamic>;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find a root of a function, using diagonal Broyden Jacobian approximation.
 		
@@ -1308,9 +1345,9 @@ package scipy.optimize;
 		
 		    The default is 'best1bin'.
 		maxiter : int, optional
-		    The maximum number of times the entire population is evolved.
-		    The maximum number of function evaluations is:
-		    ``maxiter * popsize * len(x)``
+		    The maximum number of generations over which the entire population is
+		    evolved. The maximum number of function evaluations (with no polishing)
+		    is: ``(maxiter + 1) * popsize * len(x)``
 		popsize : int, optional
 		    A multiplier for setting the total population size.  The population has
 		    ``popsize * len(x)`` individuals.
@@ -1320,7 +1357,8 @@ package scipy.optimize;
 		    is greater than 1 the solving process terminates:
 		    ``convergence = mean(pop) * tol / stdev(pop) > 1``
 		mutation : float or tuple(float, float), optional
-		    The mutation constant.
+		    The mutation constant. In the literature this is also known as
+		    differential weight, being denoted by F.
 		    If specified as a float it should be in the range [0, 2].
 		    If specified as a tuple ``(min, max)`` dithering is employed. Dithering
 		    randomly changes the mutation constant on a generation by generation
@@ -1329,9 +1367,11 @@ package scipy.optimize;
 		    Increasing the mutation constant increases the search radius, but will
 		    slow down convergence.
 		recombination : float, optional
-		    The recombination constant, should be in the range [0, 1]. Increasing
-		    this value allows a larger number of mutants to progress into the next
-		    generation, but at the risk of population stability.
+		    The recombination constant, should be in the range [0, 1]. In the
+		    literature this is also known as the crossover probability, being
+		    denoted by CR. Increasing this value allows a larger number of mutants
+		    to progress into the next generation, but at the risk of population
+		    stability.
 		seed : int or `np.random.RandomState`, optional
 		    If `seed` is not specified the `np.RandomState` singleton is used.
 		    If `seed` is an int, a new `np.random.RandomState` instance is used,
@@ -1370,8 +1410,9 @@ package scipy.optimize;
 		    Important attributes are: ``x`` the solution array, ``success`` a
 		    Boolean flag indicating if the optimizer exited successfully and
 		    ``message`` which describes the cause of the termination. See
-		    `OptimizeResult` for a description of other attributes. If `polish`
-		    was employed, then OptimizeResult also contains the `jac` attribute.
+		    `OptimizeResult` for a description of other attributes.  If `polish`
+		    was employed, and a lower minimum was obtained by the polishing, then
+		    OptimizeResult also contains the ``jac`` attribute.
 		
 		Notes
 		-----
@@ -1522,11 +1563,16 @@ package scipy.optimize;
 		    Convergence tolerance, defaults to 1e-08.
 		maxiter : int, optional
 		    Maximum number of iterations, defaults to 500.
+		method : {"del2", "iteration"}, optional
+		    Method of finding the fixed-point, defaults to "del2"
+		    which uses Steffensen's Method with Aitken's ``Del^2``
+		    convergence acceleration [1]_. The "iteration" method simply iterates
+		    the function until convergence is detected, without attempting to
+		    accelerate the convergence.
 		
-		Notes
-		-----
-		Uses Steffensen's Method using Aitken's ``Del^2`` convergence acceleration.
-		See Burden, Faires, "Numerical Analysis", 5th edition, pg. 80
+		References
+		----------
+		.. [1] Burden, Faires, "Numerical Analysis", 5th edition, pg. 80
 		
 		Examples
 		--------
@@ -1538,7 +1584,7 @@ package scipy.optimize;
 		>>> optimize.fixed_point(func, [1.2, 1.3], args=(c1,c2))
 		array([ 1.4920333 ,  1.37228132])
 	**/
-	static public function fixed_point(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic):Dynamic;
+	static public function fixed_point(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?maxiter:Dynamic, ?method:Dynamic):Dynamic;
 	/**
 		Minimize a function using the downhill simplex algorithm.
 		
@@ -1805,13 +1851,13 @@ package scipy.optimize;
 		>>> x0 = np.asarray((0, 0))  # Initial guess.
 		>>> from scipy import optimize
 		>>> res1 = optimize.fmin_cg(f, x0, fprime=gradf, args=args)
-		>>> print('res1 = ', res1)
 		Optimization terminated successfully.
 		         Current function value: 1.617021
 		         Iterations: 2
 		         Function evaluations: 5
 		         Gradient evaluations: 5
-		res1 =  [-1.80851064 -0.25531915]
+		>>> res1
+		array([-1.80851064, -0.25531915])
 		
 		Example 2: solve the same problem using the `minimize` function.
 		(This `myopts` dictionary shows all of the available options,
@@ -1831,13 +1877,13 @@ package scipy.optimize;
 		        Function evaluations: 5
 		        Gradient evaluations: 5
 		>>> res2.x  # minimum found
-		array([-1.80851064 -0.25531915])
+		array([-1.80851064, -0.25531915])
 	**/
 	static public function fmin_cg(f:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?gtol:Dynamic, ?norm:Dynamic, ?epsilon:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
 	/**
 		Minimize a function using the Constrained Optimization BY Linear
 		Approximation (COBYLA) method. This method wraps a FORTRAN
-		implentation of the algorithm.
+		implementation of the algorithm.
 		
 		Parameters
 		----------
@@ -1938,11 +1984,6 @@ package scipy.optimize;
 		    ...
 		    >>> from scipy.optimize import fmin_cobyla
 		    >>> fmin_cobyla(objective, [0.0, 0.1], [constr1, constr2], rhoend=1e-7)
-		
-		       Normal return from subroutine COBYLA
-		
-		       NFVALS =   64   F =-5.000000E-01    MAXCV = 1.998401E-14
-		       X =-7.071069E-01   7.071067E-01
 		    array([-0.70710685,  0.70710671])
 		
 		The exact solution is (-sqrt(2)/2, sqrt(2)/2).
@@ -1991,9 +2032,11 @@ package scipy.optimize;
 		    calculating the gradient
 		iprint : int, optional
 		    Controls the frequency of output. ``iprint < 0`` means no output;
-		    ``iprint == 0`` means write messages to stdout; ``iprint > 1`` in
-		    addition means write logging information to a file named
-		    ``iterate.dat`` in the current working directory.
+		    ``iprint = 0``    print only one line at the last iteration;
+		    ``0 < iprint < 99`` print also f and ``|proj g|`` every iprint iterations;
+		    ``iprint = 99``   print details of every iteration except n-vectors;
+		    ``iprint = 100``  print also the changes of active set and final x;
+		    ``iprint > 100``  print details of every iteration including x and g.
 		disp : int, optional
 		    If zero, then no output.  If a positive number, then this over-rides
 		    `iprint` (i.e., `iprint` gets the value of `disp`).
@@ -2004,6 +2047,8 @@ package scipy.optimize;
 		callback : callable, optional
 		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
 		    current parameter vector.
+		maxls : int, optional
+		    Maximum number of line search steps (per iteration). Default is 20.
 		
 		Returns
 		-------
@@ -2055,7 +2100,7 @@ package scipy.optimize;
 		  FORTRAN routines for large scale bound constrained optimization (2011),
 		  ACM Transactions on Mathematical Software, 38, 1.
 	**/
-	static public function fmin_l_bfgs_b(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?approx_grad:Dynamic, ?bounds:Dynamic, ?m:Dynamic, ?factr:Dynamic, ?pgtol:Dynamic, ?epsilon:Dynamic, ?iprint:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function fmin_l_bfgs_b(func:Dynamic, x0:Dynamic, ?fprime:Dynamic, ?args:Dynamic, ?approx_grad:Dynamic, ?bounds:Dynamic, ?m:Dynamic, ?factr:Dynamic, ?pgtol:Dynamic, ?epsilon:Dynamic, ?iprint:Dynamic, ?maxfun:Dynamic, ?maxiter:Dynamic, ?disp:Dynamic, ?callback:Dynamic, ?maxls:Dynamic):Dynamic;
 	/**
 		Unconstrained minimization of a function using the Newton-CG method.
 		
@@ -2211,7 +2256,7 @@ package scipy.optimize;
 		over each current direction in the direction set. At the end
 		of the inner loop, if certain conditions are met, the direction
 		that gave the largest decrease is dropped and replaced with
-		the difference between the current estiamted x and the estimated
+		the difference between the current estimated x and the estimated
 		x from the beginning of the inner-loop.
 		
 		The technical conditions for replacing the direction of greatest
@@ -2664,6 +2709,482 @@ package scipy.optimize;
 	**/
 	static public function golden(func:Dynamic, ?args:Dynamic, ?brack:Dynamic, ?tol:Dynamic, ?full_output:Dynamic):Dynamic;
 	/**
+		Solve a nonlinear least-squares problem with bounds on the variables.
+		
+		Given the residuals f(x) (an m-dimensional function of n variables) and
+		the loss function rho(s) (a scalar function), `least_squares` finds a
+		local minimum of the cost function F(x)::
+		
+		    F(x) = 0.5 * sum(rho(f_i(x)**2), i = 1, ..., m), lb <= x <= ub
+		
+		The purpose of the loss function rho(s) is to reduce the influence of
+		outliers on the solution.
+		
+		Parameters
+		----------
+		fun : callable
+		    Function which computes the vector of residuals, with the signature
+		    ``fun(x, *args, **kwargs)``, i.e., the minimization proceeds with
+		    respect to its first argument. The argument ``x`` passed to this
+		    function is an ndarray of shape (n,) (never a scalar, even for n=1).
+		    It must return a 1-d array_like of shape (m,) or a scalar.
+		x0 : array_like with shape (n,) or float
+		    Initial guess on independent variables. If float, it will be treated
+		    as a 1-d array with one element.
+		jac : {'2-point', '3-point', 'cs', callable}, optional
+		    Method of computing the Jacobian matrix (an m-by-n matrix, where
+		    element (i, j) is the partial derivative of f[i] with respect to
+		    x[j]). The keywords select a finite difference scheme for numerical
+		    estimation. The scheme '3-point' is more accurate, but requires
+		    twice as much operations compared to '2-point' (default). The
+		    scheme 'cs' uses complex steps, and while potentially the most
+		    accurate, it is applicable only when `fun` correctly handles
+		    complex inputs and can be analytically continued to the complex
+		    plane. Method 'lm' always uses the '2-point' scheme. If callable,
+		    it is used as ``jac(x, *args, **kwargs)`` and should return a
+		    good approximation (or the exact value) for the Jacobian as an
+		    array_like (np.atleast_2d is applied), a sparse matrix or a
+		    `scipy.sparse.linalg.LinearOperator`.
+		bounds : 2-tuple of array_like, optional
+		    Lower and upper bounds on independent variables. Defaults to no bounds.
+		    Each array must match the size of `x0` or be a scalar, in the latter
+		    case a bound will be the same for all variables. Use ``np.inf`` with
+		    an appropriate sign to disable bounds on all or some variables.
+		method : {'trf', 'dogbox', 'lm'}, optional
+		    Algorithm to perform minimization.
+		
+		        * 'trf' : Trust Region Reflective algorithm, particularly suitable
+		          for large sparse problems with bounds. Generally robust method.
+		        * 'dogbox' : dogleg algorithm with rectangular trust regions,
+		          typical use case is small problems with bounds. Not recommended
+		          for problems with rank-deficient Jacobian.
+		        * 'lm' : Levenberg-Marquardt algorithm as implemented in MINPACK.
+		          Doesn't handle bounds and sparse Jacobians. Usually the most
+		          efficient method for small unconstrained problems.
+		
+		    Default is 'trf'. See Notes for more information.
+		ftol : float, optional
+		    Tolerance for termination by the change of the cost function.
+		    Default is the square root of machine epsilon. The optimization process
+		    is stopped when ``dF < ftol * F``, and there was an adequate agreement
+		    between a local quadratic model and the true model in the last step.
+		xtol : float, optional
+		    Tolerance for termination by the change of the independent variables.
+		    Default is the square root of machine epsilon. The exact condition
+		    checked depends on the `method` used:
+		
+		        * For 'trf' and 'dogbox' : ``norm(dx) < xtol * (xtol + norm(x))``
+		        * For 'lm' : ``Delta < xtol * norm(xs)``, where ``Delta`` is
+		          a trust-region radius and ``xs`` is the value of ``x``
+		          scaled according to `x_scale` parameter (see below).
+		
+		gtol : float, optional
+		    Tolerance for termination by the norm of the gradient. Default is
+		    the square root of machine epsilon. The exact condition depends
+		    on a `method` used:
+		
+		        * For 'trf' : ``norm(g_scaled, ord=np.inf) < gtol``, where
+		          ``g_scaled`` is the value of the gradient scaled to account for
+		          the presence of the bounds [STIR]_.
+		        * For 'dogbox' : ``norm(g_free, ord=np.inf) < gtol``, where
+		          ``g_free`` is the gradient with respect to the variables which
+		          are not in the optimal state on the boundary.
+		        * For 'lm' : the maximum absolute value of the cosine of angles
+		          between columns of the Jacobian and the residual vector is less
+		          than `gtol`, or the residual vector is zero.
+		
+		x_scale : array_like or 'jac', optional
+		    Characteristic scale of each variable. Setting `x_scale` is equivalent
+		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
+		    An alternative view is that the size of a trust-region along j-th
+		    dimension is proportional to ``x_scale[j]``. Improved convergence may
+		    be achieved by setting `x_scale` such that a step of a given length
+		    along any of the scaled variables has a similar effect on the cost
+		    function. If set to 'jac', the scale is iteratively updated using the
+		    inverse norms of the columns of the Jacobian matrix (as described in
+		    [JJMore]_).
+		loss : str or callable, optional
+		    Determines the loss function. The following keyword values are allowed:
+		
+		        * 'linear' (default) : ``rho(z) = z``. Gives a standard
+		          least-squares problem.
+		        * 'soft_l1' : ``rho(z) = 2 * ((1 + z)**0.5 - 1)``. The smooth
+		          approximation of l1 (absolute value) loss. Usually a good
+		          choice for robust least squares.
+		        * 'huber' : ``rho(z) = z if z <= 1 else z**0.5 - 1``. Works
+		          similarly to 'soft_l1'.
+		        * 'cauchy' : ``rho(z) = ln(1 + z)``. Severely weakens outliers
+		          influence, but may cause difficulties in optimization process.
+		        * 'arctan' : ``rho(z) = arctan(z)``. Limits a maximum loss on
+		          a single residual, has properties similar to 'cauchy'.
+		
+		    If callable, it must take a 1-d ndarray ``z=f**2`` and return an
+		    array_like with shape (3, m) where row 0 contains function values,
+		    row 1 contains first derivatives and row 2 contains second
+		    derivatives. Method 'lm' supports only 'linear' loss.
+		f_scale : float, optional
+		    Value of soft margin between inlier and outlier residuals, default
+		    is 1.0. The loss function is evaluated as follows
+		    ``rho_(f**2) = C**2 * rho(f**2 / C**2)``, where ``C`` is `f_scale`,
+		    and ``rho`` is determined by `loss` parameter. This parameter has
+		    no effect with ``loss='linear'``, but for other `loss` values it is
+		    of crucial importance.
+		max_nfev : None or int, optional
+		    Maximum number of function evaluations before the termination.
+		    If None (default), the value is chosen automatically:
+		
+		        * For 'trf' and 'dogbox' : 100 * n.
+		        * For 'lm' :  100 * n if `jac` is callable and 100 * n * (n + 1)
+		          otherwise (because 'lm' counts function calls in Jacobian
+		          estimation).
+		
+		diff_step : None or array_like, optional
+		    Determines the relative step size for the finite difference
+		    approximation of the Jacobian. The actual step is computed as
+		    ``x * diff_step``. If None (default), then `diff_step` is taken to be
+		    a conventional "optimal" power of machine epsilon for the finite
+		    difference scheme used [NR]_.
+		tr_solver : {None, 'exact', 'lsmr'}, optional
+		    Method for solving trust-region subproblems, relevant only for 'trf'
+		    and 'dogbox' methods.
+		
+		        * 'exact' is suitable for not very large problems with dense
+		          Jacobian matrices. The computational complexity per iteration is
+		          comparable to a singular value decomposition of the Jacobian
+		          matrix.
+		        * 'lsmr' is suitable for problems with sparse and large Jacobian
+		          matrices. It uses the iterative procedure
+		          `scipy.sparse.linalg.lsmr` for finding a solution of a linear
+		          least-squares problem and only requires matrix-vector product
+		          evaluations.
+		
+		    If None (default) the solver is chosen based on type of Jacobian
+		    returned on the first iteration.
+		tr_options : dict, optional
+		    Keyword options passed to trust-region solver.
+		
+		        * ``tr_solver='exact'``: `tr_options` are ignored.
+		        * ``tr_solver='lsmr'``: options for `scipy.sparse.linalg.lsmr`.
+		          Additionally  ``method='trf'`` supports  'regularize' option
+		          (bool, default is True) which adds a regularization term to the
+		          normal equations, which improves convergence if Jacobian is
+		          rank-deficient [Byrd]_ (eq. 3.4).
+		
+		jac_sparsity : {None, array_like, sparse matrix}, optional
+		    Defines the sparsity structure of the Jacobian matrix for finite
+		    differences. If the Jacobian has only few non-zeros in *each* row,
+		    providing the sparsity structure will greatly speed up the computations
+		    [Curtis]_. Should have shape (m, n). A zero entry means that a
+		    corresponding element in the Jacobian is identically zero. If provided,
+		    forces the use of 'lsmr' trust-region solver. If None (default) then
+		    dense differencing will be used. Has no effect for 'lm' method.
+		verbose : {0, 1, 2}, optional
+		    Level of algorithm's verbosity:
+		
+		        * 0 (default) : work silently.
+		        * 1 : display a termination report.
+		        * 2 : display progress during iterations (not supported by 'lm'
+		          method).
+		
+		args, kwargs : tuple and dict, optional
+		    Additional arguments passed to `fun` and `jac`. Both empty by default.
+		    The calling signature is ``fun(x, *args, **kwargs)`` and the same for
+		    `jac`.
+		
+		Returns
+		-------
+		`OptimizeResult` with the following fields defined:
+		x : ndarray, shape (n,)
+		    Solution found.
+		cost : float
+		    Value of the cost function at the solution.
+		fun : ndarray, shape (m,)
+		    Vector of residuals at the solution.
+		jac : ndarray, sparse matrix or LinearOperator, shape (m, n)
+		    Modified Jacobian matrix at the solution, in the sense that J^T J
+		    is a Gauss-Newton approximation of the Hessian of the cost function.
+		    The type is the same as the one used by the algorithm.
+		grad : ndarray, shape (m,)
+		    Gradient of the cost function at the solution.
+		optimality : float
+		    First-order optimality measure. In unconstrained problems, it is always
+		    the uniform norm of the gradient. In constrained problems, it is the
+		    quantity which was compared with `gtol` during iterations.
+		active_mask : ndarray of int, shape (n,)
+		    Each component shows whether a corresponding constraint is active
+		    (that is, whether a variable is at the bound):
+		
+		        *  0 : a constraint is not active.
+		        * -1 : a lower bound is active.
+		        *  1 : an upper bound is active.
+		
+		    Might be somewhat arbitrary for 'trf' method as it generates a sequence
+		    of strictly feasible iterates and `active_mask` is determined within a
+		    tolerance threshold.
+		nfev : int
+		    Number of function evaluations done. Methods 'trf' and 'dogbox' do not
+		    count function calls for numerical Jacobian approximation, as opposed
+		    to 'lm' method.
+		njev : int or None
+		    Number of Jacobian evaluations done. If numerical Jacobian
+		    approximation is used in 'lm' method, it is set to None.
+		status : int
+		    The reason for algorithm termination:
+		
+		        * -1 : improper input parameters status returned from MINPACK.
+		        *  0 : the maximum number of function evaluations is exceeded.
+		        *  1 : `gtol` termination condition is satisfied.
+		        *  2 : `ftol` termination condition is satisfied.
+		        *  3 : `xtol` termination condition is satisfied.
+		        *  4 : Both `ftol` and `xtol` termination conditions are satisfied.
+		
+		message : str
+		    Verbal description of the termination reason.
+		success : bool
+		    True if one of the convergence criteria is satisfied (`status` > 0).
+		
+		See Also
+		--------
+		leastsq : A legacy wrapper for the MINPACK implementation of the
+		          Levenberg-Marquadt algorithm.
+		curve_fit : Least-squares minimization applied to a curve fitting problem.
+		
+		Notes
+		-----
+		Method 'lm' (Levenberg-Marquardt) calls a wrapper over least-squares
+		algorithms implemented in MINPACK (lmder, lmdif). It runs the
+		Levenberg-Marquardt algorithm formulated as a trust-region type algorithm.
+		The implementation is based on paper [JJMore]_, it is very robust and
+		efficient with a lot of smart tricks. It should be your first choice
+		for unconstrained problems. Note that it doesn't support bounds. Also
+		it doesn't work when m < n.
+		
+		Method 'trf' (Trust Region Reflective) is motivated by the process of
+		solving a system of equations, which constitute the first-order optimality
+		condition for a bound-constrained minimization problem as formulated in
+		[STIR]_. The algorithm iteratively solves trust-region subproblems
+		augmented by a special diagonal quadratic term and with trust-region shape
+		determined by the distance from the bounds and the direction of the
+		gradient. This enhancements help to avoid making steps directly into bounds
+		and efficiently explore the whole space of variables. To further improve
+		convergence, the algorithm considers search directions reflected from the
+		bounds. To obey theoretical requirements, the algorithm keeps iterates
+		strictly feasible. With dense Jacobians trust-region subproblems are
+		solved by an exact method very similar to the one described in [JJMore]_
+		(and implemented in MINPACK). The difference from the MINPACK
+		implementation is that a singular value decomposition of a Jacobian
+		matrix is done once per iteration, instead of a QR decomposition and series
+		of Givens rotation eliminations. For large sparse Jacobians a 2-d subspace
+		approach of solving trust-region subproblems is used [STIR]_, [Byrd]_.
+		The subspace is spanned by a scaled gradient and an approximate
+		Gauss-Newton solution delivered by `scipy.sparse.linalg.lsmr`. When no
+		constraints are imposed the algorithm is very similar to MINPACK and has
+		generally comparable performance. The algorithm works quite robust in
+		unbounded and bounded problems, thus it is chosen as a default algorithm.
+		
+		Method 'dogbox' operates in a trust-region framework, but considers
+		rectangular trust regions as opposed to conventional ellipsoids [Voglis]_.
+		The intersection of a current trust region and initial bounds is again
+		rectangular, so on each iteration a quadratic minimization problem subject
+		to bound constraints is solved approximately by Powell's dogleg method
+		[NumOpt]_. The required Gauss-Newton step can be computed exactly for
+		dense Jacobians or approximately by `scipy.sparse.linalg.lsmr` for large
+		sparse Jacobians. The algorithm is likely to exhibit slow convergence when
+		the rank of Jacobian is less than the number of variables. The algorithm
+		often outperforms 'trf' in bounded problems with a small number of
+		variables.
+		
+		Robust loss functions are implemented as described in [BA]_. The idea
+		is to modify a residual vector and a Jacobian matrix on each iteration
+		such that computed gradient and Gauss-Newton Hessian approximation match
+		the true gradient and Hessian approximation of the cost function. Then
+		the algorithm proceeds in a normal way, i.e. robust loss functions are
+		implemented as a simple wrapper over standard least-squares algorithms.
+		
+		.. versionadded:: 0.17.0
+		
+		References
+		----------
+		.. [STIR] M. A. Branch, T. F. Coleman, and Y. Li, "A Subspace, Interior,
+		          and Conjugate Gradient Method for Large-Scale Bound-Constrained
+		          Minimization Problems," SIAM Journal on Scientific Computing,
+		          Vol. 21, Number 1, pp 1-23, 1999.
+		.. [NR] William H. Press et. al., "Numerical Recipes. The Art of Scientific
+		        Computing. 3rd edition", Sec. 5.7.
+		.. [Byrd] R. H. Byrd, R. B. Schnabel and G. A. Shultz, "Approximate
+		          solution of the trust region problem by minimization over
+		          two-dimensional subspaces", Math. Programming, 40, pp. 247-263,
+		          1988.
+		.. [Curtis] A. Curtis, M. J. D. Powell, and J. Reid, "On the estimation of
+		            sparse Jacobian matrices", Journal of the Institute of
+		            Mathematics and its Applications, 13, pp. 117-120, 1974.
+		.. [JJMore] J. J. More, "The Levenberg-Marquardt Algorithm: Implementation
+		            and Theory," Numerical Analysis, ed. G. A. Watson, Lecture
+		            Notes in Mathematics 630, Springer Verlag, pp. 105-116, 1977.
+		.. [Voglis] C. Voglis and I. E. Lagaris, "A Rectangular Trust Region
+		            Dogleg Approach for Unconstrained and Bound Constrained
+		            Nonlinear Optimization", WSEAS International Conference on
+		            Applied Mathematics, Corfu, Greece, 2004.
+		.. [NumOpt] J. Nocedal and S. J. Wright, "Numerical optimization,
+		            2nd edition", Chapter 4.
+		.. [BA] B. Triggs et. al., "Bundle Adjustment - A Modern Synthesis",
+		        Proceedings of the International Workshop on Vision Algorithms:
+		        Theory and Practice, pp. 298-372, 1999.
+		
+		Examples
+		--------
+		In this example we find a minimum of the Rosenbrock function without bounds
+		on independed variables.
+		
+		>>> def fun_rosenbrock(x):
+		...     return np.array([10 * (x[1] - x[0]**2), (1 - x[0])])
+		
+		Notice that we only provide the vector of the residuals. The algorithm
+		constructs the cost function as a sum of squares of the residuals, which
+		gives the Rosenbrock function. The exact minimum is at ``x = [1.0, 1.0]``.
+		
+		>>> from scipy.optimize import least_squares
+		>>> x0_rosenbrock = np.array([2, 2])
+		>>> res_1 = least_squares(fun_rosenbrock, x0_rosenbrock)
+		>>> res_1.x
+		array([ 1.,  1.])
+		>>> res_1.cost
+		2.4651903288156619e-30
+		>>> res_1.optimality
+		4.4408921315878507e-14
+		
+		We now constrain the variables, in such a way that the previous solution
+		becomes infeasible. Specifically, we require that ``x[1] >= 1.5``, and
+		``x[0]`` left unconstrained. To this end, we specify the `bounds` parameter
+		to `least_squares` in the form ``bounds=([-np.inf, 1.5], np.inf)``.
+		
+		We also provide the analytic Jacobian:
+		
+		>>> def jac_rosenbrock(x):
+		...     return np.array([
+		...         [-20 * x[0], 10],
+		...         [-1, 0]])
+		
+		Putting this all together, we see that the new solution lies on the bound:
+		
+		>>> res_2 = least_squares(fun_rosenbrock, x0_rosenbrock, jac_rosenbrock,
+		...                       bounds=([-np.inf, 1.5], np.inf))
+		>>> res_2.x
+		array([ 1.22437075,  1.5       ])
+		>>> res_2.cost
+		0.025213093946805685
+		>>> res_2.optimality
+		1.5885401433157753e-07
+		
+		Now we solve a system of equations (i.e., the cost function should be zero
+		at a minimum) for a Broyden tridiagonal vector-valued function of 100000
+		variables:
+		
+		>>> def fun_broyden(x):
+		...     f = (3 - x) * x + 1
+		...     f[1:] -= x[:-1]
+		...     f[:-1] -= 2 * x[1:]
+		...     return f
+		
+		The corresponding Jacobian matrix is sparse. We tell the algorithm to
+		estimate it by finite differences and provide the sparsity structure of
+		Jacobian to significantly speed up this process.
+		
+		>>> from scipy.sparse import lil_matrix
+		>>> def sparsity_broyden(n):
+		...     sparsity = lil_matrix((n, n), dtype=int)
+		...     i = np.arange(n)
+		...     sparsity[i, i] = 1
+		...     i = np.arange(1, n)
+		...     sparsity[i, i - 1] = 1
+		...     i = np.arange(n - 1)
+		...     sparsity[i, i + 1] = 1
+		...     return sparsity
+		...
+		>>> n = 100000
+		>>> x0_broyden = -np.ones(n)
+		...
+		>>> res_3 = least_squares(fun_broyden, x0_broyden,
+		...                       jac_sparsity=sparsity_broyden(n))
+		>>> res_3.cost
+		4.5687161966109073e-23
+		>>> res_3.optimality
+		1.1650454296851518e-11
+		
+		Let's also solve a curve fitting problem using robust loss function to
+		take care of outliers in the data. Define the model function as
+		``y = a + b * exp(c * t)``, where t is a predictor variable, y is an
+		observation and a, b, c are parameters to estimate.
+		
+		First, define the function which generates the data with noise and
+		outliers, define the model parameters, and generate data:
+		
+		>>> def gen_data(t, a, b, c, noise=0, n_outliers=0, random_state=0):
+		...     y = a + b * np.exp(t * c)
+		...
+		...     rnd = np.random.RandomState(random_state)
+		...     error = noise * rnd.randn(t.size)
+		...     outliers = rnd.randint(0, t.size, n_outliers)
+		...     error[outliers] *= 10
+		...
+		...     return y + error
+		...
+		>>> a = 0.5
+		>>> b = 2.0
+		>>> c = -1
+		>>> t_min = 0
+		>>> t_max = 10
+		>>> n_points = 15
+		...
+		>>> t_train = np.linspace(t_min, t_max, n_points)
+		>>> y_train = gen_data(t_train, a, b, c, noise=0.1, n_outliers=3)
+		
+		Define function for computing residuals and initial estimate of
+		parameters.
+		
+		>>> def fun(x, t, y):
+		...     return x[0] + x[1] * np.exp(x[2] * t) - y
+		...
+		>>> x0 = np.array([1.0, 1.0, 0.0])
+		
+		Compute a standard least-squares solution:
+		
+		>>> res_lsq = least_squares(fun, x0, args=(t_train, y_train))
+		
+		Now compute two solutions with two different robust loss functions. The
+		parameter `f_scale` is set to 0.1, meaning that inlier residuals should
+		not significantly exceed 0.1 (the noise level used).
+		
+		>>> res_soft_l1 = least_squares(fun, x0, loss='soft_l1', f_scale=0.1,
+		...                             args=(t_train, y_train))
+		>>> res_log = least_squares(fun, x0, loss='cauchy', f_scale=0.1,
+		...                         args=(t_train, y_train))
+		
+		And finally plot all the curves. We see that by selecting an appropriate
+		`loss`  we can get estimates close to optimal even in the presence of
+		strong outliers. But keep in mind that generally it is recommended to try
+		'soft_l1' or 'huber' losses first (if at all necessary) as the other two
+		options may cause difficulties in optimization process.
+		
+		>>> t_test = np.linspace(t_min, t_max, n_points * 10)
+		>>> y_true = gen_data(t_test, a, b, c)
+		>>> y_lsq = gen_data(t_test, *res_lsq.x)
+		>>> y_soft_l1 = gen_data(t_test, *res_soft_l1.x)
+		>>> y_log = gen_data(t_test, *res_log.x)
+		...
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(t_train, y_train, 'o')
+		>>> plt.plot(t_test, y_true, 'k', linewidth=2, label='true')
+		>>> plt.plot(t_test, y_lsq, label='linear loss')
+		>>> plt.plot(t_test, y_soft_l1, label='soft_l1 loss')
+		>>> plt.plot(t_test, y_log, label='cauchy loss')
+		>>> plt.xlabel("t")
+		>>> plt.ylabel("y")
+		>>> plt.legend()
+		>>> plt.show()
+	**/
+	static public function least_squares(fun:Dynamic, x0:Dynamic, ?jac:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?ftol:Dynamic, ?xtol:Dynamic, ?gtol:Dynamic, ?x_scale:Dynamic, ?loss:Dynamic, ?f_scale:Dynamic, ?diff_step:Dynamic, ?tr_solver:Dynamic, ?tr_options:Dynamic, ?jac_sparsity:Dynamic, ?max_nfev:Dynamic, ?verbose:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
+	/**
 		Minimize the sum of squares of a set of equations.
 		
 		::
@@ -2702,9 +3223,9 @@ package scipy.optimize;
 		    in x0, otherwise the default `maxfev` is 200*(N+1).
 		epsfcn : float, optional
 		    A variable used in determining a suitable step length for the forward-
-		    difference approximation of the Jacobian (for Dfun=None). 
+		    difference approximation of the Jacobian (for Dfun=None).
 		    Normally the actual step length will be sqrt(epsfcn)*x
-		    If epsfcn is less than the machine precision, it is assumed that the 
+		    If epsfcn is less than the machine precision, it is assumed that the
 		    relative errors are of the order of the machine precision.
 		factor : float, optional
 		    A parameter determining the initial step bound
@@ -2830,6 +3351,76 @@ package scipy.optimize;
 		For the zoom phase it uses an algorithm by [...].
 	**/
 	static public function line_search(f:Dynamic, myfprime:Dynamic, xk:Dynamic, pk:Dynamic, ?gfk:Dynamic, ?old_fval:Dynamic, ?old_old_fval:Dynamic, ?args:Dynamic, ?c1:Dynamic, ?c2:Dynamic, ?amax:Dynamic):Dynamic;
+	/**
+		Solve the linear sum assignment problem.
+		
+		The linear sum assignment problem is also known as minimum weight matching
+		in bipartite graphs. A problem instance is described by a matrix C, where
+		each C[i,j] is the cost of matching vertex i of the first partite set
+		(a "worker") and vertex j of the second set (a "job"). The goal is to find
+		a complete assignment of workers to jobs of minimal cost.
+		
+		Formally, let X be a boolean matrix where :math:`X[i,j] = 1` iff row i is
+		assigned to column j. Then the optimal assignment has cost
+		
+		.. math::
+		    \min \sum_i \sum_j C_{i,j} X_{i,j}
+		
+		s.t. each row is assignment to at most one column, and each column to at
+		most one row.
+		
+		This function can also solve a generalization of the classic assignment
+		problem where the cost matrix is rectangular. If it has more rows than
+		columns, then not every row needs to be assigned to a column, and vice
+		versa.
+		
+		The method used is the Hungarian algorithm, also known as the Munkres or
+		Kuhn-Munkres algorithm.
+		
+		Parameters
+		----------
+		cost_matrix : array
+		    The cost matrix of the bipartite graph.
+		
+		Returns
+		-------
+		row_ind, col_ind : array
+		    An array of row indices and one of corresponding column indices giving
+		    the optimal assignment. The cost of the assignment can be computed
+		    as ``cost_matrix[row_ind, col_ind].sum()``. The row indices will be
+		    sorted; in the case of a square cost matrix they will be equal to
+		    ``numpy.arange(cost_matrix.shape[0])``.
+		
+		Notes
+		-----
+		.. versionadded:: 0.17.0
+		
+		Examples
+		--------
+		>>> cost = np.array([[4, 1, 3], [2, 0, 5], [3, 2, 2]])
+		>>> from scipy.optimize import linear_sum_assignment
+		>>> row_ind, col_ind = linear_sum_assignment(cost)
+		>>> col_ind
+		array([1, 0, 2])
+		>>> cost[row_ind, col_ind].sum()
+		5
+		
+		References
+		----------
+		1. http://www.public.iastate.edu/~ddoty/HungarianAlgorithm.html
+		
+		2. Harold W. Kuhn. The Hungarian Method for the assignment problem.
+		   *Naval Research Logistics Quarterly*, 2:83-97, 1955.
+		
+		3. Harold W. Kuhn. Variants of the Hungarian method for assignment
+		   problems. *Naval Research Logistics Quarterly*, 3: 253-258, 1956.
+		
+		4. Munkres, J. Algorithms for the Assignment and Transportation Problems.
+		   *J. SIAM*, 5(1):32-38, March, 1957.
+		
+		5. https://en.wikipedia.org/wiki/Hungarian_algorithm
+	**/
+	static public function linear_sum_assignment(cost_matrix:Dynamic):Dynamic;
 	/**
 		Find a root of a function, using a scalar Jacobian approximation.
 		
@@ -3029,16 +3620,17 @@ package scipy.optimize;
 		>>> from scipy.optimize import linprog
 		>>> res = linprog(c, A_ub=A, b_ub=b, bounds=(x0_bounds, x1_bounds),
 		...               options={"disp": True})
-		>>> print(res)
 		Optimization terminated successfully.
-		     Current function value: -11.428571
-		     Iterations: 2
-		status: 0
-		success: True
-		fun: -11.428571428571429
-		x: array([-1.14285714,  2.57142857])
-		message: 'Optimization terminated successfully.'
-		nit: 2
+		     Current function value: -22.000000
+		     Iterations: 1
+		>>> print(res)
+		     fun: -22.0
+		 message: 'Optimization terminated successfully.'
+		     nit: 1
+		   slack: array([ 39.,   0.])
+		  status: 0
+		 success: True
+		       x: array([ 10.,  -3.])
 		
 		Note the actual objective value is 11.428571.  In this case we minimized
 		the negative of the objective function.
@@ -3075,18 +3667,189 @@ package scipy.optimize;
 	**/
 	static public function linprog_verbose_callback(xk:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Solve a linear least-squares problem with bounds on the variables.
+		
+		`lsq_linear` finds a minimum of the cost function 0.5 * ||A x - b||**2,
+		such that lb <= x <= ub. Where A is an m-by-n design matrix and b is a
+		target vector with m elements.
+		
+		Parameters
+		----------
+		A : array_like, sparse matrix of LinearOperator, shape (m, n)
+		    Design matrix. Can be `scipy.sparse.linalg.LinearOperator`.
+		b : array_like, shape (m,)
+		    Target vector.
+		bounds : 2-tuple of array_like, optional
+		    Lower and upper bounds on independent variables. Defaults to no bounds.
+		    Each array must have shape (n,) or be a scalar, in the latter
+		    case a bound will be the same for all variables. Use ``np.inf`` with
+		    an appropriate sign to disable bounds on all or some variables.
+		method : 'trf' or 'bvls', optional
+		    Method to perform minimization.
+		
+		        * 'trf' : Trust Region Reflective algorithm adapted for a linear
+		          least-squares problem. This is an interior-point-like method
+		          and the required number of iterations is weakly correlated with
+		          the number of variables.
+		        * 'bvls' : Bounded-Variable Least-Squares algorithm. This is
+		          an active set method, which requires the number iterations
+		          comparable to the number of variables. Does not support sparse
+		          matrices.
+		
+		tol : float, optional
+		    Tolerance parameter. The algorithm terminates if the relative change
+		    of the cost function is less than `tol` on the last iteration.
+		    Additionally the first-order optimality measure is considered:
+		
+		        * ``method='trf'`` terminates if the uniform norm of the gradient,
+		          scaled to account for the presence of the bounds, is less than
+		          `tol`.
+		        * ``method='bvls'`` terminates if Karush-Kuhn-Tucker conditions
+		          are violated by less than `tol`.
+		
+		lsq_solver : {None, 'exact', 'lsmr'}, optional
+		    Method of solving unbounded least-squares problems throughout
+		    iterations:
+		
+		        * 'exact' : Use dense QR or SVD decomposition approach. Can't be
+		          used when `A` is sparse or LinearOperator.
+		        * 'lsmr' : Use `scipy.sparse.linalg.lsmr` iterative procedure
+		          which requires only matrix-vector product evaluations. Can't
+		          be used with ``method='bvls'``.
+		
+		    If None (default) the solver is chosen based on type of `A`.
+		lsmr_tol : None, float or 'auto', optional
+		    Tolerance parameters 'atol' and 'btol' for 'lsmr' solver. If None
+		    (default), it is set to ``1e-2 * tol``. If 'auto', the tolerance will
+		    be adjusted based on the optimality of the current iterate. It can
+		    speed up the optimization process, but not always reliable.
+		max_iter : None or int, optional
+		    Maximum number of iterations before termination. If None (default), it
+		    is set to 100 for ``method='trf'`` or to the number of variables for
+		    ``method='bvls'`` (not counting iterations for 'bvls' initialization).
+		verbose : {0, 1, 2}, optional
+		    Level of algorithm's verbosity:
+		
+		        * 0 : work silently (default).
+		        * 1 : display a termination report.
+		        * 2 : display progress during iterations.
+		
+		Returns
+		-------
+		OptimizeResult with the following fields defined:
+		x : ndarray, shape (n,)
+		    Solution found.
+		cost : float
+		    Value of the cost function at the solution.
+		fun : ndarray, shape (m,)
+		    Vector of residuals at the solution.
+		optimality : float
+		    First-order optimality measure. The exact meaning depends on `method`,
+		    refer to the description of `tol` parameter.
+		active_mask : ndarray of int, shape (n,)
+		    Each component shows whether a corresponding constraint is active
+		    (that is, whether a variable is at the bound):
+		
+		        *  0 : a constraint is not active.
+		        * -1 : a lower bound is active.
+		        *  1 : an upper bound is active.
+		
+		    Somewhat arbitrary because it is determined within a tolerance
+		    threshold.
+		nit : int
+		    Number of iterations. Zero if the unconstrained solution is optimal.
+		status : int
+		    Reason for algorithm termination:
+		
+		        * -1 : the algorithm was not able to make progress on the last
+		          iteration.
+		        *  0 : the maximum number of iterations is exceeded.
+		        *  1 : the first-order optimality measure is less than `tol`.
+		        *  2 : the relative change of the cost function is less than `tol`.
+		        *  3 : the unconstrained solution is optimal.
+		
+		message : str
+		    Verbal description of the termination reason.
+		success : bool
+		    True if one of the convergence criteria is satisfied (`status` > 0).
+		
+		See Also
+		--------
+		nnls : Linear least squares with non-negativity constraint.
+		least_squares : Nonlinear least squares with bounds on the variables.                    
+		
+		Notes
+		-----
+		The algorithm first computes the unconstrained least-squares solution by
+		`numpy.linalg.lstsq` or `scipy.sparse.linalg.lsmr` depending on
+		`lsq_solver`. This solution is returned as optimal if it lies within the
+		bounds.
+		
+		Method 'trf' runs the adaptation of the algorithm described in [STIR]_ for
+		a linear least-squares problem. The iterations are essentially the same as
+		in the nonlinear least-squares algorithm, but as the quadratic function
+		model is always accurate, we don't need to track or modify the radius of
+		a trust region. The line search (backtracking) is used as a safety net
+		when a selected step does not decrease the cost function. Read more
+		detailed description of the algorithm in `scipy.optimize.least_squares`.
+		
+		Method 'bvls' runs a Python implementation of the algorithm described in
+		[BVLS]_. The algorithm maintains active and free sets of variables, on
+		each iteration chooses a new variable to move from the active set to the
+		free set and then solves the unconstrained least-squares problem on free
+		variables. This algorithm is guaranteed to give an accurate solution
+		eventually, but may require up to n iterations for a problem with n
+		variables. Additionally, an ad-hoc initialization procedure is
+		implemented, that determines which variables to set free or active
+		initially. It takes some number of iterations before actual BVLS starts,
+		but can significantly reduce the number of further iterations.
+		
+		References
+		----------
+		.. [STIR] M. A. Branch, T. F. Coleman, and Y. Li, "A Subspace, Interior,
+		          and Conjugate Gradient Method for Large-Scale Bound-Constrained
+		          Minimization Problems," SIAM Journal on Scientific Computing,
+		          Vol. 21, Number 1, pp 1-23, 1999.
+		.. [BVLS] P. B. Start and R. L. Parker, "Bounded-Variable Least-Squares:
+		          an Algorithm and Applications", Computational Statistics, 10,
+		          129-141, 1995.
+		
+		Examples
+		--------
+		In this example a problem with a large sparse matrix and bounds on the
+		variables is solved.
+		
+		>>> from scipy.sparse import rand
+		>>> from scipy.optimize import lsq_linear
+		...
+		>>> np.random.seed(0)
+		...
+		>>> m = 20000
+		>>> n = 10000
+		...
+		>>> A = rand(m, n, density=1e-4)
+		>>> b = np.random.randn(m)
+		...
+		>>> lb = np.random.randn(n)
+		>>> ub = lb + 1
+		...
+		>>> res = lsq_linear(A, b, bounds=(lb, ub), lsmr_tol='auto', verbose=1)
+		# may vary
+		The relative change of the cost function is less than `tol`.
+		Number of iterations: 16, initial cost: 1.5039e+04,final cost 1.1112e+04, first-order optimality 4.66e-08.
+	**/
+	static public function lsq_linear(A:Dynamic, b:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?lsq_solver:Dynamic, ?lsmr_tol:Dynamic, ?max_iter:Dynamic, ?verbose:Dynamic):Float;
+	/**
 		Minimization of scalar function of one or more variables.
 		
-		In general, the optimization problems are of the form:
+		In general, the optimization problems are of the form::
 		
-		minimize f(x)
+		    minimize f(x) subject to
 		
-		subject to:
+		    g_i(x) >= 0,  i = 1,...,m
+		    h_j(x)  = 0,  j = 1,...,p
 		
-		    ``g_i(x) >= 0``, i = 1,...,m
-		    ``h_j(x)  = 0``, j = 1,...,p
-		
-		Where x is a vector of one or more variables.
+		where x is a vector of one or more variables.
 		``g_i(x)`` are the inequality constraints.
 		``h_j(x)`` are the equality constrains.
 		
@@ -3146,6 +3909,7 @@ package scipy.optimize;
 		constraints : dict or sequence of dict, optional
 		    Constraints definition (only for COBYLA and SLSQP).
 		    Each constraint is defined in a dictionary with fields:
+		
 		        type : str
 		            Constraint type: 'eq' for equality, 'ineq' for inequality.
 		        fun : callable
@@ -3154,6 +3918,7 @@ package scipy.optimize;
 		            The Jacobian of `fun` (only for SLSQP).
 		        args : sequence, optional
 		            Extra arguments to be passed to the function and Jacobian.
+		
 		    Equality constraint means that the constraint function result is to
 		    be zero whereas inequality means that it is to be non-negative.
 		    Note that COBYLA only supports inequality constraints.
@@ -3163,10 +3928,12 @@ package scipy.optimize;
 		options : dict, optional
 		    A dictionary of solver options. All methods accept the following
 		    generic options:
+		
 		        maxiter : int
 		            Maximum number of iterations to perform.
 		        disp : bool
 		            Set to True to print convergence messages.
+		
 		    For method-specific options, see :func:`show_options()`.
 		callback : callable, optional
 		    Called after each iteration, as ``callback(xk)``, where ``xk`` is the
@@ -3196,10 +3963,11 @@ package scipy.optimize;
 		**Unconstrained minimization**
 		
 		Method :ref:`Nelder-Mead <optimize.minimize-neldermead>` uses the
-		Simplex algorithm [1]_, [2]_. This algorithm has been successful
-		in many applications but other algorithms using the first and/or
-		second derivatives information might be preferred for their better
-		performances and robustness in general.
+		Simplex algorithm [1]_, [2]_. This algorithm is robust in many
+		applications. However, if numerical computation of derivative can be
+		trusted, other algorithms using the first and/or second derivatives
+		information might be preferred for their better performance in
+		general.
 		
 		Method :ref:`Powell <optimize.minimize-powell>` is a modification
 		of Powell's method [3]_, [4]_ which is a conjugate direction
@@ -3338,9 +4106,9 @@ package scipy.optimize;
 		A simple application of the *Nelder-Mead* method is:
 		
 		>>> x0 = [1.3, 0.7, 0.8, 1.9, 1.2]
-		>>> res = minimize(rosen, x0, method='Nelder-Mead')
+		>>> res = minimize(rosen, x0, method='Nelder-Mead', tol=1e-6)
 		>>> res.x
-		[ 1.  1.  1.  1.  1.]
+		array([ 1.,  1.,  1.,  1.,  1.])
 		
 		Now using the *BFGS* algorithm, using the first derivative and a few
 		options:
@@ -3353,15 +4121,15 @@ package scipy.optimize;
 		         Function evaluations: 64
 		         Gradient evaluations: 64
 		>>> res.x
-		array([ 1.  1.  1.  1.  1.])
+		array([ 1.,  1.,  1.,  1.,  1.])
 		>>> print(res.message)
 		Optimization terminated successfully.
 		>>> res.hess_inv
-		[[ 0.00749589  0.01255155  0.02396251  0.04750988  0.09495377]
-		 [ 0.01255155  0.02510441  0.04794055  0.09502834  0.18996269]
-		 [ 0.02396251  0.04794055  0.09631614  0.19092151  0.38165151]
-		 [ 0.04750988  0.09502834  0.19092151  0.38341252  0.7664427 ]
-		 [ 0.09495377  0.18996269  0.38165151  0.7664427   1.53713523]]
+		array([[ 0.00749589,  0.01255155,  0.02396251,  0.04750988,  0.09495377],  # may vary
+		       [ 0.01255155,  0.02510441,  0.04794055,  0.09502834,  0.18996269],
+		       [ 0.02396251,  0.04794055,  0.09631614,  0.19092151,  0.38165151],
+		       [ 0.04750988,  0.09502834,  0.19092151,  0.38341252,  0.7664427 ],
+		       [ 0.09495377,  0.18996269,  0.38165151,  0.7664427,   1.53713523]])
 		
 		
 		Next, consider a minimization problem with several constraints (namely
@@ -3667,9 +4435,11 @@ package scipy.optimize;
 		
 		References
 		----------
-		.. [1] D.A. Knoll and D.E. Keyes, J. Comp. Phys. 193, 357 (2003).
+		.. [1] D.A. Knoll and D.E. Keyes, J. Comp. Phys. 193, 357 (2004).
+		       doi:10.1016/j.jcp.2003.08.010
 		.. [2] A.H. Baker and E.R. Jessup and T. Manteuffel,
-		         SIAM J. Matrix Anal. Appl. 26, 962 (2005).
+		       SIAM J. Matrix Anal. Appl. 26, 962 (2005).
+		       doi:10.1137/S0895479803422014
 	**/
 	static public function newton_krylov(F:Dynamic, xin:Dynamic, ?iter:Dynamic, ?rdiff:Dynamic, ?method:Dynamic, ?inner_maxiter:Dynamic, ?inner_M:Dynamic, ?outer_k:Dynamic, ?verbose:Dynamic, ?maxiter:Dynamic, ?f_tol:Dynamic, ?f_rtol:Dynamic, ?x_tol:Dynamic, ?x_rtol:Dynamic, ?tol_norm:Dynamic, ?line_search:Dynamic, ?callback:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**

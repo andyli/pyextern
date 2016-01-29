@@ -128,7 +128,7 @@ package pandas.core.internals;
 		Coerce to the new type (if copy=True, return a new copy)
 		raise on an except if raise == True
 	**/
-	public function _astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?values:Dynamic, ?klass:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?values:Dynamic, ?klass:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _box_to_block_values : Dynamic;
 	static public var _can_consolidate : Dynamic;
 	public function _can_hold_element(element:Dynamic):Dynamic;
@@ -152,14 +152,18 @@ package pandas.core.internals;
 	/**
 		interpolate using scipy wrappers 
 	**/
-	public function _interpolate(?method:Dynamic, ?index:Dynamic, ?values:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _interpolate(?method:Dynamic, ?index:Dynamic, ?values:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		fillna but using the interpolate machinery 
 	**/
-	public function _interpolate_with_fill(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic):Dynamic;
+	public function _interpolate_with_fill(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var _is_single_block : Dynamic;
 	public function _maybe_downcast(blocks:Dynamic, ?downcast:Dynamic):Dynamic;
 	public var _mgr_locs : Dynamic;
+	/**
+		no-op on a non-ObjectBlock 
+	**/
+	public function _replace_single(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -193,7 +197,7 @@ package pandas.core.internals;
 	/**
 		apply the function to my values; return a block if we are not one 
 	**/
-	public function apply(func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function apply(func:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		the dtype to return if I want to construct this block as an array 
 	**/
@@ -205,7 +209,7 @@ package pandas.core.internals;
 		by definition we are not an ObjectBlock here!  
 	**/
 	public function convert(?copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function copy(?deep:Dynamic):Dynamic;
+	public function copy(?deep:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Delete given loc(-s) from block in-place.
 	**/
@@ -213,11 +217,11 @@ package pandas.core.internals;
 	/**
 		return block for the diff of the values 
 	**/
-	public function diff(n:Dynamic, ?axis:Dynamic):Dynamic;
+	public function diff(n:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		try to downcast each item to the dict of dtypes if present 
 	**/
-	public function downcast(?dtypes:Dynamic):Dynamic;
+	public function downcast(?dtypes:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	public function equals(other:Dynamic):Dynamic;
 	/**
@@ -229,18 +233,23 @@ package pandas.core.internals;
 		other : a ndarray/object
 		raise_on_error : if True, raise when I can't perform the function,
 		    False by default (and just return the data that we had coming in)
+		try_cast : try casting the results to the input type
 		
 		Returns
 		-------
 		a new block, the result of the func
 	**/
-	public function eval(func:Dynamic, other:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic):Dynamic;
+	public function eval(func:Dynamic, other:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		return an outside world format, currently just the ndarray 
 	**/
 	public function external_values(?dtype:Dynamic):Dynamic;
 	public var fill_value : Dynamic;
-	public function fillna(value:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic):Dynamic;
+	/**
+		fillna on the block with the value. If we fail, then convert to ObjectBlock
+		and try again 
+	**/
+	public function fillna(value:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var ftype : Dynamic;
 	public function get(item:Dynamic):Dynamic;
 	/**
@@ -260,7 +269,7 @@ package pandas.core.internals;
 		this should be the pure internal API format 
 	**/
 	public function internal_values(?dtype:Dynamic):Dynamic;
-	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?index:Dynamic, ?values:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?index:Dynamic, ?values:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?limit_direction:Dynamic, ?fill_value:Dynamic, ?coerce:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var is_bool : Dynamic;
 	static public var is_categorical : Dynamic;
 	/**
@@ -320,7 +329,7 @@ package pandas.core.internals;
 		-------
 		a list of new blocks, the result of the putmask
 	**/
-	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic):Dynamic;
+	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Reindex using pre-computed indexer information
 	**/
@@ -331,7 +340,7 @@ package pandas.core.internals;
 		It is used in ObjectBlocks.  It is here for API
 		compatibility.
 	**/
-	public function replace(to_replace:Dynamic, value:Dynamic, ?inplace:Dynamic, ?filter:Dynamic, ?regex:Dynamic):Dynamic;
+	public function replace(to_replace:Dynamic, value:Dynamic, ?inplace:Dynamic, ?filter:Dynamic, ?regex:Dynamic, ?convert:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
@@ -341,7 +350,7 @@ package pandas.core.internals;
 		
 		return a new block that is transformed to a nd block
 	**/
-	public function reshape_nd(labels:Dynamic, shape:Dynamic, ref_items:Dynamic):Dynamic;
+	public function reshape_nd(labels:Dynamic, shape:Dynamic, ref_items:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Modify Block in-place with new item value
 		
@@ -357,12 +366,12 @@ package pandas.core.internals;
 		indexer is a direct slice/positional indexer; value must be a
 		compatible shape
 	**/
-	public function setitem(indexer:Dynamic, value:Dynamic):Dynamic;
+	public function setitem(indexer:Dynamic, value:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var shape : Dynamic;
 	/**
 		shift the block by periods, possibly upcast 
 	**/
-	public function shift(periods:Dynamic, ?axis:Dynamic):Dynamic;
+	public function shift(periods:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
 	public function should_store(value:Dynamic):Dynamic;
 	/**
 		Take values according to indexer and return them as a block.bb
@@ -373,6 +382,10 @@ package pandas.core.internals;
 		convert to our native types format, slicing if desired 
 	**/
 	public function to_native_types(?slicer:Dynamic, ?na_rep:Dynamic, ?quoting:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		return myself as an object block 
+	**/
+	public function to_object_block(mgr:Dynamic):Dynamic;
 	public var values : Dynamic;
 	/**
 		evaluate the block; return result block(s) from the result
@@ -392,5 +405,5 @@ package pandas.core.internals;
 		-------
 		a new block(s), the result of the func
 	**/
-	public function where(other:Dynamic, cond:Dynamic, ?align:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic, ?axis:Dynamic, ?transpose:Dynamic):Dynamic;
+	public function where(other:Dynamic, cond:Dynamic, ?align:Dynamic, ?raise_on_error:Dynamic, ?try_cast:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
 }

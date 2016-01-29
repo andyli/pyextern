@@ -327,7 +327,7 @@ package scipy.stats.contingency;
 		>>> power_divergence([16, 18, 16, 14, 12, 12],
 		...                  f_exp=[16, 16, 16, 16, 16, 8],
 		...                  lambda_='log-likelihood')
-		(3.5, 0.62338762774958223)
+		(3.3281031458963746, 0.6495419288047497)
 		
 		When `f_obs` is 2-D, by default the test is applied to each column.
 		

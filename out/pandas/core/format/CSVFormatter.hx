@@ -41,11 +41,11 @@ package pandas.core.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Dynamic;
+	public function ___init__(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Void;
+	public function new(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/

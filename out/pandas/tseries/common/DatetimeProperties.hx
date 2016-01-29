@@ -48,11 +48,11 @@ package pandas.tseries.common;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, index:Dynamic, name:Dynamic):Dynamic;
+	public function ___init__(values:Dynamic, index:Dynamic, name:Dynamic, ?orig:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(values:Dynamic, index:Dynamic, name:Dynamic):Void;
+	public function new(values:Dynamic, index:Dynamic, name:Dynamic, ?orig:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -87,7 +87,7 @@ package pandas.tseries.common;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -148,6 +148,10 @@ package pandas.tseries.common;
 		delete unwanted __dir__ for this object 
 	**/
 	public function _dir_deletions():Dynamic;
+	/**
+		Prevents setting additional attributes
+	**/
+	public function _freeze():Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/

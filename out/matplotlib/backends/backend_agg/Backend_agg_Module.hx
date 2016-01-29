@@ -16,6 +16,12 @@ package matplotlib.backends.backend_agg;
 	static public var _has_pil : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var backend_version : Dynamic;
+	/**
+		cos(x)
+		
+		Return the cosine of x (measured in radians).
+	**/
+	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	static public function findfont(prop:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function get_hinting_flag():Dynamic;
@@ -32,12 +38,24 @@ package matplotlib.backends.backend_agg;
 	**/
 	static public function new_figure_manager_given_figure(num:Dynamic, figure:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		radians(x)
+		
+		Convert angle x from degrees to radians.
+	**/
+	static public function radians(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var rcParams : Dynamic;
 	/**
 		Return a dictionary that contains those keys that appear in both
 		d and keys, with values from d.
 	**/
 	static public function restrict_dict(d:Dynamic, keys:Dynamic):Dynamic;
+	/**
+		sin(x)
+		
+		Return the sine of x (measured in radians).
+	**/
+	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var unicode_literals : Dynamic;
 	static public var verbose : Dynamic;
 }

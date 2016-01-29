@@ -210,6 +210,7 @@ package scipy.interpolate.polyint;
 		
 		Examples
 		--------
+		>>> from scipy.interpolate import KroghInterpolator
 		>>> KroghInterpolator([0,0,0],[1,2,3]).derivatives(0)
 		array([1.0,2.0,3.0])
 		>>> KroghInterpolator([0,0,0],[1,2,3]).derivatives([0,0])

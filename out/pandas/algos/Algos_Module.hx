@@ -100,6 +100,14 @@ package pandas.algos;
 	**/
 	static public function group_add_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Only transforms on axis=0
+	**/
+	static public function group_cumprod_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Only transforms on axis=0
+	**/
+	static public function group_cumsum(out:Dynamic, values:Dynamic, labels:Dynamic, accum:Dynamic):Dynamic;
+	/**
 		Compute label vector from input values and associated useful data
 		
 		Returns
@@ -143,7 +151,7 @@ package pandas.algos;
 	/**
 		Only aggregates on axis=0
 	**/
-	static public function group_median(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_median_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Only aggregates on axis=0
 	**/
@@ -192,6 +200,7 @@ package pandas.algos;
 		Only aggregates on axis=0
 	**/
 	static public function group_prod_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function group_shift_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_var_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_var_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function groupby_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -453,27 +462,15 @@ package pandas.algos;
 	static public function roll_generic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		O(N log(window)) implementation using skip list
-	**/
-	static public function roll_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Moving max of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 	**/
-	static public function roll_max2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function roll_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_median_c(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		O(N log(window)) implementation using skip list
-	**/
-	static public function roll_median_cython(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		O(N log(window)) implementation using skip list
-	**/
-	static public function roll_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Moving min of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 	**/
-	static public function roll_min2(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function roll_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		O(N log(window)) implementation using skip list
 	**/

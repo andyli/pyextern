@@ -184,7 +184,7 @@ package scipy.interpolate._monotone;
 		At `x = xb` it's the same with `a = n - q`.
 	**/
 	static public function _construct_from_derivatives(xa:Dynamic, xb:Dynamic, ya:Dynamic, yb:Dynamic):Dynamic;
-	static public function _edge_case(m0:Dynamic, d1:Dynamic, out:Dynamic):Dynamic;
+	static public function _edge_case(h0:Dynamic, h1:Dynamic, m0:Dynamic, m1:Dynamic):Dynamic;
 	/**
 		c and x may be modified by the user. The Cython code expects
 		that they are C contiguous.
@@ -319,6 +319,7 @@ package scipy.interpolate._monotone;
 		Examples
 		--------
 		
+		>>> from scipy.interpolate import BPoly
 		>>> BPoly.from_derivatives([0, 1], [[1, 2], [3, 4]])
 		
 		Creates a polynomial `f(x)` of degree 3, defined on `[0, 1]`

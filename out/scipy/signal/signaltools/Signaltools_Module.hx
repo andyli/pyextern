@@ -814,15 +814,15 @@ package scipy.signal.signaltools;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> lena = misc.lena()
+		>>> face = misc.face(gray=True)
 		>>> scharr = np.array([[ -3-3j, 0-10j,  +3 -3j],
 		...                    [-10+0j, 0+ 0j, +10 +0j],
 		...                    [ -3+3j, 0+10j,  +3 +3j]]) # Gx + j*Gy
-		>>> grad = signal.convolve2d(lena, scharr, boundary='symm', mode='same')
+		>>> grad = signal.convolve2d(face, scharr, boundary='symm', mode='same')
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_mag.imshow(np.absolute(grad), cmap='gray')
@@ -950,16 +950,16 @@ package scipy.signal.signaltools;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> lena = misc.lena() - misc.lena().mean()
-		>>> template = np.copy(lena[235:295, 310:370]) # right eye
+		>>> face = misc.face(gray=True) - misc.face(gray=True).mean()
+		>>> template = np.copy(face[300:365, 670:750])  # right eye
 		>>> template -= template.mean()
-		>>> lena = lena + np.random.randn(*lena.shape) * 50 # add noise
-		>>> corr = signal.correlate2d(lena, template, boundary='symm', mode='same')
-		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape) # find the match
+		>>> face = face + np.random.randn(*face.shape) * 50  # add noise
+		>>> corr = signal.correlate2d(face, template, boundary='symm', mode='same')
+		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape)  # find the match
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_template.imshow(template, cmap='gray')
@@ -1071,7 +1071,7 @@ package scipy.signal.signaltools;
 		--------
 		>>> from scipy import signal
 		>>> randgen = np.random.RandomState(9)
-		>>> npoints = 1e3
+		>>> npoints = 1000
 		>>> noise = randgen.randn(npoints)
 		>>> x = 3 + 2*np.linspace(0, 1, npoints) + noise
 		>>> (signal.detrend(x) - noise).max() < 0.01
@@ -1312,96 +1312,13 @@ package scipy.signal.signaltools;
 		Examples
 		--------
 		>>> from scipy.special import factorial
-		>>> arr = np.array([3,4,5])
+		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
 		>>> factorial(5, exact=True)
 		120L
 	**/
 	static public function factorial(n:Dynamic, ?exact:Dynamic):Dynamic;
-	/**
-		Return discrete Fourier transform of real or complex sequence.
-		
-		The returned complex array contains ``y(0), y(1),..., y(n-1)`` where
-		
-		``y(j) = (x * exp(-2*pi*sqrt(-1)*j*np.arange(n)/n)).sum()``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Array to Fourier transform.
-		n : int, optional
-		    Length of the Fourier transform.  If ``n < x.shape[axis]``, `x` is
-		    truncated.  If ``n > x.shape[axis]``, `x` is zero-padded. The
-		    default results in ``n = x.shape[axis]``.
-		axis : int, optional
-		    Axis along which the fft's are computed; the default is over the
-		    last axis (i.e., ``axis=-1``).
-		overwrite_x : bool, optional
-		    If True, the contents of `x` can be destroyed; the default is False.
-		
-		Returns
-		-------
-		z : complex ndarray
-		    with the elements::
-		
-		        [y(0),y(1),..,y(n/2),y(1-n/2),...,y(-1)]        if n is even
-		        [y(0),y(1),..,y((n-1)/2),y(-(n-1)/2),...,y(-1)]  if n is odd
-		
-		    where::
-		
-		        y(j) = sum[k=0..n-1] x[k] * exp(-sqrt(-1)*j*k* 2*pi/n), j = 0..n-1
-		
-		    Note that ``y(-j) = y(n-j).conjugate()``.
-		
-		See Also
-		--------
-		ifft : Inverse FFT
-		rfft : FFT of a real sequence
-		
-		Notes
-		-----
-		The packing of the result is "standard": If ``A = fft(a, n)``, then
-		``A[0]`` contains the zero-frequency term, ``A[1:n/2]`` contains the
-		positive-frequency terms, and ``A[n/2:]`` contains the negative-frequency
-		terms, in order of decreasingly negative frequency. So for an 8-point
-		transform, the frequencies of the result are [0, 1, 2, 3, -4, -3, -2, -1].
-		To rearrange the fft output so that the zero-frequency component is
-		centered, like [-4, -3, -2, -1,  0,  1,  2,  3], use `fftshift`.
-		
-		For `n` even, ``A[n/2]`` contains the sum of the positive and
-		negative-frequency terms.  For `n` even and `x` real, ``A[n/2]`` will
-		always be real.
-		
-		This function is most efficient when `n` is a power of two, and least
-		efficient when `n` is prime.
-		
-		If the data type of `x` is real, a "real FFT" algorithm is automatically
-		used, which roughly halves the computation time.  To increase efficiency
-		a little further, use `rfft`, which does the same calculation, but only
-		outputs half of the symmetrical spectrum.  If the data is both real and
-		symmetrical, the `dct` can again double the efficiency, by generating
-		half of the spectrum from half of the signal.
-		
-		Examples
-		--------
-		>>> from scipy.fftpack import fft, ifft
-		>>> x = np.arange(5)
-		>>> np.allclose(fft(ifft(x)), x, atol=1e-15)  # within numerical accuracy.
-		True
-	**/
-	static public function fft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
-	/**
-		2-D discrete Fourier transform.
-		
-		Return the two-dimensional discrete Fourier transform of the 2-D argument
-		`x`.
-		
-		See Also
-		--------
-		fftn : for detailed information.
-	**/
-	static public function fft2(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
 		Convolve two N-dimensional arrays using FFT.
 		
@@ -1463,12 +1380,12 @@ package scipy.signal.signaltools;
 		but is far slower.
 		
 		>>> from scipy import misc
-		>>> lena = misc.lena()
+		>>> face = misc.face(gray=True)
 		>>> kernel = np.outer(signal.gaussian(70, 8), signal.gaussian(70, 8))
-		>>> blurred = signal.fftconvolve(lena, kernel, mode='same')
+		>>> blurred = signal.fftconvolve(face, kernel, mode='same')
 		
 		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_kernel.imshow(kernel, cmap='gray')
@@ -1480,86 +1397,6 @@ package scipy.signal.signaltools;
 		>>> fig.show()
 	**/
 	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
-	/**
-		Return the Discrete Fourier Transform sample frequencies.
-		
-		The returned float array `f` contains the frequency bin centers in cycles
-		per unit of the sample spacing (with zero at the start).  For instance, if
-		the sample spacing is in seconds, then the frequency unit is cycles/second.
-		
-		Given a window length `n` and a sample spacing `d`::
-		
-		  f = [0, 1, ...,   n/2-1,     -n/2, ..., -1] / (d*n)   if n is even
-		  f = [0, 1, ..., (n-1)/2, -(n-1)/2, ..., -1] / (d*n)   if n is odd
-		
-		Parameters
-		----------
-		n : int
-		    Window length.
-		d : scalar, optional
-		    Sample spacing (inverse of the sampling rate). Defaults to 1.
-		
-		Returns
-		-------
-		f : ndarray
-		    Array of length `n` containing the sample frequencies.
-		
-		Examples
-		--------
-		>>> signal = np.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)
-		>>> fourier = np.fft.fft(signal)
-		>>> n = signal.size
-		>>> timestep = 0.1
-		>>> freq = np.fft.fftfreq(n, d=timestep)
-		>>> freq
-		array([ 0.  ,  1.25,  2.5 ,  3.75, -5.  , -3.75, -2.5 , -1.25])
-	**/
-	static public function fftfreq(n:Dynamic, ?d:Dynamic):Dynamic;
-	/**
-		Return multidimensional discrete Fourier transform.
-		
-		The returned array contains::
-		
-		  y[j_1,..,j_d] = sum[k_1=0..n_1-1, ..., k_d=0..n_d-1]
-		     x[k_1,..,k_d] * prod[i=1..d] exp(-sqrt(-1)*2*pi/n_i * j_i * k_i)
-		
-		where d = len(x.shape) and n = x.shape.
-		Note that ``y[..., -j_i, ...] = y[..., n_i-j_i, ...].conjugate()``.
-		
-		Parameters
-		----------
-		x : array_like
-		    The (n-dimensional) array to transform.
-		shape : tuple of ints, optional
-		    The shape of the result.  If both `shape` and `axes` (see below) are
-		    None, `shape` is ``x.shape``; if `shape` is None but `axes` is
-		    not None, then `shape` is ``scipy.take(x.shape, axes, axis=0)``.
-		    If ``shape[i] > x.shape[i]``, the i-th dimension is padded with zeros.
-		    If ``shape[i] < x.shape[i]``, the i-th dimension is truncated to
-		    length ``shape[i]``.
-		axes : array_like of ints, optional
-		    The axes of `x` (`y` if `shape` is not None) along which the
-		    transform is applied.
-		overwrite_x : bool, optional
-		    If True, the contents of `x` can be destroyed.  Default is False.
-		
-		Returns
-		-------
-		y : complex-valued n-dimensional numpy array
-		    The (n-dimensional) DFT of the input array.
-		
-		See Also
-		--------
-		ifftn
-		
-		Examples
-		--------
-		>>> from scipy.fftpack import fftn, ifftn
-		>>> y = (-np.arange(16), 8 - np.arange(16), np.arange(16))
-		>>> np.allclose(y, fftn(ifftn(y)))
-		True
-	**/
-	static public function fftn(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
 	/**
 		A forward-backward filter.
 		
@@ -1779,34 +1616,45 @@ package scipy.signal.signaltools;
 		
 		Examples
 		--------
-		Low-pass from 0 to f::
+		Low-pass from 0 to f:
 		
 		>>> from scipy import signal
+		>>> numtaps = 3
+		>>> f = 0.1
 		>>> signal.firwin(numtaps, f)
+		array([ 0.06799017,  0.86401967,  0.06799017])
 		
-		Use a specific window function::
+		Use a specific window function:
 		
 		>>> signal.firwin(numtaps, f, window='nuttall')
+		array([  3.56607041e-04,   9.99286786e-01,   3.56607041e-04])
 		
-		High-pass ('stop' from 0 to f)::
+		High-pass ('stop' from 0 to f):
 		
 		>>> signal.firwin(numtaps, f, pass_zero=False)
+		array([-0.00859313,  0.98281375, -0.00859313])
 		
-		Band-pass::
+		Band-pass:
 		
+		>>> f1, f2 = 0.1, 0.2
 		>>> signal.firwin(numtaps, [f1, f2], pass_zero=False)
+		array([ 0.06301614,  0.88770441,  0.06301614])
 		
-		Band-stop::
+		Band-stop:
 		
 		>>> signal.firwin(numtaps, [f1, f2])
+		array([-0.00801395,  1.0160279 , -0.00801395])
 		
-		Multi-band (passbands are [0, f1], [f2, f3] and [f4, 1])::
+		Multi-band (passbands are [0, f1], [f2, f3] and [f4, 1]):
 		
+		>>> f3, f4 = 0.3, 0.4
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4])
+		array([-0.01376344,  1.02752689, -0.01376344])
 		
-		Multi-band (passbands are [f1, f2] and [f3,f4])::
+		Multi-band (passbands are [f1, f2] and [f3,f4]):
 		
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4], pass_zero=False)
+		array([ 0.04890915,  0.91284326,  0.04890915])
 	**/
 	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
 	/**
@@ -1819,8 +1667,8 @@ package scipy.signal.signaltools;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with ifftshift
-		    and be multiplied by the result of an fft (SEE ALSO fftfreq).
+		    If True, create a "periodic" window ready to use with `ifftshift`
+		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
 		
 		Returns
 		-------
@@ -1896,10 +1744,54 @@ package scipy.signal.signaltools;
 		transformed signal can be obtained from ``np.imag(hilbert(x))``, and the
 		original signal from ``np.real(hilbert(x))``.
 		
+		Examples
+		---------
+		In this example we use the Hilbert transform to determine the amplitude
+		envelope and instantaneous frequency of an amplitude-modulated signal.
+		    
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.signal import hilbert, chirp
+		
+		>>> duration = 1.0
+		>>> fs = 400.0
+		>>> samples = int(fs*duration)
+		>>> t = np.arange(samples) / fs
+		
+		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and 
+		apply an amplitude modulation.
+		
+		>>> signal = chirp(t, 20.0, t[-1], 100.0)    
+		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
+		
+		The amplitude envelope is given by magnitude of the analytic signal. The 
+		instantaneous frequency can be obtained by differentiating the instantaneous 
+		phase in respect to time. The instantaneous phase corresponds to the phase 
+		angle of the analytic signal.
+		
+		>>> analytic_signal = hilbert(signal)
+		>>> amplitude_envelope = np.abs(analytic_signal)
+		>>> instantaneous_phase = np.unwrap(np.angle(analytic_signal))
+		>>> instantaneous_frequency = np.diff(instantaneous_phase) / (2.0*np.pi) * fs
+		
+		>>> fig = plt.figure()
+		>>> ax0 = fig.add_subplot(211)
+		>>> ax0.plot(t, signal, label='signal')
+		>>> ax0.plot(t, amplitude_envelope, label='envelope')
+		>>> ax0.set_xlabel("time in seconds")
+		>>> ax0.legend()
+		>>> ax1 = fig.add_subplot(212)
+		>>> ax1.plot(t[1:], instantaneous_frequency)
+		>>> ax1.set_xlabel("time in seconds")
+		>>> ax1.set_ylim(0.0, 120.0)
+		
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
+		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing, 
+		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -1923,109 +1815,6 @@ package scipy.signal.signaltools;
 		    http://en.wikipedia.org/wiki/Analytic_signal
 	**/
 	static public function hilbert2(x:Dynamic, ?N:Dynamic):Dynamic;
-	/**
-		Return discrete inverse Fourier transform of real or complex sequence.
-		
-		The returned complex array contains ``y(0), y(1),..., y(n-1)`` where
-		
-		``y(j) = (x * exp(2*pi*sqrt(-1)*j*np.arange(n)/n)).mean()``.
-		
-		Parameters
-		----------
-		x : array_like
-		    Transformed data to invert.
-		n : int, optional
-		    Length of the inverse Fourier transform.  If ``n < x.shape[axis]``,
-		    `x` is truncated.  If ``n > x.shape[axis]``, `x` is zero-padded.
-		    The default results in ``n = x.shape[axis]``.
-		axis : int, optional
-		    Axis along which the ifft's are computed; the default is over the
-		    last axis (i.e., ``axis=-1``).
-		overwrite_x : bool, optional
-		    If True, the contents of `x` can be destroyed; the default is False.
-		
-		Returns
-		-------
-		ifft : ndarray of floats
-		    The inverse discrete Fourier transform.
-		
-		See Also
-		--------
-		fft : Forward FFT
-		
-		Notes
-		-----
-		This function is most efficient when `n` is a power of two, and least
-		efficient when `n` is prime.
-		
-		If the data type of `x` is real, a "real IFFT" algorithm is automatically
-		used, which roughly halves the computation time.
-	**/
-	static public function ifft(x:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?overwrite_x:Dynamic):Dynamic;
-	/**
-		2-D discrete inverse Fourier transform of real or complex sequence.
-		
-		Return inverse two-dimensional discrete Fourier transform of
-		arbitrary type sequence x.
-		
-		See `ifft` for more information.
-		
-		See also
-		--------
-		fft2, ifft
-	**/
-	static public function ifft2(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
-	/**
-		Return inverse multi-dimensional discrete Fourier transform of
-		arbitrary type sequence x.
-		
-		The returned array contains::
-		
-		  y[j_1,..,j_d] = 1/p * sum[k_1=0..n_1-1, ..., k_d=0..n_d-1]
-		     x[k_1,..,k_d] * prod[i=1..d] exp(sqrt(-1)*2*pi/n_i * j_i * k_i)
-		
-		where ``d = len(x.shape)``, ``n = x.shape``, and ``p = prod[i=1..d] n_i``.
-		
-		For description of parameters see `fftn`.
-		
-		See Also
-		--------
-		fftn : for detailed information.
-	**/
-	static public function ifftn(x:Dynamic, ?shape:Dynamic, ?axes:Dynamic, ?overwrite_x:Dynamic):Dynamic;
-	/**
-		The inverse of `fftshift`. Although identical for even-length `x`, the
-		functions differ by one sample for odd-length `x`.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		axes : int or shape tuple, optional
-		    Axes over which to calculate.  Defaults to None, which shifts all axes.
-		
-		Returns
-		-------
-		y : ndarray
-		    The shifted array.
-		
-		See Also
-		--------
-		fftshift : Shift zero-frequency component to the center of the spectrum.
-		
-		Examples
-		--------
-		>>> freqs = np.fft.fftfreq(9, d=1./9).reshape(3, 3)
-		>>> freqs
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -4.],
-		       [-3., -2., -1.]])
-		>>> np.fft.ifftshift(np.fft.fftshift(freqs))
-		array([[ 0.,  1.,  2.],
-		       [ 3.,  4., -4.],
-		       [-3., -2., -1.]])
-	**/
-	static public function ifftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
 	/**
 		Compute b(s) and a(s) from partial fraction expansion.
 		
@@ -2097,89 +1886,6 @@ package scipy.signal.signaltools;
 	**/
 	static public function invresz(r:Dynamic, p:Dynamic, k:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
-		Compute the inverse of the N-dimensional FFT of real input.
-		
-		This function computes the inverse of the N-dimensional discrete
-		Fourier Transform for real input over any number of axes in an
-		M-dimensional array by means of the Fast Fourier Transform (FFT).  In
-		other words, ``irfftn(rfftn(a), a.shape) == a`` to within numerical
-		accuracy. (The ``a.shape`` is necessary like ``len(a)`` is for `irfft`,
-		and for the same reason.)
-		
-		The input should be ordered in the same way as is returned by `rfftn`,
-		i.e. as for `irfft` for the final transformation axis, and as for `ifftn`
-		along all the other axes.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array.
-		s : sequence of ints, optional
-		    Shape (length of each transformed axis) of the output
-		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.). `s` is also the
-		    number of input points used along this axis, except for the last axis,
-		    where ``s[-1]//2+1`` points of the input are used.
-		    Along any axis, if the shape indicated by `s` is smaller than that of
-		    the input, the input is cropped.  If it is larger, the input is padded
-		    with zeros. If `s` is not given, the shape of the input along the
-		    axes specified by `axes` is used.
-		axes : sequence of ints, optional
-		    Axes over which to compute the inverse FFT. If not given, the last
-		    `len(s)` axes are used, or all axes if `s` is also not specified.
-		    Repeated indices in `axes` means that the inverse transform over that
-		    axis is performed multiple times.
-		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
-		    Normalization mode (see `numpy.fft`). Default is None.
-		
-		Returns
-		-------
-		out : ndarray
-		    The truncated or zero-padded input, transformed along the axes
-		    indicated by `axes`, or by a combination of `s` or `a`,
-		    as explained in the parameters section above.
-		    The length of each transformed axis is as given by the corresponding
-		    element of `s`, or the length of the input in every axis except for the
-		    last one if `s` is not given.  In the final transformed axis the length
-		    of the output when `s` is not given is ``2*(m-1)`` where ``m`` is the
-		    length of the final transformed axis of the input.  To get an odd
-		    number of output points in the final axis, `s` must be specified.
-		
-		Raises
-		------
-		ValueError
-		    If `s` and `axes` have different length.
-		IndexError
-		    If an element of `axes` is larger than than the number of axes of `a`.
-		
-		See Also
-		--------
-		rfftn : The forward n-dimensional FFT of real input,
-		        of which `ifftn` is the inverse.
-		fft : The one-dimensional FFT, with definitions and conventions used.
-		irfft : The inverse of the one-dimensional FFT of real input.
-		irfft2 : The inverse of the two-dimensional FFT of real input.
-		
-		Notes
-		-----
-		See `fft` for definitions and conventions used.
-		
-		See `rfft` for definitions and conventions used for real input.
-		
-		Examples
-		--------
-		>>> a = np.zeros((3, 2, 2))
-		>>> a[0, 0, 0] = 3 * 2 * 2
-		>>> np.fft.irfftn(a)
-		array([[[ 1.,  1.],
-		        [ 1.,  1.]],
-		       [[ 1.,  1.],
-		        [ 1.,  1.]],
-		       [[ 1.,  1.],
-		        [ 1.,  1.]]])
-	**/
-	static public function irfftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
-	/**
 		Check for a complex type or an array of complex numbers.
 		
 		The type of the input is checked, not the value. Even if the input
@@ -2210,29 +1916,6 @@ package scipy.signal.signaltools;
 		True
 	**/
 	static public function iscomplexobj(x:Dynamic):Bool;
-	/**
-		Returns True if the type of `num` is a scalar type.
-		
-		Parameters
-		----------
-		num : any
-		    Input argument, can be of any type and shape.
-		
-		Returns
-		-------
-		val : bool
-		    True if `num` is a scalar type, False if it is not.
-		
-		Examples
-		--------
-		>>> np.isscalar(3.1)
-		True
-		>>> np.isscalar([3.1])
-		False
-		>>> np.isscalar(False)
-		True
-	**/
-	static public function isscalar(num:Dynamic):Bool;
 	/**
 		Filter data along one-dimension with an IIR or FIR filter.
 		
@@ -3314,8 +2997,25 @@ package scipy.signal.signaltools;
 		samples.
 		
 		As noted, `resample` uses FFT transformations, which can be very
-		slow if the number of input samples is large and prime, see
-		`scipy.fftpack.fft`.
+		slow if the number of input or output samples is large and prime;
+		see `scipy.fftpack.fft`.
+		
+		Examples
+		--------
+		Note that the end of the resampled data rises to meet the first
+		sample of the next cycle:
+		
+		>>> from scipy import signal
+		
+		>>> x = np.linspace(0, 10, 20, endpoint=False)
+		>>> y = np.cos(-x**2/6.0)
+		>>> f = signal.resample(y, 100)
+		>>> xnew = np.linspace(0, 10, 100, endpoint=False)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'go-', xnew, f, '.-', 10, y[0], 'ro')
+		>>> plt.legend(['data', 'resampled'], loc='best')
+		>>> plt.show()
 	**/
 	static public function resample(x:Dynamic, num:Dynamic, ?t:Dynamic, ?axis:Dynamic, ?window:Dynamic):Dynamic;
 	/**
@@ -3471,87 +3171,6 @@ package scipy.signal.signaltools;
 		invresz, unique_roots
 	**/
 	static public function residuez(b:Dynamic, a:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
-	/**
-		Compute the N-dimensional discrete Fourier Transform for real input.
-		
-		This function computes the N-dimensional discrete Fourier Transform over
-		any number of axes in an M-dimensional real array by means of the Fast
-		Fourier Transform (FFT).  By default, all axes are transformed, with the
-		real transform performed over the last axis, while the remaining
-		transforms are complex.
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array, taken to be real.
-		s : sequence of ints, optional
-		    Shape (length along each transformed axis) to use from the input.
-		    (``s[0]`` refers to axis 0, ``s[1]`` to axis 1, etc.).
-		    The final element of `s` corresponds to `n` for ``rfft(x, n)``, while
-		    for the remaining axes, it corresponds to `n` for ``fft(x, n)``.
-		    Along any axis, if the given shape is smaller than that of the input,
-		    the input is cropped.  If it is larger, the input is padded with zeros.
-		    if `s` is not given, the shape of the input along the axes specified
-		    by `axes` is used.
-		axes : sequence of ints, optional
-		    Axes over which to compute the FFT.  If not given, the last ``len(s)``
-		    axes are used, or all axes if `s` is also not specified.
-		norm : {None, "ortho"}, optional
-		    .. versionadded:: 1.10.0
-		    Normalization mode (see `numpy.fft`). Default is None.
-		
-		Returns
-		-------
-		out : complex ndarray
-		    The truncated or zero-padded input, transformed along the axes
-		    indicated by `axes`, or by a combination of `s` and `a`,
-		    as explained in the parameters section above.
-		    The length of the last axis transformed will be ``s[-1]//2+1``,
-		    while the remaining transformed axes will have lengths according to
-		    `s`, or unchanged from the input.
-		
-		Raises
-		------
-		ValueError
-		    If `s` and `axes` have different length.
-		IndexError
-		    If an element of `axes` is larger than than the number of axes of `a`.
-		
-		See Also
-		--------
-		irfftn : The inverse of `rfftn`, i.e. the inverse of the n-dimensional FFT
-		     of real input.
-		fft : The one-dimensional FFT, with definitions and conventions used.
-		rfft : The one-dimensional FFT of real input.
-		fftn : The n-dimensional FFT.
-		rfft2 : The two-dimensional FFT of real input.
-		
-		Notes
-		-----
-		The transform for real input is performed over the last transformation
-		axis, as by `rfft`, then the transform over the remaining axes is
-		performed as by `fftn`.  The order of the output is as for `rfft` for the
-		final transformation axis, and as for `fftn` for the remaining
-		transformation axes.
-		
-		See `fft` for details, definitions and conventions used.
-		
-		Examples
-		--------
-		>>> a = np.ones((2, 2, 2))
-		>>> np.fft.rfftn(a)
-		array([[[ 8.+0.j,  0.+0.j],
-		        [ 0.+0.j,  0.+0.j]],
-		       [[ 0.+0.j,  0.+0.j],
-		        [ 0.+0.j,  0.+0.j]]])
-		
-		>>> np.fft.rfftn(a, axes=(2, 0))
-		array([[[ 4.+0.j,  0.+0.j],
-		        [ 4.+0.j,  0.+0.j]],
-		       [[ 0.+0.j,  0.+0.j],
-		        [ 0.+0.j,  0.+0.j]]])
-	**/
-	static public function rfftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Return the roots of a polynomial with coefficients given in p.
 		
@@ -4258,7 +3877,7 @@ package scipy.signal.signaltools;
 		----------
 		im : ndarray
 		    An N-dimensional array.
-		mysize : int or arraylike, optional
+		mysize : int or array_like, optional
 		    A scalar or an N-length list giving the size of the Wiener filter
 		    window in each dimension.  Elements of mysize should be odd.
 		    If mysize is a scalar, then this scalar is used as the size

@@ -1,7 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.period;
 @:pythonImport("pandas.tseries.period") extern class Period_Module {
-	static public var _DIFFERENT_FREQ_ERROR : Dynamic;
+	static public var _DIFFERENT_FREQ_INDEX : Dynamic;
 	static public var _INT64_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;

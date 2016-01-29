@@ -38,14 +38,14 @@ package seaborn.categorical;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize the plotter.
 	**/
 	@:native("__init__")
-	public function ___init__():Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Initialize the plotter.
 	**/
-	public function new():Void;
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, split:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -106,17 +106,31 @@ package seaborn.categorical;
 	**/
 	public function _group_longform(vals:Dynamic, grouper:Dynamic, order:Dynamic):Dynamic;
 	/**
-		Add a dummy patch object so we can get legend data.
+		Stop points from extending beyond their territory.
 	**/
-	public function add_legend_data(ax:Dynamic, color:Dynamic, label:Dynamic):Dynamic;
+	public function add_gutters(points:Dynamic, center:Dynamic, width:Dynamic):Dynamic;
+	/**
+		Add empty scatterplot artists with labels for the legend.
+	**/
+	public function add_legend_data(ax:Dynamic):Dynamic;
 	/**
 		Add descriptive labels to an Axes object.
 	**/
 	public function annotate_axes(ax:Dynamic):Dynamic;
 	/**
-		Use matplotlib to draw a boxplot on an Axes.
+		Adjust x position of points to avoid overlaps.
 	**/
-	public function draw_boxplot(ax:Dynamic, kws:Dynamic):Dynamic;
+	public function beeswarm(orig_xy:Dynamic, d:Dynamic):Dynamic;
+	/**
+		Return a list of all swarm points that could overlap with target.
+		
+		Assumes that swarm is a sorted list of all points below xy_i.
+	**/
+	public function could_overlap(xy_i:Dynamic, swarm:Dynamic, d:Dynamic):Dynamic;
+	/**
+		Plot the data.
+	**/
+	public function draw_swarmplot(ax:Dynamic, kws:Dynamic):Dynamic;
 	/**
 		Get a list of colors for the main component of the plots.
 	**/
@@ -138,12 +152,28 @@ package seaborn.categorical;
 	**/
 	public var nested_width : Dynamic;
 	/**
-		Make the plot.
+		Return True if two circles with the same diameter will overlap.
 	**/
-	public function plot(ax:Dynamic):Dynamic;
+	public function overlap(xy_i:Dynamic, xy_j:Dynamic, d:Dynamic):Dynamic;
 	/**
-		Take a drawn matplotlib boxplot and make it look nice.
+		Make the full plot.
 	**/
-	public function restyle_boxplot(artist_dict:Dynamic, color:Dynamic, kws:Dynamic):Dynamic;
+	public function plot(ax:Dynamic, kws:Dynamic):Dynamic;
+	/**
+		Return a color for each scatter point based on group and hue.
+	**/
+	public var point_colors : Dynamic;
+	/**
+		Return a list of (x, y) coordinates that might be valid.
+	**/
+	public function position_candidates(xy_i:Dynamic, neighbors:Dynamic, d:Dynamic):Dynamic;
+	/**
+		Remove candidates from the list if they overlap with the swarm.
+	**/
+	public function prune_candidates(candidates:Dynamic, neighbors:Dynamic, d:Dynamic):Dynamic;
+	/**
+		Find new positions on the categorical axis for each point.
+	**/
+	public function swarm_points(ax:Dynamic, points:Dynamic, center:Dynamic, width:Dynamic, s:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	static public var width : Dynamic;
 }

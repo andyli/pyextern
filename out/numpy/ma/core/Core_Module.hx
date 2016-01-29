@@ -2208,6 +2208,64 @@ package numpy.ma.core;
 	**/
 	static public function doc_note(initialdoc:Dynamic, note:Dynamic):Dynamic;
 	/**
+		Return the dot product of two arrays.
+		
+		This function is the equivalent of `numpy.dot` that takes masked values
+		into account. Note that `strict` and `out` are in different position
+		than in the method version. In order to maintain compatibility with the
+		corresponding method, it is recommended that the optional arguments be
+		treated as keyword only.  At some point that may be mandatory.
+		
+		.. note::
+		  Works only with 2-D arrays at the moment.
+		
+		
+		Parameters
+		----------
+		a, b : masked_array_like
+		    Inputs arrays.
+		strict : bool, optional
+		    Whether masked data are propagated (True) or set to 0 (False) for
+		    the computation. Default is False.  Propagating the mask means that
+		    if a masked value appears in a row or column, the whole row or
+		    column is considered masked.
+		out : masked_array, optional
+		    Output argument. This must have the exact kind that would be returned
+		    if it was not used. In particular, it must have the right type, must be
+		    C-contiguous, and its dtype must be the dtype that would be returned
+		    for `dot(a,b)`. This is a performance feature. Therefore, if these
+		    conditions are not met, an exception is raised, instead of attempting
+		    to be flexible.
+		
+		    .. versionadded:: 1.10.2
+		
+		See Also
+		--------
+		numpy.dot : Equivalent function for ndarrays.
+		
+		Examples
+		--------
+		>>> a = ma.array([[1, 2, 3], [4, 5, 6]], mask=[[1, 0, 0], [0, 0, 0]])
+		>>> b = ma.array([[1, 2], [3, 4], [5, 6]], mask=[[1, 0], [0, 0], [0, 0]])
+		>>> np.ma.dot(a, b)
+		masked_array(data =
+		 [[21 26]
+		 [45 64]],
+		             mask =
+		 [[False False]
+		 [False False]],
+		       fill_value = 999999)
+		>>> np.ma.dot(a, b, strict=True)
+		masked_array(data =
+		 [[-- --]
+		 [-- 64]],
+		             mask =
+		 [[ True  True]
+		 [ True False]],
+		       fill_value = 999999)
+	**/
+	static public function dot(a:Dynamic, b:Dynamic, ?strict:Dynamic, ?out:Dynamic):Dynamic;
+	/**
 		Pickle a masked array to a file.
 		
 		This is a wrapper around ``cPickle.dump``.
@@ -4247,9 +4305,10 @@ package numpy.ma.core;
 		shrink : bool, optional
 		    Whether to shrink `m` to ``nomask`` if all its values are False.
 		dtype : dtype, optional
-		    Data-type of the output mask. By default, the output mask has
-		    a dtype of MaskType (bool). If the dtype is flexible, each field
-		    has a boolean dtype.
+		    Data-type of the output mask. By default, the output mask has a
+		    dtype of MaskType (bool). If the dtype is flexible, each field has
+		    a boolean dtype. This is ignored when `m` is ``nomask``, in which
+		    case ``nomask`` is always returned.
 		
 		Returns
 		-------
@@ -4405,6 +4464,80 @@ package numpy.ma.core;
 		array([ True,  True,  True, False], dtype=bool)
 	**/
 	static public function mask_or(m1:Dynamic, m2:Dynamic, ?copy:Dynamic, ?shrink:Dynamic):Dynamic;
+	/**
+		Mask rows and/or columns of a 2D array that contain masked values.
+		
+		Mask whole rows and/or columns of a 2D array that contain
+		masked values.  The masking behavior is selected using the
+		`axis` parameter.
+		
+		  - If `axis` is None, rows *and* columns are masked.
+		  - If `axis` is 0, only rows are masked.
+		  - If `axis` is 1 or -1, only columns are masked.
+		
+		Parameters
+		----------
+		a : array_like, MaskedArray
+		    The array to mask.  If not a MaskedArray instance (or if no array
+		    elements are masked).  The result is a MaskedArray with `mask` set
+		    to `nomask` (False). Must be a 2D array.
+		axis : int, optional
+		    Axis along which to perform the operation. If None, applies to a
+		    flattened version of the array.
+		
+		Returns
+		-------
+		a : MaskedArray
+		    A modified version of the input array, masked depending on the value
+		    of the `axis` parameter.
+		
+		Raises
+		------
+		NotImplementedError
+		    If input array `a` is not 2D.
+		
+		See Also
+		--------
+		mask_rows : Mask rows of a 2D array that contain masked values.
+		mask_cols : Mask cols of a 2D array that contain masked values.
+		masked_where : Mask where a condition is met.
+		
+		Notes
+		-----
+		The input array's mask is modified by this function.
+		
+		Examples
+		--------
+		>>> import numpy.ma as ma
+		>>> a = np.zeros((3, 3), dtype=np.int)
+		>>> a[1, 1] = 1
+		>>> a
+		array([[0, 0, 0],
+		       [0, 1, 0],
+		       [0, 0, 0]])
+		>>> a = ma.masked_equal(a, 1)
+		>>> a
+		masked_array(data =
+		 [[0 0 0]
+		 [0 -- 0]
+		 [0 0 0]],
+		      mask =
+		 [[False False False]
+		 [False  True False]
+		 [False False False]],
+		      fill_value=999999)
+		>>> ma.mask_rowcols(a)
+		masked_array(data =
+		 [[0 -- 0]
+		 [-- -- --]
+		 [0 -- 0]],
+		      mask =
+		 [[False  True False]
+		 [ True  True  True]
+		 [False  True False]],
+		      fill_value=999999)
+	**/
+	static public function mask_rowcols(a:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	static public var masked : Dynamic;
 	/**
 		Mask an array where equal to a given value.

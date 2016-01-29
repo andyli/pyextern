@@ -11,6 +11,7 @@ package pandas.core.index;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _all_indexes_same(indexes:Dynamic):Dynamic;
+	static public function _clean_reindex_fill_method(method:Dynamic):Dynamic;
 	static public function _ensure_frozen(array_like:Dynamic, categories:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		If seq is an iterator, put its values into a list.
@@ -25,6 +26,7 @@ package pandas.core.index;
 	static public function _get_na_rep(dtype:Dynamic):Dynamic;
 	static public function _get_na_value(dtype:Dynamic):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
+	static public var _index_shared_docs : Dynamic;
 	static public function _maybe_box(idx:Dynamic):Dynamic;
 	/**
 		This is called upon unpickling, rather than the default which doesn't have arguments
@@ -33,7 +35,6 @@ package pandas.core.index;
 	static public function _new_Index(cls:Dynamic, d:Dynamic):Dynamic;
 	static public var _o_dtype : Dynamic;
 	static public function _sanitize_and_check(indexes:Dynamic):Dynamic;
-	static public var _shared_docs : Dynamic;
 	static public function _sparsify(label_list:Dynamic, ?start:Dynamic, ?sentinel:Dynamic):Dynamic;
 	/**
 		Trims zeros and decimal points
@@ -270,9 +271,9 @@ package pandas.core.index;
 		    If set to None, the number of items to be printed is unlimited.
 		    [default: 100] [currently: 100]
 		
-		display.memory_usage : bool or None
+		display.memory_usage : bool, string or None
 		    This specifies if the memory usage of a DataFrame should be displayed when
-		    df.info() is called.
+		    df.info() is called. Valid values True,False,'deep'
 		    [default: True] [currently: True]
 		
 		display.mpl_style : bool

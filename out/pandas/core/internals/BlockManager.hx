@@ -232,7 +232,7 @@ package pandas.core.internals;
 		-------
 		copy : BlockManager
 	**/
-	public function copy(?deep:Dynamic):Dynamic;
+	public function copy(?deep:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Delete selected item (items if non-unique) in-place.
 	**/
@@ -347,7 +347,7 @@ package pandas.core.internals;
 	/**
 		do a list replace 
 	**/
-	public function replace_list(src_list:Dynamic, dest_list:Dynamic, ?inplace:Dynamic, ?regex:Dynamic):Dynamic;
+	public function replace_list(src_list:Dynamic, dest_list:Dynamic, ?inplace:Dynamic, ?regex:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		a 2d-nd reshape operation on a BlockManager 
 	**/

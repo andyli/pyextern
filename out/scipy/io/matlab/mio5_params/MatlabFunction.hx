@@ -1324,13 +1324,13 @@ package scipy.io.matlab.mio5_params;
 		----------
 		new_order : string, optional
 		    Byte order to force; a value from the byte order specifications
-		    above. `new_order` codes can be any of::
+		    below. `new_order` codes can be any of:
 		
-		     * 'S' - swap dtype from current to opposite endian
-		     * {'<', 'L'} - little endian
-		     * {'>', 'B'} - big endian
-		     * {'=', 'N'} - native order
-		     * {'|', 'I'} - ignore (no change to byte order)
+		    * 'S' - swap dtype from current to opposite endian
+		    * {'<', 'L'} - little endian
+		    * {'>', 'B'} - big endian
+		    * {'=', 'N'} - native order
+		    * {'|', 'I'} - ignore (no change to byte order)
 		
 		    The default value ('S') results in swapping the current
 		    byte order. The code does a case-insensitive check on the first

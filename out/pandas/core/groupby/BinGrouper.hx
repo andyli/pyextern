@@ -102,17 +102,19 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _aggregate(result:Dynamic, counts:Dynamic, values:Dynamic, agg_func:Dynamic, is_numeric:Dynamic):Dynamic;
+	public function _aggregate(result:Dynamic, counts:Dynamic, values:Dynamic, comp_ids:Dynamic, agg_func:Dynamic, is_numeric:Dynamic):Dynamic;
 	public function _aggregate_series_fast(obj:Dynamic, func:Dynamic):Dynamic;
 	public function _aggregate_series_pure_python(obj:Dynamic, func:Dynamic):Dynamic;
 	static public var _cython_arity : Dynamic;
 	static public var _cython_functions : Dynamic;
-	public function _get_aggregate_function(how:Dynamic, values:Dynamic):Dynamic;
+	public function _cython_operation(kind:Dynamic, values:Dynamic, how:Dynamic, axis:Dynamic):Dynamic;
 	public function _get_compressed_labels():Dynamic;
+	public function _get_cython_function(kind:Dynamic, how:Dynamic, values:Dynamic, is_numeric:Dynamic):Dynamic;
 	public function _get_group_keys():Dynamic;
 	public function _get_splitter(data:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var _max_groupsize : Dynamic;
 	static public var _name_functions : Dynamic;
+	public function _transform(result:Dynamic, accum:Dynamic, values:Dynamic, comp_ids:Dynamic, transform_func:Dynamic, is_numeric:Dynamic):Dynamic;
 	public function agg_series(obj:Dynamic, func:Dynamic):Dynamic;
 	public function aggregate(values:Dynamic, how:Dynamic, ?axis:Dynamic):Dynamic;
 	public function apply(f:Dynamic, data:Dynamic, ?axis:Dynamic):Dynamic;
@@ -143,4 +145,5 @@ package pandas.core.groupby;
 		Compute group sizes
 	**/
 	public function size():Dynamic;
+	public function transform(values:Dynamic, how:Dynamic, ?axis:Dynamic):Dynamic;
 }

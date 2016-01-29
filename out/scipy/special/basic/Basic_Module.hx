@@ -13,30 +13,49 @@ package scipy.special.basic;
 	static public function _bessel_diff_formula(v:Dynamic, z:Dynamic, n:Dynamic, L:Dynamic, phase:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		Arithmetic, Geometric Mean
+		Arithmetic, Geometric Mean.
 		
 		Start with a_0=a and b_0=b and iteratively compute
 		
 		a_{n+1} = (a_n+b_n)/2
 		b_{n+1} = sqrt(a_n*b_n)
 		
-		until a_n=b_n.   The result is agm(a,b)
+		until a_n=b_n.   The result is agm(a, b)
 		
-		agm(a,b)=agm(b,a)
-		agm(a,a) = a
-		min(a,b) < agm(a,b) < max(a,b)
+		agm(a, b)=agm(b, a)
+		agm(a, a) = a
+		min(a, b) < agm(a, b) < max(a, b)
 	**/
 	static public function agm(a:Dynamic, b:Dynamic):Dynamic;
 	/**
-		Compute the zeros of Airy Functions Ai(x) and Ai'(x), a and a'
-		respectively, and the associated values of Ai(a') and Ai'(a).
+		Compute `nt` zeros and values of the Airy function Ai and its derivative.
+		
+		Computes the first `nt` zeros, `a`, of the Airy function Ai(x);
+		first `nt` zeros, `ap`, of the derivative of the Airy function Ai'(x);
+		the corresponding values Ai(a');
+		and the corresponding values Ai'(a).
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to compute
 		
 		Returns
 		-------
-		a[l-1]   -- the lth zero of Ai(x)
-		ap[l-1]  -- the lth zero of Ai'(x)
-		ai[l-1]  -- Ai(ap[l-1])
-		aip[l-1] -- Ai'(a[l-1])
+		a : ndarray
+		    First `nt` zeros of Ai(x)
+		ap : ndarray
+		    First `nt` zeros of Ai'(x)
+		ai : ndarray
+		    Values of Ai(x) evaluated at first `nt` zeros of Ai'(x)
+		aip : ndarray
+		    Values of Ai'(x) evaluated at first `nt` zeros of Ai(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ai_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -108,7 +127,7 @@ package scipy.special.basic;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Returns the n-th order generalized (associated) Laguerre polynomial.
+		Compute nth-order generalized (associated) Laguerre polynomial.
 		
 		The polynomial :math:`L^(alpha)_n(x)` is orthogonal over ``[0, inf)``,
 		with weighting function ``exp(-x) * x**alpha`` with ``alpha > -1``.
@@ -158,28 +177,53 @@ package scipy.special.basic;
 	**/
 	static public function atleast_1d(?arys:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function bei x
-		    
+		Compute nt zeros of the Kelvin function bei(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bei_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function bei' x
-		    
+		Compute nt zeros of the Kelvin function bei'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function beip_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ber x
-		    
+		Compute nt zeros of the Kelvin function ber(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ber_zeros(nt:Dynamic):Dynamic;
 	/**
-		Return an array of the Bernoulli numbers B0..Bn
-		    
+		Bernoulli numbers B0..Bn (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bernoulli(n:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ber' x
-		    
+		Compute nt zeros of the Kelvin function ber'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function berp_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -188,15 +232,34 @@ package scipy.special.basic;
 	**/
 	static public function bessel_diff_formula(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute the zeros of Airy Functions Bi(x) and Bi'(x), b and b'
-		respectively, and the associated values of Ai(b') and Ai'(b).
+		Compute `nt` zeros and values of the Airy function Bi and its derivative.
+		
+		Computes the first `nt` zeros, b, of the Airy function Bi(x);
+		first `nt` zeros, b', of the derivative of the Airy function Bi'(x);
+		the corresponding values Bi(b');
+		and the corresponding values Bi'(b).
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to compute
 		
 		Returns
 		-------
-		b[l-1]   -- the lth zero of Bi(x)
-		bp[l-1]  -- the lth zero of Bi'(x)
-		bi[l-1]  -- Bi(bp[l-1])
-		bip[l-1] -- Bi'(b[l-1])
+		b : ndarray
+		    First `nt` zeros of Bi(x)
+		bp : ndarray
+		    First `nt` zeros of Bi'(x)
+		bi : ndarray
+		    Values of Bi(x) evaluated at first `nt` zeros of Bi'(x)
+		bip : ndarray
+		    Values of Bi'(x) evaluated at first `nt` zeros of Bi(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function bi_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -208,16 +271,12 @@ package scipy.special.basic;
 	**/
 	static public function binom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z)
+		Associated Legendre function of the first kind, Pmn(z).
 		
-		Computes the (associated) Legendre function of the first kind
-		of order m and degree n,::
-		
-		    Pmn(z) = P_n^m(z)
-		
-		and its derivative, ``Pmn'(z)``.  Returns two arrays of size
-		``(m+1, n+1)`` containing ``Pmn(z)`` and ``Pmn'(z)`` for all
-		orders from ``0..m`` and degrees from ``0..n``.
+		Computes the associated Legendre function of the first kind of order m and
+		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Pmn(z)`` and
+		``Pmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
 		
 		Parameters
 		----------
@@ -259,7 +318,10 @@ package scipy.special.basic;
 		
 		References
 		----------
-		.. [1] NIST Digital Library of Mathematical Functions
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.21
 	**/
 	static public function clpmn(m:Dynamic, n:Dynamic, z:Dynamic, ?type:Dynamic):Dynamic;
@@ -312,17 +374,17 @@ package scipy.special.basic;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the periodic sinc function, also called the Dirichlet function.
+		Periodic sinc function, also called the Dirichlet function.
 		
 		The Dirichlet function is defined as::
 		
 		    diric(x) = sin(x * n/2) / (n * sin(x / 2)),
 		
-		where n is a positive integer.
+		where `n` is a positive integer.
 		
 		Parameters
 		----------
@@ -341,17 +403,48 @@ package scipy.special.basic;
 		>>> import matplotlib.pyplot as plt
 		
 		>>> x = np.linspace(-8*np.pi, 8*np.pi, num=201)
-		>>> plt.figure(figsize=(8,8));
-		>>> for idx, n in enumerate([2,3,4,9]):
+		>>> plt.figure(figsize=(8, 8));
+		>>> for idx, n in enumerate([2, 3, 4, 9]):
 		...     plt.subplot(2, 2, idx+1)
 		...     plt.plot(x, special.diric(x, n))
 		...     plt.title('diric, n={}'.format(n))
 		>>> plt.show()
+		
+		The following example demonstrates that `diric` gives the magnitudes
+		(modulo the sign and scaling) of the Fourier coefficients of a
+		rectangular pulse.
+		
+		Suppress output of values that are effectively 0:
+		
+		>>> np.set_printoptions(suppress=True)
+		
+		Create a signal `x` of length `m` with `k` ones:
+		
+		>>> m = 8
+		>>> k = 3
+		>>> x = np.zeros(m)
+		>>> x[:k] = 1
+		
+		Use the FFT to compute the Fourier transform of `x`, and
+		inspect the magnitudes of the coefficients:
+		
+		>>> np.abs(np.fft.fft(x))
+		array([ 3.        ,  2.41421356,  1.        ,  0.41421356,  1.        ,
+		        0.41421356,  1.        ,  2.41421356])
+		
+		Now find the same values (up to sign) using `diric`.  We multiply
+		by `k` to account for the different scaling conventions of
+		`numpy.fft.fft` and `diric`:
+		
+		>>> theta = np.linspace(0, 2*np.pi, m, endpoint=False)
+		>>> k * special.diric(theta, k)
+		array([ 3.        ,  2.41421356,  1.        , -0.41421356, -1.        ,
+		       -0.41421356,  1.        ,  2.41421356])
 	**/
 	static public function diric(x:Dynamic, n:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		Complete elliptic integral of the first kind
+		Complete elliptic integral of the first kind.
 		
 		This function is defined as
 		
@@ -384,7 +477,7 @@ package scipy.special.basic;
 		
 		ellipkm1(p)
 		
-		Complete elliptic integral of the first kind around m = 1
+		Complete elliptic integral of the first kind around `m` = 1
 		
 		This function is defined as
 		
@@ -395,7 +488,7 @@ package scipy.special.basic;
 		Parameters
 		----------
 		p : array_like
-		    Defines the parameter of the elliptic integral as m = 1 - p.
+		    Defines the parameter of the elliptic integral as `m` = 1 - p.
 		
 		Returns
 		-------
@@ -411,16 +504,23 @@ package scipy.special.basic;
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of the error function erf(z).
-		    
+		Compute nt complex zeros of error function erf(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function erf_zeros(nt:Dynamic):Dynamic;
 	/**
-		Inverse function for erfc
+		Inverse function for erfc.
+		    
 	**/
 	static public function erfcinv(y:Dynamic):Dynamic;
 	/**
-		Inverse function for erf
+		Inverse function for erf.
+		    
 	**/
 	static public function erfinv(y:Dynamic):Dynamic;
 	/**
@@ -442,8 +542,13 @@ package scipy.special.basic;
 	**/
 	static public function errprint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return an array of the Euler numbers E0..En (inclusive)
-		    
+		Euler numbers E0..En (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function euler(n:Dynamic):Dynamic;
 	/**
@@ -520,7 +625,7 @@ package scipy.special.basic;
 		Examples
 		--------
 		>>> from scipy.special import factorial
-		>>> arr = np.array([3,4,5])
+		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
 		>>> factorial(5, exact=True)
@@ -530,8 +635,8 @@ package scipy.special.basic;
 	/**
 		Double factorial.
 		
-		This is the factorial with every second value skipped, i.e.,
-		``7!! = 7 * 5 * 3 * 1``.  It can be approximated numerically as::
+		This is the factorial with every second value skipped.  E.g., ``7!! = 7 * 5
+		* 3 * 1``.  It can be approximated numerically as::
 		
 		  n!! = special.gamma(n/2+1)*2**((m+1)/2)/sqrt(pi)  n odd
 		      = 2**(n/2) * (n/2)!                           n even
@@ -562,8 +667,17 @@ package scipy.special.basic;
 	**/
 	static public function factorial2(n:Dynamic, ?exact:Dynamic):Dynamic;
 	/**
-		n(!!...!)  = multifactorial of order k
-		k times
+		Multifactorial of n of order k, n(!!...!).
+		
+		This is the multifactorial of n skipping k values.  For example,
+		
+		  factorialk(17, 4) = 17!!!! = 17 * 13 * 9 * 5 * 1
+		
+		In particular, for any integer ``n``, we have
+		
+		  factorialk(n, 1) = factorial(n)
+		
+		  factorialk(n, 2) = factorial2(n)
 		
 		Parameters
 		----------
@@ -578,7 +692,7 @@ package scipy.special.basic;
 		Returns
 		-------
 		val : int
-		    Multi factorial of `n`.
+		    Multifactorial of `n`.
 		
 		Raises
 		------
@@ -630,18 +744,33 @@ package scipy.special.basic;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nt complex zeros of the sine and cosine Fresnel integrals
-		S(z) and C(z).
+		Compute nt complex zeros of sine and cosine Fresnel integrals S(z) and C(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnel_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt complex zeros of the cosine Fresnel integral C(z).
-		    
+		Compute nt complex zeros of cosine Fresnel integral C(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnelc_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt complex zeros of the sine Fresnel integral S(z).
-		    
+		Compute nt complex zeros of sine Fresnel integral S(z).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function fresnels_zeros(nt:Dynamic):Dynamic;
 	/**
@@ -673,13 +802,41 @@ package scipy.special.basic;
 	**/
 	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of H1v(z) with respect to z.
-		    
+		Compute nth derivative of Hankel function H1v(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Hankel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Return the nth derivative of H2v(z) with respect to z.
-		    
+		Compute nth derivative of Hankel function H2v(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Hankel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -729,7 +886,7 @@ package scipy.special.basic;
 		-----
 		This function is defined as:
 		
-		.. math:: _0F_1(v,z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
+		.. math:: _0F_1(v, z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
 		
 		It's also the limit as q -> infinity of ``1F1(q;v;z/q)``, and satisfies
 		the differential equation :math:`f''(z) + vf'(z) = f(z)`.
@@ -842,31 +999,77 @@ package scipy.special.basic;
 	/**
 		iv(x1, x2[, out])
 		
-		iv(v,z)
+		iv(v, z)
 		
 		Modified Bessel function of the first kind  of real order
 		
 		Parameters
 		----------
 		v
-		    Order. If z is of real type and negative, v must be integer valued.
+		    Order. If `z` is of real type and negative, `v` must be integer valued.
 		z
 		    Argument.
 	**/
 	static public function iv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Iv(z) with respect to z.
-		    
+		Compute nth derivative of modified Bessel function Iv(z) with respect
+		to `z`.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel function
+		z : array_like of complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 6.
+		       http://jin.ece.illinois.edu/specfunc.html
+		
+		Examples
+		--------
+		Calculate multiple values at order 5:
+		
+		>>> from scipy.special import kvp
+		>>> kvp(5, (1, 2, 3+5j))
+		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kvp((4, 4.5, 5), 1)
+		array([ -184.0309,  -568.9585, -1849.0354])
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Jn(x).
-		    
+		Compute zeros of integer-order Bessel function Jn(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt (<=1200) zeros of the Bessel functions Jn and Jn'
-		and arange them in order of their magnitudes.
+		Compute zeros of integer-order Bessel functions Jn and Jn'.
+		
+		Results are arranged in order of the magnitudes of the zeros.
+		
+		Parameters
+		----------
+		nt : int
+		    Number (<=1200) of zeros to compute
 		
 		Returns
 		-------
@@ -884,18 +1087,51 @@ package scipy.special.basic;
 		See Also
 		--------
 		jn_zeros, jnp_zeros : to get separated arrays of zeros.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnjnp_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Jn'(x).
-		    
+		Compute zeros of integer-order Bessel function derivative Jn'(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel functions Jn(x), Jn'(x), Yn(x), and
-		Yn'(x), respectively. Returns 4 arrays of length nt.
+		Compute nt zeros of Bessel functions Jn(x), Jn'(x), Yn(x), and Yn'(x).
+		
+		Returns 4 arrays of length `nt`, corresponding to the first `nt` zeros of
+		Jn(x), Jn'(x), Yn(x), and Yn'(x), respectively.
+		
+		Parameters
+		----------
+		n : int
+		    Order of the Bessel functions
+		nt : int
+		    Number (<=1200) of zeros to compute
 		
 		See jn_zeros, jnp_zeros, yn_zeros, ynp_zeros to get separate arrays.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jnyn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
@@ -903,55 +1139,151 @@ package scipy.special.basic;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order v
+		Bessel function of the first kind of real order `v`
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Jv(z) with respect to z.
-		    
+		Compute nth derivative of Bessel function Jv(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Bessel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function kei x
+		Compute nt zeros of the Kelvin function kei(x).
 		    
 	**/
 	static public function kei_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function kei' x
-		    
+		Compute nt zeros of the Kelvin function kei'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function keip_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of all the Kelvin functions returned in a
-		length 8 tuple of arrays of length nt.
-		The tuple containse the arrays of zeros of
-		(ber, bei, ker, kei, ber', bei', ker', kei')
+		Compute nt zeros of all Kelvin functions.
+		
+		Returned in a length-8 tuple of arrays of length nt.  The tuple contains
+		the arrays of zeros of (ber, bei, ker, kei, ber', bei', ker', kei').
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kelvin_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ker x
-		    
+		Compute nt zeros of the Kelvin function ker(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ker_zeros(nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Kelvin function ker' x
-		    
+		Compute nt zeros of the Kelvin function ker'(x).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kerp_zeros(nt:Dynamic):Dynamic;
 	/**
 		kv(x1, x2[, out])
 		
-		kv(v,z)
+		kv(v, z)
 		
-		Modified Bessel function of the second kind of real order v
+		Modified Bessel function of the second kind of real order `v`
 		
-		Returns the modified Bessel function of the second kind (sometimes
-		called the third kind) for real order v at complex z.
+		Returns the modified Bessel function of the second kind for real order
+		`v` at complex `z`.
+		
+		These are also sometimes called functions of the third kind, Basset
+		functions, or Macdonald functions.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel functions
+		z : array_like of complex
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The results. Note that input must be of complex type to get complex
+		    output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``.
+		
+		See Also
+		--------
+		kvp : Derivative of this function
+		
+		Examples
+		--------
+		Plot the function of several orders for real input:
+		
+		>>> from scipy.special import kv
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(0, 5, 1000)
+		>>> for N in np.linspace(0, 6, 5):
+		...     plt.plot(x, kv(N, x), label='$K_{{{}}}(x)$'.format(N))
+		>>> plt.ylim(0, 10)
+		>>> plt.legend()
+		>>> plt.title(r'Modified Bessel function of the second kind $K_\nu(x)$')
+		>>> plt.show()
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kv([4, 4.5, 5], 1+2j)
+		array([ 0.1992+2.3892j,  2.3493+3.6j   ,  7.2827+3.8104j])
 	**/
 	static public function kv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Kv(z) with respect to z.
-		    
+		Compute nth derivative of real-order modified Bessel function Kv(z)
+		
+		Kv(z) is the modified Bessel function of the second kind.
+		Derivative is calculated with respect to `z`.
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel function
+		z : array_like of complex
+		    Argument at which to evaluate the derivative
+		n : int
+		    Order of derivative.  Default is first derivative.
+		
+		Returns
+		-------
+		out : ndarray
+		    The results
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 6.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -982,21 +1314,36 @@ package scipy.special.basic;
 	**/
 	static public function less(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute sequence of lambda functions with arbitrary order v
-		and their derivatives.  Lv0(x)..Lv(x) are computed with v0=v-int(v).
+		Jahnke-Emden Lambda function, Lambdav(x).
+		
+		Parameters
+		----------
+		v : float
+		    Order of the Lambda function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		vl : ndarray
+		    Values of Lambda_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dl : ndarray
+		    Derivatives Lambda_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lmbda(v:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Associated Legendre function of the first kind, Pmn(z)
+		Associated Legendre function of the first kind, Pmn(z).
 		
-		Computes the associated Legendre function of the first kind
-		of order m and degree n,::
-		
-		    Pmn(z) = P_n^m(z)
-		
-		and its derivative, ``Pmn'(z)``.  Returns two arrays of size
-		``(m+1, n+1)`` containing ``Pmn(z)`` and ``Pmn'(z)`` for all
-		orders from ``0..m`` and degrees from ``0..n``.
+		Computes the associated Legendre function of the first kind of order m and
+		degree n, ``Pmn(z)`` = :math:`P_n^m(z)`, and its derivative, ``Pmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Pmn(z)`` and
+		``Pmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
 		
 		This function takes a real argument ``z``. For complex arguments ``z``
 		use clpmn instead.
@@ -1031,61 +1378,162 @@ package scipy.special.basic;
 		
 		References
 		----------
-		.. [1] NIST Digital Library of Mathematical Functions
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
 		       http://dlmf.nist.gov/14.3
 	**/
 	static public function lpmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
+		Legendre functions of the first kind, Pn(z).
+		
 		Compute sequence of Legendre functions of the first kind (polynomials),
 		Pn(z) and derivatives for all degrees from 0 to n (inclusive).
 		
-		See also special.legendre  for polynomial class.
+		See also special.legendre for polynomial class.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lpn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Associated Legendre functions of the second kind, Qmn(z) and its
-		derivative, ``Qmn'(z)`` of order m and degree n.  Returns two
-		arrays of size ``(m+1, n+1)`` containing ``Qmn(z)`` and ``Qmn'(z)`` for
-		all orders from ``0..m`` and degrees from ``0..n``.
+		Associated Legendre function of the second kind, Qmn(z).
 		
-		z can be complex.
+		Computes the associated Legendre function of the second kind of order m and
+		degree n, ``Qmn(z)`` = :math:`Q_n^m(z)`, and its derivative, ``Qmn'(z)``.
+		Returns two arrays of size ``(m+1, n+1)`` containing ``Qmn(z)`` and
+		``Qmn'(z)`` for all orders from ``0..m`` and degrees from ``0..n``.
+		
+		Parameters
+		----------
+		m : int
+		   ``|m| <= n``; the order of the Legendre function.
+		n : int
+		   where ``n >= 0``; the degree of the Legendre function.  Often
+		   called ``l`` (lower case L) in descriptions of the associated
+		   Legendre function
+		z : complex
+		    Input value.
+		
+		Returns
+		-------
+		Qmn_z : (m+1, n+1) array
+		   Values for all orders 0..m and degrees 0..n
+		Qmn_d_z : (m+1, n+1) array
+		   Derivatives for all orders 0..m and degrees 0..n
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lqmn(m:Dynamic, n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute sequence of Legendre functions of the second kind,
-		Qn(z) and derivatives for all degrees from 0 to n (inclusive).
+		Legendre functions of the second kind, Qn(z).
+		
+		Compute sequence of Legendre functions of the second kind, Qn(z) and
+		derivatives for all degrees from 0 to n (inclusive).
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function lqn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
 		mathieu_a(x1, x2[, out])
 		
-		mathieu_a(m,q)
+		mathieu_a(m, q)
 		
 		Characteristic value of even Mathieu functions
 		
 		Returns the characteristic value for the even solution,
-		``ce_m(z,q)``, of Mathieu's equation.
+		``ce_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_a(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		mathieu_b(x1, x2[, out])
 		
-		mathieu_b(m,q)
+		mathieu_b(m, q)
 		
 		Characteristic value of odd Mathieu functions
 		
 		Returns the characteristic value for the odd solution,
-		``se_m(z,q)``, of Mathieu's equation.
+		``se_m(z, q)``, of Mathieu's equation.
 	**/
 	static public function mathieu_b(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute expansion coefficients for even Mathieu functions and
-		modified Mathieu functions.
+		Fourier coefficients for even Mathieu and modified Mathieu functions.
+		
+		The Fourier series of the even solutions of the Mathieu differential
+		equation are of the form
+		
+		.. math:: \mathrm{ce}_{2n}(z, q) = \sum_{k=0}^{\infty} A_{(2n)}^{(2k)} \cos 2kz
+		
+		.. math:: \mathrm{ce}_{2n+1}(z, q) = \sum_{k=0}^{\infty} A_{(2n+1)}^{(2k+1)} \cos (2k+1)z
+		
+		This function returns the coefficients :math:`A_{(2n)}^{(2k)}` for even
+		input m=2n, and the coefficients :math:`A_{(2n+1)}^{(2k+1)}` for odd input
+		m=2n+1.
+		
+		Parameters
+		----------
+		m : int
+		    Order of Mathieu functions.  Must be non-negative.
+		q : float (>=0)
+		    Parameter of Mathieu functions.  Must be non-negative.
+		
+		Returns
+		-------
+		Ak : ndarray
+		    Even or odd Fourier coefficients, corresponding to even or odd m.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/28.4#i
 	**/
 	static public function mathieu_even_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
-		Compute expansion coefficients for even Mathieu functions and
-		modified Mathieu functions.
+		Fourier coefficients for even Mathieu and modified Mathieu functions.
+		
+		The Fourier series of the odd solutions of the Mathieu differential
+		equation are of the form
+		
+		.. math:: \mathrm{se}_{2n+1}(z, q) = \sum_{k=0}^{\infty} B_{(2n+1)}^{(2k+1)} \sin (2k+1)z
+		
+		.. math:: \mathrm{se}_{2n+2}(z, q) = \sum_{k=0}^{\infty} B_{(2n+2)}^{(2k+2)} \sin (2k+2)z
+		
+		This function returns the coefficients :math:`B_{(2n+2)}^{(2k+2)}` for even
+		input m=2n+2, and the coefficients :math:`B_{(2n+1)}^{(2k+1)}` for odd
+		input m=2n+1.
+		
+		Parameters
+		----------
+		m : int
+		    Order of Mathieu functions.  Must be non-negative.
+		q : float (>=0)
+		    Parameter of Mathieu functions.  Must be non-negative.
+		
+		Returns
+		-------
+		Bk : ndarray
+		    Even or odd Fourier coefficients, corresponding to even or odd m.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function mathieu_odd_coef(m:Dynamic, q:Dynamic):Dynamic;
 	/**
@@ -1135,32 +1583,97 @@ package scipy.special.basic;
 		
 		ndtri(y)
 		
-		Inverse of ndtr vs x
+		Inverse of `ndtr` vs x
 		
 		Returns the argument x for which the area under the Gaussian
-		probability density function (integrated from minus infinity to x)
+		probability density function (integrated from minus infinity to `x`)
 		is equal to y.
 	**/
 	static public function ndtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Characteristic values for oblate spheroidal wave functions.
+		
 		Compute a sequence of characteristic values for the oblate
 		spheroidal wave functions for mode m and n'=m..n and spheroidal
 		parameter c.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function obl_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dn(z) and
-		their derivatives for D0(z)..Dn(z).
+		Parabolic cylinder functions Dn(z) and derivatives.
+		
+		Parameters
+		----------
+		n : int
+		    Order of the parabolic cylinder function
+		z : complex
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of D_i(z), for i=0, ..., i=n.
+		dp : ndarray
+		    Derivatives D_i'(z), for i=0, ..., i=n.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbdn_seq(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dv(x) and
-		their derivatives for Dv0(x)..Dv(x) with v0=v-int(v).
+		Parabolic cylinder functions Dv(x) and derivatives.
+		
+		Parameters
+		----------
+		v : float
+		    Order of the parabolic cylinder function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of D_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dp : ndarray
+		    Derivatives D_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbdv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Compute sequence of parabolic cylinder functions Dv(x) and
-		their derivatives for Dv0(x)..Dv(x) with v0=v-int(v).
+		Parabolic cylinder functions Vv(x) and derivatives.
+		
+		Parameters
+		----------
+		v : float
+		    Order of the parabolic cylinder function
+		x : float
+		    Value at which to evaluate the function and derivatives
+		
+		Returns
+		-------
+		dv : ndarray
+		    Values of V_vi(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		dp : ndarray
+		    Derivatives V_vi'(x), for vi=v-int(v), vi=1+v-int(v), ..., vi=v.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 13.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pbvv_seq(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -1251,8 +1764,9 @@ package scipy.special.basic;
 	**/
 	static public function poch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Polygamma function which is the nth derivative of the digamma (psi)
-		function.
+		Polygamma function n.
+		
+		This is the nth derivative of the digamma (psi) function.
 		
 		Parameters
 		----------
@@ -1278,9 +1792,17 @@ package scipy.special.basic;
 	static public function polygamma(n:Dynamic, x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		Characteristic values for prolate spheroidal wave functions.
+		
 		Compute a sequence of characteristic values for the prolate
 		spheroidal wave functions for mode m and n'=m..n and spheroidal
 		parameter c.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function pro_cv_seq(m:Dynamic, n:Dynamic, c:Dynamic):Dynamic;
 	/**
@@ -1291,7 +1813,7 @@ package scipy.special.basic;
 		Digamma function
 		
 		The derivative of the logarithm of the gamma function evaluated at
-		z (also called the digamma function).
+		`z` (also called the digamma function).
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1326,13 +1848,57 @@ package scipy.special.basic;
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
-		Compute the Ricatti-Bessel function of the first kind and its
-		derivative for all orders up to and including n.
+		Compute Ricatti-Bessel function of the first kind and derivative.
+		
+		This function computes the value and first derivative of the function for
+		all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of function to compute
+		x : float
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(x), ..., jn(x)
+		jnp : ndarray
+		    First derivative j0'(x), ..., jn'(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Compute the Ricatti-Bessel function of the second kind and its
-		derivative for all orders up to and including n.
+		Compute Ricatti-Bessel function of the second kind and derivative.
+		
+		This function computes the value and first derivative of the function for
+		all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of function to compute
+		x : float
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		yn : ndarray
+		    Value of y0(x), ..., yn(x)
+		ynp : ndarray
+		    First derivative y0'(x), ..., yn'(x)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -1465,33 +2031,173 @@ package scipy.special.basic;
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function in(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function in(z) and derivative.
+		
+		This function computes the value and first derivative of in(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of in to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		in : ndarray
+		    Value of i0(z), ..., in(z)
+		inp : ndarray
+		    First derivative i0'(z), ..., in'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_in(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel functions, in(z) and kn(z) and their
-		derivatives for all orders up to and including n.
+		Compute spherical Bessel functions in(z), kn(z), and derivatives.
+		
+		This function computes the value and first derivative of in(z) and kn(z)
+		for all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of in and kn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		in : ndarray
+		    Value of i0(z), ..., in(z)
+		inp : ndarray
+		    First derivative i0'(z), ..., in'(z)
+		kn : ndarray
+		    Value of k0(z), ..., kn(z)
+		knp : ndarray
+		    First derivative k0'(z), ..., kn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_inkn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function jn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function jn(z) and derivative.
+		
+		This function computes the value and first derivative of jn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of jn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(z), ..., jn(z)
+		jnp : ndarray
+		    First derivative j0'(z), ..., jn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_jn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel functions, jn(z) and yn(z) and their
-		derivatives for all orders up to and including n.
+		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
+		
+		This function computes the value and first derivative of jn(z) and yn(z)
+		for all orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of jn and yn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		jn : ndarray
+		    Value of j0(z), ..., jn(z)
+		jnp : ndarray
+		    First derivative j0'(z), ..., jn'(z)
+		yn : ndarray
+		    Value of y0(z), ..., yn(z)
+		ynp : ndarray
+		    First derivative y0'(z), ..., yn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_jnyn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function kn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function kn(z) and derivative.
+		
+		This function computes the value and first derivative of kn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of kn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		kn : ndarray
+		    Value of k0(z), ..., kn(z)
+		knp : ndarray
+		    First derivative k0'(z), ..., kn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_kn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
-		Compute the spherical Bessel function yn(z) and its derivative for
-		all orders up to and including n.
+		Compute spherical Bessel function yn(z) and derivative.
+		
+		This function computes the value and first derivative of yn(z) for all
+		orders up to and including n.
+		
+		Parameters
+		----------
+		n : int
+		    Maximum order of yn to compute
+		z : complex
+		    Argument at which to evaluate
+		
+		Returns
+		-------
+		yn : ndarray
+		    Value of y0(z), ..., yn(z)
+		ynp : ndarray
+		    First derivative y0'(z), ..., yn'(z)
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 8.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function sph_yn(n:Dynamic, z:Dynamic):Dynamic;
 	/**
@@ -1611,44 +2317,154 @@ package scipy.special.basic;
 	**/
 	static public function where(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y0(z), z0, and the value
-		of Y0'(z0) = -Y1(z0) at each zero.
+		Compute nt zeros of Bessel function Y0(z), and derivative at each zero.
+		
+		The derivatives are given by Y0'(z0) = -Y1(z0) at each zero z0.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z0n : ndarray
+		    Location of nth zero of Y0(z)
+		y0pz0n : ndarray
+		    Value of derivative Y0'(z0) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y0_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y1(z), z1, and the value
-		of Y1'(z1) = Y0(z1) at each zero.
+		Compute nt zeros of Bessel function Y1(z), and derivative at each zero.
+		
+		The derivatives are given by Y1'(z1) = Y0(z1) at each zero z1.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z1n : ndarray
+		    Location of nth zero of Y1(z)
+		y1pz1n : ndarray
+		    Value of derivative Y1'(z1) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y1_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
-		Returns nt (complex or real) zeros of Y1'(z), z1', and the value
-		of Y1(z1') at each zero.
+		Compute nt zeros of Bessel derivative Y1'(z), and value at each zero.
+		
+		The values are given by Y1(z1) at each z1 where Y1'(z1)=0.
+		
+		Parameters
+		----------
+		nt : int
+		    Number of zeros to return
+		complex : bool, default False
+		    Set to False to return only the real zeros; set to True to return only
+		    the complex zeros with negative real part and positive imaginary part.
+		    Note that the complex conjugates of the latter are also zeros of the
+		    function, but are not returned by this routine.
+		
+		Returns
+		-------
+		z1pn : ndarray
+		    Location of nth zero of Y1'(z)
+		y1z1pn : ndarray
+		    Value of derivative Y1(z1) for nth zero
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function y1p_zeros(nt:Dynamic, ?complex:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Yn(x).
-		    
+		Compute zeros of integer-order Bessel function Yn(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function yn_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
-		Compute nt zeros of the Bessel function Yn'(x).
-		    
+		Compute zeros of integer-order Bessel function derivative Yn'(x).
+		
+		Parameters
+		----------
+		n : int
+		    Order of Bessel function
+		nt : int
+		    Number of zeros to return
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function ynp_zeros(n:Dynamic, nt:Dynamic):Dynamic;
 	/**
 		yv(x1, x2[, out])
 		
-		yv(v,z)
+		yv(v, z)
 		
 		Bessel function of the second kind of real order
 		
-		Returns the Bessel function of the second kind of real order v at
-		complex z.
+		Returns the Bessel function of the second kind of real order `v` at
+		complex `z`.
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return the nth derivative of Yv(z) with respect to z.
-		    
+		Compute nth derivative of Bessel function Yv(z) with respect to `z`.
+		
+		Parameters
+		----------
+		v : float
+		    Order of Bessel function
+		z : complex
+		    Argument at which to evaluate the derivative
+		n : int, default 1
+		    Order of derivative
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996, chapter 5.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1710,7 +2526,7 @@ package scipy.special.basic;
 		Hurwitz zeta function
 		
 		The Riemann zeta function of two arguments (also known as the
-		Hurwitz zeta funtion).
+		Hurwitz zeta function).
 		
 		This function is defined as
 		

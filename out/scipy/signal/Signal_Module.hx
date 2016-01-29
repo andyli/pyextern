@@ -23,6 +23,7 @@ package scipy.signal;
 		----------
 		A, B, C, D : array_like, optional
 		    State-space matrices. All of them are None (missing) by default.
+		    See `ss2tf` for format.
 		
 		Returns
 		-------
@@ -74,6 +75,7 @@ package scipy.signal;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelextrema
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelextrema(x, np.greater)
 		(array([3, 6]),)
@@ -122,6 +124,7 @@ package scipy.signal;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelmax
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelmax(x)
 		(array([3, 6]),)
@@ -170,6 +173,7 @@ package scipy.signal;
 		
 		Examples
 		--------
+		>>> from scipy.signal import argrelmin
 		>>> x = np.array([2, 1, 2, 3, 2, 0, 1, 0])
 		>>> argrelmin(x)
 		(array([1, 5]),)
@@ -181,7 +185,6 @@ package scipy.signal;
 		(array([0, 2]), array([2, 1]))
 	**/
 	static public function argrelmin(data:Dynamic, ?axis:Dynamic, ?order:Dynamic, ?mode:Dynamic):Dynamic;
-	static public var band_dict : Dynamic;
 	/**
 		Band Stop Objective Function for order minimization.
 		
@@ -1718,15 +1721,15 @@ package scipy.signal;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> lena = misc.lena()
+		>>> face = misc.face(gray=True)
 		>>> scharr = np.array([[ -3-3j, 0-10j,  +3 -3j],
 		...                    [-10+0j, 0+ 0j, +10 +0j],
 		...                    [ -3+3j, 0+10j,  +3 +3j]]) # Gx + j*Gy
-		>>> grad = signal.convolve2d(lena, scharr, boundary='symm', mode='same')
+		>>> grad = signal.convolve2d(face, scharr, boundary='symm', mode='same')
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_mag.imshow(np.absolute(grad), cmap='gray')
@@ -1854,16 +1857,16 @@ package scipy.signal;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> lena = misc.lena() - misc.lena().mean()
-		>>> template = np.copy(lena[235:295, 310:370]) # right eye
+		>>> face = misc.face(gray=True) - misc.face(gray=True).mean()
+		>>> template = np.copy(face[300:365, 670:750])  # right eye
 		>>> template -= template.mean()
-		>>> lena = lena + np.random.randn(*lena.shape) * 50 # add noise
-		>>> corr = signal.correlate2d(lena, template, boundary='symm', mode='same')
-		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape) # find the match
+		>>> face = face + np.random.randn(*face.shape) * 50  # add noise
+		>>> corr = signal.correlate2d(face, template, boundary='symm', mode='same')
+		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape)  # find the match
 		
 		>>> import matplotlib.pyplot as plt
 		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_template.imshow(template, cmap='gray')
@@ -2101,7 +2104,7 @@ package scipy.signal;
 		wavelet : function
 		    Wavelet function, which should take 2 arguments.
 		    The first argument is the number of points that the returned vector
-		    will have (len(wavelet(width,length)) == length).
+		    will have (len(wavelet(length,width)) == length).
 		    The second is a width parameter, defining the size of the wavelet
 		    (e.g. standard deviation of a gaussian). See `ricker`, which
 		    satisfies these requirements.
@@ -2115,9 +2118,11 @@ package scipy.signal;
 		
 		Notes
 		-----
-		>>> length = min(10 * width[ii], len(data))
-		>>> cwt[ii,:] = scipy.signal.convolve(data, wavelet(length,
-		...                                       width[ii]), mode='same')
+		::
+		
+		    length = min(10 * width[ii], len(data))
+		    cwt[ii,:] = signal.convolve(data, wavelet(length,
+		                                width[ii]), mode='same')
 		
 		Examples
 		--------
@@ -2127,7 +2132,7 @@ package scipy.signal;
 		>>> sig  = np.cos(2 * np.pi * 7 * t) + signal.gausspulse(t - 0.4, fc=2)
 		>>> widths = np.arange(1, 31)
 		>>> cwtmatr = signal.cwt(sig, signal.ricker, widths)
-		>>> plt.imshow(cwtmatr, extent=[-1, 1, 1, 31], cmap='PRGn', aspect='auto',
+		>>> plt.imshow(cwtmatr, extent=[-1, 1, 31, 1], cmap='PRGn', aspect='auto',
 		...            vmax=abs(cwtmatr).max(), vmin=-abs(cwtmatr).max())
 		>>> plt.show()
 	**/
@@ -2248,7 +2253,7 @@ package scipy.signal;
 		--------
 		>>> from scipy import signal
 		>>> randgen = np.random.RandomState(9)
-		>>> npoints = 1e3
+		>>> npoints = 1000
 		>>> noise = randgen.randn(npoints)
 		>>> x = 3 + 2*np.linspace(0, 1, npoints) + noise
 		>>> (signal.detrend(x) - noise).max() < 0.01
@@ -2339,8 +2344,8 @@ package scipy.signal;
 		>>> t_in = [0.0, 1.0, 2.0, 3.0]
 		>>> u = np.asarray([0.0, 0.0, 1.0, 1.0])
 		>>> t_out, y = signal.dlsim(tf, u, t=t_in)
-		>>> y
-		array([ 0.,  0.,  0.,  1.])
+		>>> y.T
+		array([[ 0.,  0.,  0.,  1.]])
 	**/
 	static public function dlsim(system:Dynamic, u:Dynamic, ?t:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
@@ -2684,12 +2689,12 @@ package scipy.signal;
 		but is far slower.
 		
 		>>> from scipy import misc
-		>>> lena = misc.lena()
+		>>> face = misc.face(gray=True)
 		>>> kernel = np.outer(signal.gaussian(70, 8), signal.gaussian(70, 8))
-		>>> blurred = signal.fftconvolve(lena, kernel, mode='same')
+		>>> blurred = signal.fftconvolve(face, kernel, mode='same')
 		
 		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(lena, cmap='gray')
+		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_kernel.imshow(kernel, cmap='gray')
@@ -2701,7 +2706,6 @@ package scipy.signal;
 		>>> fig.show()
 	**/
 	static public function fftconvolve(in1:Dynamic, in2:Dynamic, ?mode:Dynamic):Array<Dynamic>;
-	static public var filter_dict : Dynamic;
 	/**
 		A forward-backward filter.
 		
@@ -2869,8 +2873,10 @@ package scipy.signal;
 		    1-D array of widths to use for calculating the CWT matrix. In general,
 		    this range should cover the expected width of peaks of interest.
 		wavelet : callable, optional
-		    Should take a single variable and return a 1-D array to convolve
-		    with `vector`.  Should be normalized to unit area.
+		    Should take two parameters and return a 1-D array to convolve
+		    with `vector`. The first parameter determines the number of points 
+		    of the returned wavelet array, the second parameter is the scale 
+		    (`width`) of the wavelet. Should be normalized and symmetric.
 		    Default is the ricker wavelet.
 		max_distances : ndarray, optional
 		    At each row, a ridge line is only connected if the relative max at
@@ -2960,7 +2966,8 @@ package scipy.signal;
 		
 		    H(s) = s / (s^2 + 8s + 25)
 		
-		>>> findfreqs([1, 0], [1, 8, 25], N=9)
+		>>> from scipy import signal
+		>>> signal.findfreqs([1, 0], [1, 8, 25], N=9)
 		array([  1.00000000e-02,   3.16227766e-02,   1.00000000e-01,
 		         3.16227766e-01,   1.00000000e+00,   3.16227766e+00,
 		         1.00000000e+01,   3.16227766e+01,   1.00000000e+02])
@@ -3034,34 +3041,45 @@ package scipy.signal;
 		
 		Examples
 		--------
-		Low-pass from 0 to f::
+		Low-pass from 0 to f:
 		
 		>>> from scipy import signal
+		>>> numtaps = 3
+		>>> f = 0.1
 		>>> signal.firwin(numtaps, f)
+		array([ 0.06799017,  0.86401967,  0.06799017])
 		
-		Use a specific window function::
+		Use a specific window function:
 		
 		>>> signal.firwin(numtaps, f, window='nuttall')
+		array([  3.56607041e-04,   9.99286786e-01,   3.56607041e-04])
 		
-		High-pass ('stop' from 0 to f)::
+		High-pass ('stop' from 0 to f):
 		
 		>>> signal.firwin(numtaps, f, pass_zero=False)
+		array([-0.00859313,  0.98281375, -0.00859313])
 		
-		Band-pass::
+		Band-pass:
 		
+		>>> f1, f2 = 0.1, 0.2
 		>>> signal.firwin(numtaps, [f1, f2], pass_zero=False)
+		array([ 0.06301614,  0.88770441,  0.06301614])
 		
-		Band-stop::
+		Band-stop:
 		
 		>>> signal.firwin(numtaps, [f1, f2])
+		array([-0.00801395,  1.0160279 , -0.00801395])
 		
-		Multi-band (passbands are [0, f1], [f2, f3] and [f4, 1])::
+		Multi-band (passbands are [0, f1], [f2, f3] and [f4, 1]):
 		
+		>>> f3, f4 = 0.3, 0.4
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4])
+		array([-0.01376344,  1.02752689, -0.01376344])
 		
-		Multi-band (passbands are [f1, f2] and [f3,f4])::
+		Multi-band (passbands are [f1, f2] and [f3,f4]):
 		
 		>>> signal.firwin(numtaps, [f1, f2, f3, f4], pass_zero=False)
+		array([ 0.04890915,  0.91284326,  0.04890915])
 	**/
 	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
 	/**
@@ -3563,8 +3581,8 @@ package scipy.signal;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with ifftshift
-		    and be multiplied by the result of an fft (SEE ALSO fftfreq).
+		    If True, create a "periodic" window ready to use with `ifftshift`
+		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
 		
 		Returns
 		-------
@@ -3780,7 +3798,7 @@ package scipy.signal;
 		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
 		           \qquad 0 \leq n \leq M-1
 		
-		The window was named for Julius van Hann, an Austrian meteorologist. It is
+		The window was named for Julius von Hann, an Austrian meteorologist. It is
 		also known as the Cosine Bell. It is sometimes erroneously referred to as
 		the "Hanning" window, from the use of "hann" as a verb in the original
 		paper and confusion with the very similar Hamming window.
@@ -3856,7 +3874,7 @@ package scipy.signal;
 		.. math::  w(n) = 0.5 - 0.5 \cos\left(\frac{2\pi{n}}{M-1}\right)
 		           \qquad 0 \leq n \leq M-1
 		
-		The window was named for Julius van Hann, an Austrian meteorologist. It is
+		The window was named for Julius von Hann, an Austrian meteorologist. It is
 		also known as the Cosine Bell. It is sometimes erroneously referred to as
 		the "Hanning" window, from the use of "hann" as a verb in the original
 		paper and confusion with the very similar Hamming window.
@@ -3936,10 +3954,54 @@ package scipy.signal;
 		transformed signal can be obtained from ``np.imag(hilbert(x))``, and the
 		original signal from ``np.real(hilbert(x))``.
 		
+		Examples
+		---------
+		In this example we use the Hilbert transform to determine the amplitude
+		envelope and instantaneous frequency of an amplitude-modulated signal.
+		    
+		>>> import numpy as np
+		>>> import matplotlib.pyplot as plt
+		>>> from scipy.signal import hilbert, chirp
+		
+		>>> duration = 1.0
+		>>> fs = 400.0
+		>>> samples = int(fs*duration)
+		>>> t = np.arange(samples) / fs
+		
+		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and 
+		apply an amplitude modulation.
+		
+		>>> signal = chirp(t, 20.0, t[-1], 100.0)    
+		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
+		
+		The amplitude envelope is given by magnitude of the analytic signal. The 
+		instantaneous frequency can be obtained by differentiating the instantaneous 
+		phase in respect to time. The instantaneous phase corresponds to the phase 
+		angle of the analytic signal.
+		
+		>>> analytic_signal = hilbert(signal)
+		>>> amplitude_envelope = np.abs(analytic_signal)
+		>>> instantaneous_phase = np.unwrap(np.angle(analytic_signal))
+		>>> instantaneous_frequency = np.diff(instantaneous_phase) / (2.0*np.pi) * fs
+		
+		>>> fig = plt.figure()
+		>>> ax0 = fig.add_subplot(211)
+		>>> ax0.plot(t, signal, label='signal')
+		>>> ax0.plot(t, amplitude_envelope, label='envelope')
+		>>> ax0.set_xlabel("time in seconds")
+		>>> ax0.legend()
+		>>> ax1 = fig.add_subplot(212)
+		>>> ax1.plot(t[1:], instantaneous_frequency)
+		>>> ax1.set_xlabel("time in seconds")
+		>>> ax1.set_ylim(0.0, 120.0)
+		
 		References
 		----------
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
+		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing, 
+		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -4873,9 +4935,7 @@ package scipy.signal;
 	**/
 	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		max_len_seq(nbits, state=None, length=None, taps=None)
-		
-		Maximum Length Sequence (MLS) generator
+		Maximum length sequence (MLS) generator.
 		
 		Parameters
 		----------
@@ -4907,7 +4967,7 @@ package scipy.signal;
 		-----
 		The algorithm for MLS generation is generically described in:
 		
-		    http://en.wikipedia.org/wiki/Maximum_length_sequence
+		    https://en.wikipedia.org/wiki/Maximum_length_sequence
 		
 		The default values for taps are specifically taken from the first
 		option listed for each value of ``nbits`` in:
@@ -4917,7 +4977,7 @@ package scipy.signal;
 		
 		.. versionadded:: 0.15.0
 	**/
-	static public function max_len_seq(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Dynamic;
 	/**
 		Perform a median filter on an N-dimensional array.
 		
@@ -5212,6 +5272,7 @@ package scipy.signal;
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)
 		
 		Generate a test signal, a 2 Vrms sine wave at 1234 Hz, corrupted by
 		0.001 V**2/Hz of white noise sampled at 10 kHz.
@@ -5238,7 +5299,7 @@ package scipy.signal;
 		peak, we can recover the noise power on the signal.
 		
 		>>> np.mean(Pxx_den[256:])
-		0.0009924865443739191
+		0.0018156616014838548
 		
 		Now compute and plot the power spectrum.
 		
@@ -5302,18 +5363,19 @@ package scipy.signal;
 		        requested_poles : 1-D ndarray
 		            The poles the algorithm was asked to place sorted as above,
 		            they may differ from what was achieved.
-		        X : 2D ndarray
+		        X : 2-D ndarray
 		            The transfer matrix such as ``X * diag(poles) = (A - B*K)*X``
 		            (see Notes)
 		        rtol : float
 		            The relative tolerance achieved on ``det(X)`` (see Notes).
-		            `rtol` will be NaN if the optimisation algorithms can not run,
-		            i.e when ``B.shape[1] == 1``, or 0 when the solution is unique.
+		            `rtol` will be NaN if it is possible to solve the system
+		            ``diag(poles) = (A - B*K)``, or 0 when the optimization
+		            algorithms can't do anything i.e when ``B.shape[1] == 1``.
 		        nb_iter : int
 		            The number of iterations performed before converging.
-		            `nb_iter` will be NaN if the optimisation algorithms can
-		            not run, i.e when ``B.shape[1] == 1``, or 0 when the solution
-		            is unique.
+		            `nb_iter` will be NaN if it is possible to solve the system
+		            ``diag(poles) = (A - B*K)``, or 0 when the optimization
+		            algorithms can't do anything i.e when ``B.shape[1] == 1``.
 		
 		Notes
 		-----
@@ -5630,8 +5692,25 @@ package scipy.signal;
 		samples.
 		
 		As noted, `resample` uses FFT transformations, which can be very
-		slow if the number of input samples is large and prime, see
-		`scipy.fftpack.fft`.
+		slow if the number of input or output samples is large and prime;
+		see `scipy.fftpack.fft`.
+		
+		Examples
+		--------
+		Note that the end of the resampled data rises to meet the first
+		sample of the next cycle:
+		
+		>>> from scipy import signal
+		
+		>>> x = np.linspace(0, 10, 20, endpoint=False)
+		>>> y = np.cos(-x**2/6.0)
+		>>> f = signal.resample(y, 100)
+		>>> xnew = np.linspace(0, 10, 100, endpoint=False)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(x, y, 'go-', xnew, f, '.-', 10, y[0], 'ro')
+		>>> plt.legend(['data', 'resampled'], loc='best')
+		>>> plt.show()
 	**/
 	static public function resample(x:Dynamic, num:Dynamic, ?t:Dynamic, ?axis:Dynamic, ?window:Dynamic):Dynamic;
 	/**
@@ -5885,13 +5964,14 @@ package scipy.signal;
 		
 		Examples
 		--------
+		>>> from scipy.signal import savgol_filter
 		>>> np.set_printoptions(precision=2)  # For compact display.
 		>>> x = np.array([2, 2, 5, 2, 1, 0, 1, 4, 9])
 		
 		Filter with a window length of 5 and a degree 2 polynomial.  Use
 		the defaults for all other parameters.
 		
-		>>> y = savgol_filter(x, 5, 2)
+		>>> savgol_filter(x, 5, 2)
 		array([ 1.66,  3.17,  3.54,  2.86,  0.66,  0.17,  1.  ,  4.  ,  9.  ])
 		
 		Note that the last five values in x are samples of a parabola, so
@@ -5921,7 +6001,7 @@ package scipy.signal;
 		width : array_like, optional
 		    Width of the rising ramp as a proportion of the total cycle.
 		    Default is 1, producing a rising ramp, while 0 produces a falling
-		    ramp.  `t` = 0.5 produces a triangle wave.
+		    ramp.  `width` = 0.5 produces a triangle wave.
 		    If an array, causes wave shape to change over time, and must be the
 		    same length as t.
 		
@@ -6208,6 +6288,9 @@ package scipy.signal;
 		axis : int, optional
 		    Axis along which the spectrogram is computed; the default is over
 		    the last axis (i.e. ``axis=-1``).
+		mode : str, optional
+		    Defines what kind of return values are expected. Options are ['psd',
+		    'complex', 'magnitude', 'angle', 'phase'].
 		
 		Returns
 		-------
@@ -6238,7 +6321,7 @@ package scipy.signal;
 		
 		References
 		----------
-		...[1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck "Discrete-Time
+		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck "Discrete-Time
 		       Signal Processing", Prentice Hall, 1999.
 		
 		Examples
@@ -6267,7 +6350,7 @@ package scipy.signal;
 		>>> plt.xlabel('Time [sec]')
 		>>> plt.show()
 	**/
-	static public function spectrogram(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function spectrogram(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		Smoothing spline (cubic) filtering of a rank-2 array.
 		
@@ -6325,12 +6408,21 @@ package scipy.signal;
 	/**
 		State-space to transfer function.
 		
+		A, B, C, D defines a linear state-space system with `p` inputs,
+		`q` outputs, and `n` state variables.
+		
 		Parameters
 		----------
-		A, B, C, D : ndarray
-		    State-space representation of linear system.
+		A : array_like
+		    State (or system) matrix of shape ``(n, n)``
+		B : array_like
+		    Input matrix of shape ``(n, p)``
+		C : array_like
+		    Output matrix of shape ``(q, n)``
+		D : array_like
+		    Feedthrough (or feedforward) matrix of shape ``(q, p)``
 		input : int, optional
-		    For multiple-input systems, the input to use.
+		    For multiple-input systems, the index of the input to use.
 		
 		Returns
 		-------
@@ -6341,17 +6433,52 @@ package scipy.signal;
 		den : 1-D ndarray
 		    Denominator of the resulting transfer function(s).  `den` is a sequence
 		    representation of the denominator polynomial.
+		
+		Examples
+		--------
+		Convert the state-space representation:
+		
+		.. math::
+		
+		    \dot{\textbf{x}}(t) =
+		    \begin{bmatrix} -2 & -1 \\ 1 & 0 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \\ 0 \end{bmatrix} \textbf{u}(t) \\
+		
+		    \textbf{y}(t) = \begin{bmatrix} 1 & 2 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \end{bmatrix} \textbf{u}(t)
+		
+		>>> A = [[-2, -1], [1, 0]]
+		>>> B = [[1], [0]]  # 2-dimensional column vector
+		>>> C = [[1, 2]]    # 2-dimensional row vector
+		>>> D = 1
+		
+		to the transfer function:
+		
+		.. math:: H(s) = \frac{s^2 + 3s + 3}{s^2 + 2s + 1}
+		
+		>>> from scipy.signal import ss2tf
+		>>> ss2tf(A, B, C, D)
+		(array([[1, 3, 3]]), array([ 1.,  2.,  1.]))
 	**/
 	static public function ss2tf(A:Dynamic, B:Dynamic, C:Dynamic, D:Dynamic, ?input:Dynamic):Dynamic;
 	/**
 		State-space representation to zero-pole-gain representation.
 		
+		A, B, C, D defines a linear state-space system with `p` inputs,
+		`q` outputs, and `n` state variables.
+		
 		Parameters
 		----------
-		A, B, C, D : ndarray
-		    State-space representation of linear system.
+		A : array_like
+		    State (or system) matrix of shape ``(n, n)``
+		B : array_like
+		    Input matrix of shape ``(n, p)``
+		C : array_like
+		    Output matrix of shape ``(q, n)``
+		D : array_like
+		    Feedthrough (or feedforward) matrix of shape ``(q, p)``
 		input : int, optional
-		    For multiple-input systems, the input to use.
+		    For multiple-input systems, the index of the input to use.
 		
 		Returns
 		-------
@@ -6674,6 +6801,39 @@ package scipy.signal;
 		A, B, C, D : ndarray
 		    State space representation of the system, in controller canonical
 		    form.
+		
+		Examples
+		--------
+		Convert the transfer function:
+		
+		.. math:: H(s) = \frac{s^2 + 3s + 3}{s^2 + 2s + 1}
+		
+		>>> num = [1, 3, 3]
+		>>> den = [1, 2, 1]
+		
+		to the state-space representation:
+		
+		.. math::
+		
+		    \dot{\textbf{x}}(t) =
+		    \begin{bmatrix} -2 & -1 \\ 1 & 0 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \\ 0 \end{bmatrix} \textbf{u}(t) \\
+		
+		    \textbf{y}(t) = \begin{bmatrix} 1 & 2 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \end{bmatrix} \textbf{u}(t)
+		
+		>>> from scipy.signal import tf2ss
+		>>> A, B, C, D = tf2ss(num, den)
+		>>> A
+		array([[-2., -1.],
+		       [ 1.,  0.]])
+		>>> B
+		array([[ 1.],
+		       [ 0.]])
+		>>> C
+		array([[ 1.,  2.]])
+		>>> D
+		array([ 1.])
 	**/
 	static public function tf2ss(num:Dynamic, den:Dynamic):Dynamic;
 	/**
@@ -7009,6 +7169,7 @@ package scipy.signal;
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)
 		
 		Generate a test signal, a 2 Vrms sine wave at 1234 Hz, corrupted by
 		0.001 V**2/Hz of white noise sampled at 10 kHz.
@@ -7061,7 +7222,7 @@ package scipy.signal;
 		----------
 		im : ndarray
 		    An N-dimensional array.
-		mysize : int or arraylike, optional
+		mysize : int or array_like, optional
 		    A scalar or an N-length list giving the size of the Wiener filter
 		    window in each dimension.  Elements of mysize should be odd.
 		    If mysize is a scalar, then this scalar is used as the size

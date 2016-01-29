@@ -44,6 +44,7 @@ package scipy.stats._discrete_distns;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	public function __getstate__():Dynamic;
 	/**
 		Return self>value.
 	**/
@@ -94,6 +95,7 @@ package scipy.stats._discrete_distns;
 		Implement setattr(self, name, value).
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setstate__(state:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -152,7 +154,10 @@ package scipy.stats._discrete_distns;
 	public function _isf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logpmf(k:Dynamic, M:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
-	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		More precise calculation than log(sf)
+	**/
+	public function _logsf(k:Dynamic, M:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
 	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _nonzero(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _pmf(k:Dynamic, M:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
@@ -163,6 +168,13 @@ package scipy.stats._discrete_distns;
 	**/
 	public function _sf(k:Dynamic, M:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
 	public function _stats(M:Dynamic, n:Dynamic, N:Dynamic):Dynamic;
+	/**
+		Return the current version of _ctor_param, possibly updated by user.
+		
+		Used by freezing and pickling.
+		Keep this in sync with the signature of __init__.
+	**/
+	public function _updated_ctor_param():Dynamic;
 	/**
 		Cumulative distribution function of the given RV.
 		
@@ -220,7 +232,7 @@ package scipy.stats._discrete_distns;
 		    Location parameter.
 		    Default is 0.
 		lb, ub : int, optional
-		    Lower and upper bound for integration, default is set to the
+		    Lower and upper bound for the summation, default is set to the
 		    support of the distribution, inclusive (``ul <= k <= ub``).
 		conditional : bool, optional
 		    If true then the expectation is corrected by the conditional
@@ -228,6 +240,14 @@ package scipy.stats._discrete_distns;
 		    expectation of the function, `func`, conditional on being in
 		    the given interval (k such that ``ul <= k <= ub``).
 		    Default is False.
+		maxcount : int, optional
+		    Maximal number of terms to evaluate (to avoid an endless loop for
+		    an infinite sum). Default is 1000.
+		tolerance : float, optional
+		    Absolute tolerance for the summation. Default is 1e-10.
+		chunksize : int, optional
+		    Iterate over the support of a distributions in chunks of this size.
+		    Default is 32.
 		
 		Returns
 		-------
@@ -236,21 +256,16 @@ package scipy.stats._discrete_distns;
 		
 		Notes
 		-----
-		* function is not vectorized
-		* accuracy: uses self.moment_tol as stopping criterium
-		  for heavy tailed distribution e.g. zipf(4), accuracy for
-		  mean, variance in example is only 1e-5,
-		  increasing precision (moment_tol) makes zipf very slow
-		* suppnmin=100 internal parameter for minimum number of points to
-		  evaluate could be added as keyword parameter, to evaluate functions
-		  with non-monotonic shapes, points include integers in (-suppnmin,
-		  suppnmin)
-		* uses maxcount=1000 limits the number of points that are evaluated
-		  to break loop for infinite sums
-		  (a maximum of suppnmin+1000 positive plus suppnmin+1000 negative
-		  integers are evaluated)
+		For heavy-tailed distributions, the expected value may or may not exist,
+		depending on the function, `func`. If it does exist, but the sum converges
+		slowly, the accuracy of the result may be rather low. For instance, for
+		``zipf(4)``, accuracy for mean, variance in example is only 1e-5.
+		increasing `maxcount` and/or `chunksize` may improve the result, but may also
+		make zipf very slow.
+		
+		The function is not vectorized.
 	**/
-	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic):Float;
+	public function expect(?func:Dynamic, ?args:Dynamic, ?loc:Dynamic, ?lb:Dynamic, ?ub:Dynamic, ?conditional:Dynamic, ?maxcount:Dynamic, ?tolerance:Dynamic, ?chunksize:Dynamic):Float;
 	/**
 		Freeze the distribution for the given arguments.
 		

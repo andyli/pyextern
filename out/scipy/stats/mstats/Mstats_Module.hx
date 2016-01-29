@@ -34,30 +34,16 @@ package scipy.stats.mstats;
 	**/
 	static public function argstoarray(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Returns the incomplete beta function.
+		`betai` is deprecated!
+		mstats.betai is deprecated in scipy 0.17.0; use special.betainc instead.
 		
-		I_x(a,b) = 1/B(a,b)*(Integral(0,x) of t^(a-1)(1-t)^(b-1) dt)
 		
-		where a,b>0 and B(a,b) = G(a)*G(b)/(G(a+b)) where G(a) is the gamma
-		function of a.
+		    betai() is deprecated in scipy 0.17.0.
 		
-		The standard broadcasting rules apply to a, b, and x.
-		
-		Parameters
-		----------
-		a : array_like or float > 0
-		
-		b : array_like or float > 0
-		
-		x : array_like or float
-		    x will be clipped to be no greater than 1.0 .
-		
-		Returns
-		-------
-		betai : ndarray
-		    Incomplete beta function.
+		    For details about this function, see `stats.betai`.
+		    
 	**/
-	static public function betai(a:Dynamic, b:Dynamic, x:Dynamic):Dynamic;
+	static public function betai(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculates a one-way chi square test.
 		
@@ -238,6 +224,9 @@ package scipy.stats.mstats;
 		ddof : int, optional
 		    degree of freedom (default 0); note that default ddof is different
 		    from the same routine in stats.describe
+		bias : bool, optional
+		    If False, then the skewness and kurtosis calculations are corrected for
+		    statistical bias.
 		
 		Returns
 		-------
@@ -261,20 +250,21 @@ package scipy.stats.mstats;
 		
 		Examples
 		--------
-		
+		>>> from scipy.stats.mstats import describe
 		>>> ma = np.ma.array(range(6), mask=[0, 0, 0, 1, 1, 1])
 		>>> describe(ma)
-		(array(3),
-		 (0, 2),
-		 1.0,
-		 1.0,
-		 masked_array(data = 0.0,
+		DescribeResult(nobs=array(3), minmax=(masked_array(data = 0,
+		             mask = False,
+		       fill_value = 999999)
+		, masked_array(data = 2,
+		             mask = False,
+		       fill_value = 999999)
+		), mean=1.0, variance=0.66666666666666663, skewness=masked_array(data = 0.0,
 		             mask = False,
 		       fill_value = 1e+20)
-		,
-		 -1.5)
+		, kurtosis=-1.5)
 	**/
-	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Int;
+	static public function describe(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic, ?bias:Dynamic):Int;
 	static public var division : Dynamic;
 	/**
 		Performs a 1-way ANOVA, returning an F-value and probability given
@@ -292,13 +282,18 @@ package scipy.stats.mstats;
 	**/
 	static public function f_oneway(?args:python.VarArgs<Dynamic>):Float;
 	/**
+		`f_value_wilks_lambda` is deprecated!
+		mstats.f_value_wilks_lambda deprecated in scipy 0.17.0
+		
 		Calculation of Wilks lambda F-statistic for multivariate data, per
-		Maxwell & Delaney p.657.
+		    Maxwell & Delaney p.657.
+		    
 	**/
-	static public function f_value_wilks_lambda(ER:Dynamic, EF:Dynamic, dfnum:Dynamic, dfden:Dynamic, a:Dynamic, b:Dynamic):Dynamic;
+	static public function f_value_wilks_lambda(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find repeats in arr and return a tuple (repeats, repeat_count).
-		Masked values are discarded.
+		
+		The input is cast to float64. Masked values are discarded.
 		
 		Parameters
 		----------
@@ -533,13 +528,6 @@ package scipy.stats.mstats;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
-		The Kruskal-Wallis H-test tests the null hypothesis that the population
-		median of all of the groups are equal.  It is a non-parametric version of
-		ANOVA.  The test works on 2 or more independent samples, which may have
-		different sizes.  Note that rejecting the null hypothesis does not
-		indicate which of the groups differs.  Post-hoc comparisons between
-		groups are required to determine which groups are different.
-		
 		Parameters
 		----------
 		sample1, sample2, ... : array_like
@@ -556,25 +544,12 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		Due to the assumption that H has a chi square distribution, the number
-		of samples in each group must not be too small.  A typical rule is
-		that each sample must have at least 5 measurements.
-		
-		References
-		----------
-		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		For more details on `kruskal`, see `stats.kruskal`.
 	**/
 	static public function kruskal(?args:python.VarArgs<Dynamic>):Float;
 	/**
 		Compute the Kruskal-Wallis H-test for independent samples
 		
-		The Kruskal-Wallis H-test tests the null hypothesis that the population
-		median of all of the groups are equal.  It is a non-parametric version of
-		ANOVA.  The test works on 2 or more independent samples, which may have
-		different sizes.  Note that rejecting the null hypothesis does not
-		indicate which of the groups differs.  Post-hoc comparisons between
-		groups are required to determine which groups are different.
-		
 		Parameters
 		----------
 		sample1, sample2, ... : array_like
@@ -591,13 +566,7 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		Due to the assumption that H has a chi square distribution, the number
-		of samples in each group must not be too small.  A typical rule is
-		that each sample must have at least 5 measurements.
-		
-		References
-		----------
-		.. [1] http://en.wikipedia.org/wiki/Kruskal-Wallis_one-way_analysis_of_variance
+		For more details on `kruskal`, see `stats.kruskal`.
 	**/
 	static public function kruskalwallis(?args:python.VarArgs<Dynamic>):Float;
 	/**
@@ -675,19 +644,13 @@ package scipy.stats.mstats;
 		    The kurtosis of values along an axis. If all values are equal,
 		    return -3 for Fisher's definition and 0 for Pearson's definition.
 		
-		References
-		----------
-		.. [1] Zwillinger, D. and Kokoska, S. (2000). CRC Standard
-		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
-		   York. 2000.
+		Notes
+		-----
+		For more details about `kurtosis`, see `stats.kurtosis`.
 	**/
 	static public function kurtosis(a:Dynamic, ?axis:Dynamic, ?fisher:Dynamic, ?bias:Dynamic):Array<Dynamic>;
 	/**
 		Tests whether a dataset has normal kurtosis
-		
-		This function tests the null hypothesis that the kurtosis
-		of the population from which the sample was drawn is that
-		of the normal distribution: ``kurtosis = 3(n-1)/(n+1)``.
 		
 		Parameters
 		----------
@@ -706,18 +669,16 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		Valid only for n>20.  The Z-score is set to 0 for bad entries.
+		For more details about `kurtosistest`, see `stats.kurtosistest`.
 	**/
 	static public function kurtosistest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
-		Calculate a regression line
-		
-		This computes a least-squares regression for two sets of measurements.
+		Calculate a linear least-squares regression for two sets of measurements.
 		
 		Parameters
 		----------
 		x, y : array_like
-		    two sets of measurements.  Both arrays should have the same length.
+		    Two sets of measurements.  Both arrays should have the same length.
 		    If only x is given (and y=None), then it must be a two-dimensional
 		    array where one dimension has length 2.  The two sets of measurements
 		    are then found by splitting the array along the length-2 dimension.
@@ -736,10 +697,15 @@ package scipy.stats.mstats;
 		stderr : float
 		    Standard error of the estimate
 		
+		See also
+		--------
+		optimize.curve_fit : Use non-linear least squares to fit a function to data.
+		optimize.leastsq : Minimize the sum of squares of a set of equations.
 		
 		Examples
 		--------
 		>>> from scipy import stats
+		>>> np.random.seed(12345678)
 		>>> x = np.random.random(10)
 		>>> y = np.random.random(10)
 		>>> slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
@@ -747,7 +713,7 @@ package scipy.stats.mstats;
 		# To get coefficient of determination (r_squared)
 		
 		>>> print("r-squared:", r_value**2)
-		r-squared: 0.15286643777
+		('r-squared:', 0.080402268539028335)
 		
 		
 		
@@ -756,7 +722,7 @@ package scipy.stats.mstats;
 		Missing values are considered pair-wise: if a value is missing in x,
 		the corresponding value in y is masked.
 	**/
-	static public function linregress(?args:python.VarArgs<Dynamic>):Float;
+	static public function linregress(x:Dynamic, ?y:Dynamic):Float;
 	/**
 		Computes the Mann-Whitney statistic
 		
@@ -860,9 +826,6 @@ package scipy.stats.mstats;
 	/**
 		Returns an array of the modal (most common) value in the passed array.
 		
-		If there is more than one such value, only the first is returned.
-		The bin-count for the modal bins is also returned.
-		
 		Parameters
 		----------
 		a : array_like
@@ -878,28 +841,13 @@ package scipy.stats.mstats;
 		count : ndarray
 		    Array of counts for each mode.
 		
-		Examples
-		--------
-		>>> a = np.array([[6, 8, 3, 0],
-		...               [3, 2, 1, 7],
-		...               [8, 1, 8, 4],
-		...               [5, 3, 0, 5],
-		...               [4, 7, 5, 9]])
-		>>> from scipy import stats
-		>>> stats.mode(a)
-		(array([[3, 1, 0, 0]]), array([[1, 1, 1, 1]]))
-		
-		To get mode of whole array, specify ``axis=None``:
-		
-		>>> stats.mode(a, axis=None)
-		(array([3]), array([3]))
+		Notes
+		-----
+		For more details, see `stats.mode`.
 	**/
 	static public function mode(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Calculates the nth moment about the mean for a sample.
-		
-		Generally used to calculate coefficients of skewness and
-		kurtosis.
 		
 		Parameters
 		----------
@@ -917,6 +865,10 @@ package scipy.stats.mstats;
 		   The appropriate moment along the given axis or over all values if axis
 		   is None. The denominator for the moment calculation is the number of
 		   observations, no degrees of freedom correction is done.
+		
+		Notes
+		-----
+		For more details about `moment`, see `stats.moment`.
 	**/
 	static public function moment(a:Dynamic, ?moment:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -994,32 +946,26 @@ package scipy.stats.mstats;
 		Using a 2D array, specifying axis and limit.
 		
 		>>> data = np.array([[   6.,    7.,    1.],
-		                     [  47.,   15.,    2.],
-		                     [  49.,   36.,    3.],
-		                     [  15.,   39.,    4.],
-		                     [  42.,   40., -999.],
-		                     [  41.,   41., -999.],
-		                     [   7., -999., -999.],
-		                     [  39., -999., -999.],
-		                     [  43., -999., -999.],
-		                     [  40., -999., -999.],
-		                     [  36., -999., -999.]])
-		>>> mquantiles(data, axis=0, limit=(0, 50))
-		array([[ 19.2 ,  14.6 ,   1.45],
-		       [ 40.  ,  37.5 ,   2.5 ],
-		       [ 42.8 ,  40.05,   3.55]])
+		...                  [  47.,   15.,    2.],
+		...                  [  49.,   36.,    3.],
+		...                  [  15.,   39.,    4.],
+		...                  [  42.,   40., -999.],
+		...                  [  41.,   41., -999.],
+		...                  [   7., -999., -999.],
+		...                  [  39., -999., -999.],
+		...                  [  43., -999., -999.],
+		...                  [  40., -999., -999.],
+		...                  [  36., -999., -999.]])
+		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
+		[[ 19.2   14.6    1.45]
+		 [ 40.    37.5    2.5 ]
+		 [ 42.8   40.05   3.55]]
 		
 		>>> data[:, 2] = -999.
-		>>> mquantiles(data, axis=0, limit=(0, 50))
-		masked_array(data =
-		 [[19.2 14.6 --]
+		>>> print(mquantiles(data, axis=0, limit=(0, 50)))
+		[[19.200000000000003 14.6 --]
 		 [40.0 37.5 --]
-		 [42.8 40.05 --]],
-		             mask =
-		 [[False False  True]
-		  [False False  True]
-		  [False False  True]],
-		       fill_value = 1e+20)
+		 [42.800000000000004 40.05 --]]
 	**/
 	static public function mquantiles(a:Dynamic, ?prob:Dynamic, ?alphap:Dynamic, ?betap:Dynamic, ?axis:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
@@ -1046,12 +992,6 @@ package scipy.stats.mstats;
 	/**
 		Tests whether a sample differs from a normal distribution.
 		
-		This function tests the null hypothesis that a sample comes
-		from a normal distribution.  It is based on D'Agostino and
-		Pearson's [1]_, [2]_ test that combines skew and kurtosis to
-		produce an omnibus test of normality.
-		
-		
 		Parameters
 		----------
 		a : array_like
@@ -1063,18 +1003,14 @@ package scipy.stats.mstats;
 		Returns
 		-------
 		statistic : float or array
-		    `s^2 + k^2`, where `s` is the z-score returned by `skewtest` and
-		    `k` is the z-score returned by `kurtosistest`.
+		    ``s^2 + k^2``, where ``s`` is the z-score returned by `skewtest` and
+		    ``k`` is the z-score returned by `kurtosistest`.
 		pvalue : float or array
 		   A 2-sided chi squared probability for the hypothesis test.
 		
-		References
-		----------
-		.. [1] D'Agostino, R. B. (1971), "An omnibus test of normality for
-		       moderate and large sample size," Biometrika, 58, 341-348
-		
-		.. [2] D'Agostino, R. and Pearson, E. S. (1973), "Testing for
-		       departures from normality," Biometrika, 60, 613-622
+		Notes
+		-----
+		For more details about `normaltest`, see `stats.normaltest`.
 	**/
 	static public function normaltest(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -1163,17 +1099,7 @@ package scipy.stats.mstats;
 	**/
 	static public function plotting_positions(data:Dynamic, ?alpha:Dynamic, ?beta:Dynamic):Dynamic;
 	/**
-		Calculates a point biserial correlation coefficient and the associated
-		p-value.
-		
-		The point biserial correlation is used to measure the relationship
-		between a binary variable, x, and a continuous variable, y. Like other
-		correlation coefficients, this one varies between -1 and +1 with 0
-		implying no correlation. Correlations of -1 or +1 imply a determinative
-		relationship.
-		
-		This function uses a shortcut formula but produces the same result as
-		`pearsonr`.
+		Calculates a point biserial correlation coefficient and its p-value.
 		
 		Parameters
 		----------
@@ -1189,29 +1115,12 @@ package scipy.stats.mstats;
 		pvalue : float
 		    2-tailed p-value
 		
-		References
-		----------
-		http://en.wikipedia.org/wiki/Point-biserial_correlation_coefficient
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> a = np.array([0, 0, 0, 1, 1, 1, 1])
-		>>> b = np.arange(7)
-		>>> stats.pointbiserialr(a, b)
-		(0.8660254037844386, 0.011724811003954652)
-		>>> stats.pearsonr(a, b)
-		(0.86602540378443871, 0.011724811003954626)
-		>>> np.corrcoef(a, b)
-		array([[ 1.       ,  0.8660254],
-		       [ 0.8660254,  1.       ]])
-		
-		
-		
 		Notes
 		-----
 		Missing values are considered pair-wise: if a value is missing in x,
 		the corresponding value in y is masked.
+		
+		For more details on `pointbiserialr`, see `stats.pointbiserialr`.
 	**/
 	static public function pointbiserialr(x:Dynamic, y:Dynamic):Float;
 	static public var print_function : Dynamic;
@@ -1291,12 +1200,13 @@ package scipy.stats.mstats;
 		
 		>>> from scipy import stats
 		>>> a = np.arange(20).reshape(5,4)
-		>>> stats.sem(a)
-		array([ 2.8284,  2.8284,  2.8284,  2.8284])
+		>>> print(stats.mstats.sem(a))
+		[2.8284271247461903 2.8284271247461903 2.8284271247461903
+		 2.8284271247461903]
 		
 		Find standard error across the whole array, using n degrees of freedom:
 		
-		>>> stats.sem(a, axis=None, ddof=0)
+		>>> print(stats.mstats.sem(a, axis=None, ddof=0))
 		1.2893796958227628
 	**/
 	static public function sem(a:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
@@ -1321,11 +1231,6 @@ package scipy.stats.mstats;
 	/**
 		Computes the skewness of a data set.
 		
-		For normally distributed data, the skewness should be about 0. A skewness
-		value > 0 means that there is more weight in the left tail of the
-		distribution. The function `skewtest` can be used to determine if the
-		skewness value is close enough to 0, statistically speaking.
-		
 		Parameters
 		----------
 		a : ndarray
@@ -1342,21 +1247,13 @@ package scipy.stats.mstats;
 		    The skewness of values along an axis, returning 0 where all values are
 		    equal.
 		
-		References
-		----------
-		
-		.. [1] Zwillinger, D. and Kokoska, S. (2000). CRC Standard
-		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
-		   York. 2000.
-		   Section 2.2.24.1
+		Notes
+		-----
+		For more details about `skew`, see `stats.skew`.
 	**/
 	static public function skew(a:Dynamic, ?axis:Dynamic, ?bias:Dynamic):Dynamic;
 	/**
 		Tests whether the skew is different from the normal distribution.
-		
-		This function tests the null hypothesis that the skewness of
-		the population that the sample was drawn from is the same
-		as that of a corresponding normal distribution.
 		
 		Parameters
 		----------
@@ -1375,7 +1272,7 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		The sample size must be at least 8.
+		For more details about `skewtest`, see `stats.skewtest`.
 	**/
 	static public function skewtest(a:Dynamic, ?axis:Dynamic):Float;
 	/**
@@ -1450,80 +1347,40 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		The implementation of `theilslopes` follows [1]_. The intercept is
-		not defined in [1]_, and here it is defined as ``median(y) -
-		medslope*median(x)``, which is given in [3]_. Other definitions of
-		the intercept exist in the literature. A confidence interval for
-		the intercept is not given as this question is not addressed in
-		[1]_.
-		
-		References
-		----------
-		.. [1] P.K. Sen, "Estimates of the regression coefficient based on Kendall's tau",
-		       J. Am. Stat. Assoc., Vol. 63, pp. 1379-1389, 1968.
-		.. [2] H. Theil, "A rank-invariant method of linear and polynomial
-		       regression analysis I, II and III",  Nederl. Akad. Wetensch., Proc.
-		       53:, pp. 386-392, pp. 521-525, pp. 1397-1412, 1950.
-		.. [3] W.L. Conover, "Practical nonparametric statistics", 2nd ed.,
-		       John Wiley and Sons, New York, pp. 493.
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> import matplotlib.pyplot as plt
-		
-		>>> x = np.linspace(-5, 5, num=150)
-		>>> y = x + np.random.normal(size=x.size)
-		>>> y[11:15] += 10  # add outliers
-		>>> y[-5:] -= 7
-		
-		Compute the slope, intercept and 90% confidence interval.  For comparison,
-		also compute the least-squares fit with `linregress`:
-		
-		>>> res = stats.theilslopes(y, x, 0.90)
-		>>> lsq_res = stats.linregress(x, y)
-		
-		Plot the results. The Theil-Sen regression line is shown in red, with the
-		dashed red lines illustrating the confidence interval of the slope (note
-		that the dashed red lines are not the confidence interval of the regression
-		as the confidence interval of the intercept is not included). The green
-		line shows the least-squares fit for comparison.
-		
-		>>> fig = plt.figure()
-		>>> ax = fig.add_subplot(111)
-		>>> ax.plot(x, y, 'b.')
-		>>> ax.plot(x, res[1] + res[0] * x, 'r-')
-		>>> ax.plot(x, res[1] + res[2] * x, 'r--')
-		>>> ax.plot(x, res[1] + res[3] * x, 'r--')
-		>>> ax.plot(x, lsq_res[1] + lsq_res[0] * x, 'g-')
-		>>> plt.show()
+		For more details on `theilslopes`, see `stats.theilslopes`.
 	**/
 	static public function theilslopes(y:Dynamic, ?x:Dynamic, ?alpha:Dynamic):Float;
 	/**
-		Clip array to a given value.
+		`threshold` is deprecated!
+		mstats.threshold is deprecated in scipy 0.17.0
 		
-		Similar to numpy.clip(), except that values less than `threshmin` or
-		greater than `threshmax` are replaced by `newval`, instead of by
-		`threshmin` and `threshmax` respectively.
 		
-		Parameters
-		----------
-		a : ndarray
-		    Input data
-		threshmin : {None, float}, optional
-		    Lower threshold. If None, set to the minimum value.
-		threshmax : {None, float}, optional
-		    Upper threshold. If None, set to the maximum value.
-		newval : {0, float}, optional
-		    Value outside the thresholds.
+		    Clip array to a given value.
 		
-		Returns
-		-------
-		threshold : ndarray
-		    Returns `a`, with values less then `threshmin` and values greater
-		    `threshmax` replaced with `newval`.
+		    Similar to numpy.clip(), except that values less than `threshmin` or
+		    greater than `threshmax` are replaced by `newval`, instead of by
+		    `threshmin` and `threshmax` respectively.
+		
+		    Parameters
+		    ----------
+		    a : ndarray
+		        Input data
+		    threshmin : {None, float}, optional
+		        Lower threshold. If None, set to the minimum value.
+		    threshmax : {None, float}, optional
+		        Upper threshold. If None, set to the maximum value.
+		    newval : {0, float}, optional
+		        Value outside the thresholds.
+		
+		    Returns
+		    -------
+		    threshold : ndarray
+		        Returns `a`, with values less then `threshmin` and values greater
+		        `threshmax` replaced with `newval`.
+		
+		    
 	**/
-	static public function threshold(a:Dynamic, ?threshmin:Dynamic, ?threshmax:Dynamic, ?newval:Dynamic):Dynamic;
+	static public function threshold(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the trimmed maximum
 		
@@ -1547,14 +1404,15 @@ package scipy.stats.mstats;
 		
 		Returns
 		-------
-		tmax : float
+		tmax : float, int or ndarray
+		
+		Notes
+		-----
+		For more details on `tmax`, see `stats.tmax`.
 	**/
-	static public function tmax(a:Dynamic, upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmax(a:Dynamic, ?upperlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Compute the trimmed mean.
-		
-		This function finds the arithmetic mean of given values, ignoring values
-		outside the given `limits`.
 		
 		Parameters
 		----------
@@ -1569,18 +1427,21 @@ package scipy.stats.mstats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. If None, compute over the
+		    whole array. Default is None.
 		
 		Returns
 		-------
 		tmean : float
+		
+		Notes
+		-----
+		For more details on `tmean`, see `stats.tmean`.
 	**/
-	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmean(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic):Float;
 	/**
 		Compute the trimmed minimum
-		
-		This function finds the miminum value of an array `a` along the
-		specified axis, but only considering values greater than a specified
-		lower limit.
 		
 		Parameters
 		----------
@@ -1591,17 +1452,21 @@ package scipy.stats.mstats;
 		    When lowerlimit is None, then all values are used. The default value
 		    is None.
 		axis : int or None, optional
-		    Axis along which to operate. Default is 0. If None, compute over the whole
-		    array `a`.
+		    Axis along which to operate. Default is 0. If None, compute over the
+		    whole array `a`.
 		inclusive : {True, False}, optional
 		    This flag determines whether values exactly equal to the lower limit
 		    are included.  The default value is True.
 		
 		Returns
 		-------
-		tmin : float
+		tmin : float, int or ndarray
+		
+		Notes
+		-----
+		For more details on `tmin`, see `stats.tmin`.
 	**/
-	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tmin(a:Dynamic, ?lowerlimit:Dynamic, ?axis:Dynamic, ?inclusive:Dynamic):Dynamic;
 	/**
 		Trims an array by masking the data outside some given limits.
 		
@@ -1642,11 +1507,12 @@ package scipy.stats.mstats;
 		
 		Examples
 		--------
+		>>> from scipy.stats.mstats import trim
 		>>> z = [ 1, 2, 3, 4, 5, 6, 7, 8, 9,10]
-		>>> trim(z,(3,8))
-		[--,--, 3, 4, 5, 6, 7, 8,--,--]
-		>>> trim(z,(0.1,0.2),relative=True)
-		[--, 2, 3, 4, 5, 6, 7, 8,--,--]
+		>>> print(trim(z,(3,8)))
+		[-- -- 3 4 5 6 7 8 -- --]
+		>>> print(trim(z,(0.1,0.2),relative=True))
+		[-- 2 3 4 5 6 7 8 -- --]
 	**/
 	static public function trim(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?relative:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -1835,6 +1701,11 @@ package scipy.stats.mstats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. If None, compute over the
+		    whole array. Default is zero.
+		ddof : int, optional
+		    Delta degrees of freedom. Default is 1.
 		
 		Returns
 		-------
@@ -1842,16 +1713,11 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		`tsem` uses unbiased sample standard deviation, i.e. it uses a
-		correction factor ``n / (n - 1)``.
+		For more details on `tsem`, see `stats.tsem`.
 	**/
-	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tsem(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
-		
-		This is a two-sided test for the null hypothesis that the expected value
-		(mean) of a sample of independent observations `a` is equal to the given
-		population mean, `popmean`.
 		
 		Parameters
 		----------
@@ -1871,40 +1737,13 @@ package scipy.stats.mstats;
 		pvalue : float or array
 		    two-tailed p-value
 		
-		Examples
-		--------
-		>>> from scipy import stats
-		
-		>>> np.random.seed(7654567)  # fix seed to get the same result
-		>>> rvs = stats.norm.rvs(loc=5, scale=10, size=(50,2))
-		
-		Test if mean of random sample is equal to true mean, and different mean.
-		We reject the null hypothesis in the second case and don't reject it in
-		the first case.
-		
-		>>> stats.ttest_1samp(rvs,5.0)
-		(array([-0.68014479, -0.04323899]), array([ 0.49961383,  0.96568674]))
-		>>> stats.ttest_1samp(rvs,0.0)
-		(array([ 2.77025808,  4.11038784]), array([ 0.00789095,  0.00014999]))
-		
-		Examples using axis and non-scalar dimension for population mean.
-		
-		>>> stats.ttest_1samp(rvs,[5.0,0.0])
-		(array([-0.68014479,  4.11038784]), array([  4.99613833e-01,   1.49986458e-04]))
-		>>> stats.ttest_1samp(rvs.T,[5.0,0.0],axis=1)
-		(array([-0.68014479,  4.11038784]), array([  4.99613833e-01,   1.49986458e-04]))
-		>>> stats.ttest_1samp(rvs,[[5.0],[0.0]])
-		(array([[-0.68014479, -0.04323899],
-		       [ 2.77025808,  4.11038784]]), array([[  4.99613833e-01,   9.65686743e-01],
-		       [  7.89094663e-03,   1.49986458e-04]]))
+		Notes
+		-----
+		For more details on `ttest_1samp`, see `stats.ttest_1samp`.
 	**/
 	static public function ttest_1samp(a:Dynamic, popmean:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Calculates the T-test for the means of TWO INDEPENDENT samples of scores.
-		
-		This is a two-sided test for the null hypothesis that 2 independent samples
-		have identical average (expected) values. This test assumes that the
-		populations have identical variances by default.
 		
 		Parameters
 		----------
@@ -1915,12 +1754,11 @@ package scipy.stats.mstats;
 		    Axis along which to compute test. If None, compute over the whole
 		    arrays, `a`, and `b`.
 		equal_var : bool, optional
-		    If True (default), perform a standard independent 2 sample test
-		    that assumes equal population variances [1]_.
-		    If False, perform Welch's t-test, which does not assume equal
-		    population variance [2]_.
-		    .. versionadded:: 0.11.0
-		
+		    If True, perform a standard independent 2 sample test that assumes equal
+		    population variances.
+		    If False, perform Welch's t-test, which does not assume equal population
+		    variance.
+		    .. versionadded:: 0.17.0
 		
 		Returns
 		-------
@@ -1931,67 +1769,11 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		We can use this test, if we observe two independent samples from
-		the same or different population, e.g. exam scores of boys and
-		girls or of two ethnic groups. The test measures whether the
-		average (expected) value differs significantly across samples. If
-		we observe a large p-value, for example larger than 0.05 or 0.1,
-		then we cannot reject the null hypothesis of identical average scores.
-		If the p-value is smaller than the threshold, e.g. 1%, 5% or 10%,
-		then we reject the null hypothesis of equal averages.
-		
-		References
-		----------
-		.. [1] http://en.wikipedia.org/wiki/T-test#Independent_two-sample_t-test
-		
-		.. [2] http://en.wikipedia.org/wiki/Welch%27s_t_test
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> np.random.seed(12345678)
-		
-		Test with sample with identical means:
-		
-		>>> rvs1 = stats.norm.rvs(loc=5,scale=10,size=500)
-		>>> rvs2 = stats.norm.rvs(loc=5,scale=10,size=500)
-		>>> stats.ttest_ind(rvs1,rvs2)
-		(0.26833823296239279, 0.78849443369564776)
-		>>> stats.ttest_ind(rvs1,rvs2, equal_var = False)
-		(0.26833823296239279, 0.78849452749500748)
-		
-		`ttest_ind` underestimates p for unequal variances:
-		
-		>>> rvs3 = stats.norm.rvs(loc=5, scale=20, size=500)
-		>>> stats.ttest_ind(rvs1, rvs3)
-		(-0.46580283298287162, 0.64145827413436174)
-		>>> stats.ttest_ind(rvs1, rvs3, equal_var = False)
-		(-0.46580283298287162, 0.64149646246569292)
-		
-		When n1 != n2, the equal variance t-statistic is no longer equal to the
-		unequal variance t-statistic:
-		
-		>>> rvs4 = stats.norm.rvs(loc=5, scale=20, size=100)
-		>>> stats.ttest_ind(rvs1, rvs4)
-		(-0.99882539442782481, 0.3182832709103896)
-		>>> stats.ttest_ind(rvs1, rvs4, equal_var = False)
-		(-0.69712570584654099, 0.48716927725402048)
-		
-		T-test with different means, variance, and n:
-		
-		>>> rvs5 = stats.norm.rvs(loc=8, scale=20, size=100)
-		>>> stats.ttest_ind(rvs1, rvs5)
-		(-1.4679669854490653, 0.14263895620529152)
-		>>> stats.ttest_ind(rvs1, rvs5, equal_var = False)
-		(-0.94365973617132992, 0.34744170334794122)
+		For more details on `ttest_ind`, see `stats.ttest_ind`.
 	**/
-	static public function ttest_ind(a:Dynamic, b:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function ttest_ind(a:Dynamic, b:Dynamic, ?axis:Dynamic, ?equal_var:Dynamic):Dynamic;
 	/**
 		Calculates the T-test for the mean of ONE group of scores.
-		
-		This is a two-sided test for the null hypothesis that the expected value
-		(mean) of a sample of independent observations `a` is equal to the given
-		population mean, `popmean`.
 		
 		Parameters
 		----------
@@ -2011,39 +1793,13 @@ package scipy.stats.mstats;
 		pvalue : float or array
 		    two-tailed p-value
 		
-		Examples
-		--------
-		>>> from scipy import stats
-		
-		>>> np.random.seed(7654567)  # fix seed to get the same result
-		>>> rvs = stats.norm.rvs(loc=5, scale=10, size=(50,2))
-		
-		Test if mean of random sample is equal to true mean, and different mean.
-		We reject the null hypothesis in the second case and don't reject it in
-		the first case.
-		
-		>>> stats.ttest_1samp(rvs,5.0)
-		(array([-0.68014479, -0.04323899]), array([ 0.49961383,  0.96568674]))
-		>>> stats.ttest_1samp(rvs,0.0)
-		(array([ 2.77025808,  4.11038784]), array([ 0.00789095,  0.00014999]))
-		
-		Examples using axis and non-scalar dimension for population mean.
-		
-		>>> stats.ttest_1samp(rvs,[5.0,0.0])
-		(array([-0.68014479,  4.11038784]), array([  4.99613833e-01,   1.49986458e-04]))
-		>>> stats.ttest_1samp(rvs.T,[5.0,0.0],axis=1)
-		(array([-0.68014479,  4.11038784]), array([  4.99613833e-01,   1.49986458e-04]))
-		>>> stats.ttest_1samp(rvs,[[5.0],[0.0]])
-		(array([[-0.68014479, -0.04323899],
-		       [ 2.77025808,  4.11038784]]), array([[  4.99613833e-01,   9.65686743e-01],
-		       [  7.89094663e-03,   1.49986458e-04]]))
+		Notes
+		-----
+		For more details on `ttest_1samp`, see `stats.ttest_1samp`.
 	**/
 	static public function ttest_onesamp(a:Dynamic, popmean:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Calculates the T-test on TWO RELATED samples of scores, a and b.
-		
-		This is a two-sided test for the null hypothesis that 2 related or
-		repeated samples have identical average (expected) values.
 		
 		Parameters
 		----------
@@ -2062,34 +1818,7 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		Examples for the use are scores of the same set of student in
-		different exams, or repeated sampling from the same units. The
-		test measures whether the average score differs significantly
-		across samples (e.g. exams). If we observe a large p-value, for
-		example greater than 0.05 or 0.1 then we cannot reject the null
-		hypothesis of identical average scores. If the p-value is smaller
-		than the threshold, e.g. 1%, 5% or 10%, then we reject the null
-		hypothesis of equal averages. Small p-values are associated with
-		large t-statistics.
-		
-		References
-		----------
-		http://en.wikipedia.org/wiki/T-test#Dependent_t-test
-		
-		Examples
-		--------
-		>>> from scipy import stats
-		>>> np.random.seed(12345678) # fix random seed to get same numbers
-		
-		>>> rvs1 = stats.norm.rvs(loc=5,scale=10,size=500)
-		>>> rvs2 = (stats.norm.rvs(loc=5,scale=10,size=500) +
-		...         stats.norm.rvs(scale=0.2,size=500))
-		>>> stats.ttest_rel(rvs1,rvs2)
-		(0.24101764965300962, 0.80964043445811562)
-		>>> rvs3 = (stats.norm.rvs(loc=8,scale=10,size=500) +
-		...         stats.norm.rvs(scale=0.2,size=500))
-		>>> stats.ttest_rel(rvs1,rvs3)
-		(-3.9995108708727933, 7.3082402191726459e-005)
+		For more details on `ttest_rel`, see `stats.ttest_rel`.
 	**/
 	static public function ttest_rel(a:Dynamic, b:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -2111,6 +1840,11 @@ package scipy.stats.mstats;
 		    A tuple consisting of the (lower flag, upper flag).  These flags
 		    determine whether values exactly equal to the lower or upper limits
 		    are included.  The default value is (True, True).
+		axis : int or None, optional
+		    Axis along which to operate. If None, compute over the
+		    whole array. Default is zero.
+		ddof : int, optional
+		    Delta degrees of freedom. Default is 1.
 		
 		Returns
 		-------
@@ -2119,10 +1853,9 @@ package scipy.stats.mstats;
 		
 		Notes
 		-----
-		`tvar` computes the unbiased sample variance, i.e. it uses a correction
-		factor ``n / (n - 1)``.
+		For more details on `tvar`, see `stats.tvar`.
 	**/
-	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic):Float;
+	static public function tvar(a:Dynamic, ?limits:Dynamic, ?inclusive:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Float;
 	/**
 		Computes the coefficient of variation, the ratio of the biased standard
 		deviation to the mean.
@@ -2135,11 +1868,14 @@ package scipy.stats.mstats;
 		    Axis along which to calculate the coefficient of variation. Default
 		    is 0. If None, compute over the whole array `a`.
 		
-		References
-		----------
-		.. [1] Zwillinger, D. and Kokoska, S. (2000). CRC Standard
-		   Probability and Statistics Tables and Formulae. Chapman & Hall: New
-		   York. 2000.
+		Returns
+		-------
+		variation : ndarray
+		    The calculated variation along the requested axis.
+		
+		Notes
+		-----
+		For more details about `variation`, see `stats.variation`.
 	**/
 	static public function variation(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**

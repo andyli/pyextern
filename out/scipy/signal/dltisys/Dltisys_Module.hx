@@ -99,8 +99,8 @@ package scipy.signal.dltisys;
 		>>> t_in = [0.0, 1.0, 2.0, 3.0]
 		>>> u = np.asarray([0.0, 0.0, 1.0, 1.0])
 		>>> t_out, y = signal.dlsim(tf, u, t=t_in)
-		>>> y
-		array([ 0.,  0.,  0.,  1.])
+		>>> y.T
+		array([[ 0.,  0.,  0.,  1.]])
 	**/
 	static public function dlsim(system:Dynamic, u:Dynamic, ?t:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
@@ -152,6 +152,39 @@ package scipy.signal.dltisys;
 		A, B, C, D : ndarray
 		    State space representation of the system, in controller canonical
 		    form.
+		
+		Examples
+		--------
+		Convert the transfer function:
+		
+		.. math:: H(s) = \frac{s^2 + 3s + 3}{s^2 + 2s + 1}
+		
+		>>> num = [1, 3, 3]
+		>>> den = [1, 2, 1]
+		
+		to the state-space representation:
+		
+		.. math::
+		
+		    \dot{\textbf{x}}(t) =
+		    \begin{bmatrix} -2 & -1 \\ 1 & 0 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \\ 0 \end{bmatrix} \textbf{u}(t) \\
+		
+		    \textbf{y}(t) = \begin{bmatrix} 1 & 2 \end{bmatrix} \textbf{x}(t) +
+		    \begin{bmatrix} 1 \end{bmatrix} \textbf{u}(t)
+		
+		>>> from scipy.signal import tf2ss
+		>>> A, B, C, D = tf2ss(num, den)
+		>>> A
+		array([[-2., -1.],
+		       [ 1.,  0.]])
+		>>> B
+		array([[ 1.],
+		       [ 0.]])
+		>>> C
+		array([[ 1.,  2.]])
+		>>> D
+		array([ 1.])
 	**/
 	static public function tf2ss(num:Dynamic, den:Dynamic):Dynamic;
 	/**

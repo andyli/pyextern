@@ -53,6 +53,7 @@ package pandas.core.nanops;
 	**/
 	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public function _na_ok_dtype(dtype:Dynamic):Dynamic;
+	static public function _nanminmax(meth:Dynamic, fill_value_typ:Dynamic):Dynamic;
 	/**
 		return my values or the object if we are say an ndarray 
 	**/

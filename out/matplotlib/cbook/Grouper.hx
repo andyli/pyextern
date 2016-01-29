@@ -125,4 +125,5 @@ package matplotlib.cbook;
 		Returns True if *a* and *b* are members of the same set.
 	**/
 	public function joined(a:Dynamic, b:Dynamic):Dynamic;
+	public function remove(a:Dynamic):Dynamic;
 }

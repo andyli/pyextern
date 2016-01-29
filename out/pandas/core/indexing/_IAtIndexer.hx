@@ -110,12 +110,36 @@ package pandas.core.indexing;
 	public var __weakref__ : Dynamic;
 	public function _align_frame(indexer:Dynamic, df:Dynamic):Dynamic;
 	public function _align_panel(indexer:Dynamic, df:Dynamic):Dynamic;
-	public function _align_series(indexer:Dynamic, ser:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		indexer : tuple, slice, scalar
+		    The indexer used to get the locations that will be set to
+		    `ser`
+		
+		ser : pd.Series
+		    The values to assign to the locations specified by `indexer`
+		
+		multiindex_indexer : boolean, optional
+		    Defaults to False. Should be set to True if `indexer` was from
+		    a `pd.MultiIndex`, to avoid unnecessary broadcasting.
+		
+		
+		Returns:
+		--------
+		`np.array` of `ser` broadcast to the appropriate shape for assignment
+		to the locations selected by `indexer`
+	**/
+	public function _align_series(indexer:Dynamic, ser:Dynamic, ?multiindex_indexer:Dynamic):Dynamic;
 	public function _convert_for_reindex(key:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		require  integer args (and convert to label arguments) 
 	**/
 	public function _convert_key(key:Dynamic, ?is_setter:Dynamic):Dynamic;
+	/**
+		convert a range argument 
+	**/
+	public function _convert_range(key:Dynamic, ?is_setter:Dynamic):Dynamic;
 	public function _convert_scalar_indexer(key:Dynamic, axis:Dynamic):Dynamic;
 	public function _convert_slice_indexer(key:Dynamic, axis:Dynamic):Dynamic;
 	/**

@@ -309,16 +309,15 @@ package numpy;
 		Parameters
 		----------
 		new_order : string, optional
-		    Byte order to force; a value from the byte order
-		    specifications below.  The default value ('S') results in
-		    swapping the current byte order.
-		    `new_order` codes can be any of::
+		    Byte order to force; a value from the byte order specifications
+		    below.  The default value ('S') results in swapping the current
+		    byte order.  `new_order` codes can be any of:
 		
-		     * 'S' - swap dtype from current to opposite endian
-		     * {'<', 'L'} - little endian
-		     * {'>', 'B'} - big endian
-		     * {'=', 'N'} - native order
-		     * {'|', 'I'} - ignore (no change to byte order)
+		    * 'S' - swap dtype from current to opposite endian
+		    * {'<', 'L'} - little endian
+		    * {'>', 'B'} - big endian
+		    * {'=', 'N'} - native order
+		    * {'|', 'I'} - ignore (no change to byte order)
 		
 		    The code does a case-insensitive check on the first letter of
 		    `new_order` for these alternatives.  For example, any of '>'

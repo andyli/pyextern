@@ -26,8 +26,8 @@ package scipy.signal.spectral;
 		
 		References
 		----------
-		stackoverflow: Repeat NumPy array without replicating data?
-		<http://stackoverflow.com/a/5568169>
+		.. [1] Stack Overflow, "Repeat NumPy array without replicating data?",
+		    http://stackoverflow.com/a/5568169
 		
 		Notes
 		-----
@@ -99,10 +99,10 @@ package scipy.signal.spectral;
 		
 		References
 		----------
-		stackoverflow: Rolling window for 1D arrays in Numpy?
-		<http://stackoverflow.com/a/6811241>
-		stackoverflow: Using strides for an efficient moving average filter
-		<http://stackoverflow.com/a/4947453>
+		.. [1] Stack Overflow, "Rolling window for 1D arrays in Numpy?",
+		    http://stackoverflow.com/a/6811241
+		.. [2] Stack Overflow, "Using strides for an efficient moving average
+		    filter", http://stackoverflow.com/a/4947453
 		
 		Notes
 		-----
@@ -331,8 +331,8 @@ package scipy.signal.spectral;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with ifftshift
-		    and be multiplied by the result of an fft (SEE ALSO fftfreq).
+		    If True, create a "periodic" window ready to use with `ifftshift`
+		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
 		
 		Returns
 		-------
@@ -533,6 +533,7 @@ package scipy.signal.spectral;
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)
 		
 		Generate a test signal, a 2 Vrms sine wave at 1234 Hz, corrupted by
 		0.001 V**2/Hz of white noise sampled at 10 kHz.
@@ -559,7 +560,7 @@ package scipy.signal.spectral;
 		peak, we can recover the noise power on the signal.
 		
 		>>> np.mean(Pxx_den[256:])
-		0.0009924865443739191
+		0.0018156616014838548
 		
 		Now compute and plot the power spectrum.
 		
@@ -620,6 +621,9 @@ package scipy.signal.spectral;
 		axis : int, optional
 		    Axis along which the spectrogram is computed; the default is over
 		    the last axis (i.e. ``axis=-1``).
+		mode : str, optional
+		    Defines what kind of return values are expected. Options are ['psd',
+		    'complex', 'magnitude', 'angle', 'phase'].
 		
 		Returns
 		-------
@@ -650,7 +654,7 @@ package scipy.signal.spectral;
 		
 		References
 		----------
-		...[1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck "Discrete-Time
+		.. [1] Oppenheim, Alan V., Ronald W. Schafer, John R. Buck "Discrete-Time
 		       Signal Processing", Prentice Hall, 1999.
 		
 		Examples
@@ -679,7 +683,7 @@ package scipy.signal.spectral;
 		>>> plt.xlabel('Time [sec]')
 		>>> plt.show()
 	**/
-	static public function spectrogram(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function spectrogram(x:Dynamic, ?fs:Dynamic, ?window:Dynamic, ?nperseg:Dynamic, ?noverlap:Dynamic, ?nfft:Dynamic, ?detrend:Dynamic, ?return_onesided:Dynamic, ?scaling:Dynamic, ?axis:Dynamic, ?mode:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Estimate power spectral density using Welch's method.
@@ -762,6 +766,7 @@ package scipy.signal.spectral;
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
+		>>> np.random.seed(1234)
 		
 		Generate a test signal, a 2 Vrms sine wave at 1234 Hz, corrupted by
 		0.001 V**2/Hz of white noise sampled at 10 kHz.

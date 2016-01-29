@@ -117,9 +117,5 @@ package scipy.interpolate.interpnd;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _check_call_shape(xi:Dynamic):Dynamic;
-	/**
-		Check shape of points and values arrays
-	**/
-	public function _check_init_shape(points:Dynamic, values:Dynamic, ?ndim:Dynamic):Dynamic;
 	public function _scale_x(xi:Dynamic):Dynamic;
 }

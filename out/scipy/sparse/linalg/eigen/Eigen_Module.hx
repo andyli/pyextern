@@ -446,39 +446,48 @@ package scipy.sparse.linalg.eigen;
 		
 		Examples
 		--------
-		>>> # Solve A x = lambda B x with constraints and preconditioning.
+		
+		Solve A x = lambda B x with constraints and preconditioning.
+		
+		>>> from scipy.sparse import spdiags, issparse
+		>>> from scipy.sparse.linalg import lobpcg, LinearOperator
 		>>> n = 100
-		>>> vals = [nm.arange( n, dtype = nm.float64 ) + 1]
-		>>> # Matrix A.
-		>>> operatorA = spdiags( vals, 0, n, n )
-		>>> # Matrix B
-		>>> operatorB = nm.eye( n, n )
-		>>> # Constraints.
-		>>> Y = nm.eye( n, 3 )
-		>>> # Initial guess for eigenvectors, should have linearly independent
-		>>> # columns. Column dimension = number of requested eigenvalues.
-		>>> X = sc.rand( n, 3 )
-		>>> # Preconditioner - inverse of A.
-		>>> ivals = [1./vals[0]]
+		>>> vals = [np.arange(n, dtype=np.float64) + 1]
+		>>> A = spdiags(vals, 0, n, n)
+		>>> A.toarray()
+		array([[   1.,    0.,    0., ...,    0.,    0.,    0.],
+		       [   0.,    2.,    0., ...,    0.,    0.,    0.],
+		       [   0.,    0.,    3., ...,    0.,    0.,    0.],
+		       ..., 
+		       [   0.,    0.,    0., ...,   98.,    0.,    0.],
+		       [   0.,    0.,    0., ...,    0.,   99.,    0.],
+		       [   0.,    0.,    0., ...,    0.,    0.,  100.]])
+		
+		Constraints.
+		
+		>>> Y = np.eye(n, 3)
+		
+		Initial guess for eigenvectors, should have linearly independent
+		columns. Column dimension = number of requested eigenvalues.
+		
+		>>> X = np.random.rand(n, 3)
+		
+		Preconditioner -- inverse of A (as an abstract linear operator).
+		
+		>>> invA = spdiags([1./vals[0]], 0, n, n)
 		>>> def precond( x ):
-		    invA = spdiags( ivals, 0, n, n )
-		    y = invA  * x
-		    if sp.issparse( y ):
-		        y = y.toarray()
+		...     return invA  * x
+		>>> M = LinearOperator(matvec=precond, shape=(n, n), dtype=float)
 		
-		    return as2d( y )
+		Here, ``invA`` could of course have been used directly as a preconditioner.
+		Let us then solve the problem:
 		
-		>>> # Alternative way of providing the same preconditioner.
-		>>> #precond = spdiags( ivals, 0, n, n )
+		>>> eigs, vecs = lobpcg(A, X, Y=Y, M=M, tol=1e-4, maxiter=40, largest=False)
+		>>> eigs
+		array([ 4.,  5.,  6.])
 		
-		>>> tt = time.clock()
-		>>> eigs, vecs = lobpcg(X, operatorA, operatorB, blockVectorY=Y,
-		>>>                     operatorT=precond,
-		>>>                     residualTolerance=1e-4, maxIterations=40,
-		>>>                     largest=False, verbosityLevel=1)
-		>>> print 'solution time:', time.clock() - tt
-		>>> print eigs
-		
+		Note that the vectors passed in Y are the eigenvectors of the 3 smallest
+		eigenvalues. The results returned are orthogonal to those.
 		
 		Notes
 		-----
@@ -549,6 +558,7 @@ package scipy.sparse.linalg.eigen;
 		    Array to compute the SVD on, of shape (M, N)
 		k : int, optional
 		    Number of singular values and vectors to compute.
+		    Must be 1 <= k < min(A.shape).
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
@@ -565,8 +575,8 @@ package scipy.sparse.linalg.eigen;
 		    .. versionadded:: 0.12.0
 		v0 : ndarray, optional
 		    Starting vector for iteration, of length min(A.shape). Should be an
-		    (approximate) right singular vector if N > M and a right singular vector
-		    otherwise.
+		    (approximate) left singular vector if N > M and a right singular
+		    vector otherwise.
 		    Default: random
 		
 		    .. versionadded:: 0.12.0

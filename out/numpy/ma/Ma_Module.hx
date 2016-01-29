@@ -2919,21 +2919,34 @@ package numpy.ma;
 	/**
 		Return the dot product of two arrays.
 		
+		This function is the equivalent of `numpy.dot` that takes masked values
+		into account. Note that `strict` and `out` are in different position
+		than in the method version. In order to maintain compatibility with the
+		corresponding method, it is recommended that the optional arguments be
+		treated as keyword only.  At some point that may be mandatory.
+		
 		.. note::
 		  Works only with 2-D arrays at the moment.
 		
-		This function is the equivalent of `numpy.dot` that takes masked values
-		into account, see `numpy.dot` for details.
 		
 		Parameters
 		----------
-		a, b : ndarray
+		a, b : masked_array_like
 		    Inputs arrays.
 		strict : bool, optional
-		    Whether masked data are propagated (True) or set to 0 (False) for the
-		    computation. Default is False.
-		    Propagating the mask means that if a masked value appears in a row or
-		    column, the whole row or column is considered masked.
+		    Whether masked data are propagated (True) or set to 0 (False) for
+		    the computation. Default is False.  Propagating the mask means that
+		    if a masked value appears in a row or column, the whole row or
+		    column is considered masked.
+		out : masked_array, optional
+		    Output argument. This must have the exact kind that would be returned
+		    if it was not used. In particular, it must have the right type, must be
+		    C-contiguous, and its dtype must be the dtype that would be returned
+		    for `dot(a,b)`. This is a performance feature. Therefore, if these
+		    conditions are not met, an exception is raised, instead of attempting
+		    to be flexible.
+		
+		    .. versionadded:: 1.10.2
 		
 		See Also
 		--------
@@ -2960,7 +2973,7 @@ package numpy.ma;
 		 [ True False]],
 		       fill_value = 999999)
 	**/
-	static public function dot(a:Dynamic, b:Dynamic, ?strict:Dynamic):Dynamic;
+	static public function dot(a:Dynamic, b:Dynamic, ?strict:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		dstack(tup)
 		
@@ -5134,9 +5147,10 @@ package numpy.ma;
 		shrink : bool, optional
 		    Whether to shrink `m` to ``nomask`` if all its values are False.
 		dtype : dtype, optional
-		    Data-type of the output mask. By default, the output mask has
-		    a dtype of MaskType (bool). If the dtype is flexible, each field
-		    has a boolean dtype.
+		    Data-type of the output mask. By default, the output mask has a
+		    dtype of MaskType (bool). If the dtype is flexible, each field has
+		    a boolean dtype. This is ignored when `m` is ``nomask``, in which
+		    case ``nomask`` is always returned.
 		
 		Returns
 		-------

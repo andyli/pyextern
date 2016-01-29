@@ -44,8 +44,8 @@ package scipy.linalg._decomp_polar;
 		
 		References
 		----------
-		.. [1] R. A. Horn and C. R. Johnson, "Matrix Analysis", Cambridge University
-		       Press, 1985.
+		.. [1] R. A. Horn and C. R. Johnson, "Matrix Analysis", Cambridge
+		       University Press, 1985.
 		.. [2] N. J. Higham, "Functions of Matrices: Theory and Computation",
 		       SIAM, 2008.
 		

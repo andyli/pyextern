@@ -209,8 +209,15 @@ package pandas.tseries.index;
 	static public var _allow_index_ops : Dynamic;
 	static public var _allow_period_index_ops : Dynamic;
 	static public var _arrmap : Dynamic;
+	/**
+		Check value is valid for scalar op 
+	**/
+	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
+	/**
+		box function to get object from internal representation
+	**/
 	public var _box_func : Dynamic;
 	static public var _box_scalars : Dynamic;
 	/**
@@ -219,6 +226,7 @@ package pandas.tseries.index;
 	public function _box_values(values:Dynamic):Dynamic;
 	static public function _cached_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic, ?name:Dynamic):Dynamic;
 	public function _can_fast_union(other:Dynamic):Dynamic;
+	static public var _can_hold_na : Dynamic;
 	/**
 		*this is an internal non-public method*
 		
@@ -253,6 +261,10 @@ package pandas.tseries.index;
 	**/
 	public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Convert value to be insertable to ndarray 
+	**/
+	public function _convert_for_op(value:Dynamic):Dynamic;
 	/**
 		passed a key that is tuplesafe that is integer based
 		and we have a mixed index (e.g. number/labels). figure out
@@ -316,6 +328,9 @@ package pandas.tseries.index;
 	public function _format_native_types(?na_rep:Dynamic, ?date_format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _format_space():Dynamic;
 	public function _format_with_header(header:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return the formatted data as a unicode string
+	**/
 	public var _formatter_func : Dynamic;
 	static public function _generate(start:Dynamic, end:Dynamic, periods:Dynamic, name:Dynamic, offset:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?ambiguous:Dynamic, ?closed:Dynamic):Dynamic;
 	/**
@@ -342,6 +357,7 @@ package pandas.tseries.index;
 	public function _get_time_micros():Dynamic;
 	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var _has_complex_internals : Dynamic;
+	public function _has_same_tz(other:Dynamic):Dynamic;
 	static public var _id : Dynamic;
 	static public function _inner_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
@@ -350,6 +366,7 @@ package pandas.tseries.index;
 	public function _invalid_indexer(form:Dynamic, key:Dynamic):Dynamic;
 	static public var _is_dates_only : Dynamic;
 	static public var _is_numeric_dtype : Dynamic;
+	static public var _isnan : Dynamic;
 	/**
 		create the join wrapper methods 
 	**/
@@ -410,6 +427,7 @@ package pandas.tseries.index;
 	public function _maybe_utc_convert(other:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
+	static public var _nan_idxs : Dynamic;
 	static public function _outer_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Calculate datetime bounds for parsed time string and its resolution.
@@ -484,12 +502,17 @@ package pandas.tseries.index;
 	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
+	static public var _timezone : Dynamic;
 	/**
 		return an array repr of this object, potentially casting to object
 		
 		This is for internal compat
 	**/
 	public function _to_embed(?keep_tz:Dynamic):Dynamic;
+	/**
+		convert to object if we are a categorical 
+	**/
+	public function _to_safe_for_reshape():Dynamic;
 	static public var _typ : Dynamic;
 	/**
 		Necessary for making this object picklable
@@ -634,7 +657,9 @@ package pandas.tseries.index;
 	public function delete(loc:Dynamic):Dynamic;
 	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute sorted set difference of two Index objects
+		Return a new Index with elements from the index that are not in `other`.
+		
+		This is the sorted set difference of two Index objects.
 		
 		Parameters
 		----------
@@ -642,13 +667,15 @@ package pandas.tseries.index;
 		
 		Returns
 		-------
-		diff : Index
+		difference : Index
 		
-		Notes
-		-----
-		One can do either of these and achieve the same result
+		Examples
+		--------
 		
-		>>> index.difference(index2)
+		>>> idx1 = pd.Index([1, 2, 3, 4])
+		>>> idx2 = pd.Index([3, 4, 5, 6])
+		>>> idx1.difference(idx2)
+		Int64Index([1, 2], dtype='int64')
 	**/
 	public function difference(other:Dynamic):pandas.Index;
 	/**
@@ -721,6 +748,24 @@ package pandas.tseries.index;
 		uniques : the unique Index
 	**/
 	public function factorize(?sort:Dynamic, ?na_sentinel:Dynamic):Dynamic;
+	/**
+		Fill NA/NaN values with the specified value
+		
+		Parameters
+		----------
+		value : scalar
+		    Scalar value to use to fill holes (e.g. 0).
+		    This value cannot be a list-likes.
+		downcast : dict, default is None
+		    a dict of item->dtype of what to downcast if possible,
+		    or the string 'infer' which will try to downcast to an appropriate
+		    equal type (e.g. float64 to int64 if possible)
+		
+		Returns
+		-------
+		filled : Index
+	**/
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
@@ -917,6 +962,9 @@ package pandas.tseries.index;
 		True if both have same underlying data, False otherwise : bool
 	**/
 	public function is_(other:Dynamic):Dynamic;
+	/**
+		Checks that all the labels are datetime objects
+	**/
 	public var is_all_dates : Dynamic;
 	public function is_boolean():Dynamic;
 	public function is_categorical():Dynamic;
@@ -1001,6 +1049,29 @@ package pandas.tseries.index;
 		numpy.ndarray.max
 	**/
 	public function max(?axis:Dynamic):Dynamic;
+	/**
+		Memory usage of my values
+		
+		Parameters
+		----------
+		deep : bool
+		    Introspect the data deeply, interrogate
+		    `object` dtypes for system-level memory consumption
+		
+		Returns
+		-------
+		bytes used
+		
+		Notes
+		-----
+		Memory usage does not include memory consumed by elements that
+		are not components of the array if deep=False
+		
+		See Also
+		--------
+		numpy.ndarray.nbytes
+	**/
+	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
 		The microseconds of the datetime
 	**/
@@ -1263,7 +1334,7 @@ package pandas.tseries.index;
 		>>> s.str.split('_')
 		>>> s.str.replace('_', '')
 	**/
-	static public function str(series:Dynamic):Dynamic;
+	static public function str(data:Dynamic):Dynamic;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
@@ -1295,7 +1366,6 @@ package pandas.tseries.index;
 		
 		Parameters
 		----------
-		
 		other : Index or array-like
 		result_name : str
 		
@@ -1328,7 +1398,7 @@ package pandas.tseries.index;
 	/**
 		Analogous to ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Returns numpy array of datetime.time. The time part of the Timestamps.
 	**/

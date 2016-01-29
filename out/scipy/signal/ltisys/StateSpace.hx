@@ -1,9 +1,21 @@
 /* This file is generated, do not edit! */
 package scipy.signal.ltisys;
 @:pythonImport("scipy.signal.ltisys", "StateSpace") extern class StateSpace {
+	/**
+		State matrix of the `StateSpace` system.
+	**/
 	public var A : Dynamic;
+	/**
+		Input matrix of the `StateSpace` system.
+	**/
 	public var B : Dynamic;
+	/**
+		Output matrix of the `StateSpace` system.
+	**/
 	public var C : Dynamic;
+	/**
+		Feedthrough matrix of the `StateSpace` system.
+	**/
 	public var D : Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

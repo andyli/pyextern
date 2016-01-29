@@ -131,11 +131,21 @@ package scipy.stats._multivariate;
 	**/
 	public function _logpdf(x:Dynamic, mean:Dynamic, prec_U:Dynamic, log_det_cov:Dynamic, rank:Dynamic):Dynamic;
 	/**
+		Infer dimensionality from mean or covariance matrix, ensure that
+		mean and covariance are full vector resp. matrix.
+	**/
+	public function _process_parameters(dim:Dynamic, mean:Dynamic, cov:Dynamic):Dynamic;
+	/**
+		Adjust quantiles array so that last axis labels the components of
+		each data point.
+	**/
+	public function _process_quantiles(x:Dynamic, dim:Dynamic):Dynamic;
+	/**
 		Compute the differential entropy of the multivariate normal.
 		
 		Parameters
 		----------
-		%(_doc_default_callparams)s
+		%(_mvn_doc_default_callparams)s
 		
 		Returns
 		-------
@@ -144,7 +154,7 @@ package scipy.stats._multivariate;
 		
 		Notes
 		-----
-		%(_doc_callparams_note)s
+		%(_mvn_doc_callparams_note)s
 	**/
 	public function entropy(?mean:Dynamic, ?cov:Dynamic):Dynamic;
 	/**

@@ -52,13 +52,13 @@ package scipy.interpolate.ndgriddata;
 		C-contiguous, and of correct type.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, ?rescale:Dynamic, ?tree_options:Dynamic):Dynamic;
 	/**
 		Check shape of points and values arrays, and reshape values to
 		(npoints, nvalues).  Ensure the `points` and values arrays are
 		C-contiguous, and of correct type.
 	**/
-	public function new(x:Dynamic, y:Dynamic, ?rescale:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, ?rescale:Dynamic, ?tree_options:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -115,9 +115,5 @@ package scipy.interpolate.ndgriddata;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _check_call_shape(xi:Dynamic):Dynamic;
-	/**
-		Check shape of points and values arrays
-	**/
-	public function _check_init_shape(points:Dynamic, values:Dynamic, ?ndim:Dynamic):Dynamic;
 	public function _scale_x(xi:Dynamic):Dynamic;
 }

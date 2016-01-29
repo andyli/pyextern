@@ -11,6 +11,24 @@ package matplotlib.stackplot;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
+	/**
+		Create a new `Cycler` object from a property name and
+		iterable of values.
+		
+		Parameters
+		----------
+		label : str
+		    The property key.
+		
+		itr : iterable
+		    Finite length iterable of the property values.
+		
+		Returns
+		-------
+		cycler : Cycler
+		    New `Cycler` for the given property
+	**/
+	static public function cycler(label:Dynamic, itr:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**

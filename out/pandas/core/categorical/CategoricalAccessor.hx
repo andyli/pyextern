@@ -87,7 +87,7 @@ package pandas.core.categorical;
 	/**
 		Implement setattr(self, name, value).
 	**/
-	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
+	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
 		__sizeof__() -> int
 		size of object in memory, in bytes
@@ -148,6 +148,10 @@ package pandas.core.categorical;
 		delete unwanted __dir__ for this object 
 	**/
 	public function _dir_deletions():Dynamic;
+	/**
+		Prevents setting additional attributes
+	**/
+	public function _freeze():Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/

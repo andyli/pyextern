@@ -139,6 +139,7 @@ package scipy.spatial;
 		
 		Examples
 		--------
+		>>> from scipy.spatial import distance_matrix
 		>>> distance_matrix([[0,0],[0,1]], [[1,0],[1,1]])
 		array([[ 1.        ,  1.41421356],
 		       [ 1.41421356,  1.        ]])
@@ -159,6 +160,7 @@ package scipy.spatial;
 		
 		Examples
 		--------
+		>>> from scipy.spatial import minkowski_distance
 		>>> minkowski_distance([[0,0],[0,0]], [[1,1],[0,1]])
 		array([ 1.41421356,  1.        ])
 	**/
@@ -181,6 +183,7 @@ package scipy.spatial;
 		
 		Examples
 		--------
+		>>> from scipy.spatial import minkowski_distance_p
 		>>> minkowski_distance_p([[0,0],[0,0]], [[1,1],[0,1]])
 		array([2, 1])
 	**/
@@ -350,6 +353,8 @@ package scipy.spatial;
 		    Diagram to plot
 		ax : matplotlib.axes.Axes instance, optional
 		    Axes to plot on
+		show_vertices : bool, optional
+		    Add the Voronoi vertices to the plot.
 		
 		Returns
 		-------
@@ -364,5 +369,5 @@ package scipy.spatial;
 		-----
 		Requires Matplotlib.
 	**/
-	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic):Dynamic;
+	static public function voronoi_plot_2d(vor:Dynamic, ?ax:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 }
