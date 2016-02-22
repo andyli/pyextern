@@ -5,5 +5,6 @@
 --macro include("pyextern")
 -main pyextern.Main
 -python Main.py
+-dce no
 # -cmd python3 Main.py docutils,pkgutil,inspect,importlib coredep
 # -cmd python3 Main.py docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn out
