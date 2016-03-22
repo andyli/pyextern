@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.stats.moments;
 @:pythonImport("pandas.stats.moments") extern class Moments_Module {
-	static public var NaN : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -14,74 +13,50 @@ package pandas.stats.moments;
 	static public var _bias_kw : Dynamic;
 	static public var _binary_arg : Dynamic;
 	static public var _binary_arg_flex : Dynamic;
-	static public function _center_window(rs:Dynamic, window:Dynamic, axis:Dynamic):Dynamic;
-	static public function _conv_timerule(arg:Dynamic, freq:Dynamic, how:Dynamic):Dynamic;
 	static public var _ddof_kw : Dynamic;
 	static public var _doc_template : Dynamic;
 	static public var _ewm_kw : Dynamic;
 	static public var _ewm_notes : Dynamic;
-	static public function _expanding_func(func:Dynamic, desc:Dynamic, ?check_minp:Dynamic, ?additional_kw:Dynamic):Dynamic;
+	static public function _expanding_func(name:Dynamic, desc:Dynamic, ?func_kw:Dynamic, ?additional_kw:Dynamic):Dynamic;
 	static public var _expanding_kw : Dynamic;
-	static public function _flex_binary_moment(arg1:Dynamic, arg2:Dynamic, f:Dynamic, ?pairwise:Dynamic):Dynamic;
 	static public var _flex_retval : Dynamic;
-	static public function _get_center_of_mass(com:Dynamic, span:Dynamic, halflife:Dynamic):Dynamic;
 	static public var _pairwise_arg : Dynamic;
 	static public var _pairwise_kw : Dynamic;
 	static public var _pairwise_retval : Dynamic;
-	static public function _pop_args(win_type:Dynamic, arg_names:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function _prep_binary(arg1:Dynamic, arg2:Dynamic):Dynamic;
-	static public function _process_data_structure(arg:Dynamic, ?kill_inf:Dynamic):Dynamic;
-	static public function _require_min_periods(p:Dynamic):Dynamic;
 	static public var _roll_kw : Dynamic;
 	static public var _roll_notes : Dynamic;
-	static public function _rolling_func(func:Dynamic, desc:Dynamic, ?check_minp:Dynamic, ?how:Dynamic, ?additional_kw:Dynamic):Dynamic;
-	/**
-		Rolling statistical measure using supplied function. Designed to be
-		used with passed-in Cython array-based functions.
-		
-		Parameters
-		----------
-		arg :  DataFrame or numpy ndarray-like
-		window : Number of observations used for calculating statistic
-		func : Cython function to compute rolling statistic on raw series
-		minp : int
-		    Minimum number of observations required to have a value
-		axis : int, default 0
-		freq : None or string alias / date offset object, default=None
-		    Frequency to conform to before computing statistic
-		center : boolean, default False
-		    Whether the label should correspond with center of window
-		how : string, default 'mean'
-		    Method for down- or re-sampling
-		args : tuple
-		    Passed on to func
-		kwargs : dict
-		    Passed on to func
-		
-		Returns
-		-------
-		y : type of input
-	**/
-	static public function _rolling_moment(arg:Dynamic, window:Dynamic, func:Dynamic, minp:Dynamic, ?axis:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?how:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function _ts_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function _rolling_func(name:Dynamic, desc:Dynamic, ?how:Dynamic, ?func_kw:Dynamic, ?additional_kw:Dynamic):Dynamic;
 	static public var _type_of_input_retval : Dynamic;
 	static public var _unary_arg : Dynamic;
-	static public function _use_window(minp:Dynamic, window:Dynamic):Dynamic;
-	static public function _validate_win_type(win_type:Dynamic, kwargs:Dynamic):Dynamic;
-	static public function _zsqrt(x:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		wrapper function to dispatch to the appropriate window functions
+		wraps/unwraps ndarrays for compat
+		
+		can be removed when ndarray support is removed
+	**/
+	static public function ensure_compat(dispatch:Dynamic, name:Dynamic, arg:Dynamic, ?func_kw:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Exponentially-weighted moving average
 		
 		Parameters
 		----------
 		arg : Series, DataFrame
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -102,16 +77,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -131,9 +100,9 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewma(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic):Dynamic;
+	static public function ewma(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic):Dynamic;
 	/**
 		Exponentially-weighted moving correlation
 		
@@ -142,12 +111,21 @@ package pandas.stats.moments;
 		arg1 : Series, DataFrame, or ndarray
 		arg2 : Series, DataFrame, or ndarray, optional
 		    if not supplied then will default to arg1 and produce pairwise output
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -174,16 +152,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -203,9 +175,9 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewmcorr(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
+	static public function ewmcorr(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
 		Exponentially-weighted moving covariance
 		
@@ -214,12 +186,21 @@ package pandas.stats.moments;
 		arg1 : Series, DataFrame, or ndarray
 		arg2 : Series, DataFrame, or ndarray, optional
 		    if not supplied then will default to arg1 and produce pairwise output
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -246,16 +227,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -275,21 +250,30 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewmcov(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
+	static public function ewmcov(arg1:Dynamic, ?arg2:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
 		Exponentially-weighted moving std
 		
 		Parameters
 		----------
 		arg : Series, DataFrame
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -312,16 +296,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -341,21 +319,30 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewmstd(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
+	static public function ewmstd(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
 		Exponentially-weighted moving variance
 		
 		Parameters
 		----------
 		arg : Series, DataFrame
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -378,16 +365,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -407,21 +388,30 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewmvar(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
+	static public function ewmvar(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
 		Exponentially-weighted moving std
 		
 		Parameters
 		----------
 		arg : Series, DataFrame
-		com : float. optional
-		    Center of mass: :math:`\alpha = 1 / (1 + com)`,
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
 		span : float, optional
-		    Specify decay in terms of span, :math:`\alpha = 2 / (span + 1)`
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
 		halflife : float, optional
-		    Specify decay in terms of halflife, :math:`\alpha = 1 - exp(log(0.5) / halflife)`
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
 		min_periods : int, default 0
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
@@ -444,16 +434,10 @@ package pandas.stats.moments;
 		
 		Notes
 		-----
-		Either center of mass, span or halflife must be specified
-		
-		EWMA is sometimes specified using a "span" parameter `s`, we have that the
-		decay parameter :math:`\alpha` is related to the span as
-		:math:`\alpha = 2 / (s + 1) = 1 / (1 + c)`
-		
-		where `c` is the center of mass. Given a span, the associated center of mass is
-		:math:`c = (s - 1) / 2`
-		
-		So a "20-day EWMA" would have center 9.5.
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
 		
 		When adjust is True (default), weighted averages are calculated using weights
 		    (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
@@ -473,9 +457,9 @@ package pandas.stats.moments;
 		True), and 1-alpha and alpha (if adjust is False).
 		
 		More details can be found at
-		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-moment-functions
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
 	**/
-	static public function ewmvol(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
+	static public function ewmvol(arg:Dynamic, ?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?bias:Dynamic, ?freq:Dynamic, ?how:Dynamic, ?ignore_na:Dynamic, ?adjust:Dynamic):Dynamic;
 	/**
 		Generic expanding function application.
 		
@@ -488,8 +472,8 @@ package pandas.stats.moments;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		args : tuple
 		    Passed on to func
 		kwargs : dict
@@ -536,35 +520,14 @@ package pandas.stats.moments;
 	**/
 	static public function expanding_corr(arg1:Dynamic, ?arg2:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?pairwise:Dynamic):Dynamic;
 	/**
-		Deprecated. Use expanding_corr(..., pairwise=True) instead.
-		
-		Pairwise expanding sample correlation
-		
-		Parameters
-		----------
-		df1 : DataFrame
-		df2 : DataFrame
-		min_periods : int, default None
-		    Minimum number of observations in window required to have a value
-		    (otherwise result is NA).
-		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
-		
-		Returns
-		-------
-		y : Panel whose items are df1.index values
-	**/
-	static public function expanding_corr_pairwise(df1:Dynamic, ?df2:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic):Dynamic;
-	/**
 		Expanding count of number of non-NaN observations.
 		
 		Parameters
 		----------
 		arg :  DataFrame or numpy ndarray-like
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		
 		Returns
 		-------
@@ -626,9 +589,8 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_kurt(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Moving max of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 		Expanding maximum.
 		
 		Parameters
@@ -645,7 +607,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_max(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding mean.
 		
@@ -663,7 +625,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_mean(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding median.
 		
@@ -681,9 +643,8 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_median(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_median(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Moving min of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 		Expanding minimum.
 		
 		Parameters
@@ -700,7 +661,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_min(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding quantile.
 		
@@ -713,8 +674,8 @@ package pandas.stats.moments;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		
 		Returns
 		-------
@@ -744,7 +705,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_skew(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_skew(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding standard deviation.
 		
@@ -765,7 +726,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function expanding_std(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Expanding sum.
 		
@@ -783,10 +744,8 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function expanding_sum(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		    Numerically stable implementation using Welford's method.
-		    
 		Expanding variance.
 		
 		Parameters
@@ -806,27 +765,7 @@ package pandas.stats.moments;
 		-------
 		y : type of input argument
 	**/
-	static public function expanding_var(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
-		
-		See also
-		--------
-		pandas.isnull : boolean inverse of pandas.notnull
-	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function expanding_var(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Generic moving function application.
 		
@@ -842,8 +781,8 @@ package pandas.stats.moments;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Whether the label should correspond with center of window
 		args : tuple
@@ -909,44 +848,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_corr(arg1:Dynamic, ?arg2:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?pairwise:Dynamic, ?how:Dynamic):Dynamic;
-	/**
-		Deprecated. Use rolling_corr(..., pairwise=True) instead.
-		
-		Pairwise moving sample correlation
-		
-		Parameters
-		----------
-		df1 : DataFrame
-		df2 : DataFrame
-		window : int
-		    Size of the moving window. This is the number of observations used for
-		    calculating the statistic.
-		min_periods : int, default None
-		    Minimum number of observations in window required to have a value
-		    (otherwise result is NA).
-		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
-		center : boolean, default False
-		    Set the labels at the center of the window.
-		how : string, default 'None'
-		    Method for down- or re-sampling
-		
-		Returns
-		-------
-		y : Panel whose items are df1.index values
-		
-		Notes
-		-----
-		By default, the result is set to the right edge of the window. This can be
-		changed to the center of the window by setting ``center=True``.
-		
-		The `freq` keyword is used to conform time series data to a specified
-		frequency by resampling the data. This is done with the default parameters
-		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
-	**/
-	static public function rolling_corr_pairwise(df1:Dynamic, ?df2:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic):Dynamic;
+	static public function rolling_corr(arg1:Dynamic, ?arg2:Dynamic, ?window:Dynamic, ?pairwise:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Rolling count of number of non-NaN observations inside provided window.
 		
@@ -957,8 +859,8 @@ package pandas.stats.moments;
 		    Size of the moving window. This is the number of observations used for
 		    calculating the statistic.
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Whether the label should correspond with center of window
 		how : string, default 'mean'
@@ -974,7 +876,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_count(arg:Dynamic, window:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?how:Dynamic):Dynamic;
+	static public function rolling_count(arg:Dynamic, window:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unbiased moving covariance.
 		
@@ -1022,7 +924,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_cov(arg1:Dynamic, ?arg2:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?pairwise:Dynamic, ?how:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function rolling_cov(arg1:Dynamic, ?arg2:Dynamic, ?window:Dynamic, ?pairwise:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Unbiased moving kurtosis.
 		
@@ -1056,9 +958,8 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_kurt(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Moving max of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 		Moving maximum.
 		
 		Parameters
@@ -1091,7 +992,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_max(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving mean.
 		
@@ -1125,7 +1026,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_mean(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving median.
 		
@@ -1159,9 +1060,8 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_median(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_median(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Moving min of 1d array of dtype=float64 along axis=0 ignoring NaNs.
 		Moving minimum.
 		
 		Parameters
@@ -1194,7 +1094,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_min(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving quantile.
 		
@@ -1210,8 +1110,8 @@ package pandas.stats.moments;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Whether the label should correspond with center of window
 		
@@ -1262,7 +1162,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_skew(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_skew(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving standard deviation.
 		
@@ -1299,7 +1199,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_std(?a:python.VarArgs<Dynamic>, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function rolling_std(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Moving sum.
 		
@@ -1333,10 +1233,8 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_sum(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		    Numerically stable implementation using Welford's method.
-		    
 		Moving variance.
 		
 		Parameters
@@ -1372,7 +1270,7 @@ package pandas.stats.moments;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
-	static public function rolling_var(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function rolling_var(arg:Dynamic, window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Applies a moving window of type ``window_type`` and size ``window``
 		on the data.
@@ -1389,8 +1287,8 @@ package pandas.stats.moments;
 		    Minimum number of observations in window required to have a value
 		    (otherwise result is NA).
 		freq : string or DateOffset object, optional (default None)
-		    Frequency to conform the data to before computing the statistic. Specified
-		    as a frequency string or DateOffset object.
+		    Frequency to conform the data to before computing the
+		    statistic. Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Whether the label should correspond with center of window
 		mean : boolean, default True
@@ -1430,14 +1328,4 @@ package pandas.stats.moments;
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
 	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Decorator factory to apply update_wrapper() to a wrapper function
-		
-		Returns a decorator that invokes update_wrapper() with the decorated
-		function as the wrapper argument and the arguments to wraps() as the
-		remaining arguments. Default arguments are as for update_wrapper().
-		This is a convenience function to simplify applying partial() to
-		update_wrapper().
-	**/
-	static public function wraps(wrapped:Dynamic, ?assigned:Dynamic, ?updated:Dynamic):Dynamic;
 }

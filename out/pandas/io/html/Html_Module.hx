@@ -176,13 +176,7 @@ package pandas.io.html;
 	static public function _validate_flavor(flavor:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	static public var char_types : Dynamic;
-	/**
-		replacement for six's iteritems for Python2/3 compat
-		uses 'iteritems' if available and otherwise uses 'items'.
-		
-		Passes kwargs to method.
-	**/
-	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

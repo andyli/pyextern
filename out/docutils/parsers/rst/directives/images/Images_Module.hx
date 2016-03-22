@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.parsers.rst.directives.images;
 @:pythonImport("docutils.parsers.rst.directives.images") extern class Images_Module {
+	static public var PIL : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

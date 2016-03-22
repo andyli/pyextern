@@ -55,12 +55,6 @@ package pandas.tseries.frequencies;
 	static public var _legacy_reverse_map : Dynamic;
 	static public var _lite_rule_alias : Dynamic;
 	static public var _m : Dynamic;
-	/**
-		Gets offset based on key. KeyError if prefix is bad, ValueError if
-		suffix is bad. All handled by `get_offset` in tseries/frequencies. Not
-		public.
-	**/
-	static public function _make_offset(key:Dynamic):Dynamic;
 	static public function _maybe_add_count(base:Dynamic, count:Dynamic):Dynamic;
 	static public var _month_aliases : Dynamic;
 	static public var _month_numbers : Dynamic;
@@ -199,7 +193,7 @@ package pandas.tseries.frequencies;
 		Parameters
 		----------
 		index : DatetimeIndex or TimedeltaIndex
-		        if passed a Series will use the values of the series (NOT THE INDEX)
+		  if passed a Series will use the values of the series (NOT THE INDEX)
 		warn : boolean, default True
 		
 		Returns
@@ -244,6 +238,7 @@ package pandas.tseries.frequencies;
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
 	static public var need_suffix : Dynamic;
 	static public var opattern : Dynamic;
+	static public var prefix_mapping : Dynamic;
 	/**
 		Return DateOffset object from string representation or
 		Timedelta object

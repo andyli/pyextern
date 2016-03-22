@@ -89,7 +89,8 @@ package pandas.tools.plotting;
 		    be transposed to meet matplotlib's default layout.
 		    If a Series or DataFrame is passed, use passed data to draw a table.
 		yerr : DataFrame, Series, array-like, dict and str
-		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for detail.
+		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for
+		    detail.
 		xerr : same types as yerr.
 		stacked : boolean, default False in line and
 		    bar plots, and True in area plot. If True, create stacked plot.
@@ -207,10 +208,10 @@ package pandas.tools.plotting;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		

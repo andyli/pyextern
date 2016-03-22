@@ -22,6 +22,10 @@ package pandas.tslib;
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
+		Return self//value.
+	**/
+	public function __floordiv__(value:Dynamic):Dynamic;
+	/**
 		Formats self with strftime.
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -59,25 +63,41 @@ package pandas.tslib;
 	public function __lt__(value:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	/**
+		Return self*value.
+	**/
+	public function __mul__(value:Dynamic):Dynamic;
+	/**
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
+	/**
+		-self
+	**/
+	public function __neg__():Dynamic;
 	static public function __new__(cls:Dynamic):Dynamic;
+	/**
+		+self
+	**/
+	public function __pos__():Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	/**
 		Return value+self.
 	**/
 	public function __radd__(value:Dynamic):Dynamic;
+	public function __rdiv__(other:Dynamic):Dynamic;
 	public function __reduce__():Dynamic;
 	/**
 		helper for pickle
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function __repr__():Dynamic;
+	public function __rfloordiv__(other:Dynamic):Dynamic;
+	public function __rmul__(other:Dynamic):Dynamic;
 	/**
 		Return value-self.
 	**/
 	public function __rsub__(value:Dynamic):Dynamic;
+	public function __rtruediv__(other:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -102,11 +122,16 @@ package pandas.tslib;
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Return self/value.
+	**/
+	public function __truediv__(value:Dynamic):Dynamic;
+	/**
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var asm8 : Dynamic;
 	public function astimezone(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function combine(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function ctime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -121,7 +146,7 @@ package pandas.tslib;
 	public function fromtimestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var hour : Dynamic;
 	public function isocalendar(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function isoformat(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function isoformat(?sep:Dynamic):Dynamic;
 	public function isoweekday(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var max : Dynamic;
 	public var microsecond : Dynamic;

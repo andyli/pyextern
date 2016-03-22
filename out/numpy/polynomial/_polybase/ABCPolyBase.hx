@@ -316,7 +316,7 @@ package numpy.polynomial._polybase;
 		degree : int
 		    Degree of the series, one less than the number of coefficients.
 	**/
-	public function degree():Dynamic;
+	public function degree():Int;
 	/**
 		Differentiate.
 		
@@ -565,7 +565,7 @@ package numpy.polynomial._polybase;
 		    x is equal to linspace(self.domain[0], self.domain[1], n) and
 		    y is the series evaluated at element of x.
 	**/
-	public function linspace(?n:Dynamic, ?domain:Dynamic):Dynamic;
+	public function linspace(?n:Dynamic, ?domain:Dynamic):numpy.Ndarray;
 	/**
 		Return the mapping parameters.
 		

@@ -155,8 +155,10 @@ package pandas.tseries.holiday;
 		
 		Parameters
 		----------
-		base : AbstractHolidayCalendar instance/subclass or array of Holiday objects
-		other : AbstractHolidayCalendar instance/subclass or array of Holiday objects
+		base : AbstractHolidayCalendar
+		  instance/subclass or array of Holiday objects
+		other : AbstractHolidayCalendar
+		  instance/subclass or array of Holiday objects
 	**/
 	static public function merge_class(base:Dynamic, other:Dynamic):Dynamic;
 	public function rule_from_name(name:Dynamic):Dynamic;

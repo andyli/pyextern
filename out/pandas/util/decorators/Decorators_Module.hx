@@ -16,6 +16,20 @@ package pandas.util.decorators;
 		__call__() method.
 	**/
 	static public function callable(obj:Dynamic):Dynamic;
+	/**
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
 	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
@@ -99,6 +113,7 @@ package pandas.util.decorators;
 		a,b,c=2
 	**/
 	static public function make_signature(func:Dynamic):Dynamic;
+	static public function signature(f:Dynamic):Dynamic;
 	static public function suppress_stdout(f:Dynamic):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function

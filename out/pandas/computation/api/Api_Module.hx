@@ -67,6 +67,13 @@ package pandas.computation.api;
 		    scope. Most users will **not** need to change this parameter.
 		target : a target object for assignment, optional, default is None
 		    essentially this is a passed in resolver
+		inplace : bool, default True
+		    If expression mutates, whether to modify object inplace or return
+		    copy with mutation.
+		
+		    WARNING: inplace=None currently falls back to to True, but
+		    in a future version, will default to False.  Use inplace=True
+		    explicitly rather than relying on the default.
 		
 		Returns
 		-------
@@ -85,5 +92,5 @@ package pandas.computation.api;
 		pandas.DataFrame.query
 		pandas.DataFrame.eval
 	**/
-	static public function eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic):Dynamic;
+	static public function eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
 }

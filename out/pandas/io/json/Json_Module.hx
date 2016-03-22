@@ -143,7 +143,7 @@ package pandas.io.json;
 		    file. For file URLs, a host is expected. For instance, a local file
 		    could be ``file://localhost/path/to/table.json``
 		
-		orient  
+		orient
 		
 		    * `Series`
 		
@@ -179,15 +179,15 @@ package pandas.io.json;
 		convert_dates : boolean, default True
 		    List of columns to parse for dates; If True, then try to parse
 		    datelike columns default is True; a column label is datelike if
-		    
+		
 		    * it ends with ``'_at'``,
-		    
+		
 		    * it ends with ``'_time'``,
-		    
+		
 		    * it begins with ``'timestamp'``,
-		    
+		
 		    * it is ``'modified'``, or
-		    
+		
 		    * it is ``'date'``
 		
 		keep_default_dates : boolean, default True
@@ -216,20 +216,26 @@ package pandas.io.json;
 		
 		Parameters
 		----------
-		arg : string, datetime, array of strings (with possible NAs)
+		arg : string, datetime, list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
 		dayfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    If True, parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
 		    Warning: dayfirst=True is not strict, but will prefer to parse
 		    with day first (this is a known bug, based on dateutil behavior).
 		yearfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    - If True parses dates with the year first, eg 10/11/12 is parsed as 2010-11-12.
-		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same as dateutil).
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
@@ -239,14 +245,17 @@ package pandas.io.json;
 		    Return UTC DatetimeIndex if True (converting any tz-aware
 		    datetime.datetime objects as well).
 		box : boolean, default True
+		
 		    - If True returns a DatetimeIndex
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
 		    all the way up to nanoseconds.
 		exact : boolean, True by default
+		
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
+		
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False

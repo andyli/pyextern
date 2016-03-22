@@ -55,5 +55,5 @@ package scipy.signal._max_len_seq;
 		
 		.. versionadded:: 0.15.0
 	**/
-	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Dynamic;
+	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Array<Dynamic>;
 }

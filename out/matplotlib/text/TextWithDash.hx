@@ -78,7 +78,7 @@ package matplotlib.text;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -128,7 +128,7 @@ package matplotlib.text;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown

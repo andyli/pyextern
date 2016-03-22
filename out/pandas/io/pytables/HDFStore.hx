@@ -66,6 +66,7 @@ package pandas.io.pytables;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(path:Dynamic, ?mode:Dynamic, ?complevel:Dynamic, ?complib:Dynamic, ?fletcher32:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -213,7 +214,7 @@ package pandas.io.pytables;
 	public function copy(file:Dynamic, ?mode:Dynamic, ?propindexes:Dynamic, ?keys:Dynamic, ?complib:Dynamic, ?complevel:Dynamic, ?fletcher32:Dynamic, ?overwrite:Dynamic):Dynamic;
 	/**
 		Create a pytables index on the table
-		Paramaters
+		Parameters
 		----------
 		key : object (the node to index)
 		

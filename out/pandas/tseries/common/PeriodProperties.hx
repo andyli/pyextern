@@ -89,10 +89,10 @@ package pandas.tseries.common;
 	**/
 	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -157,6 +157,45 @@ package pandas.tseries.common;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
+		Convert the PeriodIndex to the specified frequency `freq`.
+		
+		Parameters
+		----------
+		
+		freq : str
+		    a frequency
+		how : str {'E', 'S'}
+		    'E', 'END', or 'FINISH' for end,
+		    'S', 'START', or 'BEGIN' for start.
+		    Whether the elements should be aligned to the end
+		    or start within pa period. January 31st ('END') vs.
+		    Janury 1st ('START') for example.
+		
+		Returns
+		-------
+		
+		new : PeriodIndex with the new frequency
+		
+		Examples
+		--------
+		>>> pidx = pd.period_range('2010-01-01', '2015-01-01', freq='A')
+		>>> pidx
+		<class 'pandas.tseries.period.PeriodIndex'>
+		[2010, ..., 2015]
+		Length: 6, Freq: A-DEC
+		
+		>>> pidx.asfreq('M')
+		<class 'pandas.tseries.period.PeriodIndex'>
+		[2010-12, ..., 2015-12]
+		Length: 6, Freq: M
+		
+		>>> pidx.asfreq('M', how='S')
+		<class 'pandas.tseries.period.PeriodIndex'>
+		[2010-01, ..., 2015-01]
+		Length: 6, Freq: M
+	**/
+	public var asfreq : Dynamic;
+	/**
 		The days of the period
 	**/
 	public var day : Dynamic;
@@ -176,6 +215,7 @@ package pandas.tseries.common;
 		The number of days in the month
 	**/
 	public var daysinmonth : Dynamic;
+	public var end_time : Dynamic;
 	public var freq : Dynamic;
 	/**
 		The hour of the period
@@ -198,11 +238,11 @@ package pandas.tseries.common;
 		The second of the period
 	**/
 	public var second : Dynamic;
+	public var start_time : Dynamic;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in the `python string format doc
-		<https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format doc <https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		.. versionadded:: 0.17.0
 		
@@ -216,6 +256,21 @@ package pandas.tseries.common;
 		ndarray of formatted strings
 	**/
 	public function strftime(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Cast to DatetimeIndex
+		
+		Parameters
+		----------
+		freq : string or DateOffset, default 'D' for week or longer, 'S'
+		       otherwise
+		    Target frequency
+		how : {'s', 'e', 'start', 'end'}
+		
+		Returns
+		-------
+		DatetimeIndex
+	**/
+	public var to_timestamp : Dynamic;
 	/**
 		The week ordinal of the year
 	**/

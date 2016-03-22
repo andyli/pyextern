@@ -116,7 +116,8 @@ package pandas.core.groupby;
 	**/
 	public function _get_grouper(obj:Dynamic):Dynamic;
 	/**
-		given an object and the specifications, setup the internal grouper for this particular specification
+		given an object and the specifications, setup the internal grouper
+		for this particular specification
 		
 		Parameters
 		----------

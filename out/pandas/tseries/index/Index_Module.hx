@@ -26,8 +26,8 @@ package pandas.tseries.index;
 	static public var _midnight : Dynamic;
 	static public function _naive_in_cache_range(start:Dynamic, end:Dynamic):Dynamic;
 	/**
-		This is called upon unpickling, rather than the default which doesn't have arguments
-		and breaks __new__ 
+		This is called upon unpickling, rather than the default which doesn't
+		have arguments and breaks __new__ 
 	**/
 	static public function _new_DatetimeIndex(cls:Dynamic, d:Dynamic):Dynamic;
 	static public function _process_concat_data(to_concat:Dynamic, name:Dynamic):Dynamic;
@@ -276,15 +276,44 @@ package pandas.tseries.index;
 	**/
 	static public function to_offset(freqstr:Dynamic):Dynamic;
 	/**
+		Parse time strings to time objects using fixed strptime formats ("%H:%M",
+		"%H%M", "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
+		"%I%M%S%p")
+		
+		Use infer_time_format if all the strings are in the same format to speed
+		up conversion.
+		
+		Parameters
+		----------
+		arg : string in time format, datetime.time, list, tuple, 1-d array,  Series
+		format : str, default None
+		    Format used to convert arg into a time object.  If None, fixed formats
+		    are used.
+		infer_time_format: bool, default False
+		    Infer the time format based on the first non-NaN element.  If all
+		    strings are in the same format, this will speed up conversion.
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as None
+		    - If 'ignore', then invalid parsing will return the input
+		
+		Returns
+		-------
+		datetime.time
+	**/
+	static public function to_time(arg:Dynamic, ?format:Dynamic, ?infer_time_format:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
 		Convert argument to timedelta
 		
 		Parameters
 		----------
-		arg : string, timedelta, array of strings (with possible NAs)
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an integer/float number
+		arg : string, timedelta, list, tuple, 1-d array, or Series
+		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
+		    integer/float number
 		box : boolean, default True
 		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype timedelta64[ns]
+		    - if False returns a np.timedelta64 or ndarray of values of dtype
+		      timedelta64[ns]
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
@@ -293,6 +322,32 @@ package pandas.tseries.index;
 		Returns
 		-------
 		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		
+		Examples
+		--------
+		
+		Parsing a single string to a Timedelta:
+		
+		>>> pd.to_timedelta('1 days 06:05:01.00003')
+		Timedelta('1 days 06:05:01.000030')
+		>>> pd.to_timedelta('15.5us')
+		Timedelta('0 days 00:00:00.000015')
+		
+		Parsing a list or array of strings:
+		
+		>>> pd.to_timedelta(['1 days 06:05:01.00003', '15.5us', 'nan'])
+		TimedeltaIndex(['1 days 06:05:01.000030', '0 days 00:00:00.000015', NaT],
+		               dtype='timedelta64[ns]', freq=None)
+		
+		Converting numbers by specifying the `unit` keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), unit='s')
+		TimedeltaIndex(['00:00:00', '00:00:01', '00:00:02',
+		                '00:00:03', '00:00:04'],
+		               dtype='timedelta64[ns]', freq=None)
+		>>> pd.to_timedelta(np.arange(5), unit='d')
+		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq=None)
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
 	static public function u(s:Dynamic):Dynamic;

@@ -41,11 +41,11 @@ package pandas.io.gbq;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(project_id:Dynamic, ?reauth:Dynamic):Dynamic;
+	public function ___init__(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(project_id:Dynamic, ?reauth:Dynamic):Void;
+	public function new(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -101,6 +101,8 @@ package pandas.io.gbq;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _print(msg:Dynamic, ?end:Dynamic):Dynamic;
+	public function _start_timer():Dynamic;
 	/**
 		Create a dataset in Google BigQuery
 		
@@ -138,7 +140,7 @@ package pandas.io.gbq;
 		    Name of dataset to be deleted
 	**/
 	public function delete(dataset_id:Dynamic):Dynamic;
-	public function delete_and_recreate_table(dataset_id:Dynamic, table_id:Dynamic, table_schema:Dynamic, verbose:Dynamic):Dynamic;
+	public function delete_and_recreate_table(dataset_id:Dynamic, table_id:Dynamic, table_schema:Dynamic):Dynamic;
 	/**
 		Check if a dataset exists in Google BigQuery
 		
@@ -156,11 +158,17 @@ package pandas.io.gbq;
 	**/
 	public function exists(dataset_id:Dynamic):Dynamic;
 	public function get_credentials():Dynamic;
-	static public function get_service(credentials:Dynamic):Dynamic;
-	public function load_data(dataframe:Dynamic, dataset_id:Dynamic, table_id:Dynamic, chunksize:Dynamic, verbose:Dynamic):Dynamic;
+	public function get_elapsed_seconds():Dynamic;
+	public function get_service():Dynamic;
+	public function get_service_account_credentials():Dynamic;
+	public function get_user_account_credentials():Dynamic;
+	public function load_data(dataframe:Dynamic, dataset_id:Dynamic, table_id:Dynamic, chunksize:Dynamic):Dynamic;
+	public function print_elapsed_seconds(?prefix:Dynamic, ?postfix:Dynamic, ?overlong:Dynamic):Dynamic;
 	static public function process_http_error(ex:Dynamic):Dynamic;
-	static public function process_insert_errors(insert_errors:Dynamic, verbose:Dynamic):Dynamic;
-	public function run_query(query:Dynamic, ?verbose:Dynamic):Dynamic;
+	public function process_insert_errors(insert_errors:Dynamic):Dynamic;
+	public function run_query(query:Dynamic):Dynamic;
+	static public var scope : Dynamic;
+	static public function sizeof_fmt(num:Dynamic, ?suffix:Dynamic):Dynamic;
 	/**
 		List tables in the specific dataset in Google BigQuery
 		
@@ -177,6 +185,5 @@ package pandas.io.gbq;
 		    List of tables under the specific dataset
 	**/
 	public function tables(dataset_id:Dynamic):Dynamic;
-	public function test_google_api_imports():Dynamic;
 	public function verify_schema(dataset_id:Dynamic, table_id:Dynamic, schema:Dynamic):Dynamic;
 }

@@ -76,45 +76,7 @@ package pandas.stats.misc;
 	**/
 	static public function correl_ts(frame1:Dynamic, frame2:Dynamic):pandas.Series;
 	static public function correl_xs(frame1:Dynamic, frame2:Dynamic):Dynamic;
-	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
-		
-		See also
-		--------
-		pandas.notnull: boolean inverse of pandas.isnull
-	**/
-	static public function isnull(obj:Dynamic):Dynamic;
-	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
-		
-		See also
-		--------
-		pandas.isnull : boolean inverse of pandas.notnull
-	**/
-	static public function notnull(obj:Dynamic):Dynamic;
+	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return score at percentile for each point in time (cross-section)
 		

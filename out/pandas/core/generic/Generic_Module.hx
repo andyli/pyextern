@@ -12,7 +12,7 @@ package pandas.core.generic;
 	static public var _bool_doc : Dynamic;
 	static public var _cnum_doc : Dynamic;
 	/**
-		return a tuple of the doc parms 
+		Return a tuple of the doc parms.
 	**/
 	static public function _doc_parms(cls:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
@@ -28,6 +28,12 @@ package pandas.core.generic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
+	/**
+		Checks whether parameters passed to the
+		**kwargs argument in a 'stat' function 'fname'
+		are valid parameters as specified in *compat_args
+	**/
+	static public function _validate_kwargs(fname:Dynamic, kwargs:Dynamic, ?compat_args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		return my values or the object if we are say an ndarray 
 	**/

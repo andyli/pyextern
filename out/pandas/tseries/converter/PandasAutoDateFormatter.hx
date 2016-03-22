@@ -110,7 +110,6 @@ package pandas.tseries.converter;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _get_fmt(x:Dynamic):Dynamic;
 	static public var axis : Dynamic;
 	public function create_dummy_axis(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

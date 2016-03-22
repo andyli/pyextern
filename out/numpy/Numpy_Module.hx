@@ -44,6 +44,7 @@ package numpy;
 	static public var __file__ : Dynamic;
 	static public var __git_revision__ : Dynamic;
 	static public var __loader__ : Dynamic;
+	static public var __mkl_version__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
@@ -371,7 +372,7 @@ package numpy;
 		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		True
 	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Check if all elements of input array are true.
 		
@@ -762,7 +763,7 @@ package numpy;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -3280,7 +3281,7 @@ package numpy;
 		       [1, 2, 3],
 		       [1, 2, 3]])
 	**/
-	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	/**
 		busday_count(begindates, enddates, weekmask='1111100', holidays=[], busdaycal=None, out=None)
 		
@@ -4305,7 +4306,7 @@ package numpy;
 		arguments had no effect on the return values of the function and can be
 		safely ignored in this and previous versions of numpy.
 	**/
-	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):numpy.Ndarray;
 	/**
 		Cross-correlation of two 1-dimensional sequences.
 		
@@ -4585,7 +4586,7 @@ package numpy;
 		>>> print np.cov(x)
 		11.71
 	**/
-	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):numpy.Ndarray;
 	/**
 		Return the cross product of two (arrays of) vectors.
 		
@@ -4697,7 +4698,7 @@ package numpy;
 		       [-30,  60, -30],
 		       [-36,  72, -36]])
 	**/
-	static public function cross(a:Dynamic, b:Dynamic, ?axisa:Dynamic, ?axisb:Dynamic, ?axisc:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function cross(a:Dynamic, b:Dynamic, ?axisa:Dynamic, ?axisb:Dynamic, ?axisc:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return the cumulative product of elements along a given axis.
 		
@@ -7588,7 +7589,7 @@ package numpy;
 		array((1, 1.3, 'abcde'),
 		      dtype=[('intvar', '<i8'), ('fltvar', '<f8'), ('strvar', '|S5')])
 	**/
-	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):Dynamic;
+	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
@@ -8904,7 +8905,7 @@ package numpy;
 		array([[  0, 999,   1,   2, 999,   3],
 		       [  4, 999,   5,   6, 999,   7]])
 	**/
-	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	static public function int_asbuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		One-dimensional linear interpolation.
@@ -9357,7 +9358,7 @@ package numpy;
 		>>> np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		array([True, True])
 	**/
-	static public function isclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function isclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		Returns a bool array, where True if input element is complex.
 		
@@ -10489,7 +10490,7 @@ package numpy;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	static public var little_endian : Dynamic;
 	/**
 		Load arrays or pickled objects from ``.npy``, ``.npz`` or pickled files.
@@ -10697,7 +10698,7 @@ package numpy;
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):Dynamic;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):numpy.Ndarray;
 	/**
 		log(x[, out])
 		
@@ -11820,7 +11821,7 @@ package numpy;
 		3.5
 		>>> assert not np.all(a==b)
 	**/
-	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return coordinate matrices from coordinate vectors.
 		
@@ -11921,7 +11922,7 @@ package numpy;
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
-	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
 		
@@ -12529,7 +12530,7 @@ package numpy;
 		>>> np.nanmax([1, 2, np.nan, np.inf])
 		inf
 	**/
-	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the arithmetic mean along the specified axis, ignoring NaNs.
 		
@@ -12675,7 +12676,7 @@ package numpy;
 		3.0
 		>>> assert not np.all(a==b)
 	**/
-	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return minimum of an array or minimum along an axis, ignoring any NaNs.
 		When all-NaN slices are encountered a ``RuntimeWarning`` is raised and
@@ -12753,7 +12754,7 @@ package numpy;
 		>>> np.nanmin([1, 2, np.nan, np.NINF])
 		-inf
 	**/
-	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis, while
 		ignoring nan values.
@@ -13638,7 +13639,7 @@ package numpy;
 		>>> np.ones_like(y)
 		array([ 1.,  1.,  1.])
 	**/
-	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 	/**
 		Compute the outer product of two vectors.
 		
@@ -13952,7 +13953,7 @@ package numpy;
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
 	**/
-	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Return a partitioned copy of an array.
 		
@@ -14030,7 +14031,7 @@ package numpy;
 		>>> np.partition(a, (1, 3))
 		array([1, 2, 3, 4])
 	**/
-	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis.
 		
@@ -18092,7 +18093,7 @@ package numpy;
 		>>> np.squeeze(x, axis=(2,)).shape
 		(1, 3)
 	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Join a sequence of arrays along a new axis.
 		
@@ -18142,7 +18143,7 @@ package numpy;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function stack(arrays:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function stack(arrays:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Compute the standard deviation along the specified axis.
 		
@@ -18351,7 +18352,7 @@ package numpy;
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Interchange two axes of an array.
 		
@@ -18457,7 +18458,7 @@ package numpy;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		tan(x[, out])
 		
@@ -19530,7 +19531,7 @@ package numpy;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):numpy.Ndarray;
 	/**
 		unpackbits(myarray, axis=None)
 		
@@ -19723,7 +19724,7 @@ package numpy;
 		>>> (5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)
 		48
 	**/
-	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):Dynamic;
+	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):numpy.Ndarray;
 	/**
 		Compute the variance along the specified axis.
 		
@@ -20185,5 +20186,5 @@ package numpy;
 		>>> np.zeros_like(y)
 		array([ 0.,  0.,  0.])
 	**/
-	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 }

@@ -236,7 +236,7 @@ package numpy.polynomial.legendre;
 		>>> L.legder(c, 2,-1)
 		array([  9.,  60.])
 	**/
-	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Legendre series by another.
 		
@@ -554,7 +554,7 @@ package numpy.polynomial.legendre;
 		>>> L.legint(c, scl=2)
 		array([ 0.66666667,  0.8       ,  1.33333333,  1.2       ])
 	**/
-	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Legendre series whose graph is a straight line.
 		
@@ -935,7 +935,7 @@ package numpy.polynomial.legendre;
 		degree : int
 		    Degree of the series, one less than the number of coefficients.
 	**/
-	public function degree():Dynamic;
+	public function degree():Int;
 	/**
 		Differentiate.
 		
@@ -1184,7 +1184,7 @@ package numpy.polynomial.legendre;
 		    x is equal to linspace(self.domain[0], self.domain[1], n) and
 		    y is the series evaluated at element of x.
 	**/
-	public function linspace(?n:Dynamic, ?domain:Dynamic):Dynamic;
+	public function linspace(?n:Dynamic, ?domain:Dynamic):numpy.Ndarray;
 	/**
 		Return the mapping parameters.
 		

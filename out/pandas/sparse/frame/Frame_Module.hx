@@ -11,7 +11,6 @@ package pandas.sparse.frame;
 	static public var __spec__ : Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _pickle_array(arr:Dynamic):Dynamic;
 	static public function _prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _try_sort(iterable:Dynamic):Dynamic;
 	static public function _unpickle_array(bytes:Dynamic):Dynamic;
@@ -58,31 +57,12 @@ package pandas.sparse.frame;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var nan : Dynamic;
 	/**
-		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
-		on object arrays.
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for *not*-null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is *not* null or if an array
-		    is given which of the element is *not* null.
-		
-		See also
-		--------
-		pandas.isnull : boolean inverse of pandas.notnull
-	**/
-	static public function notnull(obj:Dynamic):Dynamic;
-	/**
 		Only makes sense when fill_value is NaN
 	**/
 	static public function stack_sparse_frame(frame:Dynamic):Dynamic;
 	/**
-		create and return the block manager from a dataframe of series, columns, index 
+		create and return the block manager from a dataframe of series,
+		columns, index
 	**/
 	static public function to_manager(sdf:Dynamic, columns:Dynamic, index:Dynamic):Dynamic;
 }

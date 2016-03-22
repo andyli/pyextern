@@ -135,7 +135,7 @@ package pandas.tseries.offsets;
 		-------
 		y : DatetimeIndex
 	**/
-	public function apply_index(i:Dynamic):Dynamic;
+	public function apply_index(i:Dynamic):pandas.DatetimeIndex;
 	public function copy():Dynamic;
 	public var delta : Dynamic;
 	public var freqstr : Dynamic;

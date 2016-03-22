@@ -70,21 +70,32 @@ package scipy.linalg._matfuncs_sqrtm;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		dtrsyl - Function signature:
-		  x,scale,info = dtrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
-		Required arguments:
-		  a : input rank-2 array('d') with bounds (m,m)
-		  b : input rank-2 array('d') with bounds (n,n)
-		  c : input rank-2 array('d') with bounds (m,n)
-		Optional arguments:
-		  trana := 'N' input string(len=1)
-		  tranb := 'N' input string(len=1)
-		  isgn := 1 input int
-		  overwrite_c := 0 input int
-		Return objects:
-		  x : rank-2 array('d') with bounds (m,n) and c storage
-		  scale : float
-		  info : int
+		x,scale,info = dtrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
+		
+		Wrapper for ``dtrsyl``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (m,m)
+		b : input rank-2 array('d') with bounds (n,n)
+		c : input rank-2 array('d') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		trana : input string(len=1), optional
+		    Default: 'N'
+		tranb : input string(len=1), optional
+		    Default: 'N'
+		isgn : input int, optional
+		    Default: 1
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('d') with bounds (m,n) and c storage
+		scale : float
+		info : int
 	**/
 	static public function dtrsyl(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -345,21 +356,32 @@ package scipy.linalg._matfuncs_sqrtm;
 	**/
 	static public function sqrtm(A:Dynamic, ?disp:Dynamic, ?blocksize:Dynamic):Dynamic;
 	/**
-		ztrsyl - Function signature:
-		  x,scale,info = ztrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
-		Required arguments:
-		  a : input rank-2 array('D') with bounds (m,m)
-		  b : input rank-2 array('D') with bounds (n,n)
-		  c : input rank-2 array('D') with bounds (m,n)
-		Optional arguments:
-		  trana := 'N' input string(len=1)
-		  tranb := 'N' input string(len=1)
-		  isgn := 1 input int
-		  overwrite_c := 0 input int
-		Return objects:
-		  x : rank-2 array('D') with bounds (m,n) and c storage
-		  scale : float
-		  info : int
+		x,scale,info = ztrsyl(a,b,c,[trana,tranb,isgn,overwrite_c])
+		
+		Wrapper for ``ztrsyl``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (m,m)
+		b : input rank-2 array('D') with bounds (n,n)
+		c : input rank-2 array('D') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		trana : input string(len=1), optional
+		    Default: 'N'
+		tranb : input string(len=1), optional
+		    Default: 'N'
+		isgn : input int, optional
+		    Default: 1
+		overwrite_c : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-2 array('D') with bounds (m,n) and c storage
+		scale : float
+		info : int
 	**/
 	static public function ztrsyl(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

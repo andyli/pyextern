@@ -331,7 +331,7 @@ package scipy;
 		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		True
 	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Check if all elements of input array are true.
 		
@@ -3190,7 +3190,7 @@ package scipy;
 		       [1, 2, 3],
 		       [1, 2, 3]])
 	**/
-	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	/**
 		busday_count(begindates, enddates, weekmask='1111100', holidays=[], busdaycal=None, out=None)
 		

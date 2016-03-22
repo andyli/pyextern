@@ -284,7 +284,7 @@ package numpy.lib.nanfunctions;
 		>>> np.nanmax([1, 2, np.nan, np.inf])
 		inf
 	**/
-	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the arithmetic mean along the specified axis, ignoring NaNs.
 		
@@ -430,7 +430,7 @@ package numpy.lib.nanfunctions;
 		3.0
 		>>> assert not np.all(a==b)
 	**/
-	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return minimum of an array or minimum along an axis, ignoring any NaNs.
 		When all-NaN slices are encountered a ``RuntimeWarning`` is raised and
@@ -508,7 +508,7 @@ package numpy.lib.nanfunctions;
 		>>> np.nanmin([1, 2, np.nan, np.NINF])
 		-inf
 	**/
-	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis, while
 		ignoring nan values.

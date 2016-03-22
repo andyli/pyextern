@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package pandas.util.clipboard;
 @:pythonImport("pandas.util.clipboard") extern class Clipboard_Module {
+	static public var PIPE : Dynamic;
+	static public var PY2 : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -9,22 +11,34 @@ package pandas.util.clipboard;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _copyCygwin(text:Dynamic):Dynamic;
+	static public function _copyGtk(text:Dynamic):Dynamic;
+	static public function _copyKlipper(text:Dynamic):Dynamic;
+	static public function _copyOSX(text:Dynamic):Dynamic;
+	static public function _copyQt(text:Dynamic):Dynamic;
+	static public function _copyWindows(text:Dynamic):Dynamic;
+	static public function _copyXclip(text:Dynamic):Dynamic;
+	static public function _copyXsel(text:Dynamic):Dynamic;
+	static public var _functions : Dynamic;
+	static public function _pasteCygwin():Dynamic;
+	static public function _pasteGtk():Dynamic;
+	static public function _pasteKlipper():Dynamic;
+	static public function _pasteOSX():Dynamic;
+	static public function _pasteQt():Dynamic;
+	static public function _pasteWindows():Dynamic;
+	static public function _pasteXclip():Dynamic;
+	static public function _pasteXsel():Dynamic;
+	/**
+		Run command with arguments.  Wait for command to complete or
+		timeout, then return the returncode attribute.
+		
+		The arguments are the same as for the Popen constructor.  Example:
+		
+		retcode = call(["ls", "-l"])
+	**/
+	static public function call(?popenargs:python.VarArgs<Dynamic>, ?timeout:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function clipboard_get():Dynamic;
 	static public function clipboard_set(text:Dynamic):Dynamic;
 	static public function copy(text:Dynamic):Dynamic;
-	static public function getcb():Dynamic;
-	static public function gtkGetClipboard():Dynamic;
-	static public function gtkSetClipboard(text:Dynamic):Dynamic;
-	static public function macGetClipboard():Dynamic;
-	static public function macSetClipboard(text:Dynamic):Dynamic;
 	static public function paste():Dynamic;
-	static public function qtGetClipboard():Dynamic;
-	static public function qtSetClipboard(text:Dynamic):Dynamic;
-	static public function setcb(text:Dynamic):Dynamic;
-	static public function winGetClipboard():Dynamic;
-	static public function winSetClipboard(text:Dynamic):Dynamic;
-	static public function xclipGetClipboard():Dynamic;
-	static public function xclipSetClipboard(text:Dynamic):Dynamic;
-	static public function xselGetClipboard():Dynamic;
-	static public function xselSetClipboard(text:Dynamic):Dynamic;
 }

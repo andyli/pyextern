@@ -76,7 +76,7 @@ package pandas.core.frame;
 	public function __bytes__():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		True if the key is in the info axis 
+		True if the key is in the info axis
 	**/
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
@@ -124,7 +124,7 @@ package pandas.core.frame;
 	**/
 	public function __eq__(other:Dynamic):Dynamic;
 	/**
-		propagate metadata from other to self
+		Propagate metadata from other to self.
 		
 		Parameters
 		----------
@@ -517,6 +517,7 @@ package pandas.core.frame;
 		result : DataFrame
 	**/
 	public function __ror__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
+	public function __round__(?decimals:Dynamic):Dynamic;
 	/**
 		Binary operator __rpow__ with support to substitute a fill_value for missing data in
 		one of the inputs
@@ -625,10 +626,10 @@ package pandas.core.frame;
 	public function __setitem__(key:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -733,13 +734,19 @@ package pandas.core.frame;
 	public function __xor__(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	static public var _accessors : Dynamic;
 	/**
-		add the operations to the cls; evaluate the doc strings again 
+		Add the operations to the cls; evaluate the doc strings again
 	**/
 	static public function _add_numeric_operations():Dynamic;
 	/**
-		add the series only operations to the cls; evaluate the doc strings again 
+		Add the series only operations to the cls; evaluate the doc
+		strings again.
 	**/
 	static public function _add_series_only_operations():Dynamic;
+	/**
+		Add the series or dataframe only operations to the cls; evaluate
+		the doc strings again.
+	**/
+	static public function _add_series_or_dataframe_operations():Dynamic;
 	public function _agg_by_level(name:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _align_frame(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
 	public function _align_series(other:Dynamic, ?join:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?fill_value:Dynamic, ?method:Dynamic, ?limit:Dynamic, ?fill_axis:Dynamic):Dynamic;
@@ -758,17 +765,18 @@ package pandas.core.frame;
 	**/
 	public function _check_inplace_setting(value:Dynamic):Dynamic;
 	/**
-		check if we are a view, have a cacher, and are of mixed type
-		if so, then force a setitem_copy check
+		Check if we are a view, have a cacher, and are of mixed type.
+		If so, then force a setitem_copy check.
 		
-		should be called just near setting a value
+		Should be called just near setting a value
 		
-		will return a boolean if it we are a view and are cached, but a single-dtype
-		meaning that the cacher should be updated following setting
+		Will return a boolean if it we are a view and are cached, but a
+		single-dtype meaning that the cacher should be updated following
+		setting.
 	**/
 	public function _check_is_chained_assignment_possible():Dynamic;
 	/**
-		Validate percentiles. Used by describe and quantile 
+		Validate percentiles (used by describe and quantile).
 	**/
 	public function _check_percentile(q:Dynamic):Dynamic;
 	/**
@@ -786,16 +794,16 @@ package pandas.core.frame;
 		user will see the error *at the level of setting*
 		
 		It is technically possible to figure out that we are setting on
-		a copy even WITH a multi-dtyped pandas object. In other words, some blocks
-		may be views while other are not. Currently _is_view will ALWAYS return False
-		for multi-blocks to avoid having to handle this case.
+		a copy even WITH a multi-dtyped pandas object. In other words, some
+		blocks may be views while other are not. Currently _is_view will ALWAYS
+		return False for multi-blocks to avoid having to handle this case.
 		
 		df = DataFrame(np.arange(0,9), columns=['count'])
 		df['group'] = 'b'
 		
-		# this technically need not raise SettingWithCopy if both are view (which is not
-		# generally guaranteed but is usually True
-		# however, this is in general not a good practice and we recommend using .loc
+		# This technically need not raise SettingWithCopy if both are view
+		# (which is not # generally guaranteed but is usually True.  However,
+		# this is in general not a good practice and we recommend using .loc.
 		df.iloc[0:5]['group'] = 'a'
 	**/
 	public function _check_setitem_copy(?stacklevel:Dynamic, ?t:Dynamic, ?force:Dynamic):Dynamic;
@@ -809,25 +817,26 @@ package pandas.core.frame;
 	public function _compare_frame(other:Dynamic, func:Dynamic, str_rep:Dynamic):Dynamic;
 	public function _compare_frame_evaluate(other:Dynamic, func:Dynamic, str_rep:Dynamic):Dynamic;
 	/**
-		we are inplace consolidating; return None 
+		Consolidate data in place and return None
 	**/
 	public function _consolidate_inplace():Dynamic;
 	/**
-		return an axes dictionary for myself 
+		Return an axes dictionary for myself.
 	**/
 	public function _construct_axes_dict(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return an axes dictionary for myself 
+		Return an axes dictionary for myself.
 	**/
 	public function _construct_axes_dict_for_slice(?axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return an axes dictionary for the passed axes 
+		Return an axes dictionary for the passed axes.
 	**/
 	static public function _construct_axes_dict_from(self:Dynamic, axes:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		construct and returns axes if supplied in args/kwargs
-		if require_all, raise if all axis arguments are not supplied
-		return a tuple of (axes, kwargs) 
+		Construct and returns axes if supplied in args/kwargs.
+		
+		If require_all, raise if all axis arguments are not supplied
+		return a tuple of (axes, kwargs).
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
 	/**
@@ -860,7 +869,7 @@ package pandas.core.frame;
 		index : array-like or Index (1d)
 		    Values must be unique and hashable, same length as data. Index
 		    object (or other iterable of same length as data) Will default to
-		    np.arange(len(data)) if not provided. If both a dict and index
+		    RangeIndex(len(data)) if not provided. If both a dict and index
 		    sequence are used, the index will override the keys found in the
 		    dict.
 		dtype : numpy.dtype or None
@@ -896,7 +905,7 @@ package pandas.core.frame;
 	public function _convert(?datetime:Dynamic, ?numeric:Dynamic, ?timedelta:Dynamic, ?coerce:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _count_level(level:Dynamic, ?axis:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	/**
-		create an indexer like _name in the class 
+		Create an indexer like _name in the class.
 	**/
 	static public function _create_indexer(name:Dynamic, indexer:Dynamic):Dynamic;
 	/**
@@ -925,17 +934,17 @@ package pandas.core.frame;
 	public function _get_axis_number(axis:Dynamic):Dynamic;
 	public function _get_axis_resolvers(axis:Dynamic):Dynamic;
 	/**
-		map the axis to the block_manager axis 
+		Map the axis to the block_manager axis.
 	**/
 	public function _get_block_manager_axis(axis:Dynamic):Dynamic;
 	public function _get_bool_data():Dynamic;
 	/**
-		return my cacher or None 
+		return my cacher or None
 	**/
 	public function _get_cacher():Dynamic;
 	public function _get_index_resolvers():Dynamic;
 	/**
-		return the cached item, item represents a label indexer 
+		Return the cached item, item represents a label indexer.
 	**/
 	public function _get_item_cache(item:Dynamic):Dynamic;
 	public function _get_numeric_data():Dynamic;
@@ -950,7 +959,7 @@ package pandas.core.frame;
 	public function _getitem_slice(key:Dynamic):Dynamic;
 	static public var _iat : Dynamic;
 	/**
-		return the cached item, item represents a positional indexer 
+		Return the cached item, item represents a positional indexer.
 	**/
 	public function _iget_item_cache(item:Dynamic):Dynamic;
 	static public var _iloc : Dynamic;
@@ -975,14 +984,14 @@ package pandas.core.frame;
 	static public var _internal_names : Dynamic;
 	static public var _internal_names_set : Dynamic;
 	/**
-		boolean : return if I am cached 
+		Return boolean indicating if self is cached or not.
 	**/
 	public var _is_cached : Dynamic;
 	public var _is_datelike_mixed_type : Dynamic;
 	public var _is_mixed_type : Dynamic;
 	public var _is_numeric_mixed_type : Dynamic;
 	/**
-		boolean : return if I am a view of another array 
+		Return boolean indicating if self is view of another array 
 	**/
 	public var _is_view : Dynamic;
 	static public var _ix : Dynamic;
@@ -994,16 +1003,15 @@ package pandas.core.frame;
 	public function _join_compat(other:Dynamic, ?on:Dynamic, ?how:Dynamic, ?lsuffix:Dynamic, ?rsuffix:Dynamic, ?sort:Dynamic):Dynamic;
 	static public var _loc : Dynamic;
 	/**
-		the object has called back to us saying
-		maybe it has changed
+		The object has called back to us saying maybe it has changed.
 		
 		numpy < 1.8 has an issue with object arrays and aliasing
 		GH6026
 	**/
 	public function _maybe_cache_changed(item:Dynamic, value:Dynamic):Dynamic;
 	/**
-		see if we need to update our parent cacher
-		if clear, then clear our cache
+		See if we need to update our parent cacher if clear, then clear our
+		cache.
 		
 		Parameters
 		----------
@@ -1015,17 +1023,18 @@ package pandas.core.frame;
 	public function _maybe_update_cacher(?clear:Dynamic, ?verify_is_copy:Dynamic):Dynamic;
 	static public var _metadata : Dynamic;
 	/**
-		check if we do need a multi reindex 
+		Check if we do need a multi reindex.
 	**/
 	public function _needs_reindex_multi(axes:Dynamic, method:Dynamic, level:Dynamic):Dynamic;
 	public function _nsorted(columns:Dynamic, n:Dynamic, method:Dynamic, keep:Dynamic):Dynamic;
 	/**
-		consolidate _data. if the blocks have changed, then clear the cache 
+		Consolidate _data -- if the blocks have changed, then clear the
+		cache
 	**/
 	public function _protect_consolidate(f:Dynamic):Dynamic;
 	public function _reduce(op:Dynamic, name:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?numeric_only:Dynamic, ?filter_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		perform the reinxed for all the axes 
+		Perform the reindex for all the axes.
 	**/
 	public function _reindex_axes(axes:Dynamic, level:Dynamic, limit:Dynamic, tolerance:Dynamic, method:Dynamic, fill_value:Dynamic, copy:Dynamic):Dynamic;
 	public function _reindex_axis(new_index:Dynamic, fill_method:Dynamic, axis:Dynamic, copy:Dynamic):Dynamic;
@@ -1059,21 +1068,63 @@ package pandas.core.frame;
 	**/
 	public function _repr_html_():Dynamic;
 	/**
+		Returns a LaTeX representation for a particular Dataframe.
+		Mainly for use with nbconvert (jupyter notebook conversion to pdf).
+	**/
+	public function _repr_latex_():Dynamic;
+	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
-		reset the cacher 
+		Reset the cacher.
 	**/
 	public function _reset_cacher():Dynamic;
 	public function _sanitize_column(key:Dynamic, value:Dynamic):Dynamic;
 	public var _series : Dynamic;
 	/**
-		set the _cacher attribute on the calling object with
-		a weakref to cacher 
+		Set the _cacher attribute on the calling object with a weakref to
+		cacher.
 	**/
 	public function _set_as_cached(item:Dynamic, cacher:Dynamic):Dynamic;
 	public function _set_axis(axis:Dynamic, labels:Dynamic):Dynamic;
+	/**
+		Alter the name or names of the axis, returning self.
+		
+		Parameters
+		----------
+		name : str or list of str
+		    Name for the Index, or list of names for the MultiIndex
+		axis : int or str
+		   0 or 'index' for the index; 1 or 'columns' for the columns
+		
+		Returns
+		-------
+		renamed : type of caller
+		
+		See Also
+		--------
+		pandas.DataFrame.rename
+		pandas.Series.rename
+		pandas.Index.rename
+		
+		Examples
+		--------
+		>>> df._set_axis_name("foo")
+		     A
+		foo
+		0    1
+		1    2
+		2    3
+		>>> df.index = pd.MultiIndex.from_product([['A'], ['a', 'b', 'c']])
+		>>> df._set_axis_name(["bar", "baz"])
+		         A
+		bar baz
+		A   a    1
+		    b    2
+		    c    3
+	**/
+	public function _set_axis_name(name:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _set_is_copy(?ref:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Add series to DataFrame in specified column.
@@ -1089,8 +1140,10 @@ package pandas.core.frame;
 	public function _setitem_frame(key:Dynamic, value:Dynamic):Dynamic;
 	public function _setitem_slice(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		provide axes setup for the major PandasObjects
+		Provide axes setup for the major PandasObjects.
 		
+		Parameters
+		----------
 		axes : the names of the axes in order (lowest to highest)
 		info_axis_num : the axis of the selector dimension (int)
 		stat_axis_num : the number of axis for the default stats (int)
@@ -1114,7 +1167,7 @@ package pandas.core.frame;
 	public function _unpickle_frame_compat(state:Dynamic):Dynamic;
 	public function _unpickle_matrix_compat(state:Dynamic):Dynamic;
 	/**
-		replace self internals with result.
+		Replace self internals with result.
 		
 		Parameters
 		----------
@@ -1127,12 +1180,12 @@ package pandas.core.frame;
 	**/
 	public function _validate_dtype(dtype:Dynamic):Dynamic;
 	/**
-		internal implementation 
+		internal implementation
 	**/
 	public var _values : Dynamic;
 	/**
-		Returns a cross-section (row(s) or column(s)) from the Series/DataFrame.
-		Defaults to cross-section on the rows (axis=0).
+		Returns a cross-section (row(s) or column(s)) from the
+		Series/DataFrame. Defaults to cross-section on the rows (axis=0).
 		
 		Parameters
 		----------
@@ -1195,13 +1248,14 @@ package pandas.core.frame;
 		-----
 		xs is only for getting, not setting values.
 		
-		MultiIndex Slicers is a generic way to get/set values on any level or levels
-		it is a superset of xs functionality, see :ref:`MultiIndex Slicers <advanced.mi_slicers>`
+		MultiIndex Slicers is a generic way to get/set values on any level or
+		levels.  It is a superset of xs functionality, see
+		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
 	public function _xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?drop_level:Dynamic):Dynamic;
 	/**
-		Return an object with absolute value taken. Only applicable to objects
-		that are all numeric
+		Return an object with absolute value taken--only applicable to objects
+		that are all numeric.
 		
 		Returns
 		-------
@@ -1220,8 +1274,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -1252,7 +1306,7 @@ package pandas.core.frame;
 	**/
 	public function add_prefix(prefix:Dynamic):Dynamic;
 	/**
-		Concatenate suffix string with panel items names
+		Concatenate suffix string with panel items names.
 		
 		Parameters
 		----------
@@ -1359,9 +1413,9 @@ package pandas.core.frame;
 		
 		Notes
 		-----
-		If a list of dict/series is passed and the keys are all contained in the
-		DataFrame's index, the order of the columns in the resulting DataFrame
-		will be unchanged.
+		If a list of dict/series is passed and the keys are all contained in
+		the DataFrame's index, the order of the columns in the resulting
+		DataFrame will be unchanged.
 		
 		See also
 		--------
@@ -1462,6 +1516,22 @@ package pandas.core.frame;
 		----------
 		func : function
 		    Python function, returns a single value from a single value
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame(np.random.randn(3, 3))
+		>>> df
+		    0         1          2
+		0  -0.029638  1.081563   1.280300
+		1   0.647747  0.831136  -1.549481
+		2   0.513416 -0.884417   0.195343
+		>>> df = df.applymap(lambda x: '%.2f' % x)
+		>>> df
+		    0         1          2
+		0  -0.03      1.08       1.28
+		1   0.65      0.83      -1.55
+		2   0.51     -0.88       0.20
 		
 		Returns
 		-------
@@ -1612,7 +1682,7 @@ package pandas.core.frame;
 		8   9  0.549296  2.197225
 		9  10 -0.758542  2.302585
 	**/
-	public function assign(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function assign(?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Cast object to input numpy.dtype
 		Return a copy when copy = True (be really careful with this!)
@@ -1636,7 +1706,7 @@ package pandas.core.frame;
 	**/
 	public var at : Dynamic;
 	/**
-		Select values at particular time of day (e.g. 9:30AM)
+		Select values at particular time of day (e.g. 9:30AM).
 		
 		Parameters
 		----------
@@ -1653,7 +1723,7 @@ package pandas.core.frame;
 	**/
 	public var axes : Dynamic;
 	/**
-		Select values between particular times of the day (e.g., 9:00-9:30 AM)
+		Select values between particular times of the day (e.g., 9:00-9:30 AM).
 		
 		Parameters
 		----------
@@ -1676,11 +1746,11 @@ package pandas.core.frame;
 	**/
 	public var blocks : Dynamic;
 	/**
-		Return the bool of a single element PandasObject
-		This must be a boolean scalar value, either True or False
+		Return the bool of a single element PandasObject.
 		
-		Raise a ValueError if the PandasObject does not have exactly
-		1 element, or that element is not boolean 
+		This must be a boolean scalar value, either True or False.  Raise a
+		ValueError if the PandasObject does not have exactly 1 element, or that
+		element is not boolean
 	**/
 	public function bool():Dynamic;
 	/**
@@ -1727,7 +1797,7 @@ package pandas.core.frame;
 	**/
 	public function boxplot(?column:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?fontsize:Dynamic, ?rot:Dynamic, ?grid:Dynamic, ?figsize:Dynamic, ?layout:Dynamic, ?return_type:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Trim values at input threshold(s)
+		Trim values at input threshold(s).
 		
 		Parameters
 		----------
@@ -1773,7 +1843,7 @@ package pandas.core.frame;
 	**/
 	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
-		Return copy of the input with values below given value(s) truncated
+		Return copy of the input with values below given value(s) truncated.
 		
 		Parameters
 		----------
@@ -1781,7 +1851,7 @@ package pandas.core.frame;
 		axis : int or string axis name, optional
 		    Align object with threshold along the given axis.
 		
-		See also
+		See Also
 		--------
 		clip
 		
@@ -1791,7 +1861,7 @@ package pandas.core.frame;
 	**/
 	public function clip_lower(threshold:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
-		Return copy of input with values above given value(s) truncated
+		Return copy of input with values above given value(s) truncated.
 		
 		Parameters
 		----------
@@ -1799,7 +1869,7 @@ package pandas.core.frame;
 		axis : int or string axis name, optional
 		    Align object with threshold along the given axis.
 		
-		See also
+		See Also
 		--------
 		clip
 		
@@ -1926,6 +1996,8 @@ package pandas.core.frame;
 	**/
 	public function consolidate(?inplace:Dynamic):Dynamic;
 	/**
+		Deprecated.
+		
 		Attempt to infer better dtype for object columns
 		
 		Parameters
@@ -1943,6 +2015,13 @@ package pandas.core.frame;
 		    If True, return a copy even if no copy is necessary (e.g. no
 		    conversion was done). Note: This is meant for internal use, and
 		    should not be confused with inplace.
+		
+		See Also
+		--------
+		pandas.to_datetime : Convert argument to datetime.
+		pandas.to_timedelta : Convert argument to timedelta.
+		pandas.to_numeric : Return a fixed frequency timedelta index,
+		    with day as the default.
 		
 		Returns
 		-------
@@ -2108,8 +2187,8 @@ package pandas.core.frame;
 		include, exclude : list-like, 'all', or None (default)
 		    Specify the form of the returned result. Either:
 		
-		    - None to both (default). The result will include only numeric-typed
-		      columns or, if none are, only categorical columns.
+		    - None to both (default). The result will include only
+		      numeric-typed columns or, if none are, only categorical columns.
 		    - A list of dtypes or strings to be included/excluded.
 		      To select all numeric types use numpy numpy.number. To select
 		      categorical objects use type object. See also the select_dtypes
@@ -2143,7 +2222,7 @@ package pandas.core.frame;
 		
 		The include, exclude arguments are ignored for Series.
 		
-		See also
+		See Also
 		--------
 		DataFrame.select_dtypes
 	**/
@@ -2177,8 +2256,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -2208,8 +2287,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -2240,7 +2319,7 @@ package pandas.core.frame;
 	**/
 	public function dot(other:Dynamic):Dynamic;
 	/**
-		Return new object with labels in requested axis removed
+		Return new object with labels in requested axis removed.
 		
 		Parameters
 		----------
@@ -2276,7 +2355,6 @@ package pandas.core.frame;
 		take_last : deprecated
 		inplace : boolean, default False
 		    Whether to drop duplicates in place or to return a copy
-		cols : kwargs only argument of subset [deprecated]
 		
 		Returns
 		-------
@@ -2308,7 +2386,7 @@ package pandas.core.frame;
 	**/
 	public function dropna(?axis:Dynamic, ?how:Dynamic, ?thresh:Dynamic, ?subset:Dynamic, ?inplace:Dynamic):pandas.DataFrame;
 	/**
-		Return the dtypes in this object 
+		Return the dtypes in this object.
 	**/
 	public var dtypes : Dynamic;
 	/**
@@ -2327,7 +2405,6 @@ package pandas.core.frame;
 		      last occurrence.
 		    - False : Mark all duplicates as ``True``.
 		take_last : deprecated
-		cols : kwargs only argument of subset [deprecated]
 		
 		Returns
 		-------
@@ -2335,7 +2412,42 @@ package pandas.core.frame;
 	**/
 	public function duplicated(?subset:Dynamic, ?keep:Dynamic):pandas.Series;
 	/**
-		True if NDFrame is entirely empty [no items]
+		True if NDFrame is entirely empty [no items], meaning any of the
+		axes are of length 0.
+		
+		Notes
+		-----
+		If NDFrame contains only NaNs, it is still not considered empty. See
+		the example below.
+		
+		Examples
+		--------
+		An example of an actual empty DataFrame. Notice the index is empty:
+		
+		>>> df_empty = pd.DataFrame({'A' : []})
+		>>> df_empty
+		Empty DataFrame
+		Columns: [A]
+		Index: []
+		>>> df_empty.empty
+		True
+		
+		If we only have NaNs in our DataFrame, it is not considered empty! We
+		will need to drop the NaNs to make the DataFrame empty:
+		
+		>>> df = pd.DataFrame({'A' : [np.nan]})
+		>>> df
+		    A
+		0 NaN
+		>>> df.empty
+		False
+		>>> df.dropna().empty
+		True
+		
+		See also
+		--------
+		pandas.Series.dropna
+		pandas.DataFrame.dropna
 	**/
 	public var empty : Dynamic;
 	/**
@@ -2343,8 +2455,8 @@ package pandas.core.frame;
 	**/
 	public function eq(other:Dynamic, ?axis:Dynamic, ?level:Dynamic):Dynamic;
 	/**
-		Determines if two NDFrame objects contain the same elements. NaNs in the
-		same location are considered equal.
+		Determines if two NDFrame objects contain the same elements. NaNs in
+		the same location are considered equal.
 	**/
 	public function equals(other:Dynamic):Dynamic;
 	/**
@@ -2355,6 +2467,16 @@ package pandas.core.frame;
 		----------
 		expr : string
 		    The expression string to evaluate.
+		inplace : bool
+		    If the expression contains an assignment, whether to return a new
+		    DataFrame or mutate the existing.
+		
+		    WARNING: inplace=None currently falls back to to True, but
+		    in a future version, will default to False.  Use inplace=True
+		    explicitly rather than relying on the default.
+		
+		    .. versionadded:: 0.18.0
+		
 		kwargs : dict
 		    See the documentation for :func:`~pandas.eval` for complete details
 		    on the keyword arguments accepted by
@@ -2367,6 +2489,7 @@ package pandas.core.frame;
 		See Also
 		--------
 		pandas.DataFrame.query
+		pandas.DataFrame.assign
 		pandas.eval
 		
 		Notes
@@ -2383,7 +2506,108 @@ package pandas.core.frame;
 		>>> df.eval('a + b')
 		>>> df.eval('c = a + b')
 	**/
-	public function eval(expr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function eval(expr:Dynamic, ?inplace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Provides exponential weighted functions
+		
+		.. versionadded:: 0.18.0
+		
+		Parameters
+		----------
+		com : float, optional
+		    Specify decay in terms of center of mass,
+		    :math:`\alpha = 1 / (1 + com),\text{ for } com \geq 0`
+		span : float, optional
+		    Specify decay in terms of span,
+		    :math:`\alpha = 2 / (span + 1),\text{ for } span \geq 1`
+		halflife : float, optional
+		    Specify decay in terms of half-life,
+		    :math:`\alpha = 1 - exp(log(0.5) / halflife),\text{ for } halflife > 0`
+		alpha : float, optional
+		    Specify smoothing factor :math:`\alpha` directly,
+		    :math:`0 < \alpha \leq 1`
+		
+		    .. versionadded:: 0.18.0
+		
+		min_periods : int, default 0
+		    Minimum number of observations in window required to have a value
+		    (otherwise result is NA).
+		freq : None or string alias / date offset object, default=None (DEPRECATED)
+		    Frequency to conform to before computing statistic
+		adjust : boolean, default True
+		    Divide by decaying adjustment factor in beginning periods to account
+		    for imbalance in relative weightings (viewing EWMA as a moving average)
+		ignore_na : boolean, default False
+		    Ignore missing values when calculating weights;
+		    specify True to reproduce pre-0.15.0 behavior
+		
+		Returns
+		-------
+		a Window sub-classed for the particular operation
+		
+		Notes
+		-----
+		Exactly one of center of mass, span, half-life, and alpha must be provided.
+		Allowed values and relationship between the parameters are specified in the
+		parameter descriptions above; see the link at the end of this section for
+		a detailed explanation.
+		
+		The `freq` keyword is used to conform time series data to a specified
+		frequency by resampling the data. This is done with the default parameters
+		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		When adjust is True (default), weighted averages are calculated using
+		weights (1-alpha)**(n-1), (1-alpha)**(n-2), ..., 1-alpha, 1.
+		
+		When adjust is False, weighted averages are calculated recursively as:
+		   weighted_average[0] = arg[0];
+		   weighted_average[i] = (1-alpha)*weighted_average[i-1] + alpha*arg[i].
+		
+		When ignore_na is False (default), weights are based on absolute positions.
+		For example, the weights of x and y used in calculating the final weighted
+		average of [x, None, y] are (1-alpha)**2 and 1 (if adjust is True), and
+		(1-alpha)**2 and alpha (if adjust is False).
+		
+		When ignore_na is True (reproducing pre-0.15.0 behavior), weights are based
+		on relative positions. For example, the weights of x and y used in
+		calculating the final weighted average of [x, None, y] are 1-alpha and 1
+		(if adjust is True), and 1-alpha and alpha (if adjust is False).
+		
+		More details can be found at
+		http://pandas.pydata.org/pandas-docs/stable/computation.html#exponentially-weighted-windows
+	**/
+	public function ewm(?com:Dynamic, ?span:Dynamic, ?halflife:Dynamic, ?alpha:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?adjust:Dynamic, ?ignore_na:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Provides expanding transformations.
+		
+		.. versionadded:: 0.18.0
+		
+		Parameters
+		----------
+		min_periods : int, default None
+		    Minimum number of observations in window required to have a value
+		    (otherwise result is NA).
+		freq : string or DateOffset object, optional (default None) (DEPRECATED)
+		    Frequency to conform the data to before computing the statistic.
+		    Specified as a frequency string or DateOffset object.
+		center : boolean, default False
+		    Set the labels at the center of the window.
+		axis : int, default 0
+		
+		Returns
+		-------
+		a Window sub-classed for the particular operation
+		
+		Notes
+		-----
+		By default, the result is set to the right edge of the window. This can be
+		changed to the center of the window by setting ``center=True``.
+		
+		The `freq` keyword is used to conform time series data to a specified
+		frequency by resampling the data. This is done with the default parameters
+		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+	**/
+	public function expanding(?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Synonym for NDFrame.fillna(method='ffill')
 	**/
@@ -2394,10 +2618,11 @@ package pandas.core.frame;
 		Parameters
 		----------
 		value : scalar, dict, Series, or DataFrame
-		    Value to use to fill holes (e.g. 0), alternately a dict/Series/DataFrame of
-		    values specifying which value to use for each index (for a Series) or
-		    column (for a DataFrame). (values not in the dict/Series/DataFrame will not be
-		    filled). This value cannot be a list.
+		    Value to use to fill holes (e.g. 0), alternately a
+		    dict/Series/DataFrame of values specifying which value to use for
+		    each index (for a Series) or column (for a DataFrame). (values not
+		    in the dict/Series/DataFrame will not be filled). This value cannot
+		    be a list.
 		method : {'backfill', 'bfill', 'pad', 'ffill', None}, default None
 		    Method to use for filling holes in reindexed Series
 		    pad / ffill: propagate last valid observation forward to next valid
@@ -2419,7 +2644,7 @@ package pandas.core.frame;
 		    or the string 'infer' which will try to downcast to an appropriate
 		    equal type (e.g. float64 to int64 if possible)
 		
-		See also
+		See Also
 		--------
 		reindex, asfreq
 		
@@ -2452,7 +2677,7 @@ package pandas.core.frame;
 	public function filter(?items:Dynamic, ?like:Dynamic, ?regex:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Convenience method for subsetting initial periods of time series data
-		based on a date offset
+		based on a date offset.
 		
 		Parameters
 		----------
@@ -2460,7 +2685,7 @@ package pandas.core.frame;
 		
 		Examples
 		--------
-		ts.last('10D') -> First 10 days
+		ts.first('10D') -> First 10 days
 		
 		Returns
 		-------
@@ -2483,8 +2708,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -2503,7 +2728,8 @@ package pandas.core.frame;
 	**/
 	public function floordiv(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
-		Read CSV file (DISCOURAGED, please use :func:`pandas.read_csv` instead).
+		Read CSV file (DISCOURAGED, please use :func:`pandas.read_csv`
+		instead).
 		
 		It is preferable to use the more powerful :func:`pandas.read_csv`
 		for most general purposes, but ``from_csv`` makes for an easy
@@ -2628,7 +2854,7 @@ package pandas.core.frame;
 	public function ge(other:Dynamic, ?axis:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		Get item from object for given key (DataFrame column, Panel slice,
-		etc.). Returns default value if not found
+		etc.). Returns default value if not found.
 		
 		Parameters
 		----------
@@ -2640,11 +2866,11 @@ package pandas.core.frame;
 	**/
 	public function get(key:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
-		Return the counts of dtypes in this object 
+		Return the counts of dtypes in this object.
 	**/
 	public function get_dtype_counts():Dynamic;
 	/**
-		Return the counts of ftypes in this object 
+		Return the counts of ftypes in this object.
 	**/
 	public function get_ftype_counts():Dynamic;
 	/**
@@ -2662,12 +2888,12 @@ package pandas.core.frame;
 	**/
 	public function get_value(index:Dynamic, col:Dynamic, ?takeable:Dynamic):Dynamic;
 	/**
-		same as values (but handles sparseness conversions) 
+		same as values (but handles sparseness conversions)
 	**/
 	public function get_values():Dynamic;
 	/**
 		Group series using mapper (dict or key function, apply given function
-		to group, return result as series) or by a series of columns
+		to group, return result as series) or by a series of columns.
 		
 		Parameters
 		----------
@@ -2686,8 +2912,8 @@ package pandas.core.frame;
 		    effectively "SQL-style" grouped output
 		sort : boolean, default True
 		    Sort group keys. Get better performance by turning this off.
-		    Note this does not influence the order of observations within each group.
-		    groupby preserves the order of rows within each group.
+		    Note this does not influence the order of observations within each
+		    group.  groupby preserves the order of rows within each group.
 		group_keys : boolean, default True
 		    When calling apply, add group keys to index to identify pieces
 		squeeze : boolean, default False
@@ -2865,9 +3091,11 @@ package pandas.core.frame;
 		    human-readable units (base-2 representation).
 		null_counts : boolean, default None
 		    Whether to show the non-null counts
-		    If None, then only show if the frame is smaller than max_info_rows and max_info_columns.
-		    If True, always show counts.
-		    If False, never show counts.
+		
+		    - If None, then only show if the frame is smaller than
+		      max_info_rows and max_info_columns.
+		    - If True, always show counts.
+		    - If False, never show counts.
 	**/
 	public function info(?verbose:Dynamic, ?buf:Dynamic, ?max_cols:Dynamic, ?memory_usage:Dynamic, ?null_counts:Dynamic):Dynamic;
 	/**
@@ -2887,8 +3115,8 @@ package pandas.core.frame;
 	/**
 		Interpolate values according to different methods.
 		
-		Please note that only ``method='linear'`` is supported for DataFrames/Series
-		with a MultiIndex.
+		Please note that only ``method='linear'`` is supported for
+		DataFrames/Series with a MultiIndex.
 		
 		Parameters
 		----------
@@ -2912,8 +3140,8 @@ package pandas.core.frame;
 		      wrappers around the scipy interpolation methods of similar
 		      names. These use the actual numerical values of the index. See
 		      the scipy documentation for more on their behavior
-		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__
-		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__
+		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
+		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
 		
 		axis : {0, 1}, default 0
 		    * 0: fill column-by-column
@@ -3009,9 +3237,9 @@ package pandas.core.frame;
 	**/
 	public function isin(values:Dynamic):Dynamic;
 	/**
-		Return a boolean same-sized object indicating if the values are null
+		Return a boolean same-sized object indicating if the values are null.
 		
-		See also
+		See Also
 		--------
 		notnull : boolean inverse of isnull
 	**/
@@ -3021,8 +3249,8 @@ package pandas.core.frame;
 		
 		See also
 		--------
-		iterrows : Iterate over the rows of a DataFrame as (index, Series) pairs.
-		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
+		iterrows : Iterate over DataFrame rows as (index, Series) pairs.
+		itertuples : Iterate over DataFrame rows as namedtuples of the values.
 	**/
 	public function items():Dynamic;
 	/**
@@ -3030,8 +3258,8 @@ package pandas.core.frame;
 		
 		See also
 		--------
-		iterrows : Iterate over the rows of a DataFrame as (index, Series) pairs.
-		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
+		iterrows : Iterate over DataFrame rows as (index, Series) pairs.
+		itertuples : Iterate over DataFrame rows as namedtuples of the values.
 	**/
 	public function iteritems():Dynamic;
 	/**
@@ -3039,7 +3267,7 @@ package pandas.core.frame;
 	**/
 	public function iterkv(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Iterate over the rows of a DataFrame as (index, Series) pairs.
+		Iterate over DataFrame rows as (index, Series) pairs.
 		
 		Notes
 		-----
@@ -3061,7 +3289,7 @@ package pandas.core.frame;
 		
 		   To preserve dtypes while iterating over the rows, it is better
 		   to use :meth:`itertuples` which returns namedtuples of the values
-		   and which is generally faster as ``iterrows``.
+		   and which is generally faster than ``iterrows``.
 		
 		2. You should **never modify** something you are iterating over.
 		   This is not guaranteed to work in all cases. Depending on the
@@ -3075,36 +3303,38 @@ package pandas.core.frame;
 		
 		See also
 		--------
-		itertuples : Iterate over the rows of a DataFrame as namedtuples of the values.
+		itertuples : Iterate over DataFrame rows as namedtuples of the values.
 		iteritems : Iterate over (column name, Series) pairs.
 	**/
 	public function iterrows():python.NativeIterable<Dynamic>;
 	/**
-		Iterate over the rows of DataFrame as namedtuples, with index value
-		as first element of the tuple.
+		Iterate over DataFrame rows as namedtuples, with index value as first
+		element of the tuple.
 		
 		Parameters
 		----------
 		index : boolean, default True
 		    If True, return the index as the first element of the tuple.
 		name : string, default "Pandas"
-		    The name of the returned namedtuples or None to return regular tuples.
+		    The name of the returned namedtuples or None to return regular
+		    tuples.
 		
 		Notes
 		-----
-		The columns names will be renamed to positional names if they are
+		The column names will be renamed to positional names if they are
 		invalid Python identifiers, repeated, or start with an underscore.
 		With a large number of columns (>255), regular tuples are returned.
 		
 		See also
 		--------
-		iterrows : Iterate over the rows of a DataFrame as (index, Series) pairs.
+		iterrows : Iterate over DataFrame rows as (index, Series) pairs.
 		iteritems : Iterate over (column name, Series) pairs.
 		
 		Examples
 		--------
 		
-		>>> df = pd.DataFrame({'col1': [1, 2], 'col2': [0.1, 0.2]}, index=['a', 'b'])
+		>>> df = pd.DataFrame({'col1': [1, 2], 'col2': [0.1, 0.2]},
+		                      index=['a', 'b'])
 		>>> df
 		   col1  col2
 		a     1   0.1
@@ -3186,7 +3416,7 @@ package pandas.core.frame;
 	**/
 	public function keys():Dynamic;
 	/**
-		Return unbiased kurtosis over requested axis using Fishers definition of
+		Return unbiased kurtosis over requested axis using Fisher's definition of
 		kurtosis (kurtosis of normal == 0.0). Normalized by N-1
 		
 		
@@ -3209,7 +3439,7 @@ package pandas.core.frame;
 	**/
 	public function kurt(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return unbiased kurtosis over requested axis using Fishers definition of
+		Return unbiased kurtosis over requested axis using Fisher's definition of
 		kurtosis (kurtosis of normal == 0.0). Normalized by N-1
 		
 		
@@ -3233,7 +3463,7 @@ package pandas.core.frame;
 	public function kurtosis(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience method for subsetting final periods of time series data
-		based on a date offset
+		based on a date offset.
 		
 		Parameters
 		----------
@@ -3330,7 +3560,8 @@ package pandas.core.frame;
 	public function mad(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
-		entries are from self where cond is False and otherwise are from other.
+		entries are from self where cond is False and otherwise are from
+		other.
 		
 		Parameters
 		----------
@@ -3352,9 +3583,9 @@ package pandas.core.frame;
 	**/
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
-		This method returns the maximum of the values in the object. If you
-		                                      want the *index* of the maximum, use ``idxmax``. This is the
-		                                      equivalent of the ``numpy.ndarray`` method ``argmax``.
+		This method returns the maximum of the values in the object.
+		            If you want the *index* of the maximum, use ``idxmax``. This is
+		            the equivalent of the ``numpy.ndarray`` method ``argmax``.
 		
 		Parameters
 		----------
@@ -3508,7 +3739,7 @@ package pandas.core.frame;
 		2   baz  3         2   qux  7
 		3   foo  4         3   bar  8
 		
-		>>> merge(A, B, left_on='lkey', right_on='rkey', how='outer')
+		>>> A.merge(B, left_on='lkey', right_on='rkey', how='outer')
 		   lkey  value_x  rkey  value_y
 		0  foo   1        foo   5
 		1  foo   4        foo   5
@@ -3523,11 +3754,11 @@ package pandas.core.frame;
 		    The output type will the be same as 'left', if it is a subclass
 		    of DataFrame.
 	**/
-	public function merge(right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):Dynamic;
+	public function merge(right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):pandas.DataFrame;
 	/**
-		This method returns the minimum of the values in the object. If you
-		                                      want the *index* of the minimum, use ``idxmin``. This is the
-		                                      equivalent of the ``numpy.ndarray`` method ``argmin``.
+		This method returns the minimum of the values in the object.
+		            If you want the *index* of the minimum, use ``idxmin``. This is
+		            the equivalent of the ``numpy.ndarray`` method ``argmin``.
 		
 		Parameters
 		----------
@@ -3559,8 +3790,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -3579,14 +3810,14 @@ package pandas.core.frame;
 	**/
 	public function mod(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
-		Gets the mode(s) of each element along the axis selected. Empty if nothing
-		has 2+ occurrences. Adds a row for each mode per label, fills in gaps
-		with nan.
+		Gets the mode(s) of each element along the axis selected. Empty if
+		nothing has 2+ occurrences. Adds a row for each mode per label, fills
+		in gaps with nan.
 		
 		Note that there could be multiple values returned for the selected
-		axis (when more than one item share the maximum frequency), which is the
-		reason why a dataframe is returned. If you want to impute missing values
-		with the mode in a dataframe ``df``, you can just do this:
+		axis (when more than one item share the maximum frequency), which is
+		the reason why a dataframe is returned. If you want to impute missing
+		values with the mode in a dataframe ``df``, you can just do this:
 		``df.fillna(df.mode().iloc[0])``
 		
 		Parameters
@@ -3622,8 +3853,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -3653,8 +3884,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -3715,9 +3946,9 @@ package pandas.core.frame;
 	public function nlargest(n:Dynamic, columns:Dynamic, ?keep:Dynamic):Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are
-		not null
+		not null.
 		
-		See also
+		See Also
 		--------
 		isnull : boolean inverse of notnull
 	**/
@@ -3890,13 +4121,17 @@ package pandas.core.frame;
 		----------
 		data : DataFrame
 		values : column to aggregate, optional
-		index : a column, Grouper, array which has the same length as data, or list of them.
-		    Keys to group by on the pivot table index.
-		    If an array is passed, it is being used as the same manner as column values.
-		columns : a column, Grouper, array which has the same length as data, or list of them.
-		    Keys to group by on the pivot table column.
-		    If an array is passed, it is being used as the same manner as column values.
-		aggfunc : function, default numpy.mean, or list of functions
+		index : column, Grouper, array, or list of the previous
+		    If an array is passed, it must be the same length as the data. The list
+		    can contain any of the other types (except list).
+		    Keys to group by on the pivot table index.  If an array is passed, it
+		    is being used as the same manner as column values.
+		columns : column, Grouper, array, or list of the previous
+		    If an array is passed, it must be the same length as the data. The list
+		    can contain any of the other types (except list).
+		    Keys to group by on the pivot table column.  If an array is passed, it
+		    is being used as the same manner as column values.
+		aggfunc : function or list of functions, default numpy.mean
 		    If list of functions passed, the resulting pivot table will have
 		    hierarchical columns whose top level are the function names (inferred
 		    from the function objects themselves)
@@ -3968,8 +4203,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4039,22 +4274,34 @@ package pandas.core.frame;
 		    0 <= q <= 1, the quantile(s) to compute
 		axis : {0, 1, 'index', 'columns'} (default 0)
 		    0 or 'index' for row-wise, 1 or 'columns' for column-wise
+		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+		    .. versionadded:: 0.18.0
 		
+		    This optional parameter specifies the interpolation method to use,
+		    when the desired quantile lies between two data points `i` and `j`:
+		
+		    * linear: `i + (j - i) * fraction`, where `fraction` is the
+		      fractional part of the index surrounded by `i` and `j`.
+		    * lower: `i`.
+		    * higher: `j`.
+		    * nearest: `i` or `j` whichever is nearest.
+		    * midpoint: (`i` + `j`) / 2.
 		
 		Returns
 		-------
 		quantiles : Series or DataFrame
-		    If ``q`` is an array, a DataFrame will be returned where the
-		    index is ``q``, the columns are the columns of self, and the
-		    values are the quantiles.
-		    If ``q`` is a float, a Series will be returned where the
-		    index is the columns of self and the values are the quantiles.
+		
+		    - If ``q`` is an array, a DataFrame will be returned where the
+		      index is ``q``, the columns are the columns of self, and the
+		      values are the quantiles.
+		    - If ``q`` is a float, a Series will be returned where the
+		      index is the columns of self and the values are the quantiles.
 		
 		Examples
 		--------
 		
 		>>> df = DataFrame(np.array([[1, 1], [2, 10], [3, 100], [4, 100]]),
-		                  columns=['a', 'b'])
+		                   columns=['a', 'b'])
 		>>> df.quantile(.1)
 		a    1.3
 		b    3.7
@@ -4064,7 +4311,7 @@ package pandas.core.frame;
 		0.1  1.3   3.7
 		0.5  2.5  55.0
 	**/
-	public function quantile(?q:Dynamic, ?axis:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	public function quantile(?q:Dynamic, ?axis:Dynamic, ?numeric_only:Dynamic, ?interpolation:Dynamic):Dynamic;
 	/**
 		Query the columns of a frame with a boolean expression.
 		
@@ -4076,6 +4323,12 @@ package pandas.core.frame;
 		    The query string to evaluate.  You can refer to variables
 		    in the environment by prefixing them with an '@' character like
 		    ``@a + b``.
+		inplace : bool
+		    Whether the query should modify the data in place or return
+		    a modified copy
+		
+		    .. versionadded:: 0.18.0
+		
 		kwargs : dict
 		    See the documentation for :func:`pandas.eval` for complete details
 		    on the keyword arguments accepted by :meth:`DataFrame.query`.
@@ -4131,7 +4384,7 @@ package pandas.core.frame;
 		>>> df.query('a > b')
 		>>> df[df.a > df.b]  # same result as the previous expression
 	**/
-	public function query(expr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function query(expr:Dynamic, ?inplace:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Addition of dataframe and other, element-wise (binary operator `radd`).
 		
@@ -4144,8 +4397,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4169,16 +4422,17 @@ package pandas.core.frame;
 		
 		Parameters
 		----------
-		axis : {0 or 'index', 1 or 'columns'}, default 0
-		    Ranks over columns (0) or rows (1)
-		numeric_only : boolean, default None
-		    Include only float, int, boolean data
+		axis: {0 or 'index', 1 or 'columns'}, default 0
+		    index to direct ranking
 		method : {'average', 'min', 'max', 'first', 'dense'}
 		    * average: average rank of group
 		    * min: lowest rank in group
 		    * max: highest rank in group
 		    * first: ranks assigned in order they appear in the array
 		    * dense: like 'min', but rank always increases by 1 between groups
+		numeric_only : boolean, default None
+		    Include only float, int, boolean data. Valid only for DataFrame or
+		    Panel objects
 		na_option : {'keep', 'top', 'bottom'}
 		    * keep: leave NA values where they are
 		    * top: smallest rank if ascending
@@ -4190,9 +4444,9 @@ package pandas.core.frame;
 		
 		Returns
 		-------
-		ranks : DataFrame
+		ranks : same type as caller
 	**/
-	public function rank(?axis:Dynamic, ?numeric_only:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):pandas.DataFrame;
+	public function rank(?axis:Dynamic, ?method:Dynamic, ?numeric_only:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `rtruediv`).
 		
@@ -4205,8 +4459,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4240,10 +4494,13 @@ package pandas.core.frame;
 		    method to use for filling holes in reindexed DataFrame.
 		    Please note: this is only  applicable to DataFrames/Series with a
 		    monotonically increasing/decreasing index.
-		      * default: don't fill gaps
-		      * pad / ffill: propagate last valid observation forward to next valid
-		      * backfill / bfill: use next valid observation to fill gap
-		      * nearest: use nearest valid observations to fill gap
+		
+		    * default: don't fill gaps
+		    * pad / ffill: propagate last valid observation forward to next
+		      valid
+		    * backfill / bfill: use next valid observation to fill gap
+		    * nearest: use nearest valid observations to fill gap
+		
 		copy : boolean, default True
 		    Return a new object, even if the passed indexes are the same
 		level : int or name
@@ -4321,7 +4578,7 @@ package pandas.core.frame;
 		
 		>>> date_index = pd.date_range('1/1/2010', periods=6, freq='D')
 		>>> df2 = pd.DataFrame({"prices": [100, 101, np.nan, 100, 89, 88]},
-		        index=date_index)
+		...                    index=date_index)
 		>>> df2
 		            prices
 		2010-01-01     100
@@ -4380,12 +4637,12 @@ package pandas.core.frame;
 		-------
 		reindexed : DataFrame
 	**/
-	public function reindex(?index:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function reindex(?index:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Conform input object to new index with optional filling logic,
-		placing NA/NaN in locations having no value in the previous index. A
-		new object is produced unless the new index is equivalent to the
-		current one and copy=False
+		Conform input object to new index with optional
+		filling logic, placing NA/NaN in locations having no value in the
+		previous index. A new object is produced unless the new index is
+		equivalent to the current one and copy=False
 		
 		Parameters
 		----------
@@ -4395,10 +4652,13 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		method : {None, 'backfill'/'bfill', 'pad'/'ffill', 'nearest'}, optional
 		    Method to use for filling holes in reindexed DataFrame:
-		      * default: don't fill gaps
-		      * pad / ffill: propagate last valid observation forward to next valid
-		      * backfill / bfill: use next valid observation to fill gap
-		      * nearest: use nearest valid observations to fill gap
+		
+		    * default: don't fill gaps
+		    * pad / ffill: propagate last valid observation forward to next
+		      valid
+		    * backfill / bfill: use next valid observation to fill gap
+		    * nearest: use nearest valid observations to fill gap
+		
 		copy : boolean, default True
 		    Return a new object, even if the passed indexes are the same
 		level : int or name
@@ -4417,7 +4677,7 @@ package pandas.core.frame;
 		--------
 		>>> df.reindex_axis(['A', 'B', 'C'], axis=1)
 		
-		See also
+		See Also
 		--------
 		reindex, reindex_like
 		
@@ -4425,9 +4685,9 @@ package pandas.core.frame;
 		-------
 		reindexed : DataFrame
 	**/
-	public function reindex_axis(labels:Dynamic, ?axis:Dynamic, ?method:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function reindex_axis(labels:Dynamic, ?axis:Dynamic, ?method:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
 	/**
-		return an object with matching indicies to myself
+		Return an object with matching indices to myself.
 		
 		Parameters
 		----------
@@ -4455,13 +4715,16 @@ package pandas.core.frame;
 	/**
 		Alter axes input function or functions. Function / dict values must be
 		unique (1-to-1). Labels not contained in a dict / Series will be left
-		as-is.
+		as-is. Alternatively, change ``Series.name`` with a scalar
+		value (Series only).
 		
 		Parameters
 		----------
-		index, columns : dict-like or function, optional
-		    Transformation to apply to that axis values
-		
+		index, columns : scalar, list-like, dict-like or function, optional
+		    Scalar or list-like will alter the ``Series.name`` attribute,
+		    and raise on DataFrame or Panel.
+		    dict-like or functions are transformations to apply to
+		    that axis' values
 		copy : boolean, default True
 		    Also copy underlying data
 		inplace : boolean, default False
@@ -4471,16 +4734,56 @@ package pandas.core.frame;
 		Returns
 		-------
 		renamed : DataFrame (new object)
+		
+		See Also
+		--------
+		pandas.NDFrame.rename_axis
+		
+		Examples
+		--------
+		>>> s = pd.Series([1, 2, 3])
+		>>> s
+		0    1
+		1    2
+		2    3
+		dtype: int64
+		>>> s.rename("my_name") # scalar, changes Series.name
+		0    1
+		1    2
+		2    3
+		Name: my_name, dtype: int64
+		>>> s.rename(lambda x: x ** 2)  # function, changes labels
+		0    1
+		1    2
+		4    3
+		dtype: int64
+		>>> s.rename({1: 3, 2: 5})  # mapping, changes labels
+		0    1
+		3    2
+		5    3
+		dtype: int64
+		>>> df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
+		>>> df.rename(2)
+		...
+		TypeError: 'int' object is not callable
+		>>> df.rename(index=str, columns={"A": "a", "B": "c"})
+		   a  c
+		0  1  4
+		1  2  5
+		2  3  6
 	**/
 	public function rename(?index:Dynamic, ?columns:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Alter index and / or columns using input function or functions.
+		A scaler or list-like for ``mapper`` will alter the ``Index.name``
+		or ``MultiIndex.names`` attribute.
+		A function or dict for ``mapper`` will alter the labels.
 		Function / dict values must be unique (1-to-1). Labels not contained in
 		a dict / Series will be left as-is.
 		
 		Parameters
 		----------
-		mapper : dict-like or function, optional
+		mapper : scalar, list-like, dict-like or function, optional
 		axis : int or string, default 0
 		copy : boolean, default True
 		    Also copy underlying data
@@ -4489,6 +4792,31 @@ package pandas.core.frame;
 		Returns
 		-------
 		renamed : type of caller
+		
+		See Also
+		--------
+		pandas.NDFrame.rename
+		pandas.Index.rename
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({"A": [1, 2, 3], "B": [4, 5, 6]})
+		>>> df.rename_axis("foo")  # scalar, alters df.index.name
+		     A  B
+		foo
+		0    1  4
+		1    2  5
+		2    3  6
+		>>> df.rename_axis(lambda x: 2 * x)  # function: alters labels
+		   A  B
+		0  1  4
+		2  2  5
+		4  3  6
+		>>> df.rename_axis({"A": "ehh", "C": "see"}, axis="columns")  # mapping
+		   ehh  B
+		0    1  4
+		1    2  5
+		2    3  6
 	**/
 	public function rename_axis(mapper:Dynamic, ?axis:Dynamic, ?copy:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
@@ -4572,7 +4900,7 @@ package pandas.core.frame;
 		    The method to use when for replacement, when ``to_replace`` is a
 		    ``list``.
 		
-		See also
+		See Also
 		--------
 		NDFrame.reindex
 		NDFrame.asfreq
@@ -4616,22 +4944,14 @@ package pandas.core.frame;
 		----------
 		rule : string
 		    the offset string or object representing target conversion
-		how : string
-		    method for down- or re-sampling, default to 'mean' for
-		    downsampling
 		axis : int, optional, default 0
-		fill_method : string, default None
-		    fill_method for upsampling
 		closed : {'right', 'left'}
 		    Which side of bin interval is closed
 		label : {'right', 'left'}
 		    Which bin edge label to label bucket with
 		convention : {'start', 'end', 's', 'e'}
-		kind : "period"/"timestamp"
 		loffset : timedelta
 		    Adjust the resampled time labels
-		limit : int, default None
-		    Maximum size gap to when reindexing with fill_method
 		base : int, default 0
 		    For frequencies that evenly subdivide 1 day, the "origin" of the
 		    aggregated intervals. For example, for '5min' frequency, base could
@@ -4660,7 +4980,7 @@ package pandas.core.frame;
 		Downsample the series into 3 minute bins and sum the values
 		of the timestamps falling into a bin.
 		
-		>>> series.resample('3T', how='sum')
+		>>> series.resample('3T').sum()
 		2000-01-01 00:00:00     3
 		2000-01-01 00:03:00    12
 		2000-01-01 00:06:00    21
@@ -4676,7 +4996,7 @@ package pandas.core.frame;
 		To include this value close the right side of the bin interval as
 		illustrated in the example below this one.
 		
-		>>> series.resample('3T', how='sum', label='right')
+		>>> series.resample('3T', label='right').sum()
 		2000-01-01 00:03:00     3
 		2000-01-01 00:06:00    12
 		2000-01-01 00:09:00    21
@@ -4685,7 +5005,7 @@ package pandas.core.frame;
 		Downsample the series into 3 minute bins as above, but close the right
 		side of the bin interval.
 		
-		>>> series.resample('3T', how='sum', label='right', closed='right')
+		>>> series.resample('3T', label='right', closed='right').sum()
 		2000-01-01 00:00:00     0
 		2000-01-01 00:03:00     6
 		2000-01-01 00:06:00    15
@@ -4694,7 +5014,7 @@ package pandas.core.frame;
 		
 		Upsample the series into 30 second bins.
 		
-		>>> series.resample('30S')[0:5] #select first 5 rows
+		>>> series.resample('30S').asfreq()[0:5] #select first 5 rows
 		2000-01-01 00:00:00     0
 		2000-01-01 00:00:30   NaN
 		2000-01-01 00:01:00     1
@@ -4705,7 +5025,7 @@ package pandas.core.frame;
 		Upsample the series into 30 second bins and fill the ``NaN``
 		values using the ``pad`` method.
 		
-		>>> series.resample('30S', fill_method='pad')[0:5]
+		>>> series.resample('30S').pad()[0:5]
 		2000-01-01 00:00:00    0
 		2000-01-01 00:00:30    0
 		2000-01-01 00:01:00    1
@@ -4716,7 +5036,7 @@ package pandas.core.frame;
 		Upsample the series into 30 second bins and fill the
 		``NaN`` values using the ``bfill`` method.
 		
-		>>> series.resample('30S', fill_method='bfill')[0:5]
+		>>> series.resample('30S').bfill()[0:5]
 		2000-01-01 00:00:00    0
 		2000-01-01 00:00:30    1
 		2000-01-01 00:01:00    1
@@ -4724,12 +5044,12 @@ package pandas.core.frame;
 		2000-01-01 00:02:00    2
 		Freq: 30S, dtype: int64
 		
-		Pass a custom function to ``how``.
+		Pass a custom function via ``apply``
 		
 		>>> def custom_resampler(array_like):
 		...     return np.sum(array_like)+5
 		
-		>>> series.resample('3T', how=custom_resampler)
+		>>> series.resample('3T').apply(custom_resampler)
 		2000-01-01 00:00:00     8
 		2000-01-01 00:03:00    17
 		2000-01-01 00:06:00    26
@@ -4778,8 +5098,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4809,8 +5129,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4840,8 +5160,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4859,6 +5179,59 @@ package pandas.core.frame;
 		DataFrame.mul
 	**/
 	public function rmul(other:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?fill_value:Dynamic):pandas.DataFrame;
+	/**
+		Provides rolling transformations.
+		
+		.. versionadded:: 0.18.0
+		
+		Parameters
+		----------
+		window : int
+		   Size of the moving window. This is the number of observations used for
+		   calculating the statistic.
+		min_periods : int, default None
+		    Minimum number of observations in window required to have a value
+		    (otherwise result is NA).
+		freq : string or DateOffset object, optional (default None) (DEPRECATED)
+		    Frequency to conform the data to before computing the statistic.
+		    Specified as a frequency string or DateOffset object.
+		center : boolean, default False
+		    Set the labels at the center of the window.
+		win_type : string, default None
+		    prove a window type, see the notes below
+		axis : int, default 0
+		
+		Returns
+		-------
+		a Window sub-classed for the particular operation
+		
+		Notes
+		-----
+		By default, the result is set to the right edge of the window. This can be
+		changed to the center of the window by setting ``center=True``.
+		
+		The `freq` keyword is used to conform time series data to a specified
+		frequency by resampling the data. This is done with the default parameters
+		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		The recognized window types are:
+		
+		* ``boxcar``
+		* ``triang``
+		* ``blackman``
+		* ``hamming``
+		* ``bartlett``
+		* ``parzen``
+		* ``bohman``
+		* ``blackmanharris``
+		* ``nuttall``
+		* ``barthann``
+		* ``kaiser`` (needs beta)
+		* ``gaussian`` (needs std)
+		* ``general_gaussian`` (needs power, width)
+		* ``slepian`` (needs width).
+	**/
+	public function rolling(window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Round a DataFrame to a variable number of decimal places.
 		
@@ -4905,6 +5278,10 @@ package pandas.core.frame;
 		Returns
 		-------
 		DataFrame object
+		
+		See Also
+		--------
+		numpy.around
 	**/
 	public function round(?decimals:Dynamic, ?out:Dynamic):Dynamic;
 	/**
@@ -4919,8 +5296,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4950,8 +5327,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -4981,8 +5358,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -5037,6 +5414,48 @@ package pandas.core.frame;
 		Returns
 		-------
 		A new object of same type as caller.
+		
+		Examples
+		--------
+		
+		Generate an example ``Series`` and ``DataFrame``:
+		
+		>>> s = pd.Series(np.random.randn(50))
+		>>> s.head()
+		0   -0.038497
+		1    1.820773
+		2   -0.972766
+		3   -1.598270
+		4   -1.095526
+		dtype: float64
+		>>> df = pd.DataFrame(np.random.randn(50, 4), columns=list('ABCD'))
+		>>> df.head()
+		          A         B         C         D
+		0  0.016443 -2.318952 -0.566372 -1.028078
+		1 -1.051921  0.438836  0.658280 -0.175797
+		2 -1.243569 -0.364626 -0.215065  0.057736
+		3  1.768216  0.404512 -0.385604 -1.457834
+		4  1.072446 -1.137172  0.314194 -0.046661
+		
+		Next extract a random sample from both of these objects...
+		
+		3 random elements from the ``Series``:
+		
+		>>> s.sample(n=3)
+		27   -0.994689
+		55   -1.049016
+		67   -0.224565
+		dtype: float64
+		
+		And a random 10% of the ``DataFrame`` with replacement:
+		
+		>>> df.sample(frac=0.1, replace=True)
+		           A         B         C         D
+		35  1.981780  0.142106  1.817165 -0.290805
+		49 -1.336199 -0.448634 -0.789640  0.217116
+		40  0.823173 -0.078816  1.009536  1.015108
+		15  1.421154 -0.055301 -1.922594 -0.019696
+		6  -0.148339  0.832938  1.787600 -1.383767
 	**/
 	public function sample(?n:Dynamic, ?frac:Dynamic, ?replace:Dynamic, ?weights:Dynamic, ?random_state:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -5286,7 +5705,8 @@ package pandas.core.frame;
 		inplace : boolean, default False
 		    Sort the DataFrame without creating a new instance
 		kind : {'quicksort', 'mergesort', 'heapsort'}, optional
-		    This option is only applied when sorting on a single column or label.
+		    This option is only applied when sorting on a single column or
+		    label.
 		na_position : {'first', 'last'} (optional, default='last')
 		    'first' puts NaNs at the beginning
 		    'last' puts NaNs at the end
@@ -5313,14 +5733,15 @@ package pandas.core.frame;
 		inplace : bool
 		    if True, perform operation in-place
 		kind : {`quicksort`, `mergesort`, `heapsort`}
-		     Choice of sorting algorithm. See also ndarray.np.sort for more information.
-		     `mergesort` is the only stable algorithm. For DataFrames, this option is
-		     only applied when sorting on a single column or label.
+		     Choice of sorting algorithm. See also ndarray.np.sort for more
+		     information.  `mergesort` is the only stable algorithm. For
+		     DataFrames, this option is only applied when sorting on a single
+		     column or label.
 		na_position : {'first', 'last'}
 		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
 		sort_remaining : bool
-		    if true and sorting by level and index is multilevel, sort by other levels
-		    too (in order) after sorting by specified level
+		    if true and sorting by level and index is multilevel, sort by other
+		    levels too (in order) after sorting by specified level
 		
 		Returns
 		-------
@@ -5337,14 +5758,16 @@ package pandas.core.frame;
 		by : string name or list of names which refer to the axis items
 		axis : index, columns to direct sorting
 		ascending : bool or list of bool
-		     Sort ascending vs. descending. Specify list for multiple sort orders.
-		     If this is a list of bools, must match the length of the by
+		     Sort ascending vs. descending. Specify list for multiple sort
+		     orders.  If this is a list of bools, must match the length of
+		     the by.
 		inplace : bool
 		     if True, perform operation in-place
 		kind : {`quicksort`, `mergesort`, `heapsort`}
-		     Choice of sorting algorithm. See also ndarray.np.sort for more information.
-		     `mergesort` is the only stable algorithm. For DataFrames, this option is
-		     only applied when sorting on a single column or label.
+		     Choice of sorting algorithm. See also ndarray.np.sort for more
+		     information.  `mergesort` is the only stable algorithm. For
+		     DataFrames, this option is only applied when sorting on a single
+		     column or label.
 		na_position : {'first', 'last'}
 		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
 		
@@ -5378,7 +5801,7 @@ package pandas.core.frame;
 	**/
 	public function sortlevel(?level:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?sort_remaining:Dynamic):pandas.DataFrame;
 	/**
-		squeeze length 1 dimensions 
+		Squeeze length 1 dimensions.
 	**/
 	public function squeeze():Dynamic;
 	/**
@@ -5415,7 +5838,7 @@ package pandas.core.frame;
 	**/
 	public function stack(?level:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
-		Return unbiased standard deviation over requested axis.
+		Return sample standard deviation over requested axis.
 		
 		Normalized by N-1 by default. This can be changed using the ddof argument
 		
@@ -5445,7 +5868,7 @@ package pandas.core.frame;
 		
 		See Also
 		--------
-		pandas.core.Styler
+		pandas.core.style.Styler
 	**/
 	public var style : Dynamic;
 	/**
@@ -5460,8 +5883,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -5491,8 +5914,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -5650,7 +6073,8 @@ package pandas.core.frame;
 		date_format : string, default None
 		    Format string for datetime objects
 		decimal: string, default '.'
-		    Character recognized as decimal separator. E.g. use ',' for European data
+		    Character recognized as decimal separator. E.g. use ',' for
+		    European data
 		
 		    .. versionadded:: 0.16.0
 	**/
@@ -5766,12 +6190,16 @@ package pandas.core.frame;
 		    'fail': If table exists, do nothing.
 		    'replace': If table exists, drop it, recreate it, and insert data.
 		    'append': If table exists, insert data. Create if does not exist.
+		private_key : str (optional)
+		    Service account private key in JSON format. Can be file path
+		    or string contents. This is useful for remote server
+		    authentication (eg. jupyter iPython notebook on remote host)
 		
 		    .. versionadded:: 0.17.0
 	**/
-	public function to_gbq(destination_table:Dynamic, project_id:Dynamic, ?chunksize:Dynamic, ?verbose:Dynamic, ?reauth:Dynamic, ?if_exists:Dynamic):Dynamic;
+	public function to_gbq(destination_table:Dynamic, project_id:Dynamic, ?chunksize:Dynamic, ?verbose:Dynamic, ?reauth:Dynamic, ?if_exists:Dynamic, ?private_key:Dynamic):Dynamic;
 	/**
-		activate the HDFStore
+		Activate the HDFStore.
 		
 		Parameters
 		----------
@@ -5828,7 +6256,10 @@ package pandas.core.frame;
 		max_cols : int, optional
 		    Maximum number of columns to show before truncating. If None, show
 		    all.
+		decimal : string, default '.'
+		    Character recognized as decimal separator, e.g. ',' in Europe
 		
+		    .. versionadded:: 0.18.0
 		
 		Parameters
 		----------
@@ -5865,7 +6296,7 @@ package pandas.core.frame;
 		-------
 		formatted : string (or unicode, depending on data and options)
 	**/
-	public function to_html(?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?colSpace:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?justify:Dynamic, ?bold_rows:Dynamic, ?classes:Dynamic, ?escape:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?notebook:Dynamic):Dynamic;
+	public function to_html(?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?colSpace:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?justify:Dynamic, ?bold_rows:Dynamic, ?classes:Dynamic, ?escape:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?notebook:Dynamic, ?decimal:Dynamic):Dynamic;
 	/**
 		Convert the object to a JSON string.
 		
@@ -5929,13 +6360,22 @@ package pandas.core.frame;
 		    Make the row labels bold in the output
 		column_format : str, default None
 		    The columns format as specified in `LaTeX table format
-		    <https://en.wikibooks.org/wiki/LaTeX/Tables>`__ e.g 'rcl' for 3 columns
-		longtable : boolean, default False
+		    <https://en.wikibooks.org/wiki/LaTeX/Tables>`__ e.g 'rcl' for 3
+		    columns
+		longtable : boolean, default will be read from the pandas config module
+		    default: False
 		    Use a longtable environment instead of tabular. Requires adding
 		    a \usepackage{longtable} to your LaTeX preamble.
-		escape : boolean, default True
+		escape : boolean, default will be read from the pandas config module
+		    default: True
 		    When set to False prevents from escaping latex special
 		    characters in column names.
+		encoding : str, default None
+		    Default encoding is ascii in Python 2 and utf-8 in Python 3
+		decimal : string, default '.'
+		    Character recognized as decimal separator, e.g. ',' in Europe
+		
+		    .. versionadded:: 0.18.0
 		
 		
 		Parameters
@@ -5969,7 +6409,7 @@ package pandas.core.frame;
 		-------
 		formatted : string (or unicode, depending on data and options)
 	**/
-	public function to_latex(?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?colSpace:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?bold_rows:Dynamic, ?column_format:Dynamic, ?longtable:Dynamic, ?escape:Dynamic):Dynamic;
+	public function to_latex(?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?colSpace:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?bold_rows:Dynamic, ?column_format:Dynamic, ?longtable:Dynamic, ?escape:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		
@@ -5985,7 +6425,7 @@ package pandas.core.frame;
 		compress : type of compressor (zlib or blosc), default to None (no
 		    compression)
 	**/
-	public function to_msgpack(?path_or_buf:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function to_msgpack(?path_or_buf:Dynamic, ?encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Transform long (stacked) format (DataFrame) into wide (3D, Panel)
 		format.
@@ -6016,7 +6456,7 @@ package pandas.core.frame;
 	**/
 	public function to_period(?freq:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Pickle (serialize) object to input file path
+		Pickle (serialize) object to input file path.
 		
 		Parameters
 		----------
@@ -6067,8 +6507,8 @@ package pandas.core.frame;
 		    If a DBAPI2 object, only sqlite3 is supported.
 		flavor : {'sqlite', 'mysql'}, default 'sqlite'
 		    The flavor of SQL to use. Ignored when using SQLAlchemy engine.
-		    'mysql' is deprecated and will be removed in future versions, but it
-		    will be further supported through SQLAlchemy engines.
+		    'mysql' is deprecated and will be removed in future versions, but
+		    it will be further supported through SQLAlchemy engines.
 		schema : string, default None
 		    Specify the schema (if database flavor supports this). If None, use
 		    default schema.
@@ -6180,6 +6620,91 @@ package pandas.core.frame;
 	public function to_timestamp(?freq:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
 	public function to_wide(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Return an xarray object from the pandas object.
+		
+		Returns
+		-------
+		a DataArray for a Series
+		a Dataset for a DataFrame
+		a DataArray for higher dims
+		
+		Examples
+		--------
+		>>> df = pd.DataFrame({'A' : [1, 1, 2],
+		                       'B' : ['foo', 'bar', 'foo'],
+		                       'C' : np.arange(4.,7)})
+		>>> df
+		   A    B    C
+		0  1  foo  4.0
+		1  1  bar  5.0
+		2  2  foo  6.0
+		
+		>>> df.to_xarray()
+		<xarray.Dataset>
+		Dimensions:  (index: 3)
+		Coordinates:
+		  * index    (index) int64 0 1 2
+		Data variables:
+		    A        (index) int64 1 1 2
+		    B        (index) object 'foo' 'bar' 'foo'
+		    C        (index) float64 4.0 5.0 6.0
+		
+		>>> df = pd.DataFrame({'A' : [1, 1, 2],
+		                       'B' : ['foo', 'bar', 'foo'],
+		                       'C' : np.arange(4.,7)}
+		                     ).set_index(['B','A'])
+		>>> df
+		         C
+		B   A
+		foo 1  4.0
+		bar 1  5.0
+		foo 2  6.0
+		
+		>>> df.to_xarray()
+		<xarray.Dataset>
+		Dimensions:  (A: 2, B: 2)
+		Coordinates:
+		  * B        (B) object 'bar' 'foo'
+		  * A        (A) int64 1 2
+		Data variables:
+		    C        (B, A) float64 5.0 nan 4.0 6.0
+		
+		>>> p = pd.Panel(np.arange(24).reshape(4,3,2),
+		                 items=list('ABCD'),
+		                 major_axis=pd.date_range('20130101', periods=3),
+		                 minor_axis=['first', 'second'])
+		>>> p
+		<class 'pandas.core.panel.Panel'>
+		Dimensions: 4 (items) x 3 (major_axis) x 2 (minor_axis)
+		Items axis: A to D
+		Major_axis axis: 2013-01-01 00:00:00 to 2013-01-03 00:00:00
+		Minor_axis axis: first to second
+		
+		>>> p.to_xarray()
+		<xarray.DataArray (items: 4, major_axis: 3, minor_axis: 2)>
+		array([[[ 0,  1],
+		        [ 2,  3],
+		        [ 4,  5]],
+		       [[ 6,  7],
+		        [ 8,  9],
+		        [10, 11]],
+		       [[12, 13],
+		        [14, 15],
+		        [16, 17]],
+		       [[18, 19],
+		        [20, 21],
+		        [22, 23]]])
+		Coordinates:
+		  * items       (items) object 'A' 'B' 'C' 'D'
+		  * major_axis  (major_axis) datetime64[ns] 2013-01-01 2013-01-02 2013-01-03  # noqa
+		  * minor_axis  (minor_axis) object 'first' 'second'
+		
+		Notes
+		-----
+		See the `xarray docs <http://xarray.pydata.org/en/stable/>`__
+	**/
+	public function to_xarray():Dynamic;
+	/**
 		Transpose index and columns
 	**/
 	public function transpose():Dynamic;
@@ -6195,8 +6720,8 @@ package pandas.core.frame;
 		axis : {0, 1, 'index', 'columns'}
 		    For Series input, axis to match Series index on
 		fill_value : None or float value, default None
-		    Fill missing (NaN) values with this value. If both DataFrame locations are
-		    missing, the result will be missing
+		    Fill missing (NaN) values with this value. If both DataFrame
+		    locations are missing, the result will be missing
 		level : int or name
 		    Broadcast across a level, matching Index values on the
 		    passed MultiIndex level
@@ -6234,7 +6759,7 @@ package pandas.core.frame;
 	**/
 	public function truncate(?before:Dynamic, ?after:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Shift the time index, using the index's frequency if available
+		Shift the time index, using the index's frequency if available.
 		
 		Parameters
 		----------
@@ -6279,7 +6804,7 @@ package pandas.core.frame;
 	**/
 	public function tz_convert(tz:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Localize tz-naive TimeSeries to target time zone
+		Localize tz-naive TimeSeries to target time zone.
 		
 		Parameters
 		----------
@@ -6291,11 +6816,14 @@ package pandas.core.frame;
 		copy : boolean, default True
 		    Also make a copy of the underlying data
 		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
-		    - 'infer' will attempt to infer fall dst-transition hours based on order
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
 		    - bool-ndarray where True signifies a DST time, False designates
-		      a non-DST time (note that this flag is only applicable for ambiguous times)
+		      a non-DST time (note that this flag is only applicable for
+		      ambiguous times)
 		    - 'NaT' will return NaT where there are ambiguous times
-		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
 		infer_dst : boolean, default False (DEPRECATED)
 		    Attempt to infer fall dst-transition hours based on order
 		
@@ -6320,6 +6848,10 @@ package pandas.core.frame;
 		----------
 		level : int, string, or list of these, default -1 (last level)
 		    Level(s) of index to unstack, can pass level name
+		fill_value : replace NaN with this value if the unstack produces
+		    missing values
+		
+		    .. versionadded: 0.18.0
 		
 		See also
 		--------
@@ -6360,7 +6892,7 @@ package pandas.core.frame;
 		-------
 		unstacked : DataFrame or Series
 	**/
-	public function unstack(?level:Dynamic):Dynamic;
+	public function unstack(?level:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Modify DataFrame in place using non-NA values from passed
 		DataFrame. Aligns on indices
@@ -6422,7 +6954,8 @@ package pandas.core.frame;
 	public function _var(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?ddof:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an object of same shape as self and whose corresponding
-		entries are from self where cond is True and otherwise are from other.
+		entries are from self where cond is True and otherwise are from
+		other.
 		
 		Parameters
 		----------
@@ -6444,8 +6977,8 @@ package pandas.core.frame;
 	**/
 	public function where(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
-		Returns a cross-section (row(s) or column(s)) from the Series/DataFrame.
-		Defaults to cross-section on the rows (axis=0).
+		Returns a cross-section (row(s) or column(s)) from the
+		Series/DataFrame. Defaults to cross-section on the rows (axis=0).
 		
 		Parameters
 		----------
@@ -6508,8 +7041,9 @@ package pandas.core.frame;
 		-----
 		xs is only for getting, not setting values.
 		
-		MultiIndex Slicers is a generic way to get/set values on any level or levels
-		it is a superset of xs functionality, see :ref:`MultiIndex Slicers <advanced.mi_slicers>`
+		MultiIndex Slicers is a generic way to get/set values on any level or
+		levels.  It is a superset of xs functionality, see
+		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
 	public function xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?drop_level:Dynamic):Dynamic;
 }

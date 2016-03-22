@@ -16,6 +16,7 @@ package docutils.writers.odf_odt;
 	static public var META_NAMESPACE_DICT : Dynamic;
 	static public var METNSD : Dynamic;
 	static public var NAME_SPACE_1 : Dynamic;
+	static public var PIL : Dynamic;
 	static public var SNSD : Dynamic;
 	static public var SPACES_PATTERN : Dynamic;
 	static public var STYLES_NAMESPACE_ATTRIB : Dynamic;
@@ -43,5 +44,6 @@ package docutils.writers.odf_odt;
 	static public function add_ns(tag:Dynamic, ?nsdict:Dynamic):Dynamic;
 	static public function escape_cdata(text:Dynamic):Dynamic;
 	static public function fix_ns(tag:Dynamic, attrib:Dynamic, nsdict:Dynamic):Dynamic;
+	static public var pygments : Dynamic;
 	static public function split_words(line:Dynamic):Dynamic;
 }

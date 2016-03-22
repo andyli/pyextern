@@ -24,7 +24,6 @@ package pandas.core.config_init;
 	static public var float_format_doc : Dynamic;
 	static public function get_default_val(pat:Dynamic):Dynamic;
 	static public function is_bool(x:Dynamic):Dynamic;
-	static public function is_float(x:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------
@@ -53,6 +52,9 @@ package pandas.core.config_init;
 	static public var pc_height_deprecation_warning : Dynamic;
 	static public var pc_height_doc : Dynamic;
 	static public var pc_large_repr_doc : Dynamic;
+	static public var pc_latex_escape : Dynamic;
+	static public var pc_latex_longtable : Dynamic;
+	static public var pc_latex_repr_doc : Dynamic;
 	static public var pc_line_width_deprecation_warning : Dynamic;
 	static public var pc_line_width_doc : Dynamic;
 	static public var pc_max_categories_doc : Dynamic;
@@ -62,6 +64,7 @@ package pandas.core.config_init;
 	static public var pc_max_rows_doc : Dynamic;
 	static public var pc_max_seq_items : Dynamic;
 	static public var pc_memory_usage_doc : Dynamic;
+	static public var pc_mpl_style_deprecation_warning : Dynamic;
 	static public var pc_mpl_style_doc : Dynamic;
 	static public var pc_multi_sparse_doc : Dynamic;
 	static public var pc_nb_repr_h_doc : Dynamic;

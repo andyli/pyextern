@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package pandas.sparse.panel;
-typedef Index = pandas.core.index.Index;
+typedef Index = pandas.indexes.base.Index;

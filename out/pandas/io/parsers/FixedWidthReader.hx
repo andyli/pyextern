@@ -46,6 +46,7 @@ package pandas.io.parsers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(f:Dynamic, colspecs:Dynamic, delimiter:Dynamic, comment:Dynamic):Void;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -104,5 +105,4 @@ package pandas.io.parsers;
 	public var __weakref__ : Dynamic;
 	public function detect_colspecs(?n:Dynamic):Dynamic;
 	public function get_rows(n:Dynamic):Dynamic;
-	public function next():Dynamic;
 }

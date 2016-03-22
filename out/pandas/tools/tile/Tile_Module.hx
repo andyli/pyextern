@@ -10,7 +10,6 @@ package pandas.tools.tile;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _bins_to_cuts(x:Dynamic, bins:Dynamic, ?right:Dynamic, ?labels:Dynamic, ?retbins:Dynamic, ?precision:Dynamic, ?name:Dynamic, ?include_lowest:Dynamic):Dynamic;
-	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _format_label(x:Dynamic, ?precision:Dynamic):Dynamic;
 	static public function _format_levels(bins:Dynamic, prec:Dynamic, ?right:Dynamic, ?include_lowest:Dynamic):Dynamic;
 	static public function _trim_zeros(x:Dynamic):Dynamic;
@@ -33,8 +32,9 @@ package pandas.tools.tile;
 		    right == True (the default), then the bins [1,2,3,4] indicate
 		    (1,2], (2,3], (3,4].
 		labels : array or boolean, default None
-		    Used as labels for the resulting bins. Must be of the same length as the resulting
-		    bins. If False, return only integer indicators of the bins.
+		    Used as labels for the resulting bins. Must be of the same length as
+		    the resulting bins. If False, return only integer indicators of the
+		    bins.
 		retbins : bool, optional
 		    Whether to return the bins or not. Can be useful if bins is given
 		    as a scalar.
@@ -46,9 +46,9 @@ package pandas.tools.tile;
 		Returns
 		-------
 		out : Categorical or Series or array of integers if labels is False
-		    The return type (Categorical or Series) depends on the input: a Series of type category if
-		    input is a Series else Categorical. Bins are represented as categories when categorical
-		    data is returned.
+		    The return type (Categorical or Series) depends on the input: a Series
+		    of type category if input is a Series else Categorical. Bins are
+		    represented as categories when categorical data is returned.
 		bins : ndarray of floats
 		    Returned only if `retbins` is True.
 		
@@ -65,10 +65,12 @@ package pandas.tools.tile;
 		Examples
 		--------
 		>>> pd.cut(np.array([.2, 1.4, 2.5, 6.2, 9.7, 2.1]), 3, retbins=True)
-		([(0.191, 3.367], (0.191, 3.367], (0.191, 3.367], (3.367, 6.533], (6.533, 9.7], (0.191, 3.367]]
+		([(0.191, 3.367], (0.191, 3.367], (0.191, 3.367], (3.367, 6.533],
+		  (6.533, 9.7], (0.191, 3.367]]
 		Categories (3, object): [(0.191, 3.367] < (3.367, 6.533] < (6.533, 9.7]],
 		array([ 0.1905    ,  3.36666667,  6.53333333,  9.7       ]))
-		>>> pd.cut(np.array([.2, 1.4, 2.5, 6.2, 9.7, 2.1]), 3, labels=["good","medium","bad"])
+		>>> pd.cut(np.array([.2, 1.4, 2.5, 6.2, 9.7, 2.1]), 3,
+		           labels=["good","medium","bad"])
 		[good, good, good, medium, bad, good]
 		Categories (3, object): [good < medium < bad]
 		>>> pd.cut(np.ones(5), 4, labels=False)
@@ -88,8 +90,9 @@ package pandas.tools.tile;
 		    Number of quantiles. 10 for deciles, 4 for quartiles, etc. Alternately
 		    array of quantiles, e.g. [0, .25, .5, .75, 1.] for quartiles
 		labels : array or boolean, default None
-		    Used as labels for the resulting bins. Must be of the same length as the resulting
-		    bins. If False, return only integer indicators of the bins.
+		    Used as labels for the resulting bins. Must be of the same length as
+		    the resulting bins. If False, return only integer indicators of the
+		    bins.
 		retbins : bool, optional
 		    Whether to return the bins or not. Can be useful if bins is given
 		    as a scalar.
@@ -99,9 +102,9 @@ package pandas.tools.tile;
 		Returns
 		-------
 		out : Categorical or Series or array of integers if labels is False
-		    The return type (Categorical or Series) depends on the input: a Series of type category if
-		    input is a Series else Categorical. Bins are represented as categories when categorical
-		    data is returned.
+		    The return type (Categorical or Series) depends on the input: a Series
+		    of type category if input is a Series else Categorical. Bins are
+		    represented as categories when categorical data is returned.
 		bins : ndarray of floats
 		    Returned only if `retbins` is True.
 		

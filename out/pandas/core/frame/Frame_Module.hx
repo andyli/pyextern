@@ -89,6 +89,13 @@ package pandas.core.frame;
 		    scope. Most users will **not** need to change this parameter.
 		target : a target object for assignment, optional, default is None
 		    essentially this is a passed in resolver
+		inplace : bool, default True
+		    If expression mutates, whether to modify object inplace or return
+		    copy with mutation.
+		
+		    WARNING: inplace=None currently falls back to to True, but
+		    in a future version, will default to False.  Use inplace=True
+		    explicitly rather than relying on the default.
 		
 		Returns
 		-------
@@ -107,7 +114,7 @@ package pandas.core.frame;
 		pandas.DataFrame.query
 		pandas.DataFrame.eval
 	**/
-	static public function _eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic):Dynamic;
+	static public function _eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
 	static public function _from_nested_dict(data:Dynamic):Dynamic;
 	static public function _get_names_from_index(data:Dynamic):Dynamic;
 	static public function _homogenize(data:Dynamic, index:Dynamic, ?dtype:Dynamic):Dynamic;
@@ -135,7 +142,7 @@ package pandas.core.frame;
 	**/
 	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public var _merge_doc : Dynamic;
-	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public var _np_version_under1p9 : Dynamic;
 	static public var _numeric_only_doc : Dynamic;
 	/**
 		we might have a array (or single object) that is datetime like,
@@ -373,10 +380,12 @@ package pandas.core.frame;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -429,7 +438,7 @@ package pandas.core.frame;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -455,14 +464,32 @@ package pandas.core.frame;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -492,7 +519,8 @@ package pandas.core.frame;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -553,12 +581,14 @@ package pandas.core.frame;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		

@@ -72,6 +72,7 @@ package pandas.io.stata;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function __next__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -112,7 +113,6 @@ package pandas.io.stata;
 	public var __weakref__ : Dynamic;
 	public function _calcsize(fmt:Dynamic):Dynamic;
 	public function _decode(s:Dynamic):Dynamic;
-	public function _decode_bytes(str:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var _default_encoding : Dynamic;
 	/**
 		Converts categorical columns to Categorical type.

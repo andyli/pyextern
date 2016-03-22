@@ -21,820 +21,1388 @@ package scipy.linalg.blas;
 	static public var _type_conv : Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
-		caxpy - Function signature:
-		  z = caxpy(x,y,[n,a,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  a := (1.0, 0.0) input complex
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  z : rank-1 array('F') with bounds (*) and y storage
+		z = caxpy(x,y,[n,a,offx,incx,offy,incy])
+		
+		Wrapper for ``caxpy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		a : input complex, optional
+		    Default: (1.0, 0.0)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		z : rank-1 array('F') with bounds (*) and y storage
 	**/
 	static public function caxpy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ccopy - Function signature:
-		  y = ccopy(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  y : rank-1 array('F') with bounds (*)
+		y = ccopy(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``ccopy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		y : rank-1 array('F') with bounds (*)
 	**/
 	static public function ccopy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cdotc - Function signature:
-		  xy = cdotc(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : complex
+		xy = cdotc(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``cdotc``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : complex
 	**/
 	static public function cdotc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cdotu - Function signature:
-		  xy = cdotu(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : complex
+		xy = cdotu(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``cdotu``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : complex
 	**/
 	static public function cdotu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cgemm - Function signature:
-		  c = cgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		  b : input rank-2 array('F') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  trans_a := 0 input int
-		  trans_b := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (m,n)
+		c = cgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
+		
+		Wrapper for ``cgemm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		b : input rank-2 array('F') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		trans_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function cgemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cgemv - Function signature:
-		  y = cgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (m,n)
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  y : input rank-1 array('F') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  trans := 0 input int
-		Return objects:
-		  y : rank-1 array('F') with bounds (ly)
+		y = cgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
+		
+		Wrapper for ``cgemv``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (m,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('F') with bounds (ly)
 	**/
 	static public function cgemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cgerc - Function signature:
-		  a = cgerc(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('F') with bounds (m)
-		  y : input rank-1 array('F') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := (0.0,0.0) input rank-2 array('F') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('F') with bounds (m,n)
+		a = cgerc(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``cgerc``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (m)
+		y : input rank-1 array('F') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('F') with bounds (m,n), optional
+		    Default: (0.0,0.0)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function cgerc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cgeru - Function signature:
-		  a = cgeru(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('F') with bounds (m)
-		  y : input rank-1 array('F') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := (0.0,0.0) input rank-2 array('F') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('F') with bounds (m,n)
+		a = cgeru(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``cgeru``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (m)
+		y : input rank-1 array('F') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('F') with bounds (m,n), optional
+		    Default: (0.0,0.0)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function cgeru(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chemm - Function signature:
-		  c = chemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		  b : input rank-2 array('F') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (m,n)
+		c = chemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``chemm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		b : input rank-2 array('F') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function chemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		chemv - Function signature:
-		  y = chemv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (n,n)
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  y : input rank-1 array('F') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  lower := 0 input int
-		Return objects:
-		  y : rank-1 array('F') with bounds (ly)
+		y = chemv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
+		
+		Wrapper for ``chemv``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (n,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('F') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('F') with bounds (ly)
 	**/
 	static public function chemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cher - Function signature:
-		  a = cher(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('F') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('F') with bounds (n,n)
+		a = cher(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``cher``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('F') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function cher(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cher2 - Function signature:
-		  a = cher2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  incy := 1 input int
-		  offy := 0 input int
-		  n := ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1) input int
-		  a : input rank-2 array('F') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('F') with bounds (n,n)
+		a = cher2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
+		
+		Wrapper for ``cher2``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1)
+		a : input rank-2 array('F') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function cher2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cher2k - Function signature:
-		  c = cher2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		  b : input rank-2 array('F') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (n,n)
+		c = cher2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``cher2k``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		b : input rank-2 array('F') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function cher2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cherk - Function signature:
-		  c = cherk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (n,n)
+		c = cherk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``cherk``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function cherk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		crotg - Function signature:
-		  c,s = crotg(a,b)
-		Required arguments:
-		  a : input complex
-		  b : input complex
-		Return objects:
-		  c : complex
-		  s : complex
+		c,s = crotg(a,b)
+		
+		Wrapper for ``crotg``.
+		
+		Parameters
+		----------
+		a : input complex
+		b : input complex
+		
+		Returns
+		-------
+		c : complex
+		s : complex
 	**/
 	static public function crotg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cscal - Function signature:
-		  x = cscal(a,x,[n,offx,incx])
-		Required arguments:
-		  a : input complex
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('F') with bounds (*)
+		x = cscal(a,x,[n,offx,incx])
+		
+		Wrapper for ``cscal``.
+		
+		Parameters
+		----------
+		a : input complex
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('F') with bounds (*)
 	**/
 	static public function cscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csrot - Function signature:
-		  x,y = csrot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		  c : input float
-		  s : input float
-		Optional arguments:
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('F') with bounds (*)
-		  y : rank-1 array('F') with bounds (*)
+		x,y = csrot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``csrot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		c : input float
+		s : input float
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('F') with bounds (*)
+		y : rank-1 array('F') with bounds (*)
 	**/
 	static public function csrot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csscal - Function signature:
-		  x = csscal(a,x,[n,offx,incx,overwrite_x])
-		Required arguments:
-		  a : input float
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('F') with bounds (*)
+		x = csscal(a,x,[n,offx,incx,overwrite_x])
+		
+		Wrapper for ``csscal``.
+		
+		Parameters
+		----------
+		a : input float
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('F') with bounds (*)
 	**/
 	static public function csscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		cswap - Function signature:
-		  x,y = cswap(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		  y : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('F') with bounds (*)
-		  y : rank-1 array('F') with bounds (*)
+		x,y = cswap(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``cswap``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		y : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('F') with bounds (*)
+		y : rank-1 array('F') with bounds (*)
 	**/
 	static public function cswap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csymm - Function signature:
-		  c = csymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		  b : input rank-2 array('F') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (m,n)
+		c = csymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``csymm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		b : input rank-2 array('F') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (m,n)
 	**/
 	static public function csymm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csyr - Function signature:
-		  a = csyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('F') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('F') with bounds (n,n)
+		a = csyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``csyr``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('F') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function csyr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csyr2k - Function signature:
-		  c = csyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		  b : input rank-2 array('F') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (n,n)
+		c = csyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``csyr2k``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		b : input rank-2 array('F') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function csyr2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		csyrk - Function signature:
-		  c = csyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,ka)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('F') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('F') with bounds (n,n)
+		c = csyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``csyrk``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('F') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('F') with bounds (n,n)
 	**/
 	static public function csyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ctrmm - Function signature:
-		  b = ctrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('F') with bounds (lda,k)
-		  b : input rank-2 array('F') with bounds (ldb,n)
-		Optional arguments:
-		  overwrite_b := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		  trans_a := 0 input int
-		  diag := 0 input int
-		Return objects:
-		  b : rank-2 array('F') with bounds (ldb,n)
+		b = ctrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``ctrmm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('F') with bounds (lda,k)
+		b : input rank-2 array('F') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		b : rank-2 array('F') with bounds (ldb,n)
 	**/
 	static public function ctrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ctrmv - Function signature:
-		  x = ctrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
-		Required arguments:
-		  a : input rank-2 array('F') with bounds (n,n)
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  lower := 0 input int
-		  trans := 0 input int
-		  unitdiag := 0 input int
-		Return objects:
-		  x : rank-1 array('F') with bounds (*)
+		x = ctrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		
+		Wrapper for ``ctrmv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (n,n)
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		unitdiag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-1 array('F') with bounds (*)
 	**/
 	static public function ctrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dasum - Function signature:
-		  s = dasum(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  s : float
+		s = dasum(x,[n,offx,incx])
+		
+		Wrapper for ``dasum``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		s : float
 	**/
 	static public function dasum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		daxpy - Function signature:
-		  z = daxpy(x,y,[n,a,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  a := 1.0 input float
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  z : rank-1 array('d') with bounds (*) and y storage
+		z = daxpy(x,y,[n,a,offx,incx,offy,incy])
+		
+		Wrapper for ``daxpy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		a : input float, optional
+		    Default: 1.0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		z : rank-1 array('d') with bounds (*) and y storage
 	**/
 	static public function daxpy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dcopy - Function signature:
-		  y = dcopy(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  y : rank-1 array('d') with bounds (*)
+		y = dcopy(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``dcopy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (*)
 	**/
 	static public function dcopy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ddot - Function signature:
-		  xy = ddot(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : float
+		xy = ddot(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``ddot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : float
 	**/
 	static public function ddot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dgemm - Function signature:
-		  c = dgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (lda,ka)
-		  b : input rank-2 array('d') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('d') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  trans_a := 0 input int
-		  trans_b := 0 input int
-		Return objects:
-		  c : rank-2 array('d') with bounds (m,n)
+		c = dgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
+		
+		Wrapper for ``dgemm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,ka)
+		b : input rank-2 array('d') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('d') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		trans_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('d') with bounds (m,n)
 	**/
 	static public function dgemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dgemv - Function signature:
-		  y = dgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (m,n)
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  beta := 0.0 input float
-		  y : input rank-1 array('d') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  trans := 0 input int
-		Return objects:
-		  y : rank-1 array('d') with bounds (ly)
+		y = dgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
+		
+		Wrapper for ``dgemv``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (m,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('d') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (ly)
 	**/
 	static public function dgemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dger - Function signature:
-		  a = dger(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('d') with bounds (m)
-		  y : input rank-1 array('d') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := 0.0 input rank-2 array('d') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('d') with bounds (m,n)
+		a = dger(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``dger``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('d') with bounds (m)
+		y : input rank-1 array('d') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('d') with bounds (m,n), optional
+		    Default: 0.0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (m,n)
 	**/
 	static public function dger(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
-		dnrm2 - Function signature:
-		  n2 = dnrm2(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  n2 : float
+		n2 = dnrm2(x,[n,offx,incx])
+		
+		Wrapper for ``dnrm2``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		n2 : float
 	**/
 	static public function dnrm2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		drot - Function signature:
-		  x,y = drot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		  c : input float
-		  s : input float
-		Optional arguments:
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (*)
-		  y : rank-1 array('d') with bounds (*)
+		x,y = drot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``drot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		c : input float
+		s : input float
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
+		y : rank-1 array('d') with bounds (*)
 	**/
 	static public function drot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		drotg - Function signature:
-		  c,s = drotg(a,b)
-		Required arguments:
-		  a : input float
-		  b : input float
-		Return objects:
-		  c : float
-		  s : float
+		c,s = drotg(a,b)
+		
+		Wrapper for ``drotg``.
+		
+		Parameters
+		----------
+		a : input float
+		b : input float
+		
+		Returns
+		-------
+		c : float
+		s : float
 	**/
 	static public function drotg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		drotm - Function signature:
-		  x,y = drotm(x,y,param,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		  param : input rank-1 array('d') with bounds (5)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (*)
-		  y : rank-1 array('d') with bounds (*)
+		x,y = drotm(x,y,param,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``drotm``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		param : input rank-1 array('d') with bounds (5)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
+		y : rank-1 array('d') with bounds (*)
 	**/
 	static public function drotm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		drotmg - Function signature:
-		  param = drotmg(d1,d2,x1,y1)
-		Required arguments:
-		  d1 : input float
-		  d2 : input float
-		  x1 : input float
-		  y1 : input float
-		Return objects:
-		  param : rank-1 array('d') with bounds (5)
+		param = drotmg(d1,d2,x1,y1)
+		
+		Wrapper for ``drotmg``.
+		
+		Parameters
+		----------
+		d1 : input float
+		d2 : input float
+		x1 : input float
+		y1 : input float
+		
+		Returns
+		-------
+		param : rank-1 array('d') with bounds (5)
 	**/
 	static public function drotmg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dscal - Function signature:
-		  x = dscal(a,x,[n,offx,incx])
-		Required arguments:
-		  a : input float
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (*)
+		x = dscal(a,x,[n,offx,incx])
+		
+		Wrapper for ``dscal``.
+		
+		Parameters
+		----------
+		a : input float
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
 	**/
 	static public function dscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dswap - Function signature:
-		  x,y = dswap(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (*)
-		  y : rank-1 array('d') with bounds (*)
+		x,y = dswap(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``dswap``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
+		y : rank-1 array('d') with bounds (*)
 	**/
 	static public function dswap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsymm - Function signature:
-		  c = dsymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (lda,ka)
-		  b : input rank-2 array('d') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('d') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('d') with bounds (m,n)
+		c = dsymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``dsymm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,ka)
+		b : input rank-2 array('d') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('d') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('d') with bounds (m,n)
 	**/
 	static public function dsymm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsymv - Function signature:
-		  y = dsymv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (n,n)
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  beta := 0.0 input float
-		  y : input rank-1 array('d') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  lower := 0 input int
-		Return objects:
-		  y : rank-1 array('d') with bounds (ly)
+		y = dsymv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
+		
+		Wrapper for ``dsymv``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (n,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('d') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (ly)
 	**/
 	static public function dsymv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsyr - Function signature:
-		  a = dsyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('d') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('d') with bounds (n,n)
+		a = dsyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``dsyr``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('d') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (n,n)
 	**/
 	static public function dsyr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsyr2 - Function signature:
-		  a = dsyr2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('d') with bounds (*)
-		  y : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  incy := 1 input int
-		  offy := 0 input int
-		  n := ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1) input int
-		  a : input rank-2 array('d') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('d') with bounds (n,n)
+		a = dsyr2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
+		
+		Wrapper for ``dsyr2``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1)
+		a : input rank-2 array('d') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('d') with bounds (n,n)
 	**/
 	static public function dsyr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsyr2k - Function signature:
-		  c = dsyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (lda,ka)
-		  b : input rank-2 array('d') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('d') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('d') with bounds (n,n)
+		c = dsyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``dsyr2k``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,ka)
+		b : input rank-2 array('d') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('d') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('d') with bounds (n,n)
 	**/
 	static public function dsyr2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dsyrk - Function signature:
-		  c = dsyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (lda,ka)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('d') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('d') with bounds (n,n)
+		c = dsyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``dsyrk``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('d') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('d') with bounds (n,n)
 	**/
 	static public function dsyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dtrmm - Function signature:
-		  b = dtrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('d') with bounds (lda,k)
-		  b : input rank-2 array('d') with bounds (ldb,n)
-		Optional arguments:
-		  overwrite_b := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		  trans_a := 0 input int
-		  diag := 0 input int
-		Return objects:
-		  b : rank-2 array('d') with bounds (ldb,n)
+		b = dtrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``dtrmm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('d') with bounds (lda,k)
+		b : input rank-2 array('d') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		b : rank-2 array('d') with bounds (ldb,n)
 	**/
 	static public function dtrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dtrmv - Function signature:
-		  x = dtrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
-		Required arguments:
-		  a : input rank-2 array('d') with bounds (n,n)
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  lower := 0 input int
-		  trans := 0 input int
-		  unitdiag := 0 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (*)
+		x = dtrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		
+		Wrapper for ``dtrmv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (n,n)
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		unitdiag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
 	**/
 	static public function dtrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dzasum - Function signature:
-		  s = dzasum(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  s : float
+		s = dzasum(x,[n,offx,incx])
+		
+		Wrapper for ``dzasum``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		s : float
 	**/
 	static public function dzasum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		dznrm2 - Function signature:
-		  n2 = dznrm2(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  n2 : float
+		n2 = dznrm2(x,[n,offx,incx])
+		
+		Wrapper for ``dznrm2``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		n2 : float
 	**/
 	static public function dznrm2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -901,872 +1469,1480 @@ package scipy.linalg.blas;
 	**/
 	static public function get_blas_funcs(names:Dynamic, ?arrays:Dynamic, ?dtype:Dynamic):Array<Dynamic>;
 	/**
-		icamax - Function signature:
-		  k = icamax(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  k : int
+		k = icamax(x,[n,offx,incx])
+		
+		Wrapper for ``icamax``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		k : int
 	**/
 	static public function icamax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		idamax - Function signature:
-		  k = idamax(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  k : int
+		k = idamax(x,[n,offx,incx])
+		
+		Wrapper for ``idamax``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		k : int
 	**/
 	static public function idamax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		isamax - Function signature:
-		  k = isamax(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  k : int
+		k = isamax(x,[n,offx,incx])
+		
+		Wrapper for ``isamax``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		k : int
 	**/
 	static public function isamax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		izamax - Function signature:
-		  k = izamax(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  k : int
+		k = izamax(x,[n,offx,incx])
+		
+		Wrapper for ``izamax``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		k : int
 	**/
 	static public function izamax(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		sasum - Function signature:
-		  s = sasum(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  s : float
+		s = sasum(x,[n,offx,incx])
+		
+		Wrapper for ``sasum``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		s : float
 	**/
 	static public function sasum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		saxpy - Function signature:
-		  z = saxpy(x,y,[n,a,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  a := 1.0 input float
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  z : rank-1 array('f') with bounds (*) and y storage
+		z = saxpy(x,y,[n,a,offx,incx,offy,incy])
+		
+		Wrapper for ``saxpy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		a : input float, optional
+		    Default: 1.0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		z : rank-1 array('f') with bounds (*) and y storage
 	**/
 	static public function saxpy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		scasum - Function signature:
-		  s = scasum(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  s : float
+		s = scasum(x,[n,offx,incx])
+		
+		Wrapper for ``scasum``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		s : float
 	**/
 	static public function scasum(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		scnrm2 - Function signature:
-		  n2 = scnrm2(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('F') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  n2 : float
+		n2 = scnrm2(x,[n,offx,incx])
+		
+		Wrapper for ``scnrm2``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('F') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		n2 : float
 	**/
 	static public function scnrm2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		scopy - Function signature:
-		  y = scopy(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  y : rank-1 array('f') with bounds (*)
+		y = scopy(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``scopy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		y : rank-1 array('f') with bounds (*)
 	**/
 	static public function scopy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sdot - Function signature:
-		  xy = sdot(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : float
+		xy = sdot(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``sdot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : float
 	**/
 	static public function sdot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sgemm - Function signature:
-		  c = sgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (lda,ka)
-		  b : input rank-2 array('f') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('f') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  trans_a := 0 input int
-		  trans_b := 0 input int
-		Return objects:
-		  c : rank-2 array('f') with bounds (m,n)
+		c = sgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
+		
+		Wrapper for ``sgemm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,ka)
+		b : input rank-2 array('f') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('f') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		trans_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('f') with bounds (m,n)
 	**/
 	static public function sgemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sgemv - Function signature:
-		  y = sgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (m,n)
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  beta := 0.0 input float
-		  y : input rank-1 array('f') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  trans := 0 input int
-		Return objects:
-		  y : rank-1 array('f') with bounds (ly)
+		y = sgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
+		
+		Wrapper for ``sgemv``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (m,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('f') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('f') with bounds (ly)
 	**/
 	static public function sgemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sger - Function signature:
-		  a = sger(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('f') with bounds (m)
-		  y : input rank-1 array('f') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := 0.0 input rank-2 array('f') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('f') with bounds (m,n)
+		a = sger(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``sger``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('f') with bounds (m)
+		y : input rank-1 array('f') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('f') with bounds (m,n), optional
+		    Default: 0.0
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (m,n)
 	**/
 	static public function sger(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		snrm2 - Function signature:
-		  n2 = snrm2(x,[n,offx,incx])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  n2 : float
+		n2 = snrm2(x,[n,offx,incx])
+		
+		Wrapper for ``snrm2``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		n2 : float
 	**/
 	static public function snrm2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		srot - Function signature:
-		  x,y = srot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		  c : input float
-		  s : input float
-		Optional arguments:
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('f') with bounds (*)
-		  y : rank-1 array('f') with bounds (*)
+		x,y = srot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``srot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		c : input float
+		s : input float
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('f') with bounds (*)
+		y : rank-1 array('f') with bounds (*)
 	**/
 	static public function srot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		srotg - Function signature:
-		  c,s = srotg(a,b)
-		Required arguments:
-		  a : input float
-		  b : input float
-		Return objects:
-		  c : float
-		  s : float
+		c,s = srotg(a,b)
+		
+		Wrapper for ``srotg``.
+		
+		Parameters
+		----------
+		a : input float
+		b : input float
+		
+		Returns
+		-------
+		c : float
+		s : float
 	**/
 	static public function srotg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		srotm - Function signature:
-		  x,y = srotm(x,y,param,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		  param : input rank-1 array('f') with bounds (5)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('f') with bounds (*)
-		  y : rank-1 array('f') with bounds (*)
+		x,y = srotm(x,y,param,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``srotm``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		param : input rank-1 array('f') with bounds (5)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('f') with bounds (*)
+		y : rank-1 array('f') with bounds (*)
 	**/
 	static public function srotm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		srotmg - Function signature:
-		  param = srotmg(d1,d2,x1,y1)
-		Required arguments:
-		  d1 : input float
-		  d2 : input float
-		  x1 : input float
-		  y1 : input float
-		Return objects:
-		  param : rank-1 array('f') with bounds (5)
+		param = srotmg(d1,d2,x1,y1)
+		
+		Wrapper for ``srotmg``.
+		
+		Parameters
+		----------
+		d1 : input float
+		d2 : input float
+		x1 : input float
+		y1 : input float
+		
+		Returns
+		-------
+		param : rank-1 array('f') with bounds (5)
 	**/
 	static public function srotmg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sscal - Function signature:
-		  x = sscal(a,x,[n,offx,incx])
-		Required arguments:
-		  a : input float
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('f') with bounds (*)
+		x = sscal(a,x,[n,offx,incx])
+		
+		Wrapper for ``sscal``.
+		
+		Parameters
+		----------
+		a : input float
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('f') with bounds (*)
 	**/
 	static public function sscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		sswap - Function signature:
-		  x,y = sswap(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('f') with bounds (*)
-		  y : rank-1 array('f') with bounds (*)
+		x,y = sswap(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``sswap``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('f') with bounds (*)
+		y : rank-1 array('f') with bounds (*)
 	**/
 	static public function sswap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssymm - Function signature:
-		  c = ssymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (lda,ka)
-		  b : input rank-2 array('f') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('f') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('f') with bounds (m,n)
+		c = ssymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``ssymm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,ka)
+		b : input rank-2 array('f') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('f') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('f') with bounds (m,n)
 	**/
 	static public function ssymm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssymv - Function signature:
-		  y = ssymv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (n,n)
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  beta := 0.0 input float
-		  y : input rank-1 array('f') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  lower := 0 input int
-		Return objects:
-		  y : rank-1 array('f') with bounds (ly)
+		y = ssymv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
+		
+		Wrapper for ``ssymv``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (n,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		y : input rank-1 array('f') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('f') with bounds (ly)
 	**/
 	static public function ssymv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssyr - Function signature:
-		  a = ssyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('f') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('f') with bounds (n,n)
+		a = ssyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``ssyr``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('f') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (n,n)
 	**/
 	static public function ssyr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssyr2 - Function signature:
-		  a = ssyr2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input float
-		  x : input rank-1 array('f') with bounds (*)
-		  y : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  incy := 1 input int
-		  offy := 0 input int
-		  n := ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1) input int
-		  a : input rank-2 array('f') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('f') with bounds (n,n)
+		a = ssyr2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
+		
+		Wrapper for ``ssyr2``.
+		
+		Parameters
+		----------
+		alpha : input float
+		x : input rank-1 array('f') with bounds (*)
+		y : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1)
+		a : input rank-2 array('f') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('f') with bounds (n,n)
 	**/
 	static public function ssyr2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssyr2k - Function signature:
-		  c = ssyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (lda,ka)
-		  b : input rank-2 array('f') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('f') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('f') with bounds (n,n)
+		c = ssyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``ssyr2k``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,ka)
+		b : input rank-2 array('f') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('f') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('f') with bounds (n,n)
 	**/
 	static public function ssyr2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ssyrk - Function signature:
-		  c = ssyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (lda,ka)
-		Optional arguments:
-		  beta := 0.0 input float
-		  c : input rank-2 array('f') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('f') with bounds (n,n)
+		c = ssyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``ssyrk``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input float, optional
+		    Default: 0.0
+		c : input rank-2 array('f') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('f') with bounds (n,n)
 	**/
 	static public function ssyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		strmm - Function signature:
-		  b = strmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
-		Required arguments:
-		  alpha : input float
-		  a : input rank-2 array('f') with bounds (lda,k)
-		  b : input rank-2 array('f') with bounds (ldb,n)
-		Optional arguments:
-		  overwrite_b := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		  trans_a := 0 input int
-		  diag := 0 input int
-		Return objects:
-		  b : rank-2 array('f') with bounds (ldb,n)
+		b = strmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``strmm``.
+		
+		Parameters
+		----------
+		alpha : input float
+		a : input rank-2 array('f') with bounds (lda,k)
+		b : input rank-2 array('f') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		b : rank-2 array('f') with bounds (ldb,n)
 	**/
 	static public function strmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		strmv - Function signature:
-		  x = strmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
-		Required arguments:
-		  a : input rank-2 array('f') with bounds (n,n)
-		  x : input rank-1 array('f') with bounds (*)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  lower := 0 input int
-		  trans := 0 input int
-		  unitdiag := 0 input int
-		Return objects:
-		  x : rank-1 array('f') with bounds (*)
+		x = strmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		
+		Wrapper for ``strmv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (n,n)
+		x : input rank-1 array('f') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		unitdiag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-1 array('f') with bounds (*)
 	**/
 	static public function strmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zaxpy - Function signature:
-		  z = zaxpy(x,y,[n,a,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  a := (1.0, 0.0) input complex
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  z : rank-1 array('D') with bounds (*) and y storage
+		z = zaxpy(x,y,[n,a,offx,incx,offy,incy])
+		
+		Wrapper for ``zaxpy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		a : input complex, optional
+		    Default: (1.0, 0.0)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		z : rank-1 array('D') with bounds (*) and y storage
 	**/
 	static public function zaxpy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zcopy - Function signature:
-		  y = zcopy(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  y : rank-1 array('D') with bounds (*)
+		y = zcopy(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``zcopy``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		y : rank-1 array('D') with bounds (*)
 	**/
 	static public function zcopy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zdotc - Function signature:
-		  xy = zdotc(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : complex
+		xy = zdotc(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``zdotc``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : complex
 	**/
 	static public function zdotc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zdotu - Function signature:
-		  xy = zdotu(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  xy : complex
+		xy = zdotu(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``zdotu``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		xy : complex
 	**/
 	static public function zdotu(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zdrot - Function signature:
-		  x,y = zdrot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		  c : input float
-		  s : input float
-		Optional arguments:
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  overwrite_y := 0 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('D') with bounds (*)
-		  y : rank-1 array('D') with bounds (*)
+		x,y = zdrot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
+		
+		Wrapper for ``zdrot``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		c : input float
+		s : input float
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('D') with bounds (*)
+		y : rank-1 array('D') with bounds (*)
 	**/
 	static public function zdrot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zdscal - Function signature:
-		  x = zdscal(a,x,[n,offx,incx,overwrite_x])
-		Required arguments:
-		  a : input float
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('D') with bounds (*)
+		x = zdscal(a,x,[n,offx,incx,overwrite_x])
+		
+		Wrapper for ``zdscal``.
+		
+		Parameters
+		----------
+		a : input float
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('D') with bounds (*)
 	**/
 	static public function zdscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zgemm - Function signature:
-		  c = zgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		  b : input rank-2 array('D') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  trans_a := 0 input int
-		  trans_b := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (m,n)
+		c = zgemm(alpha,a,b,[beta,c,trans_a,trans_b,overwrite_c])
+		
+		Wrapper for ``zgemm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		b : input rank-2 array('D') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		trans_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zgemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zgemv - Function signature:
-		  y = zgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (m,n)
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  y : input rank-1 array('D') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  trans := 0 input int
-		Return objects:
-		  y : rank-1 array('D') with bounds (ly)
+		y = zgemv(alpha,a,x,[beta,y,offx,incx,offy,incy,trans,overwrite_y])
+		
+		Wrapper for ``zgemv``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (m,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		trans : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('D') with bounds (ly)
 	**/
 	static public function zgemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zgerc - Function signature:
-		  a = zgerc(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('D') with bounds (m)
-		  y : input rank-1 array('D') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := (0.0,0.0) input rank-2 array('D') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('D') with bounds (m,n)
+		a = zgerc(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``zgerc``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (m)
+		y : input rank-1 array('D') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('D') with bounds (m,n), optional
+		    Default: (0.0,0.0)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zgerc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zgeru - Function signature:
-		  a = zgeru(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('D') with bounds (m)
-		  y : input rank-1 array('D') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 1 input int
-		  incx := 1 input int
-		  overwrite_y := 1 input int
-		  incy := 1 input int
-		  a := (0.0,0.0) input rank-2 array('D') with bounds (m,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('D') with bounds (m,n)
+		a = zgeru(alpha,x,y,[incx,incy,a,overwrite_x,overwrite_y,overwrite_a])
+		
+		Wrapper for ``zgeru``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (m)
+		y : input rank-1 array('D') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 1
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 1
+		incy : input int, optional
+		    Default: 1
+		a : input rank-2 array('D') with bounds (m,n), optional
+		    Default: (0.0,0.0)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zgeru(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zhemm - Function signature:
-		  c = zhemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		  b : input rank-2 array('D') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (m,n)
+		c = zhemm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``zhemm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		b : input rank-2 array('D') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zhemm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zhemv - Function signature:
-		  y = zhemv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (n,n)
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  y : input rank-1 array('D') with bounds (ly)
-		  overwrite_y := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		  lower := 0 input int
-		Return objects:
-		  y : rank-1 array('D') with bounds (ly)
+		y = zhemv(alpha,a,x,[beta,y,offx,incx,offy,incy,lower,overwrite_y])
+		
+		Wrapper for ``zhemv``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (n,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		y : input rank-1 array('D') with bounds (ly)
+		overwrite_y : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('D') with bounds (ly)
 	**/
 	static public function zhemv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zher - Function signature:
-		  a = zher(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('D') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('D') with bounds (n,n)
+		a = zher(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``zher``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('D') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zher(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zher2 - Function signature:
-		  a = zher2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  incy := 1 input int
-		  offy := 0 input int
-		  n := ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1) input int
-		  a : input rank-2 array('D') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('D') with bounds (n,n)
+		a = zher2(alpha,x,y,[lower,incx,offx,incy,offy,n,a,overwrite_a])
+		
+		Wrapper for ``zher2``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: ((len(x)-1-offx)/abs(incx)+1 <=(len(y)-1-offy)/abs(incy)+1 ?(len(x)-1-offx)/abs(incx)+1 :(len(y)-1-offy)/abs(incy)+1)
+		a : input rank-2 array('D') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zher2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zher2k - Function signature:
-		  c = zher2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		  b : input rank-2 array('D') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (n,n)
+		c = zher2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``zher2k``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		b : input rank-2 array('D') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zher2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zherk - Function signature:
-		  c = zherk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (n,n)
+		c = zherk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``zherk``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zherk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zrotg - Function signature:
-		  c,s = zrotg(a,b)
-		Required arguments:
-		  a : input complex
-		  b : input complex
-		Return objects:
-		  c : complex
-		  s : complex
+		c,s = zrotg(a,b)
+		
+		Wrapper for ``zrotg``.
+		
+		Parameters
+		----------
+		a : input complex
+		b : input complex
+		
+		Returns
+		-------
+		c : complex
+		s : complex
 	**/
 	static public function zrotg(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zscal - Function signature:
-		  x = zscal(a,x,[n,offx,incx])
-		Required arguments:
-		  a : input complex
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		Return objects:
-		  x : rank-1 array('D') with bounds (*)
+		x = zscal(a,x,[n,offx,incx])
+		
+		Wrapper for ``zscal``.
+		
+		Parameters
+		----------
+		a : input complex
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('D') with bounds (*)
 	**/
 	static public function zscal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zswap - Function signature:
-		  x,y = zswap(x,y,[n,offx,incx,offy,incy])
-		Required arguments:
-		  x : input rank-1 array('D') with bounds (*)
-		  y : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  n := (len(x)-offx)/abs(incx) input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  offy := 0 input int
-		  incy := 1 input int
-		Return objects:
-		  x : rank-1 array('D') with bounds (*)
-		  y : rank-1 array('D') with bounds (*)
+		x,y = zswap(x,y,[n,offx,incx,offy,incy])
+		
+		Wrapper for ``zswap``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('D') with bounds (*)
+		y : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-offx)/abs(incx)
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		x : rank-1 array('D') with bounds (*)
+		y : rank-1 array('D') with bounds (*)
 	**/
 	static public function zswap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zsymm - Function signature:
-		  c = zsymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		  b : input rank-2 array('D') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (m,n)
-		  overwrite_c := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (m,n)
+		c = zsymm(alpha,a,b,[beta,c,side,lower,overwrite_c])
+		
+		Wrapper for ``zsymm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		b : input rank-2 array('D') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (m,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (m,n)
 	**/
 	static public function zsymm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zsyr - Function signature:
-		  a = zsyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
-		Required arguments:
-		  alpha : input complex
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  lower := 0 input int
-		  incx := 1 input int
-		  offx := 0 input int
-		  n := (len(x)-1-offx)/abs(incx)+1 input int
-		  a : input rank-2 array('D') with bounds (n,n)
-		  overwrite_a := 0 input int
-		Return objects:
-		  a : rank-2 array('D') with bounds (n,n)
+		a = zsyr(alpha,x,[lower,incx,offx,n,a,overwrite_a])
+		
+		Wrapper for ``zsyr``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		lower : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		offx : input int, optional
+		    Default: 0
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		a : input rank-2 array('D') with bounds (n,n)
+		overwrite_a : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		a : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zsyr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zsyr2k - Function signature:
-		  c = zsyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		  b : input rank-2 array('D') with bounds (ldb,kb)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (n,n)
+		c = zsyr2k(alpha,a,b,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``zsyr2k``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		b : input rank-2 array('D') with bounds (ldb,kb)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zsyr2k(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zsyrk - Function signature:
-		  c = zsyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,ka)
-		Optional arguments:
-		  beta := (0.0, 0.0) input complex
-		  c : input rank-2 array('D') with bounds (n,n)
-		  overwrite_c := 0 input int
-		  trans := 0 input int
-		  lower := 0 input int
-		Return objects:
-		  c : rank-2 array('D') with bounds (n,n)
+		c = zsyrk(alpha,a,[beta,c,trans,lower,overwrite_c])
+		
+		Wrapper for ``zsyrk``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,ka)
+		
+		Other Parameters
+		----------------
+		beta : input complex, optional
+		    Default: (0.0, 0.0)
+		c : input rank-2 array('D') with bounds (n,n)
+		overwrite_c : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		c : rank-2 array('D') with bounds (n,n)
 	**/
 	static public function zsyrk(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ztrmm - Function signature:
-		  b = ztrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
-		Required arguments:
-		  alpha : input complex
-		  a : input rank-2 array('D') with bounds (lda,k)
-		  b : input rank-2 array('D') with bounds (ldb,n)
-		Optional arguments:
-		  overwrite_b := 0 input int
-		  side := 0 input int
-		  lower := 0 input int
-		  trans_a := 0 input int
-		  diag := 0 input int
-		Return objects:
-		  b : rank-2 array('D') with bounds (ldb,n)
+		b = ztrmm(alpha,a,b,[side,lower,trans_a,diag,overwrite_b])
+		
+		Wrapper for ``ztrmm``.
+		
+		Parameters
+		----------
+		alpha : input complex
+		a : input rank-2 array('D') with bounds (lda,k)
+		b : input rank-2 array('D') with bounds (ldb,n)
+		
+		Other Parameters
+		----------------
+		overwrite_b : input int, optional
+		    Default: 0
+		side : input int, optional
+		    Default: 0
+		lower : input int, optional
+		    Default: 0
+		trans_a : input int, optional
+		    Default: 0
+		diag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		b : rank-2 array('D') with bounds (ldb,n)
 	**/
 	static public function ztrmm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		ztrmv - Function signature:
-		  x = ztrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
-		Required arguments:
-		  a : input rank-2 array('D') with bounds (n,n)
-		  x : input rank-1 array('D') with bounds (*)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		  offx := 0 input int
-		  incx := 1 input int
-		  lower := 0 input int
-		  trans := 0 input int
-		  unitdiag := 0 input int
-		Return objects:
-		  x : rank-1 array('D') with bounds (*)
+		x = ztrmv(a,x,[offx,incx,lower,trans,unitdiag,overwrite_x])
+		
+		Wrapper for ``ztrmv``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (n,n)
+		x : input rank-1 array('D') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		lower : input int, optional
+		    Default: 0
+		trans : input int, optional
+		    Default: 0
+		unitdiag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-1 array('D') with bounds (*)
 	**/
 	static public function ztrmv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

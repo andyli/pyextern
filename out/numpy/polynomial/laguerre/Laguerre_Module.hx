@@ -162,7 +162,7 @@ package numpy.polynomial.laguerre;
 		>>> lagder([ 1.,  0.,  0., -4.,  3.], m=2)
 		array([ 1.,  2.,  3.])
 	**/
-	static public function lagder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function lagder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Laguerre series by another.
 		
@@ -593,7 +593,7 @@ package numpy.polynomial.laguerre;
 		>>> lagint([1,2], m=2, k=[1,2], lbnd=-1)
 		array([ 11.16666667,  -5.        ,  -3.        ,   2.        ])
 	**/
-	static public function lagint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function lagint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Laguerre series whose graph is a straight line.
 		

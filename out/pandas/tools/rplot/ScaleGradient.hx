@@ -11,7 +11,8 @@ package pandas.tools.rplot;
 		
 		Returns:
 		--------
-		A three element tuple representing an RGB somewhere between colour1 and colour2
+		A three element tuple representing an RGB somewhere between colour1 and
+		colour2
 	**/
 	public function __call__(data:Dynamic, index:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -56,8 +57,10 @@ package pandas.tools.rplot;
 		Parameters:
 		-----------
 		column: string, pandas DataFrame column name
-		colour1: tuple, 3 element tuple with float values representing an RGB colour
-		colour2: tuple, 3 element tuple with float values representing an RGB colour
+		colour1: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour2: tuple
+		    3 element tuple with float values representing an RGB colour
 	**/
 	@:native("__init__")
 	public function ___init__(column:Dynamic, colour1:Dynamic, colour2:Dynamic):Dynamic;
@@ -67,8 +70,10 @@ package pandas.tools.rplot;
 		Parameters:
 		-----------
 		column: string, pandas DataFrame column name
-		colour1: tuple, 3 element tuple with float values representing an RGB colour
-		colour2: tuple, 3 element tuple with float values representing an RGB colour
+		colour1: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour2: tuple
+		    3 element tuple with float values representing an RGB colour
 	**/
 	public function new(column:Dynamic, colour1:Dynamic, colour2:Dynamic):Void;
 	/**

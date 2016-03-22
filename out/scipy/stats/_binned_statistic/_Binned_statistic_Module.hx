@@ -153,7 +153,7 @@ package scipy.stats._binned_statistic;
 		>>> plt.legend(fontsize=10)
 		>>> plt.show()
 	**/
-	static public function binned_statistic(x:Dynamic, values:Dynamic, ?statistic:Dynamic, ?bins:Dynamic, ?range:Dynamic):Dynamic;
+	static public function binned_statistic(x:Dynamic, values:Dynamic, ?statistic:Dynamic, ?bins:Dynamic, ?range:Dynamic):Array<Dynamic>;
 	/**
 		Compute a bidimensional binned statistic for one or more sets of data.
 		

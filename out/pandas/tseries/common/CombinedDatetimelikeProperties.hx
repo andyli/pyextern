@@ -89,10 +89,10 @@ package pandas.tseries.common;
 	**/
 	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -157,6 +157,22 @@ package pandas.tseries.common;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function ceil(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Return a dataframe of the components (days, hours, minutes,
 		seconds, milliseconds, microseconds, nanoseconds) of the Timedeltas.
 		
@@ -198,6 +214,22 @@ package pandas.tseries.common;
 	**/
 	public var daysinmonth : Dynamic;
 	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function floor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		get/set the frequncy of the Index
 	**/
 	public var freq : Dynamic;
@@ -234,7 +266,8 @@ package pandas.tseries.common;
 	**/
 	public var microsecond : Dynamic;
 	/**
-		Number of microseconds (>= 0 and less than 1 second) for each element. 
+		Number of microseconds (>= 0 and less than 1 second) for each
+		element. 
 	**/
 	public var microseconds : Dynamic;
 	/**
@@ -250,7 +283,8 @@ package pandas.tseries.common;
 	**/
 	public var nanosecond : Dynamic;
 	/**
-		Number of nanoseconds (>= 0 and less than 1 microsecond) for each element. 
+		Number of nanoseconds (>= 0 and less than 1 microsecond) for each
+		element.
 	**/
 	public var nanoseconds : Dynamic;
 	/**
@@ -266,6 +300,22 @@ package pandas.tseries.common;
 	**/
 	public var quarter : Dynamic;
 	/**
+		round the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function round(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		The seconds of the datetime
 	**/
 	public var second : Dynamic;
@@ -276,8 +326,7 @@ package pandas.tseries.common;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in the `python string format doc
-		<https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format doc <https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		.. versionadded:: 0.17.0
 		
@@ -309,7 +358,8 @@ package pandas.tseries.common;
 	public function total_seconds(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var tz : Dynamic;
 	/**
-		Convert tz-aware DatetimeIndex from one time zone to another (using pytz/dateutil)
+		Convert tz-aware DatetimeIndex from one time zone to another (using
+		pytz/dateutil)
 		
 		Parameters
 		----------
@@ -329,8 +379,8 @@ package pandas.tseries.common;
 	**/
 	public function tz_convert(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
-		Localize tz-naive DatetimeIndex to given time zone (using pytz/dateutil),
-		or remove timezone from tz-aware DatetimeIndex
+		Localize tz-naive DatetimeIndex to given time zone (using
+		pytz/dateutil), or remove timezone from tz-aware DatetimeIndex
 		
 		Parameters
 		----------
@@ -339,11 +389,14 @@ package pandas.tseries.common;
 		    time zone of the TimeSeries.
 		    None will remove timezone holding local time.
 		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
-		    - 'infer' will attempt to infer fall dst-transition hours based on order
-		    - bool-ndarray where True signifies a DST time, False signifies
-		      a non-DST time (note that this flag is only applicable for ambiguous times)
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False signifies a
+		      non-DST time (note that this flag is only applicable for
+		      ambiguous times)
 		    - 'NaT' will return NaT where there are ambiguous times
-		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
 		infer_dst : boolean, default False (DEPRECATED)
 		    Attempt to infer fall dst-transition hours based on order
 		

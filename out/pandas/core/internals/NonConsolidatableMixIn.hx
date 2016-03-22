@@ -117,8 +117,8 @@ package pandas.core.internals;
 	public function get_values(?dtype:Dynamic):Dynamic;
 	public function iget(col:Dynamic):Dynamic;
 	/**
-		putmask the data to the block; we must be a single block and not generate
-		other blocks
+		putmask the data to the block; we must be a single block and not
+		generate other blocks
 		
 		return the resulting block
 		

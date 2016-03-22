@@ -222,7 +222,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyder(c,2,-1) # (d**2/d(-x)**2)(c) = 6 + 24x
 		array([  6.,  24.])
 	**/
-	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one polynomial by another.
 		
@@ -551,7 +551,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyint(c,scl=-2) # should return array([0, -2, -2, -2])
 		array([ 0., -2., -2., -2.])
 	**/
-	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Returns an array representing a linear polynomial.
 		
@@ -936,7 +936,7 @@ package numpy.polynomial.polynomial;
 		degree : int
 		    Degree of the series, one less than the number of coefficients.
 	**/
-	public function degree():Dynamic;
+	public function degree():Int;
 	/**
 		Differentiate.
 		
@@ -1185,7 +1185,7 @@ package numpy.polynomial.polynomial;
 		    x is equal to linspace(self.domain[0], self.domain[1], n) and
 		    y is the series evaluated at element of x.
 	**/
-	public function linspace(?n:Dynamic, ?domain:Dynamic):Dynamic;
+	public function linspace(?n:Dynamic, ?domain:Dynamic):numpy.Ndarray;
 	/**
 		Return the mapping parameters.
 		

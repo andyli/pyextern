@@ -13,13 +13,13 @@ package pandas.sparse.series;
 		Wrapper function for Series arithmetic operations, to avoid
 		code duplication.
 		
-		str_rep, default_axis, fill_zeros and eval_kwargs are not used, but are present
-		for compatibility.
+		str_rep, default_axis, fill_zeros and eval_kwargs are not used, but are
+		present for compatibility.
 	**/
 	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert a scipy.sparse.coo_matrix to a SparseSeries.
-		Use the defaults given in the SparseSeries constructor. 
+		Use the defaults given in the SparseSeries constructor.
 	**/
 	static public function _coo_to_sparse_series(A:Dynamic, ?dense_index:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
@@ -29,7 +29,7 @@ package pandas.sparse.series;
 	/**
 		Convert a SparseSeries to a scipy.sparse.coo_matrix using index
 		levels row_levels, column_levels as the row and column
-		labels respectively. Returns the sparse_matrix, row and column labels. 
+		labels respectively. Returns the sparse_matrix, row and column labels.
 	**/
 	static public function _sparse_series_to_coo(ss:Dynamic, ?row_levels:Dynamic, ?column_levels:Dynamic, ?sort_labels:Dynamic):Dynamic;
 	/**

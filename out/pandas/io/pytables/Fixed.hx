@@ -125,7 +125,8 @@ package pandas.io.pytables;
 	public var attrs : Dynamic;
 	public function copy():Dynamic;
 	/**
-		support fully deleting the node in its entirety (only) - where specification must be None 
+		support fully deleting the node in its entirety (only) - where
+		specification must be None
 	**/
 	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var format_type : Dynamic;

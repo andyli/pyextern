@@ -107,8 +107,7 @@ package pandas.core.strings;
 		Prevents setting additional attributes
 	**/
 	public function _freeze():Dynamic;
-	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic):Dynamic;
-	public function _wrap_result_expand(result:Dynamic, ?expand:Dynamic):Dynamic;
+	public function _wrap_result(result:Dynamic, ?use_codes:Dynamic, ?name:Dynamic, ?expand:Dynamic):Dynamic;
 	/**
 		Convert strings in the Series/Index to be capitalized.
 		Equivalent to :meth:`str.capitalize`.
@@ -127,7 +126,7 @@ package pandas.core.strings;
 		  If None, returns str concatenating strings of the Series
 		sep : string or None, default None
 		na_rep : string or None, default None
-		    If None, an NA in any array will propagate
+		    If None, NA in the series are ignored.
 		
 		Returns
 		-------
@@ -135,6 +134,15 @@ package pandas.core.strings;
 		
 		Examples
 		--------
+		When ``na_rep`` is `None` (default behavior), NaN value(s)
+		in the Series are ignored.
+		
+		>>> Series(['a','b',np.nan,'c']).str.cat(sep=' ')
+		'a b c'
+		
+		>>> Series(['a','b',np.nan,'c']).str.cat(sep=' ', na_rep='?')
+		'a b ? c'
+		
 		If ``others`` is specified, corresponding values are
 		concatenated with the separator. Result will be a Series of strings.
 		
@@ -214,13 +222,14 @@ package pandas.core.strings;
 	**/
 	public function count(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Decode character string in the Series/Index to unicode
-		using indicated encoding. Equivalent to :meth:`str.decode`.
+		Decode character string in the Series/Index using indicated encoding.
+		Equivalent to :meth:`str.decode` in python2 and :meth:`bytes.decode` in
+		python3.
 		
 		Parameters
 		----------
-		encoding : string
-		errors : string
+		encoding : str
+		errors : str, optional
 		
 		Returns
 		-------
@@ -228,13 +237,13 @@ package pandas.core.strings;
 	**/
 	public function decode(encoding:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
-		Encode character string in the Series/Index to some other encoding
-		using indicated encoding. Equivalent to :meth:`str.encode`.
+		Encode character string in the Series/Index using indicated encoding.
+		Equivalent to :meth:`str.encode`.
 		
 		Parameters
 		----------
-		encoding : string
-		errors : string
+		encoding : str
+		errors : str, optional
 		
 		Returns
 		-------
@@ -258,36 +267,44 @@ package pandas.core.strings;
 	**/
 	public function endswith(pat:Dynamic, ?na:Dynamic):Dynamic;
 	/**
-		Find groups in each string in the Series using passed regular
-		expression.
+		For each subject string in the Series, extract groups from the
+		first match of regular expression pat.
+		
+		.. versionadded:: 0.13.0
 		
 		Parameters
 		----------
 		pat : string
-		    Pattern or regular expression
+		    Regular expression pattern with capturing groups
 		flags : int, default 0 (no flags)
 		    re module flags, e.g. re.IGNORECASE
 		
+		.. versionadded:: 0.18.0
+		expand : bool, default False
+		    * If True, return DataFrame.
+		    * If False, return Series/Index/DataFrame.
+		
 		Returns
 		-------
-		extracted groups : Series (one group) or DataFrame (multiple groups)
-		    Note that dtype of the result is always object, even when no match is
-		    found and the result is a Series or DataFrame containing only NaN
-		    values.
+		DataFrame with one row for each subject string, and one column for
+		each group. Any capture group names in regular expression pat will
+		be used for column names; otherwise capture group numbers will be
+		used. The dtype of each result column is always object, even when
+		no match is found. If expand=True and pat has only one capture group,
+		then return a Series (if subject is a Series) or Index (if subject
+		is an Index).
+		
+		See Also
+		--------
+		extractall : returns all matches (not just the first match)
 		
 		Examples
 		--------
-		A pattern with one group will return a Series. Non-matches will be NaN.
+		A pattern with two groups will return a DataFrame with two columns.
+		Non-matches will be NaN.
 		
-		>>> Series(['a1', 'b2', 'c3']).str.extract('[ab](\d)')
-		0      1
-		1      2
-		2    NaN
-		dtype: object
-		
-		A pattern with more than one group will return a DataFrame.
-		
-		>>> Series(['a1', 'b2', 'c3']).str.extract('([ab])(\d)')
+		>>> s = Series(['a1', 'b2', 'c3'])
+		>>> s.str.extract('([ab])(\d)')
 		     0    1
 		0    a    1
 		1    b    2
@@ -295,7 +312,7 @@ package pandas.core.strings;
 		
 		A pattern may contain optional groups.
 		
-		>>> Series(['a1', 'b2', 'c3']).str.extract('([ab])?(\d)')
+		>>> s.str.extract('([ab])?(\d)')
 		     0  1
 		0    a  1
 		1    b  2
@@ -303,13 +320,100 @@ package pandas.core.strings;
 		
 		Named groups will become column names in the result.
 		
-		>>> Series(['a1', 'b2', 'c3']).str.extract('(?P<letter>[ab])(?P<digit>\d)')
+		>>> s.str.extract('(?P<letter>[ab])(?P<digit>\d)')
 		  letter digit
 		0      a     1
 		1      b     2
 		2    NaN   NaN
+		
+		A pattern with one group will return a DataFrame with one column
+		if expand=True.
+		
+		>>> s.str.extract('[ab](\d)', expand=True)
+		     0
+		0    1
+		1    2
+		2  NaN
+		
+		A pattern with one group will return a Series if expand=False.
+		
+		>>> s.str.extract('[ab](\d)', expand=False)
+		0      1
+		1      2
+		2    NaN
+		dtype: object
 	**/
-	public function extract(pat:Dynamic, ?flags:Dynamic):Dynamic;
+	public function extract(pat:Dynamic, ?flags:Dynamic, ?expand:Dynamic):Dynamic;
+	/**
+		For each subject string in the Series, extract groups from all
+		matches of regular expression pat. When each subject string in the
+		Series has exactly one match, extractall(pat).xs(0, level='match')
+		is the same as extract(pat).
+		
+		.. versionadded:: 0.18.0
+		
+		Parameters
+		----------
+		pat : string
+		    Regular expression pattern with capturing groups
+		flags : int, default 0 (no flags)
+		    re module flags, e.g. re.IGNORECASE
+		
+		Returns
+		-------
+		A DataFrame with one row for each match, and one column for each
+		group. Its rows have a MultiIndex with first levels that come from
+		the subject Series. The last level is named 'match' and indicates
+		the order in the subject. Any capture group names in regular
+		expression pat will be used for column names; otherwise capture
+		group numbers will be used.
+		
+		See Also
+		--------
+		extract : returns first match only (not all matches)
+		
+		Examples
+		--------
+		A pattern with one group will return a DataFrame with one column.
+		Indices with no matches will not appear in the result.
+		
+		>>> s = Series(["a1a2", "b1", "c1"], index=["A", "B", "C"])
+		>>> s.str.extractall("[ab](\d)")
+		         0
+		  match
+		A 0      1
+		  1      2
+		B 0      1
+		
+		Capture group names are used for column names of the result.
+		
+		>>> s.str.extractall("[ab](?P<digit>\d)")
+		        digit
+		  match
+		A 0         1
+		  1         2
+		B 0         1
+		
+		A pattern with two groups will return a DataFrame with two columns.
+		
+		>>> s.str.extractall("(?P<letter>[ab])(?P<digit>\d)")
+		        letter digit
+		  match
+		A 0          a     1
+		  1          a     2
+		B 0          b     1
+		
+		Optional groups that do not match are NaN in the result.
+		
+		>>> s.str.extractall("(?P<letter>[ab])?(?P<digit>\d)")
+		        letter digit
+		  match
+		A 0          a     1
+		  1          a     2
+		B 0          b     1
+		C 0        NaN     1
+	**/
+	public function extractall(pat:Dynamic, ?flags:Dynamic):Dynamic;
 	/**
 		Return lowest indexes in each strings in the Series/Index
 		where the substring is fully contained between [start:end].
@@ -347,6 +451,10 @@ package pandas.core.strings;
 		Returns
 		-------
 		matches : Series/Index of lists
+		
+		See Also
+		--------
+		extractall : returns DataFrame with one column per capture group
 	**/
 	public function findall(pat:Dynamic, ?flags:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -397,9 +505,9 @@ package pandas.core.strings;
 	public function get_dummies(?sep:Dynamic):pandas.DataFrame;
 	/**
 		Return lowest indexes in each strings where the substring is
-		fully contained between [start:end]. This is the same as ``str.find``
-		except instead of returning -1, it raises a ValueError when the substring
-		is not found. Equivalent to standard ``str.index``.
+		fully contained between [start:end]. This is the same as
+		``str.find`` except instead of returning -1, it raises a ValueError
+		when the substring is not found. Equivalent to standard ``str.index``.
 		
 		Parameters
 		----------
@@ -583,7 +691,7 @@ package pandas.core.strings;
 		
 		See Also
 		--------
-		contains : analagous, but less strict, relying on re.search instead of
+		contains : analogous, but less strict, relying on re.search instead of
 		    re.match
 		extract : now preferred to the deprecated usage of match (as_indexer=False)
 		
@@ -732,9 +840,9 @@ package pandas.core.strings;
 	public function rfind(sub:Dynamic, ?start:Dynamic, ?end:Dynamic):Dynamic;
 	/**
 		Return highest indexes in each strings where the substring is
-		fully contained between [start:end]. This is the same as ``str.rfind``
-		except instead of returning -1, it raises a ValueError when the substring
-		is not found. Equivalent to standard ``str.rindex``.
+		fully contained between [start:end]. This is the same as
+		``str.rfind`` except instead of returning -1, it raises a ValueError
+		when the substring is not found. Equivalent to standard ``str.rindex``.
 		
 		Parameters
 		----------
@@ -950,10 +1058,10 @@ package pandas.core.strings;
 		Parameters
 		----------
 		table : dict (python 3), str or None (python 2)
-		    In python 3, table is a mapping of Unicode ordinals to Unicode ordinals,
-		    strings, or None. Unmapped characters are left untouched. Characters
-		    mapped to None are deleted. :meth:`str.maketrans` is a helper function
-		    for making translation tables.
+		    In python 3, table is a mapping of Unicode ordinals to Unicode
+		    ordinals, strings, or None. Unmapped characters are left untouched.
+		    Characters mapped to None are deleted. :meth:`str.maketrans` is a
+		    helper function for making translation tables.
 		    In python 2, table is either a string of length 256 or None. If the
 		    table argument is None, no translation is applied and the operation
 		    simply removes the characters in deletechars. :func:`string.maketrans`

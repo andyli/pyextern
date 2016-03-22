@@ -705,6 +705,6 @@ package numpy.lib.arraypad;
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
 	**/
-	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	static public var print_function : Dynamic;
 }

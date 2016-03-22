@@ -111,7 +111,7 @@ package numpy.ma.extras;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -2426,7 +2426,7 @@ package numpy.ma.extras;
 		
 		Masked values in the input array result in rows of zeros.
 	**/
-	static public function vander(x:Dynamic, ?n:Dynamic):Dynamic;
+	static public function vander(x:Dynamic, ?n:Dynamic):numpy.Ndarray;
 	/**
 		vstack(tup)
 		

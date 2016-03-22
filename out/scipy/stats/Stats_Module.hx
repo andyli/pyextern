@@ -274,7 +274,7 @@ package scipy.stats;
 		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856]),
 		  0.8789283903979661)
 	**/
-	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Dynamic;
+	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Float;
 	/**
 		An anglit continuous random variable.
 		
@@ -1152,7 +1152,7 @@ package scipy.stats;
 		>>> plt.legend(fontsize=10)
 		>>> plt.show()
 	**/
-	static public function binned_statistic(x:Dynamic, values:Dynamic, ?statistic:Dynamic, ?bins:Dynamic, ?range:Dynamic):Dynamic;
+	static public function binned_statistic(x:Dynamic, values:Dynamic, ?statistic:Dynamic, ?bins:Dynamic, ?range:Dynamic):Array<Dynamic>;
 	/**
 		Compute a bidimensional binned statistic for one or more sets of data.
 		
@@ -10412,7 +10412,7 @@ package scipy.stats;
 		are values equal to the median, the p-value can be sensitive to the
 		choice of `ties`.
 	**/
-	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		A Mielke's Beta-Kappa continuous random variable.
 		

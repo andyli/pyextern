@@ -41,11 +41,11 @@ package pandas.core.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
+	public function new(frame:Dynamic, ?buf:Dynamic, ?columns:Dynamic, ?col_space:Dynamic, ?header:Dynamic, ?index:Dynamic, ?na_rep:Dynamic, ?formatters:Dynamic, ?justify:Dynamic, ?float_format:Dynamic, ?sparsify:Dynamic, ?index_names:Dynamic, ?line_width:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?show_dimensions:Dynamic, ?decimal:Dynamic, ?kwds:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/
@@ -133,7 +133,7 @@ package pandas.core.format;
 	/**
 		Render a DataFrame to a LaTeX tabular/longtable environment output.
 	**/
-	public function to_latex(?column_format:Dynamic, ?longtable:Dynamic):Dynamic;
+	public function to_latex(?column_format:Dynamic, ?longtable:Dynamic, ?encoding:Dynamic):Dynamic;
 	/**
 		Render a DataFrame to a console-friendly tabular output.
 	**/

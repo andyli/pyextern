@@ -250,7 +250,7 @@ package scipy.linalg.decomp_cholesky;
 		
 		.. versionadded:: 0.8.0
 	**/
-	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Compute the Cholesky decomposition of a matrix.
 		

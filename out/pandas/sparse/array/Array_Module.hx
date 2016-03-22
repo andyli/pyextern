@@ -15,7 +15,8 @@ package pandas.sparse.array;
 	**/
 	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		provide concatenation of an sparse/dense array of arrays each of which is a single dtype
+		provide concatenation of an sparse/dense array of arrays each of which is a
+		single dtype
 		
 		Parameters
 		----------

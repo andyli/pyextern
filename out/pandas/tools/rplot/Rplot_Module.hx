@@ -87,7 +87,8 @@ package pandas.tools.rplot;
 	**/
 	static public function merge_aes(layer1:Dynamic, layer2:Dynamic):Dynamic;
 	/**
-		Go through the list of layer girds and perform the same thing as sequence_layers.
+		Go through the list of layer girds and perform the same thing as
+		sequence_layers.
 		
 		Parameters:
 		-----------
@@ -97,8 +98,11 @@ package pandas.tools.rplot;
 	/**
 		Go through the list of layers and fill in the missing bits of information.
 		The basic rules are this:
-		* If the current layer has data set to None, take the data from previous layer.
-		* For each aesthetic mapping, if that mapping is set to None, take it from previous layer.
+		
+		* If the current layer has data set to None, take the data from previous
+		  layer.
+		* For each aesthetic mapping, if that mapping is set to None, take it from
+		  previous layer.
 		
 		Parameters:
 		-----------
@@ -106,7 +110,8 @@ package pandas.tools.rplot;
 	**/
 	static public function sequence_layers(layers:Dynamic):Dynamic;
 	/**
-		Take a two dimensional grid, add subplots to a figure for each cell and do layer work.
+		Take a two dimensional grid, add subplots to a figure for each cell and do
+		layer work.
 		
 		Parameters:
 		-----------

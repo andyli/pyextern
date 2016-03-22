@@ -14,8 +14,9 @@ package pandas.core.indexing;
 	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public var _eps : Dynamic;
 	/**
-		infer the fill value for the nan/NaT from the provided scalar/ndarray/list-like
-		if we are a NaT, return the correct dtyped element to provide proper block construction
+		infer the fill value for the nan/NaT from the provided
+		scalar/ndarray/list-like if we are a NaT, return the correct dtyped
+		element to provide proper block construction
 	**/
 	static public function _infer_fill_value(val:Dynamic):Dynamic;
 	/**
@@ -41,7 +42,7 @@ package pandas.core.indexing;
 	static public function convert_from_missing_indexer_tuple(indexer:Dynamic, axes:Dynamic):Dynamic;
 	/**
 		reverse convert a missing indexer, which is a dict
-		return the scalar indexer and a boolean indicating if we converted 
+		return the scalar indexer and a boolean indicating if we converted
 	**/
 	static public function convert_missing_indexer(indexer:Dynamic):Dynamic;
 	/**

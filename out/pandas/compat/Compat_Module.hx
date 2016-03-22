@@ -60,77 +60,135 @@ package pandas.compat;
 	static public function is_platform_mac():Dynamic;
 	static public function is_platform_windows():Dynamic;
 	static public function isidentifier(s:Dynamic):Dynamic;
-	/**
-		replacement for six's iteritems for Python2/3 compat
-		uses 'iteritems' if available and otherwise uses 'items'.
-		
-		Passes kwargs to method.
-	**/
-	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function iterkeys(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function itervalues(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function iterkeys(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function itervalues(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function lfilter(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Find the n largest elements in a dataset.
+		Returns a new subclass of tuple with named fields.
 		
-		Equivalent to:  sorted(iterable, key=key, reverse=True)[:n]
+		>>> Point = namedtuple('Point', ['x', 'y'])
+		>>> Point.__doc__                   # docstring for the new class
+		'Point(x, y)'
+		>>> p = Point(11, y=22)             # instantiate with positional args or keywords
+		>>> p[0] + p[1]                     # indexable like a plain tuple
+		33
+		>>> x, y = p                        # unpack like a regular tuple
+		>>> x, y
+		(11, 22)
+		>>> p.x + p.y                       # fields also accessable by name
+		33
+		>>> d = p._asdict()                 # convert to a dictionary
+		>>> d['x']
+		11
+		>>> Point(**d)                      # convert from a dictionary
+		Point(x=11, y=22)
+		>>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
+		Point(x=100, y=22)
 	**/
-	static public function nlargest(n:Dynamic, iterable:Dynamic, ?key:Dynamic):Dynamic;
+	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
 	/**
-		Parse a string in one of the supported formats, using the `parserinfo`
-		parameters.
+		next(iterator[, default])
+		
+		Return the next item from the iterator. If default is given and the iterator
+		is exhausted, it is returned instead of raising StopIteration.
+	**/
+	static public function next(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Parse a string in one of the supported formats, using the
+		``parserinfo`` parameters.
 		
 		:param timestr:
 		    A string containing a date/time stamp.
 		
 		:param parserinfo:
 		    A :class:`parserinfo` object containing parameters for the parser.
-		    If `None`, the default arguments to the `parserinfo` constructor are
-		    used.
+		    If ``None``, the default arguments to the :class:`parserinfo`
+		    constructor are used.
 		
-		The `**kwargs` parameter takes the following keyword arguments:
+		The ``**kwargs`` parameter takes the following keyword arguments:
 		
 		:param default:
 		    The default datetime object, if this is a datetime object and not
-		    `None`, elements specified in `timestr` replace elements in the
+		    ``None``, elements specified in ``timestr`` replace elements in the
 		    default object.
 		
 		:param ignoretz:
-		    Whether or not to ignore the time zone (boolean).
+		    If set ``True``, time zones in parsed strings are ignored and a naive
+		    :class:`datetime` object is returned.
 		
 		:param tzinfos:
-		    A time zone, to be applied to the date, if `ignoretz` is `True`.
-		    This can be either a subclass of `tzinfo`, a time zone string or an
-		    integer offset.
+		        Additional time zone names / aliases which may be present in the
+		        string. This argument maps time zone names (and optionally offsets
+		        from those time zones) to time zones. This parameter can be a
+		        dictionary with timezone aliases mapping time zone names to time
+		        zones or a function taking two parameters (``tzname`` and
+		        ``tzoffset``) and returning a time zone.
+		
+		        The timezones to which the names are mapped can be an integer
+		        offset from UTC in minutes or a :class:`tzinfo` object.
+		
+		        .. doctest::
+		           :options: +NORMALIZE_WHITESPACE
+		
+		            >>> from dateutil.parser import parse
+		            >>> from dateutil.tz import gettz
+		            >>> tzinfos = {"BRST": -10800, "CST": gettz("America/Chicago")}
+		            >>> parse("2012-01-19 17:21:00 BRST", tzinfos=tzinfos)
+		            datetime.datetime(2012, 1, 19, 17, 21, tzinfo=tzoffset(u'BRST', -10800))
+		            >>> parse("2012-01-19 17:21:00 CST", tzinfos=tzinfos)
+		            datetime.datetime(2012, 1, 19, 17, 21,
+		                              tzinfo=tzfile('/usr/share/zoneinfo/America/Chicago'))
+		
+		        This parameter is ignored if ``ignoretz`` is set.
 		
 		:param dayfirst:
 		    Whether to interpret the first value in an ambiguous 3-integer date
-		    (e.g. 01/05/09) as the day (`True`) or month (`False`). If
-		    `yearfirst` is set to `True`, this distinguishes between YDM and
-		    YMD. If set to `None`, this value is retrieved from the current
-		    :class:`parserinfo` object (which itself defaults to `False`).
+		    (e.g. 01/05/09) as the day (``True``) or month (``False``). If
+		    ``yearfirst`` is set to ``True``, this distinguishes between YDM and
+		    YMD. If set to ``None``, this value is retrieved from the current
+		    :class:`parserinfo` object (which itself defaults to ``False``).
 		
 		:param yearfirst:
 		    Whether to interpret the first value in an ambiguous 3-integer date
-		    (e.g. 01/05/09) as the year. If `True`, the first number is taken to
+		    (e.g. 01/05/09) as the year. If ``True``, the first number is taken to
 		    be the year, otherwise the last number is taken to be the year. If
-		    this is set to `None`, the value is retrieved from the current
-		    :class:`parserinfo` object (which itself defaults to `False`).
+		    this is set to ``None``, the value is retrieved from the current
+		    :class:`parserinfo` object (which itself defaults to ``False``).
 		
 		:param fuzzy:
 		    Whether to allow fuzzy parsing, allowing for string like "Today is
 		    January 1, 2047 at 8:21:00AM".
 		
 		:param fuzzy_with_tokens:
-		    If `True`, `fuzzy` is automatically set to True, and the parser will
-		    return a tuple where the first element is the parsed
-		    `datetime.datetime` datetimestamp and the second element is a tuple
-		    containing the portions of the string which were ignored, e.g.
-		    "Today is January 1, 2047 at 8:21:00AM" should return
-		    `(datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))`
+		    If ``True``, ``fuzzy`` is automatically set to True, and the parser
+		    will return a tuple where the first element is the parsed
+		    :class:`datetime.datetime` datetimestamp and the second element is
+		    a tuple containing the portions of the string which were ignored:
+		
+		    .. doctest::
+		
+		        >>> from dateutil.parser import parse
+		        >>> parse("Today is January 1, 2047 at 8:21:00AM", fuzzy_with_tokens=True)
+		        (datetime.datetime(2011, 1, 1, 8, 21), (u'Today is ', u' ', u'at '))
+		
+		:return:
+		    Returns a :class:`datetime.datetime` object or, if the
+		    ``fuzzy_with_tokens`` option is ``True``, returns a tuple, the
+		    first element being a :class:`datetime.datetime` object, the second
+		    a tuple containing the fuzzy tokens.
+		
+		:raises ValueError:
+		    Raised for invalid or unknown string format, if the provided
+		    :class:`tzinfo` is not in a valid format, or if an invalid date
+		    would be created.
+		
+		:raises OverflowError:
+		    Raised if the parsed date exceeds the largest valid C integer on
+		    your system.
 	**/
 	static public function parse_date(timestr:Dynamic, ?parserinfo:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -149,6 +207,7 @@ package pandas.compat;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function signature(f:Dynamic):Dynamic;
 	static public function str_to_bytes(s:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var string_and_binary_types : Dynamic;
 	static public var string_types : Dynamic;

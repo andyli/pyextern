@@ -24,17 +24,16 @@ package pandas.io.stata;
 		-----
 		Numeric columns in Stata must be one of int8, int16, int32, float32 or
 		float64, with some additional value restrictions.  int8 and int16 columns
-		are checked for violations of the value restrictions and
-		upcast if needed.  int64 data is not usable in Stata, and so it is
-		downcast to int32 whenever the value are in the int32 range, and
-		sidecast to float64 when larger than this range.  If the int64 values
-		are outside of the range of those perfectly representable as float64 values,
-		a warning is raised.
+		are checked for violations of the value restrictions and upcast if needed.
+		int64 data is not usable in Stata, and so it is downcast to int32 whenever
+		the value are in the int32 range, and sidecast to float64 when larger than
+		this range.  If the int64 values are outside of the range of those
+		perfectly representable as float64 values, a warning is raised.
 		
-		bool columns are cast to int8.  uint colums are converted to int of the same
-		size if there is no loss in precision, other wise are upcast to a larger
-		type.  uint64 is currently not supported since it is concerted to object in
-		a DataFrame.
+		bool columns are cast to int8.  uint colums are converted to int of the
+		same size if there is no loss in precision, other wise are upcast to a
+		larger type.  uint64 is currently not supported since it is concerted to
+		object in a DataFrame.
 	**/
 	static public function _cast_to_stata_types(data:Dynamic):Dynamic;
 	static public var _chunksize_params : Dynamic;
@@ -211,8 +210,7 @@ package pandas.io.stata;
 		convert_categoricals : boolean, defaults to True
 		    Read value labels and convert columns to Categorical/Factor variables
 		encoding : string, None or encoding
-		    Encoding used to parse the files. Note that Stata doesn't
-		    support unicode. None defaults to iso-8859-1.
+		    Encoding used to parse the files. None defaults to iso-8859-1.
 		index : identifier of index column
 		    identifier of column that should be used as index of the DataFrame
 		convert_missing : boolean, defaults to False
@@ -257,20 +255,26 @@ package pandas.io.stata;
 		
 		Parameters
 		----------
-		arg : string, datetime, array of strings (with possible NAs)
+		arg : string, datetime, list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
 		dayfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    If True, parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
 		    Warning: dayfirst=True is not strict, but will prefer to parse
 		    with day first (this is a known bug, based on dateutil behavior).
 		yearfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    - If True parses dates with the year first, eg 10/11/12 is parsed as 2010-11-12.
-		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same as dateutil).
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
@@ -280,14 +284,17 @@ package pandas.io.stata;
 		    Return UTC DatetimeIndex if True (converting any tz-aware
 		    datetime.datetime objects as well).
 		box : boolean, default True
+		
 		    - If True returns a DatetimeIndex
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
 		    all the way up to nanoseconds.
 		exact : boolean, True by default
+		
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
+		
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
@@ -346,11 +353,13 @@ package pandas.io.stata;
 		
 		Parameters
 		----------
-		arg : string, timedelta, array of strings (with possible NAs)
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an integer/float number
+		arg : string, timedelta, list, tuple, 1-d array, or Series
+		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
+		    integer/float number
 		box : boolean, default True
 		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype timedelta64[ns]
+		    - if False returns a np.timedelta64 or ndarray of values of dtype
+		      timedelta64[ns]
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
@@ -359,6 +368,32 @@ package pandas.io.stata;
 		Returns
 		-------
 		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		
+		Examples
+		--------
+		
+		Parsing a single string to a Timedelta:
+		
+		>>> pd.to_timedelta('1 days 06:05:01.00003')
+		Timedelta('1 days 06:05:01.000030')
+		>>> pd.to_timedelta('15.5us')
+		Timedelta('0 days 00:00:00.000015')
+		
+		Parsing a list or array of strings:
+		
+		>>> pd.to_timedelta(['1 days 06:05:01.00003', '15.5us', 'nan'])
+		TimedeltaIndex(['1 days 06:05:01.000030', '0 days 00:00:00.000015', NaT],
+		               dtype='timedelta64[ns]', freq=None)
+		
+		Converting numbers by specifying the `unit` keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), unit='s')
+		TimedeltaIndex(['00:00:00', '00:00:01', '00:00:02',
+		                '00:00:03', '00:00:04'],
+		               dtype='timedelta64[ns]', freq=None)
+		>>> pd.to_timedelta(np.arange(5), unit='d')
+		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq=None)
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
 	static public var value_label_mismatch_doc : Dynamic;

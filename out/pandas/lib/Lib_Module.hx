@@ -84,6 +84,7 @@ package pandas.lib;
 		.. note:: If indexer is not unique, only first occurrence is accounted.
 	**/
 	static public function get_reverse_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function get_timezone(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_count(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function has_infs_f4(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function has_infs_f8(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -101,6 +102,11 @@ package pandas.lib;
 	static public function is_date_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_datetime64_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_datetime_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Check values have the same tzinfo attribute.
+		Doesn't check values are datetime-like types.
+	**/
+	static public function is_datetime_with_singletz_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -286,7 +292,7 @@ package pandas.lib;
 	static public function memory_usage_of_objects(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var pandas_null : Dynamic;
 	/**
-		Paramaters
+		Parameters
 		-----------
 		arr : NDFrame object
 		f : function

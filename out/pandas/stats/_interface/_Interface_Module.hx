@@ -81,7 +81,8 @@ package pandas.stats._interface;
 		result = ols(y=y, x=x)
 		
 		# Run expanding panel OLS with window 10 and entity clustering.
-		result = ols(y=y, x=x, cluster='entity', window_type='expanding', window=10)
+		result = ols(y=y, x=x, cluster='entity', window_type='expanding',
+		             window=10)
 		
 		Returns
 		-------

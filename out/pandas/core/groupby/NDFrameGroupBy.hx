@@ -101,10 +101,10 @@ package pandas.core.groupby;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -132,12 +132,38 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _agg_doc : Dynamic;
+	/**
+		provide an implementation for the aggregators
+		
+		Parameters
+		----------
+		arg : string, dict, function
+		*args : args to pass on to the function
+		**kwargs : kwargs to pass on to the function
+		
+		Returns
+		-------
+		tuple of result, how
+		
+		Notes
+		-----
+		how can be a string describe the required post-processing, or
+		None if not required
+	**/
+	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_generic(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_item_by_item(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
+	/**
+		we create the grouper on instantiation
+		sub-classes may have a different policy
+	**/
+	public function _assure_grouper():Dynamic;
 	static public var _block_agg_axis : Dynamic;
+	static public var _builtin_table : Dynamic;
 	public function _choose_path(fast_path:Dynamic, slow_path:Dynamic, group:Dynamic):Dynamic;
 	public function _concat_objects(keys:Dynamic, values:Dynamic, ?not_indexed_same:Dynamic):Dynamic;
 	/**
@@ -147,12 +173,15 @@ package pandas.core.groupby;
 	/**
 		arr is where cumcount gets its values from
 		
-		note: this is currently implementing sort=False (though the default is sort=True)
-		      for groupby in general
+		Note
+		----
+		this is currently implementing sort=False
+		(though the default is sort=True) for groupby in general
 	**/
 	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
 	public function _cython_agg_blocks(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _decide_output_index(output:Dynamic, labels:Dynamic):Dynamic;
 	public function _define_paths(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -170,9 +199,23 @@ package pandas.core.groupby;
 	**/
 	public function _get_index(name:Dynamic):Dynamic;
 	/**
-		safe get multiple indices, translate keys for datelike to underlying repr 
+		safe get multiple indices, translate keys for
+		datelike to underlying repr
 	**/
 	public function _get_indices(names:Dynamic):Dynamic;
+	/**
+		sub-classes to define
+		return a sliced object
+		
+		Parameters
+		----------
+		key : string / list of selections
+		ndim : 1,2
+		    requested ndim of result
+		subset : object, default None
+		    subset to act on
+	**/
+	public function _gotitem(key:Dynamic, ndim:Dynamic, ?subset:Dynamic):Dynamic;
 	static public var _group_selection : Dynamic;
 	/**
 		Take boolean mask of index to be returned from apply, if as_index=True
@@ -180,6 +223,15 @@ package pandas.core.groupby;
 	public function _index_with_as_index(b:Dynamic):Dynamic;
 	static public var _internal_names : Dynamic;
 	static public var _internal_names_set : Dynamic;
+	/**
+		if we define an builtin function for this argument, return it,
+		otherwise return the arg
+	**/
+	public function _is_builtin_func(arg:Dynamic):Dynamic;
+	/**
+		if we define an internal function for this argument, return it 
+	**/
+	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_slices():Dynamic;
 	public function _make_wrapper(name:Dynamic):Dynamic;
 	static public var _obj_with_exclusions : Dynamic;
@@ -190,7 +242,9 @@ package pandas.core.groupby;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
+	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
@@ -207,50 +261,8 @@ package pandas.core.groupby;
 	public function _wrap_agged_blocks(items:Dynamic, blocks:Dynamic):Dynamic;
 	public function _wrap_aggregated_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	public function _wrap_applied_output(keys:Dynamic, values:Dynamic, ?not_indexed_same:Dynamic):Dynamic;
-	/**
-		Aggregate using input function or dict of {column -> function}
-		
-		Parameters
-		----------
-		arg : function or dict
-		    Function to use for aggregating groups. If a function, must either
-		    work when passed a DataFrame or when passed to DataFrame.apply. If
-		    passed a dict, the keys must be DataFrame column names.
-		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
-		
-		Returns
-		-------
-		aggregated : DataFrame
-	**/
-	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
-	/**
-		Aggregate using input function or dict of {column -> function}
-		
-		Parameters
-		----------
-		arg : function or dict
-		    Function to use for aggregating groups. If a function, must either
-		    work when passed a DataFrame or when passed to DataFrame.apply. If
-		    passed a dict, the keys must be DataFrame column names.
-		
-		Notes
-		-----
-		Numpy functions mean/median/prod/sum/std/var are special cased so the
-		default behavior is applying the function along axis=0
-		(e.g., np.mean(arr_2d, axis=0)) as opposed to
-		mimicking the default Numpy behavior (e.g., np.mean(arr_2d)).
-		
-		Returns
-		-------
-		aggregated : DataFrame
-	**/
-	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Apply function and combine results together in an intelligent way. The
 		split-apply-combine combination rules attempt to be as common sense
@@ -289,14 +301,58 @@ package pandas.core.groupby;
 		See also
 		--------
 		aggregate, transform
-		
-		Returns
-		-------
-		applied : type depending on grouped object and function
 	**/
 	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute count of group, excluding missing values 
+		Backward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function backfill(?limit:Dynamic):Dynamic;
+	/**
+		Backward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function bfill(?limit:Dynamic):Dynamic;
+	/**
+		Compute count of group, excluding missing values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function count():Dynamic;
 	/**
@@ -340,16 +396,56 @@ package pandas.core.groupby;
 		4    0
 		5    0
 		dtype: int64
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
 		Cumulative product for each group
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumprod(?axis:Dynamic):Dynamic;
 	/**
 		Cumulative sum for each group
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumsum(?axis:Dynamic):Dynamic;
+	/**
+		Forward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function ffill(?limit:Dynamic):Dynamic;
 	/**
 		Return a copy of a DataFrame excluding elements from groups that
 		do not satisfy the boolean criterion specified by func.
@@ -374,6 +470,12 @@ package pandas.core.groupby;
 	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute first of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function first():Dynamic;
 	/**
@@ -407,7 +509,7 @@ package pandas.core.groupby;
 		--------
 		
 		>>> df = DataFrame([[1, 2], [1, 4], [5, 6]],
-		                    columns=['A', 'B'])
+		                   columns=['A', 'B'])
 		>>> df.groupby('A', as_index=False).head(1)
 		   A  B
 		0  1  2
@@ -416,6 +518,13 @@ package pandas.core.groupby;
 		   A  B
 		0  1  2
 		2  5  6
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function head(?n:Dynamic):Dynamic;
 	/**
@@ -428,37 +537,71 @@ package pandas.core.groupby;
 	public function irow(i:Dynamic):Dynamic;
 	/**
 		Compute last of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function last():Dynamic;
 	/**
 		Compute max of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function max():Dynamic;
 	/**
 		Compute mean of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function mean():Dynamic;
 	/**
 		Compute median of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function median():Dynamic;
 	/**
 		Compute min of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function min():Dynamic;
 	public var name : Dynamic;
+	static public var ndim : Dynamic;
 	public var ngroups : Dynamic;
 	/**
 		Take the nth row from each group if n is an int, or a subset of rows
 		if n is a list of ints.
 		
 		If dropna, will take the nth non-null row, dropna is either
-		Truthy (if a Series) or 'all', 'any' (if a DataFrame); this is equivalent
-		to calling dropna(how=dropna) before the groupby.
+		Truthy (if a Series) or 'all', 'any' (if a DataFrame);
+		this is equivalent to calling dropna(how=dropna) before the
+		groupby.
 		
 		Parameters
 		----------
@@ -485,51 +628,156 @@ package pandas.core.groupby;
 		2  5  6
 		>>> g.nth(0, dropna='any')
 		   B
-		A
+		   A
 		1  4
 		5  6
-		>>> g.nth(1, dropna='any')  # NaNs denote group exhausted when using dropna
+		
+		# NaNs denote group exhausted when using dropna
+		>>> g.nth(1, dropna='any')
 		    B
-		A
+		    A
 		1 NaN
 		5 NaN
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function nth(n:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Compute sum of values, excluding missing values
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function ohlc():Dynamic;
+	/**
+		Forward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function pad(?limit:Dynamic):Dynamic;
 	/**
 		Class implementing the .plot attribute for groupby objects
 	**/
 	public var plot : Dynamic;
 	/**
 		Compute prod of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function prod():Dynamic;
+	/**
+		Provide resampling when using a TimeGrouper
+		Return a new grouper with our resampler appended
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function resample(rule:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function sem(?ddof:Dynamic):Dynamic;
 	/**
 		Shift each group by periods observations
+		
+		Parameters
+		----------
+		periods : integer, default 1
+		    number of periods to shift
+		freq : frequency string
+		axis : axis to shift, default 0
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Compute group sizes
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function size():Dynamic;
 	/**
 		Compute standard deviation of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function std(?ddof:Dynamic):Dynamic;
 	/**
 		Compute sum of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function sum():Dynamic;
 	/**
@@ -542,7 +790,7 @@ package pandas.core.groupby;
 		--------
 		
 		>>> df = DataFrame([['a', 1], ['a', 2], ['b', 1], ['b', 2]],
-		                    columns=['A', 'B'])
+		                   columns=['A', 'B'])
 		>>> df.groupby('A').tail(1)
 		   A  B
 		1  a  2
@@ -551,6 +799,13 @@ package pandas.core.groupby;
 		   A  B
 		0  a  1
 		2  b  1
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function tail(?n:Dynamic):Dynamic;
 	/**
@@ -578,6 +833,18 @@ package pandas.core.groupby;
 		Compute variance of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	@:native("var")
 	public function _var(?ddof:Dynamic):Dynamic;

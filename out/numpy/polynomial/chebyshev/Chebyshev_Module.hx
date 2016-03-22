@@ -320,7 +320,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebder(c,2,-1)
 		array([ 12.,  96.])
 	**/
-	static public function chebder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function chebder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Chebyshev series by another.
 		
@@ -563,7 +563,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. math:: w_i = \pi / n
 	**/
-	static public function chebgauss(deg:Dynamic):Dynamic;
+	static public function chebgauss(deg:Dynamic):numpy.Ndarray;
 	/**
 		Evaluate a 2-D Chebyshev series on the Cartesian product of x and y.
 		
@@ -748,7 +748,7 @@ package numpy.polynomial.chebyshev;
 		>>> C.chebint(c,scl=-2)
 		array([-1.,  1., -1., -1.])
 	**/
-	static public function chebint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function chebint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Chebyshev series whose graph is a straight line.
 		
@@ -840,7 +840,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded:: 1.5.0
 	**/
-	static public function chebmulx(c:Dynamic):Dynamic;
+	static public function chebmulx(c:Dynamic):numpy.Ndarray;
 	static public var chebone : Dynamic;
 	/**
 		Raise a Chebyshev series to a power.
@@ -898,7 +898,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded:: 1.5.0
 	**/
-	static public function chebpts1(npts:Dynamic):Dynamic;
+	static public function chebpts1(npts:Dynamic):numpy.Ndarray;
 	/**
 		Chebyshev points of the second kind.
 		
@@ -920,7 +920,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded:: 1.5.0
 	**/
-	static public function chebpts2(npts:Dynamic):Dynamic;
+	static public function chebpts2(npts:Dynamic):numpy.Ndarray;
 	/**
 		Compute the roots of a Chebyshev series.
 		
@@ -1357,7 +1357,7 @@ package numpy.polynomial.chebyshev;
 		
 		.. versionadded:: 1.7.0
 	**/
-	static public function chebweight(x:Dynamic):Dynamic;
+	static public function chebweight(x:Dynamic):numpy.Ndarray;
 	static public var chebx : Dynamic;
 	static public var chebzero : Dynamic;
 	static public var division : Dynamic;

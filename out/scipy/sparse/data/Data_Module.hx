@@ -20,60 +20,40 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		arcsin(x[, out])
+		expm1(x[, out])
 		
-		Inverse sine, element-wise.
+		Calculate ``exp(x) - 1`` for all elements in the array.
 		
 		Parameters
 		----------
 		x : array_like
-		    `y`-coordinate on the unit circle.
-		
-		out : ndarray, optional
-		    Array of the same shape as `x`, in which to store the results.
-		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		   Input values.
 		
 		Returns
 		-------
-		angle : ndarray
-		    The inverse sine of each element in `x`, in radians and in the
-		    closed interval ``[-pi/2, pi/2]``.  If `x` is a scalar, a scalar
-		    is returned, otherwise an array.
+		out : ndarray
+		    Element-wise exponential minus one: ``out = exp(x) - 1``.
 		
 		See Also
 		--------
-		sin, cos, arccos, tan, arctan, arctan2, emath.arcsin
+		log1p : ``log(1 + x)``, the inverse of expm1.
+		
 		
 		Notes
 		-----
-		`arcsin` is a multivalued function: for each `x` there are infinitely
-		many numbers `z` such that :math:`sin(z) = x`.  The convention is to
-		return the angle `z` whose real part lies in [-pi/2, pi/2].
-		
-		For real-valued input data types, *arcsin* always returns real output.
-		For each value that cannot be expressed as a real number or infinity,
-		it yields ``nan`` and sets the `invalid` floating point error flag.
-		
-		For complex-valued input, `arcsin` is a complex analytic function that
-		has, by convention, the branch cuts [-inf, -1] and [1, inf]  and is
-		continuous from above on the former and from below on the latter.
-		
-		The inverse sine is also known as `asin` or sin^{-1}.
-		
-		References
-		----------
-		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
-		10th printing, New York: Dover, 1964, pp. 79ff.
-		http://www.math.sfu.ca/~cbm/aands/
+		This function provides greater precision than ``exp(x) - 1``
+		for small values of ``x``.
 		
 		Examples
 		--------
-		>>> np.arcsin(1)     # pi/2
-		1.5707963267948966
-		>>> np.arcsin(-1)    # -pi/2
-		-1.5707963267948966
-		>>> np.arcsin(0)
-		0.0
+		The true value of ``exp(1e-10) - 1`` is ``1.00000000005e-10`` to
+		about 32 significant digits. This example shows the superiority of
+		expm1 in this case.
+		
+		>>> np.expm1(1e-10)
+		1.00000000005e-10
+		>>> np.exp(1e-10) - 1
+		1.000000082740371e-10
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;

@@ -114,6 +114,7 @@ package pandas.tslib;
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var asm8 : Dynamic;
 	/**
 		tz -> convert to local time in new timezone tz
 	**/

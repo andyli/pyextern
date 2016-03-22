@@ -161,7 +161,7 @@ package pandas.io.pytables;
 		  note: cannot index Time64Col() or ComplexCol currently;
 		  PyTables must be >= 3.0
 		
-		Paramaters
+		Parameters
 		----------
 		columns : False (don't create an index), True (create all columns
 		    index), None or list_like (the indexers to index)
@@ -178,7 +178,8 @@ package pandas.io.pytables;
 	**/
 	public var data_orientation : Dynamic;
 	/**
-		support fully deleting the node in its entirety (only) - where specification must be None 
+		support fully deleting the node in its entirety (only) - where
+		specification must be None
 	**/
 	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var description : Dynamic;

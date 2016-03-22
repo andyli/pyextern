@@ -410,7 +410,7 @@ package scipy.signal._peak_finding;
 		>>> peakind, xs[peakind], data[peakind]
 		([32], array([ 1.6]), array([ 0.9995736]))
 	**/
-	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Dynamic;
+	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Array<Dynamic>;
 	static public var print_function : Dynamic;
 	/**
 		Return a Ricker wavelet, also known as the "Mexican hat wavelet".

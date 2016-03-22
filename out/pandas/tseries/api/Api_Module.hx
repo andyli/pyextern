@@ -85,7 +85,7 @@ package pandas.tseries.api;
 		Parameters
 		----------
 		index : DatetimeIndex or TimedeltaIndex
-		        if passed a Series will use the values of the series (NOT THE INDEX)
+		  if passed a Series will use the values of the series (NOT THE INDEX)
 		warn : boolean, default True
 		
 		Returns
@@ -152,11 +152,13 @@ package pandas.tseries.api;
 		
 		Parameters
 		----------
-		arg : string, timedelta, array of strings (with possible NAs)
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an integer/float number
+		arg : string, timedelta, list, tuple, 1-d array, or Series
+		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an
+		    integer/float number
 		box : boolean, default True
 		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype timedelta64[ns]
+		    - if False returns a np.timedelta64 or ndarray of values of dtype
+		      timedelta64[ns]
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
@@ -165,6 +167,32 @@ package pandas.tseries.api;
 		Returns
 		-------
 		ret : timedelta64/arrays of timedelta64 if parsing succeeded
+		
+		Examples
+		--------
+		
+		Parsing a single string to a Timedelta:
+		
+		>>> pd.to_timedelta('1 days 06:05:01.00003')
+		Timedelta('1 days 06:05:01.000030')
+		>>> pd.to_timedelta('15.5us')
+		Timedelta('0 days 00:00:00.000015')
+		
+		Parsing a list or array of strings:
+		
+		>>> pd.to_timedelta(['1 days 06:05:01.00003', '15.5us', 'nan'])
+		TimedeltaIndex(['1 days 06:05:01.000030', '0 days 00:00:00.000015', NaT],
+		               dtype='timedelta64[ns]', freq=None)
+		
+		Converting numbers by specifying the `unit` keyword argument:
+		
+		>>> pd.to_timedelta(np.arange(5), unit='s')
+		TimedeltaIndex(['00:00:00', '00:00:01', '00:00:02',
+		                '00:00:03', '00:00:04'],
+		               dtype='timedelta64[ns]', freq=None)
+		>>> pd.to_timedelta(np.arange(5), unit='d')
+		TimedeltaIndex(['0 days', '1 days', '2 days', '3 days', '4 days'],
+		               dtype='timedelta64[ns]', freq=None)
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
 }

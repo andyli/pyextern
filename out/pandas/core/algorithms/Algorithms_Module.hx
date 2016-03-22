@@ -38,7 +38,6 @@ package pandas.core.algorithms;
 		    Sequence
 		sort : boolean, default False
 		    Sort by values
-		order : deprecated
 		na_sentinel : int, default -1
 		    Value to mark "not found"
 		size_hint : hint to the hashtable sizer
@@ -47,15 +46,18 @@ package pandas.core.algorithms;
 		-------
 		labels : the indexer to the original array
 		uniques : ndarray (1-d) or Index
-		    the unique values. Index is returned when passed values is Index or Series
+		    the unique values. Index is returned when passed values is Index or
+		    Series
 		
-		note: an array of Periods will ignore sort as it returns an always sorted PeriodIndex
+		note: an array of Periods will ignore sort as it returns an always sorted
+		PeriodIndex
 	**/
 	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
 	/**
 		Get group position
 	**/
 	static public function group_position(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public var iNaT : Dynamic;
 	/**
 		Compute the isin boolean array
 		

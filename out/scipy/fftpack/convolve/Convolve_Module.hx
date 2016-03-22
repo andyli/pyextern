@@ -9,49 +9,81 @@ package scipy.fftpack.convolve;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		convolve - Function signature:
-		  y = convolve(x,omega,[swap_real_imag,overwrite_x])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (n)
-		  omega : input rank-1 array('d') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		  swap_real_imag := 0 input int
-		Return objects:
-		  y : rank-1 array('d') with bounds (n) and x storage
+		y = convolve(x,omega,[swap_real_imag,overwrite_x])
+		
+		Wrapper for ``convolve``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (n)
+		omega : input rank-1 array('d') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		swap_real_imag : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (n) and x storage
 	**/
 	static public function convolve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		convolve_z - Function signature:
-		  y = convolve_z(x,omega_real,omega_imag,[overwrite_x])
-		Required arguments:
-		  x : input rank-1 array('d') with bounds (n)
-		  omega_real : input rank-1 array('d') with bounds (n)
-		  omega_imag : input rank-1 array('d') with bounds (n)
-		Optional arguments:
-		  overwrite_x := 0 input int
-		Return objects:
-		  y : rank-1 array('d') with bounds (n) and x storage
+		y = convolve_z(x,omega_real,omega_imag,[overwrite_x])
+		
+		Wrapper for ``convolve_z``.
+		
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (n)
+		omega_real : input rank-1 array('d') with bounds (n)
+		omega_imag : input rank-1 array('d') with bounds (n)
+		
+		Other Parameters
+		----------------
+		overwrite_x : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		y : rank-1 array('d') with bounds (n) and x storage
 	**/
 	static public function convolve_z(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		destroy_convolve_cache - Function signature:
 		destroy_convolve_cache()
+		
+		Wrapper for ``destroy_convolve_cache``.
 	**/
 	static public function destroy_convolve_cache(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		init_convolution_kernel - Function signature:
-		  omega = init_convolution_kernel(n,kernel_func,[d,zero_nyquist,kernel_func_extra_args])
-		Required arguments:
-		  n : input int
-		  kernel_func : call-back function
-		Optional arguments:
-		  d := 0 input int
-		  kernel_func_extra_args := () input tuple
-		  zero_nyquist := d%2 input int
-		Return objects:
-		  omega : rank-1 array('d') with bounds (n)
-		Call-back functions:
+		omega = init_convolution_kernel(n,kernel_func,[d,zero_nyquist,kernel_func_extra_args])
+		
+		Wrapper for ``init_convolution_kernel``.
+		
+		Parameters
+		----------
+		n : input int
+		kernel_func : call-back function
+		
+		Other Parameters
+		----------------
+		d : input int, optional
+		    Default: 0
+		kernel_func_extra_args : input tuple, optional
+		    Default: ()
+		zero_nyquist : input int, optional
+		    Default: d%2
+		
+		Returns
+		-------
+		omega : rank-1 array('d') with bounds (n)
+		
+		Notes
+		-----
+		Call-back functions::
+		
 		  def kernel_func(k): return kernel_func
 		  Required arguments:
 		    k : input int

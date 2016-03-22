@@ -50,7 +50,7 @@ package scipy.io.wavfile;
 		  from the file.
 		* This function cannot read wav files with 24 bit data.
 	**/
-	static public function read(filename:Dynamic, ?mmap:Dynamic):Dynamic;
+	static public function read(filename:Dynamic, ?mmap:Dynamic):Int;
 	/**
 		Write a numpy array as a WAV file
 		

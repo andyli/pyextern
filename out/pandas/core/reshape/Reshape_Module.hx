@@ -16,7 +16,7 @@ package pandas.core.reshape;
 	**/
 	static public function _compress_group_index(group_index:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic):Dynamic;
+	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
 	static public function _get_na_value(dtype:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
@@ -36,7 +36,7 @@ package pandas.core.reshape;
 	**/
 	static public function _slow_pivot(index:Dynamic, columns:Dynamic, values:Dynamic):Dynamic;
 	static public function _stack_multi_columns(frame:Dynamic, ?level_num:Dynamic, ?dropna:Dynamic):Dynamic;
-	static public function _unstack_frame(obj:Dynamic, level:Dynamic):Dynamic;
+	static public function _unstack_frame(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _unstack_multiple(data:Dynamic, clocs:Dynamic):Dynamic;
 	static public function get_compressed_ids(labels:Dynamic, sizes:Dynamic):Dynamic;
 	/**
@@ -65,7 +65,11 @@ package pandas.core.reshape;
 		    Otherwise returns a DataFrame with some SparseBlocks.
 		
 		    .. versionadded:: 0.16.1
+		drop_first : bool, default False
+		    Whether to get k-1 dummies out of n categorical levels by removing the
+		    first level.
 		
+		    .. versionadded:: 0.18.0
 		Returns
 		-------
 		dummies : DataFrame or SparseDataFrame
@@ -75,7 +79,7 @@ package pandas.core.reshape;
 		>>> import pandas as pd
 		>>> s = pd.Series(list('abca'))
 		
-		>>> get_dummies(s)
+		>>> pd.get_dummies(s)
 		   a  b  c
 		0  1  0  0
 		1  0  1  0
@@ -84,30 +88,48 @@ package pandas.core.reshape;
 		
 		>>> s1 = ['a', 'b', np.nan]
 		
-		>>> get_dummies(s1)
+		>>> pd.get_dummies(s1)
 		   a  b
 		0  1  0
 		1  0  1
 		2  0  0
 		
-		>>> get_dummies(s1, dummy_na=True)
+		>>> pd.get_dummies(s1, dummy_na=True)
 		   a  b  NaN
 		0  1  0    0
 		1  0  1    0
 		2  0  0    1
 		
-		>>> df = DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
+		>>> df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
 		                    'C': [1, 2, 3]})
 		
-		>>> get_dummies(df, prefix=['col1', 'col2']):
+		>>> pd.get_dummies(df, prefix=['col1', 'col2'])
 		   C  col1_a  col1_b  col2_a  col2_b  col2_c
 		0  1       1       0       0       1       0
 		1  2       0       1       1       0       0
 		2  3       1       0       0       0       1
 		
-		See also ``Series.str.get_dummies``.
+		>>> pd.get_dummies(pd.Series(list('abcaa')))
+		   a  b  c
+		0  1  0  0
+		1  0  1  0
+		2  0  0  1
+		3  1  0  0
+		4  1  0  0
+		
+		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True))
+		   b  c
+		0  0  0
+		1  1  0
+		2  0  1
+		3  0  0
+		4  0  0
+		
+		See Also
+		--------
+		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
 	/**
 		For the particular label_list, gets the offsets into the hypothetical list
 		representing the totally ordered cartesian product of all possible label
@@ -335,7 +357,7 @@ package pandas.core.reshape;
 	**/
 	static public function stack(frame:Dynamic, ?level:Dynamic, ?dropna:Dynamic):pandas.Series;
 	static public function stack_multiple(frame:Dynamic, level:Dynamic, ?dropna:Dynamic):Dynamic;
-	static public function unstack(obj:Dynamic, level:Dynamic):Dynamic;
+	static public function unstack(obj:Dynamic, level:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Wide panel to long format. Less flexible but more user-friendly than melt.
 		

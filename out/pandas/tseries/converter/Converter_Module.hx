@@ -1,10 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.converter;
 @:pythonImport("pandas.tseries.converter") extern class Converter_Module {
-	static public var HOURS_PER_DAY : Dynamic;
-	static public var MINUTES_PER_DAY : Dynamic;
-	static public var MUSECONDS_PER_DAY : Dynamic;
-	static public var SECONDS_PER_DAY : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

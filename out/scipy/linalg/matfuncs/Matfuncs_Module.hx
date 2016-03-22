@@ -617,7 +617,7 @@ package scipy.linalg.matfuncs;
 		expm : Compute the exponential of a matrix.
 		expm_frechet : Compute the Frechet derivative of the matrix exponential.
 	**/
-	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Float;
 	/**
 		Frechet derivative of the matrix exponential of A in the direction E.
 		

@@ -229,7 +229,7 @@ package numpy.polynomial.laguerre;
 		>>> lagder([ 1.,  0.,  0., -4.,  3.], m=2)
 		array([ 1.,  2.,  3.])
 	**/
-	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Laguerre series by another.
 		
@@ -549,7 +549,7 @@ package numpy.polynomial.laguerre;
 		>>> lagint([1,2], m=2, k=[1,2], lbnd=-1)
 		array([ 11.16666667,  -5.        ,  -3.        ,   2.        ])
 	**/
-	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Laguerre series whose graph is a straight line.
 		
@@ -937,7 +937,7 @@ package numpy.polynomial.laguerre;
 		degree : int
 		    Degree of the series, one less than the number of coefficients.
 	**/
-	public function degree():Dynamic;
+	public function degree():Int;
 	/**
 		Differentiate.
 		
@@ -1186,7 +1186,7 @@ package numpy.polynomial.laguerre;
 		    x is equal to linspace(self.domain[0], self.domain[1], n) and
 		    y is the series evaluated at element of x.
 	**/
-	public function linspace(?n:Dynamic, ?domain:Dynamic):Dynamic;
+	public function linspace(?n:Dynamic, ?domain:Dynamic):numpy.Ndarray;
 	/**
 		Return the mapping parameters.
 		

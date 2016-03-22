@@ -1701,7 +1701,7 @@ package numpy.core.fromnumeric;
 		>>> np.partition(a, (1, 3))
 		array([1, 2, 3, 4])
 	**/
-	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 	/**
 		Return the product of array elements over a given axis.
@@ -2474,7 +2474,7 @@ package numpy.core.fromnumeric;
 		>>> np.squeeze(x, axis=(2,)).shape
 		(1, 3)
 	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Compute the standard deviation along the specified axis.
 		
@@ -2650,7 +2650,7 @@ package numpy.core.fromnumeric;
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Interchange two axes of an array.
 		
@@ -2756,7 +2756,7 @@ package numpy.core.fromnumeric;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		Return the sum along diagonals of the array.
 		

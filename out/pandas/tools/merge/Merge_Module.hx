@@ -69,7 +69,7 @@ package pandas.tools.merge;
 		    If True, do not use the index values along the concatenation axis. The
 		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
 		    concatenating objects where the concatenation axis does not have
-		    meaningful indexing information. Note the the index values on the other
+		    meaningful indexing information. Note the index values on the other
 		    axes are still respected in the join.
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
@@ -185,7 +185,7 @@ package pandas.tools.merge;
 		2   baz  3         2   qux  7
 		3   foo  4         3   bar  8
 		
-		>>> merge(A, B, left_on='lkey', right_on='rkey', how='outer')
+		>>> A.merge(B, left_on='lkey', right_on='rkey', how='outer')
 		   lkey  value_x  rkey  value_y
 		0  foo   1        foo   5
 		1  foo   4        foo   5
@@ -200,7 +200,7 @@ package pandas.tools.merge;
 		    The output type will the be same as 'left', if it is a subclass
 		    of DataFrame.
 	**/
-	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):Dynamic;
+	static public function merge(left:Dynamic, right:Dynamic, ?how:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?sort:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?indicator:Dynamic):pandas.DataFrame;
 	/**
 		Perform merge with optional filling/interpolation designed for ordered
 		data like time series data. Optionally perform group-wise merge (see

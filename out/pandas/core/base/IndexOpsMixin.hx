@@ -132,7 +132,8 @@ package pandas.core.base;
 	**/
 	public function argmin(?axis:Dynamic):Dynamic;
 	/**
-		return the base object if the memory of the underlying data is shared 
+		return the base object if the memory of the underlying data is
+		shared
 	**/
 	public var base : Dynamic;
 	/**
@@ -163,8 +164,10 @@ package pandas.core.base;
 		Parameters
 		----------
 		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Mark duplicates as ``True`` except for the first occurrence.
-		    - ``last`` : Mark duplicates as ``True`` except for the last occurrence.
+		    - ``first`` : Mark duplicates as ``True`` except for the first
+		      occurrence.
+		    - ``last`` : Mark duplicates as ``True`` except for the last
+		      occurrence.
 		    - False : Mark all duplicates as ``True``.
 		take_last : deprecated
 		
@@ -195,7 +198,16 @@ package pandas.core.base;
 	public var flags : Dynamic;
 	static public var hasnans : Dynamic;
 	/**
-		return the first element of the underlying data as a python scalar 
+		Return boolean if values in the object are unique
+		
+		Returns
+		-------
+		is_unique : boolean
+	**/
+	public var is_unique : Dynamic;
+	/**
+		return the first element of the underlying data as a python
+		scalar
 	**/
 	public function item():Dynamic;
 	/**
@@ -238,7 +250,8 @@ package pandas.core.base;
 	**/
 	public var nbytes : Dynamic;
 	/**
-		return the number of dimensions of the underlying data, by definition 1 
+		return the number of dimensions of the underlying data,
+		by definition 1
 	**/
 	public var ndim : Dynamic;
 	/**

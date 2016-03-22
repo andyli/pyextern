@@ -61,7 +61,7 @@ package pandas.tools.pivot;
 		    If True, do not use the index values along the concatenation axis. The
 		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
 		    concatenating objects where the concatenation axis does not have
-		    meaningful indexing information. Note the the index values on the other
+		    meaningful indexing information. Note the index values on the other
 		    axes are still respected in the join.
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
@@ -104,6 +104,9 @@ package pandas.tools.pivot;
 		Any Series passed will have their name attributes used unless row or column
 		names for the cross-tabulation are specified
 		
+		In the event that there aren't overlapping indexes an empty DataFrame will
+		be returned.
+		
 		Examples
 		--------
 		>>> a
@@ -138,13 +141,17 @@ package pandas.tools.pivot;
 		----------
 		data : DataFrame
 		values : column to aggregate, optional
-		index : a column, Grouper, array which has the same length as data, or list of them.
-		    Keys to group by on the pivot table index.
-		    If an array is passed, it is being used as the same manner as column values.
-		columns : a column, Grouper, array which has the same length as data, or list of them.
-		    Keys to group by on the pivot table column.
-		    If an array is passed, it is being used as the same manner as column values.
-		aggfunc : function, default numpy.mean, or list of functions
+		index : column, Grouper, array, or list of the previous
+		    If an array is passed, it must be the same length as the data. The list
+		    can contain any of the other types (except list).
+		    Keys to group by on the pivot table index.  If an array is passed, it
+		    is being used as the same manner as column values.
+		columns : column, Grouper, array, or list of the previous
+		    If an array is passed, it must be the same length as the data. The list
+		    can contain any of the other types (except list).
+		    Keys to group by on the pivot table column.  If an array is passed, it
+		    is being used as the same manner as column values.
+		aggfunc : function or list of functions, default numpy.mean
 		    If list of functions passed, the resulting pivot table will have
 		    hierarchical columns whose top level are the function names (inferred
 		    from the function objects themselves)

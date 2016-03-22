@@ -162,7 +162,7 @@ package pandas.io.pytables;
 		  note: cannot index Time64Col() or ComplexCol currently;
 		  PyTables must be >= 3.0
 		
-		Paramaters
+		Parameters
 		----------
 		columns : False (don't create an index), True (create all columns
 		    index), None or list_like (the indexers to index)
@@ -179,7 +179,8 @@ package pandas.io.pytables;
 	**/
 	public var data_orientation : Dynamic;
 	/**
-		support fully deleting the node in its entirety (only) - where specification must be None 
+		support fully deleting the node in its entirety (only) - where
+		specification must be None
 	**/
 	public function delete(?where:Dynamic, ?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var description : Dynamic;
@@ -249,7 +250,7 @@ package pandas.io.pytables;
 		index : array-like or Index (1d)
 		    Values must be unique and hashable, same length as data. Index
 		    object (or other iterable of same length as data) Will default to
-		    np.arange(len(data)) if not provided. If both a dict and index
+		    RangeIndex(len(data)) if not provided. If both a dict and index
 		    sequence are used, the index will override the keys found in the
 		    dict.
 		dtype : numpy.dtype or None

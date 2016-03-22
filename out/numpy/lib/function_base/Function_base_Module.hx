@@ -1354,7 +1354,7 @@ package numpy.lib.function_base;
 		arguments had no effect on the return values of the function and can be
 		safely ignored in this and previous versions of numpy.
 	**/
-	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):numpy.Ndarray;
 	/**
 		cos(x[, out])
 		
@@ -1514,7 +1514,7 @@ package numpy.lib.function_base;
 		>>> print np.cov(x)
 		11.71
 	**/
-	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):numpy.Ndarray;
 	/**
 		Return a new array with sub-arrays along an axis deleted. For a one
 		dimensional array, this returns those entries not returned by
@@ -2679,7 +2679,7 @@ package numpy.lib.function_base;
 		array([[  0, 999,   1,   2, 999,   3],
 		       [  4, 999,   5,   6, 999,   7]])
 	**/
-	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		One-dimensional linear interpolation.
 		
@@ -3030,7 +3030,7 @@ package numpy.lib.function_base;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		log10(x[, out])
 		
@@ -3238,7 +3238,7 @@ package numpy.lib.function_base;
 		3.5
 		>>> assert not np.all(a==b)
 	**/
-	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return coordinate matrices from coordinate vectors.
 		
@@ -3339,7 +3339,7 @@ package numpy.lib.function_base;
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
-	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		remainder(x1, x2[, out])
 		
@@ -3631,7 +3631,7 @@ package numpy.lib.function_base;
 		>>> np.partition(a, (1, 3))
 		array([1, 2, 3, 4])
 	**/
-	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis.
 		
@@ -4366,7 +4366,7 @@ package numpy.lib.function_base;
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Take elements from an array along an axis.
 		
@@ -4430,7 +4430,7 @@ package numpy.lib.function_base;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		Integrate along the given axis using the composite trapezoidal rule.
 		

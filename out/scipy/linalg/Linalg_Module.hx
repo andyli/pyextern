@@ -219,7 +219,7 @@ package scipy.linalg;
 		
 		.. versionadded:: 0.8.0
 	**/
-	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function cho_solve_banded(cb_and_lower:Dynamic, b:Dynamic, ?overwrite_b:Dynamic, ?check_finite:Dynamic):Array<Dynamic>;
 	/**
 		Compute the Cholesky decomposition of a matrix.
 		
@@ -1055,7 +1055,7 @@ package scipy.linalg;
 		expm : Compute the exponential of a matrix.
 		expm_frechet : Compute the Frechet derivative of the matrix exponential.
 	**/
-	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function expm_cond(A:Dynamic, ?check_finite:Dynamic):Float;
 	/**
 		Frechet derivative of the matrix exponential of A in the direction E.
 		

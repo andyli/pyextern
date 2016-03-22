@@ -109,12 +109,11 @@ package pandas.io.stata;
 		    * Variables that start with numbers
 		    * Variables with names that are too long
 		
-		When an illegal variable name is detected, it is converted, and if dates
-		are exported, the variable name is propogated to the date conversion
-		dictionary
+		When an illegal variable name is detected, it is converted, and if
+		dates are exported, the variable name is propogated to the date
+		conversion dictionary
 	**/
 	public function _check_column_names(data:Dynamic):Dynamic;
-	public function _decode_bytes(str:Dynamic, ?errors:Dynamic):Dynamic;
 	static public var _default_encoding : Dynamic;
 	public function _null_terminate(s:Dynamic, ?as_string:Dynamic):Dynamic;
 	/**

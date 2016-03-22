@@ -175,7 +175,7 @@ package scipy.sparse.linalg._onenormest;
 		       "A new scaling and squaring algorithm for the matrix exponential."
 		       SIAM J. Matrix Anal. Appl. Vol. 31, No. 3, pp. 970-989.
 	**/
-	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Dynamic;
+	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;
 	static public function resample_column(i:Dynamic, X:Dynamic):Dynamic;
 	static public function sign_round_up(x:Dynamic):Dynamic;

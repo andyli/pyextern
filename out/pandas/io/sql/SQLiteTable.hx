@@ -48,11 +48,11 @@ package pandas.io.sql;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(name:Dynamic, pandas_sql_engine:Dynamic, ?frame:Dynamic, ?index:Dynamic, ?if_exists:Dynamic, ?prefix:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(name:Dynamic, pandas_sql_engine:Dynamic, ?frame:Dynamic, ?index:Dynamic, ?if_exists:Dynamic, ?prefix:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?keys:Dynamic, ?dtype:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/
@@ -89,10 +89,10 @@ package pandas.io.sql;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		

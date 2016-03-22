@@ -53,7 +53,6 @@ package pandas.tseries.period;
 	static public function dt64arr_to_periodarr(data:Dynamic, freq:Dynamic, tz:Dynamic):Dynamic;
 	static public function get_period_field_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**

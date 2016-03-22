@@ -57,9 +57,12 @@ package pandas.tools.rplot;
 		Parameters:
 		-----------
 		column: string, pandas DataFrame column name
-		colour1: tuple, 3 element tuple with float values representing an RGB colour
-		colour2: tuple, 3 element tuple with float values representing an RGB colour
-		colour3: tuple, 3 element tuple with float values representing an RGB colour
+		colour1: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour2: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour3: tuple
+		    3 element tuple with float values representing an RGB colour
 	**/
 	@:native("__init__")
 	public function ___init__(column:Dynamic, colour1:Dynamic, colour2:Dynamic, colour3:Dynamic):Dynamic;
@@ -69,9 +72,12 @@ package pandas.tools.rplot;
 		Parameters:
 		-----------
 		column: string, pandas DataFrame column name
-		colour1: tuple, 3 element tuple with float values representing an RGB colour
-		colour2: tuple, 3 element tuple with float values representing an RGB colour
-		colour3: tuple, 3 element tuple with float values representing an RGB colour
+		colour1: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour2: tuple
+		    3 element tuple with float values representing an RGB colour
+		colour3: tuple
+		    3 element tuple with float values representing an RGB colour
 	**/
 	public function new(column:Dynamic, colour1:Dynamic, colour2:Dynamic, colour3:Dynamic):Void;
 	/**

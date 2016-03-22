@@ -184,7 +184,7 @@ package matplotlib.figure;
 		sets the projection type of the axes.  (For backward
 		compatibility, ``polar=True`` may also be provided, which is
 		equivalent to ``projection='polar'``).  Valid values for
-		*projection* are: ['aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of these
+		*projection* are: ['3d', 'aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of these
 		projections support  additional kwargs, which may be provided
 		to :meth:`add_axes`. Typical usage::
 		
@@ -305,7 +305,7 @@ package matplotlib.figure;
 		*projection*, which chooses a projection type for the axes.
 		(For backward compatibility, *polar=True* may also be
 		provided, which is equivalent to *projection='polar'*). Valid
-		values for *projection* are: ['aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of
+		values for *projection* are: ['3d', 'aitoff', 'hammer', 'lambert', 'mollweide', 'polar', 'rectilinear'].  Some of
 		these projections
 		support additional *kwargs*, which may be provided to
 		:meth:`add_axes`.
@@ -1584,7 +1584,7 @@ package matplotlib.figure;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown

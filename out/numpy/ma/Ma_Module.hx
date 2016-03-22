@@ -583,7 +583,7 @@ package numpy.ma;
 		>>> print(ma.append(a, b))
 		[1 -- 3 4 5 6 -- 8 9]
 	**/
-	static public function append(a:Dynamic, b:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function append(a:Dynamic, b:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	/**
 		Apply a function to 1-D slices along the given axis.
 		
@@ -639,7 +639,7 @@ package numpy.ma;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -3166,7 +3166,7 @@ package numpy.ma;
 		array([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000],#random
 		       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])
 	**/
-	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		equal(x1, x2[, out])
 		
@@ -4989,7 +4989,7 @@ package numpy.ma;
 		>>> np.log2(xi)
 		array([ 0.+2.26618007j,  0.+0.j        ,  1.+0.j        ,  2.+2.26618007j])
 	**/
-	static public function log2(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function log2(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		logical_and(x1, x2[, out])
 		
@@ -7872,7 +7872,7 @@ package numpy.ma;
 		>>> np.squeeze(x, axis=(2,)).shape
 		(1, 3)
 	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		std(self, axis=None, dtype=None, out=None, ddof=0)
 		
@@ -8429,7 +8429,7 @@ package numpy.ma;
 		
 		Masked values in the input array result in rows of zeros.
 	**/
-	static public function vander(x:Dynamic, ?n:Dynamic):Dynamic;
+	static public function vander(x:Dynamic, ?n:Dynamic):numpy.Ndarray;
 	/**
 		var(self, axis=None, dtype=None, out=None, ddof=0)
 		

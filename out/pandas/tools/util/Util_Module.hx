@@ -45,7 +45,7 @@ package pandas.tools.util;
 		
 		Parameters
 		----------
-		arg : list, tuple or array of objects, or Series
+		arg : list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaN

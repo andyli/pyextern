@@ -103,7 +103,7 @@ package numpy.lib.stride_tricks;
 		       [1, 2, 3],
 		       [1, 2, 3]])
 	**/
-	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 }

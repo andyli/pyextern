@@ -116,6 +116,7 @@ package pandas.tslib;
 	**/
 	public function _has_time_component():Dynamic;
 	public var _repr_base : Dynamic;
+	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
 	public var _time_repr : Dynamic;
 	public var asm8 : Dynamic;
 	/**
@@ -138,6 +139,14 @@ package pandas.tslib;
 	**/
 	public function astimezone(tz:Dynamic):pandas.Timestamp;
 	/**
+		return a new Timestamp ceiled to this resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the ceiling resolution
+	**/
+	public function ceil(freq:Dynamic):Dynamic;
+	/**
 		date, time -> datetime with same date and time fields
 	**/
 	static public function combine(date:Dynamic, time:Dynamic):Dynamic;
@@ -158,6 +167,14 @@ package pandas.tslib;
 		Return self.tzinfo.dst(self).
 	**/
 	public function dst(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		return a new Timestamp floored to this resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the flooring resolution
+	**/
+	public function floor(freq:Dynamic):Dynamic;
 	public var freq : Dynamic;
 	public var freqstr : Dynamic;
 	/**
@@ -211,6 +228,14 @@ package pandas.tslib;
 	public var quarter : Dynamic;
 	public function replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
+	/**
+		return a new Timestamp rounded to this resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the rounding resolution
+	**/
+	public function round(freq:Dynamic):Dynamic;
 	public var second : Dynamic;
 	/**
 		format -> strftime() style string.

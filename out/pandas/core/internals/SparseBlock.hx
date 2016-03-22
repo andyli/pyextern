@@ -92,10 +92,10 @@ package pandas.core.internals;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	static public var __slots__ : Dynamic;
 	/**
 		Return a string representation for a particular Object
@@ -165,7 +165,6 @@ package pandas.core.internals;
 		SparseArray objects are immutable via the typical Python means. If you
 		must change values, convert to dense, make your changes, then convert back
 		to sparse
-		    
 	**/
 	static public function _holder(data:Dynamic, ?sparse_index:Dynamic, ?index:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
@@ -210,20 +209,25 @@ package pandas.core.internals;
 	static public var _validate_ndim : Dynamic;
 	static public var _verify_integrity : Dynamic;
 	/**
-		apply the function to my values; return a block if we are not one 
+		apply the function to my values; return a block if we are not
+		one
 	**/
 	public function apply(func:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		the dtype to return if I want to construct this block as an array 
+		the dtype to return if I want to construct this block as an
+		array
 	**/
 	public var array_dtype : Dynamic;
 	public function astype(dtype:Dynamic, ?copy:Dynamic, ?raise_on_error:Dynamic, ?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		attempt to coerce any object types to better types
-		return a copy of the block (if copy = True)
-		by definition we are not an ObjectBlock here!  
+		attempt to coerce any object types to better types return a copy
+		of the block (if copy = True) by definition we are not an ObjectBlock
+		here!
 	**/
 	public function convert(?copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		copy constructor 
+	**/
 	public function copy(?deep:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Delete given loc(-s) from block in-place.
@@ -261,8 +265,8 @@ package pandas.core.internals;
 	public function external_values(?dtype:Dynamic):Dynamic;
 	public var fill_value : Dynamic;
 	/**
-		fillna on the block with the value. If we fail, then convert to ObjectBlock
-		and try again 
+		fillna on the block with the value. If we fail, then convert to
+		ObjectBlock and try again
 	**/
 	public function fillna(value:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?downcast:Dynamic, ?mgr:Dynamic):Dynamic;
 	public var ftype : Dynamic;
@@ -280,7 +284,7 @@ package pandas.core.internals;
 	public function iget(col:Dynamic):Dynamic;
 	/**
 		return an internal format, currently just the ndarray
-		this should be the pure internal API format 
+		this should be the pure internal API format
 	**/
 	public function internal_values(?dtype:Dynamic):Dynamic;
 	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -311,8 +315,8 @@ package pandas.core.internals;
 	public var itemsize : Dynamic;
 	public var kind : Dynamic;
 	/**
-		Create a new block, with type inference
-		propogate any values that are not specified
+		Create a new block, with type inference propogate any values that are
+		not specified
 	**/
 	public function make_block(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -323,8 +327,8 @@ package pandas.core.internals;
 	public var mgr_locs : Dynamic;
 	public var ndim : Dynamic;
 	/**
-		putmask the data to the block; we must be a single block and not generate
-		other blocks
+		putmask the data to the block; we must be a single block and not
+		generate other blocks
 		
 		return the resulting block
 		

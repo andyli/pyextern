@@ -281,7 +281,7 @@ package numpy.core.numeric;
 		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		True
 	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Check if all elements of input array are true.
 		
@@ -3313,7 +3313,7 @@ package numpy.core.numeric;
 		       [-30,  60, -30],
 		       [-36,  72, -36]])
 	**/
-	static public function cross(a:Dynamic, b:Dynamic, ?axisa:Dynamic, ?axisb:Dynamic, ?axisc:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function cross(a:Dynamic, b:Dynamic, ?axisa:Dynamic, ?axisb:Dynamic, ?axisc:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Return the cumulative product of elements along a given axis.
 		
@@ -5636,7 +5636,7 @@ package numpy.core.numeric;
 		>>> np.isclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		array([True, True])
 	**/
-	static public function isclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function isclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):python.NativeIterable<Dynamic>;
 	/**
 		isfinite(x[, out])
 		
@@ -7463,7 +7463,7 @@ package numpy.core.numeric;
 		>>> np.ones_like(y)
 		array([ 1.,  1.,  1.])
 	**/
-	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 	/**
 		Compute the outer product of two vectors.
 		
@@ -7616,7 +7616,7 @@ package numpy.core.numeric;
 		>>> np.partition(a, (1, 3))
 		array([1, 2, 3, 4])
 	**/
-	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):Dynamic;
+	static public function partition(a:Dynamic, kth:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic):numpy.Ndarray;
 	static public var pi : Dynamic;
 	/**
 		power(x1, x2[, out])
@@ -9702,7 +9702,7 @@ package numpy.core.numeric;
 		>>> np.squeeze(x, axis=(2,)).shape
 		(1, 3)
 	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Compute the standard deviation along the specified axis.
 		
@@ -9911,7 +9911,7 @@ package numpy.core.numeric;
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Interchange two axes of an array.
 		
@@ -10017,7 +10017,7 @@ package numpy.core.numeric;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		tan(x[, out])
 		
@@ -10758,5 +10758,5 @@ package numpy.core.numeric;
 		>>> np.zeros_like(y)
 		array([ 0.,  0.,  0.])
 	**/
-	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 }

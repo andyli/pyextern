@@ -2715,7 +2715,7 @@ package numpy.linalg.linalg;
 		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
 		-128
 	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Singular Value Decomposition.
 		

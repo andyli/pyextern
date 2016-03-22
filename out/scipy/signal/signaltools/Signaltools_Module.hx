@@ -134,7 +134,7 @@ package scipy.signal.signaltools;
 		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		True
 	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Return the angle of the complex argument.
 		

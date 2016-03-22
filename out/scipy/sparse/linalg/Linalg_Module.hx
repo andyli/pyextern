@@ -1532,7 +1532,7 @@ package scipy.sparse.linalg;
 		       "A new scaling and squaring algorithm for the matrix exponential."
 		       SIAM J. Matrix Anal. Appl. Vol. 31, No. 3, pp. 970-989.
 	**/
-	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Dynamic;
+	static public function onenormest(A:Dynamic, ?t:Dynamic, ?itmax:Dynamic, ?compute_v:Dynamic, ?compute_w:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Use Quasi-Minimal Residual iteration to solve A x = b

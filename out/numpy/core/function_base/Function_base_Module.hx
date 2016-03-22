@@ -86,7 +86,7 @@ package numpy.core.function_base;
 		(-0.5, 1)
 		>>> plt.show()
 	**/
-	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function linspace(start:Dynamic, stop:Dynamic, ?num:Dynamic, ?endpoint:Dynamic, ?retstep:Dynamic, ?dtype:Dynamic):numpy.Ndarray;
 	/**
 		Return numbers spaced evenly on a log scale.
 		

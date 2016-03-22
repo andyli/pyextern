@@ -195,11 +195,13 @@ package pandas.computation.expr;
 	public function visit_BoolOp(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Break(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		in 3.5 the starargs attribute was changed to be more flexible, #11097 
+		in 3.5 the starargs attribute was changed to be more flexible,
+		#11097 
 	**/
 	public function visit_Call(node:Dynamic, ?side:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		in 3.5 the starargs attribute was changed to be more flexible, #11097 
+		in 3.5 the starargs attribute was changed to be more flexible,
+		#11097 
 	**/
 	public function visit_Call_35(node:Dynamic, ?side:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function visit_Call_legacy(node:Dynamic, ?side:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;

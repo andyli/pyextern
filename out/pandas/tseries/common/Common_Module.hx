@@ -12,8 +12,8 @@ package pandas.tseries.common;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		provide concatenation of an datetimelike array of arrays each of which is a single
-		M8[ns], datetimet64[ns, tz] or m8[ns] dtype
+		provide concatenation of an datetimelike array of arrays each of which is a
+		single M8[ns], datetimet64[ns, tz] or m8[ns] dtype
 		
 		Parameters
 		----------
@@ -43,7 +43,7 @@ package pandas.tseries.common;
 	**/
 	static public function is_datetime_arraylike(arr:Dynamic):Dynamic;
 	/**
-		return a boolean if we can be successfully converted to a datetimelike 
+		return a boolean if we can be successfully converted to a datetimelike
 	**/
 	static public function is_datetimelike(data:Dynamic):Dynamic;
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;

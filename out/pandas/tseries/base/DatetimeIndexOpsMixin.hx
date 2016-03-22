@@ -106,7 +106,8 @@ package pandas.tseries.base;
 	public var __weakref__ : Dynamic;
 	public function _add_datelike(other:Dynamic):Dynamic;
 	/**
-		add in the datetimelike methods (as we may have to override the superclass) 
+		add in the datetimelike methods (as we may have to override the
+		superclass)
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
 	public function _add_delta(other:Dynamic):Dynamic;
@@ -121,12 +122,13 @@ package pandas.tseries.base;
 	**/
 	public function _box_values(values:Dynamic):Dynamic;
 	/**
-		we don't allow integer or float indexing on datetime-like when using loc
+		we don't allow integer or float indexing on datetime-like when using
+		loc
 		
 		Parameters
 		----------
 		key : label of the slice bound
-		kind : optional, type of the indexing operation (loc/ix/iloc/None)
+		kind : {'ix', 'loc', 'getitem', 'iloc'} or None
 	**/
 	public function _convert_scalar_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
@@ -151,11 +153,23 @@ package pandas.tseries.base;
 		-------
 		result : ndarray with values replace by the fill_value
 		
-		mask the result if needed, convert to the provided dtype if its not None
+		mask the result if needed, convert to the provided dtype if its not
+		None
 		
 		This is an internal routine
 	**/
 	public function _maybe_mask_results(result:Dynamic, ?fill_value:Dynamic, ?convert:Dynamic):Dynamic;
+	/**
+		Return Index or ndarray filled with NaT which has the same
+		length as the caller.
+		
+		Parameters
+		----------
+		box : boolean, default True
+		    - If True returns a Index as the same as caller.
+		    - If False returns ndarray of np.int64.
+	**/
+	public function _nat_new(?box:Dynamic):Dynamic;
 	static public var _resolution : Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
@@ -176,7 +190,7 @@ package pandas.tseries.base;
 	public function argmin(?axis:Dynamic):Dynamic;
 	public var asobject : Dynamic;
 	/**
-		return the frequency object as a string if its set, otherwise None 
+		Return the frequency object as a string if its set, otherwise None
 	**/
 	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;

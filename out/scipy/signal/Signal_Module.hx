@@ -2941,7 +2941,7 @@ package scipy.signal;
 		>>> peakind, xs[peakind], data[peakind]
 		([32], array([ 1.6]), array([ 0.9995736]))
 	**/
-	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Dynamic;
+	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Array<Dynamic>;
 	/**
 		Find an array of frequencies for computing the response of a filter.
 		
@@ -4977,7 +4977,7 @@ package scipy.signal;
 		
 		.. versionadded:: 0.15.0
 	**/
-	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Dynamic;
+	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Array<Dynamic>;
 	/**
 		Perform a median filter on an N-dimensional array.
 		

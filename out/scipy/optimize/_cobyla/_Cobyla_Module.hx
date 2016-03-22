@@ -9,23 +9,37 @@ package scipy.optimize._cobyla;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		minimize - Function signature:
-		  x,dinfo = minimize(calcfc,m,x,rhobeg,rhoend,dinfo,[iprint,maxfun,calcfc_extra_args])
-		Required arguments:
-		  calcfc : call-back function
-		  m : input int
-		  x : input rank-1 array('d') with bounds (n)
-		  rhobeg : input float
-		  rhoend : input float
-		  dinfo : input rank-1 array('d') with bounds (4)
-		Optional arguments:
-		  calcfc_extra_args := () input tuple
-		  iprint := 1 input int
-		  maxfun := 100 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (n)
-		  dinfo : rank-1 array('d') with bounds (4)
-		Call-back functions:
+		x,dinfo = minimize(calcfc,m,x,rhobeg,rhoend,dinfo,[iprint,maxfun,calcfc_extra_args])
+		
+		Wrapper for ``minimize``.
+		
+		Parameters
+		----------
+		calcfc : call-back function
+		m : input int
+		x : input rank-1 array('d') with bounds (n)
+		rhobeg : input float
+		rhoend : input float
+		dinfo : input rank-1 array('d') with bounds (4)
+		
+		Other Parameters
+		----------------
+		calcfc_extra_args : input tuple, optional
+		    Default: ()
+		iprint : input int, optional
+		    Default: 1
+		maxfun : input int, optional
+		    Default: 100
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (n)
+		dinfo : rank-1 array('d') with bounds (4)
+		
+		Notes
+		-----
+		Call-back functions::
+		
 		  def calcfc(x,con): return f
 		  Required arguments:
 		    x : input rank-1 array('d') with bounds (n)

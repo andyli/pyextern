@@ -531,7 +531,7 @@ package numpy.fft.fftpack;
 		array([[ 1.,  1.],
 		       [ 2., -2.]])
 	**/
-	static public function hfft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function hfft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):numpy.Ndarray;
 	/**
 		Compute the one-dimensional inverse discrete Fourier Transform.
 		
@@ -906,7 +906,7 @@ package numpy.fft.fftpack;
 		part everywhere.  When calling `irfft`, the negative frequencies are not
 		specified, and the output array is purely real.
 	**/
-	static public function irfft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function irfft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):numpy.Ndarray;
 	/**
 		Compute the 2-dimensional inverse FFT of a real array.
 		
@@ -937,7 +937,7 @@ package numpy.fft.fftpack;
 		This is really `irfftn` with different defaults.
 		For more details see `irfftn`.
 	**/
-	static public function irfft2(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function irfft2(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):numpy.Ndarray;
 	/**
 		Compute the inverse of the N-dimensional FFT of real input.
 		
@@ -1020,7 +1020,7 @@ package numpy.fft.fftpack;
 		       [[ 1.,  1.],
 		        [ 1.,  1.]]])
 	**/
-	static public function irfftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function irfftn(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):numpy.Ndarray;
 	static public var print_function : Dynamic;
 	/**
 		Compute the one-dimensional discrete Fourier Transform for real input.
@@ -1128,7 +1128,7 @@ package numpy.fft.fftpack;
 		This is really just `rfftn` with different default behavior.
 		For more details see `rfftn`.
 	**/
-	static public function rfft2(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):Dynamic;
+	static public function rfft2(a:Dynamic, ?s:Dynamic, ?axes:Dynamic, ?norm:Dynamic):numpy.Ndarray;
 	/**
 		Compute the N-dimensional discrete Fourier Transform for real input.
 		
@@ -1399,7 +1399,7 @@ package numpy.fft.fftpack;
 		array([[4, 3],
 		       [5, 7]])
 	**/
-	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):Dynamic;
+	static public function take(a:Dynamic, indices:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?mode:Dynamic):numpy.Ndarray;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

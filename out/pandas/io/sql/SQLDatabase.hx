@@ -89,10 +89,10 @@ package pandas.io.sql;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -171,10 +171,10 @@ package pandas.io.sql;
 		    - Dict of ``{column_name: format string}`` where format string is
 		      strftime compatible in case of parsing string times or is one of
 		      (D, s, ns, ms, us) in case of parsing integer timestamps
-		    - Dict of ``{column_name: arg dict}``, where the arg dict corresponds
-		      to the keyword arguments of :func:`pandas.to_datetime`
-		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		    - Dict of ``{column_name: arg dict}``, where the arg dict
+		      corresponds to the keyword arguments of
+		      :func:`pandas.to_datetime` Especially useful with databases
+		      without native Datetime support, such as SQLite
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number
 		    of rows to include in each chunk.
@@ -212,10 +212,10 @@ package pandas.io.sql;
 		    - Dict of ``{column_name: format string}`` where format string is
 		      strftime compatible in case of parsing string times or is one of
 		      (D, s, ns, ms, us) in case of parsing integer timestamps
-		    - Dict of ``{column_name: arg dict}``, where the arg dict corresponds
-		      to the keyword arguments of :func:`pandas.to_datetime`
-		      Especially useful with databases without native Datetime support,
-		      such as SQLite
+		    - Dict of ``{column_name: arg dict}``, where the arg dict
+		      corresponds to the keyword arguments of
+		      :func:`pandas.to_datetime` Especially useful with databases
+		      without native Datetime support, such as SQLite
 		chunksize : int, default None
 		    If specified, return an iterator where `chunksize` is the number
 		    of rows to include in each chunk.

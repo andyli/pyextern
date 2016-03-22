@@ -25,7 +25,7 @@ package pandas.core.nanops;
 	/**
 		utility to get the values view, mask, dtype
 		if necessary copy and mask using the specified fill_value
-		copy = True will force the copy 
+		copy = True will force the copy
 	**/
 	static public function _get_values(values:Dynamic, skipna:Dynamic, ?fill_value:Dynamic, ?fill_value_typ:Dynamic, ?isfinite:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _has_infs(result:Dynamic):Dynamic;
@@ -64,7 +64,6 @@ package pandas.core.nanops;
 	**/
 	static public function _wrap_results(result:Dynamic, dtype:Dynamic):Dynamic;
 	static public function _zero_out_fperr(arg:Dynamic):Dynamic;
-	static public function ensure_float(arr:Dynamic):Dynamic;
 	static public function get_corr_func(method:Dynamic):Dynamic;
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -117,6 +116,13 @@ package pandas.core.nanops;
 	static public function naneq(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nange(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nangt(x:Dynamic, y:Dynamic):Dynamic;
+	/**
+		Compute the sample skewness.
+		
+		The statistic computed here is the adjusted Fisher-Pearson standardized
+		moment coefficient G2, computed directly from the second and fourth
+		central moment.
+	**/
 	static public function nankurt(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	static public function nanle(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nanlt(x:Dynamic, y:Dynamic):Dynamic;
@@ -127,6 +133,13 @@ package pandas.core.nanops;
 	static public function nanne(x:Dynamic, y:Dynamic):Dynamic;
 	static public function nanprod(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	static public function nansem(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic):Dynamic;
+	/**
+		Compute the sample skewness.
+		
+		The statistic computed here is the adjusted Fisher-Pearson standardized
+		moment coefficient G1. The algorithm computes this coefficient directly
+		from the second and third central moment.
+	**/
 	static public function nanskew(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;
 	static public function nanstd(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic, ?ddof:Dynamic):Dynamic;
 	static public function nansum(values:Dynamic, ?axis:Dynamic, ?skipna:Dynamic):Dynamic;

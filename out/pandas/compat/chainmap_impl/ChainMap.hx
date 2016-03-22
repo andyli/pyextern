@@ -20,7 +20,8 @@ package pandas.compat.chainmap_impl;
 	static public function __class__(name:Dynamic, bases:Dynamic, namespace:Dynamic):Dynamic;
 	public function __contains__(key:Dynamic):Dynamic;
 	/**
-		New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]
+		New ChainMap or subclass with a new copy of maps[0] and refs to
+		maps[1:]
 	**/
 	public function __copy__():Dynamic;
 	/**
@@ -134,7 +135,8 @@ package pandas.compat.chainmap_impl;
 	**/
 	public function clear():Dynamic;
 	/**
-		New ChainMap or subclass with a new copy of maps[0] and refs to maps[1:]
+		New ChainMap or subclass with a new copy of maps[0] and refs to
+		maps[1:]
 	**/
 	public function copy():Dynamic;
 	/**
@@ -163,11 +165,13 @@ package pandas.compat.chainmap_impl;
 	**/
 	public var parents : Dynamic;
 	/**
-		Remove *key* from maps[0] and return its value. Raise KeyError if *key* not in maps[0].
+		Remove *key* from maps[0] and return its value. Raise KeyError if
+		*key* not in maps[0].
 	**/
 	public function pop(key:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
-		Remove and return an item pair from maps[0]. Raise KeyError is maps[0] is empty.
+		Remove and return an item pair from maps[0]. Raise KeyError is maps[0]
+		is empty.
 	**/
 	public function popitem():Dynamic;
 	/**

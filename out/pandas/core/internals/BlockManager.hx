@@ -95,10 +95,10 @@ package pandas.core.internals;
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	static public var __slots__ : Dynamic;
 	/**
 		Return a string representation for a particular Object
@@ -194,8 +194,10 @@ package pandas.core.internals;
 		axes : optional (if not supplied, use self.axes)
 		filter : list, if supplied, only call the block if the filter is in
 		         the block
-		do_integrity_check : boolean, default False. Do the block manager integrity check
-		consolidate: boolean, default True. Join together blocks having same dtype
+		do_integrity_check : boolean, default False. Do the block manager
+		    integrity check
+		consolidate: boolean, default True. Join together blocks having same
+		    dtype
 		
 		Returns
 		-------

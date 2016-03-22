@@ -124,29 +124,43 @@ package scipy.integrate._ode;
 	**/
 	public function run_relax(f:Dynamic, jac:Dynamic, y0:Dynamic, t0:Dynamic, t1:Dynamic, f_params:Dynamic, jac_params:Dynamic):Dynamic;
 	/**
-		dopri5 - Function signature:
-		  x,y,iwork,idid = dopri5(fcn,x,y,xend,rtol,atol,solout,iout,work,iwork,[fcn_extra_args,overwrite_y,solout_extra_args])
-		Required arguments:
-		  fcn : call-back function
-		  x : input float
-		  y : input rank-1 array('d') with bounds (n)
-		  xend : input float
-		  rtol : input rank-1 array('d') with bounds (*)
-		  atol : input rank-1 array('d') with bounds (*)
-		  solout : call-back function
-		  iout : input int
-		  work : input rank-1 array('d') with bounds (*)
-		  iwork : input rank-1 array('i') with bounds (*)
-		Optional arguments:
-		  fcn_extra_args := () input tuple
-		  overwrite_y := 0 input int
-		  solout_extra_args := () input tuple
-		Return objects:
-		  x : float
-		  y : rank-1 array('d') with bounds (n)
-		  iwork : rank-1 array('i') with bounds (*)
-		  idid : int
-		Call-back functions:
+		x,y,iwork,idid = dopri5(fcn,x,y,xend,rtol,atol,solout,iout,work,iwork,[fcn_extra_args,overwrite_y,solout_extra_args])
+		
+		Wrapper for ``dopri5``.
+		
+		Parameters
+		----------
+		fcn : call-back function
+		x : input float
+		y : input rank-1 array('d') with bounds (n)
+		xend : input float
+		rtol : input rank-1 array('d') with bounds (*)
+		atol : input rank-1 array('d') with bounds (*)
+		solout : call-back function
+		iout : input int
+		work : input rank-1 array('d') with bounds (*)
+		iwork : input rank-1 array('i') with bounds (*)
+		
+		Other Parameters
+		----------------
+		fcn_extra_args : input tuple, optional
+		    Default: ()
+		overwrite_y : input int, optional
+		    Default: 0
+		solout_extra_args : input tuple, optional
+		    Default: ()
+		
+		Returns
+		-------
+		x : float
+		y : rank-1 array('d') with bounds (n)
+		iwork : rank-1 array('i') with bounds (*)
+		idid : int
+		
+		Notes
+		-----
+		Call-back functions::
+		
 		  def fcn(x,y): return f
 		  Required arguments:
 		    x : input float
@@ -162,7 +176,8 @@ package scipy.integrate._ode;
 		    con : input rank-1 array('d') with bounds (5 * nd)
 		    icomp : input rank-1 array('i') with bounds (nd)
 		  Optional arguments:
-		    nd := (len(con))/(5) input int
+		    nd : input int, optional
+		    Default: (len(con))/(5)
 		  Return objects:
 		    irtn : int
 	**/

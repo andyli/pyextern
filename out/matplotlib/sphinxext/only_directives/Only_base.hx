@@ -154,6 +154,9 @@ package matplotlib.sphinxext.only_directives;
 		NOTE: self[attr] and value both must not be None.
 	**/
 	public function coerce_append_attr_list(attr:Dynamic, value:Dynamic):Dynamic;
+	/**
+		Return a copy of self.
+	**/
 	public function copy():Dynamic;
 	/**
 		If attr is an attribute of self and either self[attr] or value is a

@@ -19,10 +19,6 @@ package pandas.core.internals;
 		guarantee the shape of the values to be at least 1 d 
 	**/
 	static public function _block_shape(values:Dynamic, ?ndim:Dynamic, ?shape:Dynamic):Dynamic;
-	/**
-		convert strings to timedelta; coerce to Timedelta (if box), else np.timedelta64
-	**/
-	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	static public function _concat_indexes(indexes:Dynamic):Dynamic;
 	/**
 		Merge blocks having same dtype, exclude non-consolidating blocks
@@ -60,6 +56,17 @@ package pandas.core.internals;
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	static public function _interleaved_dtype(blocks:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		arr: a numpy array
+		fill_value: fill value, default to np.nan
+		
+		Returns
+		-------
+		True if we can fill using this fill_value
+	**/
+	static public function _is_na_compat(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
 		Convert string-like and string-like array to convert object dtype.
 		This is to avoid numpy to handle the array as str dtype.
@@ -108,9 +115,9 @@ package pandas.core.internals;
 	static public function _transform_index(index:Dynamic, func:Dynamic):Dynamic;
 	static public function _vstack(to_stack:Dynamic, dtype:Dynamic):Dynamic;
 	/**
-		True if two arrays, left and right, have equal non-NaN elements, and NaNs in
-		corresponding locations.  False otherwise. It is assumed that left and right
-		are NumPy arrays of the same dtype. The behavior of this function
+		True if two arrays, left and right, have equal non-NaN elements, and NaNs
+		in corresponding locations.  False otherwise. It is assumed that left and
+		right are NumPy arrays of the same dtype. The behavior of this function
 		(particularly with respect to NaNs) is not defined if the dtypes are
 		different.
 		
@@ -194,7 +201,6 @@ package pandas.core.internals;
 	**/
 	static public function is_categorical(array:Dynamic):Dynamic;
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
-	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetimelike_v_numeric(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
@@ -270,7 +276,6 @@ package pandas.core.internals;
 		coerce to a categorical if a series is given 
 	**/
 	static public function maybe_to_categorical(array:Dynamic):Dynamic;
-	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Reduce join_unit's shape along item axis to length.
 		

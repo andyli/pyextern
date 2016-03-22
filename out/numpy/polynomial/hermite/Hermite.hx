@@ -229,7 +229,7 @@ package numpy.polynomial.hermite;
 		>>> hermder([-0.5,  1./2.,  1./8.,  1./12.,  1./16.], m=2)
 		array([ 1.,  2.,  3.])
 	**/
-	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _der(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Hermite series by another.
 		
@@ -550,7 +550,7 @@ package numpy.polynomial.hermite;
 		>>> hermint([1,2,3], m=2, k=[1,2], lbnd=-1)
 		array([ 1.66666667, -0.5       ,  0.125     ,  0.08333333,  0.0625    ])
 	**/
-	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function _int(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Hermite series whose graph is a straight line.
 		
@@ -938,7 +938,7 @@ package numpy.polynomial.hermite;
 		degree : int
 		    Degree of the series, one less than the number of coefficients.
 	**/
-	public function degree():Dynamic;
+	public function degree():Int;
 	/**
 		Differentiate.
 		
@@ -1187,7 +1187,7 @@ package numpy.polynomial.hermite;
 		    x is equal to linspace(self.domain[0], self.domain[1], n) and
 		    y is the series evaluated at element of x.
 	**/
-	public function linspace(?n:Dynamic, ?domain:Dynamic):Dynamic;
+	public function linspace(?n:Dynamic, ?domain:Dynamic):numpy.Ndarray;
 	/**
 		Return the mapping parameters.
 		

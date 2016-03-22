@@ -323,5 +323,5 @@ package numpy.lib.arraysetops;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):numpy.Ndarray;
 }

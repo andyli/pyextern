@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.io.excel;
 @:pythonImport("pandas.io.excel") extern class Excel_Module {
+	static public var MINYEAR : Dynamic;
 	/**
 		Converts lists of lists/tuples into DataFrames with proper type inference
 		and optional (e.g. string to datetime) conversion. Also enables iterating
@@ -67,6 +68,10 @@ package pandas.io.excel;
 	static public function _conv_value(val:Dynamic):Dynamic;
 	static public function _fill_mi_header(row:Dynamic):Dynamic;
 	/**
+		Check for an s3, s3n, or s3a url
+	**/
+	static public function _is_s3_url(url:Dynamic):Dynamic;
+	/**
 		Check to see if a URL has a valid protocol.
 		
 		Parameters
@@ -92,6 +97,21 @@ package pandas.io.excel;
 		Class decorator for creating a class with a metaclass.
 	**/
 	static public function add_metaclass(metaclass:Dynamic):Dynamic;
+	/**
+		If the filepath_or_buffer is a url, translate and return the buffer
+		passthru otherwise.
+		
+		Parameters
+		----------
+		filepath_or_buffer : a url, filepath (str, py.path.local or pathlib.Path),
+		                     or buffer
+		encoding : the encoding to use to decode py3 bytes, default is 'utf-8'
+		
+		Returns
+		-------
+		a filepath_or_buffer, the encoding, the compression
+	**/
+	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	static public function get_writer(engine_name:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -131,15 +151,16 @@ package pandas.io.excel;
 		    file could be file://localhost/path/to/workbook.xlsx
 		sheetname : string, int, mixed list of strings/ints, or None, default 0
 		
-		    Strings are used for sheet names, Integers are used in zero-indexed sheet
-		    positions.
+		    Strings are used for sheet names, Integers are used in zero-indexed
+		    sheet positions.
 		
 		    Lists of strings/integers are used to request multiple sheets.
 		
 		    Specify None to get all sheets.
 		
 		    str|int -> DataFrame is returned.
-		    list|None -> Dict of DataFrames is returned, with keys representing sheets.
+		    list|None -> Dict of DataFrames is returned, with keys representing
+		    sheets.
 		
 		    Available Cases
 		
@@ -161,6 +182,9 @@ package pandas.io.excel;
 		    Column (0-indexed) to use as the row labels of the DataFrame.
 		    Pass None if there is no such column.  If a list is passed,
 		    those columns will be combined into a ``MultiIndex``
+		names : array-like, default None
+		    List of column names to use. If file contains no header row,
+		    then you should explicitly pass header=None
 		converters : dict, default None
 		    Dict of functions for converting values in certain columns. Keys can
 		    either be integers or column labels, values are functions that take one
@@ -172,6 +196,8 @@ package pandas.io.excel;
 		    * If list of ints then indicates list of column numbers to be parsed
 		    * If string then indicates comma separated list of column names and
 		      column ranges (e.g. "A:E" or "A,C,E:F")
+		squeeze : boolean, default False
+		    If the parsed data only contains one column then return a Series
 		na_values : list-like, default None
 		    List of additional strings to recognize as NA/NaN
 		thousands : str, default None
@@ -192,17 +218,17 @@ package pandas.io.excel;
 		    data will be read in as floats: Excel stores all numbers as floats
 		    internally
 		has_index_names : boolean, default None
-		    DEPRECATED: for version 0.17+ index names will be automatically inferred
-		    based on index_col.  To read Excel output from 0.16.2 and prior that
-		    had saved index names, use True.
+		    DEPRECATED: for version 0.17+ index names will be automatically
+		    inferred based on index_col.  To read Excel output from 0.16.2 and
+		    prior that had saved index names, use True.
 		
 		Returns
 		-------
 		parsed : DataFrame or Dict of DataFrames
-		    DataFrame from the passed in Excel file.  See notes in sheetname argument
-		    for more information on when a Dict of Dataframes is returned.
+		    DataFrame from the passed in Excel file.  See notes in sheetname
+		    argument for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

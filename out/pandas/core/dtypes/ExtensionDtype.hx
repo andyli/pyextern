@@ -65,7 +65,7 @@ package pandas.core.dtypes;
 	/**
 		Return self!=value.
 	**/
-	public function __ne__(value:Dynamic):Dynamic;
+	public function __ne__(other:Dynamic):Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
@@ -117,7 +117,8 @@ package pandas.core.dtypes;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
 	/**
-		Return a boolean if we if the passed type is an actual dtype that we can match (via string or type) 
+		Return a boolean if we if the passed type is an actual dtype that
+		we can match (via string or type)
 	**/
 	static public function is_dtype(dtype:Dynamic):Dynamic;
 	static public var isbuiltin : Dynamic;

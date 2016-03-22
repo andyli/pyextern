@@ -171,7 +171,7 @@ package pandas.core.indexing;
 	public function _handle_lowerdim_multi_index_axis0(tup:Dynamic):Dynamic;
 	/**
 		validate that an positional indexer cannot enlarge its target
-		will raise if needed, does not modify the indexer externally 
+		will raise if needed, does not modify the indexer externally
 	**/
 	public function _has_valid_positional_setitem_indexer(indexer:Dynamic):Dynamic;
 	public function _has_valid_setitem_indexer(indexer:Dynamic):Dynamic;
@@ -189,7 +189,8 @@ package pandas.core.indexing;
 	public function _multi_take_opportunity(tup:Dynamic):Dynamic;
 	public function _setitem_with_indexer(indexer:Dynamic, value:Dynamic):Dynamic;
 	/**
-		return a boolean whether this axes needs validation for a passed iterable 
+		return a boolean whether this axes needs validation for a passed
+		iterable
 	**/
 	public function _should_validate_iterable(?axis:Dynamic):Dynamic;
 	public function _slice(obj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;

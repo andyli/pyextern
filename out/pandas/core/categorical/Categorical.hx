@@ -8,8 +8,9 @@ package pandas.core.categorical;
 		Returns
 		-------
 		values : numpy array
-		    A numpy array of either the specified dtype or, if dtype==None (default), the same
-		    dtype as categorical.categories.dtype
+		    A numpy array of either the specified dtype or,
+		    if dtype==None (default), the same dtype as
+		    categorical.categories.dtype
 	**/
 	public function __array__(?dtype:Dynamic):Dynamic;
 	static public var __array_priority__ : Dynamic;
@@ -98,8 +99,8 @@ package pandas.core.categorical;
 		Raises
 		------
 		ValueError
-		    If (one or more) Value is not in categories or if a assigned `Categorical` has not the
-		    same categories
+		    If (one or more) Value is not in categories or if a assigned
+		    `Categorical` does not have the same categories
 	**/
 	public function __setitem__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
@@ -107,10 +108,10 @@ package pandas.core.categorical;
 	**/
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -227,7 +228,8 @@ package pandas.core.categorical;
 	**/
 	public function _slice(slicer:Dynamic):Dynamic;
 	/**
-		a short repr displaying only max_vals and an optional (but default footer) 
+		a short repr displaying only max_vals and an optional (but default
+		footer)
 	**/
 	public function _tidy_repr(?max_vals:Dynamic, ?footer:Dynamic):Dynamic;
 	static public var _typ : Dynamic;
@@ -243,21 +245,22 @@ package pandas.core.categorical;
 	/**
 		Add new categories.
 		
-		`new_categories` will be included at the last/highest place in the categories and will be
-		unused directly after this call.
+		`new_categories` will be included at the last/highest place in the
+		categories and will be unused directly after this call.
 		
 		Raises
 		------
 		ValueError
-		    If the new categories include old categories or do not validate as categories
+		    If the new categories include old categories or do not validate as
+		    categories
 		
 		Parameters
 		----------
 		new_categories : category or list-like of category
 		   The new categories to be included.
 		inplace : boolean (default: False)
-		   Whether or not to add the categories inplace or return a copy of this categorical
-		   with added categories.
+		   Whether or not to add the categories inplace or return a copy of
+		   this categorical with added categories.
 		
 		Returns
 		-------
@@ -290,8 +293,8 @@ package pandas.core.categorical;
 		Parameters
 		----------
 		inplace : boolean (default: False)
-		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
-		   with ordered set to True
+		   Whether or not to set the ordered attribute inplace or return a copy
+		   of this categorical with ordered set to True
 	**/
 	public function as_ordered(?inplace:Dynamic):Dynamic;
 	/**
@@ -300,8 +303,8 @@ package pandas.core.categorical;
 		Parameters
 		----------
 		inplace : boolean (default: False)
-		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
-		   with ordered set to False
+		   Whether or not to set the ordered attribute inplace or return a copy
+		   of this categorical with ordered set to False
 	**/
 	public function as_unordered(?inplace:Dynamic):Dynamic;
 	/**
@@ -318,16 +321,17 @@ package pandas.core.categorical;
 		Setting assigns new values to each category (effectively a rename of
 		each individual category).
 		
-		The assigned value has to be a list-like object. All items must be unique and the number of items
-		in the new categories must be the same as the number of items in the old categories.
+		The assigned value has to be a list-like object. All items must be unique and
+		the number of items in the new categories must be the same as the number of
+		items in the old categories.
 		
 		Assigning to `categories` is a inplace operation!
 		
 		Raises
 		------
 		ValueError
-		    If the new categories do not validate as categories or if the number of new categories is
-		    unequal the number of old categories
+		    If the new categories do not validate as categories or if the number of new
+		    categories is unequal the number of old categories
 		
 		See also
 		--------
@@ -349,8 +353,8 @@ package pandas.core.categorical;
 		Level codes are an array if integer which are the positions of the real
 		values in the categories array.
 		
-		There is not setter, use the other categorical methods and the normal item setter to change
-		values in the categorical.
+		There is not setter, use the other categorical methods and the normal item
+		setter to change values in the categorical.
 	**/
 	public var codes : Dynamic;
 	/**
@@ -430,20 +434,24 @@ package pandas.core.categorical;
 	/**
 		Make a Categorical type from codes and categories arrays.
 		
-		This constructor is useful if you already have codes and categories and so do not need the
-		(computation intensive) factorization step, which is usually done on the constructor.
+		This constructor is useful if you already have codes and categories and
+		so do not need the (computation intensive) factorization step, which is
+		usually done on the constructor.
 		
-		If your data does not follow this convention, please use the normal constructor.
+		If your data does not follow this convention, please use the normal
+		constructor.
 		
 		Parameters
 		----------
 		codes : array-like, integers
-		    An integer array, where each integer points to a category in categories or -1 for NaN
+		    An integer array, where each integer points to a category in
+		    categories or -1 for NaN
 		categories : index-like
 		    The categories for the categorical. Items need to be unique.
 		ordered : boolean, (default False)
-		    Whether or not this categorical is treated as a ordered categorical. If not given,
-		    the resulting categorical will be unordered.
+		    Whether or not this categorical is treated as a ordered
+		    categorical. If not given, the resulting categorical will be
+		    unordered.
 	**/
 	static public function from_codes(codes:Dynamic, categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic):Dynamic;
 	/**
@@ -553,8 +561,8 @@ package pandas.core.categorical;
 	/**
 		Returns the mode(s) of the Categorical.
 		
-		Empty if nothing occurs at least 2 times.  Always returns `Categorical` even
-		if only one value.
+		Empty if nothing occurs at least 2 times.  Always returns `Categorical`
+		even if only one value.
 		
 		Returns
 		-------
@@ -566,7 +574,8 @@ package pandas.core.categorical;
 	/**
 		Reverse of isnull
 		
-		Both missing values (-1 in .codes) and NA as a category are detected as null.
+		Both missing values (-1 in .codes) and NA as a category are detected as
+		null.
 		
 		Returns
 		-------
@@ -581,7 +590,8 @@ package pandas.core.categorical;
 	/**
 		DEPRECATED: use :meth:`Categorical.sort_values`
 		
-		Sorts the Category by category value returning a new Categorical by default.
+		Sorts the Category by category value returning a new Categorical by
+		default.
 		
 		Only ordered Categoricals can be sorted!
 		
@@ -623,8 +633,8 @@ package pandas.core.categorical;
 	/**
 		Removes the specified categories.
 		
-		`removals` must be included in the old categories. Values which were in the removed
-		categories will be set to NaN
+		`removals` must be included in the old categories. Values which were in
+		the removed categories will be set to NaN
 		
 		Raises
 		------
@@ -636,8 +646,8 @@ package pandas.core.categorical;
 		removals : category or list of categories
 		   The categories which should be removed.
 		inplace : boolean (default: False)
-		   Whether or not to remove the categories inplace or return a copy of this categorical
-		   with removed categories.
+		   Whether or not to remove the categories inplace or return a copy of
+		   this categorical with removed categories.
 		
 		Returns
 		-------
@@ -658,8 +668,8 @@ package pandas.core.categorical;
 		Parameters
 		----------
 		inplace : boolean (default: False)
-		   Whether or not to drop unused categories inplace or return a copy of this categorical
-		   with unused categories dropped.
+		   Whether or not to drop unused categories inplace or return a copy of
+		   this categorical with unused categories dropped.
 		
 		Returns
 		-------
@@ -677,22 +687,23 @@ package pandas.core.categorical;
 	/**
 		Renames categories.
 		
-		The new categories has to be a list-like object. All items must be unique and the number of
-		items in the new categories must be the same as the number of items in the old categories.
+		The new categories has to be a list-like object. All items must be
+		unique and the number of items in the new categories must be the same
+		as the number of items in the old categories.
 		
 		Raises
 		------
 		ValueError
-		    If the new categories do not have the same number of items than the current categories
-		    or do not validate as categories
+		    If the new categories do not have the same number of items than the
+		    current categories or do not validate as categories
 		
 		Parameters
 		----------
 		new_categories : Index-like
 		   The renamed categories.
 		inplace : boolean (default: False)
-		   Whether or not to rename the categories inplace or return a copy of this categorical
-		   with renamed categories.
+		   Whether or not to rename the categories inplace or return a copy of
+		   this categorical with renamed categories.
 		
 		Returns
 		-------
@@ -710,23 +721,25 @@ package pandas.core.categorical;
 	/**
 		Reorders categories as specified in new_categories.
 		
-		`new_categories` need to include all old categories and no new category items.
+		`new_categories` need to include all old categories and no new category
+		items.
 		
 		Raises
 		------
 		ValueError
-		    If the new categories do not contain all old category items or any new ones
+		    If the new categories do not contain all old category items or any
+		    new ones
 		
 		Parameters
 		----------
 		new_categories : Index-like
 		   The categories in new order.
 		ordered : boolean, optional
-		   Whether or not the categorical is treated as a ordered categorical. If not given,
-		   do not change the ordered information.
+		   Whether or not the categorical is treated as a ordered categorical.
+		   If not given, do not change the ordered information.
 		inplace : boolean (default: False)
-		   Whether or not to reorder the categories inplace or return a copy of this categorical
-		   with reordered categories.
+		   Whether or not to reorder the categories inplace or return a copy of
+		   this categorical with reordered categories.
 		
 		Returns
 		-------
@@ -763,7 +776,8 @@ package pandas.core.categorical;
 		Parameters
 		----------
 		v : array_like
-		    Array-like values or a scalar value, to insert/search for in `self`.
+		    Array-like values or a scalar value, to insert/search for in
+		    `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
 		    If 'right', return the last such index.  If there is no suitable
@@ -799,27 +813,31 @@ package pandas.core.categorical;
 		array([1, 4])
 		>>> x.searchsorted(['bread', 'eggs'], side='right')
 		array([3, 4])       # eggs before milk
-		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk', 'donuts' ])
-		>>> x.searchsorted(['bread', 'eggs'], side='right', sorter=[0, 1, 2, 3, 5, 4])
-		array([3, 5])       # eggs after donuts, after switching milk and donuts
+		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk',
+		                        'donuts' ])
+		>>> x.searchsorted(['bread', 'eggs'], side='right',
+		                   sorter=[0, 1, 2, 3, 5, 4])
+		array([3, 5]) # eggs after donuts, after switching milk and donuts
 	**/
 	public function searchsorted(v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		Sets the categories to the specified new_categories.
 		
-		`new_categories` can include new categories (which will result in unused categories) or
-		or remove old categories (which results in values set to NaN). If `rename==True`,
-		the categories will simple be renamed (less or more items than in old categories will
-		result in values set to NaN or in unused categories respectively).
+		`new_categories` can include new categories (which will result in
+		unused categories) or remove old categories (which results in values
+		set to NaN). If `rename==True`, the categories will simple be renamed
+		(less or more items than in old categories will result in values set to
+		NaN or in unused categories respectively).
 		
-		This method can be used to perform more than one action of adding, removing,
-		and reordering simultaneously and is therefore faster than performing the individual steps
-		via the more specialised methods.
+		This method can be used to perform more than one action of adding,
+		removing, and reordering simultaneously and is therefore faster than
+		performing the individual steps via the more specialised methods.
 		
-		On the other hand this methods does not do checks (e.g., whether the old categories are
-		included in the new categories on a reorder), which can result in surprising changes, for
-		example when using special string dtypes on python3, which does not considers a S1 string
-		equal to a single char python string.
+		On the other hand this methods does not do checks (e.g., whether the
+		old categories are included in the new categories on a reorder), which
+		can result in surprising changes, for example when using special string
+		dtypes on python3, which does not considers a S1 string equal to a
+		single char python string.
 		
 		Raises
 		------
@@ -831,14 +849,14 @@ package pandas.core.categorical;
 		new_categories : Index-like
 		   The categories in new order.
 		ordered : boolean, (default: False)
-		   Whether or not the categorical is treated as a ordered categorical. If not given,
-		   do not change the ordered information.
+		   Whether or not the categorical is treated as a ordered categorical.
+		   If not given, do not change the ordered information.
 		rename : boolean (default: False)
-		   Whether or not the new_categories should be considered as a rename of the old
-		   categories or as reordered categories.
+		   Whether or not the new_categories should be considered as a rename
+		   of the old  categories or as reordered categories.
 		inplace : boolean (default: False)
-		   Whether or not to reorder the categories inplace or return a copy of this categorical
-		   with reordered categories.
+		   Whether or not to reorder the categories inplace or return a copy of
+		   this categorical with reordered categories.
 		
 		Returns
 		-------
@@ -858,10 +876,11 @@ package pandas.core.categorical;
 		
 		Parameters
 		----------
-		value : boolean to set whether this categorical is ordered (True) or not (False)
+		value : boolean to set whether this categorical is ordered (True) or
+		   not (False)
 		inplace : boolean (default: False)
-		   Whether or not to set the ordered attribute inplace or return a copy of this categorical
-		   with ordered set to the value
+		   Whether or not to set the ordered attribute inplace or return a copy
+		   of this categorical with ordered set to the value
 	**/
 	public function set_ordered(value:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
@@ -915,7 +934,8 @@ package pandas.core.categorical;
 	**/
 	public function sort(?inplace:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;
 	/**
-		Sorts the Category by category value returning a new Categorical by default.
+		Sorts the Category by category value returning a new Categorical by
+		default.
 		
 		Only ordered Categoricals can be sorted!
 		
@@ -963,8 +983,8 @@ package pandas.core.categorical;
 	**/
 	public function to_dense():Array<Dynamic>;
 	/**
-		Return the ``Categorical`` which ``categories`` and ``codes`` are unique.
-		Unused categories are NOT returned.
+		Return the ``Categorical`` which ``categories`` and ``codes`` are
+		unique. Unused categories are NOT returned.
 		
 		- unordered category: values and categories are sorted by appearance
 		  order.

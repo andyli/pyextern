@@ -11,7 +11,6 @@ package pandas.core.groupby;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var _agg_doc : Dynamic;
 	static public var _common_apply_whitelist : Dynamic;
 	/**
 		Group_index is offsets into cartesian product of all possible labels. This
@@ -20,12 +19,11 @@ package pandas.core.groupby;
 	**/
 	static public function _compress_group_index(group_index:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _convert_grouper(axis:Dynamic, grouper:Dynamic):Dynamic;
-	static public var _cython_table : Dynamic;
 	static public var _cython_transforms : Dynamic;
 	static public var _dataframe_apply_whitelist : Dynamic;
+	static public var _doc_template : Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _first_compat(x:Dynamic, ?axis:Dynamic):Dynamic;
-	static public var _func_table : Dynamic;
 	static public function _get_axes(group:Dynamic):Dynamic;
 	/**
 		_algos.groupsort_indexer implements `counting sort` and it is at least
@@ -63,15 +61,17 @@ package pandas.core.groupby;
 	static public function _groupby_indices(values:Dynamic):Dynamic;
 	static public function _indexer_from_factorized(labels:Dynamic, shape:Dynamic, ?compress:Dynamic):Dynamic;
 	static public function _int64_overflow_possible(shape:Dynamic):Dynamic;
-	static public function _intercept_cython(func:Dynamic):Dynamic;
-	static public function _intercept_function(func:Dynamic):Dynamic;
 	static public function _is_indexed_like(obj:Dynamic, axes:Dynamic):Dynamic;
 	static public function _is_label_like(val:Dynamic):Dynamic;
 	static public function _last_compat(x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _lexsort_indexer(keys:Dynamic, ?orders:Dynamic, ?na_position:Dynamic):Dynamic;
 	/**
-		This is intended to be a drop-in replacement for np.argsort which handles NaNs
-		It adds ascending and na_position parameters.
+		if we have a compatiable fill_value and arr dtype, then fill
+	**/
+	static public function _maybe_fill(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
+	/**
+		This is intended to be a drop-in replacement for np.argsort which
+		handles NaNs. It adds ascending and na_position parameters.
 		GH #6399, #5231
 	**/
 	static public function _nargsort(items:Dynamic, ?kind:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;

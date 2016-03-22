@@ -449,7 +449,7 @@ package scipy.stats.morestats;
 		  array([ 0.44925884,  1.3052767 ,  1.9434184 ,  2.57696569,  3.41634856]),
 		  0.8789283903979661)
 	**/
-	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Dynamic;
+	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Float;
 	/**
 		Return the angle of the complex argument.
 		
@@ -2235,7 +2235,7 @@ package scipy.stats.morestats;
 		are values equal to the median, the p-value can be sensitive to the
 		choice of `ties`.
 	**/
-	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function median_test(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Float;
 	/**
 		Perform Mood's test for equal scale parameters.
 		

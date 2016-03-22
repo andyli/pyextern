@@ -417,45 +417,9 @@ package matplotlib.backends.backend_tkagg;
 		    tight bbox is calculated.
 	**/
 	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Supported kwargs:
-		
-		*quality*: The image quality, on a scale from 1 (worst) to
-		    95 (best). The default is 95, if not given in the
-		    matplotlibrc file in the savefig.jpeg_quality parameter.
-		    Values above 95 should be avoided; 100 completely
-		    disables the JPEG quantization stage.
-		
-		*optimize*: If present, indicates that the encoder should
-		    make an extra pass over the image in order to select
-		    optimal encoder settings.
-		
-		*progressive*: If present, indicates that this image
-		    should be stored as a progressive JPEG file.
-	**/
-	public function print_jpeg(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Supported kwargs:
-		
-		*quality*: The image quality, on a scale from 1 (worst) to
-		    95 (best). The default is 95, if not given in the
-		    matplotlibrc file in the savefig.jpeg_quality parameter.
-		    Values above 95 should be avoided; 100 completely
-		    disables the JPEG quantization stage.
-		
-		*optimize*: If present, indicates that the encoder should
-		    make an extra pass over the image in order to select
-		    optimal encoder settings.
-		
-		*progressive*: If present, indicates that this image
-		    should be stored as a progressive JPEG file.
-	**/
-	public function print_jpg(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_png(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_raw(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_rgba(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function print_tif(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function print_tiff(filename_or_obj:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function print_to_buffer():Dynamic;
 	/**
 		Release the mouse grab held by the axes, ax.

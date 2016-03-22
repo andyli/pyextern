@@ -446,7 +446,7 @@ package scipy.signal.filter_design;
 		>>> np.allclose([1.0, np.nan], [1.0, np.nan], equal_nan=True)
 		True
 	**/
-	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Dynamic;
+	static public function allclose(a:Dynamic, b:Dynamic, ?rtol:Dynamic, ?atol:Dynamic, ?equal_nan:Dynamic):Bool;
 	/**
 		Append values to the end of an array.
 		

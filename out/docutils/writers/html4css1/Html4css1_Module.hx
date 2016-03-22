@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package docutils.writers.html4css1;
 @:pythonImport("docutils.writers.html4css1") extern class Html4css1_Module {
+	static public var PIL : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

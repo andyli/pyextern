@@ -276,7 +276,7 @@ package numpy.core.shape_base;
 		       [2, 3],
 		       [3, 4]])
 	**/
-	static public function stack(arrays:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function stack(arrays:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Stack arrays in sequence vertically (row wise).
 		

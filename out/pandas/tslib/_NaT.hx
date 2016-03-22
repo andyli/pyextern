@@ -21,6 +21,10 @@ package pandas.tslib;
 	**/
 	public function __eq__(value:Dynamic):Dynamic;
 	/**
+		Return self//value.
+	**/
+	public function __floordiv__(value:Dynamic):Dynamic;
+	/**
 		Formats self with strftime.
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -58,13 +62,25 @@ package pandas.tslib;
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
 	/**
+		Return self*value.
+	**/
+	public function __mul__(value:Dynamic):Dynamic;
+	/**
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
 	/**
+		-self
+	**/
+	public function __neg__():Dynamic;
+	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		+self
+	**/
+	public function __pos__():Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	/**
 		Return value+self.
@@ -83,9 +99,21 @@ package pandas.tslib;
 	**/
 	public function __repr__():Dynamic;
 	/**
+		Return value//self.
+	**/
+	public function __rfloordiv__(value:Dynamic):Dynamic;
+	/**
+		Return value*self.
+	**/
+	public function __rmul__(value:Dynamic):Dynamic;
+	/**
 		Return value-self.
 	**/
 	public function __rsub__(value:Dynamic):Dynamic;
+	/**
+		Return value/self.
+	**/
+	public function __rtruediv__(value:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -112,8 +140,13 @@ package pandas.tslib;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return self/value.
+	**/
+	public function __truediv__(value:Dynamic):Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var asm8 : Dynamic;
 	/**
 		tz -> convert to local time in new timezone tz
 	**/

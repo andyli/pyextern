@@ -176,7 +176,7 @@ package numpy.polynomial.legendre;
 		>>> L.legder(c, 2,-1)
 		array([  9.,  60.])
 	**/
-	static public function legder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function legder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Legendre series by another.
 		
@@ -605,7 +605,7 @@ package numpy.polynomial.legendre;
 		>>> L.legint(c, scl=2)
 		array([ 0.66666667,  0.8       ,  1.33333333,  1.2       ])
 	**/
-	static public function legint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function legint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Legendre series whose graph is a straight line.
 		

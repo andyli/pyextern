@@ -67,7 +67,7 @@ package numpy.polynomial.polynomial;
 		
 		.. versionadded:: 1.7.0
 	**/
-	static public function polycompanion(c:Dynamic):Dynamic;
+	static public function polycompanion(c:Dynamic):numpy.Ndarray;
 	/**
 		Differentiate a polynomial.
 		
@@ -118,7 +118,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyder(c,2,-1) # (d**2/d(-x)**2)(c) = 6 + 24x
 		array([  6.,  24.])
 	**/
-	static public function polyder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function polyder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one polynomial by another.
 		
@@ -523,7 +523,7 @@ package numpy.polynomial.polynomial;
 		>>> P.polyint(c,scl=-2) # should return array([0, -2, -2, -2])
 		array([ 0., -2., -2., -2.])
 	**/
-	static public function polyint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function polyint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Returns an array representing a linear polynomial.
 		
@@ -605,7 +605,7 @@ package numpy.polynomial.polynomial;
 		
 		.. versionadded:: 1.5.0
 	**/
-	static public function polymulx(c:Dynamic):Dynamic;
+	static public function polymulx(c:Dynamic):numpy.Ndarray;
 	static public var polyone : Dynamic;
 	/**
 		Raise a polynomial to a power.
@@ -1064,7 +1064,7 @@ package numpy.polynomial.polynomial;
 		
 		.. versionadded:: 1.7.0
 	**/
-	static public function polyvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):Dynamic;
+	static public function polyvander3d(x:Dynamic, y:Dynamic, z:Dynamic, deg:Dynamic):numpy.Ndarray;
 	static public var polyx : Dynamic;
 	static public var polyzero : Dynamic;
 	static public var print_function : Dynamic;

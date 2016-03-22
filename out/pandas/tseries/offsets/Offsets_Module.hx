@@ -21,12 +21,6 @@ package pandas.tseries.offsets;
 	static public var _int_to_month : Dynamic;
 	static public var _int_to_weekday : Dynamic;
 	static public function _is_normalized(dt:Dynamic):Dynamic;
-	/**
-		Gets offset based on key. KeyError if prefix is bad, ValueError if
-		suffix is bad. All handled by `get_offset` in tseries/frequencies. Not
-		public.
-	**/
-	static public function _make_offset(key:Dynamic):Dynamic;
 	static public var _month_to_int : Dynamic;
 	static public function _tick_comp(op:Dynamic):Dynamic;
 	static public var _weekday_to_int : Dynamic;
@@ -94,26 +88,41 @@ package pandas.tseries.offsets;
 		dates : generator object
 	**/
 	static public function generate_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?offset:Dynamic, ?time_rule:Dynamic):Dynamic;
+	/**
+		Normalize datetime.datetime value to midnight. Returns datetime.date as a
+		datetime.datetime at midnight
+		
+		Returns
+		-------
+		normalized : datetime.datetime or Timestamp
+	**/
+	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var prefix_mapping : Dynamic;
 	/**
 		Convert argument to datetime.
 		
 		Parameters
 		----------
-		arg : string, datetime, array of strings (with possible NAs)
+		arg : string, datetime, list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
 		dayfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    If True, parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
 		    Warning: dayfirst=True is not strict, but will prefer to parse
 		    with day first (this is a known bug, based on dateutil behavior).
 		yearfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    - If True parses dates with the year first, eg 10/11/12 is parsed as 2010-11-12.
-		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same as dateutil).
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
@@ -123,14 +132,17 @@ package pandas.tseries.offsets;
 		    Return UTC DatetimeIndex if True (converting any tz-aware
 		    datetime.datetime objects as well).
 		box : boolean, default True
+		
 		    - If True returns a DatetimeIndex
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
 		    all the way up to nanoseconds.
 		exact : boolean, True by default
+		
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
+		
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
@@ -184,24 +196,4 @@ package pandas.tseries.offsets;
 		NaT
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
-	/**
-		Convert argument to timedelta
-		
-		Parameters
-		----------
-		arg : string, timedelta, array of strings (with possible NAs)
-		unit : unit of the arg (D,h,m,s,ms,us,ns) denote the unit, which is an integer/float number
-		box : boolean, default True
-		    - If True returns a Timedelta/TimedeltaIndex of the results
-		    - if False returns a np.timedelta64 or ndarray of values of dtype timedelta64[ns]
-		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
-		    - If 'raise', then invalid parsing will raise an exception
-		    - If 'coerce', then invalid parsing will be set as NaT
-		    - If 'ignore', then invalid parsing will return the input
-		
-		Returns
-		-------
-		ret : timedelta64/arrays of timedelta64 if parsing succeeded
-	**/
-	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
 }

@@ -21,10 +21,6 @@ package pandas.computation.expr;
 	static public var _cmp_op_nodes : Dynamic;
 	static public var _cmp_ops_syms : Dynamic;
 	static public var _comprehension_nodes : Dynamic;
-	/**
-		Ensure that we are grabbing the correct scope.
-	**/
-	static public function _ensure_scope(level:Dynamic, ?global_dict:Dynamic, ?local_dict:Dynamic, ?resolvers:Dynamic, ?target:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _expr_context_nodes : Dynamic;
 	static public var _expr_nodes : Dynamic;
 	/**

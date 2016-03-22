@@ -157,7 +157,7 @@ package pandas.tseries.offsets;
 		-------
 		y : DatetimeIndex
 	**/
-	public function apply_index(i:Dynamic):Dynamic;
+	public function apply_index(i:Dynamic):pandas.DatetimeIndex;
 	public function copy():Dynamic;
 	public var freqstr : Dynamic;
 	/**
@@ -166,6 +166,7 @@ package pandas.tseries.offsets;
 	public function get_calendar(weekmask:Dynamic, holidays:Dynamic, calendar:Dynamic):Dynamic;
 	public function isAnchored():Dynamic;
 	public var name : Dynamic;
+	public var nanos : Dynamic;
 	static public var normalize : Dynamic;
 	public function onOffset(dt:Dynamic):Dynamic;
 	/**

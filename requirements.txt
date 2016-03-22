@@ -1,6 +1,6 @@
 docutils==0.12
 numpy==1.10.4
 scipy==0.17.0
-pandas==0.17.1
+pandas==0.18.0
 matplotlib==1.5.1
 seaborn==0.7.0

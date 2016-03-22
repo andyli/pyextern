@@ -88,10 +88,12 @@ package pandas.core.api;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -142,7 +144,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -168,14 +170,32 @@ package pandas.core.api;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -205,7 +225,8 @@ package pandas.core.api;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -266,12 +287,14 @@ package pandas.core.api;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
@@ -332,7 +355,6 @@ package pandas.core.api;
 		    Sequence
 		sort : boolean, default False
 		    Sort by values
-		order : deprecated
 		na_sentinel : int, default -1
 		    Value to mark "not found"
 		size_hint : hint to the hashtable sizer
@@ -341,9 +363,11 @@ package pandas.core.api;
 		-------
 		labels : the indexer to the original array
 		uniques : ndarray (1-d) or Index
-		    the unique values. Index is returned when passed values is Index or Series
+		    the unique values. Index is returned when passed values is Index or
+		    Series
 		
-		note: an array of Periods will ignore sort as it returns an always sorted PeriodIndex
+		note: an array of Periods will ignore sort as it returns an always sorted
+		PeriodIndex
 	**/
 	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
 	/**
@@ -372,7 +396,11 @@ package pandas.core.api;
 		    Otherwise returns a DataFrame with some SparseBlocks.
 		
 		    .. versionadded:: 0.16.1
+		drop_first : bool, default False
+		    Whether to get k-1 dummies out of n categorical levels by removing the
+		    first level.
 		
+		    .. versionadded:: 0.18.0
 		Returns
 		-------
 		dummies : DataFrame or SparseDataFrame
@@ -382,7 +410,7 @@ package pandas.core.api;
 		>>> import pandas as pd
 		>>> s = pd.Series(list('abca'))
 		
-		>>> get_dummies(s)
+		>>> pd.get_dummies(s)
 		   a  b  c
 		0  1  0  0
 		1  0  1  0
@@ -391,30 +419,48 @@ package pandas.core.api;
 		
 		>>> s1 = ['a', 'b', np.nan]
 		
-		>>> get_dummies(s1)
+		>>> pd.get_dummies(s1)
 		   a  b
 		0  1  0
 		1  0  1
 		2  0  0
 		
-		>>> get_dummies(s1, dummy_na=True)
+		>>> pd.get_dummies(s1, dummy_na=True)
 		   a  b  NaN
 		0  1  0    0
 		1  0  1    0
 		2  0  0    1
 		
-		>>> df = DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
+		>>> df = pd.DataFrame({'A': ['a', 'b', 'a'], 'B': ['b', 'a', 'c'],
 		                    'C': [1, 2, 3]})
 		
-		>>> get_dummies(df, prefix=['col1', 'col2']):
+		>>> pd.get_dummies(df, prefix=['col1', 'col2'])
 		   C  col1_a  col1_b  col2_a  col2_b  col2_c
 		0  1       1       0       0       1       0
 		1  2       0       1       1       0       0
 		2  3       1       0       0       0       1
 		
-		See also ``Series.str.get_dummies``.
+		>>> pd.get_dummies(pd.Series(list('abcaa')))
+		   a  b  c
+		0  1  0  0
+		1  0  1  0
+		2  0  0  1
+		3  1  0  0
+		4  1  0  0
+		
+		>>> pd.get_dummies(pd.Series(list('abcaa')), drop_first=True))
+		   b  c
+		0  0  0
+		1  1  0
+		2  0  1
+		3  0  0
+		4  0  0
+		
+		See Also
+		--------
+		Series.str.get_dummies
 	**/
-	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic):Dynamic;
+	static public function get_dummies(data:Dynamic, ?prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?columns:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -423,10 +469,12 @@ package pandas.core.api;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -479,7 +527,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -505,14 +553,32 @@ package pandas.core.api;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -542,7 +608,8 @@ package pandas.core.api;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -603,12 +670,14 @@ package pandas.core.api;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
@@ -851,10 +920,12 @@ package pandas.core.api;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -903,7 +974,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -929,14 +1000,32 @@ package pandas.core.api;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -966,7 +1055,8 @@ package pandas.core.api;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -1027,12 +1117,14 @@ package pandas.core.api;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
@@ -1100,10 +1192,12 @@ package pandas.core.api;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -1158,7 +1252,7 @@ package pandas.core.api;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -1184,14 +1278,32 @@ package pandas.core.api;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -1221,7 +1333,8 @@ package pandas.core.api;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -1282,12 +1395,14 @@ package pandas.core.api;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
@@ -1344,20 +1459,26 @@ package pandas.core.api;
 		
 		Parameters
 		----------
-		arg : string, datetime, array of strings (with possible NAs)
+		arg : string, datetime, list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
 		dayfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    If True, parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
 		    Warning: dayfirst=True is not strict, but will prefer to parse
 		    with day first (this is a known bug, based on dateutil behavior).
 		yearfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    - If True parses dates with the year first, eg 10/11/12 is parsed as 2010-11-12.
-		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same as dateutil).
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
@@ -1367,14 +1488,17 @@ package pandas.core.api;
 		    Return UTC DatetimeIndex if True (converting any tz-aware
 		    datetime.datetime objects as well).
 		box : boolean, default True
+		
 		    - If True returns a DatetimeIndex
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
 		    all the way up to nanoseconds.
 		exact : boolean, True by default
+		
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
+		
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False

@@ -1299,7 +1299,7 @@ package numpy.lib.twodim_base;
 		>>> (5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)
 		48
 	**/
-	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):Dynamic;
+	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):numpy.Ndarray;
 	/**
 		where(condition, [x, y])
 		

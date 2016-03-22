@@ -620,7 +620,7 @@ package numpy.ma.core;
 		>>> print(ma.append(a, b))
 		[1 -- 3 4 5 6 -- 8 9]
 	**/
-	static public function append(a:Dynamic, b:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function append(a:Dynamic, b:Dynamic, ?axis:Dynamic):numpy.ma.MaskedArray;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -2391,7 +2391,7 @@ package numpy.ma.core;
 		array([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000],#random
 		       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])
 	**/
-	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		equal(x1, x2[, out])
 		
@@ -4147,7 +4147,7 @@ package numpy.ma.core;
 		>>> np.log2(xi)
 		array([ 0.+2.26618007j,  0.+0.j        ,  1.+0.j        ,  2.+2.26618007j])
 	**/
-	static public function log2(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function log2(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		logical_and(x1, x2[, out])
 		
@@ -5680,7 +5680,7 @@ package numpy.ma.core;
 		>>> np.ones_like(y)
 		array([ 1.,  1.,  1.])
 	**/
-	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function ones_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 	/**
 		Compute the outer product of two vectors.
 		
@@ -6705,7 +6705,7 @@ package numpy.ma.core;
 		>>> np.squeeze(x, axis=(2,)).shape
 		(1, 3)
 	**/
-	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		std(self, axis=None, dtype=None, out=None, ddof=0)
 		
@@ -7356,5 +7356,5 @@ package numpy.ma.core;
 		>>> np.zeros_like(y)
 		array([ 0.,  0.,  0.])
 	**/
-	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function zeros_like(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic, ?subok:Dynamic):numpy.Ndarray;
 }

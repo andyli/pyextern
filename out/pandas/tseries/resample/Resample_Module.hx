@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.resample;
 @:pythonImport("pandas.tseries.resample") extern class Resample_Module {
-	static public var _DEFAULT_METHOD : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -13,6 +12,11 @@ package pandas.tseries.resample;
 	static public function _adjust_dates_anchored(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
 	static public function _delta_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _get_range_edges(first:Dynamic, last:Dynamic, offset:Dynamic, ?closed:Dynamic, ?base:Dynamic):Dynamic;
+	/**
+		potentially we might have a deprecation warning, show it
+		but call the appropriate methods anyhow 
+	**/
+	static public function _maybe_process_deprecations(r:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _take_new_index(obj:Dynamic, indexer:Dynamic, new_index:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Utility frequency conversion method for Series/DataFrame
@@ -53,6 +57,76 @@ package pandas.tseries.resample;
 	**/
 	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
 	/**
+		Returns number of unique elements in the group 
+	**/
+	static public function f(self:Dynamic, ?_method:Dynamic):Dynamic;
+	/**
+		Class for grouping and aggregating relational data. See aggregate,
+		transform, and apply functions on this object.
+		
+		It's easiest to use obj.groupby(...) to use GroupBy, but you can also do:
+		
+		::
+		
+		    grouped = groupby(obj, ...)
+		
+		Parameters
+		----------
+		obj : pandas object
+		axis : int, default 0
+		level : int, default None
+		    Level of MultiIndex
+		groupings : list of Grouping objects
+		    Most users should ignore this
+		exclusions : array-like, optional
+		    List of columns to exclude
+		name : string
+		    Most users should ignore this
+		
+		Notes
+		-----
+		After grouping, see aggregate, apply, and transform functions. Here are
+		some other brief notes about usage. When grouping by multiple groups, the
+		result index will be a MultiIndex (hierarchical) by default.
+		
+		Iteration produces (key, group) tuples, i.e. chunking the data by group. So
+		you can write code like:
+		
+		::
+		
+		    grouped = obj.groupby(keys, axis=axis)
+		    for key, group in grouped:
+		        # do something with the data
+		
+		Function calls on GroupBy, if not specially implemented, "dispatch" to the
+		grouped data. So if you group a DataFrame and wish to invoke the std()
+		method on each group, you can simply do:
+		
+		::
+		
+		    df.groupby(mapper).std()
+		
+		rather than
+		
+		::
+		
+		    df.groupby(mapper).aggregate(np.std)
+		
+		You can pass arguments to these "wrapped" functions, too.
+		
+		See the online documentation for full exposition on these topics and much
+		more
+		
+		Returns
+		-------
+		**Attributes**
+		groups : dict
+		    {group name -> group labels}
+		len(grouped) : int
+		    Number of groups
+	**/
+	static public function groupby(obj:Dynamic, by:Dynamic, ?kwds:python.KwArgs<Dynamic>):Int;
+	/**
 		Returns True if downsampling is possible between source and target
 		frequencies
 		
@@ -84,6 +158,7 @@ package pandas.tseries.resample;
 		is_superperiod : boolean
 	**/
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	static public var method : Dynamic;
 	/**
 		Return a fixed frequency datetime index, with day (calendar) as the default
 		frequency
@@ -105,6 +180,29 @@ package pandas.tseries.resample;
 		prng : PeriodIndex
 	**/
 	static public function period_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic):pandas.PeriodIndex;
+	/**
+		Class for resampling datetimelike data, a groupby-like operation.
+		See aggregate, transform, and apply functions on this object.
+		
+		It's easiest to use obj.resample(...) to use Resampler.
+		
+		Parameters
+		----------
+		obj : pandas object
+		groupby : a TimeGrouper object
+		axis : int, default 0
+		kind : str or None
+		    'period', 'timestamp' to override default index treatement
+		
+		Notes
+		-----
+		After resampling, see aggregate, apply, and transform functions.
+		
+		Returns
+		-------
+		a Resampler of the appropriate type
+	**/
+	static public function resample(obj:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return DateOffset object from string representation or
 		Timedelta object

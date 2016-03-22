@@ -18,23 +18,44 @@ package matplotlib.rcsetup;
 	static public var absolute_import : Dynamic;
 	static public var all_backends : Dynamic;
 	/**
-		Create a new `Cycler` object from a property name and
-		iterable of values.
+		Create a new `Cycler` object from a single positional argument,
+		a pair of positional arguments, or the combination of keyword arguments.
+		
+		cycler(arg)
+		cycler(label1=itr1[, label2=iter2[, ...]])
+		cycler(label, itr)
+		
+		Form 1 simply copies a given `Cycler` object.
+		
+		Form 2 composes a `Cycler` as an inner product of the
+		pairs of keyword arguments. In other words, all of the
+		iterables are cycled simultaneously, as if through zip().
+		
+		Form 3 creates a `Cycler` from a label and an iterable.
+		This is useful for when the label cannot be a keyword argument
+		(e.g., an integer or a name that has a space in it).
 		
 		Parameters
 		----------
-		label : str
-		    The property key.
+		arg : Cycler
+		    Copy constructor for Cycler (does a shallow copy of iterables).
+		
+		label : name
+		    The property key. In the 2-arg form of the function,
+		    the label can be any hashable object. In the keyword argument
+		    form of the function, it must be a valid python identifier.
 		
 		itr : iterable
 		    Finite length iterable of the property values.
+		    Can be a single-property `Cycler` that would
+		    be like a key change, but as a shallow copy.
 		
 		Returns
 		-------
 		cycler : Cycler
 		    New `Cycler` for the given property
 	**/
-	static public function ccycler(label:Dynamic, itr:Dynamic):Dynamic;
+	static public function ccycler(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Creates a :class:`cycler.Cycler` object much like :func:`cycler.cycler`,
 		but includes input validation.

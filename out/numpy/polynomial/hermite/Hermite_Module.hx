@@ -37,7 +37,7 @@ package numpy.polynomial.hermite;
 		weights for high degrees. The values of the standard Hermite functions
 		overflow when n >= 207.
 	**/
-	static public function _normed_hermite_n(x:Dynamic, n:Dynamic):Dynamic;
+	static public function _normed_hermite_n(x:Dynamic, n:Dynamic):numpy.Ndarray;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
@@ -192,7 +192,7 @@ package numpy.polynomial.hermite;
 		>>> hermder([-0.5,  1./2.,  1./8.,  1./12.,  1./16.], m=2)
 		array([ 1.,  2.,  3.])
 	**/
-	static public function hermder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function hermder(c:Dynamic, ?m:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Divide one Hermite series by another.
 		
@@ -624,7 +624,7 @@ package numpy.polynomial.hermite;
 		>>> hermint([1,2,3], m=2, k=[1,2], lbnd=-1)
 		array([ 1.66666667, -0.5       ,  0.125     ,  0.08333333,  0.0625    ])
 	**/
-	static public function hermint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function hermint(c:Dynamic, ?m:Dynamic, ?k:Dynamic, ?lbnd:Dynamic, ?scl:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		Hermite series whose graph is a straight line.
 		

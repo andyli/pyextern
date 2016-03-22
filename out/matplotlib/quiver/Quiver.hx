@@ -186,7 +186,7 @@ package matplotlib.quiver;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -354,7 +354,7 @@ package matplotlib.quiver;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown

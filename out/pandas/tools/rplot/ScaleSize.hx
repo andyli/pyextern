@@ -54,7 +54,9 @@ package pandas.tools.rplot;
 		column: string, a column name
 		min_size: float, minimum point size
 		max_size: float, maximum point size
-		transform: a one argument function of form float -> float (e.g. lambda x: log(x))
+		transform: function
+		    a one argument function of form float -> float (e.g. lambda x:
+		    log(x))
 	**/
 	@:native("__init__")
 	public function ___init__(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Dynamic;
@@ -66,7 +68,9 @@ package pandas.tools.rplot;
 		column: string, a column name
 		min_size: float, minimum point size
 		max_size: float, maximum point size
-		transform: a one argument function of form float -> float (e.g. lambda x: log(x))
+		transform: function
+		    a one argument function of form float -> float (e.g. lambda x:
+		    log(x))
 	**/
 	public function new(column:Dynamic, ?min_size:Dynamic, ?max_size:Dynamic, ?transform:Dynamic):Void;
 	/**

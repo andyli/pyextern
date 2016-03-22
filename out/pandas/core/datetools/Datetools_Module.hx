@@ -18,13 +18,6 @@ package pandas.core.datetools;
 	static public function bquarterEnd(other:Dynamic):Dynamic;
 	static public function businessDay(other:Dynamic):Dynamic;
 	static public function byearEnd(other:Dynamic):Dynamic;
-	/**
-		Return whether the object is callable (i.e., some kind of function).
-		
-		Note that classes are callable, as are instances of classes with a
-		__call__() method.
-	**/
-	static public function callable(obj:Dynamic):Dynamic;
 	static public function cbmonthBegin(other:Dynamic):Dynamic;
 	static public function cbmonthEnd(other:Dynamic):Dynamic;
 	static public function cday(other:Dynamic):Dynamic;
@@ -192,7 +185,7 @@ package pandas.core.datetools;
 		Parameters
 		----------
 		index : DatetimeIndex or TimedeltaIndex
-		        if passed a Series will use the values of the series (NOT THE INDEX)
+		  if passed a Series will use the values of the series (NOT THE INDEX)
 		warn : boolean, default True
 		
 		Returns
@@ -273,6 +266,7 @@ package pandas.core.datetools;
 		datetime, datetime/dateutil.parser._result, str
 	**/
 	static public function parse_time_string(arg:Dynamic, ?freq:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
+	static public var prefix_mapping : Dynamic;
 	static public function quarterEnd(other:Dynamic):Dynamic;
 	static public function thisBMonthEnd(other:Dynamic):Dynamic;
 	static public function thisBQuarterEnd(other:Dynamic):Dynamic;
@@ -285,20 +279,26 @@ package pandas.core.datetools;
 		
 		Parameters
 		----------
-		arg : string, datetime, array of strings (with possible NAs)
+		arg : string, datetime, list, tuple, 1-d array, or Series
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
 		    - If 'raise', then invalid parsing will raise an exception
 		    - If 'coerce', then invalid parsing will be set as NaT
 		    - If 'ignore', then invalid parsing will return the input
 		dayfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    If True, parses dates with the day first, eg 10/11/12 is parsed as 2012-11-10.
+		    If True, parses dates with the day first, eg 10/11/12 is parsed as
+		    2012-11-10.
 		    Warning: dayfirst=True is not strict, but will prefer to parse
 		    with day first (this is a known bug, based on dateutil behavior).
 		yearfirst : boolean, default False
 		    Specify a date parse order if `arg` is str or its list-likes.
-		    - If True parses dates with the year first, eg 10/11/12 is parsed as 2010-11-12.
-		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same as dateutil).
+		
+		    - If True parses dates with the year first, eg 10/11/12 is parsed as
+		      2010-11-12.
+		    - If both dayfirst and yearfirst are True, yearfirst is preceded (same
+		      as dateutil).
+		
 		    Warning: yearfirst=True is not strict, but will prefer to parse
 		    with year first (this is a known bug, based on dateutil beahavior).
 		
@@ -308,14 +308,17 @@ package pandas.core.datetools;
 		    Return UTC DatetimeIndex if True (converting any tz-aware
 		    datetime.datetime objects as well).
 		box : boolean, default True
+		
 		    - If True returns a DatetimeIndex
 		    - If False returns ndarray of values.
 		format : string, default None
 		    strftime to parse time, eg "%d/%m/%Y", note that "%f" will parse
 		    all the way up to nanoseconds.
 		exact : boolean, True by default
+		
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
+		
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
@@ -379,6 +382,33 @@ package pandas.core.datetools;
 		Minute(5)
 	**/
 	static public function to_offset(freqstr:Dynamic):Dynamic;
+	/**
+		Parse time strings to time objects using fixed strptime formats ("%H:%M",
+		"%H%M", "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
+		"%I%M%S%p")
+		
+		Use infer_time_format if all the strings are in the same format to speed
+		up conversion.
+		
+		Parameters
+		----------
+		arg : string in time format, datetime.time, list, tuple, 1-d array,  Series
+		format : str, default None
+		    Format used to convert arg into a time object.  If None, fixed formats
+		    are used.
+		infer_time_format: bool, default False
+		    Infer the time format based on the first non-NaN element.  If all
+		    strings are in the same format, this will speed up conversion.
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as None
+		    - If 'ignore', then invalid parsing will return the input
+		
+		Returns
+		-------
+		datetime.time
+	**/
+	static public function to_time(arg:Dynamic, ?format:Dynamic, ?infer_time_format:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
 		Compute unique values (not necessarily sorted) efficiently from input array
 		of values

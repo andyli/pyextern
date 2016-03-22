@@ -108,7 +108,7 @@ package scipy.special._ellip_harm;
 		>>> a, a_err
 		(583.44366156701483, 6.4580890640310646e-11)
 	**/
-	static public function ellip_harm(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic, s:Dynamic, ?signm:Dynamic, ?signn:Dynamic):Dynamic;
+	static public function ellip_harm(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic, s:Dynamic, ?signm:Dynamic, ?signn:Dynamic):Float;
 	/**
 		Ellipsoidal harmonic functions F^p_n(l)
 		
@@ -159,7 +159,7 @@ package scipy.special._ellip_harm;
 		>>> w
 		0.00108056853382
 	**/
-	static public function ellip_harm_2(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic, s:Dynamic):Dynamic;
+	static public function ellip_harm_2(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic, s:Dynamic):Float;
 	/**
 		Ellipsoidal harmonic normalization constants gamma^p_n
 		
@@ -200,6 +200,6 @@ package scipy.special._ellip_harm;
 		>>> w
 		1723.38796997
 	**/
-	static public function ellip_normal(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic):Dynamic;
+	static public function ellip_normal(h2:Dynamic, k2:Dynamic, n:Dynamic, p:Dynamic):Float;
 	static public var print_function : Dynamic;
 }

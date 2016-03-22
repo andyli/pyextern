@@ -38,8 +38,9 @@ package pandas.core.common;
 	static public function _coerce_to_dtypes(result:Dynamic, dtypes:Dynamic):Dynamic;
 	/**
 		provide concatenation of an array of arrays each of which is a single
-		'normalized' dtypes (in that for example, if its object, then it is a non-datetimelike
-		provde a combined dtype for the resulting array the preserves the overall dtype if possible)
+		'normalized' dtypes (in that for example, if it's object, then it is a
+		non-datetimelike and provide a combined dtype for the resulting array that
+		preserves the overall dtype if possible)
 		
 		Parameters
 		----------
@@ -89,8 +90,8 @@ package pandas.core.common;
 	static public function _get_callable_name(obj:Dynamic):Dynamic;
 	static public function _get_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Get a numpy dtype.type-style object. This handles the
-		   datetime64[ns] and datetime64[ns, TZ] compat
+		Get a numpy dtype.type-style object. This handles the datetime64[ns]
+		and datetime64[ns, TZ] compat
 		
 		Notes
 		-----
@@ -109,8 +110,9 @@ package pandas.core.common;
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
 	/**
-		infer the fill value for the nan/NaT from the provided scalar/ndarray/list-like
-		if we are a NaT, return the correct dtyped element to provide proper block construction
+		infer the fill value for the nan/NaT from the provided
+		scalar/ndarray/list-like if we are a NaT, return the correct dtyped
+		element to provide proper block construction
 	**/
 	static public function _infer_fill_value(val:Dynamic):Dynamic;
 	static public var _int16_max : Dynamic;
@@ -118,9 +120,21 @@ package pandas.core.common;
 	static public var _int64_max : Dynamic;
 	static public var _int8_max : Dynamic;
 	/**
-		Change string like dtypes to object for ``DataFrame.select_dtypes()``.
+		Change string like dtypes to object for
+		``DataFrame.select_dtypes()``.
 	**/
 	static public function _invalidate_string_dtypes(dtype_set:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		arr: a numpy array
+		fill_value: fill value, default to np.nan
+		
+		Returns
+		-------
+		True if we can fill using this fill_value
+	**/
+	static public function _is_na_compat(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _isnull(obj:Dynamic):Dynamic;
 	static public function _isnull_ndarraylike(obj:Dynamic):Dynamic;
 	static public function _isnull_ndarraylike_old(obj:Dynamic):Dynamic;
@@ -155,6 +169,10 @@ package pandas.core.common;
 		This is to avoid numpy to handle the array as str dtype.
 	**/
 	static public function _maybe_convert_string_to_object(values:Dynamic):Dynamic;
+	/**
+		if we have a compatiable fill_value and arr dtype, then fill
+	**/
+	static public function _maybe_fill(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public function _maybe_make_list(obj:Dynamic):Dynamic;
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
@@ -307,9 +325,9 @@ package pandas.core.common;
 	**/
 	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		True if two arrays, left and right, have equal non-NaN elements, and NaNs in
-		corresponding locations.  False otherwise. It is assumed that left and right
-		are NumPy arrays of the same dtype. The behavior of this function
+		True if two arrays, left and right, have equal non-NaN elements, and NaNs
+		in corresponding locations.  False otherwise. It is assumed that left and
+		right are NumPy arrays of the same dtype. The behavior of this function
 		(particularly with respect to NaNs) is not defined if the dtypes are
 		different.
 		
@@ -410,10 +428,12 @@ package pandas.core.common;
 		Available options:
 		
 		- display.[chop_threshold, colheader_justify, column_space, date_dayfirst,
-		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr,
-		  line_width, max_categories, max_columns, max_colwidth, max_info_columns,
-		  max_info_rows, max_rows, max_seq_items, memory_usage, mpl_style, multi_sparse,
-		  notebook_repr_html, pprint_nest_depth, precision, show_dimensions]
+		  date_yearfirst, encoding, expand_frame_repr, float_format, height, large_repr]
+		- display.latex.[escape, longtable, repr]
+		- display.[line_width, max_categories, max_columns, max_colwidth,
+		  max_info_columns, max_info_rows, max_rows, max_seq_items, memory_usage,
+		  mpl_style, multi_sparse, notebook_repr_html, pprint_nest_depth, precision,
+		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
 		- io.excel.xls.[writer]
@@ -466,7 +486,7 @@ package pandas.core.common;
 		    Defaults to the detected encoding of the console.
 		    Specifies the encoding to be used for strings returned by to_string,
 		    these are generally strings meant to be displayed on the console.
-		    [default: utf-8] [currently: utf-8]
+		    [default: UTF-8] [currently: UTF-8]
 		
 		display.expand_frame_repr : boolean
 		    Whether to print out the full DataFrame repr for wide DataFrames across
@@ -492,14 +512,32 @@ package pandas.core.common;
 		    df.info() (the behaviour in earlier versions of pandas).
 		    [default: truncate] [currently: truncate]
 		
+		display.latex.escape : bool
+		    This specifies if the to_latex method of a Dataframe uses escapes special
+		    characters.
+		    method. Valid values: False,True
+		    [default: True] [currently: True]
+		
+		display.latex.longtable :bool
+		    This specifies if the to_latex method of a Dataframe uses the longtable
+		    format.
+		    method. Valid values: False,True
+		    [default: False] [currently: False]
+		
+		display.latex.repr : boolean
+		    Whether to produce a latex DataFrame representation for jupyter
+		    environments that support it.
+		    (default: False)
+		    [default: False] [currently: False]
+		
 		display.line_width : int
 		    Deprecated.
 		    [default: 80] [currently: 80]
 		    (Deprecated, use `display.width` instead.)
 		
 		display.max_categories : int
-		    This sets the maximum number of categories pandas should output when printing
-		    out a `Categorical` or a Series of dtype "category".
+		    This sets the maximum number of categories pandas should output when
+		    printing out a `Categorical` or a Series of dtype "category".
 		    [default: 8] [currently: 8]
 		
 		display.max_columns : int
@@ -529,7 +567,8 @@ package pandas.core.common;
 		display.max_info_rows : int or None
 		    df.info() will usually show null-counts for each column.
 		    For large frames this can be quite slow. max_info_rows and max_info_cols
-		    limit this null check only to frames with smaller dimensions then specified.
+		    limit this null check only to frames with smaller dimensions than
+		    specified.
 		    [default: 1690785] [currently: 1690785]
 		
 		display.max_rows : int
@@ -590,12 +629,14 @@ package pandas.core.common;
 		    [default: truncate] [currently: truncate]
 		
 		display.unicode.ambiguous_as_wide : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
 		display.unicode.east_asian_width : boolean
-		    Whether to use the Unicode East Asian Width to calculate the display text width
+		    Whether to use the Unicode East Asian Width to calculate the display text
+		    width.
 		    Enabling this may affect to the performance (default: False)
 		    [default: False] [currently: False]
 		
@@ -703,6 +744,7 @@ package pandas.core.common;
 		return if we are a datetime with tz array 
 	**/
 	static public function is_datetimetz(array:Dynamic):Dynamic;
+	static public function is_dict_like(arg:Dynamic):Dynamic;
 	/**
 		return a boolean if the dtypes are equal 
 	**/
@@ -773,7 +815,9 @@ package pandas.core.common;
 		return if we are a sparse array 
 	**/
 	static public function is_sparse(array:Dynamic):Dynamic;
+	static public function is_string_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_string_like(obj:Dynamic):Dynamic;
+	static public function is_string_like_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -795,17 +839,11 @@ package pandas.core.common;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	/**
-		replacement for six's iteritems for Python2/3 compat
-		uses 'iteritems' if available and otherwise uses 'items'.
-		
-		Passes kwargs to method.
-	**/
-	static public function iteritems(obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Parameters
 		----------
-		seq: sequence
+		seq : sequence
 		
 		Returns
 		-------
@@ -848,6 +886,18 @@ package pandas.core.common;
 		pandas.isnull : boolean inverse of pandas.notnull
 	**/
 	static public function notnull(obj:Dynamic):Dynamic;
+	/**
+		Converts input into a pandas only dtype object or a numpy dtype object.
+		
+		Parameters
+		----------
+		dtype : object to be converted
+		
+		Returns
+		-------
+		np.dtype or a pandas dtype
+	**/
+	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.

@@ -67,7 +67,7 @@ package numpy.lib.shape_base;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Apply a function repeatedly over multiple axes.
 		

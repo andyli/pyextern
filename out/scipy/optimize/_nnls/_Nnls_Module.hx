@@ -9,24 +9,34 @@ package scipy.optimize._nnls;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		nnls - Function signature:
-		  x,rnorm,mode = nnls(a,m,n,b,w,zz,index_bn,[mda,overwrite_a,overwrite_b])
-		Required arguments:
-		  a : input rank-2 array('d') with bounds (mda,*)
-		  m : input int
-		  n : input int
-		  b : input rank-1 array('d') with bounds (*)
-		  w : input rank-1 array('d') with bounds (*)
-		  zz : input rank-1 array('d') with bounds (*)
-		  index_bn : input rank-1 array('i') with bounds (*)
-		Optional arguments:
-		  overwrite_a := 0 input int
-		  mda := shape(a,0) input int
-		  overwrite_b := 0 input int
-		Return objects:
-		  x : rank-1 array('d') with bounds (n)
-		  rnorm : float
-		  mode : int
+		x,rnorm,mode = nnls(a,m,n,b,w,zz,index_bn,[mda,overwrite_a,overwrite_b])
+		
+		Wrapper for ``nnls``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (mda,*)
+		m : input int
+		n : input int
+		b : input rank-1 array('d') with bounds (*)
+		w : input rank-1 array('d') with bounds (*)
+		zz : input rank-1 array('d') with bounds (*)
+		index_bn : input rank-1 array('i') with bounds (*)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		mda : input int, optional
+		    Default: shape(a,0)
+		overwrite_b : input int, optional
+		    Default: 0
+		
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (n)
+		rnorm : float
+		mode : int
 	**/
 	static public function nnls(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

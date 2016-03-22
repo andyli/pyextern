@@ -89,10 +89,10 @@ package pandas.tseries.common;
 	**/
 	public function __setattr__(key:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -157,6 +157,22 @@ package pandas.tseries.common;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function ceil(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		Return a dataframe of the components (days, hours, minutes,
 		seconds, milliseconds, microseconds, nanoseconds) of the Timedeltas.
 		
@@ -169,15 +185,49 @@ package pandas.tseries.common;
 		Number of days for each element. 
 	**/
 	public var days : Dynamic;
+	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function floor(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var freq : Dynamic;
 	/**
-		Number of microseconds (>= 0 and less than 1 second) for each element. 
+		Number of microseconds (>= 0 and less than 1 second) for each
+		element. 
 	**/
 	public var microseconds : Dynamic;
 	/**
-		Number of nanoseconds (>= 0 and less than 1 microsecond) for each element. 
+		Number of nanoseconds (>= 0 and less than 1 microsecond) for each
+		element.
 	**/
 	public var nanoseconds : Dynamic;
+	/**
+		round the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function round(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Number of seconds (>= 0 and less than 1 day) for each element. 
 	**/

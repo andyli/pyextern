@@ -113,5 +113,5 @@ package scipy.optimize._hungarian;
 		
 		5. https://en.wikipedia.org/wiki/Hungarian_algorithm
 	**/
-	static public function linear_sum_assignment(cost_matrix:Dynamic):Dynamic;
+	static public function linear_sum_assignment(cost_matrix:Dynamic):Array<Dynamic>;
 }

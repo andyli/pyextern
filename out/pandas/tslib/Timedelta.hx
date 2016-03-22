@@ -149,6 +149,7 @@ package pandas.tslib;
 		converted : string of a Timedelta
 	**/
 	public function _repr_base(?format:Dynamic):Dynamic;
+	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
 	public var _s : Dynamic;
 	public var _sign : Dynamic;
 	public var _us : Dynamic;
@@ -157,6 +158,14 @@ package pandas.tslib;
 		return a numpy timedelta64 array view of myself 
 	**/
 	public var asm8 : Dynamic;
+	/**
+		return a new Timedelta ceiled to this resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the ceiling resolution
+	**/
+	public function ceil(freq:Dynamic):Dynamic;
 	/**
 		Return a Components NamedTuple-like 
 	**/
@@ -171,6 +180,14 @@ package pandas.tslib;
 		return out delta in ns (for internal compat) 
 	**/
 	public var delta : Dynamic;
+	/**
+		return a new Timedelta floored to this resolution
+		
+		Parameters
+		----------
+		freq : a freq string indicating the flooring resolution
+	**/
+	public function floor(freq:Dynamic):Dynamic;
 	public var freq : Dynamic;
 	public var is_populated : Dynamic;
 	static public var max : Dynamic;
@@ -192,14 +209,14 @@ package pandas.tslib;
 	**/
 	public var resolution : Dynamic;
 	/**
-		return a new Timedelta rounded to this resolution
+		return a new Timedelta rounded to this resolution.
+		
 		
 		Parameters
 		----------
-		reso : a string indicating the rouding resolution, accepting values
-		   d,h,m,s,ms,us
+		freq : a freq string indicating the rounding resolution
 	**/
-	public function round(reso:Dynamic):Dynamic;
+	public function round(freq:Dynamic):Dynamic;
 	/**
 		Number of seconds (>= 0 and less than 1 day).
 		

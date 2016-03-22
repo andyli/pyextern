@@ -101,10 +101,10 @@ package pandas.core.groupby;
 	**/
 	public function __setattr__(name:Dynamic, value:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -132,13 +132,39 @@ package pandas.core.groupby;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _agg_doc : Dynamic;
+	/**
+		provide an implementation for the aggregators
+		
+		Parameters
+		----------
+		arg : string, dict, function
+		*args : args to pass on to the function
+		**kwargs : kwargs to pass on to the function
+		
+		Returns
+		-------
+		tuple of result, how
+		
+		Notes
+		-----
+		how can be a string describe the required post-processing, or
+		None if not required
+	**/
+	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_generic(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_item_by_item(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function _aggregate_multiple_funcs(arg:Dynamic):Dynamic;
+	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
 	public function _apply_to_column_groupbys(func:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
+	/**
+		we create the grouper on instantiation
+		sub-classes may have a different policy
+	**/
+	public function _assure_grouper():Dynamic;
 	static public var _block_agg_axis : Dynamic;
+	static public var _builtin_table : Dynamic;
 	public function _choose_path(fast_path:Dynamic, slow_path:Dynamic, group:Dynamic):Dynamic;
 	public function _concat_objects(keys:Dynamic, values:Dynamic, ?not_indexed_same:Dynamic):Dynamic;
 	/**
@@ -148,12 +174,15 @@ package pandas.core.groupby;
 	/**
 		arr is where cumcount gets its values from
 		
-		note: this is currently implementing sort=False (though the default is sort=True)
-		      for groupby in general
+		Note
+		----
+		this is currently implementing sort=False
+		(though the default is sort=True) for groupby in general
 	**/
 	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
 	public function _cython_agg_blocks(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
+	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	public function _decide_output_index(output:Dynamic, labels:Dynamic):Dynamic;
 	static public var _def_str : Dynamic;
@@ -172,9 +201,23 @@ package pandas.core.groupby;
 	**/
 	public function _get_index(name:Dynamic):Dynamic;
 	/**
-		safe get multiple indices, translate keys for datelike to underlying repr 
+		safe get multiple indices, translate keys for
+		datelike to underlying repr
 	**/
 	public function _get_indices(names:Dynamic):Dynamic;
+	/**
+		sub-classes to define
+		return a sliced object
+		
+		Parameters
+		----------
+		key : string / list of selections
+		ndim : 1,2
+		    requested ndim of result
+		subset : object, default None
+		    subset to act on
+	**/
+	public function _gotitem(key:Dynamic, ndim:Dynamic, ?subset:Dynamic):Dynamic;
 	static public var _group_selection : Dynamic;
 	/**
 		Take boolean mask of index to be returned from apply, if as_index=True
@@ -183,6 +226,15 @@ package pandas.core.groupby;
 	public function _insert_inaxis_grouper_inplace(result:Dynamic):Dynamic;
 	static public var _internal_names : Dynamic;
 	static public var _internal_names_set : Dynamic;
+	/**
+		if we define an builtin function for this argument, return it,
+		otherwise return the arg
+	**/
+	public function _is_builtin_func(arg:Dynamic):Dynamic;
+	/**
+		if we define an internal function for this argument, return it 
+	**/
+	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_column_groupbys():Dynamic;
 	public function _iterate_slices():Dynamic;
 	public function _make_wrapper(name:Dynamic):Dynamic;
@@ -192,8 +244,9 @@ package pandas.core.groupby;
 	public function _python_apply_general(f:Dynamic):Dynamic;
 	/**
 		if we have categorical groupers, then we want to make sure that
-		we have a fully reindex-output to the levels. These may have not participated in
-		the groupings (e.g. may have all been nan groups)
+		we have a fully reindex-output to the levels. These may have not
+		participated in the groupings (e.g. may have all been
+		nan groups)
 		
 		This can re-expand the output space
 	**/
@@ -202,7 +255,9 @@ package pandas.core.groupby;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
+	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
 	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
@@ -222,7 +277,8 @@ package pandas.core.groupby;
 	public function _wrap_generic_output(result:Dynamic, obj:Dynamic):Dynamic;
 	public function _wrap_transformed_output(output:Dynamic, ?names:Dynamic):Dynamic;
 	/**
-		Aggregate using input function or dict of {column -> function}
+		Aggregate using input function or dict of {column ->
+		function}
 		
 		Parameters
 		----------
@@ -230,6 +286,13 @@ package pandas.core.groupby;
 		    Function to use for aggregating groups. If a function, must either
 		    work when passed a DataFrame or when passed to DataFrame.apply. If
 		    passed a dict, the keys must be DataFrame column names.
+		
+		    Accepted Combinations are:
+		      - string cythonized function name
+		      - function
+		      - list of functions
+		      - dict of columns -> functions
+		      - nested dict of names -> dicts of functions
 		
 		Notes
 		-----
@@ -241,10 +304,16 @@ package pandas.core.groupby;
 		Returns
 		-------
 		aggregated : DataFrame
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
 	**/
-	public function agg(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function agg(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Aggregate using input function or dict of {column -> function}
+		Aggregate using input function or dict of {column ->
+		function}
 		
 		Parameters
 		----------
@@ -252,6 +321,13 @@ package pandas.core.groupby;
 		    Function to use for aggregating groups. If a function, must either
 		    work when passed a DataFrame or when passed to DataFrame.apply. If
 		    passed a dict, the keys must be DataFrame column names.
+		
+		    Accepted Combinations are:
+		      - string cythonized function name
+		      - function
+		      - list of functions
+		      - dict of columns -> functions
+		      - nested dict of names -> dicts of functions
 		
 		Notes
 		-----
@@ -263,6 +339,11 @@ package pandas.core.groupby;
 		Returns
 		-------
 		aggregated : DataFrame
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
 	**/
 	public function aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
@@ -353,16 +434,50 @@ package pandas.core.groupby;
 		See also
 		--------
 		aggregate, transform
-		
-		Returns
-		-------
-		applied : type depending on grouped object and function
 	**/
 	public function apply(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Synonym for NDFrame.fillna(method='bfill')
+		Backward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
-	public var bfill : Dynamic;
+	public function backfill(?limit:Dynamic):Dynamic;
+	/**
+		Backward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function bfill(?limit:Dynamic):Dynamic;
 	/**
 		Make box plots from DataFrameGroupBy data.
 		
@@ -507,6 +622,13 @@ package pandas.core.groupby;
 		4    0
 		5    0
 		dtype: int64
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
@@ -545,13 +667,26 @@ package pandas.core.groupby;
 	public var cummin : pandas.Series;
 	/**
 		Cumulative product for each group
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumprod(?axis:Dynamic):Dynamic;
 	/**
 		Cumulative sum for each group
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function cumsum(?axis:Dynamic):Dynamic;
 	/**
+		    
 		Generate various summary statistics, excluding NaN values.
 		
 		Parameters
@@ -563,8 +698,8 @@ package pandas.core.groupby;
 		include, exclude : list-like, 'all', or None (default)
 		    Specify the form of the returned result. Either:
 		
-		    - None to both (default). The result will include only numeric-typed
-		      columns or, if none are, only categorical columns.
+		    - None to both (default). The result will include only
+		      numeric-typed columns or, if none are, only categorical columns.
 		    - A list of dtypes or strings to be included/excluded.
 		      To select all numeric types use numpy numpy.number. To select
 		      categorical objects use type object. See also the select_dtypes
@@ -598,9 +733,11 @@ package pandas.core.groupby;
 		
 		The include, exclude arguments are ignored for Series.
 		
-		See also
+		See Also
 		--------
 		DataFrame.select_dtypes
+		
+		    
 	**/
 	public var describe : Dynamic;
 	/**
@@ -621,23 +758,42 @@ package pandas.core.groupby;
 	**/
 	public var diff : pandas.DataFrame;
 	/**
-		Return the dtypes in this object 
+		Return the dtypes in this object.
 	**/
 	public var dtypes : Dynamic;
 	/**
-		Synonym for NDFrame.fillna(method='ffill')
+		Forward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
-	public var ffill : Dynamic;
+	public function ffill(?limit:Dynamic):Dynamic;
 	/**
+		    
 		Fill NA/NaN values using the specified method
 		
 		Parameters
 		----------
 		value : scalar, dict, Series, or DataFrame
-		    Value to use to fill holes (e.g. 0), alternately a dict/Series/DataFrame of
-		    values specifying which value to use for each index (for a Series) or
-		    column (for a DataFrame). (values not in the dict/Series/DataFrame will not be
-		    filled). This value cannot be a list.
+		    Value to use to fill holes (e.g. 0), alternately a
+		    dict/Series/DataFrame of values specifying which value to use for
+		    each index (for a Series) or column (for a DataFrame). (values not
+		    in the dict/Series/DataFrame will not be filled). This value cannot
+		    be a list.
 		method : {'backfill', 'bfill', 'pad', 'ffill', None}, default None
 		    Method to use for filling holes in reindexed Series
 		    pad / ffill: propagate last valid observation forward to next valid
@@ -659,13 +815,15 @@ package pandas.core.groupby;
 		    or the string 'infer' which will try to downcast to an appropriate
 		    equal type (e.g. float64 to int64 if possible)
 		
-		See also
+		See Also
 		--------
 		reindex, asfreq
 		
 		Returns
 		-------
 		filled : DataFrame
+		
+		    
 	**/
 	public var fillna : pandas.DataFrame;
 	/**
@@ -692,6 +850,12 @@ package pandas.core.groupby;
 	public function filter(func:Dynamic, ?dropna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute first of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function first():Dynamic;
 	/**
@@ -725,7 +889,7 @@ package pandas.core.groupby;
 		--------
 		
 		>>> df = DataFrame([[1, 2], [1, 4], [5, 6]],
-		                    columns=['A', 'B'])
+		                   columns=['A', 'B'])
 		>>> df.groupby('A', as_index=False).head(1)
 		   A  B
 		0  1  2
@@ -734,6 +898,13 @@ package pandas.core.groupby;
 		   A  B
 		0  1  2
 		2  5  6
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function head(?n:Dynamic):Dynamic;
 	/**
@@ -834,6 +1005,12 @@ package pandas.core.groupby;
 	public function irow(i:Dynamic):Dynamic;
 	/**
 		Compute last of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function last():Dynamic;
 	/**
@@ -863,33 +1040,61 @@ package pandas.core.groupby;
 	public var mad : Dynamic;
 	/**
 		Compute max of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function max():Dynamic;
 	/**
 		Compute mean of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function mean():Dynamic;
 	/**
 		Compute median of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function median():Dynamic;
 	/**
 		Compute min of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function min():Dynamic;
 	public var name : Dynamic;
+	static public var ndim : Dynamic;
 	public var ngroups : Dynamic;
 	/**
 		Take the nth row from each group if n is an int, or a subset of rows
 		if n is a list of ints.
 		
 		If dropna, will take the nth non-null row, dropna is either
-		Truthy (if a Series) or 'all', 'any' (if a DataFrame); this is equivalent
-		to calling dropna(how=dropna) before the groupby.
+		Truthy (if a Series) or 'all', 'any' (if a DataFrame);
+		this is equivalent to calling dropna(how=dropna) before the
+		groupby.
 		
 		Parameters
 		----------
@@ -916,22 +1121,60 @@ package pandas.core.groupby;
 		2  5  6
 		>>> g.nth(0, dropna='any')
 		   B
-		A
+		   A
 		1  4
 		5  6
-		>>> g.nth(1, dropna='any')  # NaNs denote group exhausted when using dropna
+		
+		# NaNs denote group exhausted when using dropna
+		>>> g.nth(1, dropna='any')
 		    B
-		A
+		    A
 		1 NaN
 		5 NaN
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function nth(n:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Compute sum of values, excluding missing values
 		For multiple groupings, the result index will be a MultiIndex
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function ohlc():Dynamic;
 	/**
+		Forward fill the values
+		
+		Parameters
+		----------
+		limit : integer, optional
+		    limit of how many values to fill
+		
+		See Also
+		--------
+		Series.fillna
+		DataFrame.fillna
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function pad(?limit:Dynamic):Dynamic;
+	/**
+		    
 		Percent change over given number of periods.
 		
 		Parameters
@@ -955,6 +1198,8 @@ package pandas.core.groupby;
 		By default, the percentage change is calculated along the stat
 		axis: 0, or ``Index``, for ``DataFrame`` and 1, or ``minor`` for
 		``Panel``. You can change this with the ``axis`` keyword argument.
+		
+		    
 	**/
 	public var pct_change : pandas.core.frame.NDFrame;
 	/**
@@ -963,6 +1208,12 @@ package pandas.core.groupby;
 	public var plot : Dynamic;
 	/**
 		Compute prod of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function prod():Dynamic;
 	/**
@@ -975,22 +1226,34 @@ package pandas.core.groupby;
 		    0 <= q <= 1, the quantile(s) to compute
 		axis : {0, 1, 'index', 'columns'} (default 0)
 		    0 or 'index' for row-wise, 1 or 'columns' for column-wise
+		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+		    .. versionadded:: 0.18.0
 		
+		    This optional parameter specifies the interpolation method to use,
+		    when the desired quantile lies between two data points `i` and `j`:
+		
+		    * linear: `i + (j - i) * fraction`, where `fraction` is the
+		      fractional part of the index surrounded by `i` and `j`.
+		    * lower: `i`.
+		    * higher: `j`.
+		    * nearest: `i` or `j` whichever is nearest.
+		    * midpoint: (`i` + `j`) / 2.
 		
 		Returns
 		-------
 		quantiles : Series or DataFrame
-		    If ``q`` is an array, a DataFrame will be returned where the
-		    index is ``q``, the columns are the columns of self, and the
-		    values are the quantiles.
-		    If ``q`` is a float, a Series will be returned where the
-		    index is the columns of self and the values are the quantiles.
+		
+		    - If ``q`` is an array, a DataFrame will be returned where the
+		      index is ``q``, the columns are the columns of self, and the
+		      values are the quantiles.
+		    - If ``q`` is a float, a Series will be returned where the
+		      index is the columns of self and the values are the quantiles.
 		
 		Examples
 		--------
 		
 		>>> df = DataFrame(np.array([[1, 1], [2, 10], [3, 100], [4, 100]]),
-		                  columns=['a', 'b'])
+		                   columns=['a', 'b'])
 		>>> df.quantile(.1)
 		a    1.3
 		b    3.7
@@ -1007,16 +1270,17 @@ package pandas.core.groupby;
 		
 		Parameters
 		----------
-		axis : {0 or 'index', 1 or 'columns'}, default 0
-		    Ranks over columns (0) or rows (1)
-		numeric_only : boolean, default None
-		    Include only float, int, boolean data
+		axis: {0 or 'index', 1 or 'columns'}, default 0
+		    index to direct ranking
 		method : {'average', 'min', 'max', 'first', 'dense'}
 		    * average: average rank of group
 		    * min: lowest rank in group
 		    * max: highest rank in group
 		    * first: ranks assigned in order they appear in the array
 		    * dense: like 'min', but rank always increases by 1 between groups
+		numeric_only : boolean, default None
+		    Include only float, int, boolean data. Valid only for DataFrame or
+		    Panel objects
 		na_option : {'keep', 'top', 'bottom'}
 		    * keep: leave NA values where they are
 		    * top: smallest rank if ascending
@@ -1028,149 +1292,65 @@ package pandas.core.groupby;
 		
 		Returns
 		-------
-		ranks : DataFrame
+		ranks : same type as caller
 	**/
-	public var rank : pandas.DataFrame;
+	public var rank : Dynamic;
 	/**
-		Convenience method for frequency conversion and resampling of regular
-		time-series data.
-		
-		Parameters
-		----------
-		rule : string
-		    the offset string or object representing target conversion
-		how : string
-		    method for down- or re-sampling, default to 'mean' for
-		    downsampling
-		axis : int, optional, default 0
-		fill_method : string, default None
-		    fill_method for upsampling
-		closed : {'right', 'left'}
-		    Which side of bin interval is closed
-		label : {'right', 'left'}
-		    Which bin edge label to label bucket with
-		convention : {'start', 'end', 's', 'e'}
-		kind : "period"/"timestamp"
-		loffset : timedelta
-		    Adjust the resampled time labels
-		limit : int, default None
-		    Maximum size gap to when reindexing with fill_method
-		base : int, default 0
-		    For frequencies that evenly subdivide 1 day, the "origin" of the
-		    aggregated intervals. For example, for '5min' frequency, base could
-		    range from 0 through 4. Defaults to 0
+		Provide resampling when using a TimeGrouper
+		Return a new grouper with our resampler appended
 		
 		
-		Examples
+		See also
 		--------
-		
-		Start by creating a series with 9 one minute timestamps.
-		
-		>>> index = pd.date_range('1/1/2000', periods=9, freq='T')
-		>>> series = pd.Series(range(9), index=index)
-		>>> series
-		2000-01-01 00:00:00    0
-		2000-01-01 00:01:00    1
-		2000-01-01 00:02:00    2
-		2000-01-01 00:03:00    3
-		2000-01-01 00:04:00    4
-		2000-01-01 00:05:00    5
-		2000-01-01 00:06:00    6
-		2000-01-01 00:07:00    7
-		2000-01-01 00:08:00    8
-		Freq: T, dtype: int64
-		
-		Downsample the series into 3 minute bins and sum the values
-		of the timestamps falling into a bin.
-		
-		>>> series.resample('3T', how='sum')
-		2000-01-01 00:00:00     3
-		2000-01-01 00:03:00    12
-		2000-01-01 00:06:00    21
-		Freq: 3T, dtype: int64
-		
-		Downsample the series into 3 minute bins as above, but label each
-		bin using the right edge instead of the left. Please note that the
-		value in the bucket used as the label is not included in the bucket,
-		which it labels. For example, in the original series the
-		bucket ``2000-01-01 00:03:00`` contains the value 3, but the summed
-		value in the resampled bucket with the label``2000-01-01 00:03:00``
-		does not include 3 (if it did, the summed value would be 6, not 3).
-		To include this value close the right side of the bin interval as
-		illustrated in the example below this one.
-		
-		>>> series.resample('3T', how='sum', label='right')
-		2000-01-01 00:03:00     3
-		2000-01-01 00:06:00    12
-		2000-01-01 00:09:00    21
-		Freq: 3T, dtype: int64
-		
-		Downsample the series into 3 minute bins as above, but close the right
-		side of the bin interval.
-		
-		>>> series.resample('3T', how='sum', label='right', closed='right')
-		2000-01-01 00:00:00     0
-		2000-01-01 00:03:00     6
-		2000-01-01 00:06:00    15
-		2000-01-01 00:09:00    15
-		Freq: 3T, dtype: int64
-		
-		Upsample the series into 30 second bins.
-		
-		>>> series.resample('30S')[0:5] #select first 5 rows
-		2000-01-01 00:00:00     0
-		2000-01-01 00:00:30   NaN
-		2000-01-01 00:01:00     1
-		2000-01-01 00:01:30   NaN
-		2000-01-01 00:02:00     2
-		Freq: 30S, dtype: float64
-		
-		Upsample the series into 30 second bins and fill the ``NaN``
-		values using the ``pad`` method.
-		
-		>>> series.resample('30S', fill_method='pad')[0:5]
-		2000-01-01 00:00:00    0
-		2000-01-01 00:00:30    0
-		2000-01-01 00:01:00    1
-		2000-01-01 00:01:30    1
-		2000-01-01 00:02:00    2
-		Freq: 30S, dtype: int64
-		
-		Upsample the series into 30 second bins and fill the
-		``NaN`` values using the ``bfill`` method.
-		
-		>>> series.resample('30S', fill_method='bfill')[0:5]
-		2000-01-01 00:00:00    0
-		2000-01-01 00:00:30    1
-		2000-01-01 00:01:00    1
-		2000-01-01 00:01:30    2
-		2000-01-01 00:02:00    2
-		Freq: 30S, dtype: int64
-		
-		Pass a custom function to ``how``.
-		
-		>>> def custom_resampler(array_like):
-		...     return np.sum(array_like)+5
-		
-		>>> series.resample('3T', how=custom_resampler)
-		2000-01-01 00:00:00     8
-		2000-01-01 00:03:00    17
-		2000-01-01 00:06:00    26
-		Freq: 3T, dtype: int64
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
-	public var resample : Dynamic;
+	public function resample(rule:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function sem(?ddof:Dynamic):Dynamic;
 	/**
 		Shift each group by periods observations
+		
+		Parameters
+		----------
+		periods : integer, default 1
+		    number of periods to shift
+		freq : frequency string
+		axis : axis to shift, default 0
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function shift(?periods:Dynamic, ?freq:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Compute group sizes
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function size():Dynamic;
 	/**
@@ -1203,10 +1383,28 @@ package pandas.core.groupby;
 		Compute standard deviation of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function std(?ddof:Dynamic):Dynamic;
 	/**
 		Compute sum of group values
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function sum():Dynamic;
 	/**
@@ -1219,7 +1417,7 @@ package pandas.core.groupby;
 		--------
 		
 		>>> df = DataFrame([['a', 1], ['a', 2], ['b', 1], ['b', 2]],
-		                    columns=['A', 'B'])
+		                   columns=['A', 'B'])
 		>>> df.groupby('A').tail(1)
 		   A  B
 		1  a  2
@@ -1228,6 +1426,13 @@ package pandas.core.groupby;
 		   A  B
 		0  a  1
 		2  b  1
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	public function tail(?n:Dynamic):Dynamic;
 	/**
@@ -1267,7 +1472,7 @@ package pandas.core.groupby;
 	**/
 	public function transform(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Shift the time index, using the index's frequency if available
+		Shift the time index, using the index's frequency if available.
 		
 		Parameters
 		----------
@@ -1293,6 +1498,18 @@ package pandas.core.groupby;
 		Compute variance of groups, excluding missing values
 		
 		For multiple groupings, the result index will be a MultiIndex
+		
+		Parameters
+		----------
+		ddof : integer, default 1
+		    degrees of freedom
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
 	**/
 	@:native("var")
 	public function _var(?ddof:Dynamic):Dynamic;

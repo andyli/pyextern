@@ -102,6 +102,15 @@ package pandas.core.format;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _format_strings():Dynamic;
-	public function _format_with(fmt_str:Dynamic):Dynamic;
+	/**
+		Returns a function to be applied on each value to format it
+		        
+	**/
+	public function _value_formatter(?float_format:Dynamic, ?threshold:Dynamic):Dynamic;
 	public function get_result():Dynamic;
+	/**
+		Returns the float values converted into strings using
+		the parameters given at initalisation, as a numpy array
+	**/
+	public function get_result_as_array():Dynamic;
 }

@@ -102,7 +102,6 @@ package pandas.tseries.resample;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _adjust_bin_edges(binner:Dynamic, ax_values:Dynamic):Dynamic;
-	public var _agg_method : Dynamic;
 	/**
 		default to the standard binner here 
 	**/
@@ -118,13 +117,30 @@ package pandas.tseries.resample;
 		a tuple of binner, grouper, obj (possibly sorted)
 	**/
 	public function _get_grouper(obj:Dynamic):Dynamic;
+	/**
+		return my resampler or raise if we have an invalid axis
+		
+		Parameters
+		----------
+		obj : input object
+		kind : string, optional
+		    'period','timestamp','timedelta' are valid
+		
+		Returns
+		-------
+		a Resampler
+		
+		Raises
+		------
+		TypeError if incompatible axis
+	**/
+	public function _get_resampler(obj:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _get_time_bins(ax:Dynamic):Dynamic;
 	public function _get_time_delta_bins(ax:Dynamic):Dynamic;
 	public function _get_time_period_bins(ax:Dynamic):Dynamic;
-	public function _resample_periods():Dynamic;
-	public function _resample_timestamps(?kind:Dynamic):Dynamic;
 	/**
-		given an object and the specifications, setup the internal grouper for this particular specification
+		given an object and the specifications, setup the internal grouper
+		for this particular specification
 		
 		Parameters
 		----------
@@ -133,5 +149,4 @@ package pandas.tseries.resample;
 	public function _set_grouper(obj:Dynamic, ?sort:Dynamic):Dynamic;
 	public var ax : Dynamic;
 	public var groups : Dynamic;
-	public function resample(obj:Dynamic):Dynamic;
 }

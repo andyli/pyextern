@@ -34,6 +34,7 @@ package pandas.tseries.index;
 		Parameters
 		----------
 		name : string, optional
+		deep : boolean, default False
 		dtype : numpy dtype or pandas type
 		
 		Returns
@@ -45,7 +46,7 @@ package pandas.tseries.index;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function __copy__(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
+	public function __copy__(?name:Dynamic, ?deep:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Index;
 	public function __deepcopy__(?memo:Dynamic):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -98,6 +99,7 @@ package pandas.tseries.index;
 	**/
 	public function __len__():Dynamic;
 	public function __lt__(other:Dynamic):Dynamic;
+	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(?other:Dynamic):Dynamic;
 	public function __ne__(other:Dynamic):Dynamic;
@@ -109,6 +111,7 @@ package pandas.tseries.index;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
+	public function __pow__(?other:Dynamic):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	/**
 		helper for pickle
@@ -126,6 +129,7 @@ package pandas.tseries.index;
 	public function __repr__():Dynamic;
 	public function __rfloordiv__(?other:Dynamic):Dynamic;
 	public function __rmul__(?other:Dynamic):Dynamic;
+	public function __rpow__(?other:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
 	public function __rtruediv__(?other:Dynamic):Dynamic;
 	/**
@@ -138,10 +142,10 @@ package pandas.tseries.index;
 	**/
 	public function __setstate__(state:Dynamic):Dynamic;
 	/**
-		__sizeof__() -> int
-		size of object in memory, in bytes
+		Generates the total memory usage for a object that returns
+		either a value or Series of values
 	**/
-	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __sizeof__():Dynamic;
 	/**
 		Return a string representation for a particular Object
 		
@@ -178,7 +182,8 @@ package pandas.tseries.index;
 	static public function _add_comparison_methods():Dynamic;
 	public function _add_datelike(other:Dynamic):Dynamic;
 	/**
-		add in the datetimelike methods (as we may have to override the superclass) 
+		add in the datetimelike methods (as we may have to override the
+		superclass)
 	**/
 	static public function _add_datetimelike_methods():Dynamic;
 	public function _add_delta(delta:Dynamic):Dynamic;
@@ -192,14 +197,19 @@ package pandas.tseries.index;
 		add in logical methods to disable 
 	**/
 	static public function _add_logical_methods_disabled():Dynamic;
+	static public function _add_numeric_methods():Dynamic;
 	/**
 		add in numeric methods 
 	**/
-	static public function _add_numeric_methods():Dynamic;
+	static public function _add_numeric_methods_binary():Dynamic;
 	/**
 		add in numeric methods to disable 
 	**/
 	static public function _add_numeric_methods_disabled():Dynamic;
+	/**
+		add in numeric unary methods 
+	**/
+	static public function _add_numeric_methods_unary():Dynamic;
 	/**
 		add in the numeric set-like methods to disable 
 	**/
@@ -256,10 +266,7 @@ package pandas.tseries.index;
 	**/
 	static public function _coerce_to_ndarray(data:Dynamic):Dynamic;
 	static public var _comparables : Dynamic;
-	/**
-		class constructor (for this class it's just `__class__`
-	**/
-	public var _constructor : Dynamic;
+	static public var _constructor : Dynamic;
 	public function _convert_can_do_setop(other:Dynamic):Dynamic;
 	/**
 		Convert value to be insertable to ndarray 
@@ -272,12 +279,13 @@ package pandas.tseries.index;
 	**/
 	public function _convert_list_indexer(keyarr:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
-		we don't allow integer or float indexing on datetime-like when using loc
+		we don't allow integer or float indexing on datetime-like when using
+		loc
 		
 		Parameters
 		----------
 		key : label of the slice bound
-		kind : optional, type of the indexing operation (loc/ix/iloc/None)
+		kind : {'ix', 'loc', 'getitem', 'iloc'} or None
 	**/
 	public function _convert_scalar_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	/**
@@ -286,14 +294,9 @@ package pandas.tseries.index;
 		Parameters
 		----------
 		key : label of the slice bound
-		kind : optional, type of the indexing operation (loc/ix/iloc/None)
+		kind : {'ix', 'loc', 'getitem', 'iloc'} or None
 	**/
 	public function _convert_slice_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
-	/**
-		called from the getitem slicers, determine how to treat the key
-		whether positional or not 
-	**/
-	public function _convert_slice_indexer_getitem(key:Dynamic, ?is_index_slice:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
 	static public var _data : Dynamic;
 	static public var _datetimelike_ops : Dynamic;
@@ -359,6 +362,7 @@ package pandas.tseries.index;
 	public var _has_complex_internals : Dynamic;
 	public function _has_same_tz(other:Dynamic):Dynamic;
 	static public var _id : Dynamic;
+	static public var _infer_as_myclass : Dynamic;
 	static public function _inner_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		consistent invalid indexer message 
@@ -388,13 +392,18 @@ package pandas.tseries.index;
 	public function _local_timestamps():Dynamic;
 	public function _make_str_accessor():Dynamic;
 	/**
+		If we have a float key and are not a floating index
+		then try to cast to an int if equivalent
+	**/
+	public function _maybe_cast_indexer(key:Dynamic):Dynamic;
+	/**
 		If label is a string, cast it to datetime according to resolution.
 		
 		Parameters
 		----------
 		label : object
 		side : {'left', 'right'}
-		kind : string / None
+		kind : {'ix', 'loc', 'getitem'}
 		
 		Returns
 		-------
@@ -415,7 +424,8 @@ package pandas.tseries.index;
 		-------
 		result : ndarray with values replace by the fill_value
 		
-		mask the result if needed, convert to the provided dtype if its not None
+		mask the result if needed, convert to the provided dtype if its not
+		None
 		
 		This is an internal routine
 	**/
@@ -428,6 +438,17 @@ package pandas.tseries.index;
 	public function _mpl_repr():Dynamic;
 	static public var _na_value : Dynamic;
 	static public var _nan_idxs : Dynamic;
+	/**
+		Return Index or ndarray filled with NaT which has the same
+		length as the caller.
+		
+		Parameters
+		----------
+		box : boolean, default True
+		    - If True returns a Index as the same as caller.
+		    - If False returns ndarray of np.int64.
+	**/
+	public function _nat_new(?box:Dynamic):Dynamic;
 	static public function _outer_indexer(left:Dynamic, right:Dynamic):Dynamic;
 	/**
 		Calculate datetime bounds for parsed time string and its resolution.
@@ -453,8 +474,8 @@ package pandas.tseries.index;
 	/**
 		*this is an internal non-public method*
 		
-		Create a new index with target's values (move/add/delete values as necessary)
-		use with non-unique Index and a possibly non-unique target
+		Create a new index with target's values (move/add/delete values as
+		necessary) use with non-unique Index and a possibly non-unique target
 		
 		Parameters
 		----------
@@ -477,24 +498,38 @@ package pandas.tseries.index;
 	**/
 	public function _reset_identity():Dynamic;
 	static public var _resolution : Dynamic;
+	public function _round(freq:Dynamic, rounder:Dynamic):Dynamic;
+	static public var _round_doc : Dynamic;
 	static public function _scalar_data_error(data:Dynamic):Dynamic;
 	public function _searchsorted_monotonic(label:Dynamic, ?side:Dynamic):Dynamic;
 	public function _set_freq(value:Dynamic):Dynamic;
 	public function _set_names(values:Dynamic, ?level:Dynamic):Dynamic;
 	/**
-		create a new Index, don't copy the data, use the same object attributes
-		with passed in attributes taking precedence
+		create a new Index with the same class as the caller, don't copy the
+		data, use the same object attributes with passed in attributes taking
+		precedence
 		
 		*this is an internal non-public method*
 		
 		Parameters
 		----------
 		values : the values to create the new Index, optional
-		infer : boolean, default False
-		    if True, infer the new type of the passed values
 		kwargs : updates the default attributes for this Index
 	**/
-	public function _shallow_copy(?values:Dynamic, ?infer:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _shallow_copy(?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		create a new Index inferring the class with passed value, don't copy
+		the data, use the same object attributes with passed in attributes
+		taking precedence
+		
+		*this is an internal non-public method*
+		
+		Parameters
+		----------
+		values : the values to create the new Index, optional
+		kwargs : updates the default attributes for this Index
+	**/
+	public function _shallow_copy_with_infer(?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		we require the we have a dtype compat for the values
 		if we are passed a non-dtype compat, then coerce using the constructor
@@ -520,12 +555,29 @@ package pandas.tseries.index;
 	public function _unpickle_compat(state:Dynamic):Dynamic;
 	public function _update_inplace(result:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		return valid other, evaluate or raise TypeError
+		if we are not of the appropriate type
+		
+		internal method called by ops
+	**/
+	public function _validate_for_numeric_binop(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
+	/**
+		validate if we can perform a numeric unary operation 
+	**/
+	public function _validate_for_numeric_unaryop(op:Dynamic, opstr:Dynamic):Dynamic;
+	/**
 		Validate index level.
 		
 		For single-level Index getting level number is a no-op, but some
 		verification must be done like in MultiIndex.
 	**/
 	public function _validate_index_level(level:Dynamic):Dynamic;
+	/**
+		if we are positional indexer
+		validate that we have appropriate typed bounds
+		must be an integer
+	**/
+	public function _validate_indexer(form:Dynamic, key:Dynamic, kind:Dynamic):Dynamic;
 	/**
 		the internal implementation 
 	**/
@@ -588,9 +640,26 @@ package pandas.tseries.index;
 	public function asof_locs(where:Dynamic, mask:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic):Dynamic;
 	/**
-		return the base object if the memory of the underlying data is shared 
+		return the base object if the memory of the underlying data is
+		shared
 	**/
 	public var base : Dynamic;
+	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function ceil(freq:Dynamic):Dynamic;
 	/**
 		Make a copy of this object.  Name and dtype sets those attributes on
 		the new object.
@@ -598,6 +667,7 @@ package pandas.tseries.index;
 		Parameters
 		----------
 		name : string, optional
+		deep : boolean, default False
 		dtype : numpy dtype or pandas type
 		
 		Returns
@@ -609,7 +679,7 @@ package pandas.tseries.index;
 		In most cases, there should be no functional difference from using
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 	**/
-	public function copy(?names:Dynamic, ?name:Dynamic, ?dtype:Dynamic, ?deep:Dynamic):pandas.Index;
+	public function copy(?name:Dynamic, ?deep:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Index;
 	/**
 		return the data pointer of the underlying data 
 	**/
@@ -657,7 +727,8 @@ package pandas.tseries.index;
 	public function delete(loc:Dynamic):Dynamic;
 	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a new Index with elements from the index that are not in `other`.
+		Return a new Index with elements from the index that are not in
+		`other`.
 		
 		This is the sorted set difference of two Index objects.
 		
@@ -718,8 +789,10 @@ package pandas.tseries.index;
 		Parameters
 		----------
 		keep : {'first', 'last', False}, default 'first'
-		    - ``first`` : Mark duplicates as ``True`` except for the first occurrence.
-		    - ``last`` : Mark duplicates as ``True`` except for the last occurrence.
+		    - ``first`` : Mark duplicates as ``True`` except for the first
+		      occurrence.
+		    - ``last`` : Mark duplicates as ``True`` except for the last
+		      occurrence.
 		    - False : Mark all duplicates as ``True``.
 		take_last : deprecated
 		
@@ -771,6 +844,22 @@ package pandas.tseries.index;
 	**/
 	public var flags : Dynamic;
 	/**
+		floor the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function floor(freq:Dynamic):Dynamic;
+	/**
 		Render a string representation of the Index
 	**/
 	public function format(?name:Dynamic, ?formatter:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -779,7 +868,7 @@ package pandas.tseries.index;
 	**/
 	public var freq : Dynamic;
 	/**
-		return the frequency object as a string if its set, otherwise None 
+		Return the frequency object as a string if its set, otherwise None
 	**/
 	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;
@@ -862,7 +951,7 @@ package pandas.tseries.index;
 		----------
 		label : object
 		side : {'left', 'right'}
-		kind : string / None, the type of indexer
+		kind : {'ix', 'loc', 'getitem'}
 	**/
 	public function get_slice_bound(label:Dynamic, side:Dynamic, kind:Dynamic):Dynamic;
 	/**
@@ -901,15 +990,20 @@ package pandas.tseries.index;
 	**/
 	public function indexer_at_time(time:Dynamic, ?asof:Dynamic):Dynamic;
 	/**
-		Select values between particular times of day (e.g., 9:00-9:30AM)
+		Select values between particular times of day (e.g., 9:00-9:30AM).
+		
+		Return values of the index between two times.  If start_time or
+		end_time are strings then tseres.tools.to_time is used to convert to
+		a time object.
 		
 		Parameters
 		----------
-		start_time : datetime.time or string
-		end_time : datetime.time or string
+		start_time, end_time : datetime.time, str
+		    datetime.time or string in appropriate format ("%H:%M", "%H%M",
+		    "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
+		    "%I%M%S%p")
 		include_start : boolean, default True
 		include_end : boolean, default True
-		tz : string or pytz.timezone or dateutil.tz.tzfile, default None
 		
 		Returns
 		-------
@@ -1029,7 +1123,8 @@ package pandas.tseries.index;
 	**/
 	public function isin(values:Dynamic):Dynamic;
 	/**
-		return the first element of the underlying data as a python scalar 
+		return the first element of the underlying data as a python
+		scalar
 	**/
 	public function item():Dynamic;
 	/**
@@ -1077,10 +1172,6 @@ package pandas.tseries.index;
 	**/
 	public var microsecond : Dynamic;
 	/**
-		The milliseconds of the datetime
-	**/
-	public var millisecond : Dynamic;
-	/**
 		return the minimum value of the Index
 		
 		See also
@@ -1107,7 +1198,8 @@ package pandas.tseries.index;
 	**/
 	public var nbytes : Dynamic;
 	/**
-		return the number of dimensions of the underlying data, by definition 1 
+		return the number of dimensions of the underlying data,
+		by definition 1
 	**/
 	public var ndim : Dynamic;
 	public var nlevels : Dynamic;
@@ -1197,6 +1289,22 @@ package pandas.tseries.index;
 	public function repeat(repeats:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var resolution : Dynamic;
 	/**
+		round the index to the specified freq
+		
+		Parameters
+		----------
+		freq : freq string/object
+		
+		Returns
+		-------
+		index of same type
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
+	**/
+	public function round(freq:Dynamic):Dynamic;
+	/**
 		np.ndarray searchsorted compat 
 	**/
 	public function searchsorted(key:Dynamic, ?side:Dynamic):Dynamic;
@@ -1211,9 +1319,9 @@ package pandas.tseries.index;
 		----------
 		names : str or sequence
 		    name(s) to set
-		level : int or level name, or sequence of int / level names (default None)
-		    If the index is a MultiIndex (hierarchical), level(s) to set (None for all levels)
-		    Otherwise level must be None
+		level : int, level name, or sequence of int/level names (default None)
+		    If the index is a MultiIndex (hierarchical), level(s) to set (None
+		    for all levels).  Otherwise level must be None
 		inplace : bool
 		    if True, mutates in place
 		
@@ -1291,7 +1399,7 @@ package pandas.tseries.index;
 		    If None, defaults to the end
 		step : int, defaults None
 		    If None, defaults to 1
-		kind : string, defaults None
+		kind : {'ix', 'loc', 'getitem'} or None
 		
 		Returns
 		-------
@@ -1317,7 +1425,7 @@ package pandas.tseries.index;
 		ascending : boolean, default True
 		    False to sort in descending order
 		
-		level, sort_remaining are compat paramaters
+		level, sort_remaining are compat parameters
 		
 		Returns
 		-------
@@ -1338,8 +1446,7 @@ package pandas.tseries.index;
 	/**
 		Return an array of formatted strings specified by date_format, which
 		supports the same string format as the python standard library. Details
-		of the string format can be found in the `python string format doc
-		<https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
+		of the string format can be found in `python string format doc <https://docs.python.org/2/library/datetime.html#strftime-and-strptime-behavior>`__
 		
 		.. versionadded:: 0.17.0
 		
@@ -1437,7 +1544,7 @@ package pandas.tseries.index;
 		-------
 		y : TimedeltaIndex
 	**/
-	public function to_perioddelta(freq:Dynamic):Dynamic;
+	public function to_perioddelta(freq:Dynamic):pandas.TimedeltaIndex;
 	/**
 		Return DatetimeIndex as object ndarray of datetime.datetime objects
 		
@@ -1453,20 +1560,20 @@ package pandas.tseries.index;
 		Parameters
 		----------
 		keep_tz : optional, defaults False.
-		          return the data keeping the timezone.
+		    return the data keeping the timezone.
 		
-		          If keep_tz is True:
+		    If keep_tz is True:
 		
-		            If the timezone is not set, the resulting
-		            Series will have a datetime64[ns] dtype.
+		      If the timezone is not set, the resulting
+		      Series will have a datetime64[ns] dtype.
 		
-		            Otherwise the Series will have an datetime64[ns, tz] dtype; the
-		            tz will be preserved.
+		      Otherwise the Series will have an datetime64[ns, tz] dtype; the
+		      tz will be preserved.
 		
-		          If keep_tz is False:
+		    If keep_tz is False:
 		
-		            Series will have a datetime64[ns] dtype. TZ aware
-		            objects will have the tz removed.
+		      Series will have a datetime64[ns] dtype. TZ aware
+		      objects will have the tz removed.
 		
 		Returns
 		-------
@@ -1483,7 +1590,8 @@ package pandas.tseries.index;
 	public function transpose():Dynamic;
 	static public var tz : Dynamic;
 	/**
-		Convert tz-aware DatetimeIndex from one time zone to another (using pytz/dateutil)
+		Convert tz-aware DatetimeIndex from one time zone to another (using
+		pytz/dateutil)
 		
 		Parameters
 		----------
@@ -1503,8 +1611,8 @@ package pandas.tseries.index;
 	**/
 	public function tz_convert(tz:Dynamic):pandas.DatetimeIndex;
 	/**
-		Localize tz-naive DatetimeIndex to given time zone (using pytz/dateutil),
-		or remove timezone from tz-aware DatetimeIndex
+		Localize tz-naive DatetimeIndex to given time zone (using
+		pytz/dateutil), or remove timezone from tz-aware DatetimeIndex
 		
 		Parameters
 		----------
@@ -1513,11 +1621,14 @@ package pandas.tseries.index;
 		    time zone of the TimeSeries.
 		    None will remove timezone holding local time.
 		ambiguous : 'infer', bool-ndarray, 'NaT', default 'raise'
-		    - 'infer' will attempt to infer fall dst-transition hours based on order
-		    - bool-ndarray where True signifies a DST time, False signifies
-		      a non-DST time (note that this flag is only applicable for ambiguous times)
+		    - 'infer' will attempt to infer fall dst-transition hours based on
+		      order
+		    - bool-ndarray where True signifies a DST time, False signifies a
+		      non-DST time (note that this flag is only applicable for
+		      ambiguous times)
 		    - 'NaT' will return NaT where there are ambiguous times
-		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous times
+		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
+		      times
 		infer_dst : boolean, default False (DEPRECATED)
 		    Attempt to infer fall dst-transition hours based on order
 		

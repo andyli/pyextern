@@ -114,6 +114,18 @@ package pandas.tools.plotting;
 	**/
 	static public function _subplots(?naxes:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?layout_type:Dynamic, ?fig_kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Generates a matplotlib plot of Andrews curves, for visualising clusters of
+		multivariate data.
+		
+		Andrews curves have the functional form:
+		
+		f(t) = x_1/sqrt(2) + x_2 sin(t) + x_3 cos(t) +
+		       x_4 sin(2t) + x_5 cos(2t) + ...
+		
+		Where x coefficients correspond to the values of each dimension and t is
+		linearly spaced between -pi and +pi. Each row of frame then corresponds to
+		a single curve.
+		
 		Parameters:
 		-----------
 		frame : DataFrame
@@ -504,8 +516,10 @@ package pandas.tools.plotting;
 		>>> from pandas import read_csv
 		>>> from pandas.tools.plotting import parallel_coordinates
 		>>> from matplotlib import pyplot as plt
-		>>> df = read_csv('https://raw.github.com/pydata/pandas/master/pandas/tests/data/iris.csv')
-		>>> parallel_coordinates(df, 'Name', color=('#556270', '#4ECDC4', '#C7F464'))
+		>>> df = read_csv('https://raw.github.com/pydata/pandas/master'
+		                  '/pandas/tests/data/iris.csv')
+		>>> parallel_coordinates(df, 'Name', color=('#556270',
+		                         '#4ECDC4', '#C7F464'))
 		>>> plt.show()
 	**/
 	static public function parallel_coordinates(frame:Dynamic, class_column:Dynamic, ?cols:Dynamic, ?ax:Dynamic, ?color:Dynamic, ?use_columns:Dynamic, ?xticks:Dynamic, ?colormap:Dynamic, ?axvlines:Dynamic, ?axvlines_kwds:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
@@ -590,7 +604,8 @@ package pandas.tools.plotting;
 		    be transposed to meet matplotlib's default layout.
 		    If a Series or DataFrame is passed, use passed data to draw a table.
 		yerr : DataFrame, Series, array-like, dict and str
-		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for detail.
+		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for
+		    detail.
 		xerr : same types as yerr.
 		stacked : boolean, default False in line and
 		    bar plots, and True in area plot. If True, create stacked plot.
@@ -650,7 +665,7 @@ package pandas.tools.plotting;
 		    - 'density' : same as 'kde'
 		    - 'area' : area plot
 		    - 'pie' : pie plot
-		    
+		
 		ax : matplotlib axes object
 		    If not passed, uses gca()
 		figsize : a tuple (width, height) in inches
@@ -695,7 +710,8 @@ package pandas.tools.plotting;
 		    be transposed to meet matplotlib's default layout.
 		    If a Series or DataFrame is passed, use passed data to draw a table.
 		yerr : DataFrame, Series, array-like, dict and str
-		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for detail.
+		    See :ref:`Plotting with Error Bars <visualization.errorbars>` for
+		    detail.
 		xerr : same types as yerr.
 		label : label argument to provide to plot
 		secondary_y : boolean or sequence of ints, default False
@@ -816,7 +832,8 @@ package pandas.tools.plotting;
 		    data for table contents
 		`kwargs`: keywords, optional
 		    keyword arguments which passed to matplotlib.table.table.
-		    If `rowLabels` or `colLabels` is not specified, data index or column name will be used.
+		    If `rowLabels` or `colLabels` is not specified, data index or column
+		    name will be used.
 		
 		Returns
 		-------

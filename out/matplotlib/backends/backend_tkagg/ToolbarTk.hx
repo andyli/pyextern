@@ -373,7 +373,6 @@ package matplotlib.backends.backend_tkagg;
 		Return the resource value for a KEY given as string.
 	**/
 	public function cget(key:Dynamic):Dynamic;
-	public function check():Dynamic;
 	/**
 		Append STRING to the Tk clipboard.
 		
@@ -507,7 +506,6 @@ package matplotlib.backends.backend_tkagg;
 		Unmap this widget and do not use it for the packing order.
 	**/
 	public function forget():Dynamic;
-	public function form(?cnf:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a boolean value for Tcl boolean values true and false given as parameter.
 	**/

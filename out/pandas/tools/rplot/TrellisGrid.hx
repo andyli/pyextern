@@ -110,8 +110,8 @@ package pandas.tools.rplot;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		Create a trellis structure for a list of layers.
-		Each layer will be cloned with different data in to a two dimensional grid.
+		Create a trellis structure for a list of layers.  Each layer will be
+		cloned with different data in to a two dimensional grid.
 		
 		Parameters:
 		-----------
@@ -119,7 +119,8 @@ package pandas.tools.rplot;
 		
 		Returns:
 		--------
-		trellised_layers: Clones of each layer in the list arranged in a trellised latice
+		trellised_layers: Clones of each layer in the list arranged in a
+		trellised latice
 	**/
 	public function trellis(layers:Dynamic):Dynamic;
 	/**

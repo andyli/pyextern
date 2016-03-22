@@ -200,7 +200,7 @@ package numpy.lib;
 		       [3, 4, 9],
 		       [2, 5, 6]])
 	**/
-	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function apply_along_axis(func1d:Dynamic, axis:Dynamic, arr:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Apply a function repeatedly over multiple axes.
 		
@@ -855,7 +855,7 @@ package numpy.lib;
 		       [1, 2, 3],
 		       [1, 2, 3]])
 	**/
-	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Dynamic;
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	/**
 		Returns pointers to the end-points of an array.
 		
@@ -1048,7 +1048,7 @@ package numpy.lib;
 		arguments had no effect on the return values of the function and can be
 		safely ignored in this and previous versions of numpy.
 	**/
-	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):Dynamic;
+	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic):numpy.Ndarray;
 	/**
 		Estimate a covariance matrix, given data and weights.
 		
@@ -1159,7 +1159,7 @@ package numpy.lib;
 		>>> print np.cov(x)
 		11.71
 	**/
-	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
+	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):numpy.Ndarray;
 	/**
 		Return a new array with sub-arrays along an axis deleted. For a one
 		dimensional array, this returns those entries not returned by
@@ -2351,7 +2351,7 @@ package numpy.lib;
 		array((1, 1.3, 'abcde'),
 		      dtype=[('intvar', '<i8'), ('fltvar', '<f8'), ('strvar', '|S5')])
 	**/
-	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):Dynamic;
+	static public function genfromtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?skip_header:Dynamic, ?skip_footer:Dynamic, ?converters:Dynamic, ?missing_values:Dynamic, ?filling_values:Dynamic, ?usecols:Dynamic, ?names:Dynamic, ?excludelist:Dynamic, ?deletechars:Dynamic, ?replace_space:Dynamic, ?autostrip:Dynamic, ?case_sensitive:Dynamic, ?defaultfmt:Dynamic, ?unpack:Dynamic, ?usemask:Dynamic, ?loose:Dynamic, ?invalid_raise:Dynamic, ?max_rows:Dynamic):numpy.Ndarray;
 	/**
 		Find the wrapper for the array with the highest priority.
 		
@@ -3193,7 +3193,7 @@ package numpy.lib;
 		array([[  0, 999,   1,   2, 999,   3],
 		       [  4, 999,   5,   6, 999,   7]])
 	**/
-	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function insert(arr:Dynamic, obj:Dynamic, values:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
 		One-dimensional linear interpolation.
 		
@@ -4226,7 +4226,7 @@ package numpy.lib;
 		>>> y
 		array([ 2.,  4.])
 	**/
-	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):Dynamic;
+	static public function loadtxt(fname:Dynamic, ?dtype:Dynamic, ?comments:Dynamic, ?delimiter:Dynamic, ?converters:Dynamic, ?skiprows:Dynamic, ?usecols:Dynamic, ?unpack:Dynamic, ?ndmin:Dynamic):numpy.Ndarray;
 	/**
 		Do a keyword search on docstrings.
 		
@@ -4427,7 +4427,7 @@ package numpy.lib;
 		3.5
 		>>> assert not np.all(a==b)
 	**/
-	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return coordinate matrices from coordinate vectors.
 		
@@ -4528,7 +4528,7 @@ package numpy.lib;
 		>>> z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
 		>>> h = plt.contourf(x,y,z)
 	**/
-	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function meshgrid(?xi:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		`nd_grid` instance which returns a dense multi-dimensional "meshgrid".
 		
@@ -4845,7 +4845,7 @@ package numpy.lib;
 		>>> np.nanmax([1, 2, np.nan, np.inf])
 		inf
 	**/
-	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmax(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the arithmetic mean along the specified axis, ignoring NaNs.
 		
@@ -4991,7 +4991,7 @@ package numpy.lib;
 		3.0
 		>>> assert not np.all(a==b)
 	**/
-	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmedian(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Return minimum of an array or minimum along an axis, ignoring any NaNs.
 		When all-NaN slices are encountered a ``RuntimeWarning`` is raised and
@@ -5069,7 +5069,7 @@ package numpy.lib;
 		>>> np.nanmin([1, 2, np.nan, np.NINF])
 		-inf
 	**/
-	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis, while
 		ignoring nan values.
@@ -5867,7 +5867,7 @@ package numpy.lib;
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
 	**/
-	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Compute the qth percentile of the data along the specified axis.
 		
@@ -8451,7 +8451,7 @@ package numpy.lib;
 		>>> u[indices]
 		array([1, 2, 6, 4, 2, 3, 2])
 	**/
-	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
+	static public function unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):numpy.Ndarray;
 	/**
 		unpackbits(myarray, axis=None)
 		
@@ -8644,7 +8644,7 @@ package numpy.lib;
 		>>> (5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)
 		48
 	**/
-	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):Dynamic;
+	static public function vander(x:Dynamic, ?N:Dynamic, ?increasing:Dynamic):numpy.Ndarray;
 	/**
 		Split an array into multiple sub-arrays vertically (row-wise).
 		
