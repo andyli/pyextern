@@ -42,7 +42,7 @@ Libraries and their versions of the generated externs can be found in [requireme
 
 >pandas is an open source, BSD-licensed library providing high-performance, easy-to-use data structures and data analysis tools for the Python programming language.
 
-**[pkgutil](https://docs.python.org/2/library/pkgutil.html)**
+**[pkgutil](https://docs.python.org/3/library/pkgutil.html)**
 > This module provides utilities for the import system, in particular package support.
 
 **[scipy](https://www.scipy.org/)**
@@ -51,6 +51,6 @@ Libraries and their versions of the generated externs can be found in [requireme
 **[seaborn](https://stanford.edu/~mwaskom/software/seaborn/)**
 > Seaborn is a Python visualization library based on matplotlib. It provides a high-level interface for drawing attractive statistical graphics.
 
-**[textwrap](https://docs.python.org/2/library/textwrap.html)**
+**[textwrap](https://docs.python.org/3/library/textwrap.html)**
 > The textwrap module provides two convenience functions, wrap() and fill(), as well as TextWrapper, the class that does all the work, and a utility function dedent(). If you’re just wrapping or filling one or two text strings, the convenience functions should be good enough; otherwise, you should use an instance of TextWrapper for efficiency.
 
