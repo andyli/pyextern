@@ -4,8 +4,32 @@ haxe:
   - "3.2.1"
   - development
 
-hxml:
-  - build.hxml
-  - test.hxml
+env:
+  - REQUIREMENTS=requirements.txt         OUTDIR=coredep GENLIBS=docutils,pkgutil,inspect,importlib coredep
+  - REQUIREMENTS=requirements-externs.txt OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn
 
-sudo: false
+sudo: required
+dist: trusty
+
+install:
+  # use conda since pip install requires building libs which takes too much time
+  # http://conda.pydata.org/docs/travis.html
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda install psutil
+  - conda create -q --name pyextern --file $REQUIREMENTS python=3.5
+  - source activate pyextern
+  - conda env export
+  # install haxelibs
+  - yes | haxelib install build.hxml
+  - haxelib list
+  # build the generator
+  - haxe build.hxml
+
+script:
+  - haxe test.hxml
+  - python Main.py $GENLIBS $OUTDIR
