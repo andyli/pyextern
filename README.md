@@ -3,20 +3,23 @@
 [![Requirements Status](https://requires.io/github/andyli/pyextern/requirements.svg?branch=master)](https://requires.io/github/andyli/pyextern/requirements/?branch=master)
 
 Extern generator for the Haxe Python target.
-
-Libraries and their versions of the generated externs can be found in [requirements.txt](requirements.txt).
-
+This repository also includes a set of generated externs.
 
 
 ## How to generate extern for a Python lib
 
- 1. Install the lib, probably using `pip3`.
- 2. `haxe build.hxml`
- 3. `python3 Main.py moduleName path/to/output_dir`
+ 1. Install the Python lib, probably using `pip3`.
+ 2. Install the Python dependencies of the generator by `pip3 install -r requirements.txt`.
+ 3. Install the Haxe dependencies of the generator by `haxe install build.hxml`.
+ 4. Build the generator by `haxe build.hxml`
+ 5. Generate externs by `python3 Main.py moduleName1,moduleName2,moduleName3 path/to/output_dir`
 
 
 
-##Current externs
+## Generated externs included in this repository
+
+The list of libraries and their versions of the generated externs can be found in [requirements-externs.txt](requirements-externs.txt).
+The generated externs can be found in the [out](out) directory.
 
 **[docutils](https://pypi.python.org/pypi/docutils)**
 > Docutils is a modular system for processing documentation into useful formats, such as HTML, XML, and LaTeX. For input Docutils supports reStructuredText, an easy-to-read, what-you-see-is-what-you-get plaintext markup syntax.

@@ -37,7 +37,8 @@ class Process_pandas extends Processor {
 		}
 	}
 
-	static var classes = {
+	static var classes(get, null):Map<String, Dynamic>;
+	static function get_classes() return classes != null ? classes : classes = {
 		var module = Importlib.import_module("pandas");
 		[
 			for (clsTp in (Inspect.getmembers(module, Inspect.isclass):Array<Tuple2<String,Dynamic>>))
