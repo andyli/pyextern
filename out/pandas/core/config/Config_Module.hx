@@ -233,7 +233,7 @@ package pandas.core.config;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -502,7 +502,7 @@ package pandas.core.config;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -693,6 +693,17 @@ package pandas.core.config;
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function is_bool(x:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
+		`obj` - the object to be checked
+		
+		Returns
+		-------
+		validator - returns True if object is callable
+		    raises ValueError otherwise.
+	**/
+	static public function is_callable(obj:Dynamic):Dynamic;
 	static public function is_float(x:Dynamic):Dynamic;
 	/**
 		Parameters
@@ -734,7 +745,7 @@ package pandas.core.config;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']
@@ -849,7 +860,7 @@ package pandas.core.config;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -1119,7 +1130,7 @@ package pandas.core.config;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int

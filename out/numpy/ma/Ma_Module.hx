@@ -11,6 +11,7 @@ package numpy.ma;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	/**
 		absolute(x[, out])
 		
@@ -676,7 +677,7 @@ package numpy.ma;
 		>>> a = ma.arange(24).reshape(2,3,4)
 		>>> a[:,0,1] = ma.masked
 		>>> a[:,1,:] = ma.masked
-		>>> print a
+		>>> print(a)
 		[[[0 -- 2 3]
 		  [-- -- -- --]
 		  [8 9 10 11]]
@@ -684,14 +685,14 @@ package numpy.ma;
 		 [[12 -- 14 15]
 		  [-- -- -- --]
 		  [20 21 22 23]]]
-		>>> print ma.apply_over_axes(ma.sum, a, [0,2])
+		>>> print(ma.apply_over_axes(ma.sum, a, [0,2]))
 		[[[46]
 		  [--]
 		  [124]]]
 		
 		Tuple axis arguments to ufuncs are equivalent:
 		
-		>>> print ma.sum(a, axis=(0,2)).reshape((1,-1,1))
+		>>> print(ma.sum(a, axis=(0,2)).reshape((1,-1,1)))
 		[[[46]
 		  [--]
 		  [124]]]
@@ -755,7 +756,7 @@ package numpy.ma;
 		>>> np.arange(3,7,2)
 		array([3, 5])
 	**/
-	static public function arange(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function arange(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		arccos(x[, out])
 		
@@ -1227,12 +1228,12 @@ package numpy.ma;
 		--------
 		>>> x = np.ma.array(arange(4), mask=[1,1,0,0])
 		>>> x.shape = (2,2)
-		>>> print x
+		>>> print(x)
 		[[-- --]
 		 [2 3]]
-		>>> print x.argmin(axis=0, fill_value=-1)
+		>>> print(x.argmin(axis=0, fill_value=-1))
 		[0 0]
-		>>> print x.argmin(axis=0, fill_value=9)
+		>>> print(x.argmin(axis=0, fill_value=9))
 		[1 1]
 	**/
 	static public function argmin(a:Dynamic, ?axis:Dynamic, ?fill_value:Dynamic):Dynamic;
@@ -1301,9 +1302,9 @@ package numpy.ma;
 		
 		Construction::
 		
-		  x = MaskedArray(data, mask=nomask, dtype=None,
-		                  copy=False, subok=True, ndmin=0, fill_value=None,
-		                  keep_mask=True, hard_mask=None, shrink=True)
+		  x = MaskedArray(data, mask=nomask, dtype=None, copy=False, subok=True,
+		                  ndmin=0, fill_value=None, keep_mask=True, hard_mask=None,
+		                  shrink=True, order=None)
 		
 		Parameters
 		----------
@@ -1336,6 +1337,14 @@ package numpy.ma;
 		    cannot be unmasked. Default is False.
 		shrink : bool, optional
 		    Whether to force compression of an empty mask. Default is True.
+		order : {'C', 'F', 'A'}, optional
+		    Specify the order of the array.  If order is 'C', then the array
+		    will be in C-contiguous order (last-index varies the fastest).
+		    If order is 'F', then the returned array will be in
+		    Fortran-contiguous order (first-index varies the fastest).
+		    If order is 'A' (default), then the returned array may be
+		    in any order (either C-, Fortran-contiguous, or even discontiguous),
+		    unless a copy is required, in which case it will be C-contiguous.
 	**/
 	static public function array(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?order:Dynamic, ?mask:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?hard_mask:Dynamic, ?shrink:Dynamic, ?subok:Dynamic, ?ndmin:Dynamic):Dynamic;
 	/**
@@ -1553,7 +1562,7 @@ package numpy.ma;
 		    True
 		
 		    >>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		    ...     print arr, arr.shape
+		    ...     print(arr, arr.shape)
 		    ...
 		    [[[1]
 		      [2]]] (1, 2, 1)
@@ -1607,13 +1616,13 @@ package numpy.ma;
 		1.25
 		
 		>>> x = np.ma.arange(6.).reshape(3, 2)
-		>>> print x
+		>>> print(x)
 		[[ 0.  1.]
 		 [ 2.  3.]
 		 [ 4.  5.]]
 		>>> avg, sumweights = np.ma.average(x, axis=0, weights=[1, 2, 3],
 		...                                 returned=True)
-		>>> print avg
+		>>> print(avg)
 		[2.66666666667 3.66666666667]
 	**/
 	static public function average(a:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?returned:Dynamic):Dynamic;
@@ -2114,7 +2123,7 @@ package numpy.ma;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
@@ -2311,7 +2320,7 @@ package numpy.ma;
 	**/
 	static public function conjugate(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
-		copy
+		copy(self, *args, **params)
 		a.copy(order='C')
 		
 		    Return a copy of the array.
@@ -2372,7 +2381,7 @@ package numpy.ma;
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
 		bias : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		allow_masked : bool, optional
@@ -2381,7 +2390,7 @@ package numpy.ma;
 		    If False, raises an exception.  Because `bias` is deprecated, this
 		    argument needs to be treated as keyword only to avoid a warning.
 		ddof : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		
@@ -2709,7 +2718,7 @@ package numpy.ma;
 		Examples
 		--------
 		>>> marr = np.ma.array(np.arange(10), mask=[0,0,0,1,1,1,0,0,0,0])
-		>>> print marr.cumsum()
+		>>> print(marr.cumsum())
 		[0 1 3 -- -- -- 9 16 24 33]
 	**/
 	static public function cumsum(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
@@ -2809,12 +2818,12 @@ package numpy.ma;
 	**/
 	static public function diagflat(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		diagonal
+		diagonal(self, *args, **params)
 		a.diagonal(offset=0, axis1=0, axis2=1)
 		
 		    Return specified diagonals. In NumPy 1.9 the returned array is a
 		    read-only view instead of a copy as in previous NumPy versions.  In
-		    NumPy 1.10 the read-only restriction will be removed.
+		    a future version the read-only restriction will be removed.
 		
 		    Refer to :func:`numpy.diagonal` for full documentation.
 		
@@ -2824,47 +2833,50 @@ package numpy.ma;
 	**/
 	static public function diagonal(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Calculate the n-th order discrete difference along given axis.
+		    Calculate the n-th discrete difference along given axis.
 		
-		The first order difference is given by ``out[n] = a[n+1] - a[n]`` along
-		the given axis, higher order differences are calculated by using `diff`
-		recursively.
+		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		    the given axis, higher differences are calculated by using `diff`
+		    recursively.
 		
-		Parameters
-		----------
-		a : array_like
-		    Input array
-		n : int, optional
-		    The number of times values are differenced.
-		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
+		    Parameters
+		    ----------
+		    a : array_like
+		        Input array
+		    n : int, optional
+		        The number of times values are differenced.
+		    axis : int, optional
+		        The axis along which the difference is taken, default is the last axis.
 		
-		Returns
-		-------
-		diff : ndarray
-		    The `n` order differences. The shape of the output is the same as `a`
-		    except along `axis` where the dimension is smaller by `n`.
+		    Returns
+		    -------
+		    diff : ndarray
+		        The n-th differences. The shape of the output is the same as `a`
+		        except along `axis` where the dimension is smaller by `n`.
+		.
 		
-		See Also
-		--------
-		gradient, ediff1d, cumsum
+		    See Also
+		    --------
+		    gradient, ediff1d, cumsum
 		
-		Examples
-		--------
-		>>> x = np.array([1, 2, 4, 7, 0])
-		>>> np.diff(x)
-		array([ 1,  2,  3, -7])
-		>>> np.diff(x, n=2)
-		array([  1,   1, -10])
+		    Examples
+		    --------
+		    >>> x = np.array([1, 2, 4, 7, 0])
+		    >>> np.diff(x)
+		    array([ 1,  2,  3, -7])
+		    >>> np.diff(x, n=2)
+		    array([  1,   1, -10])
 		
-		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		>>> np.diff(x)
-		array([[2, 3, 4],
-		       [5, 1, 2]])
-		>>> np.diff(x, axis=0)
-		array([[-1,  2,  0, -2]])
+		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		    >>> np.diff(x)
+		    array([[2, 3, 4],
+		           [5, 1, 2]])
+		    >>> np.diff(x, axis=0)
+		    array([[-1,  2,  0, -2]])
+		
+		    
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		true_divide(x1, x2[, out])
 		
@@ -3084,8 +3096,8 @@ package numpy.ma;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -3108,7 +3120,7 @@ package numpy.ma;
 		array([[-1073741821, -1067949133],
 		       [  496041986,    19249760]])                     #random
 	**/
-	static public function empty(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function empty(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		empty_like(a, dtype=None, order='K', subok=True)
 		
@@ -3166,7 +3178,7 @@ package numpy.ma;
 		array([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000],#random
 		       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])
 	**/
-	static public function empty_like(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function empty_like(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		equal(x1, x2[, out])
 		
@@ -3453,7 +3465,7 @@ package numpy.ma;
 		>>> np.ma.flatnotmasked_contiguous(a)
 		[slice(3, 5, None), slice(6, 9, None)]
 		>>> a[:] = np.ma.masked
-		>>> print np.ma.flatnotmasked_edges(a)
+		>>> print(np.ma.flatnotmasked_edges(a))
 		None
 	**/
 	static public function flatnotmasked_contiguous(a:Dynamic):Array<Dynamic>;
@@ -3497,7 +3509,7 @@ package numpy.ma;
 		array([3, 8])
 		
 		>>> a[:] = np.ma.masked
-		>>> print flatnotmasked_edges(ma)
+		>>> print(flatnotmasked_edges(ma))
 		None
 	**/
 	static public function flatnotmasked_edges(a:Dynamic):Dynamic;
@@ -3594,8 +3606,10 @@ package numpy.ma;
 	/**
 		floor_divide(x1, x2[, out])
 		
-		Return the largest integer smaller or equal to the division of the
-		inputs.
+		Return the largest integer smaller or equal to the division of the inputs.
+		It is equivalent to the Python ``//`` operator and pairs with the
+		Python ``%`` (`remainder`), function so that ``b = a % b + b * (a // b)``
+		up to roundoff.
 		
 		Parameters
 		----------
@@ -3612,6 +3626,7 @@ package numpy.ma;
 		
 		See Also
 		--------
+		remainder : Remainder complementary to floor_divide.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -3714,7 +3729,7 @@ package numpy.ma;
 		array(['w', 'o', 'r', 'l', 'd'],
 		      dtype='|S1')
 	**/
-	static public function frombuffer(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function frombuffer(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Build a masked array from a suitable flexible-type array.
 		
@@ -3827,7 +3842,7 @@ package numpy.ma;
 		       [1, 2, 3],
 		       [2, 3, 4]])
 	**/
-	static public function fromfunction(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
+	static public function fromfunction(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return the data of a masked array as an ndarray.
 		
@@ -4226,7 +4241,7 @@ package numpy.ma;
 		       [ 0.,  1.,  0.],
 		       [ 0.,  0.,  1.]])
 	**/
-	static public function identity(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function identity(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		ids(self)
 		
@@ -4335,7 +4350,7 @@ package numpy.ma;
 		Parameters
 		----------
 		a, b : array_like
-		    If `a` and `b` are nonscalar, their last dimensions of must match.
+		    If `a` and `b` are nonscalar, their last dimensions must match.
 		
 		Returns
 		-------
@@ -4411,7 +4426,7 @@ package numpy.ma;
 		Parameters
 		----------
 		a, b : array_like
-		    If `a` and `b` are nonscalar, their last dimensions of must match.
+		    If `a` and `b` are nonscalar, their last dimensions must match.
 		
 		Returns
 		-------
@@ -5786,12 +5801,12 @@ package numpy.ma;
 		>>> food = np.array(['green_eggs', 'ham'], dtype=object)
 		>>> # don't eat spoiled food
 		>>> eat = ma.masked_object(food, 'green_eggs')
-		>>> print eat
+		>>> print(eat)
 		[-- ham]
 		>>> # plain ol` ham is boring
 		>>> fresh_food = np.array(['cheese', 'ham', 'pineapple'], dtype=object)
 		>>> eat = ma.masked_object(fresh_food, 'green_eggs')
-		>>> print eat
+		>>> print(eat)
 		[cheese ham pineapple]
 		
 		Note that `mask` is set to ``nomask`` if possible.
@@ -6264,9 +6279,9 @@ package numpy.ma;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -6282,11 +6297,12 @@ package numpy.ma;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -6645,7 +6661,7 @@ package numpy.ma;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function ones(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Compute the outer product of two vectors.
 		
@@ -6835,7 +6851,8 @@ package numpy.ma;
 		    default) just the coefficients are returned, when True diagnostic
 		    information from the singular value decomposition is also returned.
 		w : array_like, shape (M,), optional
-		    weights to apply to the y-coordinates of the sample points.
+		    Weights to apply to the y-coordinates of the sample points. For
+		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
 		cov : bool, optional
 		    Return the estimate and the covariance matrix of the estimate
 		    If full is True, then cov is not returned.
@@ -6873,7 +6890,7 @@ package numpy.ma;
 		
 		See Also
 		--------
-		polyval : Computes polynomial values.
+		polyval : Compute polynomial values.
 		linalg.lstsq : Computes a least-squares fit.
 		scipy.interpolate.UnivariateSpline : Computes spline fits.
 		
@@ -7201,11 +7218,11 @@ package numpy.ma;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.ravel()
+		>>> print(x.ravel())
 		[1 -- 3 -- 5 -- 7 -- 9]
 	**/
 	static public function ravel(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
@@ -7214,9 +7231,9 @@ package numpy.ma;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -7232,11 +7249,12 @@ package numpy.ma;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -7254,7 +7272,7 @@ package numpy.ma;
 	**/
 	static public function remainder(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
-		repeat
+		repeat(self, *args, **params)
 		a.repeat(repeats, axis=None)
 		
 		    Repeat elements of an array.
@@ -7778,19 +7796,19 @@ package numpy.ma;
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Default
 		>>> a.sort()
-		>>> print a
+		>>> print(a)
 		[1 3 5 -- --]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Put missing values in the front
 		>>> a.sort(endwith=False)
-		>>> print a
+		>>> print(a)
 		[-- -- 1 3 5]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # fill_value takes over endwith
 		>>> a.sort(endwith=False, fill_value=3)
-		>>> print a
+		>>> print(a)
 		[1 -- -- 3 5]
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
@@ -8036,22 +8054,22 @@ package numpy.ma;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.sum()
+		>>> print(x.sum())
 		25
-		>>> print x.sum(axis=1)
+		>>> print(x.sum(axis=1))
 		[4 5 16]
-		>>> print x.sum(axis=0)
+		>>> print(x.sum(axis=0))
 		[8 5 12]
-		>>> print type(x.sum(axis=0, dtype=np.int64)[0])
+		>>> print(type(x.sum(axis=0, dtype=np.int64)[0]))
 		<type 'numpy.int64'>
 	**/
 	static public function sum(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		swapaxes
+		swapaxes(self, *args, **params)
 		a.swapaxes(axis1, axis2)
 		
 		    Return a view of the array with `axis1` and `axis2` interchanged.
@@ -8617,14 +8635,14 @@ package numpy.ma;
 		>>> x = np.ma.array(np.arange(9.).reshape(3, 3), mask=[[0, 1, 0],
 		...                                                    [1, 0, 1],
 		...                                                    [0, 1, 0]])
-		>>> print x
+		>>> print(x)
 		[[0.0 -- 2.0]
 		 [-- 4.0 --]
 		 [6.0 -- 8.0]]
 		>>> np.ma.where(x > 5)    # return the indices where x > 5
 		(array([2, 2]), array([0, 2]))
 		
-		>>> print np.ma.where(x > 5, x, -3.1416)
+		>>> print(np.ma.where(x > 5, x, -3.1416))
 		[[-3.1416 -- -3.1416]
 		 [-- -3.1416 --]
 		 [6.0 -- 8.0]]
@@ -8680,5 +8698,5 @@ package numpy.ma;
 		array([(0, 0), (0, 0)],
 		      dtype=[('x', '<i4'), ('y', '<i4')])
 	**/
-	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function zeros(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 }

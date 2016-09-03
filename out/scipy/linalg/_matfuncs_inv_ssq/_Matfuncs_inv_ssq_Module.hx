@@ -19,7 +19,7 @@ package scipy.linalg._matfuncs_inv_ssq;
 		Parameters
 		----------
 		a : complex
-		    A complex number preferably belonging to the closed negative real axis.
+		    A complex number.
 		k : integer
 		    A nonnegative integer.
 		
@@ -30,10 +30,10 @@ package scipy.linalg._matfuncs_inv_ssq;
 		
 		Notes
 		-----
-		The algorithm as written in the publication does not handle k=0 or k=1
+		The algorithm as formulated in the reference does not handle k=0 or k=1
 		correctly, so these are special-cased in this implementation.
 		This function is intended to not allow `a` to belong to the closed
-		negative real axis, but this is constraint is relaxed.
+		negative real axis, but this constraint is relaxed.
 		
 		References
 		----------
@@ -102,8 +102,8 @@ package scipy.linalg._matfuncs_inv_ssq;
 		
 		Notes
 		-----
-		Some amount of care has been taken to return a real number
-		if all of the inputs are real.
+		Care has been taken to return a real number if possible when
+		all of the inputs are real numbers.
 		
 		References
 		----------
@@ -178,7 +178,8 @@ package scipy.linalg._matfuncs_inv_ssq;
 	/**
 		Compute a superdiagonal entry of a matrix logarithm.
 		
-		This is Eq. (11.28) in [1]_.
+		This is like Eq. (11.28) in [1]_, except the determination of whether
+		l1 and l2 are sufficiently far apart has been modified.
 		
 		Parameters
 		----------
@@ -196,8 +197,8 @@ package scipy.linalg._matfuncs_inv_ssq;
 		
 		Notes
 		-----
-		Some amount of care has been taken to return a real number
-		if all of the inputs are real.
+		Care has been taken to return a real number if possible when
+		all of the inputs are real numbers.
 		
 		References
 		----------

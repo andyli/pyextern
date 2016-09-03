@@ -14,9 +14,9 @@ package pandas;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
-	static public var _np_version : Dynamic;
 	static public var _np_version_under1p10 : Dynamic;
 	static public var _np_version_under1p11 : Dynamic;
+	static public var _np_version_under1p12 : Dynamic;
 	static public var _np_version_under1p8 : Dynamic;
 	static public var _np_version_under1p9 : Dynamic;
 	/**
@@ -114,9 +114,10 @@ package pandas;
 		columns : array-like, Series, or list of arrays/Series
 		    Values to group by in the columns
 		values : array-like, optional
-		    Array of values to aggregate according to the factors
+		    Array of values to aggregate according to the factors.
+		    Requires `aggfunc` be specified.
 		aggfunc : function, optional
-		    If no values array is passed, computes a frequency table
+		    If specified, requires `values` be specified as well
 		rownames : sequence, default None
 		    If passed, must match number of row arrays passed
 		colnames : sequence, default None
@@ -125,6 +126,16 @@ package pandas;
 		    Add row/column margins (subtotals)
 		dropna : boolean, default True
 		    Do not include columns whose entries are all NaN
+		normalize : boolean, {'all', 'index', 'columns'}, or {0,1}, default False
+		    Normalize by dividing all values by the sum of values.
+		
+		    - If passed 'all' or `True`, will normalize over all values.
+		    - If passed 'index' will normalize over each row.
+		    - If passed 'columns' will normalize over each column.
+		    - If margins is `True`, will also normalize margin values.
+		
+		    .. versionadded:: 0.18.1
+		
 		
 		Notes
 		-----
@@ -157,7 +168,7 @@ package pandas;
 		-------
 		crosstab : DataFrame
 	**/
-	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
+	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?normalize:Dynamic):pandas.DataFrame;
 	/**
 		Return indices of half-open bins to which each value of `x` belongs.
 		
@@ -335,7 +346,7 @@ package pandas;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -552,10 +563,11 @@ package pandas;
 		    ``'python'`` parser to retain strict Python semantics.  See the
 		    :ref:`enhancing performance <enhancingperf.eval>` documentation for
 		    more details.
-		engine : string, default 'numexpr', {'python', 'numexpr'}
+		engine : string or None, default 'numexpr', {'python', 'numexpr'}
 		
 		    The engine used to evaluate the expression. Supported engines are
 		
+		    - None         : tries to use ``numexpr``, falls back to ``python``
 		    - ``'numexpr'``: This default engine evaluates pandas objects using
 		                     numexpr for large speed ups in complex expressions
 		                     with large frames.
@@ -1544,7 +1556,7 @@ package pandas;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -2413,10 +2425,19 @@ package pandas;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default ','
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Regular expressions are accepted and will force use of the python
-		    parsing engine and will ignore quotes in the data.
-		delimiter : str, default None
+		    this. Separators longer than 1 character and different from '\s+' will be
+		    interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -2436,8 +2457,12 @@ package pandas;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -2494,8 +2519,10 @@ package pandas;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -2518,11 +2545,15 @@ package pandas;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'
@@ -2575,7 +2606,8 @@ package pandas;
 		
 		Parameters
 		----------
-		io : string, file-like object, pandas ExcelFile, or xlrd workbook.
+		io : string, path object (pathlib.Path or py._path.local.LocalPath),
+		    file-like object, pandas ExcelFile, or xlrd workbook.
 		    The string could be a URL. Valid URL schemes include http, ftp, s3,
 		    and file. For file URLs, a host is expected. For instance, a local
 		    file could be file://localhost/path/to/workbook.xlsx
@@ -2684,8 +2716,16 @@ package pandas;
 		    A list of field widths which can be used instead of 'colspecs' if
 		    the intervals are contiguous.
 		
-		delimiter : str, default None
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -2705,8 +2745,12 @@ package pandas;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -2761,8 +2805,10 @@ package pandas;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -2785,11 +2831,15 @@ package pandas;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'
@@ -3390,10 +3440,19 @@ package pandas;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default \t (tab-stop)
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Regular expressions are accepted and will force use of the python
-		    parsing engine and will ignore quotes in the data.
-		delimiter : str, default None
+		    this. Separators longer than 1 character and different from '\s+' will be
+		    interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -3413,8 +3472,12 @@ package pandas;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -3471,8 +3534,10 @@ package pandas;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -3495,11 +3560,15 @@ package pandas;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'
@@ -3623,7 +3692,7 @@ package pandas;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -4499,7 +4568,7 @@ package pandas;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -4766,7 +4835,12 @@ package pandas;
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, or Series
+		arg : string, datetime, list, tuple, 1-d array, Series
+		
+		    .. versionadded: 0.18.1
+		
+		       or DataFrame/dict-like
+		
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		
 		    - If 'raise', then invalid parsing will raise an exception
@@ -4809,8 +4883,10 @@ package pandas;
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
-		    If no `format` is given, try to infer the format based on the first
-		    datetime string. Provides a large speed-up in many cases.
+		    If True and no `format` is given, attempt to infer the format of the
+		    datetime strings, and if it can be inferred, switch to a faster
+		    method of parsing them. In some cases this can increase the parsing
+		    speed by ~5-10x.
 		
 		Returns
 		-------
@@ -4827,36 +4903,45 @@ package pandas;
 		
 		Examples
 		--------
-		Take separate series and convert to datetime
 		
-		>>> import pandas as pd
-		>>> i = pd.date_range('20000101',periods=100)
-		>>> df = pd.DataFrame(dict(year = i.year, month = i.month, day = i.day))
-		>>> pd.to_datetime(df.year*10000 + df.month*100 + df.day, format='%Y%m%d')
-		0    2000-01-01
-		1    2000-01-02
-		...
-		98   2000-04-08
-		99   2000-04-09
-		Length: 100, dtype: datetime64[ns]
+		Assembling a datetime from multiple columns of a DataFrame. The keys can be
+		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
+		'ms', 'us', 'ns']) or plurals of the same
 		
-		Or from strings
+		>>> df = pd.DataFrame({'year': [2015, 2016],
+		                       'month': [2, 3],
+		                       'day': [4, 5]})
+		>>> pd.to_datetime(df)
+		0   2015-02-04
+		1   2016-03-05
+		dtype: datetime64[ns]
 		
-		>>> df = df.astype(str)
-		>>> pd.to_datetime(df.day + df.month + df.year, format="%d%m%Y")
-		0    2000-01-01
-		1    2000-01-02
-		...
-		98   2000-04-08
-		99   2000-04-09
-		Length: 100, dtype: datetime64[ns]
-		
-		Date that does not meet timestamp limitations:
+		If a date that does not meet timestamp limitations, passing errors='coerce'
+		will force to NaT. Furthermore this will force non-dates to NaT as well.
 		
 		>>> pd.to_datetime('13000101', format='%Y%m%d')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
+		
+		Passing infer_datetime_format=True can often-times speedup a parsing
+		if its not an ISO8601 format exactly, but in a regular format.
+		
+		>>> s = pd.Series(['3/11/2000', '3/12/2000', '3/13/2000']*1000)
+		
+		>>> s.head()
+		0    3/11/2000
+		1    3/12/2000
+		2    3/13/2000
+		3    3/11/2000
+		4    3/12/2000
+		dtype: object
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=True)
+		100 loops, best of 3: 10.4 ms per loop
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
+		1 loop, best of 3: 471 ms per loop
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
 	/**

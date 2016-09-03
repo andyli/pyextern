@@ -122,23 +122,49 @@ package scipy.signal.ltisys;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Convert to `StateSpace` system, without copying.
+		
+		Returns
+		-------
+		sys: StateSpace
+		    The `StateSpace` system. If the class is already an instance of
+		    `StateSpace` then this instance is returned.
+	**/
+	public function _as_ss():Dynamic;
+	/**
+		Convert to `TransferFunction` system, without copying.
+		
+		Returns
+		-------
+		sys: ZerosPolesGain
+		    The `TransferFunction` system. If the class is already an instance of
+		    `TransferFunction` then this instance is returned.
+	**/
+	public function _as_tf():Dynamic;
+	/**
+		Convert to `ZerosPolesGain` system, without copying.
+		
+		Returns
+		-------
+		sys: ZerosPolesGain
+		    The `ZerosPolesGain` system. If the class is already an instance of
+		    `ZerosPolesGain` then this instance is returned.
+	**/
+	public function _as_zpk():Dynamic;
+	public var _dt_dict : Dynamic;
+	/**
 		Calculate Bode magnitude and phase data of a continuous-time system.
 		
 		Returns a 3-tuple containing arrays of frequencies [rad/s], magnitude
-		[dB] and phase [deg]. See `scipy.signal.bode` for details.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.11.0
+		[dB] and phase [deg]. See `bode` for details.
 		
 		Examples
 		--------
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> s1 = signal.lti([1], [1, 1])
-		>>> w, mag, phase = s1.bode()
+		>>> sys = signal.TransferFunction([1], [1, 1])
+		>>> w, mag, phase = sys.bode()
 		
 		>>> plt.figure()
 		>>> plt.semilogx(w, mag)    # Bode magnitude plot
@@ -152,11 +178,15 @@ package scipy.signal.ltisys;
 	**/
 	public var den : Dynamic;
 	/**
+		Return the sampling time of the system, `None` for `lti` systems.
+	**/
+	public var dt : Dynamic;
+	/**
 		Calculate the frequency response of a continuous-time system.
 		
 		Returns a 2-tuple containing arrays of frequencies [rad/s] and
 		complex magnitude.
-		See `scipy.signal.freqresp` for details.
+		See `freqresp` for details.
 	**/
 	public function freqresp(?w:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -165,7 +195,7 @@ package scipy.signal.ltisys;
 	public var gain : Dynamic;
 	/**
 		Return the impulse response of a continuous-time system.
-		See `scipy.signal.impulse` for details.
+		See `impulse` for details.
 	**/
 	public function impulse(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -174,20 +204,30 @@ package scipy.signal.ltisys;
 	public var num : Dynamic;
 	/**
 		Return the response of a continuous-time system to input `U`.
-		See `scipy.signal.lsim` for details.
+		See `lsim` for details.
 	**/
 	public function output(U:Dynamic, T:Dynamic, ?X0:Dynamic):Dynamic;
 	/**
-		Poles of the `ZerosPolesGain` system.
+		Poles of the system.
 	**/
 	public var poles : Dynamic;
 	/**
 		Return the step response of a continuous-time system.
-		See `scipy.signal.step` for details.
+		See `step` for details.
 	**/
 	public function step(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
-		Zeros of the `ZerosPolesGain` system.
+		Return a discretized version of the current system.
+		
+		Parameters: See `cont2discrete` for details.
+		
+		Returns
+		-------
+		sys: instance of `dlti`
+	**/
+	public function to_discrete(dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
+	/**
+		Zeros of the system.
 	**/
 	public var zeros : Dynamic;
 }

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package numpy.core.function_base;
 @:pythonImport("numpy.core.function_base") extern class Function_base_Module {
+	static public var MAY_SHARE_BOUNDS : Dynamic;
 	static public var NaN : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
@@ -231,4 +232,43 @@ package numpy.core.function_base;
 		dtype('float64')
 	**/
 	static public function result_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		shares_memory(a, b, max_work=None)
+		
+		Determine if two arrays share memory
+		
+		Parameters
+		----------
+		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem (maximum number
+		    of candidate solutions to consider). The following special
+		    values are recognized:
+		
+		    max_work=MAY_SHARE_EXACT  (default)
+		        The problem is solved exactly. In this case, the function returns
+		        True only if there is an element shared between the arrays.
+		    max_work=MAY_SHARE_BOUNDS
+		        Only the memory bounds of a and b are checked.
+		
+		Raises
+		------
+		numpy.TooHardError
+		    Exceeded max_work.
+		
+		Returns
+		-------
+		out : bool
+		
+		See Also
+		--------
+		may_share_memory
+		
+		Examples
+		--------
+		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
+		False
+	**/
+	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

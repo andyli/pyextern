@@ -119,9 +119,14 @@ package pandas._sparse;
 	public function intersect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var length : Dynamic;
 	/**
-		Returns -1 if not found
+		Return the internal location if value exists on given index.
+		Return -1 otherwise.
 	**/
 	public function lookup(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Vectorized lookup, returns ndarray[int32_t]
+	**/
+	public function lookup_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Combine together two BlockIndex objects, accepting indices if contained
 		in one or the other

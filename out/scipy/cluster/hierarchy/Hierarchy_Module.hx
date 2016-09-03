@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package scipy.cluster.hierarchy;
 @:pythonImport("scipy.cluster.hierarchy") extern class Hierarchy_Module {
+	static public var _EUCLIDEAN_METHODS : Dynamic;
+	static public var _LINKAGE_METHODS : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -31,9 +33,6 @@ package scipy.cluster.hierarchy;
 		does not do proper striding.
 	**/
 	static public function _copy_arrays_if_base_present(T:Dynamic):Dynamic;
-	static public var _cpy_euclid_methods : Dynamic;
-	static public var _cpy_linkage_methods : Dynamic;
-	static public var _cpy_non_euclid_methods : Dynamic;
 	/**
 		Calculates the endpoints of the links as well as the labels for the
 		the dendrogram rooted at the node with index i. iv is the independent
@@ -1020,6 +1019,29 @@ package scipy.cluster.hierarchy;
 		-------
 		Z : ndarray
 		    The hierarchical clustering encoded as a linkage matrix.
+		
+		Notes
+		-----
+		1. For method 'single' an optimized algorithm called SLINK is implemented,
+		   which has :math:`O(n^2)` time complexity.
+		   For methods 'complete', 'average', 'weighted' and 'ward' an algorithm
+		   called nearest-neighbors chain is implemented, which too has time
+		   complexity :math:`O(n^2)`.
+		   For other methods a naive algorithm is implemented with :math:`O(n^3)`
+		   time complexity.
+		   All algorithms use :math:`O(n^2)` memory.
+		   Refer to [1]_ for details about the algorithms.
+		2. Methods 'centroid', 'median' and 'ward' are correctly defined only if
+		   Euclidean pairwise metric is used. If `y` is passed as precomputed
+		   pairwise distances, then it is a user responsibility to assure that
+		   these distances are in fact Euclidean, otherwise the produced result
+		   will be incorrect.
+		
+		References
+		----------
+		.. [1] Daniel Mullner, "Modern hierarchical, agglomerative clustering
+		       algorithms", `arXiv:1109.2378v1 <http://arxiv.org/abs/1109.2378v1>`_
+		       , 2011.
 	**/
 	static public function linkage(y:Dynamic, ?method:Dynamic, ?metric:Dynamic):Dynamic;
 	/**

@@ -212,6 +212,10 @@ package pandas.indexes.range;
 	**/
 	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Internal method to handle NA filling of take 
+	**/
+	public function _assert_take_fillable(values:Dynamic, indices:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?na_value:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _box_scalars : Dynamic;
 	static public var _can_hold_na : Dynamic;
@@ -291,6 +295,7 @@ package pandas.indexes.range;
 	static public function _ensure_compat_concat(indexes:Dynamic):Dynamic;
 	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
 	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
+	public function _evalute_compare(op:Dynamic):Dynamic;
 	/**
 		Extended Euclidean algorithms to solve Bezout's identity:
 		   a*x + b*y = gcd(x, y)
@@ -321,6 +326,12 @@ package pandas.indexes.range;
 		return an attributes dict for my class 
 	**/
 	public function _get_attributes_dict():Dynamic;
+	/**
+		Given 2 indexes, give a consensus name meaning
+		we take the not None one, or None if the names differ.
+		Return a new object if we are resetting the name
+	**/
+	public function _get_consensus_name(other:Dynamic):Dynamic;
 	/**
 		return a list of tuples of start, stop, step 
 	**/
@@ -449,8 +460,16 @@ package pandas.indexes.range;
 	public function _searchsorted_monotonic(label:Dynamic, ?side:Dynamic):Dynamic;
 	public function _set_names(values:Dynamic, ?level:Dynamic):Dynamic;
 	/**
-		create a new Index, don't copy the data, use the same object attributes
-		with passed in attributes taking precedence 
+		create a new Index with the same class as the caller, don't copy the
+		data, use the same object attributes with passed in attributes taking
+		precedence
+		
+		*this is an internal non-public method*
+		
+		Parameters
+		----------
+		values : the values to create the new Index, optional
+		kwargs : updates the default attributes for this Index
 	**/
 	public function _shallow_copy(?values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -579,7 +598,12 @@ package pandas.indexes.range;
 	**/
 	public function argmin(?axis:Dynamic):Dynamic;
 	/**
-		return an ndarray indexer of the underlying data
+		Returns the indices that would sort the index and its
+		underlying data.
+		
+		Returns
+		-------
+		argsorted : numpy array
 		
 		See also
 		--------
@@ -750,9 +774,9 @@ package pandas.indexes.range;
 		
 		Returns
 		-------
-		filled : Index
+		filled : %(klass)s
 	**/
-	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
@@ -976,8 +1000,13 @@ package pandas.indexes.range;
 		
 		Parameters
 		----------
-		values : set or sequence of values
+		values : set or list-like
 		    Sought values.
+		
+		    .. versionadded:: 0.18.1
+		
+		    Support for values as a set
+		
 		level : str or int, optional
 		    Name or position of the index level to use (if the index is a
 		    MultiIndex).
@@ -1021,7 +1050,19 @@ package pandas.indexes.range;
 		join_index, (left_indexer, right_indexer)
 	**/
 	public function join(other:Dynamic, ?how:Dynamic, ?level:Dynamic, ?return_indexers:Dynamic):Dynamic;
-	public function map(mapper:Dynamic):Dynamic;
+	/**
+		Apply mapper function to its values.
+		
+		Parameters
+		----------
+		mapper : callable
+		    Function to be applied.
+		
+		Returns
+		-------
+		applied : array
+	**/
+	public function map(mapper:Dynamic):Array<Dynamic>;
 	/**
 		The maximum value of the object 
 	**/
@@ -1130,17 +1171,76 @@ package pandas.indexes.range;
 	**/
 	public function rename(name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		return a new Index of the values repeated n times
+		Repeat elements of an Index. Refer to `numpy.ndarray.repeat`
+		for more information about the `n` argument.
 		
 		See also
 		--------
 		numpy.ndarray.repeat
 	**/
-	public function repeat(n:Dynamic):Dynamic;
+	public function repeat(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		np.ndarray searchsorted compat 
+		Find indices where elements should be inserted to maintain order.
+		
+		Find the indices into a sorted IndexOpsMixin `self` such that, if the
+		corresponding elements in `v` were inserted before the indices, the
+		order of `self` would be preserved.
+		
+		Parameters
+		----------
+		key : array_like
+		    Values to insert into `self`.
+		side : {'left', 'right'}, optional
+		    If 'left', the index of the first suitable location found is given.
+		    If 'right', return the last such index.  If there is no suitable
+		    index, return either 0 or N (where N is the length of `self`).
+		sorter : 1-D array_like, optional
+		    Optional array of integer indices that sort `self` into ascending
+		    order. They are typically the result of ``np.argsort``.
+		
+		Returns
+		-------
+		indices : array of ints
+		    Array of insertion points with the same shape as `v`.
+		
+		See Also
+		--------
+		numpy.searchsorted
+		
+		Notes
+		-----
+		Binary search is used to find the required insertion points.
+		
+		Examples
+		--------
+		>>> x = pd.Series([1, 2, 3])
+		>>> x
+		0    1
+		1    2
+		2    3
+		dtype: int64
+		>>> x.searchsorted(4)
+		array([3])
+		>>> x.searchsorted([0, 4])
+		array([0, 3])
+		>>> x.searchsorted([1, 3], side='left')
+		array([0, 2])
+		>>> x.searchsorted([1, 3], side='right')
+		array([1, 3])
+		>>>
+		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		[apple, bread, bread, cheese, milk]
+		Categories (4, object): [apple < bread < cheese < milk]
+		>>> x.searchsorted('bread')
+		array([1])     # Note: an array, not a scalar
+		>>> x.searchsorted(['bread'])
+		array([1])
+		>>> x.searchsorted(['bread', 'eggs'])
+		array([1, 4])
+		>>> x.searchsorted(['bread', 'eggs'], side='right')
+		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(key:Dynamic, ?side:Dynamic):Dynamic;
+	public function searchsorted(key:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		Set new names on index. Defaults to returning new index.
 		
@@ -1277,6 +1377,7 @@ package pandas.indexes.range;
 	**/
 	public var strides : Dynamic;
 	public function summary(?name:Dynamic):Dynamic;
+	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the sorted symmetric difference of two Index objects.
 		
@@ -1287,12 +1388,12 @@ package pandas.indexes.range;
 		
 		Returns
 		-------
-		sym_diff : Index
+		symmetric_difference : Index
 		
 		Notes
 		-----
-		``sym_diff`` contains elements that appear in either ``idx1`` or
-		``idx2`` but not both. Equivalent to the Index created by
+		``symmetric_difference`` contains elements that appear in either
+		``idx1`` or ``idx2`` but not both. Equivalent to the Index created by
 		``(idx1 - idx2) + (idx2 - idx1)`` with duplicates dropped.
 		
 		The sorting of a result containing ``NaN`` values is not guaranteed
@@ -1302,7 +1403,7 @@ package pandas.indexes.range;
 		--------
 		>>> idx1 = Index([1, 2, 3, 4])
 		>>> idx2 = Index([2, 3, 4, 5])
-		>>> idx1.sym_diff(idx2)
+		>>> idx1.symmetric_difference(idx2)
 		Int64Index([1, 5], dtype='int64')
 		
 		You can also use the ``^`` operator:
@@ -1310,20 +1411,28 @@ package pandas.indexes.range;
 		>>> idx1 ^ idx2
 		Int64Index([1, 5], dtype='int64')
 	**/
-	public function sym_diff(other:Dynamic, ?result_name:Dynamic):Dynamic;
+	public function symmetric_difference(other:Dynamic, ?result_name:Dynamic):Dynamic;
 	/**
-		return a new Index of the values selected by the indexer
+		return a new %(klass)s of the values selected by the indices
 		
 		For internal compatibility with numpy arrays.
 		
-		# filling must always be None/nan here
-		# but is passed thru internally
+		Parameters
+		----------
+		indices : list
+		    Indices to be taken
+		axis : int, optional
+		    The axis over which to select values, always 0.
+		allow_fill : bool, default True
+		fill_value : bool, default None
+		    If allow_fill=True and fill_value is not None, indices specified by
+		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
 		
 		See also
 		--------
 		numpy.ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		For an Index containing strings or datetime.datetime objects, attempt
 		conversion to DatetimeIndex
@@ -1349,7 +1458,7 @@ package pandas.indexes.range;
 	/**
 		return the transpose, which is by definition self 
 	**/
-	public function transpose():Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Form the union of two Index objects and sorts if possible
 		

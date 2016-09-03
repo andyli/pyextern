@@ -11,6 +11,24 @@ package pandas.io.packers;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Check if blosc is installed.
+		
+		Raises
+		------
+		ImportError
+		    Raised when blosc is not installed.
+	**/
+	static public function _check_blosc():Dynamic;
+	/**
+		Check if zlib is installed.
+		
+		Raises
+		------
+		ImportError
+		    Raised when zlib is not installed.
+	**/
+	static public function _check_zlib():Dynamic;
+	/**
 		Convert strings to complex number instance with specified numpy type.
 	**/
 	static public function c2f(r:Dynamic, i:Dynamic, ctype_name:Dynamic):Dynamic;
@@ -24,6 +42,20 @@ package pandas.io.packers;
 		Decoder for deserializing numpy data types.
 	**/
 	static public function decode(obj:Dynamic):Dynamic;
+	/**
+		Remove any common leading whitespace from every line in `text`.
+		
+		This can be used to make triple-quoted strings line up with the left
+		edge of the display, while still presenting them in the source code
+		in indented form.
+		
+		Note that tabs and spaces are both treated as whitespace, but they
+		are not equal: the lines "  hello" and "\thello" are
+		considered to have no common leading whitespace.  (This behaviour is
+		new in Python 2.5; older versions of this module incorrectly
+		expanded tabs before searching for common leading whitespace.)
+	**/
+	static public function dedent(text:Dynamic):Dynamic;
 	static public var dtype_dict : Dynamic;
 	/**
 		return my dtype mapping, whether number or name 
@@ -48,6 +80,8 @@ package pandas.io.packers;
 		a filepath_or_buffer, the encoding, the compression
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**

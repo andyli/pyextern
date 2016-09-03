@@ -119,17 +119,17 @@ package numpy.lib.arrayterator;
 		
 		See Also
 		--------
-		`Arrayterator`
+		Arrayterator
 		flatiter
 		
 		Examples
 		--------
 		>>> a = np.arange(3 * 4 * 5 * 6).reshape(3, 4, 5, 6)
-		>>> a_itor = np.lib.arrayterator.Arrayterator(a, 2)
+		>>> a_itor = np.lib.Arrayterator(a, 2)
 		
 		>>> for subarr in a_itor.flat:
 		...     if not subarr:
-		...         print subarr, type(subarr)
+		...         print(subarr, type(subarr))
 		...
 		0 <type 'numpy.int32'>
 	**/

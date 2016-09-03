@@ -173,7 +173,7 @@ package numpy.core.shape_base;
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		...     print arr, arr.shape
+		...     print(arr, arr.shape)
 		...
 		[[[1]
 		  [2]]] (1, 2, 1)

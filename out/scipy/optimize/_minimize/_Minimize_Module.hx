@@ -133,16 +133,25 @@ package scipy.optimize._minimize;
 		-------
 		disp : bool
 		    Set to True to print convergence messages.
-		xtol : float
-		    Relative error in solution `xopt` acceptable for convergence.
-		ftol : float
-		    Relative error in ``fun(xopt)`` acceptable for convergence.
-		maxiter : int
-		    Maximum number of iterations to perform.
-		maxfev : int
-		    Maximum number of function evaluations to make.
+		maxiter, maxfev : int
+		    Maximum allowed number of iterations and function evaluations.
+		    Will default to ``N*200``, where ``N`` is the number of
+		    variables, if neither `maxiter` or `maxfev` is set. If both
+		    `maxiter` and `maxfev` are set, minimization will stop at the
+		    first reached.
+		initial_simplex : array_like of shape (N + 1, N)
+		    Initial simplex. If given, overrides `x0`.
+		    ``initial_simplex[j,:]`` should contain the coordinates of
+		    the j-th vertex of the ``N+1`` vertices in the simplex, where
+		    ``N`` is the dimension.
+		xatol : float, optional
+		    Absolute error in xopt between iterations that is acceptable for
+		    convergence.
+		fatol : number, optional
+		    Absolute error in func(xopt) between iterations that is acceptable for
+		    convergence.
 	**/
-	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?initial_simplex:Dynamic, ?xatol:Dynamic, ?fatol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Newton-CG algorithm.
@@ -174,10 +183,12 @@ package scipy.optimize._minimize;
 		    Relative error in solution `xopt` acceptable for convergence.
 		ftol : float
 		    Relative error in ``fun(xopt)`` acceptable for convergence.
-		maxiter : int
-		    Maximum number of iterations to perform.
-		maxfev : int
-		    Maximum number of function evaluations to make.
+		maxiter, maxfev : int
+		    Maximum allowed number of iterations and function evaluations.
+		    Will default to ``N*1000``, where ``N`` is the number of
+		    variables, if neither `maxiter` or `maxfev` is set. If both
+		    `maxiter` and `maxfev` are set, minimization will stop at the
+		    first reached.
 		direc : ndarray
 		    Initial set of direction vectors for the Powell method.
 	**/
@@ -325,8 +336,8 @@ package scipy.optimize._minimize;
 		``g_i(x)`` are the inequality constraints.
 		``h_j(x)`` are the equality constrains.
 		
-		Optionally, the lower and upper bounds for each element in x can also be specified 
-		using the `bounds` argument.
+		Optionally, the lower and upper bounds for each element in x can also be
+		specified using the `bounds` argument.
 		
 		Parameters
 		----------
@@ -589,9 +600,9 @@ package scipy.optimize._minimize;
 		...                options={'gtol': 1e-6, 'disp': True})
 		Optimization terminated successfully.
 		         Current function value: 0.000000
-		         Iterations: 52
-		         Function evaluations: 64
-		         Gradient evaluations: 64
+		         Iterations: 26
+		         Function evaluations: 31
+		         Gradient evaluations: 31
 		>>> res.x
 		array([ 1.,  1.,  1.,  1.,  1.])
 		>>> print(res.message)

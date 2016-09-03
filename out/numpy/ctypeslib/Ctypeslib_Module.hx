@@ -123,6 +123,33 @@ package numpy.ctypeslib;
 	static public var code : Dynamic;
 	/**
 		`ctypes_load_library` is deprecated, use `load_library` instead!
+		
+		
+		It is possible to load a library using 
+		>>> lib = ctypes.cdll[<full_path_name>]
+		
+		But there are cross-platform considerations, such as library file extensions,
+		plus the fact Windows will just load the first library it finds with that name.  
+		Numpy supplies the load_library function as a convenience.
+		
+		Parameters
+		----------
+		libname : str
+		    Name of the library, which can have 'lib' as a prefix,
+		    but without an extension.
+		loader_path : str
+		    Where the library can be found.
+		
+		Returns
+		-------
+		ctypes.cdll[libpath] : library object
+		   A ctypes library object 
+		
+		Raises
+		------
+		OSError
+		    If there is no library with the expected extension, or the 
+		    library is defective and cannot be loaded.
 	**/
 	static public function ctypes_load_library(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -167,6 +194,33 @@ package numpy.ctypeslib;
 	**/
 	static public function deprecate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):haxe.Constraints.Function;
 	static public var division : Dynamic;
+	/**
+		It is possible to load a library using 
+		>>> lib = ctypes.cdll[<full_path_name>]
+		
+		But there are cross-platform considerations, such as library file extensions,
+		plus the fact Windows will just load the first library it finds with that name.  
+		Numpy supplies the load_library function as a convenience.
+		
+		Parameters
+		----------
+		libname : str
+		    Name of the library, which can have 'lib' as a prefix,
+		    but without an extension.
+		loader_path : str
+		    Where the library can be found.
+		
+		Returns
+		-------
+		ctypes.cdll[libpath] : library object
+		   A ctypes library object 
+		
+		Raises
+		------
+		OSError
+		    If there is no library with the expected extension, or the 
+		    library is defective and cannot be loaded.
+	**/
 	static public function load_library(libname:Dynamic, loader_path:Dynamic):Dynamic;
 	/**
 		Array-checking restype/argtypes.

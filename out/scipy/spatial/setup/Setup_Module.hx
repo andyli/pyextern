@@ -11,6 +11,10 @@ package scipy.spatial.setup;
 	static public var __spec__ : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public function configuration(?parent_package:Dynamic, ?top_path:Dynamic):Dynamic;
+	/**
+		Returns the directory component of a pathname
+	**/
+	static public function dirname(p:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Join two or more pathname components, inserting '/' as needed.

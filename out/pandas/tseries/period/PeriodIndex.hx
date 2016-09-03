@@ -230,6 +230,10 @@ package pandas.tseries.period;
 	**/
 	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Internal method to handle NA filling of take 
+	**/
+	public function _assert_take_fillable(values:Dynamic, indices:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?na_value:Dynamic):Dynamic;
 	static public var _attributes : Dynamic;
 	/**
 		box function to get object from internal representation
@@ -317,8 +321,15 @@ package pandas.tseries.period;
 	**/
 	public function _ensure_compat_append(other:Dynamic):Dynamic;
 	public function _ensure_compat_concat():Dynamic;
+	/**
+		We have been called because a comparison between
+		8 aware arrays. numpy >= 1.11 will
+		now warn about NaT comparisons
+	**/
+	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
 	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
 	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
+	public function _evalute_compare(op:Dynamic):Dynamic;
 	public function _filter_indexer_tolerance(target:Dynamic, indexer:Dynamic, tolerance:Dynamic):Dynamic;
 	/**
 		Return a list of tuples of the (attr,formatted_value)
@@ -344,6 +355,12 @@ package pandas.tseries.period;
 		return an attributes dict for my class 
 	**/
 	public function _get_attributes_dict():Dynamic;
+	/**
+		Given 2 indexes, give a consensus name meaning
+		we take the not None one, or None if the names differ.
+		Return a new object if we are resetting the name
+	**/
+	public function _get_consensus_name(other:Dynamic):Dynamic;
 	public function _get_duplicates():Dynamic;
 	public function _get_fill_indexer(target:Dynamic, method:Dynamic, ?limit:Dynamic, ?tolerance:Dynamic):Dynamic;
 	/**
@@ -583,23 +600,32 @@ package pandas.tseries.period;
 	**/
 	public function append(other:Dynamic):pandas.Index;
 	/**
-		return a ndarray of the maximum argument indexer
+		Returns the indices of the maximum values along an axis.
+		See `numpy.ndarray.argmax` for more information on the
+		`axis` parameter.
 		
 		See also
 		--------
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic):Dynamic;
+	public function argmax(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a ndarray of the minimum argument indexer
+		Returns the indices of the minimum values along an axis.
+		See `numpy.ndarray.argmin` for more information on the
+		`axis` parameter.
 		
 		See also
 		--------
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic):Dynamic;
+	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return an ndarray indexer of the underlying data
+		Returns the indices that would sort the index and its
+		underlying data.
+		
+		Returns
+		-------
+		argsorted : numpy array
 		
 		See also
 		--------
@@ -646,6 +672,11 @@ package pandas.tseries.period;
 	**/
 	public function asfreq(?freq:Dynamic, ?how:Dynamic):Dynamic;
 	public var asi8 : Dynamic;
+	/**
+		return object Index which contains boxed values
+		
+		*this is an internal non-public method*
+	**/
 	public var asobject : Dynamic;
 	/**
 		For a sorted index, return the most recent label up to and including
@@ -835,9 +866,9 @@ package pandas.tseries.period;
 		
 		Returns
 		-------
-		filled : Index
+		filled : %(klass)s
 	**/
-	public function fillna(?value:Dynamic, ?downcast:Dynamic):pandas.Index;
+	public function fillna(?value:Dynamic, ?downcast:Dynamic):Dynamic;
 	/**
 		return the ndarray.flags for the underlying data 
 	**/
@@ -1071,13 +1102,14 @@ package pandas.tseries.period;
 	public function join(other:Dynamic, ?how:Dynamic, ?level:Dynamic, ?return_indexers:Dynamic):Dynamic;
 	public function map(f:Dynamic):Dynamic;
 	/**
-		return the maximum value of the Index
+		Return the maximum value of the Index or maximum along
+		an axis.
 		
 		See also
 		--------
 		numpy.ndarray.max
 	**/
-	public function max(?axis:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Memory usage of my values
 		
@@ -1102,13 +1134,14 @@ package pandas.tseries.period;
 	**/
 	public function memory_usage(?deep:Dynamic):Dynamic;
 	/**
-		return the minimum value of the Index
+		Return the minimum value of the Index or minimum along
+		an axis.
 		
 		See also
 		--------
 		numpy.ndarray.min
 	**/
-	public function min(?axis:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		The minute of the period
 	**/
@@ -1202,18 +1235,76 @@ package pandas.tseries.period;
 	**/
 	public function rename(name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Return a new Index of the values repeated n times.
+		Return a new Index of the values repeated `n` times.
 		
 		See also
 		--------
 		numpy.ndarray.repeat
 	**/
-	public function repeat(n:Dynamic):Dynamic;
+	public function repeat(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	/**
-		np.ndarray searchsorted compat 
+		Find indices where elements should be inserted to maintain order.
+		
+		Find the indices into a sorted PeriodIndex `self` such that, if the
+		corresponding elements in `v` were inserted before the indices, the
+		order of `self` would be preserved.
+		
+		Parameters
+		----------
+		key : array_like
+		    Values to insert into `self`.
+		side : {'left', 'right'}, optional
+		    If 'left', the index of the first suitable location found is given.
+		    If 'right', return the last such index.  If there is no suitable
+		    index, return either 0 or N (where N is the length of `self`).
+		sorter : 1-D array_like, optional
+		    Optional array of integer indices that sort `self` into ascending
+		    order. They are typically the result of ``np.argsort``.
+		
+		Returns
+		-------
+		indices : array of ints
+		    Array of insertion points with the same shape as `v`.
+		
+		See Also
+		--------
+		numpy.searchsorted
+		
+		Notes
+		-----
+		Binary search is used to find the required insertion points.
+		
+		Examples
+		--------
+		>>> x = pd.Series([1, 2, 3])
+		>>> x
+		0    1
+		1    2
+		2    3
+		dtype: int64
+		>>> x.searchsorted(4)
+		array([3])
+		>>> x.searchsorted([0, 4])
+		array([0, 3])
+		>>> x.searchsorted([1, 3], side='left')
+		array([0, 2])
+		>>> x.searchsorted([1, 3], side='right')
+		array([1, 3])
+		>>>
+		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		[apple, bread, bread, cheese, milk]
+		Categories (4, object): [apple < bread < cheese < milk]
+		>>> x.searchsorted('bread')
+		array([1])     # Note: an array, not a scalar
+		>>> x.searchsorted(['bread'])
+		array([1])
+		>>> x.searchsorted(['bread', 'eggs'])
+		array([1, 4])
+		>>> x.searchsorted(['bread', 'eggs'], side='right')
+		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(key:Dynamic, ?side:Dynamic):Dynamic;
+	public function searchsorted(key:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		The second of the period
 	**/
@@ -1379,6 +1470,7 @@ package pandas.tseries.period;
 		return a summarized representation
 	**/
 	public function summary(?name:Dynamic):Dynamic;
+	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the sorted symmetric difference of two Index objects.
 		
@@ -1389,12 +1481,12 @@ package pandas.tseries.period;
 		
 		Returns
 		-------
-		sym_diff : Index
+		symmetric_difference : Index
 		
 		Notes
 		-----
-		``sym_diff`` contains elements that appear in either ``idx1`` or
-		``idx2`` but not both. Equivalent to the Index created by
+		``symmetric_difference`` contains elements that appear in either
+		``idx1`` or ``idx2`` but not both. Equivalent to the Index created by
 		``(idx1 - idx2) + (idx2 - idx1)`` with duplicates dropped.
 		
 		The sorting of a result containing ``NaN`` values is not guaranteed
@@ -1404,7 +1496,7 @@ package pandas.tseries.period;
 		--------
 		>>> idx1 = Index([1, 2, 3, 4])
 		>>> idx2 = Index([2, 3, 4, 5])
-		>>> idx1.sym_diff(idx2)
+		>>> idx1.symmetric_difference(idx2)
 		Int64Index([1, 5], dtype='int64')
 		
 		You can also use the ``^`` operator:
@@ -1412,11 +1504,28 @@ package pandas.tseries.period;
 		>>> idx1 ^ idx2
 		Int64Index([1, 5], dtype='int64')
 	**/
-	public function sym_diff(other:Dynamic, ?result_name:Dynamic):Dynamic;
+	public function symmetric_difference(other:Dynamic, ?result_name:Dynamic):Dynamic;
 	/**
-		Analogous to ndarray.take
+		return a new %(klass)s of the values selected by the indices
+		
+		For internal compatibility with numpy arrays.
+		
+		Parameters
+		----------
+		indices : list
+		    Indices to be taken
+		axis : int, optional
+		    The axis over which to select values, always 0.
+		allow_fill : bool, default True
+		fill_value : bool, default None
+		    If allow_fill=True and fill_value is not None, indices specified by
+		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
+		
+		See also
+		--------
+		numpy.ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		For an Index containing strings or datetime.datetime objects, attempt
 		conversion to DatetimeIndex
@@ -1457,7 +1566,7 @@ package pandas.tseries.period;
 	/**
 		return the transpose, which is by definition self 
 	**/
-	public function transpose():Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convert tz-aware DatetimeIndex from one time zone to another (using
 		pytz/dateutil)

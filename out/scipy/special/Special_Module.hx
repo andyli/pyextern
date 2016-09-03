@@ -67,17 +67,50 @@ package scipy.special;
 		
 		Parameters
 		----------
-		z : float or complex
-		    Argument.
+		z : array_like
+		    Real or complex argument.
 		
 		Returns
 		-------
-		Ai, Aip, Bi, Bip
-		    Airy functions Ai and Bi, and their derivatives Aip and Bip
+		Ai, Aip, Bi, Bip : ndarrays
+		    Airy functions Ai and Bi, and their derivatives Aip and Bip.
 		
 		Notes
 		-----
-		The Airy functions Ai and Bi are two independent solutions of y''(x) = x y.
+		The Airy functions Ai and Bi are two independent solutions of
+		
+		.. math:: y''(x) = x y(x).
+		
+		For real `z` in [-10, 10], the computation is carried out by calling
+		the Cephes [1]_ `airy` routine, which uses power series summation
+		for small `z` and rational minimax approximations for large `z`.
+		
+		Outside this range, the AMOS [2]_ `zairy` and `zbiry` routines are
+		employed.  They are computed using power series for :math:`|z| < 1` and
+		the following relations to modified Bessel functions for larger `z`
+		(where :math:`t \equiv 2 z^{3/2}/3`):
+		
+		.. math::
+		
+		    Ai(z) = \frac{1}{\pi \sqrt{3}} K_{1/3}(t)
+		
+		    Ai'(z) = -\frac{z}{\pi \sqrt{3}} K_{2/3}(t)
+		
+		    Bi(z) = \sqrt{\frac{z}{3}} \left(I_{-1/3}(t) + I_{1/3}(t) \right)
+		
+		    Bi'(z) = \frac{z}{\sqrt{3}} \left(I_{-2/3}(t) + I_{2/3}(t)\right)
+		
+		See also
+		--------
+		airye : exponentially scaled Airy functions.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/.org/amos/
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -96,20 +129,34 @@ package scipy.special;
 		
 		Parameters
 		----------
-		z : float or complex
-		    Argument.
+		z : array_like
+		    Real or complex argument.
 		
 		Returns
 		-------
-		eAi, eAip, eBi, eBip
+		eAi, eAip, eBi, eBip : array_like
 		    Airy functions Ai and Bi, and their derivatives Aip and Bip
+		
+		Notes
+		-----
+		Wrapper for the AMOS [1]_ routines `zairy` and `zbiry`.
+		
+		See also
+		--------
+		airy
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function airye(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute nth-order generalized (associated) Laguerre polynomial.
+		Compute the generalized (associated) Laguerre polynomial of degree n and order k.
 		
-		The polynomial :math:`L^(alpha)_n(x)` is orthogonal over ``[0, inf)``,
-		with weighting function ``exp(-x) * x**alpha`` with ``alpha > -1``.
+		The polynomial :math:`L^{(k)}_n(x)` is orthogonal over ``[0, inf)``,
+		with weighting function ``exp(-x) * x**k`` with ``k > -1``.
 		
 		Notes
 		-----
@@ -126,21 +173,38 @@ package scipy.special;
 		
 		Sum of the terms 0 through `k` of the Binomial probability density.
 		
-		::
-		
-		    y = sum(nCj p**j (1-p)**(n-j), j=0..k)
+		.. math::
+		    \mathrm{bdtr}(k, n, p) = \sum_{j=0}^k {{n}\choose{j}} p^j (1-p)^{n-j}
 		
 		Parameters
 		----------
-		k, n : int
-		    Terms to include
-		p : float
-		    Probability
+		k : array_like
+		    Number of successes (int).
+		n : array_like
+		    Number of events (int).
+		p : array_like
+		    Probability of success in a single event (float).
 		
 		Returns
 		-------
-		y : float
-		    Sum of terms
+		y : ndarray
+		    Probability of `k` or fewer successes in `n` independent events with
+		    success probabilities of `p`.
+		
+		Notes
+		-----
+		The terms are not summed directly; instead the regularized incomplete beta
+		function is employed, according to the formula,
+		
+		.. math::
+		    \mathrm{bdtr}(k, n, p) = I_{1 - p}(n - k, k + 1).
+		
+		Wrapper for the Cephes [1]_ routine `bdtr`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function bdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -150,23 +214,45 @@ package scipy.special;
 		
 		Binomial distribution survival function.
 		
-		Sum of the terms k+1 through `n` of the Binomial probability density
+		Sum of the terms `k + 1` through `n` of the binomial probability density,
 		
-		::
-		
-		    y = sum(nCj p**j (1-p)**(n-j), j=k+1..n)
+		.. math::
+		    \mathrm{bdtrc}(k, n, p) = \sum_{j=k+1}^n {{n}\choose{j}} p^j (1-p)^{n-j}
 		
 		Parameters
 		----------
-		k, n : int
-		    Terms to include
-		p : float
-		    Probability
+		k : array_like
+		    Number of successes (int).
+		n : array_like
+		    Number of events (int)
+		p : array_like
+		    Probability of success in a single event.
 		
 		Returns
 		-------
-		y : float
-		    Sum of terms
+		y : ndarray
+		    Probability of `k + 1` or more successes in `n` independent events
+		    with success probabilities of `p`.
+		
+		See also
+		--------
+		bdtr
+		betainc
+		
+		Notes
+		-----
+		The terms are not summed directly; instead the regularized incomplete beta
+		function is employed, according to the formula,
+		
+		.. math::
+		    \mathrm{bdtrc}(k, n, p) = I_{p}(k + 1, n - k).
+		
+		Wrapper for the Cephes [1]_ routine `bdtrc`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function bdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -174,10 +260,45 @@ package scipy.special;
 		
 		bdtri(k, n, y)
 		
-		Inverse function to `bdtr` vs. `p`
+		Inverse function to `bdtr` with respect to `p`.
 		
-		Finds probability `p` such that for the cumulative binomial
-		probability ``bdtr(k, n, p) == y``.
+		Finds the event probability `p` such that the sum of the terms 0 through
+		`k` of the binomial probability density is equal to the given cumulative
+		probability `y`.
+		
+		Parameters
+		----------
+		k : array_like
+		    Number of successes (float).
+		n : array_like
+		    Number of events (float)
+		y : array_like
+		    Cumulative probability (probability of `k` or fewer successes in `n`
+		    events).
+		
+		Returns
+		-------
+		p : ndarray
+		    The event probability such that `bdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		bdtr
+		betaincinv
+		
+		Notes
+		-----
+		The computation is carried out using the inverse beta integral function
+		and the relation,::
+		
+		    1 - p = betaincinv(n - k, k + 1, y).
+		
+		Wrapper for the Cephes [1]_ routine `bdtri`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function bdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -185,7 +306,49 @@ package scipy.special;
 		
 		bdtrik(y, n, p)
 		
-		Inverse function to `bdtr` vs `k`
+		Inverse function to `bdtr` with respect to `k`.
+		
+		Finds the number of successes `k` such that the sum of the terms 0 through
+		`k` of the Binomial probability density for `n` events with probability
+		`p` is equal to the given cumulative probability `y`.
+		
+		Parameters
+		----------
+		y : array_like
+		    Cumulative probability (probability of `k` or fewer successes in `n`
+		    events).
+		n : array_like
+		    Number of events (float).
+		p : array_like
+		    Success probability (float).
+		
+		Returns
+		-------
+		k : ndarray
+		    The number of successes `k` such that `bdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		bdtr
+		
+		Notes
+		-----
+		Formula 26.5.24 of [1]_ is used to reduce the binomial distribution to the
+		cumulative incomplete beta distribution.
+		
+		Computation of `k` involves a seach for a value that produces the desired
+		value of `y`.  The search relies on the monotinicity of `y` with `k`.
+		
+		Wrapper for the CDFLIB [2]_ Fortran routine `cdfbin`.
+		
+		References
+		----------
+		.. [1] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
+		.. [2] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
 	**/
 	static public function bdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -193,7 +356,49 @@ package scipy.special;
 		
 		bdtrin(k, y, p)
 		
-		Inverse function to `bdtr` vs `n`
+		Inverse function to `bdtr` with respect to `n`.
+		
+		Finds the number of events `n` such that the sum of the terms 0 through
+		`k` of the Binomial probability density for events with probability `p` is
+		equal to the given cumulative probability `y`.
+		
+		Parameters
+		----------
+		k : array_like
+		    Number of successes (float).
+		y : array_like
+		    Cumulative probability (probability of `k` or fewer successes in `n`
+		    events).
+		p : array_like
+		    Success probability (float).
+		
+		Returns
+		-------
+		n : ndarray
+		    The number of events `n` such that `bdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		bdtr
+		
+		Notes
+		-----
+		Formula 26.5.24 of [1]_ is used to reduce the binomial distribution to the
+		cumulative incomplete beta distribution.
+		
+		Computation of `n` involves a seach for a value that produces the desired
+		value of `y`.  The search relies on the monotinicity of `y` with `n`.
+		
+		Wrapper for the CDFLIB [2]_ Fortran routine `cdfbin`.
+		
+		References
+		----------
+		.. [1] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
+		.. [2] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
 	**/
 	static public function bdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -347,7 +552,7 @@ package scipy.special;
 		
 		Natural logarithm of absolute value of beta function.
 		
-		Computes ``ln(abs(beta(x)))``.
+		Computes ``ln(abs(beta(a, b)))``.
 	**/
 	static public function betaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -476,15 +681,46 @@ package scipy.special;
 		
 		btdtr(a, b, x)
 		
-		Cumulative beta distribution.
+		Cumulative density function of the beta distribution.
 		
-		Returns the area from zero to `x` under the beta density function::
+		Returns the integral from zero to `x` of the beta probability density
+		function,
 		
-		    gamma(a+b)/(gamma(a)*gamma(b)))*integral(t**(a-1) (1-t)**(b-1), t=0..x)
+		.. math::
+		    I = \int_0^x \frac{\Gamma(a + b)}{\Gamma(a)\Gamma(b)} t^{a-1} (1-t)^{b-1}\,dt
+		
+		where :math:`\Gamma` is the gamma function.
+		
+		Parameters
+		----------
+		a : array_like
+		    Shape parameter (a > 0).
+		b : array_like
+		    Shape parameter (b > 0).
+		x : array_like
+		    Upper limit of integration, in [0, 1].
+		
+		Returns
+		-------
+		I : ndarray
+		    Cumulative density function of the beta distribution with parameters
+		    `a` and `b` at `x`.
 		
 		See Also
 		--------
 		betainc
+		
+		Notes
+		-----
+		This function is identical to the incomplete beta integral function
+		`betainc`.
+		
+		Wrapper for the Cephes [1]_ routine `btdtr`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function btdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -492,14 +728,44 @@ package scipy.special;
 		
 		btdtri(a, b, p)
 		
-		p-th quantile of the beta distribution.
+		The `p`-th quantile of the beta distribution.
 		
-		This is effectively the inverse of `btdtr` returning the value of `x` for which
-		``btdtr(a, b, x) = p``
+		This function is the inverse of the beta cumulative distribution function,
+		`btdtr`, returning the value of `x` for which `btdtr(a, b, x) = p`, or
+		
+		.. math::
+		    p = \int_0^x \frac{\Gamma(a + b)}{\Gamma(a)\Gamma(b)} t^{a-1} (1-t)^{b-1}\,dt
+		
+		Parameters
+		----------
+		a : array_like
+		    Shape parameter (`a` > 0).
+		b : array_like
+		    Shape parameter (`b` > 0).
+		p : array_like
+		    Cumulative probability, in [0, 1].
+		
+		Returns
+		-------
+		x : ndarray
+		    The quantile corresponding to `p`.
 		
 		See Also
 		--------
 		betaincinv
+		btdtr
+		
+		Notes
+		-----
+		The value of `x` is found by interval halving or Newton iterations.
+		
+		Wrapper for the Cephes [1]_ routine `incbi`, which solves the equivalent
+		problem of finding the inverse of the incomplete beta integral.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function btdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -507,7 +773,52 @@ package scipy.special;
 		
 		btdtria(p, b, x)
 		
-		Inverse of `btdtr` vs `a`
+		Inverse of `btdtr` with respect to `a`.
+		
+		This is the inverse of the beta cumulative distribution function, `btdtr`,
+		considered as a function of `a`, returning the value of `a` for which
+		`btdtr(a, b, x) = p`, or
+		
+		.. math::
+		    p = \int_0^x \frac{\Gamma(a + b)}{\Gamma(a)\Gamma(b)} t^{a-1} (1-t)^{b-1}\,dt
+		
+		Parameters
+		----------
+		p : array_like
+		    Cumulative probability, in [0, 1].
+		b : array_like
+		    Shape parameter (`b` > 0).
+		x : array_like
+		    The quantile, in [0, 1].
+		
+		Returns
+		-------
+		a : ndarray
+		    The value of the shape parameter `a` such that `btdtr(a, b, x) = p`.
+		
+		See Also
+		--------
+		btdtr : Cumulative density function of the beta distribution.
+		btdtri : Inverse with respect to `x`.
+		btdtrib : Inverse with respect to `b`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfbet`.
+		
+		The cumulative distribution function `p` is computed using a routine by
+		DiDinato and Morris [2]_.  Computation of `a` involves a seach for a value
+		that produces the desired value of `p`.  The search relies on the
+		monotinicity of `p` with `a`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] DiDinato, A. R. and Morris, A. H.,
+		       Algorithm 708: Significant Digit Computation of the Incomplete Beta
+		       Function Ratios. ACM Trans. Math. Softw. 18 (1993), 360-373.
 	**/
 	static public function btdtria(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -515,7 +826,52 @@ package scipy.special;
 		
 		btdtria(a, p, x)
 		
-		Inverse of `btdtr` vs `b`
+		Inverse of `btdtr` with respect to `b`.
+		
+		This is the inverse of the beta cumulative distribution function, `btdtr`,
+		considered as a function of `b`, returning the value of `b` for which
+		`btdtr(a, b, x) = p`, or
+		
+		.. math::
+		    p = \int_0^x \frac{\Gamma(a + b)}{\Gamma(a)\Gamma(b)} t^{a-1} (1-t)^{b-1}\,dt
+		
+		Parameters
+		----------
+		a : array_like
+		    Shape parameter (`a` > 0).
+		p : array_like
+		    Cumulative probability, in [0, 1].
+		x : array_like
+		    The quantile, in [0, 1].
+		
+		Returns
+		-------
+		b : ndarray
+		    The value of the shape parameter `b` such that `btdtr(a, b, x) = p`.
+		
+		See Also
+		--------
+		btdtr : Cumulative density function of the beta distribution.
+		btdtri : Inverse with respect to `x`.
+		btdtria : Inverse with respect to `a`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfbet`.
+		
+		The cumulative distribution function `p` is computed using a routine by
+		DiDinato and Morris [2]_.  Computation of `b` involves a seach for a value
+		that produces the desired value of `p`.  The search relies on the
+		monotinicity of `p` with `b`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] DiDinato, A. R. and Morris, A. H.,
+		       Algorithm 708: Significant Digit Computation of the Incomplete Beta
+		       Function Ratios. ACM Trans. Math. Softw. 18 (1993), 360-373.
 	**/
 	static public function btdtrib(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -823,21 +1179,70 @@ package scipy.special;
 		
 		    exp(-x**2) * integral(exp(t**2), t=0..x).
 		
+		See Also
+		--------
+		wofz, erf, erfc, erfcx, erfi
+		
 		References
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-15, 15, num=1000)
+		>>> plt.plot(x, special.dawsn(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$dawsn(x)$')
+		>>> plt.show()
 	**/
 	static public function dawsn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		psi(x[, out])
 		
-		psi(z)
+		psi(z, out=None)
 		
-		Digamma function
+		The digamma function.
 		
-		The derivative of the logarithm of the gamma function evaluated at
-		`z` (also called the digamma function).
+		The logarithmic derivative of the gamma function evaluated at ``z``.
+		
+		Parameters
+		----------
+		z : array_like
+		    Real or complex argument.
+		out : ndarray, optional
+		    Array for the computed values of ``psi``.
+		
+		Returns
+		-------
+		digamma : ndarray
+		    Computed values of ``psi``.
+		
+		Notes
+		-----
+		For large values not close to the negative real axis ``psi`` is
+		computed using the asymptotic series (5.11.2) from [1]_. For small
+		arguments not close to the negative real axis the recurrence
+		relation (5.5.2) from [1]_ is used until the argument is large
+		enough to use the asymptotic series. For values close to the
+		negative real axis the reflection formula (5.5.4) from [1]_ is
+		used first.  Note that ``psi`` has a family of zeros on the
+		negative real axis which occur between the poles at nonpositive
+		integers. Around the zeros the reflection formula suffers from
+		cancellation and the implementation loses precision. The sole
+		positive zero and the first negative zero, however, are handled
+		separately by precomputing series expansions using [2]_, so the
+		function should maintain full accuracy around the origin.
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/5
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1106,12 +1511,32 @@ package scipy.special;
 		E : ndarray
 		    Value of the elliptic integral.
 		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `ellpe`.
+		
+		For `m > 0` the computation uses the approximation,
+		
+		.. math:: E(m) \approx P(1-m) - (1-m) \log(1-m) Q(1-m),
+		
+		where :math:`P` and :math:`Q` are tenth-order polynomials.  For
+		`m < 0`, the relation
+		
+		.. math:: E(m) = E(m/(m - 1)) \sqrt(1-m)
+		
+		is used.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipeinc : Incomplete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipe(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1138,12 +1563,23 @@ package scipy.special;
 		E : ndarray
 		    Value of the elliptic integral.
 		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `ellie`.
+		
+		Computation uses arithmetic-geometric means algorithm.
+		
 		See Also
 		--------
 		ellipkm1 : Complete elliptic integral of the first kind, near `m` = 1
 		ellipk : Complete elliptic integral of the first kind
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipeinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1154,22 +1590,48 @@ package scipy.special;
 		Jacobian elliptic functions
 		
 		Calculates the Jacobian elliptic functions of parameter `m` between
-		0 and 1, and real `u`.
+		0 and 1, and real argument `u`.
 		
 		Parameters
 		----------
-		m, u
-		    Parameters
+		m : array_like
+		    Parameter.
+		u : array_like
+		    Argument.
 		
 		Returns
 		-------
-		sn, cn, dn, ph
+		sn, cn, dn, ph : ndarrays
 		    The returned functions::
 		
 		        sn(u|m), cn(u|m), dn(u|m)
 		
-		    The value ``ph`` is such that if ``u = ellik(ph, m)``,
-		    then ``sn(u|m) = sin(ph)`` and ``cn(u|m) = cos(ph)``.
+		    The value `ph` is such that if `u = ellipk(ph, m)`,
+		    then `sn(u|m) = sin(ph)` and `cn(u|m) = cos(ph)`.
+		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `ellpj`.
+		
+		These functions are periodic, with quarter-period on the real axis
+		equal to the complete elliptic integral `ellipk(m)`.
+		
+		Relation to incomplete elliptic integral: If `u = ellipk(phi,m)`, then
+		`sn(u|m) = sin(phi)`, and `cn(u|m) = cos(phi)`.  The `phi` is called
+		the amplitude of `u`.
+		
+		Computation is by means of the arithmetic-geometric mean algorithm,
+		except when `m` is within 1e-9 of 0 or 1.  In the latter case with `m`
+		close to 1, the approximation applies only for `phi < pi/2`.
+		
+		See also
+		--------
+		ellipk : Complete elliptic integral of the first kind.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipj(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1191,7 +1653,8 @@ package scipy.special;
 		
 		Notes
 		-----
-		For more precision around point m = 1, use `ellipkm1`.
+		For more precision around point m = 1, use `ellipkm1`, which this
+		function calls.
 		
 		See Also
 		--------
@@ -1212,6 +1675,8 @@ package scipy.special;
 		
 		.. math:: K(\phi, m) = \int_0^{\phi} [1 - m \sin(t)^2]^{-1/2} dt
 		
+		This function is also called `F(phi, m)`.
+		
 		Parameters
 		----------
 		phi : array_like
@@ -1227,7 +1692,8 @@ package scipy.special;
 		
 		Notes
 		-----
-		This function is also called ``F(phi, m)``.
+		Wrapper for the Cephes [1]_ routine `ellik`.  The computation is
+		carried out using the arithmetic-geometric mean algorithm.
 		
 		See Also
 		--------
@@ -1235,6 +1701,11 @@ package scipy.special;
 		ellipk : Complete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipkinc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1253,12 +1724,29 @@ package scipy.special;
 		Parameters
 		----------
 		p : array_like
-		    Defines the parameter of the elliptic integral as `m` = 1 - p.
+		    Defines the parameter of the elliptic integral as `m = 1 - p`.
 		
 		Returns
 		-------
 		K : ndarray
 		    Value of the elliptic integral.
+		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `ellpk`.
+		
+		For `p <= 1`, computation uses the approximation,
+		
+		.. math:: K(p) \approx P(p) - \log(p) Q(p),
+		
+		where :math:`P` and :math:`Q` are tenth-order polynomials.  The
+		argument `p` is used internally rather than `m` so that the logarithmic
+		singularity at `m = 1` will be shifted to the origin; this preserves
+		maximum accuracy.  For `p > 1`, the identity
+		
+		.. math:: K(p) = K(1/p)/\sqrt(p)
+		
+		is used.
 		
 		See Also
 		--------
@@ -1266,6 +1754,11 @@ package scipy.special;
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1295,7 +1788,7 @@ package scipy.special;
 		-----
 		This function is concave.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1319,7 +1812,7 @@ package scipy.special;
 		
 		See Also
 		--------
-		erfc, erfinv, erfcinv
+		erfc, erfinv, erfcinv, wofz, erfcx, erfi
 		
 		Notes
 		-----
@@ -1335,6 +1828,16 @@ package scipy.special;
 		    1972. http://www.math.sfu.ca/~cbm/aands/page_297.htm
 		.. [3] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.erf(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$erf(x)$')
+		>>> plt.show()
 	**/
 	static public function erf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1352,12 +1855,26 @@ package scipy.special;
 		
 		erfc(x)
 		
-		Complementary error function, 1 - erf(x).
+		Complementary error function, ``1 - erf(x)``.
+		
+		See Also
+		--------
+		erf, erfi, erfcx, dawsn, wofz
 		
 		References
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.erfc(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$erfc(x)$')
+		>>> plt.show()
 	**/
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1370,7 +1887,11 @@ package scipy.special;
 		
 		erfcx(x)
 		
-		Scaled complementary error function, exp(x^2) erfc(x).
+		Scaled complementary error function, ``exp(x**2) * erfc(x)``.
+		
+		See Also
+		--------
+		erf, erfc, erfi, dawsn, wofz
 		
 		Notes
 		-----
@@ -1381,6 +1902,16 @@ package scipy.special;
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.erfcx(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$erfcx(x)$')
+		>>> plt.show()
 	**/
 	static public function erfcx(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1388,7 +1919,11 @@ package scipy.special;
 		
 		erfi(z)
 		
-		Imaginary error function, -i erf(i z).
+		Imaginary error function, ``-i erf(i z)``.
+		
+		See Also
+		--------
+		erf, erfc, erfcx, dawsn, wofz
 		
 		Notes
 		-----
@@ -1399,6 +1934,16 @@ package scipy.special;
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.erfi(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$erfi(x)$')
+		>>> plt.show()
 	**/
 	static public function erfi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1624,7 +2169,7 @@ package scipy.special;
 		-----
 		As a ufunc expit takes a number of optional
 		keyword arguments. For more information
-		see `ufuncs <http://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
+		see `ufuncs <https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
 		
 		.. versionadded:: 0.10.0
 	**/
@@ -1675,28 +2220,38 @@ package scipy.special;
 	**/
 	static public function exprel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		The factorial function, n! = special.gamma(n+1).
+		The factorial of a number or array of numbers.
 		
-		If exact is 0, then floating point precision is used, otherwise
-		exact long integer is computed.
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
 		
-		- Array argument accepted only for exact=False case.
-		- If n<0, the return value is 0.
+		    n! = n * (n - 1) * (n - 2) * ... * 1
 		
 		Parameters
 		----------
 		n : int or array_like of ints
-		    Calculate ``n!``.  Arrays are only supported with `exact` set
-		    to False.  If ``n < 0``, the return value is 0.
+		    Input values.  If ``n < 0``, the return value is 0.
 		exact : bool, optional
-		    The result can be approximated rapidly using the gamma-formula
-		    above.  If `exact` is set to True, calculate the
-		    answer exactly using integer arithmetic. Default is False.
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
 		
 		Returns
 		-------
-		nf : float or int
-		    Factorial of `n`, as an integer or a float depending on `exact`.
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
 		
 		Examples
 		--------
@@ -1704,6 +2259,8 @@ package scipy.special;
 		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
 		>>> factorial(5, exact=True)
 		120L
 	**/
@@ -1789,13 +2346,50 @@ package scipy.special;
 		
 		fdtr(dfn, dfd, x)
 		
-		F cumulative distribution function
+		F cumulative distribution function.
 		
-		Returns the area from zero to `x` under the F density function (also
-		known as Snedcor's density or the variance ratio density).  This
-		is the density of X = (unum/dfn)/(uden/dfd), where unum and uden
-		are random variables having Chi square distributions with dfn and
-		dfd degrees of freedom, respectively.
+		Returns the value of the cumulative density function of the
+		F-distribution, also known as Snedecor's F-distribution or the
+		Fisher-Snedecor distribution.
+		
+		The F-distribution with parameters :math:`d_n` and :math:`d_d` is the
+		distribution of the random variable,
+		
+		.. math::
+		    X = \frac{U_n/d_n}{U_d/d_d},
+		
+		where :math:`U_n` and :math:`U_d` are random variables distributed
+		:math:`\chi^2`, with :math:`d_n` and :math:`d_d` degrees of freedom,
+		respectively.
+		
+		Parameters
+		----------
+		dfn : array_like
+		    First parameter (positive float).
+		dfd : array_like
+		    Second parameter (positive float).
+		x : array_like
+		    Argument (nonnegative float).
+		
+		Returns
+		-------
+		y : ndarray
+		    The CDF of the F-distribution with parameters `dfn` and `dfd` at `x`.
+		
+		Notes
+		-----
+		The regularized incomplete beta function is used, according to the
+		formula,
+		
+		.. math::
+		    F(d_n, d_d; x) = I_{xd_n/(d_d + xd_n)}(d_n/2, d_d/2).
+		
+		Wrapper for the Cephes [1]_ routine `fdtr`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function fdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1803,9 +2397,44 @@ package scipy.special;
 		
 		fdtrc(dfn, dfd, x)
 		
-		F survival function
+		F survival function.
 		
-		Returns the complemented F distribution function.
+		Returns the complemented F-distribution function (the integral of the
+		density from `x` to infinity).
+		
+		Parameters
+		----------
+		dfn : array_like
+		    First parameter (positive float).
+		dfd : array_like
+		    Second parameter (positive float).
+		x : array_like
+		    Argument (nonnegative float).
+		
+		Returns
+		-------
+		y : ndarray
+		    The complemented F-distribution function with parameters `dfn` and
+		    `dfd` at `x`.
+		
+		See also
+		--------
+		fdtr
+		
+		Notes
+		-----
+		The regularized incomplete beta function is used, according to the
+		formula,
+		
+		.. math::
+		    F(d_n, d_d; x) = I_{d_d/(d_d + xd_n)}(d_d/2, d_n/2).
+		
+		Wrapper for the Cephes [1]_ routine `fdtrc`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function fdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1813,9 +2442,47 @@ package scipy.special;
 		
 		fdtri(dfn, dfd, p)
 		
-		Inverse to `fdtr` vs x
+		The `p`-th quantile of the F-distribution.
 		
-		Finds the F density argument `x` such that ``fdtr(dfn, dfd, x) == p``.
+		This function is the inverse of the F-distribution CDF, `fdtr`, returning
+		the `x` such that `fdtr(dfn, dfd, x) = p`.
+		
+		Parameters
+		----------
+		dfn : array_like
+		    First parameter (positive float).
+		dfd : array_like
+		    Second parameter (positive float).
+		p : array_like
+		    Cumulative probability, in [0, 1].
+		
+		Returns
+		-------
+		x : ndarray
+		    The quantile corresponding to `p`.
+		
+		Notes
+		-----
+		The computation is carried out using the relation to the inverse
+		regularized beta function, :math:`I^{-1}_x(a, b)`.  Let
+		:math:`z = I^{-1}_p(d_d/2, d_n/2).`  Then,
+		
+		.. math::
+		    x = \frac{d_d (1 - z)}{d_n z}.
+		
+		If `p` is such that :math:`x < 0.5`, the following relation is used
+		instead for improved stability: let
+		:math:`z' = I^{-1}_{1 - p}(d_n/2, d_d/2).` Then,
+		
+		.. math::
+		    x = \frac{d_d z'}{d_n (1 - z')}.
+		
+		Wrapper for the Cephes [1]_ routine `fdtri`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function fdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1886,7 +2553,7 @@ package scipy.special;
 		
 		gamma(z)
 		
-		Gamma function
+		Gamma function.
 		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
@@ -1942,21 +2609,37 @@ package scipy.special;
 	**/
 	static public function gammaincinv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gammaln(x:Dynamic):Dynamic;
 	/**
 		gammasgn(x[, out])
 		
@@ -1967,6 +2650,7 @@ package scipy.special;
 		See Also
 		--------
 		gammaln
+		loggamma
 	**/
 	static public function gammasgn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1976,13 +2660,48 @@ package scipy.special;
 		
 		Gamma distribution cumulative density function.
 		
-		Returns the integral from zero to `x` of the gamma probability
-		density function::
+		Returns the integral from zero to `x` of the gamma probability density
+		function,
 		
-		    a**b / gamma(b) * integral(t**(b-1) exp(-at), t=0..x).
+		.. math::
 		
-		The arguments `a` and `b` are used differently here than in other
-		definitions.
+		    F = \int_0^x \frac{a^b}{\Gamma(b)} t^{b-1} e^{-at}\,dt,
+		
+		where :math:`\Gamma` is the gamma function.
+		
+		Parameters
+		----------
+		a : array_like
+		    The rate parameter of the gamma distribution, sometimes denoted
+		    :math:`\beta` (float).  It is also the reciprocal of the scale
+		    parameter :math:`\theta`.
+		b : array_like
+		    The shape parameter of the gamma distribution, sometimes denoted
+		    :math:`\alpha` (float).
+		x : array_like
+		    The quantile (upper limit of integration; float).
+		
+		See also
+		--------
+		gdtrc : 1 - CDF of the gamma distribution.
+		
+		Returns
+		-------
+		F : ndarray
+		    The CDF of the gamma distribution with parameters `a` and `b`
+		    evaluated at `x`.
+		
+		Notes
+		-----
+		The evaluation is carried out using the relation to the incomplete gamma
+		integral (regularized gamma function).
+		
+		Wrapper for the Cephes [1]_ routine `gdtr`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function gdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1992,12 +2711,47 @@ package scipy.special;
 		
 		Gamma distribution survival function.
 		
-		Integral from `x` to infinity of the gamma probability density
-		function.
+		Integral from `x` to infinity of the gamma probability density function,
+		
+		.. math::
+		
+		    F = \int_x^\infty \frac{a^b}{\Gamma(b)} t^{b-1} e^{-at}\,dt,
+		
+		where :math:`\Gamma` is the gamma function.
+		
+		Parameters
+		----------
+		a : array_like
+		    The rate parameter of the gamma distribution, sometimes denoted
+		    :math:`\beta` (float).  It is also the reciprocal of the scale
+		    parameter :math:`\theta`.
+		b : array_like
+		    The shape parameter of the gamma distribution, sometimes denoted
+		    :math:`\alpha` (float).
+		x : array_like
+		    The quantile (lower limit of integration; float).
+		
+		Returns
+		-------
+		F : ndarray
+		    The survival function of the gamma distribution with parameters `a`
+		    and `b` evaluated at `x`.
 		
 		See Also
 		--------
 		gdtr, gdtri
+		
+		Notes
+		-----
+		The evaluation is carried out using the relation to the incomplete gamma
+		integral (regularized gamma function).
+		
+		Wrapper for the Cephes [1]_ routine `gdtrc`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function gdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2036,6 +2790,24 @@ package scipy.special;
 		gdtr : CDF of the gamma distribution.
 		gdtrib : Inverse with respect to `b` of `gdtr(a, b, x)`.
 		gdtrix : Inverse with respect to `x` of `gdtr(a, b, x)`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
+		
+		The cumulative distribution function `p` is computed using a routine by
+		DiDinato and Morris [2]_.  Computation of `a` involves a seach for a value
+		that produces the desired value of `p`.  The search relies on the
+		monotinicity of `p` with `a`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] DiDinato, A. R. and Morris, A. H.,
+		       Computation of the incomplete gamma function ratios and their
+		       inverse.  ACM Trans. Math. Softw. 12 (1986), 377-393.
 		
 		Examples
 		--------
@@ -2088,6 +2860,24 @@ package scipy.special;
 		gdtr : CDF of the gamma distribution.
 		gdtria : Inverse with respect to `a` of `gdtr(a, b, x)`.
 		gdtrix : Inverse with respect to `x` of `gdtr(a, b, x)`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
+		
+		The cumulative distribution function `p` is computed using a routine by
+		DiDinato and Morris [2]_.  Computation of `b` involves a seach for a value
+		that produces the desired value of `p`.  The search relies on the
+		monotinicity of `p` with `b`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] DiDinato, A. R. and Morris, A. H.,
+		       Computation of the incomplete gamma function ratios and their
+		       inverse.  ACM Trans. Math. Softw. 12 (1986), 377-393.
 		
 		Examples
 		--------
@@ -2142,6 +2932,24 @@ package scipy.special;
 		gdtria : Inverse with respect to `a` of `gdtr(a, b, x)`.
 		gdtrib : Inverse with respect to `b` of `gdtr(a, b, x)`.
 		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfgam`.
+		
+		The cumulative distribution function `p` is computed using a routine by
+		DiDinato and Morris [2]_.  Computation of `x` involves a seach for a value
+		that produces the desired value of `p`.  The search relies on the
+		monotinicity of `p` with `x`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] DiDinato, A. R. and Morris, A. H.,
+		       Computation of the incomplete gamma function ratios and their
+		       inverse.  ACM Trans. Math. Softw. 12 (1986), 377-393.
+		
 		Examples
 		--------
 		First evaluate `gdtr`.
@@ -2181,11 +2989,17 @@ package scipy.special;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2200,11 +3014,17 @@ package scipy.special;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2275,10 +3095,38 @@ package scipy.special;
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : float or complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the Hankel function of the first kind.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(1)}_v(z) = \frac{2}{\imath\pi} \exp(-\imath \pi v/2) K_v(z \exp(-\imath\pi/2))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(1)}_{-v}(z) = H^{(1)}_v(z) \exp(\imath\pi v)
+		
+		is used.
+		
+		See also
+		--------
+		hankel1e : this function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2294,10 +3142,34 @@ package scipy.special;
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the exponentially scaled Hankel function.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(1)}_v(z) = \frac{2}{\imath\pi} \exp(-\imath \pi v/2) K_v(z \exp(-\imath\pi/2))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(1)}_{-v}(z) = H^{(1)}_v(z) \exp(\imath\pi v)
+		
+		is used.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2309,10 +3181,38 @@ package scipy.special;
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the Hankel function of the second kind.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(2)}_v(z) = -\frac{2}{\imath\pi} \exp(\imath \pi v/2) K_v(z \exp(\imath\pi/2))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(2)}_{-v}(z) = H^{(2)}_v(z) \exp(-\imath\pi v)
+		
+		is used.
+		
+		See also
+		--------
+		hankel2e : this function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2324,14 +3224,38 @@ package scipy.special;
 		
 		Defined as::
 		
-		    hankel1e(v, z) = hankel1(v, z) * exp(1j * z)
+		    hankel2e(v, z) = hankel2(v, z) * exp(1j * z)
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the exponentially scaled Hankel function of the second kind.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(2)}_v(z) = -\frac{2}{\imath\pi} \exp(\frac{\imath \pi v}{2}) K_v(z exp(\frac{\imath\pi}{2}))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(2)}_{-v}(z) = H^{(2)}_v(z) \exp(-\imath\pi v)
+		
+		is used.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel2e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2417,6 +3341,10 @@ package scipy.special;
 	**/
 	static public function huber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		hyp0f1(x1, x2[, out])
+		
+		hyp0f1(v, x)
+		
 		Confluent hypergeometric limit function 0F1.
 		
 		Parameters
@@ -2433,12 +3361,12 @@ package scipy.special;
 		-----
 		This function is defined as:
 		
-		.. math:: _0F_1(v, z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
+		.. math:: _0F_1(v, z) = \sum_{k=0}^{\infty}\frac{z^k}{(v)_k k!}.
 		
-		It's also the limit as q -> infinity of ``1F1(q;v;z/q)``, and satisfies
-		the differential equation :math:`f''(z) + vf'(z) = f(z)`.
+		It's also the limit as :math:`q \to \infty` of :math:`_1F_1(q; v; z/q)`,
+		and satisfies the differential equation :math:`f''(z) + vf'(z) = f(z)`.
 	**/
-	static public function hyp0f1(v:Dynamic, z:Dynamic):Dynamic;
+	static public function hyp0f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		hyp1f1(x1, x2, x3[, out])
 		
@@ -2516,7 +3444,41 @@ package scipy.special;
 		
 		i0(x)
 		
-		Modified Bessel function of order 0
+		Modified Bessel function of order 0.
+		
+		Defined as,
+		
+		.. math::
+		    I_0(x) = \sum_{k=0}^\infty \frac{(x^2/4)^k}{(k!)^2} = J_0(\imath x),
+		
+		where :math:`J_0` is the Bessel function of the first kind of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the modified Bessel function of order 0 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i0`.
+		
+		See also
+		--------
+		iv
+		i0e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2529,6 +3491,36 @@ package scipy.special;
 		Defined as::
 		
 		    i0e(x) = exp(-abs(x)) * i0(x).
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the exponentially scaled modified Bessel function of order 0
+		    at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.  The
+		polynomial expansions used are the same as those in `i0`, but
+		they are not multiplied by the dominant exponential factor.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i0e`.
+		
+		See also
+		--------
+		iv
+		i0
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function i0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2536,7 +3528,42 @@ package scipy.special;
 		
 		i1(x)
 		
-		Modified Bessel function of order 1
+		Modified Bessel function of order 1.
+		
+		Defined as,
+		
+		.. math::
+		    I_1(x) = \frac{1}{2}x \sum_{k=0}^\infty \frac{(x^2/4)^k}{k! (k + 1)!}
+		           = -\imath J_1(\imath x),
+		
+		where :math:`J_1` is the Bessel function of the first kind of order 1.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the modified Bessel function of order 1 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i1`.
+		
+		See also
+		--------
+		iv
+		i1e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function i1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2549,6 +3576,36 @@ package scipy.special;
 		Defined as::
 		
 		    i1e(x) = exp(-abs(x)) * i1(x)
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the exponentially scaled modified Bessel function of order 1
+		    at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval. The
+		polynomial expansions used are the same as those in `i1`, but
+		they are not multiplied by the dominant exponential factor.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i1e`.
+		
+		See also
+		--------
+		iv
+		i1
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function i1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2660,12 +3717,39 @@ package scipy.special;
 		
 		it2struve0(x)
 		
-		Integral related to Struve function of order 0
+		Integral related to the Struve function of order 0.
+		
+		Returns the integral,
+		
+		.. math::
+		    \int_x^\infty \frac{H_0(t)}{t}\,dt
+		
+		where :math:`H_0` is the Struve function of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Lower limit of integration.
 		
 		Returns
 		-------
-		i
-		    ``integral(H0(t)/t, t=x..inf)``
+		I : ndarray
+		    The value of the integral.
+		
+		See also
+		--------
+		struve
+		
+		Notes
+		-----
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function it2struve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2675,14 +3759,37 @@ package scipy.special;
 		
 		Integrals of Airy functions
 		
-		Calculates the integral of Airy functions from 0 to `x`
+		Calculates the integrals of Airy functions from 0 to `x`.
+		
+		Parameters
+		----------
+		
+		x: array_like
+		    Upper limit of integration (float).
 		
 		Returns
 		-------
-		Apt, Bpt
-		    Integrals for positive arguments
-		Ant, Bnt
-		    Integrals for negative arguments
+		Apt
+		    Integral of Ai(t) from 0 to x.
+		Bpt
+		    Integral of Bi(t) from 0 to x.
+		Ant
+		    Integral of Ai(-t) from 0 to x.
+		Bnt
+		    Integral of Bi(-t) from 0 to x.
+		
+		Notes
+		-----
+		
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
+		References
+		----------
+		
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function itairy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2720,12 +3827,31 @@ package scipy.special;
 		
 		itmodstruve0(x)
 		
-		Integral of the modified Struve function of order 0
+		Integral of the modified Struve function of order 0.
+		
+		.. math::
+		    I = \int_0^x L_0(t)\,dt
+		
+		Parameters
+		----------
+		x : array_like
+		    Upper limit of integration (float).
 		
 		Returns
 		-------
-		i
-		    ``integral(L0(t), t=0..x)``
+		I : ndarray
+		    The integral of :math:`L_0` from 0 to `x`.
+		
+		Notes
+		-----
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function itmodstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2733,12 +3859,35 @@ package scipy.special;
 		
 		itstruve0(x)
 		
-		Integral of the Struve function of order 0
+		Integral of the Struve function of order 0.
+		
+		.. math::
+		    I = \int_0^x H_0(t)\,dt
+		
+		Parameters
+		----------
+		x : array_like
+		    Upper limit of integration (float).
 		
 		Returns
 		-------
-		i
-		    ``integral(H0(t), t=0..x)``
+		I : ndarray
+		    The integral of :math:`H_0` from 0 to `x`.
+		
+		See also
+		--------
+		struve
+		
+		Notes
+		-----
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
+		References
+		----------
+		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		       Functions", John Wiley and Sons, 1996.
+		       http://jin.ece.illinois.edu/specfunc.html
 	**/
 	static public function itstruve0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2746,14 +3895,58 @@ package scipy.special;
 		
 		iv(v, z)
 		
-		Modified Bessel function of the first kind  of real order
+		Modified Bessel function of the first kind of real order.
 		
 		Parameters
 		----------
-		v
-		    Order. If `z` is of real type and negative, `v` must be integer valued.
-		z
+		v : array_like
+		    Order. If `z` is of real type and negative, `v` must be integer
+		    valued.
+		z : array_like of float or complex
 		    Argument.
+		
+		Returns
+		-------
+		out : ndarray
+		    Values of the modified Bessel function.
+		
+		Notes
+		-----
+		For real `z` and :math:`v \in [-50, 50]`, the evaluation is carried out
+		using Temme's method [1]_.  For larger orders, uniform asymptotic
+		expansions are applied.
+		
+		For complex `z` and positive `v`, the AMOS [2]_ `zbesi` routine is
+		called. It uses a power series for small `z`, the asymptitic expansion
+		for large `abs(z)`, the Miller algorithm normalized by the Wronskian
+		and a Neumann series for intermediate magnitudes, and the uniform
+		asymptitic expansions for :math:`I_v(z)` and :math:`J_v(z)` for large
+		orders.  Backward recurrence is used to generate sequences or reduce
+		orders when necessary.
+		
+		The calculations above are done in the right half plane and continued
+		into the left half plane by the formula,
+		
+		.. math:: I_v(z \exp(\pm\imath\pi)) = \exp(\pm\pi v) I_v(z)
+		
+		(valid when the real part of `z` is positive).  For negative `v`, the
+		formula
+		
+		.. math:: I_{-v}(z) = I_v(z) + \frac{2}{\pi} \sin(\pi v) K_v(z)
+		
+		is used, where :math:`K_v(z)` is the modified Bessel function of the
+		second kind, evaluated using the AMOS routine `zbesk`.
+		
+		See also
+		--------
+		kve : This function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Temme, Journal of Computational Physics, vol 21, 343 (1976)
+		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function iv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2766,6 +3959,47 @@ package scipy.special;
 		Defined as::
 		
 		    ive(v, z) = iv(v, z) * exp(-abs(z.real))
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order.
+		z : array_like of float or complex
+		    Argument.
+		
+		Returns
+		-------
+		out : ndarray
+		    Values of the exponentially scaled modified Bessel function.
+		
+		Notes
+		-----
+		For positive `v`, the AMOS [1]_ `zbesi` routine is called. It uses a
+		power series for small `z`, the asymptitic expansion for large
+		`abs(z)`, the Miller algorithm normalized by the Wronskian and a
+		Neumann series for intermediate magnitudes, and the uniform asymptitic
+		expansions for :math:`I_v(z)` and :math:`J_v(z)` for large orders.
+		Backward recurrence is used to generate sequences or reduce orders when
+		necessary.
+		
+		The calculations above are done in the right half plane and continued
+		into the left half plane by the formula,
+		
+		.. math:: I_v(z \exp(\pm\imath\pi)) = \exp(\pm\pi v) I_v(z)
+		
+		(valid when the real part of `z` is positive).  For negative `v`, the
+		formula
+		
+		.. math:: I_{-v}(z) = I_v(z) + \frac{2}{\pi} \sin(\pi v) K_v(z)
+		
+		is used, where :math:`K_v(z)` is the modified Bessel function of the
+		second kind, evaluated using the AMOS routine `zbesk`.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2781,24 +4015,17 @@ package scipy.special;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.29.5 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       http://jin.ece.illinois.edu/specfunc.html
-		
-		Examples
-		--------
-		Calculate multiple values at order 5:
-		
-		>>> from scipy.special import kvp
-		>>> kvp(5, (1, 2, 3+5j))
-		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
-		
-		Calculate for a single value at multiple orders:
-		
-		>>> kvp((4, 4.5, 5), 1)
-		array([ -184.0309,  -568.9585, -1849.0354])
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.29.E5
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2806,7 +4033,44 @@ package scipy.special;
 		
 		j0(x)
 		
-		Bessel function the first kind of order 0
+		Bessel function of the first kind of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the Bessel function of the first kind of order 0 at `x`.
+		
+		Notes
+		-----
+		The domain is divided into the intervals [0, 5] and (5, infinity). In the
+		first interval the following rational approximation is used:
+		
+		.. math::
+		
+		    J_0(x) \approx (w - r_1^2)(w - r_2^2) \frac{P_3(w)}{Q_8(w)},
+		
+		where :math:`w = x^2` and :math:`r_1`, :math:`r_2` are the zeros of
+		:math:`J_0`, and :math:`P_3` and :math:`Q_8` are polynomials of degrees 3
+		and 8, respectively.
+		
+		In the second interval, the Hankel asymptotic expansion is employed with
+		two rational functions of degree 6/6 and 7/7.
+		
+		This function is a wrapper for the Cephes [1]_ routine `j0`.
+		
+		See also
+		--------
+		jv : Bessel function of real order and complex argument.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function j0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2814,7 +4078,35 @@ package scipy.special;
 		
 		j1(x)
 		
-		Bessel function of the first kind of order 1
+		Bessel function of the first kind of order 1.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the Bessel function of the first kind of order 1 at `x`.
+		
+		Notes
+		-----
+		The domain is divided into the intervals [0, 8] and (8, infinity). In the
+		first interval a 24 term Chebyshev expansion is used. In the second, the
+		asymptotic trigonometric representation is employed using two rational
+		functions of degree 5/5.
+		
+		This function is a wrapper for the Cephes [1]_ routine `j1`.
+		
+		See also
+		--------
+		jv
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function j1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2864,7 +4156,49 @@ package scipy.special;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order `v`
+		Bessel function of the first kind of real order and complex argument.
+		
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the Bessel function, :math:`J_v(z)`.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the AMOS
+		[1]_ `zbesj` routine, which exploits the connection to the modified
+		Bessel function :math:`I_v`,
+		
+		.. math::
+		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		
+		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		
+		For negative `v` values the formula,
+		
+		.. math:: J_{-v}(z) = J_v(z) \cos(\pi v) - Y_v(z) \sin(\pi v)
+		
+		is used, where :math:`Y_v(z)` is the Bessel function of the second
+		kind, computed using the AMOS routine `zbesy`.  Note that the second
+		term is exactly zero for integer `v`; to improve accuracy the second
+		term is explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		See also
+		--------
+		jve : :math:`J_v` with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function jn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2998,7 +4332,49 @@ package scipy.special;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order `v`
+		Bessel function of the first kind of real order and complex argument.
+		
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the Bessel function, :math:`J_v(z)`.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the AMOS
+		[1]_ `zbesj` routine, which exploits the connection to the modified
+		Bessel function :math:`I_v`,
+		
+		.. math::
+		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		
+		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		
+		For negative `v` values the formula,
+		
+		.. math:: J_{-v}(z) = J_v(z) \cos(\pi v) - Y_v(z) \sin(\pi v)
+		
+		is used, where :math:`Y_v(z)` is the Bessel function of the second
+		kind, computed using the AMOS routine `zbesy`.  Note that the second
+		term is exactly zero for integer `v`; to improve accuracy the second
+		term is explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		See also
+		--------
+		jve : :math:`J_v` with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3006,11 +4382,49 @@ package scipy.special;
 		
 		jve(v, z)
 		
-		Exponentially scaled Bessel function of order `v`
+		Exponentially scaled Bessel function of order `v`.
 		
 		Defined as::
 		
 		    jve(v, z) = jv(v, z) * exp(-abs(z.imag))
+		
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the exponentially scaled Bessel function.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the AMOS
+		[1]_ `zbesj` routine, which exploits the connection to the modified
+		Bessel function :math:`I_v`,
+		
+		.. math::
+		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		
+		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		
+		For negative `v` values the formula,
+		
+		.. math:: J_{-v}(z) = J_v(z) \cos(\pi v) - Y_v(z) \sin(\pi v)
+		
+		is used, where :math:`Y_v(z)` is the Bessel function of the second
+		kind, computed using the AMOS routine `zbesy`.  Note that the second
+		term is exactly zero for integer `v`; to improve accuracy the second
+		term is explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function jve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3025,11 +4439,17 @@ package scipy.special;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -3037,10 +4457,37 @@ package scipy.special;
 		
 		k0(x)
 		
-		Modified Bessel function K of order 0
+		Modified Bessel function of the second kind of order 0, :math:`K_0`.
 		
-		Modified Bessel function of the second kind (sometimes called the
-		third kind) of order 0.
+		This function is also sometimes referred to as the modified Bessel
+		function of the third kind of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		K : ndarray
+		    Value of the modified Bessel function :math:`K_0` at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 2] and (2, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `k0`.
+		
+		See also
+		--------
+		kv
+		k0e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function k0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3053,14 +4500,69 @@ package scipy.special;
 		Defined as::
 		
 		    k0e(x) = exp(x) * k0(x).
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		K : ndarray
+		    Value of the exponentially scaled modified Bessel function K of order
+		    0 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 2] and (2, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `k0e`.
+		
+		See also
+		--------
+		kv
+		k0
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function k0e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		k1(x[, out])
 		
-		i1(x)
+		k1(x)
 		
-		Modified Bessel function of the first kind of order 1
+		Modified Bessel function of the second kind of order 1, :math:`K_1(x)`.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		K : ndarray
+		    Value of the modified Bessel function K of order 1 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 2] and (2, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `k1`.
+		
+		See also
+		--------
+		kv
+		k1e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function k1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3073,6 +4575,34 @@ package scipy.special;
 		Defined as::
 		
 		    k1e(x) = exp(x) * k1(x)
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		K : ndarray
+		    Value of the exponentially scaled modified Bessel function K of order
+		    1 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 2] and (2, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `k1e`.
+		
+		See also
+		--------
+		kv
+		k1
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function k1e(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3201,7 +4731,7 @@ package scipy.special;
 		-----
 		This function is non-negative and is jointly convex in `x` and `y`.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3229,10 +4759,24 @@ package scipy.special;
 		out : ndarray
 		    The results
 		
+		Notes
+		-----
+		Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the
+		algorithm used, see [2]_ and the references therein.
+		
 		See Also
 		--------
 		kv : Same function, but accepts real order and complex argument
 		kvp : Derivative of this function
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
+		.. [2] Donald E. Amos, "Algorithm 644: A portable package for Bessel
+		       functions of a complex argument and nonnegative order", ACM
+		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
 		
 		Examples
 		--------
@@ -3289,7 +4833,13 @@ package scipy.special;
 		`v` at complex `z`.
 		
 		These are also sometimes called functions of the third kind, Basset
-		functions, or Macdonald functions.
+		functions, or Macdonald functions.  They are defined as those solutions
+		of the modified Bessel equation for which,
+		
+		.. math::
+		    K_v(x) \sim \sqrt{\pi/(2x)} \exp(-x)
+		
+		as :math:`x \to \infty` [3]_.
 		
 		Parameters
 		----------
@@ -3304,9 +4854,26 @@ package scipy.special;
 		    The results. Note that input must be of complex type to get complex
 		    output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``.
 		
+		Notes
+		-----
+		Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the
+		algorithm used, see [2]_ and the references therein.
+		
 		See Also
 		--------
+		kve : This function with leading exponential behavior stripped off.
 		kvp : Derivative of this function
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
+		.. [2] Donald E. Amos, "Algorithm 644: A portable package for Bessel
+		       functions of a complex argument and nonnegative order", ACM
+		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
+		.. [3] NIST Digital Library of Mathematical Functions,
+		       Eq. 10.25.E3. http://dlmf.nist.gov/10.25.E3
 		
 		Examples
 		--------
@@ -3340,6 +4907,32 @@ package scipy.special;
 		complex `z`::
 		
 		    kve(v, z) = kv(v, z) * exp(z)
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order of Bessel functions
+		z : array_like of complex
+		    Argument at which to evaluate the Bessel functions
+		
+		Returns
+		-------
+		out : ndarray
+		    The exponentially scaled modified Bessel function of the second kind.
+		
+		Notes
+		-----
+		Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the
+		algorithm used, see [2]_ and the references therein.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
+		.. [2] Donald E. Amos, "Algorithm 644: A portable package for Bessel
+		       functions of a complex argument and nonnegative order", ACM
+		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
 	**/
 	static public function kve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -3362,11 +4955,30 @@ package scipy.special;
 		out : ndarray
 		    The results
 		
+		Examples
+		--------
+		Calculate multiple values at order 5:
+		
+		>>> from scipy.special import kvp
+		>>> kvp(5, (1, 2, 3+5j))
+		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kvp((4, 4.5, 5), 1)
+		array([ -184.0309,  -568.9585, -1849.0354])
+		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.29.5 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.29.E5
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -3568,6 +5180,13 @@ package scipy.special;
 	/**
 		Jahnke-Emden Lambda function, Lambdav(x).
 		
+		This function is defined as [2]_,
+		
+		.. math:: \Lambda_v(x) = \Gamma(v+1) \frac{J_v(x)}{(x/2)^v},
+		
+		where :math:`\Gamma` is the gamma function and :math:`J_v` is the
+		Bessel function of the first kind.
+		
 		Parameters
 		----------
 		v : float
@@ -3587,6 +5206,8 @@ package scipy.special;
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] Jahnke, E. and Emde, F. "Tables of Functions with Formulae and
+		       Curves" (4th ed.), Dover, 1945
 	**/
 	static public function lmbda(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -3602,14 +5223,90 @@ package scipy.special;
 		
 		log_ndtr(x)
 		
-		Logarithm of Gaussian cumulative distribution function
+		Logarithm of Gaussian cumulative distribution function.
 		
 		Returns the log of the area under the standard Gaussian probability
 		density function, integrated from minus infinity to `x`::
 		
 		    log(1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x))
+		
+		Parameters
+		----------
+		x : array_like, real or complex
+		    Argument
+		
+		Returns
+		-------
+		ndarray
+		    The value of the log of the normal CDF evaluated at `x`
+		
+		See Also
+		--------
+		erf
+		erfc
+		scipy.stats.norm
+		ndtr
 	**/
 	static public function log_ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		loggamma(x[, out])
+		
+		loggamma(z, out=None)
+		
+		Principal branch of the logarithm of the Gamma function. It is
+		defined to be :math:`\log(\Gamma(x))` for :math:`x > 0` and
+		extended to the complex plane by analytic continuation. The
+		implementation here is based on [hare1997]_.
+		
+		The function has a single branch cut on the negative real axis and
+		is taken to be continuous when approaching the axis from
+		above. Note that it is not generally true that
+		:math:`\log\Gamma(z) = \log(\Gamma(z))`, though the real parts of
+		the functions do agree. The benefit of not defining ``loggamma``
+		as :math:`\log(\Gamma(z))` is that the latter function has a
+		complicated branch cut structure whereas ``loggamma`` is analytic
+		except for on the negative real axis.
+		
+		The identities
+		
+		.. math::
+		  \exp(\log\Gamma(z)) &= \Gamma(z) \\
+		  \log\Gamma(z + 1) &= \log(z) + \log\Gamma(z)
+		
+		make ``loggama`` useful for working in complex logspace. However,
+		``loggamma`` necessarily returns complex outputs for real inputs,
+		so if you want to work only with real numbers use `gammaln`. On
+		the real line the two functions are related by ``exp(loggamma(x))
+		= gammasgn(x)*exp(gammaln(x))``, though in practice rounding
+		errors will introduce small spurious imaginary components in
+		``exp(loggamma(x))``.
+		
+		.. versionadded:: 0.18.0
+		
+		Parameters
+		----------
+		z : array-like
+		    Values in the complex plain at which to compute ``loggamma``
+		out : ndarray, optional
+		    Output array for computed values of ``loggamma``
+		
+		Returns
+		-------
+		loggamma : ndarray
+		    Values of ``loggamma`` at z.
+		
+		See also
+		--------
+		gammaln : logarithm of the absolute value of the Gamma function
+		gammasgn : sign of the gamma function
+		
+		References
+		----------
+		.. [hare1997] D.E.G. Hare,
+		  *Computing the Principal Branch of log-Gamma*,
+		  Journal of Algorithms, Volume 25, Issue 2, November 1997, pages 221-236.
+	**/
+	static public function loggamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		logit(x[, out])
 		
@@ -3636,7 +5333,7 @@ package scipy.special;
 		-----
 		As a ufunc logit takes a number of optional
 		keyword arguments. For more information
-		see `ufuncs <http://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
+		see `ufuncs <https://docs.scipy.org/doc/numpy/reference/ufuncs.html>`_
 		
 		.. versionadded:: 0.10.0
 	**/
@@ -4039,10 +5736,48 @@ package scipy.special;
 		
 		modstruve(v, x)
 		
-		Modified Struve function
+		Modified Struve function.
 		
-		Returns the modified Struve function Lv(x) of order `v` at `x`, `x` must
-		be positive unless `v` is an integer.
+		Return the value of the modified Struve function of order `v` at `x`.  The
+		modified Struve function is defined as,
+		
+		.. math::
+		    L_v(x) = -\imath \exp(-\pi\imath v/2) H_v(x),
+		
+		where :math:`H_v` is the Struve function.
+		
+		Parameters
+		----------
+		v : array_like
+		    Order of the modified Struve function (float).
+		x : array_like
+		    Argument of the Struve function (float; must be positive unless `v` is
+		    an integer).
+		
+		Returns
+		-------
+		L : ndarray
+		    Value of the modified Struve function of order `v` at `x`.
+		
+		Notes
+		-----
+		Three methods discussed in [1]_ are used to evaluate the function:
+		
+		- power series
+		- expansion in Bessel functions (if :math:`|z| < |v| + 20`)
+		- asymptotic large-z expansion (if :math:`z \geq 0.7v + 12`)
+		
+		Rounding errors are estimated based on the largest terms in the sums, and
+		the result associated with the smallest error is returned.
+		
+		See also
+		--------
+		struve
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/11
 	**/
 	static public function modstruve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4063,19 +5798,23 @@ package scipy.special;
 		
 		Notes
 		-----
-		The formal definition of the multivariate gamma of dimension d for a real a
-		is::
+		The formal definition of the multivariate gamma of dimension d for a real
+		`a` is
 		
-		    \Gamma_d(a) = \int_{A>0}{e^{-tr(A)\cdot{|A|}^{a - (m+1)/2}dA}}
+		.. math::
 		
-		with the condition ``a > (d-1)/2``, and ``A > 0`` being the set of all the
-		positive definite matrices of dimension s.  Note that a is a scalar: the
-		integrand only is multivariate, the argument is not (the function is
-		defined over a subset of the real set).
+		    \Gamma_d(a) = \int_{A>0} e^{-tr(A)} |A|^{a - (d+1)/2} dA
 		
-		This can be proven to be equal to the much friendlier equation::
+		with the condition :math:`a > (d-1)/2`, and :math:`A > 0` being the set of
+		all the positive definite matrices of dimension `d`.  Note that `a` is a
+		scalar: the integrand only is multivariate, the argument is not (the
+		function is defined over a subset of the real set).
 		
-		    \Gamma_d(a) = \pi^{d(d-1)/4}\prod_{i=1}^{d}{\Gamma(a - (i-1)/2)}.
+		This can be proven to be equal to the much friendlier equation
+		
+		.. math::
+		
+		    \Gamma_d(a) = \pi^{d(d-1)/4} \prod_{i=1}^{d} \Gamma(a - (i-1)/2).
 		
 		References
 		----------
@@ -4088,15 +5827,55 @@ package scipy.special;
 		
 		nbdtr(k, n, p)
 		
-		Negative binomial cumulative distribution function
+		Negative binomial cumulative distribution function.
 		
 		Returns the sum of the terms 0 through `k` of the negative binomial
-		distribution::
+		distribution probability mass function,
 		
-		    sum((n+j-1)Cj p**n (1-p)**j, j=0..k).
+		.. math::
 		
-		In a sequence of Bernoulli trials this is the probability that k
-		or fewer failures precede the nth success.
+		    F = \sum_{j=0}^k {{n + j - 1}\choose{j}} p^n (1 - p)^j.
+		
+		In a sequence of Bernoulli trials with individual success probabilities
+		`p`, this is the probability that `k` or fewer failures precede the nth
+		success.
+		
+		Parameters
+		----------
+		k : array_like
+		    The maximum number of allowed failures (nonnegative int).
+		n : array_like
+		    The target number of successes (positive int).
+		p : array_like
+		    Probability of success in a single event (float).
+		
+		Returns
+		-------
+		F : ndarray
+		    The probability of `k` or fewer failures before `n` successes in a
+		    sequence of events with individual success probability `p`.
+		
+		See also
+		--------
+		nbdtrc
+		
+		Notes
+		-----
+		If floating point values are passed for `k` or `n`, they will be truncated
+		to integers.
+		
+		The terms are not summed directly; instead the regularized incomplete beta
+		function is employed, according to the formula,
+		
+		.. math::
+		    \mathrm{nbdtr}(k, n, p) = I_{p}(n, k + 1).
+		
+		Wrapper for the Cephes [1]_ routine `nbdtr`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function nbdtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4104,10 +5883,51 @@ package scipy.special;
 		
 		nbdtrc(k, n, p)
 		
-		Negative binomial survival function
+		Negative binomial survival function.
 		
-		Returns the sum of the terms k+1 to infinity of the negative
-		binomial distribution.
+		Returns the sum of the terms `k + 1` to infinity of the negative binomial
+		distribution probability mass function,
+		
+		.. math::
+		
+		    F = \sum_{j=k + 1}^\infty {{n + j - 1}\choose{j}} p^n (1 - p)^j.
+		
+		In a sequence of Bernoulli trials with individual success probabilities
+		`p`, this is the probability that more than `k` failures precede the nth
+		success.
+		
+		Parameters
+		----------
+		k : array_like
+		    The maximum number of allowed failures (nonnegative int).
+		n : array_like
+		    The target number of successes (positive int).
+		p : array_like
+		    Probability of success in a single event (float).
+		
+		Returns
+		-------
+		F : ndarray
+		    The probability of `k + 1` or more failures before `n` successes in a
+		    sequence of events with individual success probability `p`.
+		
+		Notes
+		-----
+		If floating point values are passed for `k` or `n`, they will be truncated
+		to integers.
+		
+		The terms are not summed directly; instead the regularized incomplete beta
+		function is employed, according to the formula,
+		
+		.. math::
+		    \mathrm{nbdtrc}(k, n, p) = I_{1 - p}(k + 1, n).
+		
+		Wrapper for the Cephes [1]_ routine `nbdtrc`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function nbdtrc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4115,9 +5935,41 @@ package scipy.special;
 		
 		nbdtri(k, n, y)
 		
-		Inverse of `nbdtr` vs `p`
+		Inverse of `nbdtr` vs `p`.
 		
-		Finds the argument p such that ``nbdtr(k, n, p) = y``.
+		Returns the inverse with respect to the parameter `p` of
+		`y = nbdtr(k, n, p)`, the negative binomial cumulative distribution
+		function.
+		
+		Parameters
+		----------
+		k : array_like
+		    The maximum number of allowed failures (nonnegative int).
+		n : array_like
+		    The target number of successes (positive int).
+		y : array_like
+		    The probability of `k` or fewer failures before `n` successes (float).
+		
+		Returns
+		-------
+		p : ndarray
+		    Probability of success in a single event (float) such that
+		    `nbdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		nbdtr : Cumulative distribution function of the negative binomial.
+		nbdtrik : Inverse with respect to `k` of `nbdtr(k, n, p)`.
+		nbdtrin : Inverse with respect to `n` of `nbdtr(k, n, p)`.
+		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `nbdtri`.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function nbdtri(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4125,9 +5977,55 @@ package scipy.special;
 		
 		nbdtrik(y, n, p)
 		
-		Inverse of `nbdtr` vs `k`
+		Inverse of `nbdtr` vs `k`.
 		
-		Finds the argument k such that ``nbdtr(k, n, p) = y``.
+		Returns the inverse with respect to the parameter `k` of
+		`y = nbdtr(k, n, p)`, the negative binomial cumulative distribution
+		function.
+		
+		Parameters
+		----------
+		y : array_like
+		    The probability of `k` or fewer failures before `n` successes (float).
+		n : array_like
+		    The target number of successes (positive int).
+		p : array_like
+		    Probability of success in a single event (float).
+		
+		Returns
+		-------
+		k : ndarray
+		    The maximum number of allowed failures such that `nbdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		nbdtr : Cumulative distribution function of the negative binomial.
+		nbdtri : Inverse with respect to `p` of `nbdtr(k, n, p)`.
+		nbdtrin : Inverse with respect to `n` of `nbdtr(k, n, p)`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfnbn`.
+		
+		Formula 26.5.26 of [2]_,
+		
+		.. math::
+		    \sum_{j=k + 1}^\infty {{n + j - 1}\choose{j}} p^n (1 - p)^j = I_{1 - p}(k + 1, n),
+		
+		is used to reduce calculation of the cumulative distribution function to
+		that of a regularized incomplete beta :math:`I`.
+		
+		Computation of `k` involves a seach for a value that produces the desired
+		value of `y`.  The search relies on the monotinicity of `y` with `k`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function nbdtrik(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4135,9 +6033,55 @@ package scipy.special;
 		
 		nbdtrin(k, y, p)
 		
-		Inverse of `nbdtr` vs `n`
+		Inverse of `nbdtr` vs `n`.
 		
-		Finds the argument `n` such that ``nbdtr(k, n, p) = y``.
+		Returns the inverse with respect to the parameter `n` of
+		`y = nbdtr(k, n, p)`, the negative binomial cumulative distribution
+		function.
+		
+		Parameters
+		----------
+		k : array_like
+		    The maximum number of allowed failures (nonnegative int).
+		y : array_like
+		    The probability of `k` or fewer failures before `n` successes (float).
+		p : array_like
+		    Probability of success in a single event (float).
+		
+		Returns
+		-------
+		n : ndarray
+		    The number of successes `n` such that `nbdtr(k, n, p) = y`.
+		
+		See also
+		--------
+		nbdtr : Cumulative distribution function of the negative binomial.
+		nbdtri : Inverse with respect to `p` of `nbdtr(k, n, p)`.
+		nbdtrik : Inverse with respect to `k` of `nbdtr(k, n, p)`.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdfnbn`.
+		
+		Formula 26.5.26 of [2]_,
+		
+		.. math::
+		    \sum_{j=k + 1}^\infty {{n + j - 1}\choose{j}} p^n (1 - p)^j = I_{1 - p}(k + 1, n),
+		
+		is used to reduce calculation of the cumulative distribution function to
+		that of a regularized incomplete beta :math:`I`.
+		
+		Computation of `n` involves a seach for a value that produces the desired
+		value of `y`.  The search relies on the monotinicity of `y` with `n`.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 	**/
 	static public function nbdtrin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4146,6 +6090,16 @@ package scipy.special;
 		ncfdtr(dfn, dfd, nc, f)
 		
 		Cumulative distribution function of the non-central F distribution.
+		
+		The non-central F describes the distribution of,
+		
+		.. math::
+		    Z = \frac{X/d_n}{Y/d_d}
+		
+		where :math:`X` and :math:`Y` are independently distributed, with
+		:math:`X` distributed non-central :math:`\chi^2` with noncentrality
+		parameter `nc` and :math:`d_n` degrees of freedom, and :math:`Y`
+		distributed :math:`\chi^2` with :math:`d_d` degrees of freedom.
 		
 		Parameters
 		----------
@@ -4170,6 +6124,33 @@ package scipy.special;
 		ncdfdtridfd : Calculate dfd, given CDF and iCDF values.
 		ncdfdtridfn : Calculate dfn, given CDF and iCDF values.
 		ncdfdtrinc : Calculate noncentrality parameter, given CDF, iCDF, dfn, dfd.
+		
+		Notes
+		-----
+		Wrapper for the CDFLIB [1]_ Fortran routine `cdffnc`.
+		
+		The cumulative distribution function is computed using Formula 26.6.20 of
+		[2]_:
+		
+		.. math::
+		    F(d_n, d_d, n_c, f) = \sum_{j=0}^\infty e^{-n_c/2} \frac{(n_c/2)^j}{j!} I_{x}(\frac{d_n}{2} + j, \frac{d_d}{2}),
+		
+		where :math:`I` is the regularized incomplete beta function, and
+		:math:`x = f d_n/(f d_n + d_d)`.
+		
+		The computation time required for this routine is proportional to the
+		noncentrality parameter `nc`.  Very large values of this parameter can
+		consume immense computer resources.  This is why the search range is
+		bounded by 10,000.
+		
+		References
+		----------
+		.. [1] Barry Brown, James Lovato, and Kathy Russell,
+		       CDFLIB: Library of Fortran Routines for Cumulative Distribution
+		       Functions, Inverses, and Other Parameters.
+		.. [2] Milton Abramowitz and Irene A. Stegun, eds.
+		       Handbook of Mathematical Functions with Formulas,
+		       Graphs, and Mathematical Tables. New York: Dover, 1972.
 		
 		Examples
 		--------
@@ -4211,6 +6192,13 @@ package scipy.special;
 		Calculate degrees of freedom (denominator) for the noncentral F-distribution.
 		
 		See `ncfdtr` for more details.
+		
+		Notes
+		-----
+		The value of the cumulative noncentral F distribution is not necessarily
+		monotone in either degrees of freedom.  There thus may be two values that
+		provide a given CDF value.  This routine assumes monotonicity and will
+		find an arbitrary one of the two values.
 	**/
 	static public function ncfdtridfd(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4221,6 +6209,13 @@ package scipy.special;
 		Calculate degrees of freedom (numerator) for the noncentral F-distribution.
 		
 		See `ncfdtr` for more details.
+		
+		Notes
+		-----
+		The value of the cumulative noncentral F distribution is not necessarily
+		monotone in either degrees of freedom.  There thus may be two values that
+		provide a given CDF value.  This routine assumes monotonicity and will
+		find an arbitrary one of the two values.
 	**/
 	static public function ncfdtridfn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -4344,12 +6339,31 @@ package scipy.special;
 		
 		ndtr(x)
 		
-		Gaussian cumulative distribution function
+		Gaussian cumulative distribution function.
 		
 		Returns the area under the standard Gaussian probability
-		density function, integrated from minus infinity to `x`::
+		density function, integrated from minus infinity to `x`
 		
-		    1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x)
+		.. math::
+		
+		   \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-t^2/2) dt
+		
+		Parameters
+		----------
+		x : array_like, real or complex
+		    Argument
+		
+		Returns
+		-------
+		ndarray
+		    The value of the normal CDF evaluated at `x`
+		
+		See Also
+		--------
+		erf
+		erfc
+		scipy.stats.norm
+		log_ndtr
 	**/
 	static public function ndtr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5051,12 +7065,47 @@ package scipy.special;
 	/**
 		psi(x[, out])
 		
-		psi(z)
+		psi(z, out=None)
 		
-		Digamma function
+		The digamma function.
 		
-		The derivative of the logarithm of the gamma function evaluated at
-		`z` (also called the digamma function).
+		The logarithmic derivative of the gamma function evaluated at ``z``.
+		
+		Parameters
+		----------
+		z : array_like
+		    Real or complex argument.
+		out : ndarray, optional
+		    Array for the computed values of ``psi``.
+		
+		Returns
+		-------
+		digamma : ndarray
+		    Computed values of ``psi``.
+		
+		Notes
+		-----
+		For large values not close to the negative real axis ``psi`` is
+		computed using the asymptotic series (5.11.2) from [1]_. For small
+		arguments not close to the negative real axis the recurrence
+		relation (5.5.2) from [1]_ is used until the argument is large
+		enough to use the asymptotic series. For values close to the
+		negative real axis the reflection formula (5.5.4) from [1]_ is
+		used first.  Note that ``psi`` has a family of zeros on the
+		negative real axis which occur between the poles at nonpositive
+		integers. Around the zeros the reflection formula suffers from
+		cancellation and the implementation loses precision. The sole
+		positive zero and the first negative zero, however, are handled
+		separately by precomputing series expansions using [2]_, so the
+		function should maintain full accuracy around the origin.
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/5
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5099,7 +7148,7 @@ package scipy.special;
 		-----
 		This function is jointly convex in x and y.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function rel_entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5113,10 +7162,14 @@ package scipy.special;
 	**/
 	static public function rgamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Compute Ricatti-Bessel function of the first kind and derivative.
+		Compute Ricatti-Bessel function of the first kind and its derivative.
 		
-		This function computes the value and first derivative of the function for
-		all orders up to and including n.
+		The Ricatti-Bessel function of the first kind is defined as :math:`x
+		j_n(x)`, where :math:`j_n` is the spherical Bessel function of the first
+		kind of order :math:`n`.
+		
+		This function computes the value and first derivative of the
+		Ricatti-Bessel function for all orders up to and including `n`.
 		
 		Parameters
 		----------
@@ -5132,18 +7185,32 @@ package scipy.special;
 		jnp : ndarray
 		    First derivative j0'(x), ..., jn'(x)
 		
+		Notes
+		-----
+		The computation is carried out via backward recurrence, using the
+		relation DLMF 10.51.1 [2]_.
+		
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Compute Ricatti-Bessel function of the second kind and derivative.
+		Compute Ricatti-Bessel function of the second kind and its derivative.
+		
+		The Ricatti-Bessel function of the second kind is defined as :math:`x
+		y_n(x)`, where :math:`y_n` is the spherical Bessel function of the second
+		kind of order :math:`n`.
 		
 		This function computes the value and first derivative of the function for
-		all orders up to and including n.
+		all orders up to and including `n`.
 		
 		Parameters
 		----------
@@ -5159,11 +7226,21 @@ package scipy.special;
 		ynp : ndarray
 		    First derivative y0'(x), ..., yn'(x)
 		
+		Notes
+		-----
+		The computation is carried out via ascending recurrence, using the
+		relation DLMF 10.51.1 [2]_.
+		
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -5371,13 +7448,26 @@ package scipy.special;
 	/**
 		spence(x[, out])
 		
-		spence(x)
+		spence(z)
 		
-		Dilogarithm integral
+		Spence's function, also known as the dilogarithm. It is defined to
+		be
 		
-		Returns the dilogarithm integral::
+		.. math::
+		  \int_0^z \frac{\log(t)}{1 - t}dt
 		
-		    -integral(log t / (t-1), t=1..x)
+		for complex :math:`z`, where the contour of integration is taken
+		to avoid the branch cut of the logarithm. Spence's function is
+		analytic everywhere except the negative real axis where it has a
+		branch cut.
+		
+		Note that there is a different convention which defines Spence's
+		function by the integral
+		
+		.. math::
+		  -\int_0^z \frac{\log(1 - t)}{t}dt;
+		
+		this is our ``spence(1 - z)``.
 	**/
 	static public function spence(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5420,175 +7510,412 @@ package scipy.special;
 	**/
 	static public function sph_harm(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		`sph_in` is deprecated!
+		scipy.special.sph_in is deprecated in scipy 0.18.0. Use scipy.special.spherical_in instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel function in(z) and derivative.
 		
-		This function computes the value and first derivative of in(z) for all
-		orders up to and including n.
+		    This function computes the value and first derivative of in(z) for all
+		    orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of in to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of in to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		in : ndarray
-		    Value of i0(z), ..., in(z)
-		inp : ndarray
-		    First derivative i0'(z), ..., in'(z)
+		    Returns
+		    -------
+		    in : ndarray
+		        Value of i0(z), ..., in(z)
+		    inp : ndarray
+		        First derivative i0'(z), ..., in'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_in
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_in(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_in(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_inkn` is deprecated!
+		scipy.special.sph_inkn is deprecated in scipy 0.18.0. Use scipy.special.spherical_in and scipy.special.spherical_kn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel functions in(z), kn(z), and derivatives.
 		
-		This function computes the value and first derivative of in(z) and kn(z)
-		for all orders up to and including n.
+		    This function computes the value and first derivative of in(z) and kn(z)
+		    for all orders up to and including n.
+		
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of in and kn to compute
+		    z : complex
+		        Argument at which to evaluate
+		
+		    Returns
+		    -------
+		    in : ndarray
+		        Value of i0(z), ..., in(z)
+		    inp : ndarray
+		        First derivative i0'(z), ..., in'(z)
+		    kn : ndarray
+		        Value of k0(z), ..., kn(z)
+		    knp : ndarray
+		        First derivative k0'(z), ..., kn'(z)
+		
+		    See also
+		    --------
+		    spherical_in
+		    spherical_kn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
+	**/
+	static public function sph_inkn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`sph_jn` is deprecated!
+		scipy.special.sph_jn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn instead. Note that the new function has a different signature.
+		
+		Compute spherical Bessel function jn(z) and derivative.
+		
+		    This function computes the value and first derivative of jn(z) for all
+		    orders up to and including n.
+		
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of jn to compute
+		    z : complex
+		        Argument at which to evaluate
+		
+		    Returns
+		    -------
+		    jn : ndarray
+		        Value of j0(z), ..., jn(z)
+		    jnp : ndarray
+		        First derivative j0'(z), ..., jn'(z)
+		
+		    See also
+		    --------
+		    spherical_jn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
+	**/
+	static public function sph_jn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`sph_jnyn` is deprecated!
+		scipy.special.sph_jnyn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn and scipy.special.spherical_yn instead. Note that the new function has a different signature.
+		
+		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
+		
+		    This function computes the value and first derivative of jn(z) and yn(z)
+		    for all orders up to and including n.
+		
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of jn and yn to compute
+		    z : complex
+		        Argument at which to evaluate
+		
+		    Returns
+		    -------
+		    jn : ndarray
+		        Value of j0(z), ..., jn(z)
+		    jnp : ndarray
+		        First derivative j0'(z), ..., jn'(z)
+		    yn : ndarray
+		        Value of y0(z), ..., yn(z)
+		    ynp : ndarray
+		        First derivative y0'(z), ..., yn'(z)
+		
+		    See also
+		    --------
+		    spherical_jn
+		    spherical_yn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
+	**/
+	static public function sph_jnyn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`sph_kn` is deprecated!
+		scipy.special.sph_kn is deprecated in scipy 0.18.0. Use scipy.special.spherical_kn instead. Note that the new function has a different signature.
+		
+		Compute spherical Bessel function kn(z) and derivative.
+		
+		    This function computes the value and first derivative of kn(z) for all
+		    orders up to and including n.
+		
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of kn to compute
+		    z : complex
+		        Argument at which to evaluate
+		
+		    Returns
+		    -------
+		    kn : ndarray
+		        Value of k0(z), ..., kn(z)
+		    knp : ndarray
+		        First derivative k0'(z), ..., kn'(z)
+		
+		    See also
+		    --------
+		    spherical_kn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
+	**/
+	static public function sph_kn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		`sph_yn` is deprecated!
+		scipy.special.sph_yn is deprecated in scipy 0.18.0. Use scipy.special.spherical_yn instead. Note that the new function has a different signature.
+		
+		Compute spherical Bessel function yn(z) and derivative.
+		
+		    This function computes the value and first derivative of yn(z) for all
+		    orders up to and including n.
+		
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of yn to compute
+		    z : complex
+		        Argument at which to evaluate
+		
+		    Returns
+		    -------
+		    yn : ndarray
+		        Value of y0(z), ..., yn(z)
+		    ynp : ndarray
+		        First derivative y0'(z), ..., yn'(z)
+		
+		    See also
+		    --------
+		    spherical_yn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
+	**/
+	static public function sph_yn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Modified spherical Bessel function of the first kind or its derivative.
+		
+		Defined as [1]_,
+		
+		.. math:: i_n(z) = \sqrt{\frac{\pi}{2z}} I_{n + 1/2}(z),
+		
+		where :math:`I_n` is the modified Bessel function of the first kind.
 		
 		Parameters
 		----------
-		n : int
-		    Maximum order of in and kn to compute
-		z : complex
-		    Argument at which to evaluate
+		n : int, array_like
+		    Order of the Bessel function (n >= 0).
+		z : complex or float, array_like
+		    Argument of the Bessel function.
+		derivative : bool, optional
+		    If True, the value of the derivative (rather than the function
+		    itself) is returned.
 		
 		Returns
 		-------
 		in : ndarray
-		    Value of i0(z), ..., in(z)
-		inp : ndarray
-		    First derivative i0'(z), ..., in'(z)
-		kn : ndarray
-		    Value of k0(z), ..., kn(z)
-		knp : ndarray
-		    First derivative k0'(z), ..., kn'(z)
+		
+		Notes
+		-----
+		The function is computed using its definitional relation to the
+		modified cylindrical Bessel function of the first kind.
+		
+		The derivative is computed using the relations [2]_,
+		
+		.. math::
+		    i_n' = i_{n-1} - \frac{n + 1}{2} i_n.
+		
+		    i_1' = i_0
+		
+		
+		.. versionadded:: 0.18.0
 		
 		References
 		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		.. [1] http://dlmf.nist.gov/10.47.E7
+		.. [2] http://dlmf.nist.gov/10.51.E5
 	**/
-	static public function sph_inkn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function spherical_in(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
-		Compute spherical Bessel function jn(z) and derivative.
+		Spherical Bessel function of the first kind or its derivative.
 		
-		This function computes the value and first derivative of jn(z) for all
-		orders up to and including n.
+		Defined as [1]_,
+		
+		.. math:: j_n(z) = \sqrt{\frac{\pi}{2z}} J_{n + 1/2}(z),
+		
+		where :math:`J_n` is the Bessel function of the first kind.
 		
 		Parameters
 		----------
-		n : int
-		    Maximum order of jn to compute
-		z : complex
-		    Argument at which to evaluate
+		n : int, array_like
+		    Order of the Bessel function (n >= 0).
+		z : complex or float, array_like
+		    Argument of the Bessel function.
+		derivative : bool, optional
+		    If True, the value of the derivative (rather than the function
+		    itself) is returned.
 		
 		Returns
 		-------
 		jn : ndarray
-		    Value of j0(z), ..., jn(z)
-		jnp : ndarray
-		    First derivative j0'(z), ..., jn'(z)
+		
+		Notes
+		-----
+		For real arguments greater than the order, the function is computed
+		using the ascending recurrence [2]_.  For small real or complex
+		arguments, the definitional relation to the cylindrical Bessel function
+		of the first kind is used.
+		
+		The derivative is computed using the relations [3]_,
+		
+		.. math::
+		    j_n' = j_{n-1} - \frac{n + 1}{2} j_n.
+		
+		    j_0' = -j_1
+		
+		
+		.. versionadded:: 0.18.0
 		
 		References
 		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		.. [1] http://dlmf.nist.gov/10.47.E3
+		.. [2] http://dlmf.nist.gov/10.51.E1
+		.. [3] http://dlmf.nist.gov/10.51.E2
 	**/
-	static public function sph_jn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function spherical_jn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
-		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
+		Modified spherical Bessel function of the second kind or its derivative.
 		
-		This function computes the value and first derivative of jn(z) and yn(z)
-		for all orders up to and including n.
+		Defined as [1]_,
+		
+		.. math:: k_n(z) = \sqrt{\frac{\pi}{2z}} K_{n + 1/2}(z),
+		
+		where :math:`K_n` is the modified Bessel function of the second kind.
 		
 		Parameters
 		----------
-		n : int
-		    Maximum order of jn and yn to compute
-		z : complex
-		    Argument at which to evaluate
-		
-		Returns
-		-------
-		jn : ndarray
-		    Value of j0(z), ..., jn(z)
-		jnp : ndarray
-		    First derivative j0'(z), ..., jn'(z)
-		yn : ndarray
-		    Value of y0(z), ..., yn(z)
-		ynp : ndarray
-		    First derivative y0'(z), ..., yn'(z)
-		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
-	**/
-	static public function sph_jnyn(n:Dynamic, z:Dynamic):Dynamic;
-	/**
-		Compute spherical Bessel function kn(z) and derivative.
-		
-		This function computes the value and first derivative of kn(z) for all
-		orders up to and including n.
-		
-		Parameters
-		----------
-		n : int
-		    Maximum order of kn to compute
-		z : complex
-		    Argument at which to evaluate
+		n : int, array_like
+		    Order of the Bessel function (n >= 0).
+		z : complex or float, array_like
+		    Argument of the Bessel function.
+		derivative : bool, optional
+		    If True, the value of the derivative (rather than the function
+		    itself) is returned.
 		
 		Returns
 		-------
 		kn : ndarray
-		    Value of k0(z), ..., kn(z)
-		knp : ndarray
-		    First derivative k0'(z), ..., kn'(z)
+		
+		Notes
+		-----
+		The function is computed using its definitional relation to the
+		modified cylindrical Bessel function of the second kind.
+		
+		The derivative is computed using the relations [2]_,
+		
+		.. math::
+		    k_n' = -k_{n-1} - \frac{n + 1}{2} k_n.
+		
+		    k_0' = -k_1
+		
+		
+		.. versionadded:: 0.18.0
 		
 		References
 		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		.. [1] http://dlmf.nist.gov/10.47.E9
+		.. [2] http://dlmf.nist.gov/10.51.E5
 	**/
-	static public function sph_kn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function spherical_kn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
-		Compute spherical Bessel function yn(z) and derivative.
+		Spherical Bessel function of the second kind or its derivative.
 		
-		This function computes the value and first derivative of yn(z) for all
-		orders up to and including n.
+		Defined as [1]_,
+		
+		.. math:: y_n(z) = \sqrt{\frac{\pi}{2z}} Y_{n + 1/2}(z),
+		
+		where :math:`Y_n` is the Bessel function of the second kind.
 		
 		Parameters
 		----------
-		n : int
-		    Maximum order of yn to compute
-		z : complex
-		    Argument at which to evaluate
+		n : int, array_like
+		    Order of the Bessel function (n >= 0).
+		z : complex or float, array_like
+		    Argument of the Bessel function.
+		derivative : bool, optional
+		    If True, the value of the derivative (rather than the function
+		    itself) is returned.
 		
 		Returns
 		-------
 		yn : ndarray
-		    Value of y0(z), ..., yn(z)
-		ynp : ndarray
-		    First derivative y0'(z), ..., yn'(z)
+		
+		Notes
+		-----
+		For real arguments, the function is computed using the ascending
+		recurrence [2]_.  For complex arguments, the definitional relation to
+		the cylindrical Bessel function of the second kind is used.
+		
+		The derivative is computed using the relations [3]_,
+		
+		.. math::
+		    y_n' = y_{n-1} - \frac{n + 1}{2} y_n.
+		
+		    y_0' = -y_1
+		
+		
+		.. versionadded:: 0.18.0
 		
 		References
 		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		.. [1] http://dlmf.nist.gov/10.47.E4
+		.. [2] http://dlmf.nist.gov/10.51.E1
+		.. [3] http://dlmf.nist.gov/10.51.E2
 	**/
-	static public function sph_yn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function spherical_yn(n:Dynamic, z:Dynamic, ?derivative:Dynamic):Dynamic;
 	/**
 		stdtr(x1, x2[, out])
 		
@@ -5628,10 +7955,48 @@ package scipy.special;
 		
 		struve(v, x)
 		
-		Struve function
+		Struve function.
 		
-		Computes the struve function Hv(x) of order `v` at `x`, `x` must be
-		positive unless `v` is an integer.
+		Return the value of the Struve function of order `v` at `x`.  The Struve
+		function is defined as,
+		
+		.. math::
+		    H_v(x) = (z/2)^{v + 1} \sum_{n=0}^\infty \frac{(-1)^n (z/2)^{2n}}{\Gamma(n + \frac{3}{2}) \Gamma(n + v + \frac{3}{2})},
+		
+		where :math:`\Gamma` is the gamma function.
+		
+		Parameters
+		----------
+		v : array_like
+		    Order of the Struve function (float).
+		x : array_like
+		    Argument of the Struve function (float; must be positive unless `v` is
+		    an integer).
+		
+		Returns
+		-------
+		H : ndarray
+		    Value of the Struve function of order `v` at `x`.
+		
+		Notes
+		-----
+		Three methods discussed in [1]_ are used to evaluate the Struve function:
+		
+		- power series
+		- expansion in Bessel functions (if :math:`|z| < |v| + 20`)
+		- asymptotic large-z expansion (if :math:`z \geq 0.7v + 12`)
+		
+		Rounding errors are estimated based on the largest terms in the sums, and
+		the result associated with the smallest error is returned.
+		
+		See also
+		--------
+		modstruve
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/11
 	**/
 	static public function struve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5846,12 +8211,26 @@ package scipy.special;
 		
 		Returns the value of the Faddeeva function for complex argument::
 		
-		    exp(-z**2)*erfc(-i*z)
+		    exp(-z**2) * erfc(-i*z)
+		
+		See Also
+		--------
+		dawsn, erf, erfc, erfcx, erfi
 		
 		References
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.wofz(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$wofz(x)$')
+		>>> plt.show()
 	**/
 	static public function wofz(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5909,9 +8288,45 @@ package scipy.special;
 		
 		y0(x)
 		
-		Bessel function of the second kind of order 0
+		Bessel function of the second kind of order 0.
 		
-		Returns the Bessel function of the second kind of order 0 at `x`.
+		Parameters
+		----------
+		x : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the Bessel function of the second kind of order 0 at `x`.
+		
+		Notes
+		-----
+		
+		The domain is divided into the intervals [0, 5] and (5, infinity). In the
+		first interval a rational approximation :math:`R(x)` is employed to
+		compute,
+		
+		.. math::
+		
+		    Y_0(x) = R(x) + \frac{2 \log(x) J_0(x)}{\pi},
+		
+		where :math:`J_0` is the Bessel function of the first kind of order 0.
+		
+		In the second interval, the Hankel asymptotic expansion is employed with
+		two rational functions of degree 6/6 and 7/7.
+		
+		This function is a wrapper for the Cephes [1]_ routine `y0`.
+		
+		See also
+		--------
+		j0
+		yv
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function y0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -5948,9 +8363,39 @@ package scipy.special;
 		
 		y1(x)
 		
-		Bessel function of the second kind of order 1
+		Bessel function of the second kind of order 1.
 		
-		Returns the Bessel function of the second kind of order 1 at `x`.
+		Parameters
+		----------
+		x : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the Bessel function of the second kind of order 1 at `x`.
+		
+		Notes
+		-----
+		
+		The domain is divided into the intervals [0, 8] and (8, infinity). In the
+		first interval a 25 term Chebyshev expansion is used, and computing
+		:math:`J_1` (the Bessel function of the first kind) is required. In the
+		second, the asymptotic trigonometric representation is employed using two
+		rational functions of degree 5/5.
+		
+		This function is a wrapper for the Cephes [1]_ routine `y1`.
+		
+		See also
+		--------
+		j1
+		yn
+		yv
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function y1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6016,10 +8461,36 @@ package scipy.special;
 		
 		yn(n, x)
 		
-		Bessel function of the second kind of integer order
+		Bessel function of the second kind of integer order and real argument.
 		
-		Returns the Bessel function of the second kind of integer order `n`
-		at `x`.
+		Parameters
+		----------
+		n : array_like
+		    Order (integer).
+		z : array_like
+		    Argument (float).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the Bessel function, :math:`Y_n(x)`.
+		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `yn`.
+		
+		The function is evaluated by forward recurrence on `n`, starting with
+		values computed by the Cephes routines `y0` and `y1`. If `n = 0` or 1,
+		the routine for `y0` or `y1` is called directly.
+		
+		See also
+		--------
+		yv : For real order and real or complex argument.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function yn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6061,10 +8532,46 @@ package scipy.special;
 		
 		yv(v, z)
 		
-		Bessel function of the second kind of real order
+		Bessel function of the second kind of real order and complex argument.
 		
-		Returns the Bessel function of the second kind of real order `v` at
-		complex `z`.
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the Bessel function of the second kind, :math:`Y_v(x)`.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the
+		AMOS [1]_ `zbesy` routine, which exploits the connection to the Hankel
+		Bessel functions :math:`H_v^{(1)}` and :math:`H_v^{(2)}`,
+		
+		.. math:: Y_v(z) = \frac{1}{2\imath} (H_v^{(1)} - H_v^{(2)}).
+		
+		For negative `v` values the formula,
+		
+		.. math:: Y_{-v}(z) = Y_v(z) \cos(\pi v) + J_v(z) \sin(\pi v)
+		
+		is used, where :math:`J_v(z)` is the Bessel function of the first kind,
+		computed using the AMOS routine `zbesj`.  Note that the second term is
+		exactly zero for integer `v`; to improve accuracy the second term is
+		explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		See also
+		--------
+		yve : :math:`Y_v` with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6072,12 +8579,47 @@ package scipy.special;
 		
 		yve(v, z)
 		
-		Exponentially scaled Bessel function of the second kind of real order
+		Exponentially scaled Bessel function of the second kind of real order.
 		
 		Returns the exponentially scaled Bessel function of the second
 		kind of real order `v` at complex `z`::
 		
 		    yve(v, z) = yv(v, z) * exp(-abs(z.imag))
+		
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the exponentially scaled Bessel function.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the
+		AMOS [1]_ `zbesy` routine, which exploits the connection to the Hankel
+		Bessel functions :math:`H_v^{(1)}` and :math:`H_v^{(2)}`,
+		
+		.. math:: Y_v(z) = \frac{1}{2\imath} (H_v^{(1)} - H_v^{(2)}).
+		
+		For negative `v` values the formula,
+		
+		.. math:: Y_{-v}(z) = Y_v(z) \cos(\pi v) + J_v(z) \sin(\pi v)
+		
+		is used, where :math:`J_v(z)` is the Bessel function of the first kind,
+		computed using the AMOS routine `zbesj`.  Note that the second term is
+		exactly zero for integer `v`; to improve accuracy the second term is
+		explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function yve(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -6092,34 +8634,33 @@ package scipy.special;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
-		zeta(x1, x2[, out])
+		Riemann zeta function.
 		
-		zeta(x, q)
+		The two-argument version is the Hurwitz zeta function:
 		
-		Hurwitz zeta function
+		.. math:: \zeta(x, q) = \sum_{k=0}^{\infty} \frac{1}{(k + q)^x},
 		
-		The Riemann zeta function of two arguments (also known as the
-		Hurwitz zeta function).
-		
-		This function is defined as
-		
-		.. math:: \zeta(x, q) = \sum_{k=0}^{\infty} 1 / (k+q)^x,
-		
-		where ``x > 1`` and ``q > 0``.
+		Riemann zeta function corresponds to ``q = 1``.
 		
 		See also
 		--------
 		zetac
 	**/
-	static public function zeta(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function zeta(x:Dynamic, ?q:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		zetac(x[, out])
 		

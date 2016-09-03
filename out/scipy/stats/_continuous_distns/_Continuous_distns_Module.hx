@@ -25,6 +25,32 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function _kurtosis(data:Dynamic):Dynamic;
 	/**
+		Mimic `np.select(condlist, choicelist)`.
+		
+		Notice it assumes that all `arrays` are of the same shape, or can be
+		broadcasted together.
+		
+		All functions in `choicelist` must accept array arguments in the order
+		given in `arrays` and must return an array of the same shape as broadcasted
+		`arrays`.
+		
+		Examples
+		--------
+		>>> x = np.arange(6)
+		>>> np.select([x <3, x > 3], [x**2, x**3], default=0)
+		array([  0,   1,   4,   0,  64, 125])
+		
+		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
+		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		
+		>>> a = -np.ones_like(x)
+		>>> _lazyselect([x < 3, x > 3],
+		...             [lambda x, a: x**2, lambda x, a: a * x**3],
+		...             (x, a))
+		array([   0.,    1.,    4.,   nan,  -64., -125.])
+	**/
+	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
+	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
 		This one only evaluates f(arr1[cond], arr2[cond], ...).
 		For example,
@@ -42,9 +68,69 @@ package scipy.stats._continuous_distns;
 	static public function _ncx2_cdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
 	static public function _ncx2_log_pdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
 	static public function _ncx2_pdf(x:Dynamic, df:Dynamic, nc:Dynamic):Dynamic;
-	static public function _norm_cdf(x:Dynamic):Dynamic;
+	/**
+		ndtr(x[, out])
+		
+		ndtr(x)
+		
+		Gaussian cumulative distribution function.
+		
+		Returns the area under the standard Gaussian probability
+		density function, integrated from minus infinity to `x`
+		
+		.. math::
+		
+		   \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp(-t^2/2) dt
+		
+		Parameters
+		----------
+		x : array_like, real or complex
+		    Argument
+		
+		Returns
+		-------
+		ndarray
+		    The value of the normal CDF evaluated at `x`
+		
+		See Also
+		--------
+		erf
+		erfc
+		scipy.stats.norm
+		log_ndtr
+	**/
+	static public function _norm_cdf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _norm_isf(q:Dynamic):Dynamic;
-	static public function _norm_logcdf(x:Dynamic):Dynamic;
+	/**
+		log_ndtr(x[, out])
+		
+		log_ndtr(x)
+		
+		Logarithm of Gaussian cumulative distribution function.
+		
+		Returns the log of the area under the standard Gaussian probability
+		density function, integrated from minus infinity to `x`::
+		
+		    log(1/sqrt(2*pi) * integral(exp(-t**2 / 2), t=-inf..x))
+		
+		Parameters
+		----------
+		x : array_like, real or complex
+		    Argument
+		
+		Returns
+		-------
+		ndarray
+		    The value of the log of the normal CDF evaluated at `x`
+		
+		See Also
+		--------
+		erf
+		erfc
+		scipy.stats.norm
+		ndtr
+	**/
+	static public function _norm_logcdf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _norm_logpdf(x:Dynamic):Dynamic;
 	static public function _norm_logsf(x:Dynamic):Dynamic;
 	static public function _norm_pdf(x:Dynamic):Dynamic;
@@ -112,9 +198,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -180,7 +266,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -220,9 +306,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -286,7 +372,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -310,78 +396,6 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function anglit(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Test whether any array element along a given axis evaluates to True.
-		
-		Returns single boolean unless `axis` is not ``None``
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array or object that can be converted to an array.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a logical OR reduction is performed.
-		    The default (`axis` = `None`) is to perform a logical OR over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a reduction is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		out : ndarray, optional
-		    Alternate output array in which to place the result.  It must have
-		    the same shape as the expected output and its type is preserved
-		    (e.g., if it is of type float, then it will remain so, returning
-		    1.0 for True and 0.0 for False, regardless of the type of `a`).
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		any : bool or ndarray
-		    A new boolean or `ndarray` is returned unless `out` is specified,
-		    in which case a reference to `out` is returned.
-		
-		See Also
-		--------
-		ndarray.any : equivalent method
-		
-		all : Test whether all elements along a given axis evaluate to True.
-		
-		Notes
-		-----
-		Not a Number (NaN), positive infinity and negative infinity evaluate
-		to `True` because these are not equal to zero.
-		
-		Examples
-		--------
-		>>> np.any([[True, False], [True, True]])
-		True
-		
-		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
-		
-		>>> np.any([-1, 0, 5])
-		True
-		
-		>>> np.any(np.nan)
-		True
-		
-		>>> o=np.array([False])
-		>>> z=np.any([-1, 4, 5], out=o)
-		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
-		>>> # Check now that z is a reference to o
-		>>> z is o
-		True
-		>>> id(z), id(o) # identity of z and o              # doctest: +SKIP
-		(191614240, 191614240)
-	**/
-	static public function any(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -514,9 +528,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -580,7 +594,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -802,9 +816,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -873,7 +887,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -913,9 +927,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -982,7 +996,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1104,9 +1118,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -1172,7 +1186,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1197,6 +1211,45 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function bradford(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Broadcast an array to a new shape.
+		
+		Parameters
+		----------
+		array : array_like
+		    The array to broadcast.
+		shape : tuple
+		    The shape of the desired array.
+		subok : bool, optional
+		    If True, then sub-classes will be passed-through, otherwise
+		    the returned array will be forced to be a base-class array (default).
+		
+		Returns
+		-------
+		broadcast : array
+		    A readonly view on the original array with the given shape. It is
+		    typically not contiguous. Furthermore, more than one element of a
+		    broadcasted array may refer to a single memory location.
+		
+		Raises
+		------
+		ValueError
+		    If the array is not compatible with the new shape according to NumPy's
+		    broadcasting rules.
+		
+		Notes
+		-----
+		.. versionadded:: 1.10.0
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 3])
+		>>> np.broadcast_to(x, (3, 3))
+		array([[1, 2, 3],
+		       [1, 2, 3],
+		       [1, 2, 3]])
+	**/
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
+	/**
 		A Burr (Type III) continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `burr` object inherits from it
@@ -1212,9 +1265,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, d, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, d, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, d, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, d, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, d, loc=0, scale=1)``
@@ -1246,7 +1299,8 @@ package scipy.stats._continuous_distns;
 		
 		See Also
 		--------
-		fisk : a special case of `burr` with ``d = 1``
+		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		burr12 : Burr Type XII distribution
 		
 		Notes
 		-----
@@ -1292,7 +1346,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1317,6 +1371,132 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function burr(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		A Burr (Type XII) continuous random variable.
+		
+		As an instance of the `rv_continuous` class, `burr12` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(c, d, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, c, d, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, c, d, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, c, d, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, c, d, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, c, d, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, c, d, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, c, d, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, c, d, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, c, d, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(c, d, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(c, d, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, c, d, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(c, d, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(c, d, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(c, d, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(c, d, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, c, d, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		See Also
+		--------
+		fisk : a special case of either `burr` or ``burr12`` with ``d = 1``
+		burr : Burr Type III distribution
+		
+		Notes
+		-----
+		The probability density function for `burr` is::
+		
+		    burr12.pdf(x, c, d) = c * d * x**(c-1) * (1+x**(c))**(-d-1)
+		
+		for ``x > 0``.
+		
+		`burr12` takes ``c`` and ``d`` as shape parameters.
+		
+		This is the PDF corresponding to the twelfth CDF given in Burr's list;
+		specifically, it is equation (20) in Burr's paper [1]_.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``burr12.pdf(x, c, d, loc, scale)`` is identically
+		equivalent to ``burr12.pdf(y, c, d) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		The Burr type 12 distribution is also sometimes referred to as
+		the Singh-Maddala distribution from NIST [2]_.
+		
+		References
+		----------
+		.. [1] Burr, I. W. "Cumulative frequency functions", Annals of
+		   Mathematical Statistics, 13(2), pp 215-232 (1942).
+		
+		.. [2] http://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/b12pdf.htm
+		
+		Examples
+		--------
+		>>> from scipy.stats import burr12
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> c, d = 10, 4
+		>>> mean, var, skew, kurt = burr12.stats(c, d, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(burr12.ppf(0.01, c, d),
+		...                 burr12.ppf(0.99, c, d), 100)
+		>>> ax.plot(x, burr12.pdf(x, c, d),
+		...        'r-', lw=5, alpha=0.6, label='burr12 pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = burr12(c, d)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = burr12.ppf([0.001, 0.5, 0.999], c, d)
+		>>> np.allclose([0.001, 0.5, 0.999], burr12.cdf(vals, c, d))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = burr12.rvs(c, d, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function burr12(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		A Cauchy continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `cauchy` object inherits from it
@@ -1332,9 +1512,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -1396,7 +1576,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1436,9 +1616,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, df, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, df, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, df, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, df, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
@@ -1510,7 +1690,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1550,9 +1730,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, df, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, df, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, df, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, df, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
@@ -1616,7 +1796,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1792,9 +1972,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -1859,7 +2039,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -1899,9 +2079,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -1967,7 +2147,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2008,9 +2188,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -2074,7 +2254,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2103,12 +2283,26 @@ package scipy.stats._continuous_distns;
 		
 		erfc(x)
 		
-		Complementary error function, 1 - erf(x).
+		Complementary error function, ``1 - erf(x)``.
+		
+		See Also
+		--------
+		erf, erfi, erfcx, dawsn, wofz
 		
 		References
 		----------
 		.. [1] Steven G. Johnson, Faddeeva W function implementation.
 		   http://ab-initio.mit.edu/Faddeeva
+		
+		Examples
+		--------
+		>>> from scipy import special
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-3, 3)
+		>>> plt.plot(x, special.erfc(x))
+		>>> plt.xlabel('$x$')
+		>>> plt.ylabel('$erfc(x)$')
+		>>> plt.show()
 	**/
 	static public function erfc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2127,9 +2321,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -2252,9 +2446,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -2322,7 +2516,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2362,9 +2556,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, K, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, K, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, K, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, K, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, K, loc=0, scale=1)``
@@ -2442,7 +2636,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2482,9 +2676,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
@@ -2556,7 +2750,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2596,9 +2790,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, c, loc=0, scale=1)``
@@ -2665,7 +2859,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2752,9 +2946,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, dfn, dfd, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, dfn, dfd, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, dfn, dfd, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, dfn, dfd, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, dfn, dfd, loc=0, scale=1)``
@@ -2822,7 +3016,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2862,9 +3056,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -2936,7 +3130,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -2981,9 +3175,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3053,7 +3247,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3093,9 +3287,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3155,7 +3349,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3195,9 +3389,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3263,7 +3457,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3303,9 +3497,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3376,7 +3570,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3416,9 +3610,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3489,7 +3683,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3518,7 +3712,7 @@ package scipy.stats._continuous_distns;
 		
 		gamma(z)
 		
-		Gamma function
+		Gamma function.
 		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
@@ -3526,21 +3720,37 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function gam(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gamln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gamln(x:Dynamic):Dynamic;
 	/**
 		A gamma continuous random variable.
 		
@@ -3557,9 +3767,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -3632,7 +3842,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3672,9 +3882,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, c, z, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, c, z, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, c, z, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, c, z, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, c, z, loc=0, scale=1)``
@@ -3742,7 +3952,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3782,9 +3992,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, c, loc=0, scale=1)``
@@ -3858,7 +4068,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -3898,9 +4108,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -3974,7 +4184,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4014,9 +4224,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, c, loc=0, scale=1)``
@@ -4052,7 +4262,7 @@ package scipy.stats._continuous_distns;
 		
 		    gengamma.pdf(x, a, c) = abs(c) * x**(c*a-1) * exp(-x**c) / gamma(a)
 		
-		for ``x > 0``, ``a > 0``, and ``c != 0``.
+		for ``x >= 0``, ``a > 0``, and ``c != 0``.
 		
 		`gengamma` takes ``a`` and ``c`` as shape parameters.
 		
@@ -4082,7 +4292,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4122,9 +4332,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -4190,7 +4400,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4230,9 +4440,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -4298,7 +4508,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4338,9 +4548,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, beta, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, beta, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, beta, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, beta, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, beta, loc=0, scale=1)``
@@ -4414,7 +4624,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4454,9 +4664,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -4532,7 +4742,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4592,9 +4802,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -4658,7 +4868,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4698,9 +4908,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -4766,7 +4976,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4806,9 +5016,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -4878,7 +5088,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -4918,9 +5128,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -4990,7 +5200,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5030,9 +5240,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -5096,7 +5306,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5136,9 +5346,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, beta, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, beta, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, beta, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, beta, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, beta, loc=0, scale=1)``
@@ -5213,7 +5423,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5253,9 +5463,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -5319,7 +5529,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5359,9 +5569,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -5427,7 +5637,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5467,9 +5677,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -5531,7 +5741,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5555,6 +5765,91 @@ package scipy.stats._continuous_distns;
 		>>> plt.show()
 	**/
 	static public function hypsecant(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		i0(x[, out])
+		
+		i0(x)
+		
+		Modified Bessel function of order 0.
+		
+		Defined as,
+		
+		.. math::
+		    I_0(x) = \sum_{k=0}^\infty \frac{(x^2/4)^k}{(k!)^2} = J_0(\imath x),
+		
+		where :math:`J_0` is the Bessel function of the first kind of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the modified Bessel function of order 0 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i0`.
+		
+		See also
+		--------
+		iv
+		i0e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+	**/
+	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		i1(x[, out])
+		
+		i1(x)
+		
+		Modified Bessel function of order 1.
+		
+		Defined as,
+		
+		.. math::
+		    I_1(x) = \frac{1}{2}x \sum_{k=0}^\infty \frac{(x^2/4)^k}{k! (k + 1)!}
+		           = -\imath J_1(\imath x),
+		
+		where :math:`J_1` is the Bessel function of the first kind of order 1.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the modified Bessel function of order 1 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i1`.
+		
+		See also
+		--------
+		iv
+		i1e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+	**/
+	static public function i1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var inf : Dynamic;
 	/**
 		This decorator modifies the decorated function's docstring by
@@ -5692,9 +5987,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -5762,7 +6057,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5802,9 +6097,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, mu, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, mu, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, mu, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, mu, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0, scale=1)``
@@ -5850,7 +6145,7 @@ package scipy.stats._continuous_distns;
 		equivalent to ``invgauss.pdf(y, mu) / scale`` with
 		``y = (x - loc) / scale``.
 		
-		When `mu` is too small, evaluating the cumulative density function will be
+		When `mu` is too small, evaluating the cumulative distribution function will be
 		inaccurate due to ``cdf(mu -> 0) = inf * 0``.
 		NaNs are returned for ``mu <= 0.0028``.
 		
@@ -5874,7 +6169,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -5914,9 +6209,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -5987,7 +6282,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6027,9 +6322,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -6099,7 +6394,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6139,9 +6434,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -6212,7 +6507,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6237,6 +6532,302 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function johnsonsu(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Kappa 3 parameter distribution.
+		
+		As an instance of the `rv_continuous` class, `kappa3` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, a, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, a, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, a, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, a, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, a, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, a, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, a, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, a, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, a, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(a, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(a, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, a, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(a, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(a, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(a, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(a, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, a, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for `kappa` is::
+		
+		    kappa3.pdf(x, a) =
+		        a*[a + x**a]**(-(a + 1)/a),     for ``x > 0``
+		        0.0,                            for ``x <= 0``
+		
+		`kappa3` takes ``a`` as a shape parameter and ``a > 0``.
+		
+		References
+		----------
+		P.W. Mielke and E.S. Johnson, "Three-Parameter Kappa Distribution Maximum
+		Likelihood and Likelihood Ratio Tests", Methods in Weather Research,
+		701-707, (September, 1973),
+		http://docs.lib.noaa.gov/rescue/mwr/101/mwr-101-09-0701.pdf
+		
+		B. Kumphon, "Maximum Entropy and Maximum Likelihood Estimation for the
+		Three-Parameter Kappa Distribution", Open Journal of Statistics, vol 2,
+		415-419 (2012)
+		http://file.scirp.org/pdf/OJS20120400011_95789012.pdf
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``kappa3.pdf(x, a, loc, scale)`` is identically
+		equivalent to ``kappa3.pdf(y, a) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import kappa3
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> a = 1
+		>>> mean, var, skew, kurt = kappa3.stats(a, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(kappa3.ppf(0.01, a),
+		...                 kappa3.ppf(0.99, a), 100)
+		>>> ax.plot(x, kappa3.pdf(x, a),
+		...        'r-', lw=5, alpha=0.6, label='kappa3 pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = kappa3(a)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = kappa3.ppf([0.001, 0.5, 0.999], a)
+		>>> np.allclose([0.001, 0.5, 0.999], kappa3.cdf(vals, a))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = kappa3.rvs(a, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function kappa3(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Kappa 4 parameter distribution.
+		
+		As an instance of the `rv_continuous` class, `kappa4` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(h, k, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, h, k, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, h, k, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, h, k, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, h, k, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, h, k, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, h, k, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, h, k, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, h, k, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, h, k, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(h, k, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(h, k, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, h, k, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(h, k), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(h, k, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(h, k, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(h, k, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(h, k, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, h, k, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The probability density function for kappa4 is::
+		
+		    kappa4.pdf(x, h, k) = (1.0 - k*x)**(1.0/k - 1.0)*
+		                          (1.0 - h*(1.0 - k*x)**(1.0/k))**(1.0/h-1)
+		
+		if ``h`` and ``k`` are not equal to 0.
+		
+		If ``h`` or ``k`` are zero then the pdf can be simplified:
+		
+		h = 0 and k != 0::
+		
+		    kappa4.pdf(x, h, k) = (1.0 - k*x)**(1.0/k - 1.0)*
+		                          exp(-(1.0 - k*x)**(1.0/k))
+		
+		h != 0 and k = 0::
+		
+		    kappa4.pdf(x, h, k) = exp(-x)*(1.0 - h*exp(-x))**(1.0/h - 1.0)
+		
+		h = 0 and k = 0::
+		
+		    kappa4.pdf(x, h, k) = exp(-x)*exp(-exp(-x))
+		
+		kappa4 takes ``h`` and ``k`` as shape parameters.
+		
+		The kappa4 distribution returns other distributions when certain
+		``h`` and ``k`` values are used.
+		
+		+------+-------------+----------------+------------------+
+		| h    | k=0.0       | k=1.0          | -inf<=k<=inf     |
+		+======+=============+================+==================+
+		| -1.0 | Logistic    |                | Generalized      |
+		|      |             |                | Logistic(1)      |
+		|      |             |                |                  |
+		|      | logistic(x) |                |                  |
+		+------+-------------+----------------+------------------+
+		|  0.0 | Gumbel      | Reverse        | Generalized      |
+		|      |             | Exponential(2) | Extreme Value    |
+		|      |             |                |                  |
+		|      | gumbel_r(x) |                | genextreme(x, k) |
+		+------+-------------+----------------+------------------+
+		|  1.0 | Exponential | Uniform        | Generalized      |
+		|      |             |                | Pareto           |
+		|      |             |                |                  |
+		|      | expon(x)    | uniform(x)     | genpareto(x, -k) |
+		+------+-------------+----------------+------------------+
+		
+		(1) There are at least five generalized logistic distributions.
+		    Four are described here:
+		    https://en.wikipedia.org/wiki/Generalized_logistic_distribution
+		    The "fifth" one is the one kappa4 should match which currently
+		    isn't implemented in scipy:
+		    https://en.wikipedia.org/wiki/Talk:Generalized_logistic_distribution
+		    http://www.mathwave.com/help/easyfit/html/analyses/distributions/gen_logistic.html
+		(2) This distribution is currently not in scipy.
+		
+		References
+		----------
+		J.C. Finney, "Optimization of a Skewed Logistic Distribution With Respect
+		to the Kolmogorov-Smirnov Test", A Dissertation Submitted to the Graduate
+		Faculty of the Louisiana State University and Agricultural and Mechanical
+		College, (August, 2004),
+		http://etd.lsu.edu/docs/available/etd-05182004-144851/unrestricted/Finney_dis.pdf
+		
+		J.R.M. Hosking, "The four-parameter kappa distribution". IBM J. Res.
+		Develop. 38 (3), 25 1-258 (1994).
+		
+		B. Kumphon, A. Kaew-Man, P. Seenoi, "A Rainfall Distribution for the Lampao
+		Site in the Chi River Basin, Thailand", Journal of Water Resource and
+		Protection, vol. 4, 866-869, (2012).
+		http://file.scirp.org/pdf/JWARP20121000009_14676002.pdf
+		
+		C. Winchester, "On Estimation of the Four-Parameter Kappa Distribution", A
+		Thesis Submitted to Dalhousie University, Halifax, Nova Scotia, (March
+		2000).
+		http://www.nlc-bnc.ca/obj/s4/f2/dsk2/ftp01/MQ57336.pdf
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``kappa4.pdf(x, h, k, loc, scale)`` is identically
+		equivalent to ``kappa4.pdf(y, h, k) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import kappa4
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> h, k = 0.1, 0
+		>>> mean, var, skew, kurt = kappa4.stats(h, k, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(kappa4.ppf(0.01, h, k),
+		...                 kappa4.ppf(0.99, h, k), 100)
+		>>> ax.plot(x, kappa4.pdf(x, h, k),
+		...        'r-', lw=5, alpha=0.6, label='kappa4 pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = kappa4(h, k)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = kappa4.ppf([0.001, 0.5, 0.999], h, k)
+		>>> np.allclose([0.001, 0.5, 0.999], kappa4.cdf(vals, h, k))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = kappa4.rvs(h, k, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function kappa4(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		General Kolmogorov-Smirnov one-sided test.
 		
 		As an instance of the `rv_continuous` class, `ksone` object inherits from it
@@ -6252,9 +6843,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, n, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, n, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, n, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, n, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, loc=0, scale=1)``
@@ -6304,7 +6895,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6344,9 +6935,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -6396,7 +6987,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6436,9 +7027,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -6500,7 +7091,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6540,9 +7131,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -6612,7 +7203,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6652,9 +7243,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -6724,7 +7315,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6764,9 +7355,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, alpha, beta, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, alpha, beta, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, alpha, beta, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, alpha, beta, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, alpha, beta, loc=0, scale=1)``
@@ -6831,7 +7422,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -6921,9 +7512,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -6989,7 +7580,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7029,9 +7620,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -7095,7 +7686,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7135,9 +7726,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -7209,7 +7800,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7249,9 +7840,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, s, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, s, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, s, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, s, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, s, loc=0, scale=1)``
@@ -7323,7 +7914,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7363,9 +7954,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -7434,7 +8025,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7474,9 +8065,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -7548,7 +8139,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7588,9 +8179,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, k, s, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, k, s, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, k, s, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, k, s, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, k, s, loc=0, scale=1)``
@@ -7656,7 +8247,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7696,9 +8287,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, nu, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, nu, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, nu, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, nu, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, nu, loc=0, scale=1)``
@@ -7765,7 +8356,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7806,9 +8397,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, dfn, dfd, nc, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, dfn, dfd, nc, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, dfn, dfd, nc, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, dfn, dfd, nc, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, dfn, dfd, nc, loc=0, scale=1)``
@@ -7879,7 +8470,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -7919,9 +8510,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, df, nc, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, df, nc, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, df, nc, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, df, nc, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, nc, loc=0, scale=1)``
@@ -7989,7 +8580,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8029,9 +8620,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, df, nc, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, df, nc, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, df, nc, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, df, nc, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, nc, loc=0, scale=1)``
@@ -8098,7 +8689,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8141,9 +8732,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -8179,6 +8770,10 @@ package scipy.stats._continuous_distns;
 		
 		    norm.pdf(x) = exp(-x**2/2)/sqrt(2*pi)
 		
+		The survival function, ``norm.sf``, is also referred to as the
+		Q-function in some contexts (see, e.g.,
+		`Wikipedia's <https://en.wikipedia.org/wiki/Q-function>`_ definition).
+		
 		The probability density above is defined in the "standardized" form. To shift
 		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
 		Specifically, ``norm.pdf(x, loc, scale)`` is identically
@@ -8205,7 +8800,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8246,9 +8841,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
@@ -8314,7 +8909,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8354,9 +8949,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, skew, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, skew, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, skew, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, skew, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, skew, loc=0, scale=1)``
@@ -8427,7 +9022,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8477,7 +9072,7 @@ package scipy.stats._continuous_distns;
 		
 		Parameters
 		----------
-		arr : array_like
+		arr : ndarray
 		    Array to put data into.
 		mask : array_like
 		    Boolean mask array. Must have the same size as `a`.
@@ -8517,7 +9112,7 @@ package scipy.stats._continuous_distns;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns
@@ -8573,9 +9168,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0, scale=1)``
@@ -8643,7 +9238,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8683,9 +9278,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, s, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, s, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, s, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, s, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, s, loc=0, scale=1)``
@@ -8753,7 +9348,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8793,9 +9388,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -8862,7 +9457,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -8991,20 +9586,20 @@ package scipy.stats._continuous_distns;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -9044,9 +9639,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -9112,7 +9707,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9152,9 +9747,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -9220,7 +9815,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9260,9 +9855,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, mu, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, mu, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, mu, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, mu, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0, scale=1)``
@@ -9328,7 +9923,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9368,9 +9963,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -9436,7 +10031,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9476,9 +10071,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
@@ -9550,7 +10145,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9590,9 +10185,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -9656,7 +10251,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -9831,6 +10426,123 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function sinh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		A skew-normal random variable.
+		
+		As an instance of the `rv_continuous` class, `skewnorm` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(a, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, a, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, a, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, a, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, a, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, a, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, a, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, a, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, a, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, a, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(a, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(a, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, a, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(a,), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(a, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(a, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(a, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(a, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, a, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The pdf is::
+		
+		    skewnorm.pdf(x, a) = 2*norm.pdf(x)*norm.cdf(ax)
+		
+		`skewnorm` takes ``a`` as a skewness parameter
+		When a=0 the distribution is identical to a normal distribution.
+		rvs implements the method of [1]_.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``skewnorm.pdf(x, a, loc, scale)`` is identically
+		equivalent to ``skewnorm.pdf(y, a) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		Examples
+		--------
+		>>> from scipy.stats import skewnorm
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> a = 4
+		>>> mean, var, skew, kurt = skewnorm.stats(a, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(skewnorm.ppf(0.01, a),
+		...                 skewnorm.ppf(0.99, a), 100)
+		>>> ax.plot(x, skewnorm.pdf(x, a),
+		...        'r-', lw=5, alpha=0.6, label='skewnorm pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = skewnorm(a)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = skewnorm.ppf([0.001, 0.5, 0.999], a)
+		>>> np.allclose([0.001, 0.5, 0.999], skewnorm.cdf(vals, a))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = skewnorm.rvs(a, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+		
+		
+		
+		References
+		----------
+		
+		.. [1] A. Azzalini and A. Capitanio (1999). Statistical applications of the
+		    multivariate skew-normal distribution. J. Roy. Statist. Soc., B 61, 579-602.
+		    http://azzalini.stat.unipd.it/SN/faq-r.html
+	**/
+	static public function skewnorm(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		sqrt(x[, out])
 		
 		Return the positive square-root of an array, element-wise.
@@ -9878,87 +10590,6 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
-		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	/**
 		A Student's T continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `t` object inherits from it
@@ -9974,9 +10605,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, df, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, df, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, df, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, df, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, df, loc=0, scale=1)``
@@ -10044,7 +10675,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10178,6 +10809,116 @@ package scipy.stats._continuous_distns;
 	**/
 	static public function tanh(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		A trapezoidal continuous random variable.
+		
+		As an instance of the `rv_continuous` class, `trapz` object inherits from it
+		a collection of generic methods (see below for the full list),
+		and completes them with details specific for this particular distribution.
+		
+		Methods
+		-------
+		``rvs(c, d, loc=0, scale=1, size=1, random_state=None)``
+		    Random variates.
+		``pdf(x, c, d, loc=0, scale=1)``
+		    Probability density function.
+		``logpdf(x, c, d, loc=0, scale=1)``
+		    Log of the probability density function.
+		``cdf(x, c, d, loc=0, scale=1)``
+		    Cumulative distribution function.
+		``logcdf(x, c, d, loc=0, scale=1)``
+		    Log of the cumulative distribution function.
+		``sf(x, c, d, loc=0, scale=1)``
+		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
+		``logsf(x, c, d, loc=0, scale=1)``
+		    Log of the survival function.
+		``ppf(q, c, d, loc=0, scale=1)``
+		    Percent point function (inverse of ``cdf`` --- percentiles).
+		``isf(q, c, d, loc=0, scale=1)``
+		    Inverse survival function (inverse of ``sf``).
+		``moment(n, c, d, loc=0, scale=1)``
+		    Non-central moment of order n
+		``stats(c, d, loc=0, scale=1, moments='mv')``
+		    Mean('m'), variance('v'), skew('s'), and/or kurtosis('k').
+		``entropy(c, d, loc=0, scale=1)``
+		    (Differential) entropy of the RV.
+		``fit(data, c, d, loc=0, scale=1)``
+		    Parameter estimates for generic data.
+		``expect(func, args=(c, d), loc=0, scale=1, lb=None, ub=None, conditional=False, **kwds)``
+		    Expected value of a function (of one argument) with respect to the distribution.
+		``median(c, d, loc=0, scale=1)``
+		    Median of the distribution.
+		``mean(c, d, loc=0, scale=1)``
+		    Mean of the distribution.
+		``var(c, d, loc=0, scale=1)``
+		    Variance of the distribution.
+		``std(c, d, loc=0, scale=1)``
+		    Standard deviation of the distribution.
+		``interval(alpha, c, d, loc=0, scale=1)``
+		    Endpoints of the range that contains alpha percent of the distribution
+		
+		Notes
+		-----
+		The trapezoidal distribution can be represented with an up-sloping line
+		from ``loc`` to ``(loc + c*scale)``, then constant to ``(loc + d*scale)``
+		and then downsloping from ``(loc + d*scale)`` to ``(loc+scale)``.
+		
+		`trapz` takes ``c`` and ``d`` as shape parameters.
+		
+		The probability density above is defined in the "standardized" form. To shift
+		and/or scale the distribution use the ``loc`` and ``scale`` parameters.
+		Specifically, ``trapz.pdf(x, c, d, loc, scale)`` is identically
+		equivalent to ``trapz.pdf(y, c, d) / scale`` with
+		``y = (x - loc) / scale``.
+		
+		The standard form is in the range [0, 1] with c the mode.
+		The location parameter shifts the start to `loc`.
+		The scale parameter changes the width from 1 to `scale`.
+		
+		Examples
+		--------
+		>>> from scipy.stats import trapz
+		>>> import matplotlib.pyplot as plt
+		>>> fig, ax = plt.subplots(1, 1)
+		
+		Calculate a few first moments:
+		
+		>>> c, d = 0.2, 0.8
+		>>> mean, var, skew, kurt = trapz.stats(c, d, moments='mvsk')
+		
+		Display the probability density function (``pdf``):
+		
+		>>> x = np.linspace(trapz.ppf(0.01, c, d),
+		...                 trapz.ppf(0.99, c, d), 100)
+		>>> ax.plot(x, trapz.pdf(x, c, d),
+		...        'r-', lw=5, alpha=0.6, label='trapz pdf')
+		
+		Alternatively, the distribution object can be called (as a function)
+		to fix the shape, location and scale parameters. This returns a "frozen"
+		RV object holding the given parameters fixed.
+		
+		Freeze the distribution and display the frozen ``pdf``:
+		
+		>>> rv = trapz(c, d)
+		>>> ax.plot(x, rv.pdf(x), 'k-', lw=2, label='frozen pdf')
+		
+		Check accuracy of ``cdf`` and ``ppf``:
+		
+		>>> vals = trapz.ppf([0.001, 0.5, 0.999], c, d)
+		>>> np.allclose([0.001, 0.5, 0.999], trapz.cdf(vals, c, d))
+		True
+		
+		Generate random numbers:
+		
+		>>> r = trapz.rvs(c, d, size=1000)
+		
+		And compare the histogram:
+		
+		>>> ax.hist(r, normed=True, histtype='stepfilled', alpha=0.2)
+		>>> ax.legend(loc='best', frameon=False)
+		>>> plt.show()
+	**/
+	static public function trapz(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		A triangular continuous random variable.
 		
 		As an instance of the `rv_continuous` class, `triang` object inherits from it
@@ -10193,9 +10934,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -10263,7 +11004,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10303,9 +11044,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, b, loc=0, scale=1)``
@@ -10371,7 +11112,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10411,9 +11152,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, a, b, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, a, b, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, b, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, b, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, b, loc=0, scale=1)``
@@ -10480,7 +11221,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10520,9 +11261,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, lam, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, lam, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, lam, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, lam, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lam, loc=0, scale=1)``
@@ -10591,7 +11332,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10633,9 +11374,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -10685,7 +11426,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10730,9 +11471,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, kappa, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, kappa, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, kappa, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, kappa, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, kappa, loc=0, scale=1)``
@@ -10806,7 +11547,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10846,9 +11587,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, kappa, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, kappa, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, kappa, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, kappa, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, kappa, loc=0, scale=1)``
@@ -10922,7 +11663,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -10962,9 +11703,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, loc=0, scale=1)``
@@ -11030,7 +11771,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -11070,9 +11811,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -11143,7 +11884,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -11183,9 +11924,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -11256,7 +11997,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		
@@ -11365,9 +12106,9 @@ package scipy.stats._continuous_distns;
 		``logpdf(x, c, loc=0, scale=1)``
 		    Log of the probability density function.
 		``cdf(x, c, loc=0, scale=1)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, c, loc=0, scale=1)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, c, loc=0, scale=1)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, c, loc=0, scale=1)``
@@ -11433,7 +12174,7 @@ package scipy.stats._continuous_distns;
 		
 		Alternatively, the distribution object can be called (as a function)
 		to fix the shape, location and scale parameters. This returns a "frozen"
-		RV object holding the given parameters fixed. 
+		RV object holding the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pdf``:
 		

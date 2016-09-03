@@ -23,7 +23,9 @@ package pandas.sparse.series;
 	**/
 	static public function _coo_to_sparse_series(A:Dynamic, ?dense_index:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _make_index(length:Dynamic, indices:Dynamic, kind:Dynamic):Dynamic;
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
+	static public var _shared_doc_kwargs : Dynamic;
 	static public function _sparse_array_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
 	static public function _sparse_series_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
 	/**

@@ -16,23 +16,6 @@ package pandas.core.categorical;
 		coerce the indexer input array to the smallest dtype possible 
 	**/
 	static public function _coerce_indexer_dtype(indexer:Dynamic, categories:Dynamic):Dynamic;
-	/**
-		Concatenate an object/categorical array of arrays, each of which is a
-		single dtype
-		
-		Parameters
-		----------
-		to_concat : array of arrays
-		axis : int
-		    Axis to provide concatenation in the current implementation this is
-		    always 0, e.g. we only have 1D categoricals
-		
-		Returns
-		-------
-		Categorical
-		    A single array, preserving the combined dtypes
-	**/
-	static public function _concat_compat(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _convert_to_list_like(list_like:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -58,6 +41,7 @@ package pandas.core.categorical;
 		   leave inferred dtype 'date' alone
 	**/
 	static public function _possibly_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -122,16 +106,6 @@ package pandas.core.categorical;
 		PeriodIndex
 	**/
 	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
-	/**
-		Parameters
-		----------
-		l : list of arrays
-		
-		Returns
-		-------
-		a set of kinds that exist in this list of arrays
-	**/
-	static public function get_dtype_kinds(l:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -210,7 +184,7 @@ package pandas.core.categorical;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int

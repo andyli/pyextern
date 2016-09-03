@@ -104,16 +104,25 @@ package scipy.optimize.optimize;
 		-------
 		disp : bool
 		    Set to True to print convergence messages.
-		xtol : float
-		    Relative error in solution `xopt` acceptable for convergence.
-		ftol : float
-		    Relative error in ``fun(xopt)`` acceptable for convergence.
-		maxiter : int
-		    Maximum number of iterations to perform.
-		maxfev : int
-		    Maximum number of function evaluations to make.
+		maxiter, maxfev : int
+		    Maximum allowed number of iterations and function evaluations.
+		    Will default to ``N*200``, where ``N`` is the number of
+		    variables, if neither `maxiter` or `maxfev` is set. If both
+		    `maxiter` and `maxfev` are set, minimization will stop at the
+		    first reached.
+		initial_simplex : array_like of shape (N + 1, N)
+		    Initial simplex. If given, overrides `x0`.
+		    ``initial_simplex[j,:]`` should contain the coordinates of
+		    the j-th vertex of the ``N+1`` vertices in the simplex, where
+		    ``N`` is the dimension.
+		xatol : float, optional
+		    Absolute error in xopt between iterations that is acceptable for
+		    convergence.
+		fatol : number, optional
+		    Absolute error in func(xopt) between iterations that is acceptable for
+		    convergence.
 	**/
-	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
+	static public function _minimize_neldermead(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?callback:Dynamic, ?maxiter:Dynamic, ?maxfev:Dynamic, ?disp:Dynamic, ?return_all:Dynamic, ?initial_simplex:Dynamic, ?xatol:Dynamic, ?fatol:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Minimization of scalar function of one or more variables using the
 		Newton-CG algorithm.
@@ -145,10 +154,12 @@ package scipy.optimize.optimize;
 		    Relative error in solution `xopt` acceptable for convergence.
 		ftol : float
 		    Relative error in ``fun(xopt)`` acceptable for convergence.
-		maxiter : int
-		    Maximum number of iterations to perform.
-		maxfev : int
-		    Maximum number of function evaluations to make.
+		maxiter, maxfev : int
+		    Maximum allowed number of iterations and function evaluations.
+		    Will default to ``N*1000``, where ``N`` is the number of
+		    variables, if neither `maxiter` or `maxfev` is set. If both
+		    `maxiter` and `maxfev` are set, minimization will stop at the
+		    first reached.
 		direc : ndarray
 		    Initial set of direction vectors for the Powell method.
 	**/
@@ -581,7 +592,7 @@ package scipy.optimize.optimize;
 		of the objective function occurs.  If `finish` is None, that is the
 		point returned.  When the global minimum occurs within (or not very far
 		outside) the grid's boundaries, and the grid is fine enough, that
-		point will be in the neighborhood of the gobal minimum.
+		point will be in the neighborhood of the global minimum.
 		
 		However, users often employ some other optimization program to
 		"polish" the gridpoint values, `i.e.`, to seek a more precise
@@ -603,7 +614,9 @@ package scipy.optimize.optimize;
 		of the `finish` program, *not* the gridpoint ones.  Consequently,
 		while `brute` confines its search to the input grid points,
 		the `finish` program's results usually will not coincide with any
-		gridpoint, and may fall outside the grid's boundary.
+		gridpoint, and may fall outside the grid's boundary. Thus, if a
+		minimum only needs to be found over the provided grid points, make
+		sure to pass in `finish=None`.
 		
 		*Note 2*: The grid of points is a `numpy.mgrid` object.
 		For `brute` the `ranges` and `Ns` inputs have the following effect.
@@ -755,13 +768,12 @@ package scipy.optimize.optimize;
 		    Initial guess.
 		args : tuple, optional
 		    Extra arguments passed to func, i.e. ``f(x,*args)``.
-		callback : callable, optional
-		    Called after each iteration, as callback(xk), where xk is the
-		    current parameter vector.
 		xtol : float, optional
-		    Relative error in xopt acceptable for convergence.
+		    Absolute error in xopt between iterations that is acceptable for
+		    convergence.
 		ftol : number, optional
-		    Relative error in func(xopt) acceptable for convergence.
+		    Absolute error in func(xopt) between iterations that is acceptable for
+		    convergence.
 		maxiter : int, optional
 		    Maximum number of iterations to perform.
 		maxfun : number, optional
@@ -772,6 +784,14 @@ package scipy.optimize.optimize;
 		    Set to True to print convergence messages.
 		retall : bool, optional
 		    Set to True to return list of solutions at each iteration.
+		callback : callable, optional
+		    Called after each iteration, as callback(xk), where xk is the
+		    current parameter vector.
+		initial_simplex : array_like of shape (N + 1, N), optional
+		    Initial simplex. If given, overrides `x0`.
+		    ``initial_simplex[j,:]`` should contain the coordinates of
+		    the j-th vertex of the ``N+1`` vertices in the simplex, where
+		    ``N`` is the dimension.
 		
 		Returns
 		-------
@@ -805,7 +825,8 @@ package scipy.optimize.optimize;
 		performance in high-dimensional problems and is not robust to
 		minimizing complicated functions. Additionally, there currently is no
 		complete theory describing when the algorithm will successfully
-		converge to the minimum, or how fast it will if it does.
+		converge to the minimum, or how fast it will if it does. Both the ftol and
+		xtol criteria must be met for convergence.
 		
 		References
 		----------
@@ -818,7 +839,7 @@ package scipy.optimize.optimize;
 		       Griffiths and G.A. Watson (Eds.), Addison Wesley Longman,
 		       Harlow, UK, pp. 191-208.
 	**/
-	static public function fmin(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function fmin(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic, ?initial_simplex:Dynamic):Dynamic;
 	/**
 		Minimize a function using the BFGS algorithm.
 		
@@ -1009,9 +1030,9 @@ package scipy.optimize.optimize;
 		>>> res1 = optimize.fmin_cg(f, x0, fprime=gradf, args=args)
 		Optimization terminated successfully.
 		         Current function value: 1.617021
-		         Iterations: 2
-		         Function evaluations: 5
-		         Gradient evaluations: 5
+		         Iterations: 4
+		         Function evaluations: 8
+		         Gradient evaluations: 8
 		>>> res1
 		array([-1.80851064, -0.25531915])
 		
@@ -1029,9 +1050,9 @@ package scipy.optimize.optimize;
 		...                          method='CG', options=opts)
 		Optimization terminated successfully.
 		        Current function value: 1.617021
-		        Iterations: 2
-		        Function evaluations: 5
-		        Gradient evaluations: 5
+		        Iterations: 4
+		        Function evaluations: 8
+		        Gradient evaluations: 8
 		>>> res2.x  # minimum found
 		array([-1.80851064, -0.25531915])
 	**/
@@ -1562,7 +1583,7 @@ package scipy.optimize.optimize;
 		
 		The function computed is::
 		
-		    sum(100.0*(x[1:] - x[:-1]**2.0)**2.0 + (1 - x[:-1])**2.0
+		    sum(100.0*(x[1:] - x[:-1]**2.0)**2.0 + (1 - x[:-1])**2.0)
 		
 		Parameters
 		----------

@@ -20,7 +20,8 @@ package scipy.optimize._lsq;
 		the loss function rho(s) (a scalar function), `least_squares` finds a
 		local minimum of the cost function F(x)::
 		
-		    F(x) = 0.5 * sum(rho(f_i(x)**2), i = 1, ..., m), lb <= x <= ub
+		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
+		    subject to lb <= x <= ub
 		
 		The purpose of the loss function rho(s) is to reduce the influence of
 		outliers on the solution.
@@ -69,14 +70,13 @@ package scipy.optimize._lsq;
 		
 		    Default is 'trf'. See Notes for more information.
 		ftol : float, optional
-		    Tolerance for termination by the change of the cost function.
-		    Default is the square root of machine epsilon. The optimization process
-		    is stopped when ``dF < ftol * F``, and there was an adequate agreement
-		    between a local quadratic model and the true model in the last step.
+		    Tolerance for termination by the change of the cost function. Default
+		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
+		    and there was an adequate agreement between a local quadratic model and
+		    the true model in the last step.
 		xtol : float, optional
 		    Tolerance for termination by the change of the independent variables.
-		    Default is the square root of machine epsilon. The exact condition
-		    checked depends on the `method` used:
+		    Default is 1e-8. The exact condition depends on the `method` used:
 		
 		        * For 'trf' and 'dogbox' : ``norm(dx) < xtol * (xtol + norm(x))``
 		        * For 'lm' : ``Delta < xtol * norm(xs)``, where ``Delta`` is
@@ -84,9 +84,8 @@ package scipy.optimize._lsq;
 		          scaled according to `x_scale` parameter (see below).
 		
 		gtol : float, optional
-		    Tolerance for termination by the norm of the gradient. Default is
-		    the square root of machine epsilon. The exact condition depends
-		    on a `method` used:
+		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
+		    The exact condition depends on a `method` used:
 		
 		        * For 'trf' : ``norm(g_scaled, ord=np.inf) < gtol``, where
 		          ``g_scaled`` is the value of the gradient scaled to account for
@@ -101,9 +100,9 @@ package scipy.optimize._lsq;
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
-		    An alternative view is that the size of a trust-region along j-th
+		    An alternative view is that the size of a trust region along j-th
 		    dimension is proportional to ``x_scale[j]``. Improved convergence may
-		    be achieved by setting `x_scale` such that a step of a given length
+		    be achieved by setting `x_scale` such that a step of a given size
 		    along any of the scaled variables has a similar effect on the cost
 		    function. If set to 'jac', the scale is iteratively updated using the
 		    inverse norms of the columns of the Jacobian matrix (as described in
@@ -116,7 +115,7 @@ package scipy.optimize._lsq;
 		        * 'soft_l1' : ``rho(z) = 2 * ((1 + z)**0.5 - 1)``. The smooth
 		          approximation of l1 (absolute value) loss. Usually a good
 		          choice for robust least squares.
-		        * 'huber' : ``rho(z) = z if z <= 1 else z**0.5 - 1``. Works
+		        * 'huber' : ``rho(z) = z if z <= 1 else 2*z**0.5 - 1``. Works
 		          similarly to 'soft_l1'.
 		        * 'cauchy' : ``rho(z) = ln(1 + z)``. Severely weakens outliers
 		          influence, but may cause difficulties in optimization process.
@@ -163,7 +162,7 @@ package scipy.optimize._lsq;
 		          least-squares problem and only requires matrix-vector product
 		          evaluations.
 		
-		    If None (default) the solver is chosen based on type of Jacobian
+		    If None (default) the solver is chosen based on the type of Jacobian
 		    returned on the first iteration.
 		tr_options : dict, optional
 		    Keyword options passed to trust-region solver.
@@ -172,17 +171,18 @@ package scipy.optimize._lsq;
 		        * ``tr_solver='lsmr'``: options for `scipy.sparse.linalg.lsmr`.
 		          Additionally  ``method='trf'`` supports  'regularize' option
 		          (bool, default is True) which adds a regularization term to the
-		          normal equations, which improves convergence if Jacobian is
+		          normal equation, which improves convergence if the Jacobian is
 		          rank-deficient [Byrd]_ (eq. 3.4).
 		
 		jac_sparsity : {None, array_like, sparse matrix}, optional
 		    Defines the sparsity structure of the Jacobian matrix for finite
-		    differences. If the Jacobian has only few non-zeros in *each* row,
-		    providing the sparsity structure will greatly speed up the computations
-		    [Curtis]_. Should have shape (m, n). A zero entry means that a
-		    corresponding element in the Jacobian is identically zero. If provided,
-		    forces the use of 'lsmr' trust-region solver. If None (default) then
-		    dense differencing will be used. Has no effect for 'lm' method.
+		    difference estimation, its shape must be (m, n). If the Jacobian has
+		    only few non-zero elements in *each* row, providing the sparsity
+		    structure will greatly speed up the computations [Curtis]_. A zero
+		    entry means that a corresponding element in the Jacobian is identically
+		    zero. If provided, forces the use of 'lsmr' trust-region solver.
+		    If None (default) then dense differencing will be used. Has no effect
+		    for 'lm' method.
 		verbose : {0, 1, 2}, optional
 		    Level of algorithm's verbosity:
 		
@@ -354,9 +354,9 @@ package scipy.optimize._lsq;
 		>>> res_1.x
 		array([ 1.,  1.])
 		>>> res_1.cost
-		2.4651903288156619e-30
+		9.8669242910846867e-30
 		>>> res_1.optimality
-		4.4408921315878507e-14
+		8.8928864934219529e-14
 		
 		We now constrain the variables, in such a way that the previous solution
 		becomes infeasible. Specifically, we require that ``x[1] >= 1.5``, and
@@ -412,7 +412,7 @@ package scipy.optimize._lsq;
 		>>> res_3 = least_squares(fun_broyden, x0_broyden,
 		...                       jac_sparsity=sparsity_broyden(n))
 		>>> res_3.cost
-		4.5687161966109073e-23
+		4.5687069299604613e-23
 		>>> res_3.optimality
 		1.1650454296851518e-11
 		
@@ -492,9 +492,14 @@ package scipy.optimize._lsq;
 	/**
 		Solve a linear least-squares problem with bounds on the variables.
 		
-		`lsq_linear` finds a minimum of the cost function 0.5 * ||A x - b||**2,
-		such that lb <= x <= ub. Where A is an m-by-n design matrix and b is a
-		target vector with m elements.
+		Given a m-by-n design matrix A and a target vector b with m elements,
+		`lsq_linear` solves the following optimization problem::
+		
+		    minimize 0.5 * ||A x - b||**2
+		    subject to lb <= x <= ub
+		
+		This optimization problem is convex, hence a found minimum (if iterations
+		have converged) is guaranteed to be global.
 		
 		Parameters
 		----------
@@ -515,12 +520,13 @@ package scipy.optimize._lsq;
 		          and the required number of iterations is weakly correlated with
 		          the number of variables.
 		        * 'bvls' : Bounded-Variable Least-Squares algorithm. This is
-		          an active set method, which requires the number iterations
-		          comparable to the number of variables. Does not support sparse
-		          matrices.
+		          an active set method, which requires the number of iterations
+		          comparable to the number of variables. Can't be used when `A` is
+		          sparse or LinearOperator.
 		
+		    Default is 'trf'.
 		tol : float, optional
-		    Tolerance parameter. The algorithm terminates if the relative change
+		    Tolerance parameter. The algorithm terminates if a relative change
 		    of the cost function is less than `tol` on the last iteration.
 		    Additionally the first-order optimality measure is considered:
 		
@@ -528,7 +534,7 @@ package scipy.optimize._lsq;
 		          scaled to account for the presence of the bounds, is less than
 		          `tol`.
 		        * ``method='bvls'`` terminates if Karush-Kuhn-Tucker conditions
-		          are violated by less than `tol`.
+		          are satisfied within `tol` tolerance.
 		
 		lsq_solver : {None, 'exact', 'lsmr'}, optional
 		    Method of solving unbounded least-squares problems throughout
@@ -542,10 +548,11 @@ package scipy.optimize._lsq;
 		
 		    If None (default) the solver is chosen based on type of `A`.
 		lsmr_tol : None, float or 'auto', optional
-		    Tolerance parameters 'atol' and 'btol' for 'lsmr' solver. If None
-		    (default), it is set to ``1e-2 * tol``. If 'auto', the tolerance will
-		    be adjusted based on the optimality of the current iterate. It can
-		    speed up the optimization process, but not always reliable.
+		    Tolerance parameters 'atol' and 'btol' for `scipy.sparse.linalg.lsmr`
+		    If None (default), it is set to ``1e-2 * tol``. If 'auto', the
+		    tolerance will be adjusted based on the optimality of the current
+		    iterate, which can speed up the optimization process, but is not always
+		    reliable.
 		max_iter : None or int, optional
 		    Maximum number of iterations before termination. If None (default), it
 		    is set to 100 for ``method='trf'`` or to the number of variables for
@@ -577,8 +584,9 @@ package scipy.optimize._lsq;
 		        * -1 : a lower bound is active.
 		        *  1 : an upper bound is active.
 		
-		    Somewhat arbitrary because it is determined within a tolerance
-		    threshold.
+		    Might be somewhat arbitrary for the `trf` method as it generates a
+		    sequence of strictly feasible iterates and active_mask is determined
+		    within a tolerance threshold.
 		nit : int
 		    Number of iterations. Zero if the unconstrained solution is optimal.
 		status : int
@@ -659,7 +667,8 @@ package scipy.optimize._lsq;
 		>>> res = lsq_linear(A, b, bounds=(lb, ub), lsmr_tol='auto', verbose=1)
 		# may vary
 		The relative change of the cost function is less than `tol`.
-		Number of iterations: 16, initial cost: 1.5039e+04,final cost 1.1112e+04, first-order optimality 4.66e-08.
+		Number of iterations 16, initial cost 1.5039e+04, final cost 1.1112e+04,
+		first-order optimality 4.66e-08.
 	**/
 	static public function lsq_linear(A:Dynamic, b:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?lsq_solver:Dynamic, ?lsmr_tol:Dynamic, ?max_iter:Dynamic, ?verbose:Dynamic):Float;
 	static public var print_function : Dynamic;

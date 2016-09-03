@@ -282,7 +282,7 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -314,9 +314,9 @@ package scipy.sparse.linalg.eigen.lobpcg.lobpcg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If `a` is singular.
-		ValueError :
+		ValueError
 		    If `a` is not square, or not 2-dimensional.
 		
 		Examples

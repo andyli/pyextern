@@ -71,6 +71,10 @@ package scipy.sparse.dok;
 		Return an iterator over the (key, value) pairs of a dictionary.
 	**/
 	static public function iteritems(d:Dynamic):Dynamic;
+	/**
+		Return an iterator over the values of a dictionary.
+	**/
+	static public function itervalues(d:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Returns the nearest supported sparse dtype for the

@@ -46,7 +46,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method __eq__
 	**/
-	public function __eq__(other:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Propagate metadata from other to self.
 		
@@ -66,7 +66,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method __ge__
 	**/
-	public function __ge__(other:Dynamic):Dynamic;
+	public function __ge__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		After regular attribute access, try looking up the name
 		This allows simpler access to columns for interactive use.
@@ -81,7 +81,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method __gt__
 	**/
-	public function __gt__(other:Dynamic):Dynamic;
+	public function __gt__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return hash(self).
 	**/
@@ -108,7 +108,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method __le__
 	**/
-	public function __le__(other:Dynamic):Dynamic;
+	public function __le__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns length of info axis
 	**/
@@ -116,14 +116,14 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method __lt__
 	**/
-	public function __lt__(other:Dynamic):Dynamic;
+	public function __lt__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
 	/**
 		Wrapper for comparison method __ne__
 	**/
-	public function __ne__(other:Dynamic):Dynamic;
+	public function __ne__(other:Dynamic, ?axis:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
@@ -1023,7 +1023,7 @@ package pandas.sparse.panel;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated.
 		
@@ -1167,7 +1167,7 @@ package pandas.sparse.panel;
 	**/
 	public function count(?axis:Dynamic):pandas.DataFrame;
 	/**
-		Return cumulative max over requested axis.
+		Return cumulative cummax over requested axis.
 		
 		Parameters
 		----------
@@ -1178,11 +1178,11 @@ package pandas.sparse.panel;
 		
 		Returns
 		-------
-		max : DataFrame
+		cummax : DataFrame
 	**/
 	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative min over requested axis.
+		Return cumulative cummin over requested axis.
 		
 		Parameters
 		----------
@@ -1193,11 +1193,11 @@ package pandas.sparse.panel;
 		
 		Returns
 		-------
-		min : DataFrame
+		cummin : DataFrame
 	**/
 	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative prod over requested axis.
+		Return cumulative cumprod over requested axis.
 		
 		Parameters
 		----------
@@ -1208,11 +1208,11 @@ package pandas.sparse.panel;
 		
 		Returns
 		-------
-		prod : DataFrame
+		cumprod : DataFrame
 	**/
 	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative sum over requested axis.
+		Return cumulative cumsum over requested axis.
 		
 		Parameters
 		----------
@@ -1223,7 +1223,7 @@ package pandas.sparse.panel;
 		
 		Returns
 		-------
-		sum : DataFrame
+		cumsum : DataFrame
 	**/
 	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
@@ -1402,7 +1402,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method eq
 	**/
-	public function eq(other:Dynamic):Dynamic;
+	public function eq(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Determines if two NDFrame objects contain the same elements. NaNs in
 		the same location are considered equal.
@@ -1546,7 +1546,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method ge
 	**/
-	public function ge(other:Dynamic):Dynamic;
+	public function ge(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Get item from object for given key (DataFrame column, Panel slice,
 		etc.). Returns default value if not found.
@@ -1604,7 +1604,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method gt
 	**/
-	public function gt(other:Dynamic):Dynamic;
+	public function gt(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns first n rows
 	**/
@@ -1629,6 +1629,8 @@ package pandas.sparse.panel;
 		- A list or array of integers, e.g. ``[4, 3, 0]``.
 		- A slice object with ints, e.g. ``1:7``.
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.iloc`` will raise ``IndexError`` if a requested indexer is
 		out-of-bounds, except *slice* indexers which allow out-of-bounds
@@ -1647,7 +1649,8 @@ package pandas.sparse.panel;
 		----------
 		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
 		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
-		          'polynomial', 'spline' 'piecewise_polynomial', 'pchip'}
+		          'polynomial', 'spline', 'piecewise_polynomial',
+		          'from_derivatives', 'pchip', 'akima'}
 		
 		    * 'linear': ignore the index and treat the values as equally
 		      spaced. This is the only method supported on MultiIndexes.
@@ -1661,12 +1664,21 @@ package pandas.sparse.panel;
 		      require that you also specify an `order` (int),
 		      e.g. df.interpolate(method='polynomial', order=4).
 		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', and 'pchip' are all
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
 		      wrappers around the scipy interpolation methods of similar
 		      names. These use the actual numerical values of the index. See
 		      the scipy documentation for more on their behavior
 		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
 		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		
+		    .. versionadded:: 0.18.1
+		
+		       Added support for the 'akima' method
+		       Added interpolate method 'from_derivatives' which replaces
+		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
+		       scipy < 0.18
 		
 		axis : {0, 1}, default 0
 		    * 0: fill column-by-column
@@ -1845,7 +1857,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method le
 	**/
-	public function le(other:Dynamic):Dynamic;
+	public function le(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Purely label-location based indexer for selection by label.
 		
@@ -1861,6 +1873,8 @@ package pandas.sparse.panel;
 		- A slice object with labels, e.g. ``'a':'f'`` (note that contrary
 		  to usual python slices, **both** the start and the stop are included!).
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.loc`` will raise a ``KeyError`` when the items are not found.
 		
@@ -1870,7 +1884,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method lt
 	**/
-	public function lt(other:Dynamic):Dynamic;
+	public function lt(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return the mean absolute deviation of the values for the requested axis
 		
@@ -1914,8 +1928,26 @@ package pandas.sparse.panel;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None
@@ -2080,7 +2112,7 @@ package pandas.sparse.panel;
 	/**
 		Wrapper for comparison method ne
 	**/
-	public function ne(other:Dynamic):Dynamic;
+	public function ne(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are
 		not null.
@@ -2780,7 +2812,7 @@ package pandas.sparse.panel;
 		--------
 		numpy.around
 	**/
-	public function round(?decimals:Dynamic):Dynamic;
+	public function round(?decimals:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Exponential power of series and other, element-wise (binary operator `rpow`).
 		Equivalent to ``other ** panel``.
@@ -3082,7 +3114,7 @@ package pandas.sparse.panel;
 	/**
 		Squeeze length 1 dimensions.
 	**/
-	public function squeeze():Dynamic;
+	public function squeeze(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sample standard deviation over requested axis.
 		
@@ -3186,8 +3218,13 @@ package pandas.sparse.panel;
 		Returns
 		-------
 		swapped : type of caller (new object)
+		
+		.. versionchanged:: 0.18.1
+		
+		   The indexes ``i`` and ``j`` are now optional, and default to
+		   the two innermost levels of the index.
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic, ?axis:Dynamic):Dynamic;
+	public function swaplevel(?i:Dynamic, ?j:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns last n rows
 	**/
@@ -3206,7 +3243,7 @@ package pandas.sparse.panel;
 		-------
 		taken : type of caller
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function toLong(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Attempt to write text representation of object to the system clipboard
@@ -3742,8 +3779,26 @@ package pandas.sparse.panel;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None

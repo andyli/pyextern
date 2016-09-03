@@ -1,6 +1,8 @@
 /* This file is generated, do not edit! */
 package scipy.spatial.distance;
 @:pythonImport("scipy.spatial.distance") extern class Distance_Module {
+	static public var _SIMPLE_CDIST : Dynamic;
+	static public var _SIMPLE_PDIST : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -16,13 +18,6 @@ package scipy.spatial.distance;
 		Copies the array if its base points to a parent array.
 	**/
 	static public function _copy_array_if_base_present(a:Dynamic):Dynamic;
-	/**
-		Accepts a tuple of arrays T. Copies the array T[i] if its base array
-		points to an actual array. Otherwise, the reference is just copied.
-		This is useful if the arrays are being passed to a C function that
-		does not do proper striding.
-	**/
-	static public function _copy_arrays_if_base_present(T:Dynamic):Dynamic;
 	static public function _cosine_cdist(XA:Dynamic, XB:Dynamic, dm:Dynamic):Dynamic;
 	static public function _nbool_correspond_all(u:Dynamic, v:Dynamic):Dynamic;
 	static public function _nbool_correspond_ft_tf(u:Dynamic, v:Dynamic):Dynamic;
@@ -198,7 +193,7 @@ package scipy.spatial.distance;
 		
 		   Computes the Mahalanobis distance between the points. The
 		   Mahalanobis distance between two points ``u`` and ``v`` is
-		   :math:`(u-v)(1/V)(u-v)^T` where :math:`(1/V)` (the ``VI``
+		   :math:`\sqrt{(u-v)(1/V)(u-v)^T}` where :math:`(1/V)` (the ``VI``
 		   variable) is the inverse covariance. If ``VI`` is not None,
 		   ``VI`` will be used as the inverse covariance matrix.
 		
@@ -209,8 +204,7 @@ package scipy.spatial.distance;
 		
 		15. ``Y = cdist(XA, XB, 'matching')``
 		
-		   Computes the matching distance between the boolean
-		   vectors. (see `matching` function documentation)
+		   Synonym for 'hamming'.
 		
 		16. ``Y = cdist(XA, XB, 'dice')``
 		
@@ -349,6 +343,7 @@ package scipy.spatial.distance;
 		       [ 2.3]])
 	**/
 	static public function cdist(XA:Dynamic, XB:Dynamic, ?metric:Dynamic, ?p:Dynamic, ?V:Dynamic, ?VI:Dynamic, ?w:Dynamic):Dynamic;
+	static public function cdist_fn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Computes the Chebyshev distance.
 		
@@ -670,30 +665,9 @@ package scipy.spatial.distance;
 	**/
 	static public function mahalanobis(u:Dynamic, v:Dynamic, VI:Dynamic):Dynamic;
 	/**
-		Computes the Matching dissimilarity between two boolean 1-D arrays.
+		Computes the Hamming distance between two boolean 1-D arrays.
 		
-		The Matching dissimilarity between two boolean 1-D arrays
-		`u` and `v`, is defined as
-		
-		.. math::
-		
-		   \frac{c_{TF} + c_{FT}}{n}
-		
-		where :math:`c_{ij}` is the number of occurrences of
-		:math:`\mathtt{u[k]} = i` and :math:`\mathtt{v[k]} = j` for
-		:math:`k < n`.
-		
-		Parameters
-		----------
-		u : (N,) array_like, bool
-		    Input array.
-		v : (N,) array_like, bool
-		    Input array.
-		
-		Returns
-		-------
-		matching : double
-		    The Matching dissimilarity between vectors `u` and `v`.
+		This is a deprecated synonym for :func:`hamming`.
 	**/
 	static public function matching(u:Dynamic, v:Dynamic):Dynamic;
 	/**
@@ -721,6 +695,8 @@ package scipy.spatial.distance;
 		    The Minkowski distance between vectors `u` and `v`.
 	**/
 	static public function minkowski(u:Dynamic, v:Dynamic, p:Dynamic):Dynamic;
+	static public var name : Dynamic;
+	static public var names : Dynamic;
 	/**
 		Matrix or vector norm.
 		
@@ -943,7 +919,7 @@ package scipy.spatial.distance;
 		   Computes the Jaccard distance between the points. Given two
 		   vectors, ``u`` and ``v``, the Jaccard distance is the
 		   proportion of those elements ``u[i]`` and ``v[i]`` that
-		   disagree where at least one of them is non-zero.
+		   disagree.
 		
 		10. ``Y = pdist(X, 'chebyshev')``
 		
@@ -993,8 +969,7 @@ package scipy.spatial.distance;
 		
 		15. ``Y = pdist(X, 'matching')``
 		
-		   Computes the matching distance between each pair of boolean
-		   vectors. (see matching function documentation)
+		   Synonym for 'hamming'.
 		
 		16. ``Y = pdist(X, 'dice')``
 		
@@ -1093,6 +1068,7 @@ package scipy.spatial.distance;
 		redundant square matrix.
 	**/
 	static public function pdist(X:Dynamic, ?metric:Dynamic, ?p:Dynamic, ?w:Dynamic, ?V:Dynamic, ?VI:Dynamic):Dynamic;
+	static public function pdist_fn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Computes the Rogers-Tanimoto dissimilarity between two boolean 1-D arrays.
@@ -1291,10 +1267,10 @@ package scipy.spatial.distance;
 		
 		2. X = squareform(v)
 		
-		  Given a d*d(-1)/2 sized v for some integer d>=2 encoding distances
+		  Given a d*(d-1)/2 sized v for some integer d>=2 encoding distances
 		  as described, X=squareform(v) returns a d by d distance matrix X. The
 		  X[i, j] and X[j, i] values are set to
-		  v[{n \choose 2}-{n-i \choose 2} + (j-u-1)] and all
+		  v[{n \choose 2}-{n-i \choose 2} + (j-i-1)] and all
 		  diagonal elements are zero.
 	**/
 	static public function squareform(X:Dynamic, ?force:Dynamic, ?checks:Dynamic):Dynamic;
@@ -1306,7 +1282,7 @@ package scipy.spatial.distance;
 		
 		.. math::
 		
-		   \left(\sum{(w_i |u_i - v_i|^p)}\right)^{1/p}.
+		   \left(\sum{(|w_i (u_i - v_i)|^p)}\right)^{1/p}.
 		
 		Parameters
 		----------
@@ -1325,6 +1301,7 @@ package scipy.spatial.distance;
 		    The weighted Minkowski distance between vectors `u` and `v`.
 	**/
 	static public function wminkowski(u:Dynamic, v:Dynamic, p:Dynamic, w:Dynamic):Dynamic;
+	static public var wrap_name : Dynamic;
 	/**
 		Computes the Yule dissimilarity between two boolean 1-D arrays.
 		

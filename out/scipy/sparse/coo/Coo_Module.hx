@@ -52,11 +52,6 @@ package scipy.sparse.coo;
 	**/
 	static public function getdtype(dtype:Dynamic, ?a:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
-		Is x appropriate as an index into a sparse matrix? Returns True
-		if it can be cast safely to a machine int.
-	**/
-	static public function isintlike(x:Dynamic):Dynamic;
-	/**
 		Is x a valid 2-tuple of dimensions?
 		    
 	**/

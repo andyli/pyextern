@@ -40,6 +40,7 @@ package scipy.optimize._lsq.trf;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Parameterize a multivariate quadratic function along a line.
 		
@@ -84,6 +85,7 @@ package scipy.optimize._lsq.trf;
 		Compute variables scale based on the Jacobian matrix.
 	**/
 	static public function compute_jac_scale(J:Dynamic, ?scale_inv_old:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Compute values of a quadratic function arising in least squares.
 		
@@ -356,22 +358,22 @@ package scipy.optimize._lsq.trf;
 		>>> LA.norm(b, 'fro')
 		7.745966692414834
 		>>> LA.norm(a, np.inf)
-		4
+		4.0
 		>>> LA.norm(b, np.inf)
-		9
+		9.0
 		>>> LA.norm(a, -np.inf)
-		0
+		0.0
 		>>> LA.norm(b, -np.inf)
-		2
+		2.0
 		
 		>>> LA.norm(a, 1)
-		20
+		20.0
 		>>> LA.norm(b, 1)
-		7
+		7.0
 		>>> LA.norm(a, -1)
 		-4.6566128774142013e-010
 		>>> LA.norm(b, -1)
-		6
+		6.0
 		>>> LA.norm(a, 2)
 		7.745966692414834
 		>>> LA.norm(b, 2)
@@ -395,7 +397,7 @@ package scipy.optimize._lsq.trf;
 		>>> LA.norm(c, axis=1)
 		array([ 3.74165739,  4.24264069])
 		>>> LA.norm(c, ord=1, axis=1)
-		array([6, 6])
+		array([ 6.,  6.])
 		
 		Using the `axis` argument to compute matrix norms:
 		
@@ -406,6 +408,7 @@ package scipy.optimize._lsq.trf;
 		(3.7416573867739413, 11.224972160321824)
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function print_header_nonlinear():Dynamic;
 	static public function print_iteration_nonlinear(iteration:Dynamic, nfev:Dynamic, cost:Dynamic, cost_reduction:Dynamic, step_norm:Dynamic, optimality:Dynamic):Dynamic;
 	/**
@@ -638,6 +641,13 @@ package scipy.optimize._lsq.trf;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -651,7 +661,7 @@ package scipy.optimize._lsq.trf;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -682,7 +692,7 @@ package scipy.optimize._lsq.trf;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	static public function trf(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, lb:Dynamic, ub:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;
 	static public function trf_bounds(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, lb:Dynamic, ub:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;
 	static public function trf_no_bounds(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;

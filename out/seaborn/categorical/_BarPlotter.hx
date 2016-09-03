@@ -41,11 +41,11 @@ package seaborn.categorical;
 		Initialize the plotter.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic):Dynamic;
 	/**
 		Initialize the plotter.
 	**/
-	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, saturation:Dynamic, errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -117,7 +117,7 @@ package seaborn.categorical;
 		Draw the bars onto `ax`.
 	**/
 	public function draw_bars(ax:Dynamic, kws:Dynamic):Dynamic;
-	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
+	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a list of colors for the main component of the plots.
 	**/

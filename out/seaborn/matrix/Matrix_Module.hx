@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.matrix;
 @:pythonImport("seaborn.matrix") extern class Matrix_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -81,10 +82,14 @@ package seaborn.matrix;
 		{row,col}_linkage : numpy.array, optional
 		    Precomputed linkage matrix for the rows or columns. See
 		    scipy.cluster.hierarchy.linkage for specific formats.
-		{row,col}_colors : list-like, optional
+		{row,col}_colors : list-like or pandas DataFrame/Series, optional
 		    List of colors to label for either the rows or columns. Useful to
 		    evaluate whether samples within a group are clustered together. Can
-		    use nested lists for multiple color levels of labeling.
+		    use nested lists or DataFrame for multiple color levels of labeling.
+		    If given as a DataFrame or Series, labels for the colors are extracted
+		    from the DataFrames column names or from the name of the Series.
+		    DataFrame/Series colors are also matched to the data by their
+		    index, ensuring colors are drawn in the correct order.
 		mask : boolean array or DataFrame, optional
 		    If passed, data will not be shown in cells where ``mask`` is True.
 		    Cells with missing values are automatically masked. Only used for
@@ -367,10 +372,12 @@ package seaborn.matrix;
 		robust : bool, optional
 		    If True and ``vmin`` or ``vmax`` are absent, the colormap range is
 		    computed with robust quantiles instead of the extreme values.
-		annot : bool, optional
-		    If True, write the data value in each cell.
+		annot : bool or rectangular dataset, optional
+		    If True, write the data value in each cell. If an array-like with the
+		    same shape as ``data``, then use this to annotate the heatmap instead
+		    of the raw data.
 		fmt : string, optional
-		    String formatting code to use when ``annot`` is True.
+		    String formatting code to use when adding annotations.
 		annot_kws : dict of key, value mappings, optional
 		    Keyword arguments for ``ax.text`` when ``annot`` is True.
 		linewidths : float, optional
@@ -514,4 +521,17 @@ package seaborn.matrix;
 		    ...     ax = sns.heatmap(corr, mask=mask, vmax=.3, square=True)
 	**/
 	static public function heatmap(data:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?cmap:Dynamic, ?center:Dynamic, ?robust:Dynamic, ?annot:Dynamic, ?fmt:Dynamic, ?annot_kws:Dynamic, ?linewidths:Dynamic, ?linecolor:Dynamic, ?cbar:Dynamic, ?cbar_kws:Dynamic, ?cbar_ax:Dynamic, ?square:Dynamic, ?ax:Dynamic, ?xticklabels:Dynamic, ?yticklabels:Dynamic, ?mask:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Calculate the relative luminance of a color according to W3C standards
+		
+		Parameters
+		----------
+		color : matplotlib color or sequence of matplotlib colors
+		    Hex code, rgb-tuple, or html color name.
+		
+		Returns
+		-------
+		luminance : float(s) between 0 and 1
+	**/
+	static public function relative_luminance(color:Dynamic):Dynamic;
 }

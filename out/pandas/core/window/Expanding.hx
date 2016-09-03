@@ -147,6 +147,8 @@ package pandas.core.window;
 		Parameters
 		----------
 		func : string/callable to apply
+		name : string, optional
+		   name of this function
 		window : int/array, default to _get_window()
 		center : boolean, default to self.center
 		check_minp : function, default to _use_window
@@ -157,7 +159,7 @@ package pandas.core.window;
 		-------
 		y : type of input
 	**/
-	public function _apply(func:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _apply(func:Dynamic, ?name:Dynamic, ?window:Dynamic, ?center:Dynamic, ?check_minp:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var _attributes : Dynamic;
 	static public var _builtin_table : Dynamic;
 	/**
@@ -220,11 +222,10 @@ package pandas.core.window;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _setup():Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
-	public function _shallow_copy(?obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
 		wrap a single result 
@@ -550,6 +551,7 @@ package pandas.core.window;
 		pandas.DataFrame.expanding
 	**/
 	public function sum(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function validate():Dynamic;
 	/**
 		expanding variance
 		

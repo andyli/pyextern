@@ -26,7 +26,6 @@ package scipy.io.matlab.mio5_utils;
 		   ``arr``
 	**/
 	static public function chars_to_strings(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var native_code : Dynamic;
 	/**
 		Shallow copy operation on arbitrary Python objects.
 		
@@ -41,5 +40,4 @@ package scipy.io.matlab.mio5_utils;
 	**/
 	static public function squeeze_element(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var swapped_code : Dynamic;
-	static public var sys_is_le : Dynamic;
 }

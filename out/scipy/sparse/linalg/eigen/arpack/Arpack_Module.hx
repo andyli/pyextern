@@ -80,7 +80,7 @@ package scipy.sparse.linalg.eigen.arpack;
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    `ncv` must be greater than `k`; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str, ['LM' | 'SM' | 'LR' | 'SR' | 'LI' | 'SI'], optional
 		    Which `k` eigenvectors and eigenvalues to find:
 		
@@ -240,7 +240,7 @@ package scipy.sparse.linalg.eigen.arpack;
 		ncv : int, optional
 		    The number of Lanczos vectors generated ncv must be greater than k and
 		    smaller than n; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str ['LM' | 'SM' | 'LA' | 'SA' | 'BE']
 		    If A is a complex hermitian matrix, 'BE' is invalid.
 		    Which `k` eigenvectors and eigenvalues to find:
@@ -354,7 +354,7 @@ package scipy.sparse.linalg.eigen.arpack;
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
 		    it is recommended that ncv > 2*k
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		tol : float, optional
 		    Tolerance for singular values. Zero (default) means machine precision.
 		which : str, ['LM' | 'SM'], optional

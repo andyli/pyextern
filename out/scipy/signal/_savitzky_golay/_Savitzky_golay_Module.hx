@@ -159,10 +159,10 @@ package scipy.signal._savitzky_golay;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If computation does not converge.
 		
-		ValueError :
+		ValueError
 		    When parameters are wrong.
 		
 		See Also

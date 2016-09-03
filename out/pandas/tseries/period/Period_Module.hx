@@ -45,6 +45,7 @@ package pandas.tseries.period;
 	static public function _period_index_cmp(opname:Dynamic, ?nat_result:Dynamic):Dynamic;
 	static public function _quarter_to_myear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _range_from_fields(?year:Dynamic, ?month:Dynamic, ?quarter:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?freq:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
 	static public function _validate_end_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return my values or the object if we are say an ndarray 

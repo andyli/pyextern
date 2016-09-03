@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.utils;
 @:pythonImport("seaborn.utils") extern class Utils_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -233,6 +234,19 @@ package seaborn.utils;
 	static public function pmf_hist(a:Dynamic, ?bins:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
+		Calculate the relative luminance of a color according to W3C standards
+		
+		Parameters
+		----------
+		color : matplotlib color or sequence of matplotlib colors
+		    Hex code, rgb-tuple, or html color name.
+		
+		Returns
+		-------
+		luminance : float(s) between 0 and 1
+	**/
+	static public function relative_luminance(color:Dynamic):Dynamic;
+	/**
 		Return a fully saturated color with the same hue.
 		
 		Parameters
@@ -266,6 +280,29 @@ package seaborn.utils;
 		Return a R-style significance string corresponding to p values.
 	**/
 	static public function sig_stars(p:Dynamic):Dynamic;
+	/**
+		Return a Unicode string representing a Python object.
+		
+		Unicode strings (i.e. type ``unicode`` in Python 2.7 and type ``str`` in
+		Python 3.x) are returned unchanged.
+		
+		Byte strings (i.e. type ``str`` in Python 2.7 and type ``bytes`` in
+		Python 3.x) are returned as UTF-8-encoded strings.
+		
+		For other objects, the method ``__str__()`` is called, and the result is
+		returned as a UTF-8-encoded string.
+		
+		Parameters
+		----------
+		obj : object
+		    Any Python object
+		
+		Returns
+		-------
+		s : unicode (Python 2.7) / str (Python 3.x)
+		    UTF-8-encoded string representation of ``obj``
+	**/
+	static public function to_utf8(obj:Dynamic):Dynamic;
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		Retrieve a URL into a temporary location on disk.

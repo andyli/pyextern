@@ -23,6 +23,7 @@ package pandas.tseries.tdi;
 	static public function _is_convertible_to_index(other:Dynamic):Dynamic;
 	static public function _is_convertible_to_td(key:Dynamic):Dynamic;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
 	/**
 		Wrap comparison operations to convert timedelta-like to timedelta64
 	**/

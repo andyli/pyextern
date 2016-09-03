@@ -78,7 +78,7 @@ package scipy.stats._discrete_distns;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?a:Dynamic, ?b:Dynamic, ?name:Dynamic, ?badvalue:Dynamic, ?moment_tol:Dynamic, ?values:Dynamic, ?inc:Dynamic, ?longname:Dynamic, ?shapes:Dynamic, ?extradoc:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -125,6 +125,7 @@ package scipy.stats._discrete_distns;
 		 0's where they are not.
 	**/
 	public function _argcheck(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _argcheck_rvs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _cdf(x:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
 	public function _cdf_single(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -150,6 +151,7 @@ package scipy.stats._discrete_distns;
 		Construct the instance docstring with string substitutions.
 	**/
 	public function _construct_doc(docdict:Dynamic, ?shapes_vals:Dynamic):Dynamic;
+	public function _construct_docstrings(name:Dynamic, longname:Dynamic, extradoc:Dynamic):Dynamic;
 	public function _entropy(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _isf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
@@ -157,11 +159,13 @@ package scipy.stats._discrete_distns;
 	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _nonzero(k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _open_support_mask(x:Dynamic):Dynamic;
 	public function _pmf(k:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
 	public function _ppf(q:Dynamic, lambda_:Dynamic, N:Dynamic):Dynamic;
 	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _sf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stats(lambda_:Dynamic, N:Dynamic):Dynamic;
+	public function _support_mask(x:Dynamic):Dynamic;
 	/**
 		Return the current version of _ctor_param, possibly updated by user.
 		
@@ -484,6 +488,11 @@ package scipy.stats._discrete_distns;
 		If an int, use a new RandomState instance seeded with seed.
 	**/
 	public var random_state : Dynamic;
+	/**
+		`return_integers` is deprecated!
+		`return_integers` attribute is not used anywhere any  longer and is deprecated in scipy 0.18.
+	**/
+	public var return_integers : Dynamic;
 	/**
 		Random variates of given type.
 		

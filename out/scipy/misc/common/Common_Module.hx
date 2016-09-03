@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package scipy.misc.common;
 @:pythonImport("scipy.misc.common") extern class Common_Module {
-	static public var _NUMPY_170 : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -11,6 +10,38 @@ package scipy.misc.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Helper function for scipy argument validation.
+		
+		Many scipy linear algebra functions do support arbitrary array-like
+		input arguments.  Examples of commonly unsupported inputs include
+		matrices containing inf/nan, sparse matrix representations, and
+		matrices with complicated elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    The array-like input.
+		check_finite : bool, optional
+		    Whether to check that the input matrices contain only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		    Default: True
+		sparse_ok : bool, optional
+		    True if scipy sparse matrices are allowed.
+		objects_ok : bool, optional
+		    True if arrays with dype('O') are allowed.
+		mask_ok : bool, optional
+		    True if masked arrays are allowed.
+		as_inexact : bool, optional
+		    True to convert the input array to a np.inexact dtype.
+		
+		Returns
+		-------
+		ret : ndarray
+		    The converted validated array.
+	**/
+	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Return the maximum of an array or maximum along an axis.
@@ -410,7 +441,7 @@ package scipy.misc.common;
 		    Input function.
 		x0 : float
 		    The point at which `n`-th derivative is found.
-		dx : int, optional
+		dx : float, optional
 		    Spacing.
 		n : int, optional
 		    Order of the derivative. Default is 1.
@@ -542,7 +573,7 @@ package scipy.misc.common;
 		Parameters
 		----------
 		gray : bool, optional
-		    If True then return color image, otherwise return an 8-bit gray-scale
+		    If True return 8-bit grey-scale image, otherwise return a color image
 		
 		Returns
 		-------
@@ -844,7 +875,7 @@ package scipy.misc.common;
 		    If return_sign is True, this will be an array of floating-point
 		    numbers matching res and +1, 0, or -1 depending on the sign
 		    of the result. If False, only one result is returned.
-		    
+		
 		See Also
 		--------
 		numpy.logaddexp, numpy.logaddexp2
@@ -877,6 +908,15 @@ package scipy.misc.common;
 		
 		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
 		(1.5413248546129181, -1.0)
+		
+		Notice that `logsumexp` does not directly support masked arrays. To use it
+		on a masked array, convert the mask into zero weights:
+		
+		>>> a = np.ma.array([np.log(2), 2, np.log(3)],
+		...                  mask=[False, True, False])
+		>>> b = (~a.mask).astype(int)
+		>>> logsumexp(a.data, b=b), np.log(5)
+		1.6094379124341005, 1.6094379124341005
 	**/
 	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	static public var newaxis : Dynamic;
@@ -1022,7 +1062,13 @@ package scipy.misc.common;
 		
 		Returns an element-wise indication of the sign of a number.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
+		is returned for nan inputs.
+		
+		For complex inputs, the `sign` function returns
+		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
+		
+		complex(nan, 0) is returned for complex nan inputs.
 		
 		Parameters
 		----------
@@ -1034,12 +1080,20 @@ package scipy.misc.common;
 		y : ndarray
 		  The sign of `x`.
 		
+		Notes
+		-----
+		There is more than one definition of sign in common use for complex
+		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
+		which is different from a common alternative, :math:`x/|x|`.
+		
 		Examples
 		--------
 		>>> np.sign([-5., 4.5])
 		array([-1.,  1.])
 		>>> np.sign(0)
 		0
+		>>> np.sign(5-2j)
+		(1+0j)
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1074,87 +1128,6 @@ package scipy.misc.common;
 		(1, 3)
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
-		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		zeros(shape, dtype=float, order='C')
 		

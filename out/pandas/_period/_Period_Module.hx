@@ -1,13 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas._period;
 @:pythonImport("pandas._period") extern class _Period_Module {
-	static public var D_RESO : Dynamic;
-	static public var H_RESO : Dynamic;
-	static public var MS_RESO : Dynamic;
 	static public var NaT : Dynamic;
-	static public var S_RESO : Dynamic;
-	static public var T_RESO : Dynamic;
-	static public var US_RESO : Dynamic;
 	static public var _DIFFERENT_FREQ : Dynamic;
 	static public var _DIFFERENT_FREQ_INDEX : Dynamic;
 	static public var __doc__ : Dynamic;

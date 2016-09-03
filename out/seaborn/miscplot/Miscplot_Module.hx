@@ -3,6 +3,7 @@ package seaborn.miscplot;
 @:pythonImport("seaborn.miscplot") extern class Miscplot_Module {
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
+	static public var __call__ : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;

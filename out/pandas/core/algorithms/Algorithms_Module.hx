@@ -9,9 +9,12 @@ package pandas.core.algorithms;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _convert_wrapper(f:Dynamic, conv_dtype:Dynamic):Dynamic;
+	static public var _diff_special : Dynamic;
 	static public var _dtype_map : Dynamic;
 	static public function _finalize_nsmallest(arr:Dynamic, kth_val:Dynamic, n:Dynamic, keep:Dynamic, narr:Dynamic):Dynamic;
 	static public function _get_data_algo(values:Dynamic, func_map:Dynamic):Dynamic;
+	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
 	/**
 		f(HashTable, type_caster) -> result
 	**/
@@ -27,7 +30,20 @@ package pandas.core.algorithms;
 	static public var _rank1d_functions : Dynamic;
 	static public var _rank2d_functions : Dynamic;
 	static public var _select_methods : Dynamic;
+	static public var _take_1d_dict : Dynamic;
+	static public var _take_2d_axis0_dict : Dynamic;
+	static public var _take_2d_axis1_dict : Dynamic;
+	static public var _take_2d_multi_dict : Dynamic;
+	static public function _take_2d_multi_generic(arr:Dynamic, indexer:Dynamic, out:Dynamic, fill_value:Dynamic, mask_info:Dynamic):Dynamic;
+	static public function _take_nd_generic(arr:Dynamic, indexer:Dynamic, out:Dynamic, axis:Dynamic, fill_value:Dynamic, mask_info:Dynamic):Dynamic;
 	static public function _unique_generic(values:Dynamic, table_type:Dynamic, type_caster:Dynamic):Dynamic;
+	static public function _value_counts_arraylike(values:Dynamic, ?dropna:Dynamic):Dynamic;
+	static public function _view_wrapper(f:Dynamic, ?arr_dtype:Dynamic, ?out_dtype:Dynamic, ?fill_wrap:Dynamic):Dynamic;
+	/**
+		difference of n between self,
+		analagoust to s-s.shift(n) 
+	**/
+	static public function diff(arr:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Encode input values as an enumerated type or categorical variable
@@ -53,10 +69,6 @@ package pandas.core.algorithms;
 		PeriodIndex
 	**/
 	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
-	/**
-		Get group position
-	**/
-	static public function group_position(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public var iNaT : Dynamic;
 	/**
 		Compute the isin boolean array
@@ -165,6 +177,66 @@ package pandas.core.algorithms;
 	static public function select_n(series:Dynamic, n:Dynamic, keep:Dynamic, method:Dynamic):pandas.Series;
 	static public function select_n_slow(dropped:Dynamic, n:Dynamic, keep:Dynamic, method:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
+	/**
+		Specialized Cython take which sets NaN values in one pass
+		
+		Parameters
+		----------
+		arr : ndarray
+		    Input array
+		indexer : ndarray
+		    1-D array of indices to take, subarrays corresponding to -1 value
+		    indicies are filed with fill_value
+		axis : int, default 0
+		    Axis to take from
+		out : ndarray or None, default None
+		    Optional output array, must be appropriate type to hold input and
+		    fill_value together, if indexer has any -1 value entries; call
+		    common._maybe_promote to determine this type for any fill_value
+		fill_value : any, default np.nan
+		    Fill value to replace -1 values with
+		mask_info : tuple of (ndarray, boolean)
+		    If provided, value should correspond to:
+		        (indexer != -1, (indexer != -1).any())
+		    If not provided, it will be computed internally if necessary
+		allow_fill : boolean, default True
+		    If False, indexer is assumed to contain no -1 values so no filling
+		    will be done.  This short-circuits computation of a mask.  Result is
+		    undefined if allow_fill == False and -1 is present in indexer.
+	**/
+	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
+	/**
+		Specialized Cython take which sets NaN values in one pass
+	**/
+	static public function take_2d_multi(arr:Dynamic, indexer:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
+	/**
+		Specialized Cython take which sets NaN values in one pass
+		
+		Parameters
+		----------
+		arr : ndarray
+		    Input array
+		indexer : ndarray
+		    1-D array of indices to take, subarrays corresponding to -1 value
+		    indicies are filed with fill_value
+		axis : int, default 0
+		    Axis to take from
+		out : ndarray or None, default None
+		    Optional output array, must be appropriate type to hold input and
+		    fill_value together, if indexer has any -1 value entries; call
+		    common._maybe_promote to determine this type for any fill_value
+		fill_value : any, default np.nan
+		    Fill value to replace -1 values with
+		mask_info : tuple of (ndarray, boolean)
+		    If provided, value should correspond to:
+		        (indexer != -1, (indexer != -1).any())
+		    If not provided, it will be computed internally if necessary
+		allow_fill : boolean, default True
+		    If False, indexer is assumed to contain no -1 values so no filling
+		    will be done.  This short-circuits computation of a mask.  Result is
+		    undefined if allow_fill == False and -1 is present in indexer.
+	**/
+	static public function take_nd(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
 	/**
 		Compute unique values (not necessarily sorted) efficiently from input array
 		of values

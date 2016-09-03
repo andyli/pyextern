@@ -143,7 +143,7 @@ package scipy.linalg.decomp_cholesky;
 		>>> try:
 		...     np.asarray_chkfinite(a)
 		... except ValueError:
-		...     print 'ValueError'
+		...     print('ValueError')
 		...
 		ValueError
 	**/

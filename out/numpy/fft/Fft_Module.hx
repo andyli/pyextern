@@ -10,6 +10,7 @@ package numpy.fft;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Run benchmarks for module using nose.
@@ -481,10 +482,16 @@ package numpy.fft;
 		see `numpy.fft`.
 		
 		The input should be ordered in the same way as is returned by `fft`,
-		i.e., ``a[0]`` should contain the zero frequency term,
-		``a[1:n/2+1]`` should contain the positive-frequency terms, and
-		``a[n/2+1:]`` should contain the negative-frequency terms, in order of
-		decreasingly negative frequency.  See `numpy.fft` for details.
+		i.e.,
+		
+		* ``a[0]`` should contain the zero frequency term,
+		* ``a[1:n//2]`` should contain the positive-frequency terms,
+		* ``a[n//2 + 1:]`` should contain the negative-frequency terms, in
+		  increasing order starting from the most negative frequency.
+		
+		For an even number of input points, ``A[n//2]`` represents the sum of
+		the values at the positive and negative Nyquist frequencies, as the two
+		are aliased together. See `numpy.fft` for details.
 		
 		Parameters
 		----------
@@ -541,9 +548,9 @@ package numpy.fft;
 		>>> n[40:60] = np.exp(1j*np.random.uniform(0, 2*np.pi, (20,)))
 		>>> s = np.fft.ifft(n)
 		>>> plt.plot(t, s.real, 'b-', t, s.imag, 'r--')
-		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
+		...
 		>>> plt.legend(('real', 'imaginary'))
-		<matplotlib.legend.Legend object at 0x...>
+		...
 		>>> plt.show()
 	**/
 	static public function ifft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
@@ -1284,5 +1291,4 @@ package numpy.fft;
 		[]
 	**/
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
-	static public var using_mklfft : Dynamic;
 }

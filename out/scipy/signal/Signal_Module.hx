@@ -395,7 +395,7 @@ package scipy.signal;
 	/**
 		Bessel/Thomson digital and analog filter design.
 		
-		Design an Nth order digital or analog Bessel filter and return the
+		Design an Nth-order digital or analog Bessel filter and return the
 		filter coefficients.
 		
 		Parameters
@@ -403,22 +403,44 @@ package scipy.signal;
 		N : int
 		    The order of the filter.
 		Wn : array_like
-		    A scalar or length-2 sequence giving the critical frequencies.
-		    For a Bessel filter, this is defined as the point at which the
-		    asymptotes of the response are the same as a Butterworth filter of
-		    the same order.
+		    A scalar or length-2 sequence giving the critical frequencies (defined
+		    by the `norm` parameter).
+		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
 		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
 		    half-cycles / sample.)
-		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
-		    returned.
+		    returned.  (See Notes.)
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		norm : {'phase', 'delay', 'mag'}, optional
+		    Critical frequency normalization:
+		
+		    ``phase``
+		        The filter is normalized such that the phase response reaches its
+		        midpoint at angular (e.g. rad/s) frequency `Wn`.  This happens for
+		        both low-pass and high-pass filters, so this is the
+		        "phase-matched" case.
+		
+		        The magnitude response asymptotes are the same as a Butterworth
+		        filter of the same order with a cutoff of `Wn`.
+		
+		        This is the default, and matches MATLAB's implementation.
+		
+		    ``delay``
+		        The filter is normalized such that the group delay in the passband
+		        is 1/`Wn` (e.g. seconds).  This is the "natural" type obtained by
+		        solving Bessel polynomials.
+		
+		    ``mag``
+		        The filter is normalized such that the gain magnitude is -3 dB at
+		        angular frequency `Wn`.
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
@@ -436,77 +458,164 @@ package scipy.signal;
 		-----
 		Also known as a Thomson filter, the analog Bessel filter has maximally
 		flat group delay and maximally linear phase response, with very little
-		ringing in the step response.
+		ringing in the step response. [1]_
 		
-		As order increases, the Bessel filter approaches a Gaussian filter.
+		The Bessel is inherently an analog filter.  This function generates digital
+		Bessel filters using the bilinear transform, which does not preserve the
+		phase response of the analog filter.  As such, it is only approximately
+		correct at frequencies below about fs/4.  To get maximally-flat group
+		delay at higher frequencies, the analog Bessel filter must be transformed
+		using phase-preserving techniques.
 		
-		The digital Bessel filter is generated using the bilinear
-		transform, which does not preserve the phase response of the analog
-		filter. As such, it is only approximately correct at frequencies
-		below about fs/4.  To get maximally flat group delay at higher
-		frequencies, the analog Bessel filter must be transformed using
-		phase-preserving techniques.
-		
-		For a given `Wn`, the lowpass and highpass filter have the same phase vs
-		frequency curves; they are "phase-matched".
+		See `besselap` for implementation details and references.
 		
 		The ``'sos'`` output parameter was added in 0.16.0.
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the flat group delay and
-		the relationship to the Butterworth's cutoff frequency:
+		Plot the phase-normalized frequency response, showing the relationship
+		to the Butterworth's cutoff frequency (green):
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
 		>>> b, a = signal.butter(4, 100, 'low', analog=True)
 		>>> w, h = signal.freqs(b, a)
-		>>> plt.plot(w, 20 * np.log10(np.abs(h)), color='silver', ls='dashed')
-		>>> b, a = signal.bessel(4, 100, 'low', analog=True)
+		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)), color='silver', ls='dashed')
+		>>> b, a = signal.bessel(4, 100, 'low', analog=True, norm='phase')
 		>>> w, h = signal.freqs(b, a)
 		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)))
-		>>> plt.title('Bessel filter frequency response (with Butterworth)')
+		>>> plt.title('Bessel filter magnitude response (with Butterworth)')
 		>>> plt.xlabel('Frequency [radians / second]')
 		>>> plt.ylabel('Amplitude [dB]')
 		>>> plt.margins(0, 0.1)
 		>>> plt.grid(which='both', axis='both')
-		>>> plt.axvline(100, color='green') # cutoff frequency
+		>>> plt.axvline(100, color='green')  # cutoff frequency
 		>>> plt.show()
 		
+		and the phase midpoint:
+		
+		>>> plt.figure()
+		>>> plt.semilogx(w, np.unwrap(np.angle(h)))
+		>>> plt.axvline(100, color='green')  # cutoff frequency
+		>>> plt.axhline(-np.pi, color='red')  # phase midpoint
+		>>> plt.title('Bessel filter phase response')
+		>>> plt.xlabel('Frequency [radians / second]')
+		>>> plt.ylabel('Phase [radians]')
+		>>> plt.margins(0, 0.1)
+		>>> plt.grid(which='both', axis='both')
+		>>> plt.show()
+		
+		Plot the magnitude-normalized frequency response, showing the -3 dB cutoff:
+		
+		>>> b, a = signal.bessel(3, 10, 'low', analog=True, norm='mag')
+		>>> w, h = signal.freqs(b, a)
+		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)))
+		>>> plt.axhline(-3, color='red')  # -3 dB magnitude
+		>>> plt.axvline(10, color='green')  # cutoff frequency
+		>>> plt.title('Magnitude-normalized Bessel filter frequency response')
+		>>> plt.xlabel('Frequency [radians / second]')
+		>>> plt.ylabel('Amplitude [dB]')
+		>>> plt.margins(0, 0.1)
+		>>> plt.grid(which='both', axis='both')
+		>>> plt.show()
+		
+		Plot the delay-normalized filter, showing the maximally-flat group delay
+		at 0.1 seconds:
+		
+		>>> b, a = signal.bessel(5, 1/0.1, 'low', analog=True, norm='delay')
+		>>> w, h = signal.freqs(b, a)
 		>>> plt.figure()
 		>>> plt.semilogx(w[1:], -np.diff(np.unwrap(np.angle(h)))/np.diff(w))
+		>>> plt.axhline(0.1, color='red')  # 0.1 seconds group delay
 		>>> plt.title('Bessel filter group delay')
 		>>> plt.xlabel('Frequency [radians / second]')
 		>>> plt.ylabel('Group delay [seconds]')
 		>>> plt.margins(0, 0.1)
 		>>> plt.grid(which='both', axis='both')
 		>>> plt.show()
-	**/
-	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
-	/**
-		Return (z,p,k) for analog prototype of an Nth order Bessel filter.
 		
-		The filter is normalized such that the filter asymptotes are the same as
-		a Butterworth filter of the same order with an angular (e.g. rad/s)
-		cutoff frequency of 1.
+		References
+		----------
+		.. [1] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
+		       Characteristics", Proceedings of the Institution of Electrical
+		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
+	**/
+	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?norm:Dynamic):Dynamic;
+	/**
+		Return (z,p,k) for analog prototype of an Nth-order Bessel filter.
 		
 		Parameters
 		----------
 		N : int
-		    The order of the Bessel filter to return zeros, poles and gain for.
-		    Values in the range 0-25 are supported.
+		    The order of the filter.
+		norm : {'phase', 'delay', 'mag'}, optional
+		    Frequency normalization:
+		
+		    ``phase``
+		        The filter is normalized such that the phase response reaches its
+		        midpoint at an angular (e.g. rad/s) cutoff frequency of 1.  This
+		        happens for both low-pass and high-pass filters, so this is the
+		        "phase-matched" case. [6]_
+		
+		        The magnitude response asymptotes are the same as a Butterworth
+		        filter of the same order with a cutoff of `Wn`.
+		
+		        This is the default, and matches MATLAB's implementation.
+		
+		    ``delay``
+		        The filter is normalized such that the group delay in the passband
+		        is 1 (e.g. 1 second).  This is the "natural" type obtained by
+		        solving Bessel polynomials
+		
+		    ``mag``
+		        The filter is normalized such that the gain magnitude is -3 dB at
+		        angular frequency 1.  This is called "frequency normalization" by
+		        Bond. [1]_
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
 		z : ndarray
-		    Zeros. Is always an empty array.
+		    Zeros of the transfer function. Is always an empty array.
 		p : ndarray
-		    Poles.
+		    Poles of the transfer function.
 		k : scalar
-		    Gain. Always 1.
+		    Gain of the transfer function.  For phase-normalized, this is always 1.
+		
+		See Also
+		--------
+		bessel : Filter design function using this prototype
+		
+		Notes
+		-----
+		To find the pole locations, approximate starting points are generated [2]_
+		for the zeros of the ordinary Bessel polynomial [3]_, then the
+		Aberth-Ehrlich method [4]_ [5]_ is used on the Kv(x) Bessel function to
+		calculate more accurate zeros, and these locations are then inverted about
+		the unit circle.
+		
+		References
+		----------
+		.. [1] C.R. Bond, "Bessel Filter Constants",
+		       http://www.crbond.com/papers/bsf.pdf
+		.. [2] Campos and Calderon, "Approximate closed-form formulas for the
+		       zeros of the Bessel Polynomials", arXiv:1105.0957 [math-ph],
+		       http://arxiv.org/abs/1105.0957
+		.. [3] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
+		       Characteristics", Proceedings of the Institution of Electrical
+		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
+		.. [4] Aberth, "Iteration Methods for Finding all Zeros of a Polynomial
+		       Simultaneously", Mathematics of Computation, Vol. 27, No. 122,
+		       April 1973
+		.. [5] Ehrlich, "A modified Newton method for polynomials", Communications
+		       of the ACM, Vol. 10, Issue 2, pp. 107-108, Feb. 1967,
+		       DOI:10.1145/363067.363115
+		.. [6] Miller and Bohn, "A Bessel Filter Crossover, and Its Relation to
+		       Others", RaneNote 147, 1998, http://www.rane.com/note147.html
 	**/
-	static public function besselap(N:Dynamic):Dynamic;
+	static public function besselap(N:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Return a digital filter from an analog one using a bilinear transform.
 		
@@ -636,6 +745,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -660,6 +770,9 @@ package scipy.signal;
 		
 		Notes
 		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 		
 		.. versionadded:: 0.11.0
 		
@@ -668,8 +781,8 @@ package scipy.signal;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> s1 = signal.lti([1], [1, 1])
-		>>> w, mag, phase = signal.bode(s1)
+		>>> sys = signal.TransferFunction([1], [1, 1])
+		>>> w, mag, phase = signal.bode(sys)
 		
 		>>> plt.figure()
 		>>> plt.semilogx(w, mag)    # Bode magnitude plot
@@ -774,15 +887,19 @@ package scipy.signal;
 	**/
 	static public function bspline(x:Dynamic, n:Dynamic):Dynamic;
 	/**
-		Return (z,p,k) for analog prototype of Nth order Butterworth filter.
+		Return (z,p,k) for analog prototype of Nth-order Butterworth filter.
 		
 		The filter will have an angular (e.g. rad/s) cutoff frequency of 1.
+		
+		See Also
+		--------
+		butter : Filter design function using this prototype
 	**/
 	static public function buttap(N:Dynamic):Dynamic;
 	/**
 		Butterworth digital and analog filter design.
 		
-		Design an Nth order digital or analog Butterworth filter and return
+		Design an Nth-order digital or analog Butterworth filter and return
 		the filter coefficients.
 		
 		Parameters
@@ -820,7 +937,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		buttord
+		buttord, buttap
 		
 		Notes
 		-----
@@ -951,12 +1068,16 @@ package scipy.signal;
 	**/
 	static public function cascade(hk:Dynamic, ?J:Dynamic):Dynamic;
 	/**
-		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
+		Return (z,p,k) for Nth-order Chebyshev type I analog lowpass filter.
 		
 		The returned filter prototype has `rp` decibels of ripple in the passband.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first drops below ``-rp``.
+		
+		See Also
+		--------
+		cheby1 : Filter design function using this prototype
 	**/
 	static public function cheb1ap(N:Dynamic, rp:Dynamic):Dynamic;
 	/**
@@ -1029,12 +1150,16 @@ package scipy.signal;
 	**/
 	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
-		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
+		Return (z,p,k) for Nth-order Chebyshev type I analog lowpass filter.
 		
 		The returned filter prototype has `rs` decibels of ripple in the stopband.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first reaches ``-rs``.
+		
+		See Also
+		--------
+		cheby2 : Filter design function using this prototype
 	**/
 	static public function cheb2ap(N:Dynamic, rs:Dynamic):Dynamic;
 	/**
@@ -1196,7 +1321,7 @@ package scipy.signal;
 	/**
 		Chebyshev type I digital and analog filter design.
 		
-		Design an Nth order digital or analog Chebyshev type I filter and
+		Design an Nth-order digital or analog Chebyshev type I filter and
 		return the filter coefficients.
 		
 		Parameters
@@ -1237,7 +1362,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		cheb1ord
+		cheb1ord, cheb1ap
 		
 		Notes
 		-----
@@ -1277,7 +1402,7 @@ package scipy.signal;
 	/**
 		Chebyshev type II digital and analog filter design.
 		
-		Design an Nth order digital or analog Chebyshev type II filter and
+		Design an Nth-order digital or analog Chebyshev type II filter and
 		return the filter coefficients.
 		
 		Parameters
@@ -1318,7 +1443,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		cheb2ord
+		cheb2ord, cheb2ap
 		
 		Notes
 		-----
@@ -1470,7 +1595,7 @@ package scipy.signal;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap: int, optional
@@ -1505,7 +1630,7 @@ package scipy.signal;
 		Notes
 		--------
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50\% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.
@@ -1554,24 +1679,25 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		sys : a tuple describing the system.
+		system : a tuple describing the system or an instance of `lti`
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
-		       * 2: (num, den)
-		       * 3: (zeros, poles, gain)
-		       * 4: (A, B, C, D)
+		        * 1: (instance of `lti`)
+		        * 2: (num, den)
+		        * 3: (zeros, poles, gain)
+		        * 4: (A, B, C, D)
 		
 		dt : float
 		    The discretization time step.
 		method : {"gbt", "bilinear", "euler", "backward_diff", "zoh"}, optional
 		    Which method to use:
 		
-		       * gbt: generalized bilinear transformation
-		       * bilinear: Tustin's approximation ("gbt" with alpha=0.5)
-		       * euler: Euler (or forward differencing) method ("gbt" with alpha=0)
-		       * backward_diff: Backwards differencing ("gbt" with alpha=1.0)
-		       * zoh: zero-order hold (default)
+		        * gbt: generalized bilinear transformation
+		        * bilinear: Tustin's approximation ("gbt" with alpha=0.5)
+		        * euler: Euler (or forward differencing) method ("gbt" with alpha=0)
+		        * backward_diff: Backwards differencing ("gbt" with alpha=1.0)
+		        * zoh: zero-order hold (default)
 		
 		alpha : float within [0, 1], optional
 		    The generalized bilinear transformation weighting parameter, which
@@ -1607,7 +1733,7 @@ package scipy.signal;
 		    2009.
 		    (http://www.ece.ualberta.ca/~gfzhang/research/ZCC07_preprint.pdf)
 	**/
-	static public function cont2discrete(sys:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
+	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
 	/**
 		Convolve two N-dimensional arrays.
 		
@@ -1619,9 +1745,9 @@ package scipy.signal;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1678,8 +1804,12 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		in1, in2 : array_like
-		    Two-dimensional input arrays to be convolved.
+		in1 : array_like
+		    First input.
+		in2 : array_like
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1721,15 +1851,15 @@ package scipy.signal;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> face = misc.face(gray=True)
+		>>> ascent = misc.ascent()
 		>>> scharr = np.array([[ -3-3j, 0-10j,  +3 -3j],
 		...                    [-10+0j, 0+ 0j, +10 +0j],
 		...                    [ -3+3j, 0+10j,  +3 +3j]]) # Gx + j*Gy
-		>>> grad = signal.convolve2d(face, scharr, boundary='symm', mode='same')
+		>>> grad = signal.convolve2d(ascent, scharr, boundary='symm', mode='same')
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(face, cmap='gray')
+		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(3, 1, figsize=(6, 15))
+		>>> ax_orig.imshow(ascent, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_mag.imshow(np.absolute(grad), cmap='gray')
@@ -1752,9 +1882,9 @@ package scipy.signal;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1816,8 +1946,12 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		in1, in2 : array_like
-		    Two-dimensional input arrays to be convolved.
+		in1 : array_like
+		    First input.
+		in2 : array_like
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1865,7 +1999,8 @@ package scipy.signal;
 		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape)  # find the match
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(1, 3)
+		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(3, 1,
+		...                                                     figsize=(6, 15))
 		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
@@ -1944,7 +2079,7 @@ package scipy.signal;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap: int, optional
@@ -1994,7 +2129,7 @@ package scipy.signal;
 		zero-padded to match.
 		
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50\% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.
@@ -2155,34 +2290,114 @@ package scipy.signal;
 	**/
 	static public function daub(p:Dynamic):Dynamic;
 	/**
-		Downsample the signal by using a filter.
+		Calculate Bode magnitude and phase data of a discrete-time system.
 		
-		By default, an order 8 Chebyshev type I filter is used.  A 30 point FIR
-		filter with hamming window is used if `ftype` is 'fir'.
+		Parameters
+		----------
+		system : an instance of the LTI class or a tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1 (instance of `dlti`)
+		        * 2 (num, den, dt)
+		        * 3 (zeros, poles, gain, dt)
+		        * 4 (A, B, C, D, dt)
+		
+		w : array_like, optional
+		    Array of frequencies (in radians/sample). Magnitude and phase data is
+		    calculated for every value in this array. If not given a reasonable
+		    set will be calculated.
+		n : int, optional
+		    Number of frequency points to compute if `w` is not given. The `n`
+		    frequencies are logarithmically spaced in an interval chosen to
+		    include the influence of the poles and zeros of the system.
+		
+		Returns
+		-------
+		w : 1D ndarray
+		    Frequency array [rad/time_unit]
+		mag : 1D ndarray
+		    Magnitude array [dB]
+		phase : 1D ndarray
+		    Phase array [deg]
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``z^2 + 3z + 5`` would be represented as ``[1, 3, 5]``).
+		
+		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Transfer function: H(z) = 1 / (z^2 + 2z + 3)
+		
+		>>> sys = signal.TransferFunction([1], [1, 2, 3], dt=0.05)
+		
+		Equivalent: sys.bode()
+		
+		>>> w, mag, phase = signal.dbode(sys)
+		
+		>>> plt.figure()
+		>>> plt.semilogx(w, mag)    # Bode magnitude plot
+		>>> plt.figure()
+		>>> plt.semilogx(w, phase)  # Bode phase plot
+		>>> plt.show()
+	**/
+	static public function dbode(system:Dynamic, ?w:Dynamic, ?n:Dynamic):Dynamic;
+	/**
+		Downsample the signal after applying an anti-aliasing filter.
+		
+		By default, an order 8 Chebyshev type I filter is used. A 30 point FIR
+		filter with Hamming window is used if `ftype` is 'fir'.
 		
 		Parameters
 		----------
 		x : ndarray
 		    The signal to be downsampled, as an N-dimensional array.
 		q : int
-		    The downsampling factor.
+		    The downsampling factor. For downsampling factors higher than 13, it is
+		    recommended to call `decimate` multiple times.
 		n : int, optional
-		    The order of the filter (1 less than the length for 'fir').
-		ftype : str {'iir', 'fir'}, optional
-		    The type of the lowpass filter.
+		    The order of the filter (1 less than the length for 'fir'). Defaults to
+		    8 for 'iir' and 30 for 'fir'.
+		ftype : str {'iir', 'fir'} or ``dlti`` instance, optional
+		    If 'iir' or 'fir', specifies the type of lowpass filter. If an instance
+		    of an `dlti` object, uses that object to filter before downsampling.
 		axis : int, optional
 		    The axis along which to decimate.
+		zero_phase : bool, optional
+		    Prevent phase shift by filtering with `filtfilt` instead of `lfilter`
+		    when using an IIR filter, and shifting the outputs back by the filter's
+		    group delay when using an FIR filter. A value of ``True`` is
+		    recommended, since a phase shift is generally not desired. Using
+		    ``None`` defaults to ``False`` for backwards compatibility. This
+		    default will change to ``True`` in a future release, so it is best to
+		    set this argument explicitly.
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
 		y : ndarray
 		    The down-sampled signal.
 		
-		See also
+		See Also
 		--------
-		resample
+		resample : Resample up or down using the FFT method.
+		resample_poly : Resample using polyphase filtering and an FIR filter.
+		
+		Notes
+		-----
+		The ``zero_phase`` keyword was added in 0.18.0.
+		The possibility to use instances of ``dlti`` as ``ftype`` was added in
+		0.18.0.
 	**/
-	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic, ?zero_phase:Dynamic):Dynamic;
 	/**
 		Deconvolves ``divisor`` out of ``signal``.
 		
@@ -2261,18 +2476,80 @@ package scipy.signal;
 	**/
 	static public function detrend(data:Dynamic, ?axis:Dynamic, ?type:Dynamic, ?bp:Dynamic):Dynamic;
 	/**
+		Calculate the frequency response of a discrete-time system.
+		
+		Parameters
+		----------
+		system : an instance of the `dlti` class or a tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1 (instance of `dlti`)
+		        * 2 (numerator, denominator, dt)
+		        * 3 (zeros, poles, gain, dt)
+		        * 4 (A, B, C, D, dt)
+		
+		w : array_like, optional
+		    Array of frequencies (in radians/sample). Magnitude and phase data is
+		    calculated for every value in this array. If not given a reasonable
+		    set will be calculated.
+		n : int, optional
+		    Number of frequency points to compute if `w` is not given. The `n`
+		    frequencies are logarithmically spaced in an interval chosen to
+		    include the influence of the poles and zeros of the system.
+		whole : bool, optional
+		    Normally, if 'w' is not given, frequencies are computed from 0 to the
+		    Nyquist frequency, pi radians/sample (upper-half of unit-circle). If
+		    `whole` is True, compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : 1D ndarray
+		    Frequency array [radians/sample]
+		H : 1D ndarray
+		    Array of complex magnitude values
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``z^2 + 3z + 5`` would be represented as ``[1, 3, 5]``).
+		
+		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		Generating the Nyquist plot of a transfer function
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Transfer function: H(z) = 1 / (z^2 + 2z + 3)
+		
+		>>> sys = signal.TransferFunction([1], [1, 2, 3], dt=0.05)
+		
+		>>> w, H = signal.dfreqresp(sys)
+		
+		>>> plt.figure()
+		>>> plt.plot(H.real, H.imag, "b")
+		>>> plt.plot(H.real, -H.imag, "r")
+		>>> plt.show()
+	**/
+	static public function dfreqresp(system:Dynamic, ?w:Dynamic, ?n:Dynamic, ?whole:Dynamic):Dynamic;
+	/**
 		Impulse response of discrete-time system.
 		
 		Parameters
 		----------
-		system : tuple of array_like
+		system : tuple of array_like or instance of `dlti`
 		    A tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
-		      * 3: (num, den, dt)
-		      * 4: (zeros, poles, gain, dt)
-		      * 5: (A, B, C, D, dt)
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
 		
 		x0 : array_like, optional
 		    Initial state-vector.  Defaults to zero.
@@ -2300,14 +2577,15 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		system : tuple of array_like
+		system : tuple of array_like or instance of `dlti`
 		    A tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
-		      - 3: (num, den, dt)
-		      - 4: (zeros, poles, gain, dt)
-		      - 5: (A, B, C, D, dt)
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
 		
 		u : array_like
 		    An input array describing the input at each time `t` (interpolation is
@@ -2328,7 +2606,7 @@ package scipy.signal;
 		    System response, as a 1-D array.
 		xout : ndarray, optional
 		    Time-evolution of the state-vector.  Only generated if the input is a
-		    state-space systems.
+		    `StateSpace` system.
 		
 		See Also
 		--------
@@ -2358,9 +2636,10 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
-		      * 3: (num, den, dt)
-		      * 4: (zeros, poles, gain, dt)
-		      * 5: (A, B, C, D, dt)
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
 		
 		x0 : array_like, optional
 		    Initial state-vector.  Defaults to zero.
@@ -2385,7 +2664,7 @@ package scipy.signal;
 	/**
 		Elliptic (Cauer) digital and analog filter design.
 		
-		Design an Nth order digital or analog elliptic filter and return
+		Design an Nth-order digital or analog elliptic filter and return
 		the filter coefficients.
 		
 		Parameters
@@ -2429,7 +2708,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		ellipord
+		ellipord, ellipap
 		
 		Notes
 		-----
@@ -2471,13 +2750,17 @@ package scipy.signal;
 	**/
 	static public function ellip(N:Dynamic, rp:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		Return (z,p,k) of Nth order elliptic analog lowpass filter.
+		Return (z,p,k) of Nth-order elliptic analog lowpass filter.
 		
 		The filter is a normalized prototype that has `rp` decibels of ripple
 		in the passband and a stopband `rs` decibels down.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first drops below ``-rp``.
+		
+		See Also
+		--------
+		ellip : Filter design function using this prototype
 		
 		References
 		----------
@@ -2643,9 +2926,9 @@ package scipy.signal;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -2693,7 +2976,8 @@ package scipy.signal;
 		>>> kernel = np.outer(signal.gaussian(70, 8), signal.gaussian(70, 8))
 		>>> blurred = signal.fftconvolve(face, kernel, mode='same')
 		
-		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(1, 3)
+		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(3, 1,
+		...                                                      figsize=(6, 15))
 		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
@@ -2764,12 +3048,11 @@ package scipy.signal;
 		Returns
 		-------
 		y : ndarray
-		    The filtered output, an array of type numpy.float64 with the same
-		    shape as `x`.
+		    The filtered output with the same shape as `x`.
 		
 		See Also
 		--------
-		lfilter_zi, lfilter
+		sosfiltfilt, lfilter_zi, lfilter, lfiltic, savgol_filter, sosfilt
 		
 		Notes
 		-----
@@ -2943,7 +3226,7 @@ package scipy.signal;
 	**/
 	static public function find_peaks_cwt(vector:Dynamic, widths:Dynamic, ?wavelet:Dynamic, ?max_distances:Dynamic, ?gap_thresh:Dynamic, ?min_length:Dynamic, ?min_snr:Dynamic, ?noise_perc:Dynamic):Array<Dynamic>;
 	/**
-		Find an array of frequencies for computing the response of a filter.
+		Find array of frequencies for computing the response of an analog filter.
 		
 		Parameters
 		----------
@@ -2973,6 +3256,106 @@ package scipy.signal;
 		         1.00000000e+01,   3.16227766e+01,   1.00000000e+02])
 	**/
 	static public function findfreqs(num:Dynamic, den:Dynamic, N:Dynamic):Dynamic;
+	/**
+		FIR filter design using least-squares error minimization.
+		
+		Calculate the filter coefficients for the linear-phase finite
+		impulse response (FIR) filter which has the best approximation
+		to the desired frequency response described by `bands` and
+		`desired` in the least squares sense (i.e., the integral of the
+		weighted mean-squared error within the specified bands is
+		minimized).
+		
+		Parameters
+		----------
+		numtaps : int
+		    The number of taps in the FIR filter.  `numtaps` must be odd.
+		bands : array_like
+		    A monotonic nondecreasing sequence containing the band edges in
+		    Hz. All elements must be non-negative and less than or equal to
+		    the Nyquist frequency given by `nyq`.
+		desired : array_like
+		    A sequence the same size as `bands` containing the desired gain
+		    at the start and end point of each band.
+		weight : array_like, optional
+		    A relative weighting to give to each band region when solving
+		    the least squares problem. `weight` has to be half the size of
+		    `bands`.
+		nyq : float, optional
+		    Nyquist frequency. Each frequency in `bands` must be between 0
+		    and `nyq` (inclusive).
+		
+		Returns
+		-------
+		coeffs : ndarray
+		    Coefficients of the optimal (in a least squares sense) FIR filter.
+		
+		See also
+		--------
+		firwin
+		firwin2
+		
+		Notes
+		-----
+		This implementation follows the algorithm given in [1]_.
+		As noted there, least squares design has multiple advantages:
+		
+		    1. Optimal in a least-squares sense.
+		    2. Simple, non-iterative method.
+		    3. The general solution can obtained by solving a linear
+		       system of equations.
+		    4. Allows the use of a frequency dependent weighting function.
+		
+		This function constructs a Type I linear phase FIR filter, which
+		contains an odd number of `coeffs` satisfying for :math:`n < numtaps`:
+		
+		.. math:: coeffs(n) = coeffs(numtaps - 1 - n)
+		
+		The odd number of coefficients and filter symmetry avoid boundary
+		conditions that could otherwise occur at the Nyquist and 0 frequencies
+		(e.g., for Type II, III, or IV variants).
+		
+		.. versionadded:: 0.18
+		
+		References
+		----------
+		.. [1] Ivan Selesnick, Linear-Phase Fir Filter Design By Least Squares.
+		       OpenStax CNX. Aug 9, 2005.
+		       http://cnx.org/contents/eb1ecb35-03a9-4610-ba87-41cd771c95f2@7
+		
+		Examples
+		--------
+		We want to construct a band-pass filter. Note that the behavior in the
+		frequency ranges between our stop bands and pass bands is unspecified,
+		and thus may overshoot depending on the parameters of our filter:
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> fig, axs = plt.subplots(2)
+		>>> nyq = 5.  # Hz
+		>>> desired = (0, 0, 1, 1, 0, 0)
+		>>> for bi, bands in enumerate(((0, 1, 2, 3, 4, 5), (0, 1, 2, 4, 4.5, 5))):
+		...     fir_firls = signal.firls(73, bands, desired, nyq=nyq)
+		...     fir_remez = signal.remez(73, bands, desired[::2], Hz=2 * nyq)
+		...     fir_firwin2 = signal.firwin2(73, bands, desired, nyq=nyq)
+		...     hs = list()
+		...     ax = axs[bi]
+		...     for fir in (fir_firls, fir_remez, fir_firwin2):
+		...         freq, response = signal.freqz(fir)
+		...         hs.append(ax.semilogy(nyq*freq/(np.pi), np.abs(response))[0])
+		...     for band, gains in zip(zip(bands[::2], bands[1::2]), zip(desired[::2], desired[1::2])):
+		...         ax.semilogy(band, np.maximum(gains, 1e-7), 'k--', linewidth=2)
+		...     if bi == 0:
+		...         ax.legend(hs, ('firls', 'remez', 'firwin2'), loc='lower center', frameon=False)
+		...     else:
+		...         ax.set_xlabel('Frequency (Hz)')
+		...     ax.grid(True)
+		...     ax.set(title='Band-pass %d-%d Hz' % bands[2:4], ylabel='Magnitude')
+		...
+		>>> fig.tight_layout()
+		>>> plt.show()
+	**/
+	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -3037,7 +3420,9 @@ package scipy.signal;
 		
 		See also
 		--------
-		scipy.signal.firwin2
+		firwin2
+		firls
+		remez
 		
 		Examples
 		--------
@@ -3130,7 +3515,9 @@ package scipy.signal;
 		
 		See also
 		--------
-		scipy.signal.firwin
+		firls
+		firwin
+		remez
 		
 		Notes
 		-----
@@ -3227,17 +3614,18 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		system : an instance of the LTI class or a tuple describing the system.
+		system : an instance of the `lti` class or a tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
 		
 		w : array_like, optional
 		    Array of frequencies (in rad/s). Magnitude and phase data is
-		    calculated for every value in this array. If not given a reasonable
+		    calculated for every value in this array. If not given, a reasonable
 		    set will be calculated.
 		n : int, optional
 		    Number of frequency points to compute if `w` is not given. The `n`
@@ -3251,15 +3639,22 @@ package scipy.signal;
 		H : 1D ndarray
 		    Array of complex magnitude values
 		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		Examples
 		--------
-		# Generating the Nyquist plot of a transfer function
+		Generating the Nyquist plot of a transfer function
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> s1 = signal.lti([], [1, 1, 1], [5])
-		# transfer function: H(s) = 5 / (s-1)^3
+		Transfer function: H(s) = 5 / (s-1)^3
+		
+		>>> s1 = signal.ZerosPolesGain([], [1, 1, 1], [5])
 		
 		>>> w, H = signal.freqresp(s1)
 		
@@ -3272,20 +3667,20 @@ package scipy.signal;
 	/**
 		Compute frequency response of analog filter.
 		
-		Given the numerator `b` and denominator `a` of a filter, compute its
-		frequency response::
+		Given the M-order numerator `b` and N-order denominator `a` of an analog
+		filter, compute its frequency response::
 		
-		         b[0]*(jw)**(nb-1) + b[1]*(jw)**(nb-2) + ... + b[nb-1]
-		 H(w) = -------------------------------------------------------
-		         a[0]*(jw)**(na-1) + a[1]*(jw)**(na-2) + ... + a[na-1]
+		         b[0]*(jw)**M + b[1]*(jw)**(M-1) + ... + b[M]
+		 H(w) = ----------------------------------------------
+		         a[0]*(jw)**N + a[1]*(jw)**(N-1) + ... + a[N]
 		
 		Parameters
 		----------
-		b : ndarray
+		b : array_like
 		    Numerator of a linear filter.
-		a : ndarray
+		a : array_like
 		    Denominator of a linear filter.
-		worN : {None, int}, optional
+		worN : {None, int, array_like}, optional
 		    If None, then compute at 200 frequencies around the interesting parts
 		    of the response curve (determined by pole-zero locations).  If a single
 		    integer, then compute at that many frequencies.  Otherwise, compute the
@@ -3298,7 +3693,7 @@ package scipy.signal;
 		Returns
 		-------
 		w : ndarray
-		    The angular frequencies at which h was computed.
+		    The angular frequencies at which `h` was computed.
 		h : ndarray
 		    The frequency response.
 		
@@ -3331,20 +3726,20 @@ package scipy.signal;
 	/**
 		Compute the frequency response of a digital filter.
 		
-		Given the numerator `b` and denominator `a` of a digital filter,
-		compute its frequency response::
+		Given the M-order numerator `b` and N-order denominator `a` of a digital
+		filter, compute its frequency response::
 		
-		           jw               -jw            -jmw
-		    jw  B(e)    b[0] + b[1]e + .... + b[m]e
-		 H(e) = ---- = ------------------------------------
-		           jw               -jw            -jnw
-		        A(e)    a[0] + a[1]e + .... + a[n]e
+		             jw               -jw               -jwM
+		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
+		 H(e  ) = ---- = -----------------------------------
+		             jw               -jw               -jwN
+		          A(e  )  a[0] + a[1]e    + .... + a[N]e
 		
 		Parameters
 		----------
-		b : ndarray
+		b : array_like
 		    numerator of a linear filter
-		a : ndarray
+		a : array_like
 		    denominator of a linear filter
 		worN : {None, int, array_like}, optional
 		    If None (default), then compute at 512 frequencies equally spaced
@@ -3364,7 +3759,8 @@ package scipy.signal;
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which h was computed, in radians/sample.
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
 		h : ndarray
 		    The frequency response.
 		
@@ -3581,8 +3977,10 @@ package scipy.signal;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with `ifftshift`
-		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
+		    If True (default), create a "periodic" window, ready to use with
+		    `ifftshift` and be multiplied by the result of an FFT (see also
+		    `fftpack.fftfreq`).
+		    If False, create a "symmetric" window, for use in filter design.
 		
 		Returns
 		-------
@@ -3593,11 +3991,12 @@ package scipy.signal;
 		-----
 		Window types:
 		
-		    boxcar, triang, blackman, hamming, hann, bartlett, flattop, parzen,
-		    bohman, blackmanharris, nuttall, barthann, kaiser (needs beta),
-		    gaussian (needs std), general_gaussian (needs power, width),
-		    slepian (needs width), chebwin (needs attenuation)
-		    exponential (needs decay scale), tukey (needs taper fraction)
+		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
+		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
+		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
+		    deviation), `general_gaussian` (needs power, width), `slepian`
+		    (needs width), `chebwin` (needs attenuation), `exponential`
+		    (needs decay scale), `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -3606,7 +4005,7 @@ package scipy.signal;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the kaiser window.
+		parameter of the `kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -3958,7 +4357,7 @@ package scipy.signal;
 		---------
 		In this example we use the Hilbert transform to determine the amplitude
 		envelope and instantaneous frequency of an amplitude-modulated signal.
-		    
+		
 		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy.signal import hilbert, chirp
@@ -3968,15 +4367,15 @@ package scipy.signal;
 		>>> samples = int(fs*duration)
 		>>> t = np.arange(samples) / fs
 		
-		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and 
+		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and
 		apply an amplitude modulation.
 		
-		>>> signal = chirp(t, 20.0, t[-1], 100.0)    
+		>>> signal = chirp(t, 20.0, t[-1], 100.0)
 		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
 		
-		The amplitude envelope is given by magnitude of the analytic signal. The 
-		instantaneous frequency can be obtained by differentiating the instantaneous 
-		phase in respect to time. The instantaneous phase corresponds to the phase 
+		The amplitude envelope is given by magnitude of the analytic signal. The
+		instantaneous frequency can be obtained by differentiating the instantaneous
+		phase in respect to time. The instantaneous phase corresponds to the phase
 		angle of the analytic signal.
 		
 		>>> analytic_signal = hilbert(signal)
@@ -4000,7 +4399,7 @@ package scipy.signal;
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
-		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing, 
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing,
 		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
@@ -4096,7 +4495,7 @@ package scipy.signal;
 	/**
 		IIR digital and analog filter design given order and critical points.
 		
-		Design an Nth order digital or analog filter and return the filter
+		Design an Nth-order digital or analog filter and return the filter
 		coefficients.
 		
 		Parameters
@@ -4189,6 +4588,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -4207,6 +4607,12 @@ package scipy.signal;
 		yout : ndarray
 		    A 1-D array containing the impulse response of the system (except for
 		    singularities at zero).
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function impulse(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -4219,6 +4625,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -4254,6 +4661,10 @@ package scipy.signal;
 		The solution is generated by calling `scipy.signal.lsim2`, which uses
 		the differential equation solver `scipy.integrate.odeint`.
 		
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		.. versionadded:: 0.8.0
 		
 		Examples
@@ -4270,30 +4681,37 @@ package scipy.signal;
 	/**
 		Compute b(s) and a(s) from partial fraction expansion.
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(s)     b[0] x**(M-1) + b[1] x**(M-2) + ... + b[M-1]
-		    H(s) = ------ = ----------------------------------------------
-		            a(s)     a[0] x**(N-1) + a[1] x**(N-2) + ... + a[N-1]
+		          b(s)     b[0] s**(M) + b[1] s**(M-1) + ... + b[M]
+		  H(s) = ------ = ------------------------------------------
+		          a(s)     a[0] s**(N) + a[1] s**(N-1) + ... + a[N]
 		
-		             r[0]       r[1]             r[-1]
-		         = -------- + -------- + ... + --------- + k(s)
-		           (s-p[0])   (s-p[1])         (s-p[-1])
+		then the partial-fraction expansion H(s) is defined as::
 		
-		If there are any repeated roots (closer than tol), then the partial
-		fraction expansion has terms like::
+		           r[0]       r[1]             r[-1]
+		       = -------- + -------- + ... + --------- + k(s)
+		         (s-p[0])   (s-p[1])         (s-p[-1])
+		
+		If there are any repeated roots (closer together than `tol`), then H(s)
+		has terms like::
 		
 		      r[i]      r[i+1]              r[i+n-1]
 		    -------- + ----------- + ... + -----------
 		    (s-p[i])  (s-p[i])**2          (s-p[i])**n
 		
+		This function is used for polynomials in positive powers of s or z,
+		such as analog filters or digital filters in controls engineering.  For
+		negative powers of z (typical for digital filters in DSP), use `invresz`.
+		
 		Parameters
 		----------
-		r : ndarray
+		r : array_like
 		    Residues.
-		p : ndarray
+		p : array_like
 		    Poles.
-		k : ndarray
+		k : array_like
 		    Coefficients of the direct polynomial term.
 		tol : float, optional
 		    The tolerance for two roots to be considered equal. Default is 1e-3.
@@ -4301,36 +4719,72 @@ package scipy.signal;
 		    How to determine the returned root if multiple roots are within
 		    `tol` of each other.
 		
-		      'max': pick the maximum of those roots.
+		      - 'max': pick the maximum of those roots.
+		      - 'min': pick the minimum of those roots.
+		      - 'avg': take the average of those roots.
 		
-		      'min': pick the minimum of those roots.
-		
-		      'avg': take the average of those roots.
+		Returns
+		-------
+		b : ndarray
+		    Numerator polynomial coefficients.
+		a : ndarray
+		    Denominator polynomial coefficients.
 		
 		See Also
 		--------
-		residue, unique_roots
+		residue, invresz, unique_roots
 	**/
 	static public function invres(r:Dynamic, p:Dynamic, k:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
 		Compute b(z) and a(z) from partial fraction expansion.
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(z)     b[0] + b[1] z**(-1) + ... + b[M-1] z**(-M+1)
-		    H(z) = ------ = ----------------------------------------------
-		            a(z)     a[0] + a[1] z**(-1) + ... + a[N-1] z**(-N+1)
+		            b(z)     b[0] + b[1] z**(-1) + ... + b[M] z**(-M)
+		    H(z) = ------ = ------------------------------------------
+		            a(z)     a[0] + a[1] z**(-1) + ... + a[N] z**(-N)
 		
-		                 r[0]                   r[-1]
-		         = --------------- + ... + ---------------- + k[0] + k[1]z**(-1)...
-		           (1-p[0]z**(-1))         (1-p[-1]z**(-1))
+		then the partial-fraction expansion H(z) is defined as::
 		
-		If there are any repeated roots (closer than tol), then the partial
+		             r[0]                   r[-1]
+		     = --------------- + ... + ---------------- + k[0] + k[1]z**(-1) ...
+		       (1-p[0]z**(-1))         (1-p[-1]z**(-1))
+		
+		If there are any repeated roots (closer than `tol`), then the partial
 		fraction expansion has terms like::
 		
 		         r[i]              r[i+1]                    r[i+n-1]
 		    -------------- + ------------------ + ... + ------------------
 		    (1-p[i]z**(-1))  (1-p[i]z**(-1))**2         (1-p[i]z**(-1))**n
+		
+		This function is used for polynomials in negative powers of z,
+		such as digital filters in DSP.  For positive powers, use `invres`.
+		
+		Parameters
+		----------
+		r : array_like
+		    Residues.
+		p : array_like
+		    Poles.
+		k : array_like
+		    Coefficients of the direct polynomial term.
+		tol : float, optional
+		    The tolerance for two roots to be considered equal. Default is 1e-3.
+		rtype : {'max', 'min, 'avg'}, optional
+		    How to determine the returned root if multiple roots are within
+		    `tol` of each other.
+		
+		      - 'max': pick the maximum of those roots.
+		      - 'min': pick the minimum of those roots.
+		      - 'avg': take the average of those roots.
+		
+		Returns
+		-------
+		b : ndarray
+		    Numerator polynomial coefficients.
+		a : ndarray
+		    Denominator polynomial coefficients.
 		
 		See Also
 		--------
@@ -4511,7 +4965,7 @@ package scipy.signal;
 		-----
 		There are several ways to obtain the Kaiser window:
 		
-		- ``signal.kaiser(numtaps, beta, sym=0)``
+		- ``signal.kaiser(numtaps, beta, sym=True)``
 		- ``signal.get_window(beta, numtaps)``
 		- ``signal.get_window(('kaiser', beta), numtaps)``
 		
@@ -4546,7 +5000,7 @@ package scipy.signal;
 		zi : array_like, optional
 		    Initial conditions for the filter delays.  It is a vector
 		    (or array of vectors for an N-dimensional input) of length
-		    ``max(len(a),len(b))-1``.  If `zi` is None or is not given then
+		    ``max(len(a), len(b)) - 1``.  If `zi` is None or is not given then
 		    initial rest is assumed.  See `lfiltic` for more information.
 		
 		Returns
@@ -4557,33 +5011,85 @@ package scipy.signal;
 		    If `zi` is None, this is not returned, otherwise, `zf` holds the
 		    final filter delay values.
 		
+		See Also
+		--------
+		lfiltic : Construct initial conditions for `lfilter`.
+		lfilter_zi : Compute initial state (steady state of step response) for
+		             `lfilter`.
+		filtfilt : A forward-backward filter, to obtain a filter with linear phase.
+		savgol_filter : A Savitzky-Golay filter.
+		sosfilt: Filter data using cascaded second-order sections.
+		sosfiltfilt: A forward-backward filter using second-order sections.
+		
 		Notes
 		-----
 		The filter function is implemented as a direct II transposed structure.
 		This means that the filter implements::
 		
-		   a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... + b[nb]*x[n-nb]
-		                           - a[1]*y[n-1] - ... - a[na]*y[n-na]
+		   a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... + b[M]*x[n-M]
+		                         - a[1]*y[n-1] - ... - a[N]*y[n-N]
 		
-		using the following difference equations::
+		where `M` is the degree of the numerator, `N` is the degree of the
+		denominator, and `n` is the sample number.  It is implemented using
+		the following difference equations (assuming M = N)::
 		
-		     y[m] = b[0]*x[m] + z[0,m-1]
-		     z[0,m] = b[1]*x[m] + z[1,m-1] - a[1]*y[m]
+		     a[0]*y[n] = b[0] * x[n]               + d[0][n-1]
+		       d[0][n] = b[1] * x[n] - a[1] * y[n] + d[1][n-1]
+		       d[1][n] = b[2] * x[n] - a[2] * y[n] + d[2][n-1]
 		     ...
-		     z[n-3,m] = b[n-2]*x[m] + z[n-2,m-1] - a[n-2]*y[m]
-		     z[n-2,m] = b[n-1]*x[m] - a[n-1]*y[m]
+		     d[N-2][n] = b[N-1]*x[n] - a[N-1]*y[n] + d[N-1][n-1]
+		     d[N-1][n] = b[N] * x[n] - a[N] * y[n]
 		
-		where m is the output sample number and n=max(len(a),len(b)) is the
-		model order.
+		where `d` are the state variables.
 		
 		The rational transfer function describing this filter in the
 		z-transform domain is::
 		
-		                         -1               -nb
-		             b[0] + b[1]z  + ... + b[nb] z
-		     Y(z) = ---------------------------------- X(z)
-		                         -1               -na
-		             a[0] + a[1]z  + ... + a[na] z
+		                         -1              -M
+		             b[0] + b[1]z  + ... + b[M] z
+		     Y(z) = -------------------------------- X(z)
+		                         -1              -N
+		             a[0] + a[1]z  + ... + a[N] z
+		
+		Examples
+		--------
+		Generate a noisy signal to be filtered:
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> t = np.linspace(-1, 1, 201)
+		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1)
+		...      + 0.18*np.cos(2*np.pi*3.85*t))
+		>>> xn = x + np.random.randn(len(t)) * 0.08
+		
+		Create an order 3 lowpass butterworth filter:
+		
+		>>> b, a = signal.butter(3, 0.05)
+		
+		Apply the filter to xn.  Use lfilter_zi to choose the initial condition of
+		the filter:
+		
+		>>> zi = signal.lfilter_zi(b, a)
+		>>> z, _ = signal.lfilter(b, a, xn, zi=zi*xn[0])
+		
+		Apply the filter again, to have a result filtered at an order the same as
+		filtfilt:
+		
+		>>> z2, _ = signal.lfilter(b, a, z, zi=zi*z[0])
+		
+		Use filtfilt to apply the filter:
+		
+		>>> y = signal.filtfilt(b, a, xn)
+		
+		Plot the original signal and the various filtered versions:
+		
+		>>> plt.figure
+		>>> plt.plot(t, xn, 'b', alpha=0.75)
+		>>> plt.plot(t, z, 'r--', t, z2, 'r', t, y, 'k')
+		>>> plt.legend(('noisy signal', 'lfilter, once', 'lfilter, twice',
+		...             'filtfilt'), loc='best')
+		>>> plt.grid(True)
+		>>> plt.show()
 	**/
 	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
@@ -4604,6 +5110,10 @@ package scipy.signal;
 		-------
 		zi : 1-D ndarray
 		    The initial state for the filter.
+		
+		See Also
+		--------
+		lfilter, lfiltic, filtfilt
 		
 		Notes
 		-----
@@ -4677,13 +5187,13 @@ package scipy.signal;
 		y : array_like
 		    Initial conditions.
 		
-		    If ``N=len(a) - 1``, then ``y = {y[-1], y[-2], ..., y[-N]}``.
+		    If ``N = len(a) - 1``, then ``y = {y[-1], y[-2], ..., y[-N]}``.
 		
 		    If `y` is too short, it is padded with zeros.
 		x : array_like, optional
 		    Initial conditions.
 		
-		    If ``M=len(b) - 1``, then ``x = {x[-1], x[-2], ..., x[-M]}``.
+		    If ``M = len(b) - 1``, then ``x = {x[-1], x[-2], ..., x[-M]}``.
 		
 		    If `x` is not given, its initial conditions are assumed zero.
 		
@@ -4692,12 +5202,12 @@ package scipy.signal;
 		Returns
 		-------
 		zi : ndarray
-		    The state vector ``zi``.
-		    ``zi = {z_0[-1], z_1[-1], ..., z_K-1[-1]}``, where ``K = max(M,N)``.
+		    The state vector ``zi = {z_0[-1], z_1[-1], ..., z_K-1[-1]}``,
+		    where ``K = max(M, N)``.
 		
 		See Also
 		--------
-		lfilter
+		lfilter, lfilter_zi
 	**/
 	static public function lfiltic(b:Dynamic, a:Dynamic, y:Dynamic, ?x:Dynamic):Dynamic;
 	/**
@@ -4846,6 +5356,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		    * 1: (instance of `lti`)
 		    * 2: (num, den)
 		    * 3: (zeros, poles, gain)
 		    * 4: (A, B, C, D)
@@ -4873,6 +5384,12 @@ package scipy.signal;
 		xout : ndarray
 		    Time evolution of the state vector.
 		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		Examples
 		--------
 		Simulate a double integrator y'' = u, with a constant input u = 1
@@ -4892,10 +5409,11 @@ package scipy.signal;
 		
 		Parameters
 		----------
-		system : an instance of the LTI class or a tuple describing the system.
+		system : an instance of the `lti` class or a tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		    * 1: (instance of `lti`)
 		    * 2: (num, den)
 		    * 3: (zeros, poles, gain)
 		    * 4: (A, B, C, D)
@@ -4932,6 +5450,10 @@ package scipy.signal;
 		system's differential equations.  Additional keyword arguments
 		given to `lsim2` are passed on to `odeint`.  See the documentation
 		for `scipy.integrate.odeint` for the full list of arguments.
+		
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4948,7 +5470,7 @@ package scipy.signal;
 		    (bool) representation. If None, a seed of ones will be used,
 		    producing a repeatable representation. If ``state`` is all
 		    zeros, an error is raised as this is invalid. Default: None.
-		length : int | None, optional
+		length : int, optional
 		    Number of samples to compute. If None, the entire length
 		    ``(2**nbits) - 1`` is computed.
 		taps : array_like, optional
@@ -4976,6 +5498,44 @@ package scipy.signal;
 		        m_sequence_linear_feedback_shift_register_lfsr.htm
 		
 		.. versionadded:: 0.15.0
+		
+		Examples
+		--------
+		MLS uses binary convention:
+		
+		>>> from scipy.signal import max_len_seq
+		>>> max_len_seq(4)[0]
+		array([1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0], dtype=int8)
+		
+		MLS has a white spectrum (except for DC):
+		
+		>>> import matplotlib.pyplot as plt
+		>>> from numpy.fft import fft, ifft, fftshift, fftfreq
+		>>> seq = max_len_seq(6)[0]*2-1  # +1 and -1
+		>>> spec = fft(seq)
+		>>> N = len(seq)
+		>>> plt.plot(fftshift(fftfreq(N)), fftshift(np.abs(spec)), '.-')
+		>>> plt.margins(0.1, 0.1)
+		>>> plt.grid(True)
+		>>> plt.show()
+		
+		Circular autocorrelation of MLS is an impulse:
+		
+		>>> acorrcirc = ifft(spec * np.conj(spec)).real
+		>>> plt.figure()
+		>>> plt.plot(np.arange(-N/2+1, N/2+1), fftshift(acorrcirc), '.-')
+		>>> plt.margins(0.1, 0.1)
+		>>> plt.grid(True)
+		>>> plt.show()
+		
+		Linear autocorrelation of MLS is approximately an impulse:
+		
+		>>> acorr = np.correlate(seq, seq, 'full')
+		>>> plt.figure()
+		>>> plt.plot(np.arange(-N+1, N), acorr, '.-')
+		>>> plt.margins(0.1, 0.1)
+		>>> plt.grid(True)
+		>>> plt.show()
 	**/
 	static public function max_len_seq(nbits:Dynamic, ?state:Dynamic, ?length:Dynamic, ?taps:Dynamic):Array<Dynamic>;
 	/**
@@ -5055,21 +5615,24 @@ package scipy.signal;
 		
 		This commonly used wavelet is often referred to simply as the
 		Morlet wavelet.  Note that this simplified version can cause
-		admissibility problems at low values of w.
+		admissibility problems at low values of `w`.
 		
 		The complete version::
 		
 		    pi**-0.25 * (exp(1j*w*x) - exp(-0.5*(w**2))) * exp(-0.5*(x**2))
 		
-		The complete version of the Morlet wavelet, with a correction
-		term to improve admissibility. For w greater than 5, the
+		This version has a correction
+		term to improve admissibility. For `w` greater than 5, the
 		correction term is negligible.
 		
 		Note that the energy of the return wavelet is not normalised
-		according to s.
+		according to `s`.
 		
 		The fundamental frequency of this wavelet in Hz is given
-		by ``f = 2*s*w*r / M`` where r is the sampling rate.
+		by ``f = 2*s*w*r / M`` where `r` is the sampling rate.
+		
+		Note: This function was created before `cwt` and is not compatible
+		with it.
 	**/
 	static public function morlet(M:Dynamic, ?w:Dynamic, ?s:Dynamic, ?complete:Dynamic):Dynamic;
 	/**
@@ -5137,7 +5700,7 @@ package scipy.signal;
 		a : ndarray
 		    The N-dimensional input array.
 		domain : array_like
-		    A mask array with the same number of dimensions as `in`.
+		    A mask array with the same number of dimensions as `a`.
 		    Each dimension should have an odd number of elements.
 		rank : int
 		    A non-negative integer which selects the element from the
@@ -5148,7 +5711,7 @@ package scipy.signal;
 		-------
 		out : ndarray
 		    The results of the order filter in an array with the same
-		    shape as `in`.
+		    shape as `a`.
 		
 		Examples
 		--------
@@ -5584,13 +6147,13 @@ package scipy.signal;
 		type : {'bandpass', 'differentiator', 'hilbert'}, optional
 		    The type of filter:
 		
-		      'bandpass' : flat response in bands. This is the default.
+		      * 'bandpass' : flat response in bands. This is the default.
 		
-		      'differentiator' : frequency proportional response in bands.
+		      * 'differentiator' : frequency proportional response in bands.
 		
-		      'hilbert' : filter with odd symmetry, that is, type III
-		                  (for even order) or type IV (for odd order)
-		                  linear phase filters.
+		      * 'hilbert' : filter with odd symmetry, that is, type III
+		                    (for even order) or type IV (for odd order)
+		                    linear phase filters.
 		
 		maxiter : int, optional
 		    Maximum number of iterations of the algorithm. Default is 25.
@@ -5606,7 +6169,10 @@ package scipy.signal;
 		
 		See Also
 		--------
-		freqz : Compute the frequency response of a digital filter.
+		freqz
+		firls
+		firwin
+		firwin2
 		
 		References
 		----------
@@ -5666,6 +6232,11 @@ package scipy.signal;
 		    containing the resampled array and the corresponding resampled
 		    positions.
 		
+		See also
+		--------
+		decimate : Downsample the signal after applying an FIR or IIR filter.
+		resample_poly : Resample using polyphase filtering and an FIR filter.
+		
 		Notes
 		-----
 		The argument `window` controls a Fourier-domain window that tapers
@@ -5714,14 +6285,99 @@ package scipy.signal;
 	**/
 	static public function resample(x:Dynamic, num:Dynamic, ?t:Dynamic, ?axis:Dynamic, ?window:Dynamic):Dynamic;
 	/**
+		Resample `x` along the given axis using polyphase filtering.
+		
+		The signal `x` is upsampled by the factor `up`, a zero-phase low-pass
+		FIR filter is applied, and then it is downsampled by the factor `down`.
+		The resulting sample rate is ``up / down`` times the original sample
+		rate. Values beyond the boundary of the signal are assumed to be zero
+		during the filtering step.
+		
+		Parameters
+		----------
+		x : array_like
+		    The data to be resampled.
+		up : int
+		    The upsampling factor.
+		down : int
+		    The downsampling factor.
+		axis : int, optional
+		    The axis of `x` that is resampled. Default is 0.
+		window : string, tuple, or array_like, optional
+		    Desired window to use to design the low-pass filter, or the FIR filter
+		    coefficients to employ. See below for details.
+		
+		Returns
+		-------
+		resampled_x : array
+		    The resampled array.
+		
+		See also
+		--------
+		decimate : Downsample the signal after applying an FIR or IIR filter.
+		resample : Resample up or down using the FFT method.
+		
+		Notes
+		-----
+		This polyphase method will likely be faster than the Fourier method
+		in `scipy.signal.resample` when the number of samples is large and
+		prime, or when the number of samples is large and `up` and `down`
+		share a large greatest common denominator. The length of the FIR
+		filter used will depend on ``max(up, down) // gcd(up, down)``, and
+		the number of operations during polyphase filtering will depend on
+		the filter length and `down` (see `scipy.signal.upfirdn` for details).
+		
+		The argument `window` specifies the FIR low-pass filter design.
+		
+		If `window` is an array_like it is assumed to be the FIR filter
+		coefficients. Note that the FIR filter is applied after the upsampling
+		step, so it should be designed to operate on a signal at a sampling
+		frequency higher than the original by a factor of `up//gcd(up, down)`.
+		This function's output will be centered with respect to this array, so it
+		is best to pass a symmetric filter with an odd number of samples if, as
+		is usually the case, a zero-phase filter is desired.
+		
+		For any other type of `window`, the functions `scipy.signal.get_window`
+		and `scipy.signal.firwin` are called to generate the appropriate filter
+		coefficients.
+		
+		The first sample of the returned vector is the same as the first
+		sample of the input vector. The spacing between samples is changed
+		from ``dx`` to ``dx * up / float(down)``.
+		
+		Examples
+		--------
+		Note that the end of the resampled data rises to meet the first
+		sample of the next cycle for the FFT method, and gets closer to zero
+		for the polyphase method:
+		
+		>>> from scipy import signal
+		
+		>>> x = np.linspace(0, 10, 20, endpoint=False)
+		>>> y = np.cos(-x**2/6.0)
+		>>> f_fft = signal.resample(y, 100)
+		>>> f_poly = signal.resample_poly(y, 100, 20)
+		>>> xnew = np.linspace(0, 10, 100, endpoint=False)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(xnew, f_fft, 'b.-', xnew, f_poly, 'r.-')
+		>>> plt.plot(x, y, 'ko-')
+		>>> plt.plot(10, y[0], 'bo', 10, 0., 'ro')  # boundaries
+		>>> plt.legend(['resample', 'resamp_poly', 'data'], loc='best')
+		>>> plt.show()
+	**/
+	static public function resample_poly(x:Dynamic, up:Dynamic, down:Dynamic, ?axis:Dynamic, ?window:Dynamic):Array<Dynamic>;
+	/**
 		Compute partial-fraction expansion of b(s) / a(s).
 		
-		If ``M = len(b)`` and ``N = len(a)``, then the partial-fraction
-		expansion H(s) is defined as::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		          b(s)     b[0] s**(M-1) + b[1] s**(M-2) + ... + b[M-1]
-		  H(s) = ------ = ----------------------------------------------
-		          a(s)     a[0] s**(N-1) + a[1] s**(N-2) + ... + a[N-1]
+		          b(s)     b[0] s**(M) + b[1] s**(M-1) + ... + b[M]
+		  H(s) = ------ = ------------------------------------------
+		          a(s)     a[0] s**(N) + a[1] s**(N-1) + ... + a[N]
+		
+		then the partial-fraction expansion H(s) is defined as::
 		
 		           r[0]       r[1]             r[-1]
 		       = -------- + -------- + ... + --------- + k(s)
@@ -5730,9 +6386,20 @@ package scipy.signal;
 		If there are any repeated roots (closer together than `tol`), then H(s)
 		has terms like::
 		
-		        r[i]      r[i+1]              r[i+n-1]
-		      -------- + ----------- + ... + -----------
-		      (s-p[i])  (s-p[i])**2          (s-p[i])**n
+		      r[i]      r[i+1]              r[i+n-1]
+		    -------- + ----------- + ... + -----------
+		    (s-p[i])  (s-p[i])**2          (s-p[i])**n
+		
+		This function is used for polynomials in positive powers of s or z,
+		such as analog filters or digital filters in controls engineering.  For
+		negative powers of z (typical for digital filters in DSP), use `residuez`.
+		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
 		
 		Returns
 		-------
@@ -5745,32 +6412,54 @@ package scipy.signal;
 		
 		See Also
 		--------
-		invres, numpy.poly, unique_roots
+		invres, residuez, numpy.poly, unique_roots
 	**/
 	static public function residue(b:Dynamic, a:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
 		Compute partial-fraction expansion of b(z) / a(z).
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(z)     b[0] + b[1] z**(-1) + ... + b[M-1] z**(-M+1)
-		    H(z) = ------ = ----------------------------------------------
-		            a(z)     a[0] + a[1] z**(-1) + ... + a[N-1] z**(-N+1)
+		            b(z)     b[0] + b[1] z**(-1) + ... + b[M] z**(-M)
+		    H(z) = ------ = ------------------------------------------
+		            a(z)     a[0] + a[1] z**(-1) + ... + a[N] z**(-N)
+		
+		then the partial-fraction expansion H(z) is defined as::
 		
 		             r[0]                   r[-1]
 		     = --------------- + ... + ---------------- + k[0] + k[1]z**(-1) ...
 		       (1-p[0]z**(-1))         (1-p[-1]z**(-1))
 		
-		If there are any repeated roots (closer than tol), then the partial
+		If there are any repeated roots (closer than `tol`), then the partial
 		fraction expansion has terms like::
 		
 		         r[i]              r[i+1]                    r[i+n-1]
 		    -------------- + ------------------ + ... + ------------------
 		    (1-p[i]z**(-1))  (1-p[i]z**(-1))**2         (1-p[i]z**(-1))**n
 		
+		This function is used for polynomials in negative powers of z,
+		such as digital filters in DSP.  For positive powers, use `residue`.
+		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		
+		Returns
+		-------
+		r : ndarray
+		    Residues.
+		p : ndarray
+		    Poles.
+		k : ndarray
+		    Coefficients of the direct polynomial term.
+		
 		See also
 		--------
-		invresz, unique_roots
+		invresz, residue, unique_roots
 	**/
 	static public function residuez(b:Dynamic, a:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
@@ -6165,7 +6854,7 @@ package scipy.signal;
 		
 		See Also
 		--------
-		zpk2sos, sos2zpk, sosfilt_zi
+		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt
 		
 		Notes
 		-----
@@ -6246,6 +6935,57 @@ package scipy.signal;
 		>>> plt.show()
 	**/
 	static public function sosfilt_zi(sos:Dynamic):Dynamic;
+	/**
+		A forward-backward filter using cascaded second-order sections.
+		
+		See `filtfilt` for more complete information about this method.
+		
+		Parameters
+		----------
+		sos : array_like
+		    Array of second-order filter coefficients, must have shape
+		    ``(n_sections, 6)``. Each row corresponds to a second-order
+		    section, with the first three columns providing the numerator
+		    coefficients and the last three providing the denominator
+		    coefficients.
+		x : array_like
+		    The array of data to be filtered.
+		axis : int, optional
+		    The axis of `x` to which the filter is applied.
+		    Default is -1.
+		padtype : str or None, optional
+		    Must be 'odd', 'even', 'constant', or None.  This determines the
+		    type of extension to use for the padded signal to which the filter
+		    is applied.  If `padtype` is None, no padding is used.  The default
+		    is 'odd'.
+		padlen : int or None, optional
+		    The number of elements by which to extend `x` at both ends of
+		    `axis` before applying the filter.  This value must be less than
+		    ``x.shape[axis] - 1``.  ``padlen=0`` implies no padding.
+		    The default value is::
+		
+		        3 * (2 * len(sos) + 1 - min((sos[:, 2] == 0).sum(),
+		                                    (sos[:, 5] == 0).sum()))
+		
+		    The extra subtraction at the end attempts to compensate for poles
+		    and zeros at the origin (e.g. for odd-order filters) to yield
+		    equivalent estimates of `padlen` to those of `filtfilt` for
+		    second-order section filters built with `scipy.signal` functions.
+		
+		Returns
+		-------
+		y : ndarray
+		    The filtered output with the same shape as `x`.
+		
+		See Also
+		--------
+		filtfilt, sosfilt, sosfilt_zi
+		
+		Notes
+		-----
+		.. versionadded:: 0.18.0
+	**/
+	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
 	/**
 		Compute a spectrogram with consecutive Fourier transforms.
 		
@@ -6498,6 +7238,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -6519,6 +7260,12 @@ package scipy.signal;
 		See also
 		--------
 		scipy.signal.step2
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function step(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -6535,6 +7282,7 @@ package scipy.signal;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -6564,6 +7312,10 @@ package scipy.signal;
 		
 		Notes
 		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		.. versionadded:: 0.8.0
 	**/
 	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -6793,8 +7545,9 @@ package scipy.signal;
 		Parameters
 		----------
 		num, den : array_like
-		    Sequences representing the numerator and denominator polynomials.
-		    The denominator needs to be at least as long as the numerator.
+		    Sequences representing the coefficients of the numerator and
+		    denominator polynomials, in order of descending degree. The
+		    denominator needs to be at least as long as the numerator.
 		
 		Returns
 		-------
@@ -6833,7 +7586,7 @@ package scipy.signal;
 		>>> C
 		array([[ 1.,  2.]])
 		>>> D
-		array([ 1.])
+		array([[ 1.]])
 	**/
 	static public function tf2ss(num:Dynamic, den:Dynamic):Dynamic;
 	/**
@@ -7042,6 +7795,95 @@ package scipy.signal;
 	**/
 	static public function unique_roots(p:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
+		Upsample, FIR filter, and downsample
+		
+		Parameters
+		----------
+		h : array_like
+		    1-dimensional FIR (finite-impulse response) filter coefficients.
+		x : array_like
+		    Input signal array.
+		up : int, optional
+		    Upsampling rate. Default is 1.
+		down : int, optional
+		    Downsampling rate. Default is 1.
+		axis : int, optional
+		    The axis of the input data array along which to apply the
+		    linear filter. The filter is applied to each subarray along
+		    this axis. Default is -1.
+		
+		Returns
+		-------
+		y : ndarray
+		    The output signal array. Dimensions will be the same as `x` except
+		    for along `axis`, which will change size according to the `h`,
+		    `up`,  and `down` parameters.
+		
+		Notes
+		-----
+		The algorithm is an implementation of the block diagram shown on page 129
+		of the Vaidyanathan text [1]_ (Figure 4.3-8d).
+		
+		.. [1] P. P. Vaidyanathan, Multirate Systems and Filter Banks,
+		   Prentice Hall, 1993.
+		
+		The direct approach of upsampling by factor of P with zero insertion,
+		FIR filtering of length ``N``, and downsampling by factor of Q is
+		O(N*Q) per output sample. The polyphase implementation used here is
+		O(N/P).
+		
+		.. versionadded:: 0.18
+		
+		Examples
+		--------
+		Simple operations:
+		
+		>>> from scipy.signal import upfirdn
+		>>> upfirdn([1, 1, 1], [1, 1, 1])   # FIR filter
+		array([ 1.,  2.,  3.,  2.,  1.])
+		>>> upfirdn([1], [1, 2, 3], 3)  # upsampling with zeros insertion
+		array([ 1.,  0.,  0.,  2.,  0.,  0.,  3.,  0.,  0.])
+		>>> upfirdn([1, 1, 1], [1, 2, 3], 3)  # upsampling with sample-and-hold
+		array([ 1.,  1.,  1.,  2.,  2.,  2.,  3.,  3.,  3.])
+		>>> upfirdn([.5, 1, .5], [1, 1, 1], 2)  # linear interpolation
+		array([ 0.5,  1. ,  1. ,  1. ,  1. ,  1. ,  0.5,  0. ])
+		>>> upfirdn([1], np.arange(10), 1, 3)  # decimation by 3
+		array([ 0.,  3.,  6.,  9.])
+		>>> upfirdn([.5, 1, .5], np.arange(10), 2, 3)  # linear interp, rate 2/3
+		array([ 0. ,  1. ,  2.5,  4. ,  5.5,  7. ,  8.5,  0. ])
+		
+		Apply a single filter to multiple signals:
+		
+		>>> x = np.reshape(np.arange(8), (4, 2))
+		>>> x
+		array([[0, 1],
+		       [2, 3],
+		       [4, 5],
+		       [6, 7]])
+		
+		Apply along the last dimension of ``x``:
+		
+		>>> h = [1, 1]
+		>>> upfirdn(h, x, 2)
+		array([[ 0.,  0.,  1.,  1.],
+		       [ 2.,  2.,  3.,  3.],
+		       [ 4.,  4.,  5.,  5.],
+		       [ 6.,  6.,  7.,  7.]])
+		
+		Apply along the 0th dimension of ``x``:
+		
+		>>> upfirdn(h, x, 2, axis=0)
+		array([[ 0.,  1.],
+		       [ 0.,  1.],
+		       [ 2.,  3.],
+		       [ 2.,  3.],
+		       [ 4.,  5.],
+		       [ 4.,  5.],
+		       [ 6.,  7.],
+		       [ 6.,  7.]])
+	**/
+	static public function upfirdn(h:Dynamic, x:Dynamic, ?up:Dynamic, ?down:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
 		Determine the vector strength of the events corresponding to the given
 		period.
 		
@@ -7105,7 +7947,7 @@ package scipy.signal;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap : int, optional
@@ -7147,7 +7989,7 @@ package scipy.signal;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.
@@ -7274,8 +8116,7 @@ package scipy.signal;
 		*Algorithms*
 		
 		The current algorithms are designed specifically for use with digital
-		filters. Although they can operate on analog filters, the results may
-		be sub-optimal.
+		filters. (The output coefficents are not correct for analog filters.)
 		
 		The steps in the ``pairing='nearest'`` and ``pairing='keep_odd'``
 		algorithms are mostly shared. The ``nearest`` algorithm attempts to
@@ -7351,7 +8192,7 @@ package scipy.signal;
 		
 		>>> sos = signal.zpk2sos(z, p, k)
 		
-		The coefficents of the numerators of the sections:
+		The coefficients of the numerators of the sections:
 		
 		>>> sos[:, :3]
 		array([[ 0.0014154 ,  0.00248707,  0.0014154 ],

@@ -369,13 +369,13 @@ package scipy.stats.kde;
 	static public function power(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		randint(low, high=None, size=None)
+		randint(low, high=None, size=None, dtype='l')
 		
 		Return random integers from `low` (inclusive) to `high` (exclusive).
 		
-		Return random integers from the "discrete uniform" distribution in the
-		"half-open" interval [`low`, `high`). If `high` is None (the default),
-		then results are from [0, `low`).
+		Return random integers from the "discrete uniform" distribution of
+		the specified dtype in the "half-open" interval [`low`, `high`). If
+		`high` is None (the default), then results are from [0, `low`).
 		
 		Parameters
 		----------
@@ -390,6 +390,13 @@ package scipy.stats.kde;
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
 		    single value is returned.
+		dtype : dtype, optional
+		    Desired dtype of the result. All dtypes are determined by their
+		    name, i.e., 'int64', 'int', etc, so byteorder is not available
+		    and a specific precision may have different C types depending
+		    on the platform. The default value is 'np.int'.
+		
+		    .. versionadded:: 1.11.0
 		
 		Returns
 		-------
@@ -482,20 +489,20 @@ package scipy.stats.kde;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -700,31 +707,30 @@ package scipy.stats.kde;
 		a : array_like
 		    Elements to sum.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a sum is performed.  The default,
+		    axis=None, will sum all of the elements of the input array.  If
+		    axis is negative it counts from the last to the first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
+		    If axis is a tuple of ints, a sum is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
+		    The type of the returned array and of the accumulator in which the
+		    elements are summed.  The dtype of `a` is used by default unless `a`
+		    has an integer dtype of less precision than the default platform
+		    integer.  In that case, if `a` is signed then the platform integer
+		    is used while if `a` is unsigned then an unsigned integer of the
+		    same precision as the platform integer is used.
 		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -792,7 +798,7 @@ package scipy.stats.kde;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

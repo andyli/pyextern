@@ -592,7 +592,11 @@ package numpy.matrixlib.defmatrix;
 	**/
 	public function any(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Indices of the maximum values along an axis.
+		Indexes of the maximum values along an axis.
+		
+		Return the indexes of the first occurrences of the maximum values
+		along the specified axis.  If axis is None, the index is for the
+		flattened matrix.
 		
 		Parameters
 		----------
@@ -624,7 +628,11 @@ package numpy.matrixlib.defmatrix;
 	**/
 	public function argmax(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Return the indices of the minimum values along an axis.
+		Indexes of the minimum values along an axis.
+		
+		Return the indexes of the first occurrences of the minimum values
+		along the specified axis.  If axis is None, the index is for the
+		flattened matrix.
 		
 		Parameters
 		----------
@@ -720,7 +728,7 @@ package numpy.matrixlib.defmatrix;
 		-------
 		arr_t : ndarray
 		    Unless `copy` is False and the other conditions for returning the input
-		    array are satisfied (see description for `copy` input paramter), `arr_t`
+		    array are satisfied (see description for `copy` input parameter), `arr_t`
 		    is a new array of the same shape as the input array, with dtype, order
 		    given by `dtype`, `order`.
 		
@@ -1036,7 +1044,7 @@ package numpy.matrixlib.defmatrix;
 		
 		Return specified diagonals. In NumPy 1.9 the returned array is a
 		read-only view instead of a copy as in previous NumPy versions.  In
-		NumPy 1.10 the read-only restriction will be removed.
+		a future version the read-only restriction will be removed.
 		
 		Refer to :func:`numpy.diagonal` for full documentation.
 		
@@ -1257,10 +1265,12 @@ package numpy.matrixlib.defmatrix;
 		
 		Parameters
 		----------
-		order : {'C', 'F', 'A'}, optional
-		    Whether to flatten in C (row-major), Fortran (column-major) order,
-		    or preserve the C/Fortran ordering from `m`.
-		    The default is 'C'.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    'C' means to flatten in row-major (C-style) order. 'F' means to
+		    flatten in column-major (Fortran-style) order. 'A' means to
+		    flatten in column-major order if `m` is Fortran *contiguous* in
+		    memory, row-major order otherwise. 'K' means to flatten `m` in
+		    the order the elements occur in memory. The default is 'C'.
 		
 		Returns
 		-------
@@ -2743,7 +2753,7 @@ package numpy.matrixlib.defmatrix;
 		>>> y = x.view(dtype=np.int16, type=np.matrix)
 		>>> y
 		matrix([[513]], dtype=int16)
-		>>> print type(y)
+		>>> print(type(y))
 		<class 'numpy.matrixlib.defmatrix.matrix'>
 		
 		Creating a view on a structured array so it can be used in calculations
@@ -2759,7 +2769,7 @@ package numpy.matrixlib.defmatrix;
 		Making changes to the view changes the underlying array
 		
 		>>> xv[0,1] = 20
-		>>> print x
+		>>> print(x)
 		[(1, 20) (3, 4)]
 		
 		Using a view to convert an array to a recarray:

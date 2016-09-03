@@ -41,11 +41,11 @@ package seaborn.categorical;
 		Initialize the plotter.
 	**/
 	@:native("__init__")
-	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, markers:Dynamic, linestyles:Dynamic, dodge:Dynamic, join:Dynamic, scale:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Dynamic;
+	public function ___init__(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, markers:Dynamic, linestyles:Dynamic, dodge:Dynamic, join:Dynamic, scale:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic):Dynamic;
 	/**
 		Initialize the plotter.
 	**/
-	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, markers:Dynamic, linestyles:Dynamic, dodge:Dynamic, join:Dynamic, scale:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic):Void;
+	public function new(x:Dynamic, y:Dynamic, hue:Dynamic, data:Dynamic, order:Dynamic, hue_order:Dynamic, estimator:Dynamic, ci:Dynamic, n_boot:Dynamic, units:Dynamic, markers:Dynamic, linestyles:Dynamic, dodge:Dynamic, join:Dynamic, scale:Dynamic, orient:Dynamic, color:Dynamic, palette:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -113,7 +113,7 @@ package seaborn.categorical;
 		Add descriptive labels to an Axes object.
 	**/
 	public function annotate_axes(ax:Dynamic):Dynamic;
-	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
+	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw the main data components of the plot.
 	**/

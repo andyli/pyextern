@@ -13,7 +13,6 @@ package pandas.sparse.frame;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _try_sort(iterable:Dynamic):Dynamic;
-	static public function _unpickle_array(bytes:Dynamic):Dynamic;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function extract_index(data:Dynamic):Dynamic;

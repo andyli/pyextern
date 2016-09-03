@@ -13,21 +13,37 @@ package scipy.special.spfun_stats;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function loggam(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function loggam(x:Dynamic):Dynamic;
 	/**
 		Returns the log of multivariate gamma, also sometimes called the
 		generalized gamma.
@@ -46,19 +62,23 @@ package scipy.special.spfun_stats;
 		
 		Notes
 		-----
-		The formal definition of the multivariate gamma of dimension d for a real a
-		is::
+		The formal definition of the multivariate gamma of dimension d for a real
+		`a` is
 		
-		    \Gamma_d(a) = \int_{A>0}{e^{-tr(A)\cdot{|A|}^{a - (m+1)/2}dA}}
+		.. math::
 		
-		with the condition ``a > (d-1)/2``, and ``A > 0`` being the set of all the
-		positive definite matrices of dimension s.  Note that a is a scalar: the
-		integrand only is multivariate, the argument is not (the function is
-		defined over a subset of the real set).
+		    \Gamma_d(a) = \int_{A>0} e^{-tr(A)} |A|^{a - (d+1)/2} dA
 		
-		This can be proven to be equal to the much friendlier equation::
+		with the condition :math:`a > (d-1)/2`, and :math:`A > 0` being the set of
+		all the positive definite matrices of dimension `d`.  Note that `a` is a
+		scalar: the integrand only is multivariate, the argument is not (the
+		function is defined over a subset of the real set).
 		
-		    \Gamma_d(a) = \pi^{d(d-1)/4}\prod_{i=1}^{d}{\Gamma(a - (i-1)/2)}.
+		This can be proven to be equal to the much friendlier equation
+		
+		.. math::
+		
+		    \Gamma_d(a) = \pi^{d(d-1)/4} \prod_{i=1}^{d} \Gamma(a - (i-1)/2).
 		
 		References
 		----------

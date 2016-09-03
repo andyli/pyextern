@@ -54,14 +54,14 @@ package scipy.signal.ltisys;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize the zeros, poles, gain LTI system.
+		Initialize the zeros, poles, gain system.
 	**/
 	@:native("__init__")
-	public function ___init__(?system:python.VarArgs<Dynamic>):Dynamic;
+	public function ___init__(?system:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Initialize the zeros, poles, gain LTI system.
+		Initialize the zeros, poles, gain system.
 	**/
-	public function new(?system:python.VarArgs<Dynamic>):Void;
+	public function new(?system:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/
@@ -78,7 +78,7 @@ package scipy.signal.ltisys;
 	/**
 		Handle object conversion if input is an instance of `lti`
 	**/
-	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?system:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -88,7 +88,7 @@ package scipy.signal.ltisys;
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return representation of the `ZerosPolesGain` system
+		Return representation of the `ZerosPolesGain` system.
 	**/
 	public function __repr__():Dynamic;
 	/**
@@ -118,6 +118,36 @@ package scipy.signal.ltisys;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Convert to `StateSpace` system, without copying.
+		
+		Returns
+		-------
+		sys: StateSpace
+		    The `StateSpace` system. If the class is already an instance of
+		    `StateSpace` then this instance is returned.
+	**/
+	public function _as_ss():Dynamic;
+	/**
+		Convert to `TransferFunction` system, without copying.
+		
+		Returns
+		-------
+		sys: ZerosPolesGain
+		    The `TransferFunction` system. If the class is already an instance of
+		    `TransferFunction` then this instance is returned.
+	**/
+	public function _as_tf():Dynamic;
+	/**
+		Convert to `ZerosPolesGain` system, without copying.
+		
+		Returns
+		-------
+		sys: ZerosPolesGain
+		    The `ZerosPolesGain` system. If the class is already an instance of
+		    `ZerosPolesGain` then this instance is returned.
+	**/
+	public function _as_zpk():Dynamic;
+	/**
 		Copy the parameters of another `ZerosPolesGain` system.
 		
 		Parameters
@@ -126,71 +156,27 @@ package scipy.signal.ltisys;
 		    The zeros, poles gain system that is to be copied
 	**/
 	public function _copy(system:Dynamic):Dynamic;
-	/**
-		Calculate Bode magnitude and phase data of a continuous-time system.
-		
-		Returns a 3-tuple containing arrays of frequencies [rad/s], magnitude
-		[dB] and phase [deg]. See `scipy.signal.bode` for details.
-		
-		Notes
-		-----
-		
-		.. versionadded:: 0.11.0
-		
-		Examples
-		--------
-		>>> from scipy import signal
-		>>> import matplotlib.pyplot as plt
-		
-		>>> s1 = signal.lti([1], [1, 1])
-		>>> w, mag, phase = s1.bode()
-		
-		>>> plt.figure()
-		>>> plt.semilogx(w, mag)    # Bode magnitude plot
-		>>> plt.figure()
-		>>> plt.semilogx(w, phase)  # Bode phase plot
-		>>> plt.show()
-	**/
-	public function bode(?w:Dynamic, ?n:Dynamic):Dynamic;
+	public var _dt_dict : Dynamic;
 	/**
 		Denominator of the `TransferFunction` system.
 	**/
 	public var den : Dynamic;
 	/**
-		Calculate the frequency response of a continuous-time system.
-		
-		Returns a 2-tuple containing arrays of frequencies [rad/s] and
-		complex magnitude.
-		See `scipy.signal.freqresp` for details.
+		Return the sampling time of the system, `None` for `lti` systems.
 	**/
-	public function freqresp(?w:Dynamic, ?n:Dynamic):Dynamic;
+	public var dt : Dynamic;
 	/**
 		Gain of the `ZerosPolesGain` system.
 	**/
 	public var gain : Dynamic;
 	/**
-		Return the impulse response of a continuous-time system.
-		See `scipy.signal.impulse` for details.
-	**/
-	public function impulse(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
-	/**
 		Numerator of the `TransferFunction` system.
 	**/
 	public var num : Dynamic;
 	/**
-		Return the response of a continuous-time system to input `U`.
-		See `scipy.signal.lsim` for details.
-	**/
-	public function output(U:Dynamic, T:Dynamic, ?X0:Dynamic):Dynamic;
-	/**
 		Poles of the `ZerosPolesGain` system.
 	**/
 	public var poles : Dynamic;
-	/**
-		Return the step response of a continuous-time system.
-		See `scipy.signal.step` for details.
-	**/
-	public function step(?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
 		Convert system representation to `StateSpace`.
 		

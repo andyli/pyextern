@@ -53,8 +53,8 @@ package matplotlib.animation;
 		    automatically by the underlying utility.
 		extra_args: list of strings or None
 		    A list of extra string arguments to be passed to the underlying
-		    movie utiltiy. The default is None, which passes the additional
-		    argurments in the 'animation.extra_args' rcParam.
+		    movie utility. The default is None, which passes the additional
+		    arguments in the 'animation.extra_args' rcParam.
 		metadata: dict of string:string or None
 		    A dictionary of keys and values for metadata to include in the
 		    output file. Some keys that may be of use include:
@@ -78,8 +78,8 @@ package matplotlib.animation;
 		    automatically by the underlying utility.
 		extra_args: list of strings or None
 		    A list of extra string arguments to be passed to the underlying
-		    movie utiltiy. The default is None, which passes the additional
-		    argurments in the 'animation.extra_args' rcParam.
+		    movie utility. The default is None, which passes the additional
+		    arguments in the 'animation.extra_args' rcParam.
 		metadata: dict of string:string or None
 		    A dictionary of keys and values for metadata to include in the
 		    output file. Some keys that may be of use include:
@@ -176,6 +176,7 @@ package matplotlib.animation;
 		A tuple (width,height) in pixels of a movie frame.
 	**/
 	public var frame_size : Dynamic;
+	static public var frame_size_can_vary : Dynamic;
 	/**
 		Grab the image information from the figure and save as a movie frame.
 		All keyword arguments in savefig_kwargs are passed on to the 'savefig'

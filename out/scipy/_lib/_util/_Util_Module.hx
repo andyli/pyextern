@@ -50,6 +50,32 @@ package scipy._lib._util;
 	**/
 	static public function _asarray_validated(a:Dynamic, ?check_finite:Dynamic, ?sparse_ok:Dynamic, ?objects_ok:Dynamic, ?mask_ok:Dynamic, ?as_inexact:Dynamic):Dynamic;
 	/**
+		Mimic `np.select(condlist, choicelist)`.
+		
+		Notice it assumes that all `arrays` are of the same shape, or can be
+		broadcasted together.
+		
+		All functions in `choicelist` must accept array arguments in the order
+		given in `arrays` and must return an array of the same shape as broadcasted
+		`arrays`.
+		
+		Examples
+		--------
+		>>> x = np.arange(6)
+		>>> np.select([x <3, x > 3], [x**2, x**3], default=0)
+		array([  0,   1,   4,   0,  64, 125])
+		
+		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
+		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		
+		>>> a = -np.ones_like(x)
+		>>> _lazyselect([x < 3, x > 3],
+		...             [lambda x, a: x**2, lambda x, a: a * x**3],
+		...             (x, a))
+		array([   0.,    1.,    4.,   nan,  -64., -125.])
+	**/
+	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
+	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
 		This one only evaluates f(arr1[cond], arr2[cond], ...).
 		For example,
@@ -72,7 +98,7 @@ package scipy._lib._util;
 	/**
 		Turn seed into a np.random.RandomState instance
 		
-		If seed is None (or np.random), return the RandomState singleton used 
+		If seed is None (or np.random), return the RandomState singleton used
 		by np.random.
 		If seed is an int, return a new RandomState instance seeded with seed.
 		If seed is already a RandomState instance, return it.
@@ -114,7 +140,7 @@ package scipy._lib._util;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']

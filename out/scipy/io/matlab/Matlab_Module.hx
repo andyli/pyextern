@@ -68,14 +68,14 @@ package scipy.io.matlab;
 	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	static public var division : Dynamic;
 	/**
-		Load MATLAB file
+		Load MATLAB file.
 		
 		Parameters
 		----------
 		file_name : str
 		   Name of the mat file (do not need .mat extension if
-		   appendmat==True) Can also pass open file-like object.
-		m_dict : dict, optional
+		   appendmat==True). Can also pass open file-like object.
+		mdict : dict, optional
 		    Dictionary in which to insert matfile variables.
 		appendmat : bool, optional
 		   True to append the .mat extension to the end of the given
@@ -118,7 +118,7 @@ package scipy.io.matlab;
 		-------
 		mat_dict : dict
 		   dictionary with variable names as keys, and loaded matrices as
-		   values
+		   values.
 		
 		Notes
 		-----
@@ -149,12 +149,12 @@ package scipy.io.matlab;
 		    given filename, if not already present.
 		format : {'5', '4'}, string, optional
 		    '5' (the default) for MATLAB 5 and up (to 7.2),
-		    '4' for MATLAB 4 .mat files
+		    '4' for MATLAB 4 .mat files.
 		long_field_names : bool, optional
 		    False (the default) - maximum field name length in a structure is
 		    31 characters which is the documented maximum length.
 		    True - maximum field name length in a structure is 63 characters
-		    which works for MATLAB 7.6+
+		    which works for MATLAB 7.6+.
 		do_compression : bool, optional
 		    Whether or not to compress matrices on write.  Default is False.
 		oned_as : {'row', 'column'}, optional
@@ -228,7 +228,7 @@ package scipy.io.matlab;
 	**/
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
 	/**
-		List variables inside a MATLAB file
+		List variables inside a MATLAB file.
 		
 		Parameters
 		----------

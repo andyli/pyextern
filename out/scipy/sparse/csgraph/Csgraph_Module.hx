@@ -619,7 +619,7 @@ package scipy.sparse.csgraph;
 	static public function depth_first_tree(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		dijkstra(csgraph, directed=True, indices=None, return_predecessors=False,
-		         unweighted=False)
+		         unweighted=False, limit=np.inf)
 		
 		Dijkstra algorithm using Fibonacci Heaps
 		
@@ -649,6 +649,7 @@ package scipy.sparse.csgraph;
 		    will decrease computation time by aborting calculations between pairs
 		    that are separated by a distance > limit. For such pairs, the distance
 		    will be equal to np.inf (i.e., not connected).
+		
 		    .. versionadded:: 0.14.0
 		
 		Returns
@@ -809,8 +810,9 @@ package scipy.sparse.csgraph;
 		
 		Returns
 		-------
-		lap : ndarray
-		    The N x N laplacian matrix of graph.
+		lap : ndarray or sparse matrix
+		    The N x N laplacian matrix of csgraph. It will be a numpy array (dense)
+		    if the input was dense, or a sparse matrix otherwise.
 		diag : ndarray, optional
 		    The length-N diagonal of the Laplacian matrix.
 		    For the normalized Laplacian, this is the array of square roots
@@ -1007,7 +1009,7 @@ package scipy.sparse.csgraph;
 	static public function reverse_cuthill_mckee(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		shortest_path(csgraph, method='auto', directed=True, return_predecessors=False,
-		              unweighted=False, overwrite=False)
+		              unweighted=False, overwrite=False, indices=None)
 		
 		Perform a shortest-path graph search on a positive directed or
 		undirected graph.
@@ -1062,6 +1064,9 @@ package scipy.sparse.csgraph;
 		    If True, overwrite csgraph with the result.  This applies only if
 		    method == 'FW' and csgraph is a dense, c-ordered array with
 		    dtype=float64.
+		indices : array_like or int, optional
+		    If specified, only compute the paths for the points at the given
+		    indices. Incompatible with method == 'FW'.
 		
 		Returns
 		-------

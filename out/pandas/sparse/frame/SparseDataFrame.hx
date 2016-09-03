@@ -1567,8 +1567,9 @@ package pandas.sparse.frame;
 		kwargs : keyword, value pairs
 		    keywords are the column names. If the values are
 		    callable, they are computed on the DataFrame and
-		    assigned to the new columns. If the values are
-		    not callable, (e.g. a Series, scalar, or array),
+		    assigned to the new columns. The callable must not
+		    change input DataFrame (though pandas doesn't check it).
+		    If the values are not callable, (e.g. a Series, scalar, or array),
 		    they are simply assigned.
 		
 		Returns
@@ -1780,7 +1781,7 @@ package pandas.sparse.frame;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated.
 		
@@ -2046,7 +2047,7 @@ package pandas.sparse.frame;
 	**/
 	public function cov(?min_periods:Dynamic):pandas.DataFrame;
 	/**
-		Return cumulative max over requested axis.
+		Return cumulative cummax over requested axis.
 		
 		Parameters
 		----------
@@ -2057,11 +2058,11 @@ package pandas.sparse.frame;
 		
 		Returns
 		-------
-		max : Series
+		cummax : Series
 	**/
 	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
-		Return cumulative min over requested axis.
+		Return cumulative cummin over requested axis.
 		
 		Parameters
 		----------
@@ -2072,11 +2073,11 @@ package pandas.sparse.frame;
 		
 		Returns
 		-------
-		min : Series
+		cummin : Series
 	**/
 	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
-		Return cumulative prod over requested axis.
+		Return cumulative cumprod over requested axis.
 		
 		Parameters
 		----------
@@ -2087,7 +2088,7 @@ package pandas.sparse.frame;
 		
 		Returns
 		-------
-		prod : Series
+		cumprod : Series
 	**/
 	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
@@ -2102,7 +2103,7 @@ package pandas.sparse.frame;
 		-------
 		y : SparseDataFrame
 	**/
-	public function cumsum(?axis:Dynamic):pandas.SparseDataFrame;
+	public function cumsum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.SparseDataFrame;
 	public var default_fill_value : Dynamic;
 	public var default_kind : Dynamic;
 	/**
@@ -2870,7 +2871,7 @@ package pandas.sparse.frame;
 		-------
 		GroupBy object
 	**/
-	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic):Dynamic;
+	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Wrapper for flexible comparison methods gt
 	**/
@@ -2995,6 +2996,8 @@ package pandas.sparse.frame;
 		- A list or array of integers, e.g. ``[4, 3, 0]``.
 		- A slice object with ints, e.g. ``1:7``.
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.iloc`` will raise ``IndexError`` if a requested indexer is
 		out-of-bounds, except *slice* indexers which allow out-of-bounds
@@ -3057,7 +3060,8 @@ package pandas.sparse.frame;
 		----------
 		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
 		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
-		          'polynomial', 'spline' 'piecewise_polynomial', 'pchip'}
+		          'polynomial', 'spline', 'piecewise_polynomial',
+		          'from_derivatives', 'pchip', 'akima'}
 		
 		    * 'linear': ignore the index and treat the values as equally
 		      spaced. This is the only method supported on MultiIndexes.
@@ -3071,12 +3075,21 @@ package pandas.sparse.frame;
 		      require that you also specify an `order` (int),
 		      e.g. df.interpolate(method='polynomial', order=4).
 		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', and 'pchip' are all
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
 		      wrappers around the scipy interpolation methods of similar
 		      names. These use the actual numerical values of the index. See
 		      the scipy documentation for more on their behavior
 		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
 		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		
+		    .. versionadded:: 0.18.1
+		
+		       Added support for the 'akima' method
+		       Added interpolate method 'from_derivatives' which replaces
+		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
+		       scipy < 0.18
 		
 		axis : {0, 1}, default 0
 		    * 0: fill column-by-column
@@ -3436,6 +3449,8 @@ package pandas.sparse.frame;
 		- A slice object with labels, e.g. ``'a':'f'`` (note that contrary
 		  to usual python slices, **both** the start and the stop are included!).
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.loc`` will raise a ``KeyError`` when the items are not found.
 		
@@ -3500,8 +3515,26 @@ package pandas.sparse.frame;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None
@@ -5217,8 +5250,9 @@ package pandas.sparse.frame;
 		See Also
 		--------
 		numpy.around
+		Series.round
 	**/
-	public function round(?decimals:Dynamic, ?out:Dynamic):Dynamic;
+	public function round(?decimals:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Exponential power of dataframe and other, element-wise (binary operator `rpow`).
 		
@@ -5658,7 +5692,7 @@ package pandas.sparse.frame;
 		-------
 		sorted : DataFrame
 	**/
-	public function sort(?columns:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic):pandas.DataFrame;
+	public function sort(?columns:Dynamic, ?axis:Dynamic, ?ascending:Dynamic, ?inplace:Dynamic, ?kind:Dynamic, ?na_position:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Sort object by labels (along an axis)
 		
@@ -5742,7 +5776,7 @@ package pandas.sparse.frame;
 	/**
 		Squeeze length 1 dimensions.
 	**/
-	public function squeeze():Dynamic;
+	public function squeeze(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Pivot a level of the (possibly hierarchical) column labels, returning a
 		DataFrame (or Series in the case of an object with a single level of
@@ -5807,7 +5841,7 @@ package pandas.sparse.frame;
 		
 		See Also
 		--------
-		pandas.core.style.Styler
+		pandas.formats.style.Styler
 	**/
 	public var style : Dynamic;
 	/**
@@ -5912,8 +5946,13 @@ package pandas.sparse.frame;
 		Returns
 		-------
 		swapped : type of caller (new object)
+		
+		.. versionchanged:: 0.18.1
+		
+		   The indexes ``i`` and ``j`` are now optional, and default to
+		   the two innermost levels of the index.
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic, ?axis:Dynamic):Dynamic;
+	public function swaplevel(?i:Dynamic, ?j:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns last n rows
 	**/
@@ -5932,7 +5971,7 @@ package pandas.sparse.frame;
 		-------
 		taken : type of caller
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		This can be pasted into Excel, for example.
@@ -5991,7 +6030,7 @@ package pandas.sparse.frame;
 		    defaults to 'ascii' on Python 2 and 'utf-8' on Python 3.
 		compression : string, optional
 		    a string representing the compression to use in the output file,
-		    allowed values are 'gzip', 'bz2',
+		    allowed values are 'gzip', 'bz2', 'xz',
 		    only used when the first argument is a filename
 		line_terminator : string, default '\n'
 		    The newline character or character sequence to use in the output
@@ -6650,7 +6689,7 @@ package pandas.sparse.frame;
 	/**
 		Returns a DataFrame with the rows/columns switched.
 	**/
-	public function transpose():Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Floating division of dataframe and other, element-wise (binary operator `truediv`).
 		
@@ -6902,8 +6941,26 @@ package pandas.sparse.frame;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None

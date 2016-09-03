@@ -396,7 +396,7 @@ package scipy.sparse.linalg.matfuncs;
 		    The square matrix A will be converted into CSC or CSR form
 		b : ndarray or sparse matrix
 		    The matrix or vector representing the right hand side of the equation.
-		    If a vector, b.size must be (n,) or (n, 1)
+		    If a vector, b.shape must be (n,) or (n, 1).
 		permc_spec : str, optional
 		    How to permute the columns of the matrix for sparsity preservation.
 		    (default: 'COLAMD')

@@ -129,6 +129,7 @@ package pandas.core.internals;
 		raise on an except if raise == True
 	**/
 	public function _astype(dtype:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public var _box_func : Dynamic;
 	static public var _box_to_block_values : Dynamic;
 	static public var _can_consolidate : Dynamic;
 	public function _can_hold_element(element:Dynamic):Dynamic;
@@ -160,6 +161,7 @@ package pandas.core.internals;
 	public var _is_single_block : Dynamic;
 	public function _maybe_downcast(blocks:Dynamic, ?downcast:Dynamic):Dynamic;
 	public var _mgr_locs : Dynamic;
+	public var _na_value : Dynamic;
 	/**
 		no-op on a non-ObjectBlock 
 	**/
@@ -270,8 +272,7 @@ package pandas.core.internals;
 	public var ftype : Dynamic;
 	public function get(item:Dynamic):Dynamic;
 	/**
-		return an internal format, currently just the ndarray
-		this is often overriden to handle to_dense like operations
+		return object dtype as boxed values, such as Timestamps/Timedelta
 	**/
 	public function get_values(?dtype:Dynamic):Dynamic;
 	/**
@@ -313,7 +314,7 @@ package pandas.core.internals;
 	public var is_view : Dynamic;
 	public var itemsize : Dynamic;
 	/**
-		Create a new block, with type inference propogate any values that are
+		Create a new block, with type inference propagate any values that are
 		not specified
 	**/
 	public function make_block(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -345,6 +346,14 @@ package pandas.core.internals;
 		a list of new blocks, the result of the putmask
 	**/
 	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
+	/**
+		compute the quantiles of the
+		
+		Parameters
+		----------
+		qs : a scalar or list of the quantiles to be computed
+	**/
+	public function quantile(qs:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reindex using pre-computed indexer information
 	**/

@@ -74,7 +74,7 @@ package scipy.linalg._decomp_qz;
 		>>> try:
 		...     np.asarray_chkfinite(a)
 		... except ValueError:
-		...     print 'ValueError'
+		...     print('ValueError')
 		...
 		ValueError
 	**/

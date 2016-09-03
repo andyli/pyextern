@@ -2,7 +2,6 @@
 package scipy.stats._distn_infrastructure;
 @:pythonImport("scipy.stats._distn_infrastructure") extern class _Distn_infrastructure_Module {
 	static public var NINF : Dynamic;
-	static public var _EPS : Dynamic;
 	static public var _XMAX : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -17,12 +16,10 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function _drv2_moment(self:Dynamic, n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _drv2_ppfsingle(self:Dynamic, q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_cdf(self:Dynamic, xk:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_moment(self:Dynamic, n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_moment_gen(self:Dynamic, t:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_nonzero(self:Dynamic, k:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_pmf(self:Dynamic, xk:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _drv_ppf(self:Dynamic, q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Helper for computing the expectation value of `fun`.
+	**/
+	static public function _expect(fun:Dynamic, lb:Dynamic, ub:Dynamic, x0:Dynamic, inc:Dynamic, ?maxcount:Dynamic, ?tolerance:Dynamic, ?chunksize:Dynamic):Dynamic;
 	/**
 		inspect.getargspec replacement using inspect.signature.
 		
@@ -67,6 +64,32 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function _kurtosis(data:Dynamic):Dynamic;
 	/**
+		Mimic `np.select(condlist, choicelist)`.
+		
+		Notice it assumes that all `arrays` are of the same shape, or can be
+		broadcasted together.
+		
+		All functions in `choicelist` must accept array arguments in the order
+		given in `arrays` and must return an array of the same shape as broadcasted
+		`arrays`.
+		
+		Examples
+		--------
+		>>> x = np.arange(6)
+		>>> np.select([x <3, x > 3], [x**2, x**3], default=0)
+		array([  0,   1,   4,   0,  64, 125])
+		
+		>>> _lazyselect([x < 3, x > 3], [lambda x: x**2, lambda x: x**3], (x,))
+		array([   0.,    1.,    4.,   nan,   64.,  125.])
+		
+		>>> a = -np.ones_like(x)
+		>>> _lazyselect([x < 3, x > 3],
+		...             [lambda x, a: x**2, lambda x, a: a * x**3],
+		...             (x, a))
+		array([   0.,    1.,    4.,   nan,  -64., -125.])
+	**/
+	static public function _lazyselect(condlist:Dynamic, choicelist:Dynamic, arrays:Dynamic, ?_default:Dynamic):Dynamic;
+	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
 		This one only evaluates f(arr1[cond], arr2[cond], ...).
 		For example,
@@ -90,78 +113,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function _skew(data:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
-	/**
-		Test whether any array element along a given axis evaluates to True.
-		
-		Returns single boolean unless `axis` is not ``None``
-		
-		Parameters
-		----------
-		a : array_like
-		    Input array or object that can be converted to an array.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a logical OR reduction is performed.
-		    The default (`axis` = `None`) is to perform a logical OR over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a reduction is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		out : ndarray, optional
-		    Alternate output array in which to place the result.  It must have
-		    the same shape as the expected output and its type is preserved
-		    (e.g., if it is of type float, then it will remain so, returning
-		    1.0 for True and 0.0 for False, regardless of the type of `a`).
-		    See `doc.ufuncs` (Section "Output arguments") for details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		any : bool or ndarray
-		    A new boolean or `ndarray` is returned unless `out` is specified,
-		    in which case a reference to `out` is returned.
-		
-		See Also
-		--------
-		ndarray.any : equivalent method
-		
-		all : Test whether all elements along a given axis evaluate to True.
-		
-		Notes
-		-----
-		Not a Number (NaN), positive infinity and negative infinity evaluate
-		to `True` because these are not equal to zero.
-		
-		Examples
-		--------
-		>>> np.any([[True, False], [True, True]])
-		True
-		
-		>>> np.any([[True, False], [False, False]], axis=0)
-		array([ True, False], dtype=bool)
-		
-		>>> np.any([-1, 0, 5])
-		True
-		
-		>>> np.any(np.nan)
-		True
-		
-		>>> o=np.array([False])
-		>>> z=np.any([-1, 4, 5], out=o)
-		>>> z, o
-		(array([ True], dtype=bool), array([ True], dtype=bool))
-		>>> # Check now that z is a reference to o
-		>>> z is o
-		True
-		>>> id(z), id(o) # identity of z and o              # doctest: +SKIP
-		(191614240, 191614240)
-	**/
-	static public function any(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		arange([start,] stop[, step,], dtype=None)
 		
@@ -300,7 +251,7 @@ package scipy.stats._distn_infrastructure;
 		-------
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
 		
 		See Also
 		--------
@@ -445,7 +396,7 @@ package scipy.stats._distn_infrastructure;
 	/**
 		Turn seed into a np.random.RandomState instance
 		
-		If seed is None (or np.random), return the RandomState singleton used 
+		If seed is None (or np.random), return the RandomState singleton used
 		by np.random.
 		If seed is an int, return a new RandomState instance seeded with seed.
 		If seed is already a RandomState instance, return it.
@@ -513,7 +464,7 @@ package scipy.stats._distn_infrastructure;
 		    Input function.
 		x0 : float
 		    The point at which `n`-th derivative is found.
-		dx : int, optional
+		dx : float, optional
 		    Spacing.
 		n : int, optional
 		    Order of the derivative. Default is 1.
@@ -560,8 +511,8 @@ package scipy.stats._distn_infrastructure;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -612,7 +563,7 @@ package scipy.stats._distn_infrastructure;
 		-----
 		This function is concave.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -752,22 +703,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaln(x[, out])
-		
-		gammaln(z)
-		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
-		
-		See Also
-		--------
-		gammasgn
-	**/
-	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
 		Collect names of statistical distributions and their generators.
 		
 		Parameters
@@ -862,6 +797,47 @@ package scipy.stats._distn_infrastructure;
 		Defined as::
 		
 		    ive(v, z) = iv(v, z) * exp(-abs(z.real))
+		
+		Parameters
+		----------
+		v : array_like of float
+		    Order.
+		z : array_like of float or complex
+		    Argument.
+		
+		Returns
+		-------
+		out : ndarray
+		    Values of the exponentially scaled modified Bessel function.
+		
+		Notes
+		-----
+		For positive `v`, the AMOS [1]_ `zbesi` routine is called. It uses a
+		power series for small `z`, the asymptitic expansion for large
+		`abs(z)`, the Miller algorithm normalized by the Wronskian and a
+		Neumann series for intermediate magnitudes, and the uniform asymptitic
+		expansions for :math:`I_v(z)` and :math:`J_v(z)` for large orders.
+		Backward recurrence is used to generate sequences or reduce orders when
+		necessary.
+		
+		The calculations above are done in the right half plane and continued
+		into the left half plane by the formula,
+		
+		.. math:: I_v(z \exp(\pm\imath\pi)) = \exp(\pm\pi v) I_v(z)
+		
+		(valid when the real part of `z` is positive).  For negative `v`, the
+		formula
+		
+		.. math:: I_{-v}(z) = I_v(z) + \frac{2}{\pi} \sin(\pi v) K_v(z)
+		
+		is used, where :math:`K_v(z)` is the modified Bessel function of the
+		second kind, evaluated using the AMOS routine `zbesk`.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function ive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -893,7 +869,7 @@ package scipy.stats._distn_infrastructure;
 		-----
 		This function is non-negative and is jointly convex in `x` and `y`.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function kl_div(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1035,7 +1011,7 @@ package scipy.stats._distn_infrastructure;
 		
 		Parameters
 		----------
-		arr : array_like
+		arr : ndarray
 		    Array to put data into.
 		mask : array_like
 		    Boolean mask array. Must have the same size as `a`.
@@ -1170,20 +1146,20 @@ package scipy.stats._distn_infrastructure;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -1385,87 +1361,6 @@ package scipy.stats._distn_infrastructure;
 	**/
 	static public function sqrt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var string_types : Dynamic;
-	/**
-		Sum of array elements over a given axis.
-		
-		Parameters
-		----------
-		a : array_like
-		    Elements to sum.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
-		
-		    .. versionadded:: 1.7.0
-		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
-		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		sum_along_axis : ndarray
-		    An array with the same shape as `a`, with the specified
-		    axis removed.   If `a` is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
-		
-		See Also
-		--------
-		ndarray.sum : Equivalent method.
-		
-		cumsum : Cumulative sum of array elements.
-		
-		trapz : Integration of array values using the composite trapezoidal rule.
-		
-		mean, average
-		
-		Notes
-		-----
-		Arithmetic is modular when using integer types, and no error is
-		raised on overflow.
-		
-		The sum of an empty array is the neutral element 0:
-		
-		>>> np.sum([])
-		0.0
-		
-		Examples
-		--------
-		>>> np.sum([0.5, 1.5])
-		2.0
-		>>> np.sum([0.5, 0.7, 0.2, 1.5], dtype=np.int32)
-		1
-		>>> np.sum([[0, 1], [0, 5]])
-		6
-		>>> np.sum([[0, 1], [0, 5]], axis=0)
-		array([0, 6])
-		>>> np.sum([[0, 1], [0, 5]], axis=1)
-		array([1, 5])
-		
-		If the accumulator is too small, overflow occurs:
-		
-		>>> np.ones(128, dtype=np.int8).sum(dtype=np.int8)
-		-128
-	**/
-	static public function sum(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Take elements from an array along an axis.
 		

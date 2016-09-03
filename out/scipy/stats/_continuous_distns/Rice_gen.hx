@@ -125,6 +125,7 @@ package scipy.stats._continuous_distns;
 		 0's where they are not.
 	**/
 	public function _argcheck(b:Dynamic):Dynamic;
+	public function _argcheck_rvs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _cdf(x:Dynamic, b:Dynamic):Dynamic;
 	public function _cdf_single(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -181,10 +182,12 @@ package scipy.stats._continuous_distns;
 	public function _mom_integ1(q:Dynamic, m:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _munp(n:Dynamic, b:Dynamic):Dynamic;
 	public function _nnlf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _nnlf_and_penalty(x:Dynamic, args:Dynamic):Dynamic;
+	public function _open_support_mask(x:Dynamic):Dynamic;
 	public function _pdf(x:Dynamic, b:Dynamic):Dynamic;
 	/**
-		Return negative loglikelihood function,
-		i.e., - sum (log pdf(x, theta), axis=0)
+		Return penalized negative loglikelihood function,
+		i.e., - sum (log pdf(x, theta), axis=0) + penalty
 		   where theta are the parameters (including loc and scale)
 	**/
 	public function _penalized_nnlf(theta:Dynamic, x:Dynamic):Dynamic;
@@ -195,6 +198,8 @@ package scipy.stats._continuous_distns;
 	public function _rvs(b:Dynamic):Dynamic;
 	public function _sf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _support_mask(x:Dynamic):Dynamic;
+	public function _unpack_loc_scale(theta:Dynamic):Dynamic;
 	/**
 		Return the current version of _ctor_param, possibly updated by user.
 		
@@ -245,13 +250,6 @@ package scipy.stats._continuous_distns;
 		True
 	**/
 	public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`est_loc_scale` is deprecated!
-		
-		This function is deprecated, use self.fit_loc_scale(data) instead.
-		        
-	**/
-	public function est_loc_scale(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate expected value of a function with respect to the
 		distribution.
@@ -364,9 +362,9 @@ package scipy.stats._continuous_distns;
 		
 		Now we can fit all four parameters (``a``, ``b``, ``loc`` and ``scale``):
 		
-		>>> a1, b1, loc1, scale1 = beta.fit(x)        
+		>>> a1, b1, loc1, scale1 = beta.fit(x)
 		
-		We can also use some prior knowledge about the dataset: let's keep 
+		We can also use some prior knowledge about the dataset: let's keep
 		``loc`` and ``scale`` fixed:
 		
 		>>> a1, b1, loc1, scale1 = beta.fit(x, floc=0, fscale=1)

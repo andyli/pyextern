@@ -397,7 +397,7 @@ package numpy.lib.shape_base;
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		...     print arr, arr.shape
+		...     print(arr, arr.shape)
 		...
 		[[[1]
 		  [2]]] (1, 2, 1)
@@ -1113,6 +1113,9 @@ package numpy.lib.shape_base;
 		Thus for an `A` of shape (2, 3, 4, 5), a `reps` of (2, 2) is treated as
 		(1, 1, 2, 2).
 		
+		Note : Although tile may be used for broadcasting, it is strongly
+		recommended to use numpy's broadcasting operations and functions.
+		
 		Parameters
 		----------
 		A : array_like
@@ -1128,6 +1131,7 @@ package numpy.lib.shape_base;
 		See Also
 		--------
 		repeat : Repeat elements of an array.
+		broadcast_to : Broadcast an array to a new shape
 		
 		Examples
 		--------
@@ -1150,6 +1154,13 @@ package numpy.lib.shape_base;
 		       [3, 4],
 		       [1, 2],
 		       [3, 4]])
+		
+		>>> c = np.array([1,2,3,4])
+		>>> np.tile(c,(4,1))
+		array([[1, 2, 3, 4],
+		       [1, 2, 3, 4],
+		       [1, 2, 3, 4],
+		       [1, 2, 3, 4]])
 	**/
 	static public function tile(A:Dynamic, reps:Dynamic):numpy.Ndarray;
 	/**

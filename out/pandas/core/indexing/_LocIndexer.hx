@@ -4,7 +4,7 @@ package pandas.core.indexing;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function __call__(?axis:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -160,6 +160,11 @@ package pandas.core.indexing;
 	static public function _exception(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_label(label:Dynamic, ?axis:Dynamic):Dynamic;
 	public function _get_loc(key:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Translate any partial string timestamp matches in key, returning the
+		new key (GH 10331)
+	**/
+	public function _get_partial_string_timestamp_match_key(key:Dynamic, labels:Dynamic):Dynamic;
 	public function _get_setitem_indexer(key:Dynamic):Dynamic;
 	/**
 		this is pretty simple as we just have to deal with labels 
@@ -199,4 +204,5 @@ package pandas.core.indexing;
 	public function _slice(obj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _tuplify(loc:Dynamic):Dynamic;
 	static public var _valid_types : Dynamic;
+	static public var axis : Dynamic;
 }

@@ -45,9 +45,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, p, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, p, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, p, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
@@ -108,8 +108,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, bernoulli.pmf(x, p), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -146,9 +146,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, n, p, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, n, p, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, n, p, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
@@ -208,8 +208,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, binom.pmf(x, n, p), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -246,9 +246,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, lambda_, N, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, lambda_, N, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, lambda_, N, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, lambda_, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, N, loc=0)``
@@ -308,8 +308,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, boltzmann.pmf(x, lambda_, N), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -330,6 +330,45 @@ package scipy.stats._discrete_distns;
 		>>> r = boltzmann.rvs(lambda_, N, size=1000)
 	**/
 	static public function boltzmann(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Broadcast an array to a new shape.
+		
+		Parameters
+		----------
+		array : array_like
+		    The array to broadcast.
+		shape : tuple
+		    The shape of the desired array.
+		subok : bool, optional
+		    If True, then sub-classes will be passed-through, otherwise
+		    the returned array will be forced to be a base-class array (default).
+		
+		Returns
+		-------
+		broadcast : array
+		    A readonly view on the original array with the given shape. It is
+		    typically not contiguous. Furthermore, more than one element of a
+		    broadcasted array may refer to a single memory location.
+		
+		Raises
+		------
+		ValueError
+		    If the array is not compatible with the new shape according to NumPy's
+		    broadcasting rules.
+		
+		Notes
+		-----
+		.. versionadded:: 1.10.0
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 3])
+		>>> np.broadcast_to(x, (3, 3))
+		array([[1, 2, 3],
+		       [1, 2, 3],
+		       [1, 2, 3]])
+	**/
+	static public function broadcast_to(array:Dynamic, shape:Dynamic, ?subok:Dynamic):Array<Dynamic>;
 	/**
 		ceil(x[, out])
 		
@@ -406,9 +445,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, a, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, a, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
@@ -468,8 +507,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, dlaplace.pmf(x, a), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -517,7 +556,7 @@ package scipy.stats._discrete_distns;
 		-----
 		This function is concave.
 		
-		.. versionadded:: 0.14.0
+		.. versionadded:: 0.15.0
 	**/
 	static public function entr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -656,21 +695,37 @@ package scipy.stats._discrete_distns;
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gamln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gamln(x:Dynamic):Dynamic;
 	/**
 		A geometric discrete random variable.
 		
@@ -687,9 +742,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, p, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, p, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, p, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
@@ -749,8 +804,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, geom.pmf(x, p), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -812,9 +867,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, M, n, N, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, M, n, N, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, M, n, N, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, M, n, N, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, M, n, N, loc=0)``
@@ -1005,9 +1060,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, p, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, p, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, p, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, p, loc=0)``
@@ -1067,8 +1122,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, logser.pmf(x, p), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1130,7 +1185,7 @@ package scipy.stats._discrete_distns;
 		    If return_sign is True, this will be an array of floating-point
 		    numbers matching res and +1, 0, or -1 depending on the sign
 		    of the result. If False, only one result is returned.
-		    
+		
 		See Also
 		--------
 		numpy.logaddexp, numpy.logaddexp2
@@ -1163,6 +1218,15 @@ package scipy.stats._discrete_distns;
 		
 		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
 		(1.5413248546129181, -1.0)
+		
+		Notice that `logsumexp` does not directly support masked arrays. To use it
+		on a masked array, convert the mask into zero weights:
+		
+		>>> a = np.ma.array([np.log(2), 2, np.log(3)],
+		...                  mask=[False, True, False])
+		>>> b = (~a.mask).astype(int)
+		>>> logsumexp(a.data, b=b), np.log(5)
+		1.6094379124341005, 1.6094379124341005
 	**/
 	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	/**
@@ -1181,9 +1245,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, n, p, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, n, p, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, n, p, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, n, p, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, n, p, loc=0)``
@@ -1243,8 +1307,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, nbinom.pmf(x, n, p), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1282,9 +1346,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, lambda_, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, lambda_, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, lambda_, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, lambda_, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, lambda_, loc=0)``
@@ -1344,8 +1408,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, planck.pmf(x, lambda_), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1382,9 +1446,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, mu, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, mu, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, mu, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, mu, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu, loc=0)``
@@ -1444,8 +1508,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, poisson.pmf(x, mu), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1483,9 +1547,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, low, high, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, low, high, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, low, high, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, low, high, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, low, high, loc=0)``
@@ -1521,9 +1585,6 @@ package scipy.stats._discrete_distns;
 		
 		`randint` takes ``low`` and ``high`` as shape parameters.
 		
-		Note the difference to the numpy ``random_integers`` which
-		returns integers on a *closed* interval ``[low, high]``.
-		
 		The probability mass function above is defined in the "standardized" form.
 		To shift distribution use the ``loc`` parameter.
 		Specifically, ``randint.pmf(k, low, high, loc)`` is identically
@@ -1548,8 +1609,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, randint.pmf(x, low, high), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1643,9 +1704,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, mu1, mu2, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, mu1, mu2, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, mu1, mu2, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, mu1, mu2, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, mu1, mu2, loc=0)``
@@ -1713,8 +1774,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, skellam.pmf(x, mu1, mu2), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		
@@ -1854,9 +1915,9 @@ package scipy.stats._discrete_distns;
 		``logpmf(x, a, loc=0)``
 		    Log of the probability mass function.
 		``cdf(x, a, loc=0)``
-		    Cumulative density function.
+		    Cumulative distribution function.
 		``logcdf(x, a, loc=0)``
-		    Log of the cumulative density function.
+		    Log of the cumulative distribution function.
 		``sf(x, a, loc=0)``
 		    Survival function  (also defined as ``1 - cdf``, but `sf` is sometimes more accurate).
 		``logsf(x, a, loc=0)``
@@ -1916,8 +1977,8 @@ package scipy.stats._discrete_distns;
 		>>> ax.vlines(x, 0, zipf.pmf(x, a), colors='b', lw=5, alpha=0.5)
 		
 		Alternatively, the distribution object can be called (as a function)
-		to fix the shape and location. This returns a "frozen" RV object holding 
-		the given parameters fixed. 
+		to fix the shape and location. This returns a "frozen" RV object holding
+		the given parameters fixed.
 		
 		Freeze the distribution and display the frozen ``pmf``:
 		

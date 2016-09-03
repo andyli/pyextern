@@ -41,6 +41,7 @@ package scipy.optimize._lsq.trf_linear;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Find an appropriate step size using backtracking line search.
 	**/
@@ -81,6 +82,7 @@ package scipy.optimize._lsq.trf_linear;
 		Compute gradient of the least-squares cost function.
 	**/
 	static public function compute_grad(J:Dynamic, f:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Compute values of a quadratic function arising in least squares.
 		
@@ -361,22 +363,22 @@ package scipy.optimize._lsq.trf_linear;
 		>>> LA.norm(b, 'fro')
 		7.745966692414834
 		>>> LA.norm(a, np.inf)
-		4
+		4.0
 		>>> LA.norm(b, np.inf)
-		9
+		9.0
 		>>> LA.norm(a, -np.inf)
-		0
+		0.0
 		>>> LA.norm(b, -np.inf)
-		2
+		2.0
 		
 		>>> LA.norm(a, 1)
-		20
+		20.0
 		>>> LA.norm(b, 1)
-		7
+		7.0
 		>>> LA.norm(a, -1)
 		-4.6566128774142013e-010
 		>>> LA.norm(b, -1)
-		6
+		6.0
 		>>> LA.norm(a, 2)
 		7.745966692414834
 		>>> LA.norm(b, 2)
@@ -400,7 +402,7 @@ package scipy.optimize._lsq.trf_linear;
 		>>> LA.norm(c, axis=1)
 		array([ 3.74165739,  4.24264069])
 		>>> LA.norm(c, ord=1, axis=1)
-		array([6, 6])
+		array([ 6.,  6.])
 		
 		Using the `axis` argument to compute matrix norms:
 		
@@ -411,6 +413,7 @@ package scipy.optimize._lsq.trf_linear;
 		(3.7416573867739413, 11.224972160321824)
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function print_header_linear():Dynamic;
 	static public function print_iteration_linear(iteration:Dynamic, cost:Dynamic, cost_reduction:Dynamic, step_norm:Dynamic, optimality:Dynamic):Dynamic;
 	/**

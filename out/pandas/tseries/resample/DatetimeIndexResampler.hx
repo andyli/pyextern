@@ -42,11 +42,11 @@ package pandas.tseries.resample;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, groupby:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(obj:Dynamic, ?groupby:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, groupby:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(obj:Dynamic, ?groupby:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	public function __inv__():Dynamic;
 	/**
 		Groupby iterator
@@ -124,6 +124,10 @@ package pandas.tseries.resample;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		adjust our binner when upsampling 
+	**/
+	public function _adjust_binner_for_upsample(binner:Dynamic):Dynamic;
 	static public var _agg_doc : Dynamic;
 	/**
 		provide an implementation for the aggregators
@@ -146,6 +150,10 @@ package pandas.tseries.resample;
 	public function _aggregate(arg:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _aggregate_multiple_funcs(arg:Dynamic, _level:Dynamic):Dynamic;
 	public function _apply_filter(indices:Dynamic, dropna:Dynamic):Dynamic;
+	/**
+		if loffset if set, offset the result index
+	**/
+	public function _apply_loffset(result:Dynamic):Dynamic;
 	static public var _apply_whitelist : Dynamic;
 	/**
 		make sure that we are creating our binner & grouper 
@@ -167,14 +175,17 @@ package pandas.tseries.resample;
 	**/
 	public function _convert_obj(obj:Dynamic):Dynamic;
 	/**
-		arr is where cumcount gets its values from
+		Parameters
+		----------
+		ascending : bool, default True
+		    If False, number in reverse, from length of group - 1 to 0.
 		
 		Note
 		----
 		this is currently implementing sort=False
 		(though the default is sort=True) for groupby in general
 	**/
-	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
+	public function _cumcount_array(?ascending:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
@@ -214,6 +225,10 @@ package pandas.tseries.resample;
 	**/
 	public function _get_indices(names:Dynamic):Dynamic;
 	/**
+		return the correct class for resampling with groupby 
+	**/
+	public function _get_resampler_for_grouping(groupby:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		sub-classes to define
 		return a sliced object
 		
@@ -230,7 +245,7 @@ package pandas.tseries.resample;
 	/**
 		revaluate the obj with a groupby aggregation 
 	**/
-	public function _groupby_and_aggregate(grouper:Dynamic, how:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _groupby_and_aggregate(how:Dynamic, ?grouper:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Take boolean mask of index to be returned from apply, if as_index=True
 	**/
@@ -253,6 +268,7 @@ package pandas.tseries.resample;
 	static public var _obj_with_exclusions : Dynamic;
 	public function _python_agg_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _python_apply_general(f:Dynamic):Dynamic;
+	public var _resampler_for_grouping : Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
@@ -272,6 +288,10 @@ package pandas.tseries.resample;
 	**/
 	public function _set_selection_from_grouper():Dynamic;
 	/**
+		return a new object with the replacement attributes 
+	**/
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
 		try to cast the result to our obj original type,
 		we may have roundtripped thru object in the mean-time
 	**/
@@ -281,8 +301,8 @@ package pandas.tseries.resample;
 	**/
 	public var _typ : Dynamic;
 	/**
-		method : string {'backfill', 'bfill', 'pad', 'ffill'}
-		    method for upsampling
+		method : string {'backfill', 'bfill', 'pad',
+		    'ffill', 'asfreq'} method for upsampling
 		limit : int, default None
 		    Maximum size gap to fill when reindexing
 		
@@ -584,6 +604,88 @@ package pandas.tseries.resample;
 		dict {group name -> group indices} 
 	**/
 	public var indices : Dynamic;
+	/**
+		Interpolate values according to different methods.
+		
+		.. versionadded:: 0.18.1
+		
+		Please note that only ``method='linear'`` is supported for
+		DataFrames/Series with a MultiIndex.
+		
+		Parameters
+		----------
+		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
+		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
+		          'polynomial', 'spline', 'piecewise_polynomial',
+		          'from_derivatives', 'pchip', 'akima'}
+		
+		    * 'linear': ignore the index and treat the values as equally
+		      spaced. This is the only method supported on MultiIndexes.
+		      default
+		    * 'time': interpolation works on daily and higher resolution
+		      data to interpolate given length of interval
+		    * 'index', 'values': use the actual numerical values of the index
+		    * 'nearest', 'zero', 'slinear', 'quadratic', 'cubic',
+		      'barycentric', 'polynomial' is passed to
+		      ``scipy.interpolate.interp1d``. Both 'polynomial' and 'spline'
+		      require that you also specify an `order` (int),
+		      e.g. df.interpolate(method='polynomial', order=4).
+		      These use the actual numerical values of the index.
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
+		      wrappers around the scipy interpolation methods of similar
+		      names. These use the actual numerical values of the index. See
+		      the scipy documentation for more on their behavior
+		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
+		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		
+		    .. versionadded:: 0.18.1
+		
+		       Added support for the 'akima' method
+		       Added interpolate method 'from_derivatives' which replaces
+		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
+		       scipy < 0.18
+		
+		axis : {0, 1}, default 0
+		    * 0: fill column-by-column
+		    * 1: fill row-by-row
+		limit : int, default None.
+		    Maximum number of consecutive NaNs to fill.
+		limit_direction : {'forward', 'backward', 'both'}, defaults to 'forward'
+		    If limit is specified, consecutive NaNs will be filled in this
+		    direction.
+		
+		    .. versionadded:: 0.17.0
+		
+		inplace : bool, default False
+		    Update the NDFrame in place if possible.
+		downcast : optional, 'infer' or None, defaults to None
+		    Downcast dtypes if possible.
+		kwargs : keyword arguments to pass on to the interpolating function.
+		
+		Returns
+		-------
+		Series or DataFrame of same shape interpolated at the NaNs
+		
+		See Also
+		--------
+		reindex, replace, fillna
+		
+		Examples
+		--------
+		
+		Filling in NaNs
+		
+		>>> s = pd.Series([0, 1, np.nan, 3])
+		>>> s.interpolate()
+		0    0
+		1    1
+		2    2
+		3    3
+		dtype: float64
+	**/
+	public function interpolate(?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?inplace:Dynamic, ?limit_direction:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute last of group values
 		

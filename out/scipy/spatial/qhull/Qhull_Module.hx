@@ -41,7 +41,6 @@ package scipy.spatial.qhull;
 		These are stacked into the `Tinvs` returned.
 	**/
 	static public function _get_barycentric_transforms(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _qhull_lock : Dynamic;
 	static public function asbytes(s:Dynamic):Dynamic;
 	/**
 		tsearch(tri, xi)

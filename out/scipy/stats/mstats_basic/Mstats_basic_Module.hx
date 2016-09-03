@@ -434,7 +434,7 @@ package scipy.stats.mstats_basic;
 		    two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero.
 		stderr : float
-		    Standard error of the estimate
+		    Standard error of the estimated gradient.
 		
 		See also
 		--------
@@ -687,7 +687,7 @@ package scipy.stats.mstats_basic;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']
@@ -1037,7 +1037,7 @@ package scipy.stats.mstats_basic;
 		    two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero.
 		stderr : float
-		    Standard error of the estimate
+		    Standard error of the estimated gradient.
 		
 		See also
 		--------

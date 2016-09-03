@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.widgets;
 @:pythonImport("seaborn.widgets") extern class Widgets_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

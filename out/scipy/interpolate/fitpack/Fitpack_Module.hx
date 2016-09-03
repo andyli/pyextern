@@ -390,8 +390,8 @@ package scipy.interpolate.fitpack;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -565,20 +565,20 @@ package scipy.interpolate.fitpack;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -960,8 +960,8 @@ package scipy.interpolate.fitpack;
 		    The interval to fit.  If None, these default to x[0] and x[-1]
 		    respectively.
 		k : int, optional
-		    The order of the spline fit. It is recommended to use cubic splines.
-		    Even order splines should be avoided especially with small s values.
+		    The degree of the spline fit. It is recommended to use cubic splines.
+		    Even values of k should be avoided especially with small s values.
 		    1 <= k <= 5
 		task : {1, 0, -1}, optional
 		    If task==0 find t and c for a given smoothing factor, s.
@@ -1168,7 +1168,7 @@ package scipy.interpolate.fitpack;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

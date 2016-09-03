@@ -388,7 +388,7 @@ package scipy.linalg.decomp;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -565,7 +565,7 @@ package scipy.linalg.decomp;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported

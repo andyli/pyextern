@@ -2,6 +2,7 @@
 package seaborn.palettes;
 @:pythonImport("seaborn.palettes") extern class Palettes_Module {
 	static public var SEABORN_PALETTES : Dynamic;
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;

@@ -51,4 +51,8 @@ package scipy.odr.odrpack;
 	**/
 	static public function odr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	/**
+		Issue a warning, or maybe ignore it or raise an exception.
+	**/
+	static public function warn(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

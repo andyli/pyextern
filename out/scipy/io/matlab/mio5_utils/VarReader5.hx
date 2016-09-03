@@ -126,9 +126,7 @@ package scipy.io.matlab.mio5_utils;
 	**/
 	public function read_char(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Read fieldnames for struct-like matrix '
-		
-		Python wrapper for cdef'ed method
+		Read fieldnames for struct-like matrix.
 	**/
 	public function read_fieldnames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

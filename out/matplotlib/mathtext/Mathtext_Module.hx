@@ -31,8 +31,8 @@ package matplotlib.mathtext;
 	/**
 		ceil(x)
 		
-		Return the ceiling of x as an int.
-		This is the smallest integral value >= x.
+		Return the ceiling of x as an Integral.
+		This is the smallest integer >= x.
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
@@ -149,11 +149,21 @@ package matplotlib.mathtext;
 		but returns a C{L{MatchFirst}} for best performance.
 		
 		Parameters:
-		 - strs - a string of space-delimited literals, or a list of string literals
-		 - caseless - (default=False) - treat all literals as caseless
-		 - useRegex - (default=True) - as an optimization, will generate a Regex
-		   object; otherwise, will generate a C{MatchFirst} object (if C{caseless=True}, or
-		   if creating a C{Regex} raises an exception)
+		 - strs - a string of space-delimited literals, or a collection of string literals
+		 - caseless - (default=C{False}) - treat all literals as caseless
+		 - useRegex - (default=C{True}) - as an optimization, will generate a Regex
+		      object; otherwise, will generate a C{MatchFirst} object (if C{caseless=True}, or
+		      if creating a C{Regex} raises an exception)
+		
+		Example::
+		    comp_oper = oneOf("< = > <= >= !=")
+		    var = Word(alphas)
+		    number = Word(nums)
+		    term = var | number
+		    comparison_expr = term + comp_oper + term
+		    print(comparison_expr.searchString("B = 12  AA=23 B<=AA AA>12"))
+		prints::
+		    [['B', '=', '12'], ['AA', '=', '23'], ['B', '<=', 'AA'], ['AA', '>', '12']]
 	**/
 	static public function oneOf(strs:Dynamic, ?caseless:Dynamic, ?useRegex:Dynamic):Dynamic;
 	static public var print_function : Dynamic;

@@ -447,9 +447,9 @@ package scipy.signal.waveforms;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -465,11 +465,12 @@ package scipy.signal.waveforms;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -500,7 +501,7 @@ package scipy.signal.waveforms;
 		
 		Parameters
 		----------
-		arr : array_like
+		arr : ndarray
 		    Array to put data into.
 		mask : array_like
 		    Boolean mask array. Must have the same size as `a`.
@@ -606,7 +607,7 @@ package scipy.signal.waveforms;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns

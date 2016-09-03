@@ -122,7 +122,7 @@ package scipy.integrate._ode;
 		----------
 		name : str
 		    Name of the integrator
-		integrator_params :
+		integrator_params
 		    Additional parameters for the integrator.
 	**/
 	public function set_integrator(name:Dynamic, ?integrator_params:python.KwArgs<Dynamic>):Dynamic;

@@ -814,7 +814,7 @@ package pandas.core.generic;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated.
 		
@@ -900,12 +900,18 @@ package pandas.core.generic;
 	**/
 	public function convert_objects(?convert_dates:Dynamic, ?convert_numeric:Dynamic, ?convert_timedeltas:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Make a copy of this object
+		Make a copy of this objects data.
 		
 		Parameters
 		----------
 		deep : boolean or string, default True
-		    Make a deep copy, i.e. also copy data
+		    Make a deep copy, including a copy of the data and the indices.
+		    With ``deep=False`` neither the indices or the data are copied.
+		
+		    Note that when ``deep=True`` data is copied, actual python objects
+		    will not be copied recursively, only the reference to the object.
+		    This is in contrast to ``copy.deepcopy`` in the Standard Library,
+		    which recursively copies object data.
 		
 		Returns
 		-------
@@ -1191,7 +1197,7 @@ package pandas.core.generic;
 		-------
 		GroupBy object
 	**/
-	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic):Dynamic;
+	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Returns first n rows
 	**/
@@ -1216,6 +1222,8 @@ package pandas.core.generic;
 		- A list or array of integers, e.g. ``[4, 3, 0]``.
 		- A slice object with ints, e.g. ``1:7``.
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.iloc`` will raise ``IndexError`` if a requested indexer is
 		out-of-bounds, except *slice* indexers which allow out-of-bounds
@@ -1234,7 +1242,8 @@ package pandas.core.generic;
 		----------
 		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
 		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
-		          'polynomial', 'spline' 'piecewise_polynomial', 'pchip'}
+		          'polynomial', 'spline', 'piecewise_polynomial',
+		          'from_derivatives', 'pchip', 'akima'}
 		
 		    * 'linear': ignore the index and treat the values as equally
 		      spaced. This is the only method supported on MultiIndexes.
@@ -1248,12 +1257,21 @@ package pandas.core.generic;
 		      require that you also specify an `order` (int),
 		      e.g. df.interpolate(method='polynomial', order=4).
 		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', and 'pchip' are all
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
 		      wrappers around the scipy interpolation methods of similar
 		      names. These use the actual numerical values of the index. See
 		      the scipy documentation for more on their behavior
 		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
 		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		
+		    .. versionadded:: 0.18.1
+		
+		       Added support for the 'akima' method
+		       Added interpolate method 'from_derivatives' which replaces
+		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
+		       scipy < 0.18
 		
 		axis : {0, 1}, default 0
 		    * 0: fill column-by-column
@@ -1373,6 +1391,8 @@ package pandas.core.generic;
 		- A slice object with labels, e.g. ``'a':'f'`` (note that contrary
 		  to usual python slices, **both** the start and the stop are included!).
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.loc`` will raise a ``KeyError`` when the items are not found.
 		
@@ -1386,8 +1406,26 @@ package pandas.core.generic;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None
@@ -2271,7 +2309,7 @@ package pandas.core.generic;
 	/**
 		Squeeze length 1 dimensions.
 	**/
-	public function squeeze():Dynamic;
+	public function squeeze(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Interchange axes and swap values axes appropriately
 		
@@ -2291,8 +2329,13 @@ package pandas.core.generic;
 		Returns
 		-------
 		swapped : type of caller (new object)
+		
+		.. versionchanged:: 0.18.1
+		
+		   The indexes ``i`` and ``j`` are now optional, and default to
+		   the two innermost levels of the index.
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic, ?axis:Dynamic):Dynamic;
+	public function swaplevel(?i:Dynamic, ?j:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Returns last n rows
 	**/
@@ -2311,7 +2354,7 @@ package pandas.core.generic;
 		-------
 		taken : type of caller
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		This can be pasted into Excel, for example.
@@ -2717,8 +2760,26 @@ package pandas.core.generic;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None

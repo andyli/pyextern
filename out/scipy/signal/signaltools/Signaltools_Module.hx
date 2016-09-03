@@ -12,8 +12,7 @@ package scipy.signal.signaltools;
 	static public var __spec__ : Dynamic;
 	static public var _boundarydict : Dynamic;
 	static public function _bvalfromboundary(boundary:Dynamic):Dynamic;
-	static public function _centered(arr:Dynamic, newsize:Dynamic):Dynamic;
-	static public function _check_valid_mode_shapes(shape1:Dynamic, shape2:Dynamic):Dynamic;
+	static public function _centered(arr:Dynamic, newshape:Dynamic):Dynamic;
 	/**
 		Forward-backward IIR filter that uses Gustafsson's method.
 		
@@ -60,19 +59,33 @@ package scipy.signal.signaltools;
 		       filtering. Transactions on Signal Processing, 46(4):988-992, 1996.
 	**/
 	static public function _filtfilt_gust(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?irlen:Dynamic):Dynamic;
+	/**
+		If in 'valid' mode, checks whether or not one of the array shapes
+		is at least as large as the other in every dimension. Returns whether
+		or not the input arrays need to be swapped depending on whether shape2
+		is larger than shape1. This is important for some of the correlation and
+		convolution implementations in this module, where the larger array input
+		needs to come before the smaller array input when operating in this mode.
+		Note that if the mode provided is not 'valid', False is immediately
+		returned.
+	**/
+	static public function _inputs_swap_needed(mode:Dynamic, shape1:Dynamic, shape2:Dynamic):Dynamic;
 	static public var _modedict : Dynamic;
 	/**
-		Find the next regular number greater than or equal to target.
-		Regular numbers are composites of the prime factors 2, 3, and 5.
-		Also known as 5-smooth numbers or Hamming numbers, these are the optimal
-		size for inputs to FFTPACK.
-		
-		Target must be a positive integer.
+		The output length that results from a given input
 	**/
-	static public function _next_regular(target:Dynamic):Dynamic;
+	static public function _output_len(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _rfft_lock : Dynamic;
 	static public var _rfft_mt_safe : Dynamic;
 	static public function _valfrommode(mode:Dynamic):Dynamic;
+	/**
+		Helper to validate padding for filtfilt
+	**/
+	static public function _validate_pad(padtype:Dynamic, padlen:Dynamic, x:Dynamic, axis:Dynamic, ntaps:Dynamic):Dynamic;
+	/**
+		Helper to validate a SOS input
+	**/
+	static public function _validate_sos(sos:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Returns True if two arrays are element-wise equal within a tolerance.
@@ -252,7 +265,7 @@ package scipy.signal.signaltools;
 		-------
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
 		
 		See Also
 		--------
@@ -584,7 +597,7 @@ package scipy.signal.signaltools;
 	/**
 		Chebyshev type I digital and analog filter design.
 		
-		Design an Nth order digital or analog Chebyshev type I filter and
+		Design an Nth-order digital or analog Chebyshev type I filter and
 		return the filter coefficients.
 		
 		Parameters
@@ -625,7 +638,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		cheb1ord
+		cheb1ord, cheb1ap
 		
 		Notes
 		-----
@@ -712,9 +725,9 @@ package scipy.signal.signaltools;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -771,8 +784,12 @@ package scipy.signal.signaltools;
 		
 		Parameters
 		----------
-		in1, in2 : array_like
-		    Two-dimensional input arrays to be convolved.
+		in1 : array_like
+		    First input.
+		in2 : array_like
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -814,15 +831,15 @@ package scipy.signal.signaltools;
 		
 		>>> from scipy import signal
 		>>> from scipy import misc
-		>>> face = misc.face(gray=True)
+		>>> ascent = misc.ascent()
 		>>> scharr = np.array([[ -3-3j, 0-10j,  +3 -3j],
 		...                    [-10+0j, 0+ 0j, +10 +0j],
 		...                    [ -3+3j, 0+10j,  +3 +3j]]) # Gx + j*Gy
-		>>> grad = signal.convolve2d(face, scharr, boundary='symm', mode='same')
+		>>> grad = signal.convolve2d(ascent, scharr, boundary='symm', mode='same')
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(1, 3)
-		>>> ax_orig.imshow(face, cmap='gray')
+		>>> fig, (ax_orig, ax_mag, ax_ang) = plt.subplots(3, 1, figsize=(6, 15))
+		>>> ax_orig.imshow(ascent, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
 		>>> ax_mag.imshow(np.absolute(grad), cmap='gray')
@@ -845,9 +862,9 @@ package scipy.signal.signaltools;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -909,8 +926,12 @@ package scipy.signal.signaltools;
 		
 		Parameters
 		----------
-		in1, in2 : array_like
-		    Two-dimensional input arrays to be convolved.
+		in1 : array_like
+		    First input.
+		in2 : array_like
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -958,7 +979,8 @@ package scipy.signal.signaltools;
 		>>> y, x = np.unravel_index(np.argmax(corr), corr.shape)  # find the match
 		
 		>>> import matplotlib.pyplot as plt
-		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(1, 3)
+		>>> fig, (ax_orig, ax_template, ax_corr) = plt.subplots(3, 1,
+		...                                                     figsize=(6, 15))
 		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
@@ -973,34 +995,54 @@ package scipy.signal.signaltools;
 	**/
 	static public function correlate2d(in1:Dynamic, in2:Dynamic, ?mode:Dynamic, ?boundary:Dynamic, ?fillvalue:Dynamic):Dynamic;
 	/**
-		Downsample the signal by using a filter.
+		Downsample the signal after applying an anti-aliasing filter.
 		
-		By default, an order 8 Chebyshev type I filter is used.  A 30 point FIR
-		filter with hamming window is used if `ftype` is 'fir'.
+		By default, an order 8 Chebyshev type I filter is used. A 30 point FIR
+		filter with Hamming window is used if `ftype` is 'fir'.
 		
 		Parameters
 		----------
 		x : ndarray
 		    The signal to be downsampled, as an N-dimensional array.
 		q : int
-		    The downsampling factor.
+		    The downsampling factor. For downsampling factors higher than 13, it is
+		    recommended to call `decimate` multiple times.
 		n : int, optional
-		    The order of the filter (1 less than the length for 'fir').
-		ftype : str {'iir', 'fir'}, optional
-		    The type of the lowpass filter.
+		    The order of the filter (1 less than the length for 'fir'). Defaults to
+		    8 for 'iir' and 30 for 'fir'.
+		ftype : str {'iir', 'fir'} or ``dlti`` instance, optional
+		    If 'iir' or 'fir', specifies the type of lowpass filter. If an instance
+		    of an `dlti` object, uses that object to filter before downsampling.
 		axis : int, optional
 		    The axis along which to decimate.
+		zero_phase : bool, optional
+		    Prevent phase shift by filtering with `filtfilt` instead of `lfilter`
+		    when using an IIR filter, and shifting the outputs back by the filter's
+		    group delay when using an FIR filter. A value of ``True`` is
+		    recommended, since a phase shift is generally not desired. Using
+		    ``None`` defaults to ``False`` for backwards compatibility. This
+		    default will change to ``True`` in a future release, so it is best to
+		    set this argument explicitly.
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
 		y : ndarray
 		    The down-sampled signal.
 		
-		See also
+		See Also
 		--------
-		resample
+		resample : Resample up or down using the FFT method.
+		resample_poly : Resample using polyphase filtering and an FIR filter.
+		
+		Notes
+		-----
+		The ``zero_phase`` keyword was added in 0.18.0.
+		The possibility to use instances of ``dlti`` as ``ftype`` was added in
+		0.18.0.
 	**/
-	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function decimate(x:Dynamic, q:Dynamic, ?n:Dynamic, ?ftype:Dynamic, ?axis:Dynamic, ?zero_phase:Dynamic):Dynamic;
 	/**
 		Deconvolves ``divisor`` out of ``signal``.
 		
@@ -1286,28 +1328,38 @@ package scipy.signal.signaltools;
 	**/
 	static public function expand_dims(a:Dynamic, axis:Dynamic):Dynamic;
 	/**
-		The factorial function, n! = special.gamma(n+1).
+		The factorial of a number or array of numbers.
 		
-		If exact is 0, then floating point precision is used, otherwise
-		exact long integer is computed.
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
 		
-		- Array argument accepted only for exact=False case.
-		- If n<0, the return value is 0.
+		    n! = n * (n - 1) * (n - 2) * ... * 1
 		
 		Parameters
 		----------
 		n : int or array_like of ints
-		    Calculate ``n!``.  Arrays are only supported with `exact` set
-		    to False.  If ``n < 0``, the return value is 0.
+		    Input values.  If ``n < 0``, the return value is 0.
 		exact : bool, optional
-		    The result can be approximated rapidly using the gamma-formula
-		    above.  If `exact` is set to True, calculate the
-		    answer exactly using integer arithmetic. Default is False.
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
 		
 		Returns
 		-------
-		nf : float or int
-		    Factorial of `n`, as an integer or a float depending on `exact`.
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
 		
 		Examples
 		--------
@@ -1315,6 +1367,8 @@ package scipy.signal.signaltools;
 		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
 		>>> factorial(5, exact=True)
 		120L
 	**/
@@ -1334,9 +1388,9 @@ package scipy.signal.signaltools;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -1384,7 +1438,8 @@ package scipy.signal.signaltools;
 		>>> kernel = np.outer(signal.gaussian(70, 8), signal.gaussian(70, 8))
 		>>> blurred = signal.fftconvolve(face, kernel, mode='same')
 		
-		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(1, 3)
+		>>> fig, (ax_orig, ax_kernel, ax_blurred) = plt.subplots(3, 1,
+		...                                                      figsize=(6, 15))
 		>>> ax_orig.imshow(face, cmap='gray')
 		>>> ax_orig.set_title('Original')
 		>>> ax_orig.set_axis_off()
@@ -1455,12 +1510,11 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		y : ndarray
-		    The filtered output, an array of type numpy.float64 with the same
-		    shape as `x`.
+		    The filtered output with the same shape as `x`.
 		
 		See Also
 		--------
-		lfilter_zi, lfilter
+		sosfiltfilt, lfilter_zi, lfilter, lfiltic, savgol_filter, sosfilt
 		
 		Notes
 		-----
@@ -1612,7 +1666,9 @@ package scipy.signal.signaltools;
 		
 		See also
 		--------
-		scipy.signal.firwin2
+		firwin2
+		firls
+		remez
 		
 		Examples
 		--------
@@ -1658,6 +1714,11 @@ package scipy.signal.signaltools;
 	**/
 	static public function firwin(numtaps:Dynamic, cutoff:Dynamic, ?width:Dynamic, ?window:Dynamic, ?pass_zero:Dynamic, ?scale:Dynamic, ?nyq:Dynamic):Dynamic;
 	/**
+		gcd(x, y) -> int
+		greatest common divisor of x and y
+	**/
+	static public function gcd(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Return a window.
 		
 		Parameters
@@ -1667,8 +1728,10 @@ package scipy.signal.signaltools;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with `ifftshift`
-		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
+		    If True (default), create a "periodic" window, ready to use with
+		    `ifftshift` and be multiplied by the result of an FFT (see also
+		    `fftpack.fftfreq`).
+		    If False, create a "symmetric" window, for use in filter design.
 		
 		Returns
 		-------
@@ -1679,11 +1742,12 @@ package scipy.signal.signaltools;
 		-----
 		Window types:
 		
-		    boxcar, triang, blackman, hamming, hann, bartlett, flattop, parzen,
-		    bohman, blackmanharris, nuttall, barthann, kaiser (needs beta),
-		    gaussian (needs std), general_gaussian (needs power, width),
-		    slepian (needs width), chebwin (needs attenuation)
-		    exponential (needs decay scale), tukey (needs taper fraction)
+		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
+		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
+		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
+		    deviation), `general_gaussian` (needs power, width), `slepian`
+		    (needs width), `chebwin` (needs attenuation), `exponential`
+		    (needs decay scale), `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -1692,7 +1756,7 @@ package scipy.signal.signaltools;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the kaiser window.
+		parameter of the `kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -1748,7 +1812,7 @@ package scipy.signal.signaltools;
 		---------
 		In this example we use the Hilbert transform to determine the amplitude
 		envelope and instantaneous frequency of an amplitude-modulated signal.
-		    
+		
 		>>> import numpy as np
 		>>> import matplotlib.pyplot as plt
 		>>> from scipy.signal import hilbert, chirp
@@ -1758,15 +1822,15 @@ package scipy.signal.signaltools;
 		>>> samples = int(fs*duration)
 		>>> t = np.arange(samples) / fs
 		
-		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and 
+		We create a chirp of which the frequency increases from 20 Hz to 100 Hz and
 		apply an amplitude modulation.
 		
-		>>> signal = chirp(t, 20.0, t[-1], 100.0)    
+		>>> signal = chirp(t, 20.0, t[-1], 100.0)
 		>>> signal *= (1.0 + 0.5 * np.sin(2.0*np.pi*3.0*t) )
 		
-		The amplitude envelope is given by magnitude of the analytic signal. The 
-		instantaneous frequency can be obtained by differentiating the instantaneous 
-		phase in respect to time. The instantaneous phase corresponds to the phase 
+		The amplitude envelope is given by magnitude of the analytic signal. The
+		instantaneous frequency can be obtained by differentiating the instantaneous
+		phase in respect to time. The instantaneous phase corresponds to the phase
 		angle of the analytic signal.
 		
 		>>> analytic_signal = hilbert(signal)
@@ -1790,7 +1854,7 @@ package scipy.signal.signaltools;
 		.. [1] Wikipedia, "Analytic signal".
 		       http://en.wikipedia.org/wiki/Analytic_signal
 		.. [2] Leon Cohen, "Time-Frequency Analysis", 1995. Chapter 2.
-		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing, 
+		.. [3] Alan V. Oppenheim, Ronald W. Schafer. Discrete-Time Signal Processing,
 		       Third Edition, 2009. Chapter 12. ISBN 13: 978-1292-02572-8
 	**/
 	static public function hilbert(x:Dynamic, ?N:Dynamic, ?axis:Dynamic):Dynamic;
@@ -1818,30 +1882,37 @@ package scipy.signal.signaltools;
 	/**
 		Compute b(s) and a(s) from partial fraction expansion.
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(s)     b[0] x**(M-1) + b[1] x**(M-2) + ... + b[M-1]
-		    H(s) = ------ = ----------------------------------------------
-		            a(s)     a[0] x**(N-1) + a[1] x**(N-2) + ... + a[N-1]
+		          b(s)     b[0] s**(M) + b[1] s**(M-1) + ... + b[M]
+		  H(s) = ------ = ------------------------------------------
+		          a(s)     a[0] s**(N) + a[1] s**(N-1) + ... + a[N]
 		
-		             r[0]       r[1]             r[-1]
-		         = -------- + -------- + ... + --------- + k(s)
-		           (s-p[0])   (s-p[1])         (s-p[-1])
+		then the partial-fraction expansion H(s) is defined as::
 		
-		If there are any repeated roots (closer than tol), then the partial
-		fraction expansion has terms like::
+		           r[0]       r[1]             r[-1]
+		       = -------- + -------- + ... + --------- + k(s)
+		         (s-p[0])   (s-p[1])         (s-p[-1])
+		
+		If there are any repeated roots (closer together than `tol`), then H(s)
+		has terms like::
 		
 		      r[i]      r[i+1]              r[i+n-1]
 		    -------- + ----------- + ... + -----------
 		    (s-p[i])  (s-p[i])**2          (s-p[i])**n
 		
+		This function is used for polynomials in positive powers of s or z,
+		such as analog filters or digital filters in controls engineering.  For
+		negative powers of z (typical for digital filters in DSP), use `invresz`.
+		
 		Parameters
 		----------
-		r : ndarray
+		r : array_like
 		    Residues.
-		p : ndarray
+		p : array_like
 		    Poles.
-		k : ndarray
+		k : array_like
 		    Coefficients of the direct polynomial term.
 		tol : float, optional
 		    The tolerance for two roots to be considered equal. Default is 1e-3.
@@ -1849,36 +1920,72 @@ package scipy.signal.signaltools;
 		    How to determine the returned root if multiple roots are within
 		    `tol` of each other.
 		
-		      'max': pick the maximum of those roots.
+		      - 'max': pick the maximum of those roots.
+		      - 'min': pick the minimum of those roots.
+		      - 'avg': take the average of those roots.
 		
-		      'min': pick the minimum of those roots.
-		
-		      'avg': take the average of those roots.
+		Returns
+		-------
+		b : ndarray
+		    Numerator polynomial coefficients.
+		a : ndarray
+		    Denominator polynomial coefficients.
 		
 		See Also
 		--------
-		residue, unique_roots
+		residue, invresz, unique_roots
 	**/
 	static public function invres(r:Dynamic, p:Dynamic, k:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
 		Compute b(z) and a(z) from partial fraction expansion.
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(z)     b[0] + b[1] z**(-1) + ... + b[M-1] z**(-M+1)
-		    H(z) = ------ = ----------------------------------------------
-		            a(z)     a[0] + a[1] z**(-1) + ... + a[N-1] z**(-N+1)
+		            b(z)     b[0] + b[1] z**(-1) + ... + b[M] z**(-M)
+		    H(z) = ------ = ------------------------------------------
+		            a(z)     a[0] + a[1] z**(-1) + ... + a[N] z**(-N)
 		
-		                 r[0]                   r[-1]
-		         = --------------- + ... + ---------------- + k[0] + k[1]z**(-1)...
-		           (1-p[0]z**(-1))         (1-p[-1]z**(-1))
+		then the partial-fraction expansion H(z) is defined as::
 		
-		If there are any repeated roots (closer than tol), then the partial
+		             r[0]                   r[-1]
+		     = --------------- + ... + ---------------- + k[0] + k[1]z**(-1) ...
+		       (1-p[0]z**(-1))         (1-p[-1]z**(-1))
+		
+		If there are any repeated roots (closer than `tol`), then the partial
 		fraction expansion has terms like::
 		
 		         r[i]              r[i+1]                    r[i+n-1]
 		    -------------- + ------------------ + ... + ------------------
 		    (1-p[i]z**(-1))  (1-p[i]z**(-1))**2         (1-p[i]z**(-1))**n
+		
+		This function is used for polynomials in negative powers of z,
+		such as digital filters in DSP.  For positive powers, use `invres`.
+		
+		Parameters
+		----------
+		r : array_like
+		    Residues.
+		p : array_like
+		    Poles.
+		k : array_like
+		    Coefficients of the direct polynomial term.
+		tol : float, optional
+		    The tolerance for two roots to be considered equal. Default is 1e-3.
+		rtype : {'max', 'min, 'avg'}, optional
+		    How to determine the returned root if multiple roots are within
+		    `tol` of each other.
+		
+		      - 'max': pick the maximum of those roots.
+		      - 'min': pick the minimum of those roots.
+		      - 'avg': take the average of those roots.
+		
+		Returns
+		-------
+		b : ndarray
+		    Numerator polynomial coefficients.
+		a : ndarray
+		    Denominator polynomial coefficients.
 		
 		See Also
 		--------
@@ -1940,7 +2047,7 @@ package scipy.signal.signaltools;
 		zi : array_like, optional
 		    Initial conditions for the filter delays.  It is a vector
 		    (or array of vectors for an N-dimensional input) of length
-		    ``max(len(a),len(b))-1``.  If `zi` is None or is not given then
+		    ``max(len(a), len(b)) - 1``.  If `zi` is None or is not given then
 		    initial rest is assumed.  See `lfiltic` for more information.
 		
 		Returns
@@ -1951,33 +2058,85 @@ package scipy.signal.signaltools;
 		    If `zi` is None, this is not returned, otherwise, `zf` holds the
 		    final filter delay values.
 		
+		See Also
+		--------
+		lfiltic : Construct initial conditions for `lfilter`.
+		lfilter_zi : Compute initial state (steady state of step response) for
+		             `lfilter`.
+		filtfilt : A forward-backward filter, to obtain a filter with linear phase.
+		savgol_filter : A Savitzky-Golay filter.
+		sosfilt: Filter data using cascaded second-order sections.
+		sosfiltfilt: A forward-backward filter using second-order sections.
+		
 		Notes
 		-----
 		The filter function is implemented as a direct II transposed structure.
 		This means that the filter implements::
 		
-		   a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... + b[nb]*x[n-nb]
-		                           - a[1]*y[n-1] - ... - a[na]*y[n-na]
+		   a[0]*y[n] = b[0]*x[n] + b[1]*x[n-1] + ... + b[M]*x[n-M]
+		                         - a[1]*y[n-1] - ... - a[N]*y[n-N]
 		
-		using the following difference equations::
+		where `M` is the degree of the numerator, `N` is the degree of the
+		denominator, and `n` is the sample number.  It is implemented using
+		the following difference equations (assuming M = N)::
 		
-		     y[m] = b[0]*x[m] + z[0,m-1]
-		     z[0,m] = b[1]*x[m] + z[1,m-1] - a[1]*y[m]
+		     a[0]*y[n] = b[0] * x[n]               + d[0][n-1]
+		       d[0][n] = b[1] * x[n] - a[1] * y[n] + d[1][n-1]
+		       d[1][n] = b[2] * x[n] - a[2] * y[n] + d[2][n-1]
 		     ...
-		     z[n-3,m] = b[n-2]*x[m] + z[n-2,m-1] - a[n-2]*y[m]
-		     z[n-2,m] = b[n-1]*x[m] - a[n-1]*y[m]
+		     d[N-2][n] = b[N-1]*x[n] - a[N-1]*y[n] + d[N-1][n-1]
+		     d[N-1][n] = b[N] * x[n] - a[N] * y[n]
 		
-		where m is the output sample number and n=max(len(a),len(b)) is the
-		model order.
+		where `d` are the state variables.
 		
 		The rational transfer function describing this filter in the
 		z-transform domain is::
 		
-		                         -1               -nb
-		             b[0] + b[1]z  + ... + b[nb] z
-		     Y(z) = ---------------------------------- X(z)
-		                         -1               -na
-		             a[0] + a[1]z  + ... + a[na] z
+		                         -1              -M
+		             b[0] + b[1]z  + ... + b[M] z
+		     Y(z) = -------------------------------- X(z)
+		                         -1              -N
+		             a[0] + a[1]z  + ... + a[N] z
+		
+		Examples
+		--------
+		Generate a noisy signal to be filtered:
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> t = np.linspace(-1, 1, 201)
+		>>> x = (np.sin(2*np.pi*0.75*t*(1-t) + 2.1) + 0.1*np.sin(2*np.pi*1.25*t + 1)
+		...      + 0.18*np.cos(2*np.pi*3.85*t))
+		>>> xn = x + np.random.randn(len(t)) * 0.08
+		
+		Create an order 3 lowpass butterworth filter:
+		
+		>>> b, a = signal.butter(3, 0.05)
+		
+		Apply the filter to xn.  Use lfilter_zi to choose the initial condition of
+		the filter:
+		
+		>>> zi = signal.lfilter_zi(b, a)
+		>>> z, _ = signal.lfilter(b, a, xn, zi=zi*xn[0])
+		
+		Apply the filter again, to have a result filtered at an order the same as
+		filtfilt:
+		
+		>>> z2, _ = signal.lfilter(b, a, z, zi=zi*z[0])
+		
+		Use filtfilt to apply the filter:
+		
+		>>> y = signal.filtfilt(b, a, xn)
+		
+		Plot the original signal and the various filtered versions:
+		
+		>>> plt.figure
+		>>> plt.plot(t, xn, 'b', alpha=0.75)
+		>>> plt.plot(t, z, 'r--', t, z2, 'r', t, y, 'k')
+		>>> plt.legend(('noisy signal', 'lfilter, once', 'lfilter, twice',
+		...             'filtfilt'), loc='best')
+		>>> plt.grid(True)
+		>>> plt.show()
 	**/
 	static public function lfilter(b:Dynamic, a:Dynamic, x:Dynamic, ?axis:Dynamic, ?zi:Dynamic):Array<Dynamic>;
 	/**
@@ -1998,6 +2157,10 @@ package scipy.signal.signaltools;
 		-------
 		zi : 1-D ndarray
 		    The initial state for the filter.
+		
+		See Also
+		--------
+		lfilter, lfiltic, filtfilt
 		
 		Notes
 		-----
@@ -2071,13 +2234,13 @@ package scipy.signal.signaltools;
 		y : array_like
 		    Initial conditions.
 		
-		    If ``N=len(a) - 1``, then ``y = {y[-1], y[-2], ..., y[-N]}``.
+		    If ``N = len(a) - 1``, then ``y = {y[-1], y[-2], ..., y[-N]}``.
 		
 		    If `y` is too short, it is padded with zeros.
 		x : array_like, optional
 		    Initial conditions.
 		
-		    If ``M=len(b) - 1``, then ``x = {x[-1], x[-2], ..., x[-M]}``.
+		    If ``M = len(b) - 1``, then ``x = {x[-1], x[-2], ..., x[-M]}``.
 		
 		    If `x` is not given, its initial conditions are assumed zero.
 		
@@ -2086,12 +2249,12 @@ package scipy.signal.signaltools;
 		Returns
 		-------
 		zi : ndarray
-		    The state vector ``zi``.
-		    ``zi = {z_0[-1], z_1[-1], ..., z_K-1[-1]}``, where ``K = max(M,N)``.
+		    The state vector ``zi = {z_0[-1], z_1[-1], ..., z_K-1[-1]}``,
+		    where ``K = max(M, N)``.
 		
 		See Also
 		--------
-		lfilter
+		lfilter, lfilter_zi
 	**/
 	static public function lfiltic(b:Dynamic, a:Dynamic, y:Dynamic, ?x:Dynamic):Dynamic;
 	/**
@@ -2297,7 +2460,7 @@ package scipy.signal.signaltools;
 		a : ndarray
 		    The N-dimensional input array.
 		domain : array_like
-		    A mask array with the same number of dimensions as `in`.
+		    A mask array with the same number of dimensions as `a`.
 		    Each dimension should have an odd number of elements.
 		rank : int
 		    A non-negative integer which selects the element from the
@@ -2308,7 +2471,7 @@ package scipy.signal.signaltools;
 		-------
 		out : ndarray
 		    The results of the order filter in an array with the same
-		    shape as `in`.
+		    shape as `a`.
 		
 		Examples
 		--------
@@ -2367,7 +2530,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		roots : Return the roots of a polynomial.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
@@ -2460,12 +2623,12 @@ package scipy.signal.signaltools;
 		
 		>>> p1 = np.poly1d([1, 2])
 		>>> p2 = np.poly1d([9, 5, 4])
-		>>> print p1
+		>>> print(p1)
 		1 x + 2
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 4
-		>>> print np.polyadd(p1, p2)
+		>>> print(np.polyadd(p1, p2))
 		   2
 		9 x + 6 x + 6
 	**/
@@ -2602,13 +2765,13 @@ package scipy.signal.signaltools;
 		
 		>>> p1 = np.poly1d([1, 2, 3])
 		>>> p2 = np.poly1d([9, 5, 1])
-		>>> print p1
+		>>> print(p1)
 		   2
 		1 x + 2 x + 3
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 1
-		>>> print np.polymul(p1, p2)
+		>>> print(np.polymul(p1, p2))
 		   4      3      2
 		9 x + 23 x + 38 x + 17 x + 3
 	**/
@@ -2660,7 +2823,7 @@ package scipy.signal.signaltools;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns
@@ -2709,29 +2872,31 @@ package scipy.signal.signaltools;
 		a : array_like
 		    Input data.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.
-		    The default (`axis` = `None`) is perform a product over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a product is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : data-type, optional
-		    The data-type of the returned array, as well as of the accumulator
-		    in which the elements are multiplied.  By default, if `a` is of
-		    integer type, `dtype` is the default platform integer. (Note: if
-		    the type of `a` is unsigned, then so is `dtype`.)  Otherwise,
-		    the dtype is the same as that of `a`.
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the
-		    output values will be cast if necessary.
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -2863,20 +3028,20 @@ package scipy.signal.signaltools;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -2971,6 +3136,11 @@ package scipy.signal.signaltools;
 		    containing the resampled array and the corresponding resampled
 		    positions.
 		
+		See also
+		--------
+		decimate : Downsample the signal after applying an FIR or IIR filter.
+		resample_poly : Resample using polyphase filtering and an FIR filter.
+		
 		Notes
 		-----
 		The argument `window` controls a Fourier-domain window that tapers
@@ -3018,6 +3188,89 @@ package scipy.signal.signaltools;
 		>>> plt.show()
 	**/
 	static public function resample(x:Dynamic, num:Dynamic, ?t:Dynamic, ?axis:Dynamic, ?window:Dynamic):Dynamic;
+	/**
+		Resample `x` along the given axis using polyphase filtering.
+		
+		The signal `x` is upsampled by the factor `up`, a zero-phase low-pass
+		FIR filter is applied, and then it is downsampled by the factor `down`.
+		The resulting sample rate is ``up / down`` times the original sample
+		rate. Values beyond the boundary of the signal are assumed to be zero
+		during the filtering step.
+		
+		Parameters
+		----------
+		x : array_like
+		    The data to be resampled.
+		up : int
+		    The upsampling factor.
+		down : int
+		    The downsampling factor.
+		axis : int, optional
+		    The axis of `x` that is resampled. Default is 0.
+		window : string, tuple, or array_like, optional
+		    Desired window to use to design the low-pass filter, or the FIR filter
+		    coefficients to employ. See below for details.
+		
+		Returns
+		-------
+		resampled_x : array
+		    The resampled array.
+		
+		See also
+		--------
+		decimate : Downsample the signal after applying an FIR or IIR filter.
+		resample : Resample up or down using the FFT method.
+		
+		Notes
+		-----
+		This polyphase method will likely be faster than the Fourier method
+		in `scipy.signal.resample` when the number of samples is large and
+		prime, or when the number of samples is large and `up` and `down`
+		share a large greatest common denominator. The length of the FIR
+		filter used will depend on ``max(up, down) // gcd(up, down)``, and
+		the number of operations during polyphase filtering will depend on
+		the filter length and `down` (see `scipy.signal.upfirdn` for details).
+		
+		The argument `window` specifies the FIR low-pass filter design.
+		
+		If `window` is an array_like it is assumed to be the FIR filter
+		coefficients. Note that the FIR filter is applied after the upsampling
+		step, so it should be designed to operate on a signal at a sampling
+		frequency higher than the original by a factor of `up//gcd(up, down)`.
+		This function's output will be centered with respect to this array, so it
+		is best to pass a symmetric filter with an odd number of samples if, as
+		is usually the case, a zero-phase filter is desired.
+		
+		For any other type of `window`, the functions `scipy.signal.get_window`
+		and `scipy.signal.firwin` are called to generate the appropriate filter
+		coefficients.
+		
+		The first sample of the returned vector is the same as the first
+		sample of the input vector. The spacing between samples is changed
+		from ``dx`` to ``dx * up / float(down)``.
+		
+		Examples
+		--------
+		Note that the end of the resampled data rises to meet the first
+		sample of the next cycle for the FFT method, and gets closer to zero
+		for the polyphase method:
+		
+		>>> from scipy import signal
+		
+		>>> x = np.linspace(0, 10, 20, endpoint=False)
+		>>> y = np.cos(-x**2/6.0)
+		>>> f_fft = signal.resample(y, 100)
+		>>> f_poly = signal.resample_poly(y, 100, 20)
+		>>> xnew = np.linspace(0, 10, 100, endpoint=False)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> plt.plot(xnew, f_fft, 'b.-', xnew, f_poly, 'r.-')
+		>>> plt.plot(x, y, 'ko-')
+		>>> plt.plot(10, y[0], 'bo', 10, 0., 'ro')  # boundaries
+		>>> plt.legend(['resample', 'resamp_poly', 'data'], loc='best')
+		>>> plt.show()
+	**/
+	static public function resample_poly(x:Dynamic, up:Dynamic, down:Dynamic, ?axis:Dynamic, ?window:Dynamic):Array<Dynamic>;
 	/**
 		Gives a new shape to an array without changing its data.
 		
@@ -3114,12 +3367,14 @@ package scipy.signal.signaltools;
 	/**
 		Compute partial-fraction expansion of b(s) / a(s).
 		
-		If ``M = len(b)`` and ``N = len(a)``, then the partial-fraction
-		expansion H(s) is defined as::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		          b(s)     b[0] s**(M-1) + b[1] s**(M-2) + ... + b[M-1]
-		  H(s) = ------ = ----------------------------------------------
-		          a(s)     a[0] s**(N-1) + a[1] s**(N-2) + ... + a[N-1]
+		          b(s)     b[0] s**(M) + b[1] s**(M-1) + ... + b[M]
+		  H(s) = ------ = ------------------------------------------
+		          a(s)     a[0] s**(N) + a[1] s**(N-1) + ... + a[N]
+		
+		then the partial-fraction expansion H(s) is defined as::
 		
 		           r[0]       r[1]             r[-1]
 		       = -------- + -------- + ... + --------- + k(s)
@@ -3128,9 +3383,20 @@ package scipy.signal.signaltools;
 		If there are any repeated roots (closer together than `tol`), then H(s)
 		has terms like::
 		
-		        r[i]      r[i+1]              r[i+n-1]
-		      -------- + ----------- + ... + -----------
-		      (s-p[i])  (s-p[i])**2          (s-p[i])**n
+		      r[i]      r[i+1]              r[i+n-1]
+		    -------- + ----------- + ... + -----------
+		    (s-p[i])  (s-p[i])**2          (s-p[i])**n
+		
+		This function is used for polynomials in positive powers of s or z,
+		such as analog filters or digital filters in controls engineering.  For
+		negative powers of z (typical for digital filters in DSP), use `residuez`.
+		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
 		
 		Returns
 		-------
@@ -3143,32 +3409,54 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		invres, numpy.poly, unique_roots
+		invres, residuez, numpy.poly, unique_roots
 	**/
 	static public function residue(b:Dynamic, a:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
 		Compute partial-fraction expansion of b(z) / a(z).
 		
-		If ``M = len(b)`` and ``N = len(a)``::
+		If `M` is the degree of numerator `b` and `N` the degree of denominator
+		`a`::
 		
-		            b(z)     b[0] + b[1] z**(-1) + ... + b[M-1] z**(-M+1)
-		    H(z) = ------ = ----------------------------------------------
-		            a(z)     a[0] + a[1] z**(-1) + ... + a[N-1] z**(-N+1)
+		            b(z)     b[0] + b[1] z**(-1) + ... + b[M] z**(-M)
+		    H(z) = ------ = ------------------------------------------
+		            a(z)     a[0] + a[1] z**(-1) + ... + a[N] z**(-N)
+		
+		then the partial-fraction expansion H(z) is defined as::
 		
 		             r[0]                   r[-1]
 		     = --------------- + ... + ---------------- + k[0] + k[1]z**(-1) ...
 		       (1-p[0]z**(-1))         (1-p[-1]z**(-1))
 		
-		If there are any repeated roots (closer than tol), then the partial
+		If there are any repeated roots (closer than `tol`), then the partial
 		fraction expansion has terms like::
 		
 		         r[i]              r[i+1]                    r[i+n-1]
 		    -------------- + ------------------ + ... + ------------------
 		    (1-p[i]z**(-1))  (1-p[i]z**(-1))**2         (1-p[i]z**(-1))**n
 		
+		This function is used for polynomials in negative powers of z,
+		such as digital filters in DSP.  For positive powers, use `residue`.
+		
+		Parameters
+		----------
+		b : array_like
+		    Numerator polynomial coefficients.
+		a : array_like
+		    Denominator polynomial coefficients.
+		
+		Returns
+		-------
+		r : ndarray
+		    Residues.
+		p : ndarray
+		    Poles.
+		k : ndarray
+		    Coefficients of the direct polynomial term.
+		
 		See also
 		--------
-		invresz, unique_roots
+		invresz, residue, unique_roots
 	**/
 	static public function residuez(b:Dynamic, a:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
 	/**
@@ -3198,7 +3486,7 @@ package scipy.signal.signaltools;
 		--------
 		poly : Find the coefficients of a polynomial with a given sequence
 		       of roots.
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
 		
@@ -3360,7 +3648,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		zpk2sos, sos2zpk, sosfilt_zi
+		zpk2sos, sos2zpk, sosfilt_zi, sosfiltfilt
 		
 		Notes
 		-----
@@ -3442,6 +3730,57 @@ package scipy.signal.signaltools;
 	**/
 	static public function sosfilt_zi(sos:Dynamic):Dynamic;
 	/**
+		A forward-backward filter using cascaded second-order sections.
+		
+		See `filtfilt` for more complete information about this method.
+		
+		Parameters
+		----------
+		sos : array_like
+		    Array of second-order filter coefficients, must have shape
+		    ``(n_sections, 6)``. Each row corresponds to a second-order
+		    section, with the first three columns providing the numerator
+		    coefficients and the last three providing the denominator
+		    coefficients.
+		x : array_like
+		    The array of data to be filtered.
+		axis : int, optional
+		    The axis of `x` to which the filter is applied.
+		    Default is -1.
+		padtype : str or None, optional
+		    Must be 'odd', 'even', 'constant', or None.  This determines the
+		    type of extension to use for the padded signal to which the filter
+		    is applied.  If `padtype` is None, no padding is used.  The default
+		    is 'odd'.
+		padlen : int or None, optional
+		    The number of elements by which to extend `x` at both ends of
+		    `axis` before applying the filter.  This value must be less than
+		    ``x.shape[axis] - 1``.  ``padlen=0`` implies no padding.
+		    The default value is::
+		
+		        3 * (2 * len(sos) + 1 - min((sos[:, 2] == 0).sum(),
+		                                    (sos[:, 5] == 0).sum()))
+		
+		    The extra subtraction at the end attempts to compensate for poles
+		    and zeros at the origin (e.g. for odd-order filters) to yield
+		    equivalent estimates of `padlen` to those of `filtfilt` for
+		    second-order section filters built with `scipy.signal` functions.
+		
+		Returns
+		-------
+		y : ndarray
+		    The filtered output with the same shape as `x`.
+		
+		See Also
+		--------
+		filtfilt, sosfilt, sosfilt_zi
+		
+		Notes
+		-----
+		.. versionadded:: 0.18.0
+	**/
+	static public function sosfiltfilt(sos:Dynamic, x:Dynamic, ?axis:Dynamic, ?padtype:Dynamic, ?padlen:Dynamic):Dynamic;
+	/**
 		Sum of array elements over a given axis.
 		
 		Parameters
@@ -3449,31 +3788,30 @@ package scipy.signal.signaltools;
 		a : array_like
 		    Elements to sum.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a sum is performed.  The default,
+		    axis=None, will sum all of the elements of the input array.  If
+		    axis is negative it counts from the last to the first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
+		    If axis is a tuple of ints, a sum is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
+		    The type of the returned array and of the accumulator in which the
+		    elements are summed.  The dtype of `a` is used by default unless `a`
+		    has an integer dtype of less precision than the default platform
+		    integer.  In that case, if `a` is signed then the platform integer
+		    is used while if `a` is unsigned then an unsigned integer of the
+		    same precision as the platform integer is used.
 		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -3605,7 +3943,7 @@ package scipy.signal.signaltools;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes
@@ -3752,6 +4090,95 @@ package scipy.signal.signaltools;
 		array([ 1.305])
 	**/
 	static public function unique_roots(p:Dynamic, ?tol:Dynamic, ?rtype:Dynamic):Dynamic;
+	/**
+		Upsample, FIR filter, and downsample
+		
+		Parameters
+		----------
+		h : array_like
+		    1-dimensional FIR (finite-impulse response) filter coefficients.
+		x : array_like
+		    Input signal array.
+		up : int, optional
+		    Upsampling rate. Default is 1.
+		down : int, optional
+		    Downsampling rate. Default is 1.
+		axis : int, optional
+		    The axis of the input data array along which to apply the
+		    linear filter. The filter is applied to each subarray along
+		    this axis. Default is -1.
+		
+		Returns
+		-------
+		y : ndarray
+		    The output signal array. Dimensions will be the same as `x` except
+		    for along `axis`, which will change size according to the `h`,
+		    `up`,  and `down` parameters.
+		
+		Notes
+		-----
+		The algorithm is an implementation of the block diagram shown on page 129
+		of the Vaidyanathan text [1]_ (Figure 4.3-8d).
+		
+		.. [1] P. P. Vaidyanathan, Multirate Systems and Filter Banks,
+		   Prentice Hall, 1993.
+		
+		The direct approach of upsampling by factor of P with zero insertion,
+		FIR filtering of length ``N``, and downsampling by factor of Q is
+		O(N*Q) per output sample. The polyphase implementation used here is
+		O(N/P).
+		
+		.. versionadded:: 0.18
+		
+		Examples
+		--------
+		Simple operations:
+		
+		>>> from scipy.signal import upfirdn
+		>>> upfirdn([1, 1, 1], [1, 1, 1])   # FIR filter
+		array([ 1.,  2.,  3.,  2.,  1.])
+		>>> upfirdn([1], [1, 2, 3], 3)  # upsampling with zeros insertion
+		array([ 1.,  0.,  0.,  2.,  0.,  0.,  3.,  0.,  0.])
+		>>> upfirdn([1, 1, 1], [1, 2, 3], 3)  # upsampling with sample-and-hold
+		array([ 1.,  1.,  1.,  2.,  2.,  2.,  3.,  3.,  3.])
+		>>> upfirdn([.5, 1, .5], [1, 1, 1], 2)  # linear interpolation
+		array([ 0.5,  1. ,  1. ,  1. ,  1. ,  1. ,  0.5,  0. ])
+		>>> upfirdn([1], np.arange(10), 1, 3)  # decimation by 3
+		array([ 0.,  3.,  6.,  9.])
+		>>> upfirdn([.5, 1, .5], np.arange(10), 2, 3)  # linear interp, rate 2/3
+		array([ 0. ,  1. ,  2.5,  4. ,  5.5,  7. ,  8.5,  0. ])
+		
+		Apply a single filter to multiple signals:
+		
+		>>> x = np.reshape(np.arange(8), (4, 2))
+		>>> x
+		array([[0, 1],
+		       [2, 3],
+		       [4, 5],
+		       [6, 7]])
+		
+		Apply along the last dimension of ``x``:
+		
+		>>> h = [1, 1]
+		>>> upfirdn(h, x, 2)
+		array([[ 0.,  0.,  1.,  1.],
+		       [ 2.,  2.,  3.,  3.],
+		       [ 4.,  4.,  5.,  5.],
+		       [ 6.,  6.,  7.,  7.]])
+		
+		Apply along the 0th dimension of ``x``:
+		
+		>>> upfirdn(h, x, 2, axis=0)
+		array([[ 0.,  1.],
+		       [ 0.,  1.],
+		       [ 2.,  3.],
+		       [ 2.,  3.],
+		       [ 4.,  5.],
+		       [ 4.,  5.],
+		       [ 6.,  7.],
+		       [ 6.,  7.]])
+	**/
+	static public function upfirdn(h:Dynamic, x:Dynamic, ?up:Dynamic, ?down:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Determine the vector strength of the events corresponding to the given
 		period.

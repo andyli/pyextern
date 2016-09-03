@@ -132,21 +132,37 @@ package scipy.integrate.quadrature;
 	**/
 	static public function fixed_quad(func:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?n:Dynamic):Float;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gammaln(x:Dynamic):Dynamic;
 	/**
 		Return weights and error coefficient for Newton-Cotes integration.
 		
@@ -445,11 +461,13 @@ package scipy.integrate.quadrature;
 		y : array_like
 		    Input array to integrate.
 		x : array_like, optional
-		    If `x` is None, then spacing between all `y` elements is `dx`.
+		    The sample points corresponding to the `y` values. If `x` is None,
+		    the sample points are assumed to be evenly spaced `dx` apart. The
+		    default is None.
 		dx : scalar, optional
-		    If `x` is None, spacing given by `dx` is assumed. Default is 1.
+		    The spacing between sample points when `x` is None. The default is 1.
 		axis : int, optional
-		    Specify the axis.
+		    The axis along which to integrate.
 		
 		Returns
 		-------

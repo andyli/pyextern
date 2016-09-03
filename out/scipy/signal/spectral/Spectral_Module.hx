@@ -58,7 +58,7 @@ package scipy.signal.spectral;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap : int, optional
@@ -92,10 +92,10 @@ package scipy.signal.spectral;
 		-------
 		freqs : ndarray
 		    Array of sample frequencies.
-		result : ndarray
-		    Array of output data, contents dependant on *mode* kwarg.
 		t : ndarray
 		    Array of times corresponding to each data segment
+		result : ndarray
+		    Array of output data, contents dependant on *mode* kwarg.
 		
 		References
 		----------
@@ -132,7 +132,7 @@ package scipy.signal.spectral;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap: int, optional
@@ -167,7 +167,7 @@ package scipy.signal.spectral;
 		Notes
 		--------
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50\% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.
@@ -226,7 +226,7 @@ package scipy.signal.spectral;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap: int, optional
@@ -276,7 +276,7 @@ package scipy.signal.spectral;
 		zero-padded to match.
 		
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50\% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.
@@ -331,8 +331,10 @@ package scipy.signal.spectral;
 		Nx : int
 		    The number of samples in the window.
 		fftbins : bool, optional
-		    If True, create a "periodic" window ready to use with `ifftshift`
-		    and be multiplied by the result of an fft (SEE ALSO `fftfreq`).
+		    If True (default), create a "periodic" window, ready to use with
+		    `ifftshift` and be multiplied by the result of an FFT (see also
+		    `fftpack.fftfreq`).
+		    If False, create a "symmetric" window, for use in filter design.
 		
 		Returns
 		-------
@@ -343,11 +345,12 @@ package scipy.signal.spectral;
 		-----
 		Window types:
 		
-		    boxcar, triang, blackman, hamming, hann, bartlett, flattop, parzen,
-		    bohman, blackmanharris, nuttall, barthann, kaiser (needs beta),
-		    gaussian (needs std), general_gaussian (needs power, width),
-		    slepian (needs width), chebwin (needs attenuation)
-		    exponential (needs decay scale), tukey (needs taper fraction)
+		    `boxcar`, `triang`, `blackman`, `hamming`, `hann`, `bartlett`,
+		    `flattop`, `parzen`, `bohman`, `blackmanharris`, `nuttall`,
+		    `barthann`, `kaiser` (needs beta), `gaussian` (needs standard
+		    deviation), `general_gaussian` (needs power, width), `slepian`
+		    (needs width), `chebwin` (needs attenuation), `exponential`
+		    (needs decay scale), `tukey` (needs taper fraction)
 		
 		If the window requires no parameters, then `window` can be a string.
 		
@@ -356,7 +359,7 @@ package scipy.signal.spectral;
 		arguments the needed parameters.
 		
 		If `window` is a floating point number, it is interpreted as the beta
-		parameter of the kaiser window.
+		parameter of the `kaiser` window.
 		
 		Each of the window types listed above is also the name of
 		a function that can be called directly to create a window of
@@ -702,7 +705,7 @@ package scipy.signal.spectral;
 		    Desired window to use. See `get_window` for a list of windows and
 		    required parameters. If `window` is array_like it will be used
 		    directly as the window and its length will be used for nperseg.
-		    Defaults to 'hanning'.
+		    Defaults to 'hann'.
 		nperseg : int, optional
 		    Length of each segment.  Defaults to 256.
 		noverlap : int, optional
@@ -744,7 +747,7 @@ package scipy.signal.spectral;
 		Notes
 		-----
 		An appropriate amount of overlap will depend on the choice of window
-		and on your requirements.  For the default 'hanning' window an
+		and on your requirements.  For the default 'hann' window an
 		overlap of 50% is a reasonable trade off between accurately estimating
 		the signal power, while not over counting any of the data.  Narrower
 		windows may require a larger overlap.

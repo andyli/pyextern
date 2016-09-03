@@ -384,47 +384,50 @@ package numpy.lib.index_tricks;
 	**/
 	static public function diag_indices_from(arr:Dynamic):Dynamic;
 	/**
-		Calculate the n-th order discrete difference along given axis.
+		    Calculate the n-th discrete difference along given axis.
 		
-		The first order difference is given by ``out[n] = a[n+1] - a[n]`` along
-		the given axis, higher order differences are calculated by using `diff`
-		recursively.
+		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		    the given axis, higher differences are calculated by using `diff`
+		    recursively.
 		
-		Parameters
-		----------
-		a : array_like
-		    Input array
-		n : int, optional
-		    The number of times values are differenced.
-		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
+		    Parameters
+		    ----------
+		    a : array_like
+		        Input array
+		    n : int, optional
+		        The number of times values are differenced.
+		    axis : int, optional
+		        The axis along which the difference is taken, default is the last axis.
 		
-		Returns
-		-------
-		diff : ndarray
-		    The `n` order differences. The shape of the output is the same as `a`
-		    except along `axis` where the dimension is smaller by `n`.
+		    Returns
+		    -------
+		    diff : ndarray
+		        The n-th differences. The shape of the output is the same as `a`
+		        except along `axis` where the dimension is smaller by `n`.
+		.
 		
-		See Also
-		--------
-		gradient, ediff1d, cumsum
+		    See Also
+		    --------
+		    gradient, ediff1d, cumsum
 		
-		Examples
-		--------
-		>>> x = np.array([1, 2, 4, 7, 0])
-		>>> np.diff(x)
-		array([ 1,  2,  3, -7])
-		>>> np.diff(x, n=2)
-		array([  1,   1, -10])
+		    Examples
+		    --------
+		    >>> x = np.array([1, 2, 4, 7, 0])
+		    >>> np.diff(x)
+		    array([ 1,  2,  3, -7])
+		    >>> np.diff(x, n=2)
+		    array([  1,   1, -10])
 		
-		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		>>> np.diff(x)
-		array([[2, 3, 4],
-		       [5, 1, 2]])
-		>>> np.diff(x, axis=0)
-		array([[-1,  2,  0, -2]])
+		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		    >>> np.diff(x)
+		    array([[2, 3, 4],
+		           [5, 1, 2]])
+		    >>> np.diff(x, axis=0)
+		    array([[-1,  2,  0, -2]])
+		
+		    
 	**/
-	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Fill the main diagonal of the given array of any dimensionality.
@@ -445,7 +448,7 @@ package numpy.lib.index_tricks;
 		wrap : bool
 		  For tall matrices in NumPy version up to 1.6.2, the
 		  diagonal "wrapped" after N columns. You can have this behavior
-		  with this option. This affect only tall matrices.
+		  with this option. This affects only tall matrices.
 		
 		See also
 		--------

@@ -46,6 +46,7 @@ package scipy.optimize._differentialevolution;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	public function new(func:Dynamic, bounds:Dynamic, ?args:Dynamic, ?strategy:Dynamic, ?maxiter:Dynamic, ?popsize:Dynamic, ?tol:Dynamic, ?mutation:Dynamic, ?recombination:Dynamic, ?seed:Dynamic, ?maxfun:Dynamic, ?callback:Dynamic, ?disp:Dynamic, ?polish:Dynamic, ?init:Dynamic):Void;
+	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
 	**/
@@ -63,6 +64,17 @@ package scipy.optimize._differentialevolution;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Evolve the population by a single generation
+		
+		Returns
+		-------
+		x : ndarray
+		    The best solution from the solver.
+		fun : float
+		    Value of objective function obtained from the best solution.
+	**/
+	public function __next__():Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -111,6 +123,12 @@ package scipy.optimize._differentialevolution;
 	public function _best2(samples:Dynamic):Dynamic;
 	static public var _binomial : Dynamic;
 	/**
+		Calculate the energies of all the population members at the same time.
+		Puts the best member in first place. Useful if the population has just
+		been initialised.
+	**/
+	public function _calculate_population_energies():Dynamic;
+	/**
 		make sure the parameters lie between the limits
 	**/
 	public function _ensure_constraint(trial:Dynamic):Dynamic;
@@ -132,7 +150,7 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _randtobest1(candidate:Dynamic, samples:Dynamic):Dynamic;
 	/**
-		scale from a number between 0 and 1 to parameters
+		scale from a number between 0 and 1 to parameters.
 	**/
 	public function _scale_parameters(trial:Dynamic):Dynamic;
 	/**
@@ -145,6 +163,11 @@ package scipy.optimize._differentialevolution;
 	**/
 	public function _unscale_parameters(parameters:Dynamic):Dynamic;
 	/**
+		The standard deviation of the population energies divided by their
+		mean.
+	**/
+	public var convergence : Dynamic;
+	/**
 		Initializes the population with Latin Hypercube Sampling.
 		Latin Hypercube Sampling ensures that each parameter is uniformly
 		sampled over its range.
@@ -155,6 +178,17 @@ package scipy.optimize._differentialevolution;
 		can possess clustering, Latin Hypercube sampling is generally better.
 	**/
 	public function init_population_random():Dynamic;
+	/**
+		Evolve the population by a single generation
+		
+		Returns
+		-------
+		x : ndarray
+		    The best solution from the solver.
+		fun : float
+		    Value of objective function obtained from the best solution.
+	**/
+	public function next():Dynamic;
 	/**
 		Runs the DifferentialEvolutionSolver.
 		
@@ -175,7 +209,7 @@ package scipy.optimize._differentialevolution;
 		
 		Returns
 		-------
-		x - ndarray
+		x : ndarray
 		    The best solution from the solver.
 	**/
 	public var x : Dynamic;

@@ -145,7 +145,7 @@ package scipy.linalg.decomp_schur;
 		>>> try:
 		...     np.asarray_chkfinite(a)
 		... except ValueError:
-		...     print 'ValueError'
+		...     print('ValueError')
 		...
 		ValueError
 	**/

@@ -68,6 +68,11 @@ package pandas.core.internals;
 	**/
 	static public function _is_na_compat(arr:Dynamic, ?fill_value:Dynamic):Dynamic;
 	/**
+		Convert a python scalar to the appropriate numpy dtype if possible
+		This avoids numpy directly converting according to platform preferences
+	**/
+	static public function _maybe_convert_scalar(values:Dynamic):Dynamic;
+	/**
 		Convert string-like and string-like array to convert object dtype.
 		This is to avoid numpy to handle the array as str dtype.
 	**/
@@ -96,6 +101,112 @@ package pandas.core.internals;
 		n : `new values` either scalar or an array like aligned with `values`
 	**/
 	static public function _putmask_smart(v:Dynamic, m:Dynamic, n:Dynamic):Dynamic;
+	/**
+		Compute the qth percentile of the data along the specified axis.
+		
+		Returns the qth percentile(s) of the array elements.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array or object that can be converted to an array.
+		q : float in range of [0,100] (or sequence of floats)
+		    Percentile to compute, which must be between 0 and 100 inclusive.
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the percentiles are computed. The
+		    default is to compute the percentile(s) along a flattened
+		    version of the array. A sequence of axes is supported since
+		    version 1.9.0.
+		out : ndarray, optional
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output,
+		    but the type (of the output) will be cast if necessary.
+		overwrite_input : bool, optional
+		    If True, then allow use of memory of input array `a` 
+		    calculations. The input array will be modified by the call to
+		    `percentile`. This will save memory when you do not need to
+		    preserve the contents of the input array. In this case you
+		    should not make any assumptions about the contents of the input
+		    `a` after this function completes -- treat it as undefined.
+		    Default is False. If `a` is not already an array, this parameter
+		    will have no effect as `a` will be converted to an array
+		    internally regardless of the value of this parameter.
+		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
+		    This optional parameter specifies the interpolation method to
+		    use when the desired quantile lies between two data points
+		    ``i < j``:
+		        * linear: ``i + (j - i) * fraction``, where ``fraction``
+		          is the fractional part of the index surrounded by ``i``
+		          and ``j``.
+		        * lower: ``i``.
+		        * higher: ``j``.
+		        * nearest: ``i`` or ``j``, whichever is nearest.
+		        * midpoint: ``(i + j) / 2``.
+		
+		    .. versionadded:: 1.9.0
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
+		
+		    .. versionadded:: 1.9.0
+		
+		Returns
+		-------
+		percentile : scalar or ndarray
+		    If `q` is a single percentile and `axis=None`, then the result
+		    is a scalar. If multiple percentiles are given, first axis of
+		    the result corresponds to the percentiles. The other axes are
+		    the axes that remain after the reduction of `a`. If the input 
+		    contains integers or floats smaller than ``float64``, the output
+		    data-type is ``float64``. Otherwise, the output data-type is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
+		
+		See Also
+		--------
+		mean, median, nanpercentile
+		
+		Notes
+		-----
+		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+		``V`` is the value ``q/100`` of the way from the mimumum to the
+		maximum in in a sorted copy of ``V``. The values and distances of
+		the two nearest neighbors as well as the `interpolation` parameter
+		will determine the percentile if the normalized ranking does not
+		match the location of ``q`` exactly. This function is the same as
+		the median if ``q=50``, the same as the minimum if ``q=0`` and the
+		same as the maximum if ``q=100``.
+		
+		Examples
+		--------
+		>>> a = np.array([[10, 7, 4], [3, 2, 1]])
+		>>> a
+		array([[10,  7,  4],
+		       [ 3,  2,  1]])
+		>>> np.percentile(a, 50)
+		3.5
+		>>> np.percentile(a, 50, axis=0)
+		array([[ 6.5,  4.5,  2.5]])
+		>>> np.percentile(a, 50, axis=1)
+		array([ 7.,  2.])
+		>>> np.percentile(a, 50, axis=1, keepdims=True)
+		array([[ 7.],
+		       [ 2.]])
+		
+		>>> m = np.percentile(a, 50, axis=0)
+		>>> out = np.zeros_like(m)
+		>>> np.percentile(a, 50, axis=0, out=out)
+		array([[ 6.5,  4.5,  2.5]])
+		>>> m
+		array([[ 6.5,  4.5,  2.5]])
+		
+		>>> b = a.copy()
+		>>> np.percentile(b, 50, axis=1, overwrite_input=True)
+		array([ 7.,  2.])
+		>>> assert not np.all(a == b)
+	**/
+	static public function _quantile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		return a single array of a block that has a single dtype; if dtype is
 		not None, coerce to this dtype
@@ -214,7 +325,7 @@ package pandas.core.internals;
 		if we are a klass that is preserved by the internals
 		these are internal klasses that we represent (and don't use a np.array)
 	**/
-	static public function is_internal_type(value:Dynamic):Dynamic;
+	static public function is_extension_type(value:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
 		test whether the object is a null datelike, e.g. Nat
@@ -276,6 +387,32 @@ package pandas.core.internals;
 		coerce to a categorical if a series is given 
 	**/
 	static public function maybe_to_categorical(array:Dynamic):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
 		Reduce join_unit's shape along item axis to length.
 		

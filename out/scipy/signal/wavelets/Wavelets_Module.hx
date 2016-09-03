@@ -94,9 +94,9 @@ package scipy.signal.wavelets;
 		in1 : array_like
 		    First input.
 		in2 : array_like
-		    Second input. Should have the same number of dimensions as `in1`;
-		    if sizes of `in1` and `in2` are not equal then `in1` has to be the
-		    larger array.
+		    Second input. Should have the same number of dimensions as `in1`.
+		    If operating in 'valid' mode, either `in1` or `in2` must be
+		    at least as large as the other in every dimension.
 		mode : str {'full', 'valid', 'same'}, optional
 		    A string indicating the size of the output:
 		
@@ -430,21 +430,24 @@ package scipy.signal.wavelets;
 		
 		This commonly used wavelet is often referred to simply as the
 		Morlet wavelet.  Note that this simplified version can cause
-		admissibility problems at low values of w.
+		admissibility problems at low values of `w`.
 		
 		The complete version::
 		
 		    pi**-0.25 * (exp(1j*w*x) - exp(-0.5*(w**2))) * exp(-0.5*(x**2))
 		
-		The complete version of the Morlet wavelet, with a correction
-		term to improve admissibility. For w greater than 5, the
+		This version has a correction
+		term to improve admissibility. For `w` greater than 5, the
 		correction term is negligible.
 		
 		Note that the energy of the return wavelet is not normalised
-		according to s.
+		according to `s`.
 		
 		The fundamental frequency of this wavelet in Hz is given
-		by ``f = 2*s*w*r / M`` where r is the sampling rate.
+		by ``f = 2*s*w*r / M`` where `r` is the sampling rate.
+		
+		Note: This function was created before `cwt` and is not compatible
+		with it.
 	**/
 	static public function morlet(M:Dynamic, ?w:Dynamic, ?s:Dynamic, ?complete:Dynamic):Dynamic;
 	static public var pi : Dynamic;

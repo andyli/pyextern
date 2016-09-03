@@ -65,14 +65,14 @@ package scipy.io;
 	**/
 	static public function hb_write(file:Dynamic, m:Dynamic, ?hb_info:Dynamic):Dynamic;
 	/**
-		Load MATLAB file
+		Load MATLAB file.
 		
 		Parameters
 		----------
 		file_name : str
 		   Name of the mat file (do not need .mat extension if
-		   appendmat==True) Can also pass open file-like object.
-		m_dict : dict, optional
+		   appendmat==True). Can also pass open file-like object.
+		mdict : dict, optional
 		    Dictionary in which to insert matfile variables.
 		appendmat : bool, optional
 		   True to append the .mat extension to the end of the given
@@ -115,7 +115,7 @@ package scipy.io;
 		-------
 		mat_dict : dict
 		   dictionary with variable names as keys, and loaded matrices as
-		   values
+		   values.
 		
 		Notes
 		-----
@@ -190,14 +190,14 @@ package scipy.io;
 	static public function mmwrite(target:Dynamic, a:Dynamic, ?comment:Dynamic, ?field:Dynamic, ?precision:Dynamic, ?symmetry:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Read an IDL .sav file
+		Read an IDL .sav file.
 		
 		Parameters
 		----------
 		file_name : str
 		    Name of the IDL save file.
 		idict : dict, optional
-		    Dictionary in which to insert .sav file variables
+		    Dictionary in which to insert .sav file variables.
 		python_dict : bool, optional
 		    By default, the object return is not a Python dictionary, but a
 		    case-insensitive dictionary with item, attribute, and call access
@@ -244,12 +244,12 @@ package scipy.io;
 		    given filename, if not already present.
 		format : {'5', '4'}, string, optional
 		    '5' (the default) for MATLAB 5 and up (to 7.2),
-		    '4' for MATLAB 4 .mat files
+		    '4' for MATLAB 4 .mat files.
 		long_field_names : bool, optional
 		    False (the default) - maximum field name length in a structure is
 		    31 characters which is the documented maximum length.
 		    True - maximum field name length in a structure is 63 characters
-		    which works for MATLAB 7.6+
+		    which works for MATLAB 7.6+.
 		do_compression : bool, optional
 		    Whether or not to compress matrices on write.  Default is False.
 		oned_as : {'row', 'column'}, optional
@@ -323,7 +323,7 @@ package scipy.io;
 	**/
 	static public function test(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic, ?doctests:Dynamic, ?coverage:Dynamic, ?raise_warnings:Dynamic):Dynamic;
 	/**
-		List variables inside a MATLAB file
+		List variables inside a MATLAB file.
 		
 		Parameters
 		----------

@@ -192,7 +192,7 @@ package numpy;
 		Examples
 		--------
 		>>> dt = np.dtype([('name', np.str_, 16), ('grades', np.float64, (2,))])
-		>>> print dt.fields
+		>>> print(dt.fields)
 		{'grades': (dtype(('float64',(2,))), 16), 'name': (dtype('|S16'), 0)}
 	**/
 	public var fields : Dynamic;
@@ -264,7 +264,7 @@ package numpy;
 	**/
 	public var itemsize : Dynamic;
 	/**
-		A character code (one of 'biufcOSUV') identifying the general kind of data.
+		A character code (one of 'biufcmMOSUV') identifying the general kind of data.
 		
 		=  ======================
 		b  boolean
@@ -272,6 +272,8 @@ package numpy;
 		u  unsigned integer
 		f  floating-point
 		c  complex floating-point
+		m  timedelta
+		M  datetime
 		O  object
 		S  (byte-)string
 		U  Unicode

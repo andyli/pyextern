@@ -29,8 +29,8 @@ package matplotlib.backends.backend_pdf;
 	/**
 		ceil(x)
 		
-		Return the ceiling of x as an int.
-		This is the smallest integral value >= x.
+		Return the ceiling of x as an Integral.
+		This is the smallest integer >= x.
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -50,8 +50,8 @@ package matplotlib.backends.backend_pdf;
 	/**
 		floor(x)
 		
-		Return the floor of x as an int.
-		This is the largest integral value <= x.
+		Return the floor of x as an Integral.
+		This is the largest integer <= x.
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_realpath_and_stat(path:Dynamic):Dynamic;

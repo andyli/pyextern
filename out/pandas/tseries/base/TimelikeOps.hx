@@ -150,5 +150,5 @@ package pandas.tseries.base;
 		------
 		ValueError if the freq cannot be converted
 	**/
-	public function round(freq:Dynamic):Dynamic;
+	public function round(freq:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

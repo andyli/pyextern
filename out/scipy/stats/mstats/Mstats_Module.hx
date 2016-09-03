@@ -695,7 +695,7 @@ package scipy.stats.mstats;
 		    two-sided p-value for a hypothesis test whose null hypothesis is
 		    that the slope is zero.
 		stderr : float
-		    Standard error of the estimate
+		    Standard error of the estimated gradient.
 		
 		See also
 		--------
@@ -763,7 +763,7 @@ package scipy.stats.mstats;
 		
 		Returns
 		-------
-		median_cihs :
+		median_cihs
 		    Alpha level confidence interval.
 	**/
 	static public function median_cihs(data:Dynamic, ?alpha:Dynamic, ?axis:Dynamic):Dynamic;
@@ -1917,9 +1917,9 @@ package scipy.stats.mstats;
 	/**
 		Calculates the relative z-scores.
 		
-		Returns an array of z-scores, i.e., scores that are standardized to zero
-		mean and unit variance, where mean and variance are calculated from the
-		comparison array.
+		Returns an array of z-scores, i.e., scores that are standardized to
+		zero mean and unit variance, where mean and variance are calculated
+		from the comparison array.
 		
 		Parameters
 		----------
@@ -1944,8 +1944,8 @@ package scipy.stats.mstats;
 		Notes
 		-----
 		This function preserves ndarray subclasses, and works also with
-		matrices and masked arrays (it uses `asanyarray` instead of `asarray`
-		for parameters).
+		matrices and masked arrays (it uses `asanyarray` instead of
+		`asarray` for parameters).
 		
 		Examples
 		--------
@@ -1957,8 +1957,8 @@ package scipy.stats.mstats;
 	**/
 	static public function zmap(scores:Dynamic, compare:Dynamic, ?axis:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
-		Calculates the z score of each value in the sample, relative to the sample
-		mean and standard deviation.
+		Calculates the z score of each value in the sample, relative to the
+		sample mean and standard deviation.
 		
 		Parameters
 		----------
@@ -1974,26 +1974,26 @@ package scipy.stats.mstats;
 		Returns
 		-------
 		zscore : array_like
-		    The z-scores, standardized by mean and standard deviation of input
-		    array `a`.
+		    The z-scores, standardized by mean and standard deviation of
+		    input array `a`.
 		
 		Notes
 		-----
 		This function preserves ndarray subclasses, and works also with
-		matrices and masked arrays (it uses `asanyarray` instead of `asarray`
-		for parameters).
+		matrices and masked arrays (it uses `asanyarray` instead of
+		`asarray` for parameters).
 		
 		Examples
 		--------
-		>>> a = np.array([ 0.7972,  0.0767,  0.4383,  0.7866,  0.8091,  0.1954,
-		...                0.6307, 0.6599,  0.1065,  0.0508])
+		>>> a = np.array([ 0.7972,  0.0767,  0.4383,  0.7866,  0.8091,
+		...                0.1954,  0.6307,  0.6599,  0.1065,  0.0508])
 		>>> from scipy import stats
 		>>> stats.zscore(a)
 		array([ 1.1273, -1.247 , -0.0552,  1.0923,  1.1664, -0.8559,  0.5786,
 		        0.6748, -1.1488, -1.3324])
 		
-		Computing along a specified axis, using n-1 degrees of freedom (``ddof=1``)
-		to calculate the standard deviation:
+		Computing along a specified axis, using n-1 degrees of freedom
+		(``ddof=1``) to calculate the standard deviation:
 		
 		>>> b = np.array([[ 0.3148,  0.0478,  0.6243,  0.4608],
 		...               [ 0.7149,  0.0775,  0.6072,  0.9656],

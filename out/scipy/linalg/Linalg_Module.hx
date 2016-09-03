@@ -757,7 +757,7 @@ package scipy.linalg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -934,7 +934,7 @@ package scipy.linalg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -1531,9 +1531,9 @@ package scipy.linalg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If `a` is singular.
-		ValueError :
+		ValueError
 		    If `a` is not square, or not 2-dimensional.
 		
 		Examples
@@ -1857,10 +1857,10 @@ package scipy.linalg;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If computation does not converge.
 		
-		ValueError :
+		ValueError
 		    When parameters are wrong.
 		
 		See Also
@@ -2619,7 +2619,7 @@ package scipy.linalg;
 	**/
 	static public function qr(a:Dynamic, ?overwrite_a:Dynamic, ?lwork:Dynamic, ?mode:Dynamic, ?pivoting:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		qr_delete(Q, R, k, p=1, which='row', overwrite_qr=False, check_finite=True)
+		qr_delete(Q, R, k, int p=1, which='row', overwrite_qr=False, check_finite=True)
 		
 		QR downdate on row or column deletions
 		
@@ -2641,7 +2641,7 @@ package scipy.linalg;
 		    Determines if rows or columns will be deleted, defaults to 'row'
 		overwrite_qr : bool, optional
 		    If True, consume Q and R, overwriting their contents with their
-		    downdated versions, and returning approriately sized views.  
+		    downdated versions, and returning approriately sized views.
 		    Defaults to False.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
@@ -2750,7 +2750,7 @@ package scipy.linalg;
 		rcond : float
 		    Lower bound on the reciprocal condition number of ``Q`` augmented with
 		    ``u/||u||`` Only used when updating economic mode (thin, (M,N) (N,N))
-		    decompositions.  If None, machine precision is used.  Defaults to 
+		    decompositions.  If None, machine precision is used.  Defaults to
 		    None.
 		overwrite_qru : bool, optional
 		    If True, consume Q, R, and u, if possible, while performing the update,
@@ -2808,8 +2808,8 @@ package scipy.linalg;
 		>>> q, r = linalg.qr(a)
 		
 		Given this QR decomposition, update q and r when 2 rows are inserted.
-		                  
-		>>> u = np.array([[  6.,  -9.,  -3.], 
+		
+		>>> u = np.array([[  6.,  -9.,  -3.],
 		...               [ -3.,  10.,   1.]])
 		>>> q1, r1 = linalg.qr_insert(q, r, u, 2, 'row')
 		>>> q1
@@ -3748,15 +3748,13 @@ package scipy.linalg;
 	**/
 	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
 	/**
-		Solves the discrete Lyapunov equation :math:`A'XA-X=-Q`.
+		Solves the discrete Lyapunov equation :math:`AXA^H - X + Q = 0`.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix
-		
-		q : (M, M) array_like
-		    Right-hand side square matrix
+		a, q : (M, M) array_like
+		    Square matrices corresponding to A and Q in the equation
+		    above respectively. Must have the same shape.
 		
 		method : {'direct', 'bilinear'}, optional
 		    Type of solver.
@@ -3785,7 +3783,7 @@ package scipy.linalg;
 		performance degrades rapidly for even moderately sized matrices.
 		
 		Method *bilinear* uses a bilinear transformation to convert the discrete
-		Lyapunov equation to a continuous Lyapunov equation :math:`(B'X+XB=-C)`
+		Lyapunov equation to a continuous Lyapunov equation :math:`(BX+XB'=-C)`
 		where :math:`B=(A-I)(A+I)^{-1}` and
 		:math:`C=2(A' + I)^{-1} Q (A + I)^{-1}`. The continuous equation can be
 		efficiently solved since it is a special case of a Sylvester equation.
@@ -4067,6 +4065,13 @@ package scipy.linalg;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -4080,7 +4085,7 @@ package scipy.linalg;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -4111,7 +4116,7 @@ package scipy.linalg;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute singular values of a matrix.
 		

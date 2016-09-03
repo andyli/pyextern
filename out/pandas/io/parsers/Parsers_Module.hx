@@ -104,6 +104,19 @@ package pandas.io.parsers;
 	static public function _try_convert_dates(parser:Dynamic, colspec:Dynamic, data_dict:Dynamic, columns:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	/**
+		Check whether or not the 'parse_dates' parameter
+		is a non-boolean scalar. Raises a ValueError if
+		that is the case.
+	**/
+	static public function _validate_parse_dates_arg(parse_dates:Dynamic):Dynamic;
+	/**
+		Check whether or not the 'usecols' parameter
+		contains all integers (column selection by index)
+		or strings (column by name). Raises a ValueError
+		if that is not the case.
+	**/
+	static public function _validate_usecols_arg(usecols:Dynamic):Dynamic;
+	/**
 		wraps compressed fileobject in a decompressing fileobject
 		NOTE: For all files in Python 3.2 and for bzip'd files under all Python
 		versions, this means reading in the entire file and then re-wrapping it in
@@ -205,7 +218,7 @@ package pandas.io.parsers;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -415,10 +428,19 @@ package pandas.io.parsers;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default ','
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Regular expressions are accepted and will force use of the python
-		    parsing engine and will ignore quotes in the data.
-		delimiter : str, default None
+		    this. Separators longer than 1 character and different from '\s+' will be
+		    interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -438,8 +460,12 @@ package pandas.io.parsers;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -496,8 +522,10 @@ package pandas.io.parsers;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -520,11 +548,15 @@ package pandas.io.parsers;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'
@@ -597,8 +629,16 @@ package pandas.io.parsers;
 		    A list of field widths which can be used instead of 'colspecs' if
 		    the intervals are contiguous.
 		
-		delimiter : str, default None
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -618,8 +658,12 @@ package pandas.io.parsers;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -674,8 +718,10 @@ package pandas.io.parsers;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -698,11 +744,15 @@ package pandas.io.parsers;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'
@@ -771,10 +821,19 @@ package pandas.io.parsers;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default \t (tab-stop)
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Regular expressions are accepted and will force use of the python
-		    parsing engine and will ignore quotes in the data.
-		delimiter : str, default None
+		    this. Separators longer than 1 character and different from '\s+' will be
+		    interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		delimiter : str, default ``None``
 		    Alternative argument name for sep.
+		delim_whitespace : boolean, default False
+		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
+		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    is set to True, nothing should be passed in for the ``delimiter``
+		    parameter.
+		
+		    .. versionadded:: 0.18.1 support for the Python parser.
+		
 		header : int or list of ints, default 'infer'
 		    Row number(s) to use as the column names, and the start of the data.
 		    Default behavior is as if set to 0 if no ``names`` passed, otherwise
@@ -794,8 +853,12 @@ package pandas.io.parsers;
 		    of each line, you might consider index_col=False to force pandas to _not_
 		    use the first column as the index (row names)
 		usecols : array-like, default None
-		    Return a subset of the columns.
-		    Results in much faster parsing time and lower memory usage.
+		    Return a subset of the columns. All elements in this array must either
+		    be positional (i.e. integer indices into the document columns) or strings
+		    that correspond to column names provided either by the user in `names` or
+		    inferred from the document header row(s). For example, a valid `usecols`
+		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
+		    results in much faster parsing time and lower memory usage.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
@@ -852,8 +915,10 @@ package pandas.io.parsers;
 		
 		    Note: A fast-path exists for iso8601-formatted dates.
 		infer_datetime_format : boolean, default False
-		    If True and parse_dates is enabled for a column, attempt to infer
-		    the datetime format to speed up the processing
+		    If True and parse_dates is enabled, pandas will attempt to infer the format
+		    of the datetime strings in the columns, and if it can be inferred, switch
+		    to a faster method of parsing them. In some cases this can increase the
+		    parsing speed by ~5-10x.
 		keep_date_col : boolean, default False
 		    If True and parse_dates specifies combining multiple columns then
 		    keep the original columns.
@@ -876,11 +941,15 @@ package pandas.io.parsers;
 		    information
 		    <http://pandas.pydata.org/pandas-docs/stable/io.html#io-chunking>`_ on
 		    ``iterator`` and ``chunksize``.
-		compression : {'infer', 'gzip', 'bz2', None}, default 'infer'
-		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip or
-		    bz2 if filepath_or_buffer is a string ending in '.gz' or '.bz2',
-		    respectively, and no decompression otherwise. Set to None for no
-		    decompression.
+		compression : {'infer', 'gzip', 'bz2', 'zip', 'xz', None}, default 'infer'
+		    For on-the-fly decompression of on-disk data. If 'infer', then use gzip,
+		    bz2, zip or xz if filepath_or_buffer is a string ending in '.gz', '.bz2',
+		    '.zip', or 'xz', respectively, and no decompression otherwise. If using
+		    'zip', the ZIP file must contain only one data file to be read in.
+		    Set to None for no decompression.
+		
+		    .. versionadded:: 0.18.1 support for 'zip' and 'xz' compression.
+		
 		thousands : str, default None
 		    Thousands separator
 		decimal : str, default '.'

@@ -13,6 +13,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 	static public var SSEUPD_ERRORS : Dynamic;
 	static public var ZNAUPD_ERRORS : Dynamic;
 	static public var ZNEUPD_ERRORS : Dynamic;
+	static public var _ARPACK_LOCK : Dynamic;
 	static public var _NAUPD_ERRORS : Dynamic;
 	static public var _NEUPD_ERRORS : Dynamic;
 	static public var _NEUPD_WHICH : Dynamic;
@@ -64,6 +65,11 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		<2x3 MatrixLinearOperator with dtype=int32>
 	**/
 	static public function aslinearoperator(A:Dynamic):Dynamic;
+	/**
+		Choose number of lanczos vectors based on target number
+		of singular/eigen values and vectors to compute, k.
+	**/
+	static public function choose_ncv(k:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Find k eigenvalues and eigenvectors of the square matrix A.
@@ -133,7 +139,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    `ncv` must be greater than `k`; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str, ['LM' | 'SM' | 'LR' | 'SR' | 'LI' | 'SI'], optional
 		    Which `k` eigenvectors and eigenvalues to find:
 		
@@ -293,7 +299,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		ncv : int, optional
 		    The number of Lanczos vectors generated ncv must be greater than k and
 		    smaller than n; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str ['LM' | 'SM' | 'LA' | 'SA' | 'BE']
 		    If A is a complex hermitian matrix, 'BE' is invalid.
 		    Which `k` eigenvectors and eigenvalues to find:
@@ -643,7 +649,7 @@ package scipy.sparse.linalg.eigen.arpack.arpack;
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
 		    it is recommended that ncv > 2*k
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		tol : float, optional
 		    Tolerance for singular values. Zero (default) means machine precision.
 		which : str, ['LM' | 'SM'], optional

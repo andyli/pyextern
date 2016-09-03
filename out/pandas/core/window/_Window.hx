@@ -50,11 +50,11 @@ package pandas.core.window;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic):Dynamic;
+	public function ___init__(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic):Void;
+	public function new(obj:Dynamic, ?window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/
@@ -202,11 +202,10 @@ package pandas.core.window;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _setup():Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
-	public function _shallow_copy(?obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
 		wrap a single result 
@@ -227,4 +226,5 @@ package pandas.core.window;
 	static public var exclusions : Dynamic;
 	public var name : Dynamic;
 	static public var ndim : Dynamic;
+	public function validate():Dynamic;
 }

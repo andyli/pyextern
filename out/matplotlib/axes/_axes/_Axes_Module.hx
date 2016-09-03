@@ -10,6 +10,7 @@ package matplotlib.axes._axes;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _alias_map : Dynamic;
 	static public function _plot_args_replacer(args:Dynamic, data:Dynamic):Dynamic;
 	/**
 		Process a MATLAB style color/line style format string.  Return a
@@ -50,6 +51,7 @@ package matplotlib.axes._axes;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 	/**
 		A decorator to add a 'data' kwarg to any a function.  The signature

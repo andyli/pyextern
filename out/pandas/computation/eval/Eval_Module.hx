@@ -23,6 +23,10 @@ package pandas.computation.eval;
 		  * If an invalid engine is passed
 		ImportError
 		  * If numexpr was requested but doesn't exist
+		
+		Returns
+		-------
+		string engine
 	**/
 	static public function _check_engine(engine:Dynamic):Dynamic;
 	/**
@@ -111,10 +115,11 @@ package pandas.computation.eval;
 		    ``'python'`` parser to retain strict Python semantics.  See the
 		    :ref:`enhancing performance <enhancingperf.eval>` documentation for
 		    more details.
-		engine : string, default 'numexpr', {'python', 'numexpr'}
+		engine : string or None, default 'numexpr', {'python', 'numexpr'}
 		
 		    The engine used to evaluate the expression. Supported engines are
 		
+		    - None         : tries to use ``numexpr``, falls back to ``python``
 		    - ``'numexpr'``: This default engine evaluates pandas objects using
 		                     numexpr for large speed ups in complex expressions
 		                     with large frames.
@@ -168,6 +173,32 @@ package pandas.computation.eval;
 		pandas.DataFrame.eval
 	**/
 	static public function eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
 		Tokenize a Python source code string.

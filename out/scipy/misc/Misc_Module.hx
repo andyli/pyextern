@@ -163,7 +163,7 @@ package scipy.misc;
 		    Input function.
 		x0 : float
 		    The point at which `n`-th derivative is found.
-		dx : int, optional
+		dx : float, optional
 		    Spacing.
 		n : int, optional
 		    Order of the derivative. Default is 1.
@@ -194,7 +194,7 @@ package scipy.misc;
 		Parameters
 		----------
 		gray : bool, optional
-		    If True then return color image, otherwise return an 8-bit gray-scale
+		    If True return 8-bit grey-scale image, otherwise return a color image
 		
 		Returns
 		-------
@@ -219,28 +219,38 @@ package scipy.misc;
 	**/
 	static public function face(?gray:Dynamic):Dynamic;
 	/**
-		The factorial function, n! = special.gamma(n+1).
+		The factorial of a number or array of numbers.
 		
-		If exact is 0, then floating point precision is used, otherwise
-		exact long integer is computed.
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
 		
-		- Array argument accepted only for exact=False case.
-		- If n<0, the return value is 0.
+		    n! = n * (n - 1) * (n - 2) * ... * 1
 		
 		Parameters
 		----------
 		n : int or array_like of ints
-		    Calculate ``n!``.  Arrays are only supported with `exact` set
-		    to False.  If ``n < 0``, the return value is 0.
+		    Input values.  If ``n < 0``, the return value is 0.
 		exact : bool, optional
-		    The result can be approximated rapidly using the gamma-formula
-		    above.  If `exact` is set to True, calculate the
-		    answer exactly using integer arithmetic. Default is False.
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
 		
 		Returns
 		-------
-		nf : float or int
-		    Factorial of `n`, as an integer or a float depending on `exact`.
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
 		
 		Examples
 		--------
@@ -248,6 +258,8 @@ package scipy.misc;
 		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
 		>>> factorial(5, exact=True)
 		120L
 	**/
@@ -445,7 +457,7 @@ package scipy.misc;
 		    If return_sign is True, this will be an array of floating-point
 		    numbers matching res and +1, 0, or -1 depending on the sign
 		    of the result. If False, only one result is returned.
-		    
+		
 		See Also
 		--------
 		numpy.logaddexp, numpy.logaddexp2
@@ -478,6 +490,15 @@ package scipy.misc;
 		
 		>>> logsumexp([1,2],b=[1,-1],return_sign=True)
 		(1.5413248546129181, -1.0)
+		
+		Notice that `logsumexp` does not directly support masked arrays. To use it
+		on a masked array, convert the mask into zero weights:
+		
+		>>> a = np.ma.array([np.log(2), 2, np.log(3)],
+		...                  mask=[False, True, False])
+		>>> b = (~a.mask).astype(int)
+		>>> logsumexp(a.data, b=b), np.log(5)
+		1.6094379124341005, 1.6094379124341005
 	**/
 	static public function logsumexp(a:Dynamic, ?axis:Dynamic, ?b:Dynamic, ?keepdims:Dynamic, ?return_sign:Dynamic):Dynamic;
 	/**

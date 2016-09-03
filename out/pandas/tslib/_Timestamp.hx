@@ -112,8 +112,11 @@ package pandas.tslib;
 		overrides the normal algorithm (and the outcome is cached).
 	**/
 	static public function __subclasshook__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _date_repr : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _repr_base : Dynamic;
+	public var _time_repr : Dynamic;
 	public var asm8 : Dynamic;
 	/**
 		tz -> convert to local time in new timezone tz

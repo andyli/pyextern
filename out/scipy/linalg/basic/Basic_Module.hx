@@ -170,9 +170,9 @@ package scipy.linalg.basic;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If `a` is singular.
-		ValueError :
+		ValueError
 		    If `a` is not square, or not 2-dimensional.
 		
 		Examples
@@ -270,10 +270,10 @@ package scipy.linalg.basic;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If computation does not converge.
 		
-		ValueError :
+		ValueError
 		    When parameters are wrong.
 		
 		See Also

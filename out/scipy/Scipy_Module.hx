@@ -20,6 +20,8 @@ package scipy;
 	static public var Inf : Dynamic;
 	static public var Infinity : Dynamic;
 	static public var MAXDIMS : Dynamic;
+	static public var MAY_SHARE_BOUNDS : Dynamic;
+	static public var MAY_SHARE_EXACT : Dynamic;
 	static public var NAN : Dynamic;
 	static public var NINF : Dynamic;
 	static public var NZERO : Dynamic;
@@ -152,7 +154,6 @@ package scipy;
 		in new-style classes or built-in functions. Because this
 		routine never raises an error the caller must check manually
 		that the docstrings were changed.
-		   
 	**/
 	static public function add_newdoc(place:Dynamic, obj:Dynamic, doc:Dynamic):Dynamic;
 	/**
@@ -1403,7 +1404,7 @@ package scipy;
 		-------
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
 		
 		See Also
 		--------
@@ -1728,8 +1729,8 @@ package scipy;
 		Examples
 		--------
 		>>> x = np.array([1e-16,1,2,3])
-		>>> print np.array2string(x, precision=2, separator=',',
-		...                       suppress_small=True)
+		>>> print(np.array2string(x, precision=2, separator=',',
+		...                       suppress_small=True))
 		[ 0., 1., 2., 3.]
 		
 		>>> x  = np.arange(3.)
@@ -2072,7 +2073,7 @@ package scipy;
 		>>> try:
 		...     np.asarray_chkfinite(a)
 		... except ValueError:
-		...     print 'ValueError'
+		...     print('ValueError')
 		...
 		ValueError
 	**/
@@ -2333,7 +2334,7 @@ package scipy;
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		...     print arr, arr.shape
+		...     print(arr, arr.shape)
 		...
 		[[[1]
 		  [2]]] (1, 2, 1)
@@ -3991,11 +3992,11 @@ package scipy;
 		      completely, and boundary effects may be seen.
 		
 		    'same':
-		      Mode `same` returns output of length ``max(M, N)``.  Boundary
+		      Mode 'same' returns output of length ``max(M, N)``.  Boundary
 		      effects are still visible.
 		
 		    'valid':
-		      Mode `valid` returns output of length
+		      Mode 'valid' returns output of length
 		      ``max(M, N) - min(M, N) + 1``.  The convolution product is only given
 		      for points where the signals overlap completely.  Values outside
 		      the signal boundary have no effect.
@@ -4191,11 +4192,11 @@ package scipy;
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
 		bias : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		ddof : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		
@@ -4210,6 +4211,12 @@ package scipy;
 		
 		Notes
 		-----
+		Due to floating point rounding the resulting array may not be Hermitian,
+		the diagonal elements may not be 1, and the elements may not satisfy the
+		inequality abs(a) <= 1. The real and imaginary parts are clipped to the
+		interval [-1,  1] in an attempt to improve on that situation but is not
+		much help in the complex case.
+		
 		This function accepts but discards arguments `bias` and `ddof`.  This is
 		for backwards compatibility with previous versions of this function.  These
 		arguments had no effect on the return values of the function and can be
@@ -4233,7 +4240,7 @@ package scipy;
 		    Input sequences.
 		mode : {'valid', 'same', 'full'}, optional
 		    Refer to the `convolve` docstring.  Note that the default
-		    is `valid`, unlike `convolve`, which uses `full`.
+		    is 'valid', unlike `convolve`, which uses 'full'.
 		old_behavior : bool
 		    `old_behavior` was removed in NumPy 1.10. If you need the old
 		    behavior, use `multiarray.correlate`.
@@ -4405,14 +4412,14 @@ package scipy;
 		y : array_like, optional
 		    An additional set of variables and observations. `y` has the same form
 		    as that of `m`.
-		rowvar : int, optional
-		    If `rowvar` is non-zero (default), then each row represents a
+		rowvar : bool, optional
+		    If `rowvar` is True (default), then each row represents a
 		    variable, with observations in the columns. Otherwise, the relationship
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
-		bias : int, optional
-		    Default normalization is by ``(N - 1)``, where ``N`` corresponds to the
-		    number of observations given (unbiased estimate). If `bias` is 1, then
+		bias : bool, optional
+		    Default normalization (False) is by ``(N - 1)``, where ``N`` is the
+		    number of observations given (unbiased estimate). If `bias` is True, then
 		    normalization is by ``N``. These values can be overridden by using the
 		    keyword ``ddof`` in numpy versions >= 1.5.
 		ddof : int, optional
@@ -4486,13 +4493,13 @@ package scipy;
 		>>> x = [-2.1, -1,  4.3]
 		>>> y = [3,  1.1,  0.12]
 		>>> X = np.vstack((x,y))
-		>>> print np.cov(X)
+		>>> print(np.cov(X))
 		[[ 11.71        -4.286     ]
 		 [ -4.286        2.14413333]]
-		>>> print np.cov(x, y)
+		>>> print(np.cov(x, y))
 		[[ 11.71        -4.286     ]
 		 [ -4.286        2.14413333]]
-		>>> print np.cov(x)
+		>>> print(np.cov(x))
 		11.71
 	**/
 	static public function cov(m:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?ddof:Dynamic, ?fweights:Dynamic, ?aweights:Dynamic):Dynamic;
@@ -4713,7 +4720,7 @@ package scipy;
 		
 		trapz : Integration of array values using the composite trapezoidal rule.
 		
-		diff :  Calculate the n-th order discrete difference along given axis.
+		diff :  Calculate the n-th discrete difference along given axis.
 		
 		Notes
 		-----
@@ -5099,11 +5106,11 @@ package scipy;
 		but depending on this fact is deprecated. Writing to the resulting
 		array continues to work as it used to, but a FutureWarning is issued.
 		
-		In NumPy 1.9 it returns a read-only view on the original array.
+		Starting in NumPy 1.9 it returns a read-only view on the original array.
 		Attempting to write to the resulting array will produce an error.
 		
-		In NumPy 1.10, it will return a read/write view and writing to the
-		returned array will alter your original array.  The returned array
+		In some future release, it will return a read/write view and writing to
+		the returned array will alter your original array.  The returned array
 		will have the same type as the input array.
 		
 		If you don't write to the array returned by this function, then you can
@@ -5187,45 +5194,48 @@ package scipy;
 	**/
 	static public function diagonal(a:Dynamic, ?offset:Dynamic, ?axis1:Dynamic, ?axis2:Dynamic):Dynamic;
 	/**
-		Calculate the n-th order discrete difference along given axis.
+		    Calculate the n-th discrete difference along given axis.
 		
-		The first order difference is given by ``out[n] = a[n+1] - a[n]`` along
-		the given axis, higher order differences are calculated by using `diff`
-		recursively.
+		    The first difference is given by ``out[n] = a[n+1] - a[n]`` along
+		    the given axis, higher differences are calculated by using `diff`
+		    recursively.
 		
-		Parameters
-		----------
-		a : array_like
-		    Input array
-		n : int, optional
-		    The number of times values are differenced.
-		axis : int, optional
-		    The axis along which the difference is taken, default is the last axis.
+		    Parameters
+		    ----------
+		    a : array_like
+		        Input array
+		    n : int, optional
+		        The number of times values are differenced.
+		    axis : int, optional
+		        The axis along which the difference is taken, default is the last axis.
 		
-		Returns
-		-------
-		diff : ndarray
-		    The `n` order differences. The shape of the output is the same as `a`
-		    except along `axis` where the dimension is smaller by `n`.
+		    Returns
+		    -------
+		    diff : ndarray
+		        The n-th differences. The shape of the output is the same as `a`
+		        except along `axis` where the dimension is smaller by `n`.
+		.
 		
-		See Also
-		--------
-		gradient, ediff1d, cumsum
+		    See Also
+		    --------
+		    gradient, ediff1d, cumsum
 		
-		Examples
-		--------
-		>>> x = np.array([1, 2, 4, 7, 0])
-		>>> np.diff(x)
-		array([ 1,  2,  3, -7])
-		>>> np.diff(x, n=2)
-		array([  1,   1, -10])
+		    Examples
+		    --------
+		    >>> x = np.array([1, 2, 4, 7, 0])
+		    >>> np.diff(x)
+		    array([ 1,  2,  3, -7])
+		    >>> np.diff(x, n=2)
+		    array([  1,   1, -10])
 		
-		>>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
-		>>> np.diff(x)
-		array([[2, 3, 4],
-		       [5, 1, 2]])
-		>>> np.diff(x, axis=0)
-		array([[-1,  2,  0, -2]])
+		    >>> x = np.array([[1, 3, 6, 10], [0, 5, 6, 8]])
+		    >>> np.diff(x)
+		    array([[2, 3, 4],
+		           [5, 1, 2]])
+		    >>> np.diff(x, axis=0)
+		    array([[-1,  2,  0, -2]])
+		
+		    
 	**/
 	static public function diff(a:Dynamic, ?n:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -5292,7 +5302,7 @@ package scipy;
 		>>> inds
 		array([1, 4, 3, 2])
 		>>> for n in range(x.size):
-		...   print bins[inds[n]-1], "<=", x[n], "<", bins[inds[n]]
+		...   print(bins[inds[n]-1], "<=", x[n], "<", bins[inds[n]])
 		...
 		0.0 <= 0.2 < 1.0
 		4.0 <= 6.4 < 10.0
@@ -5600,7 +5610,7 @@ package scipy;
 		
 		Using the Einstein summation convention, many common multi-dimensional
 		array operations can be represented in a simple fashion.  This function
-		provides a way compute such summations. The best way to understand this
+		provides a way to compute such summations. The best way to understand this
 		function is to try the examples below, which show how many common NumPy
 		functions can be implemented as calls to `einsum`.
 		
@@ -5830,8 +5840,8 @@ package scipy;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -6356,7 +6366,7 @@ package scipy;
 		wrap : bool
 		  For tall matrices in NumPy version up to 1.6.2, the
 		  diagonal "wrapped" after N columns. You can have this behavior
-		  with this option. This affect only tall matrices.
+		  with this option. This affects only tall matrices.
 		
 		See also
 		--------
@@ -6677,8 +6687,10 @@ package scipy;
 	/**
 		floor_divide(x1, x2[, out])
 		
-		Return the largest integer smaller or equal to the division of the
-		inputs.
+		Return the largest integer smaller or equal to the division of the inputs.
+		It is equivalent to the Python ``//`` operator and pairs with the
+		Python ``%`` (`remainder`), function so that ``b = a % b + b * (a // b)``
+		up to roundoff.
 		
 		Parameters
 		----------
@@ -6695,6 +6707,7 @@ package scipy;
 		
 		See Also
 		--------
+		remainder : Remainder complementary to floor_divide.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -7438,10 +7451,11 @@ package scipy;
 		
 		Parameters
 		----------
-		fname : file or str
-		    File, filename, or generator to read.  If the filename extension is
-		    `.gz` or `.bz2`, the file is first decompressed. Note that
-		    generators must return byte strings in Python 3k.
+		fname : file, str, list of str, generator
+		    File, filename, list, or generator to read.  If the filename
+		    extension is `.gz` or `.bz2`, the file is first decompressed. Mote
+		    that generators must return byte strings in Python 3k.  The strings
+		    in a list or produced by a generator are treated as lines.
 		dtype : dtype, optional
 		    Data type of the resulting array.
 		    If None, the dtypes will be determined by the contents of each
@@ -7706,7 +7720,7 @@ package scipy;
 		
 		>>> oldsettings = np.seterr(all='call')
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		>>> oldhandler = np.seterrcall(err_handler)
 		>>> np.array([1, 2, 3]) / 0.0
 		Floating point error (divide by zero), with flag 1
@@ -7762,7 +7776,7 @@ package scipy;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> old_bufsize = np.setbufsize(20000)
 		>>> old_err = np.seterr(divide='raise')
@@ -7791,19 +7805,28 @@ package scipy;
 		----------
 		f : array_like
 		    An N-dimensional array containing samples of a scalar function.
-		varargs : list of scalar, optional
+		varargs : scalar or list of scalar, optional
 		    N scalars specifying the sample distances for each dimension,
 		    i.e. `dx`, `dy`, `dz`, ... Default distance: 1.
+		    single scalar specifies sample distance for all dimensions.
+		    if `axis` is given, the number of varargs must equal the number of axes.
 		edge_order : {1, 2}, optional
 		    Gradient is calculated using N\ :sup:`th` order accurate differences
 		    at the boundaries. Default: 1.
 		
 		    .. versionadded:: 1.9.1
 		
+		axis : None or int or tuple of ints, optional
+		    Gradient is calculated only along the given axis or axes
+		    The default (axis = None) is to calculate the gradient for all the axes of the input array.
+		    axis may be negative, in which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.11.0
+		
 		Returns
 		-------
 		gradient : list of ndarray
-		    Each element of `list` has the same shape as `f` giving the derivative 
+		    Each element of `list` has the same shape as `f` giving the derivative
 		    of `f` with respect to each dimension.
 		
 		Examples
@@ -7814,8 +7837,8 @@ package scipy;
 		>>> np.gradient(x, 2)
 		array([ 0.5 ,  0.75,  1.25,  1.75,  2.25,  2.5 ])
 		
-		For two dimensional arrays, the return will be two arrays ordered by 
-		axis. In this example the first array stands for the gradient in 
+		For two dimensional arrays, the return will be two arrays ordered by
+		axis. In this example the first array stands for the gradient in
 		rows and the second one in columns direction:
 		
 		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float))
@@ -7828,6 +7851,11 @@ package scipy;
 		>>> y = x**2
 		>>> np.gradient(y, dx, edge_order=2)
 		array([-0.,  2.,  4.,  6.,  8.])
+		
+		The axis keyword can be used to specify a subset of axes of which the gradient is calculated
+		>>> np.gradient(np.array([[1, 2, 6], [3, 4, 5]], dtype=np.float), axis=0)
+		array([[ 2.,  2., -1.],
+		       [ 2.,  2., -1.]])
 	**/
 	static public function gradient(f:Dynamic, ?varargs:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -8079,42 +8107,90 @@ package scipy;
 		----------
 		a : array_like
 		    Input data. The histogram is computed over the flattened array.
-		bins : int or sequence of scalars, optional
+		bins : int or sequence of scalars or str, optional
 		    If `bins` is an int, it defines the number of equal-width
-		    bins in the given range (10, by default). If `bins` is a sequence,
-		    it defines the bin edges, including the rightmost edge, allowing
-		    for non-uniform bin widths.
+		    bins in the given range (10, by default). If `bins` is a
+		    sequence, it defines the bin edges, including the rightmost
+		    edge, allowing for non-uniform bin widths.
+		
+		    .. versionadded:: 1.11.0
+		
+		    If `bins` is a string from the list below, `histogram` will use
+		    the method chosen to calculate the optimal bin width and
+		    consequently the number of bins (see `Notes` for more detail on
+		    the estimators) from the data that falls within the requested
+		    range. While the bin width will be optimal for the actual data
+		    in the range, the number of bins will be computed to fill the
+		    entire range, including the empty portions. For visualisation,
+		    using the 'auto' option is suggested. Weighted data is not
+		    supported for automated bin size selection.
+		
+		    'auto'
+		        Maximum of the 'sturges' and 'fd' estimators. Provides good
+		        all round performance
+		
+		    'fd' (Freedman Diaconis Estimator)
+		        Robust (resilient to outliers) estimator that takes into
+		        account data variability and data size .
+		
+		    'doane'
+		        An improved version of Sturges' estimator that works better
+		        with non-normal datasets.
+		
+		    'scott'
+		        Less robust estimator that that takes into account data
+		        variability and data size.
+		
+		    'rice'
+		        Estimator does not take variability into account, only data
+		        size. Commonly overestimates number of bins required.
+		
+		    'sturges'
+		        R's default method, only accounts for data size. Only
+		        optimal for gaussian data and underestimates number of bins
+		        for large non-gaussian datasets.
+		
+		    'sqrt'
+		        Square root (of data size) estimator, used by Excel and
+		        other programs for its speed and simplicity.
+		
 		range : (float, float), optional
 		    The lower and upper range of the bins.  If not provided, range
 		    is simply ``(a.min(), a.max())``.  Values outside the range are
-		    ignored.
+		    ignored. The first element of the range must be less than or
+		    equal to the second. `range` affects the automatic bin
+		    computation as well. While bin width is computed to be optimal
+		    based on the actual data within `range`, the bin count will fill
+		    the entire range including portions containing no data.
 		normed : bool, optional
 		    This keyword is deprecated in Numpy 1.6 due to confusing/buggy
-		    behavior. It will be removed in Numpy 2.0. Use the density keyword
-		    instead.
-		    If False, the result will contain the number of samples
-		    in each bin.  If True, the result is the value of the
-		    probability *density* function at the bin, normalized such that
-		    the *integral* over the range is 1. Note that this latter behavior is
-		    known to be buggy with unequal bin widths; use `density` instead.
+		    behavior. It will be removed in Numpy 2.0. Use the ``density``
+		    keyword instead. If ``False``, the result will contain the
+		    number of samples in each bin. If ``True``, the result is the
+		    value of the probability *density* function at the bin,
+		    normalized such that the *integral* over the range is 1. Note
+		    that this latter behavior is known to be buggy with unequal bin
+		    widths; use ``density`` instead.
 		weights : array_like, optional
-		    An array of weights, of the same shape as `a`.  Each value in `a`
-		    only contributes its associated weight towards the bin count
-		    (instead of 1).  If `normed` is True, the weights are normalized,
-		    so that the integral of the density over the range remains 1
+		    An array of weights, of the same shape as `a`.  Each value in
+		    `a` only contributes its associated weight towards the bin count
+		    (instead of 1). If `density` is True, the weights are
+		    normalized, so that the integral of the density over the range
+		    remains 1.
 		density : bool, optional
-		    If False, the result will contain the number of samples
-		    in each bin.  If True, the result is the value of the
+		    If ``False``, the result will contain the number of samples in
+		    each bin. If ``True``, the result is the value of the
 		    probability *density* function at the bin, normalized such that
 		    the *integral* over the range is 1. Note that the sum of the
 		    histogram values will not be equal to 1 unless bins of unity
 		    width are chosen; it is not a probability *mass* function.
-		    Overrides the `normed` keyword if given.
+		
+		    Overrides the ``normed`` keyword if given.
 		
 		Returns
 		-------
 		hist : array
-		    The values of the histogram. See `normed` and `weights` for a
+		    The values of the histogram. See `density` and `weights` for a
 		    description of the possible semantics.
 		bin_edges : array of dtype float
 		    Return the bin edges ``(length(hist)+1)``.
@@ -8126,14 +8202,84 @@ package scipy;
 		
 		Notes
 		-----
-		All but the last (righthand-most) bin is half-open.  In other words, if
-		`bins` is::
+		All but the last (righthand-most) bin is half-open.  In other words,
+		if `bins` is::
 		
 		  [1, 2, 3, 4]
 		
-		then the first bin is ``[1, 2)`` (including 1, but excluding 2) and the
-		second ``[2, 3)``.  The last bin, however, is ``[3, 4]``, which *includes*
-		4.
+		then the first bin is ``[1, 2)`` (including 1, but excluding 2) and
+		the second ``[2, 3)``.  The last bin, however, is ``[3, 4]``, which
+		*includes* 4.
+		
+		.. versionadded:: 1.11.0
+		
+		The methods to estimate the optimal number of bins are well founded
+		in literature, and are inspired by the choices R provides for
+		histogram visualisation. Note that having the number of bins
+		proportional to :math:`n^{1/3}` is asymptotically optimal, which is
+		why it appears in most estimators. These are simply plug-in methods
+		that give good starting points for number of bins. In the equations
+		below, :math:`h` is the binwidth and :math:`n_h` is the number of
+		bins. All estimators that compute bin counts are recast to bin width
+		using the `ptp` of the data. The final bin count is obtained from
+		``np.round(np.ceil(range / h))`.
+		
+		'Auto' (maximum of the 'Sturges' and 'FD' estimators)
+		    A compromise to get a good value. For small datasets the Sturges
+		    value will usually be chosen, while larger datasets will usually
+		    default to FD.  Avoids the overly conservative behaviour of FD
+		    and Sturges for small and large datasets respectively.
+		    Switchover point is usually :math:`a.size \approx 1000`.
+		
+		'FD' (Freedman Diaconis Estimator)
+		    .. math:: h = 2 \frac{IQR}{n^{1/3}}
+		
+		    The binwidth is proportional to the interquartile range (IQR)
+		    and inversely proportional to cube root of a.size. Can be too
+		    conservative for small datasets, but is quite good for large
+		    datasets. The IQR is very robust to outliers.
+		
+		'Scott'
+		    .. math:: h = \sigma \sqrt[3]{\frac{24 * \sqrt{\pi}}{n}}
+		
+		    The binwidth is proportional to the standard deviation of the
+		    data and inversely proportional to cube root of ``x.size``. Can
+		    be too conservative for small datasets, but is quite good for
+		    large datasets. The standard deviation is not very robust to
+		    outliers. Values are very similar to the Freedman-Diaconis
+		    estimator in the absence of outliers.
+		
+		'Rice'
+		    .. math:: n_h = 2n^{1/3}
+		
+		    The number of bins is only proportional to cube root of
+		    ``a.size``. It tends to overestimate the number of bins and it
+		    does not take into account data variability.
+		
+		'Sturges'
+		    .. math:: n_h = \log _{2}n+1
+		
+		    The number of bins is the base 2 log of ``a.size``.  This
+		    estimator assumes normality of data and is too conservative for
+		    larger, non-normal datasets. This is the default method in R's
+		    ``hist`` method.
+		
+		'Doane'
+		    .. math:: n_h = 1 + \log_{2}(n) +
+		                    \log_{2}(1 + \frac{|g_1|}{\sigma_{g_1})}
+		
+		        g_1 = mean[(\frac{x - \mu}{\sigma})^3]
+		
+		        \sigma_{g_1} = \sqrt{\frac{6(n - 2)}{(n + 1)(n + 3)}}
+		
+		    An improved version of Sturges' formula that produces better
+		    estimates for non-normal datasets. This estimator attempts to
+		    account for the skew of the data.
+		
+		'Sqrt'
+		    .. math:: n_h = \sqrt n
+		    The simplest and fastest estimator. Only takes into account the
+		    data size.
 		
 		Examples
 		--------
@@ -8152,6 +8298,19 @@ package scipy;
 		2.4999999999999996
 		>>> np.sum(hist*np.diff(bin_edges))
 		1.0
+		
+		.. versionadded:: 1.11.0
+		
+		Automated Bin Selection Methods example, using 2 peak random data
+		with 2000 points:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> rng = np.random.RandomState(10)  # deterministic random data
+		>>> a = np.hstack((rng.normal(size=1000),
+		...                rng.normal(loc=5, scale=2, size=1000)))
+		>>> plt.hist(a, bins='auto')  # plt.hist passes it's arguments to np.histogram
+		>>> plt.title("Histogram with 'auto' bins")
+		>>> plt.show()
 	**/
 	static public function histogram(a:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?density:Dynamic):Array<Dynamic>;
 	/**
@@ -8240,7 +8399,7 @@ package scipy;
 		Or we fill the histogram H with a determined bin content:
 		
 		>>> H = np.ones((4, 4)).cumsum().reshape(4, 4)
-		>>> print H[::-1]  # This shows the bin content in the order as plotted
+		>>> print(H[::-1])  # This shows the bin content in the order as plotted
 		[[ 13.  14.  15.  16.]
 		 [  9.  10.  11.  12.]
 		 [  5.   6.   7.   8.]
@@ -8551,10 +8710,16 @@ package scipy;
 		see `numpy.fft`.
 		
 		The input should be ordered in the same way as is returned by `fft`,
-		i.e., ``a[0]`` should contain the zero frequency term,
-		``a[1:n/2+1]`` should contain the positive-frequency terms, and
-		``a[n/2+1:]`` should contain the negative-frequency terms, in order of
-		decreasingly negative frequency.  See `numpy.fft` for details.
+		i.e.,
+		
+		* ``a[0]`` should contain the zero frequency term,
+		* ``a[1:n//2]`` should contain the positive-frequency terms,
+		* ``a[n//2 + 1:]`` should contain the negative-frequency terms, in
+		  increasing order starting from the most negative frequency.
+		
+		For an even number of input points, ``A[n//2]`` represents the sum of
+		the values at the positive and negative Nyquist frequencies, as the two
+		are aliased together. See `numpy.fft` for details.
 		
 		Parameters
 		----------
@@ -8611,9 +8776,9 @@ package scipy;
 		>>> n[40:60] = np.exp(1j*np.random.uniform(0, 2*np.pi, (20,)))
 		>>> s = np.fft.ifft(n)
 		>>> plt.plot(t, s.real, 'b-', t, s.imag, 'r--')
-		[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]
+		...
 		>>> plt.legend(('real', 'imaginary'))
-		<matplotlib.legend.Legend object at 0x...>
+		...
 		>>> plt.show()
 	**/
 	static public function ifft(a:Dynamic, ?n:Dynamic, ?axis:Dynamic, ?norm:Dynamic):Dynamic;
@@ -8827,7 +8992,7 @@ package scipy;
 		Parameters
 		----------
 		a, b : array_like
-		    If `a` and `b` are nonscalar, their last dimensions of must match.
+		    If `a` and `b` are nonscalar, their last dimensions must match.
 		
 		Returns
 		-------
@@ -9240,7 +9405,7 @@ package scipy;
 		>>> for payment in per:
 		...     index = payment - 1
 		...     principal = principal + ppmt[index]
-		...     print fmt.format(payment, ppmt[index], ipmt[index], principal)
+		...     print(fmt.format(payment, ppmt[index], ipmt[index], principal))
 		 1  -200.58   -17.17  2299.42
 		 2  -201.96   -15.79  2097.46
 		 3  -203.35   -14.40  1894.11
@@ -10463,7 +10628,7 @@ package scipy;
 		>>> a = [1,5,1,4,3,4,4] # First column
 		>>> b = [9,4,0,4,0,2,1] # Second column
 		>>> ind = np.lexsort((b,a)) # Sort by a, then by b
-		>>> print ind
+		>>> print(ind)
 		[2 0 4 6 5 3 1]
 		
 		>>> [(a[i],b[i]) for i in ind]
@@ -10668,7 +10833,7 @@ package scipy;
 		representation are ignored.
 		
 		Optional keyword arguments are *fix_imports*, *encoding* and *errors*,
-		which are used to control compatiblity support for pickle stream
+		which are used to control compatibility support for pickle stream
 		generated by Python 2.  If *fix_imports* is True, pickle will try to
 		map the old Python 2 names to the new names used in Python 3.  The
 		*encoding* and *errors* tell pickle how to decode 8-bit string
@@ -11644,26 +11809,39 @@ package scipy;
 	**/
 	static public function maximum_sctype(t:Dynamic):Dynamic;
 	/**
-		Determine if two arrays can share memory
+		may_share_memory(a, b, max_work=None)
 		
-		The memory-bounds of a and b are computed.  If they overlap then
-		this function returns True.  Otherwise, it returns False.
+		Determine if two arrays might share memory
 		
 		A return of True does not necessarily mean that the two arrays
 		share any element.  It just means that they *might*.
 		
+		Only the memory bounds of a and b are checked by default.
+		
 		Parameters
 		----------
 		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem.  See
+		    `shares_memory` for details.  Default for ``may_share_memory``
+		    is to do a bounds check.
 		
 		Returns
 		-------
 		out : bool
 		
+		See Also
+		--------
+		shares_memory
+		
 		Examples
 		--------
 		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
 		False
+		>>> x = np.zeros([3, 4])
+		>>> np.may_share_memory(x[:,0], x[:,1])
+		True
 	**/
 	static public function may_share_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -11755,22 +11933,22 @@ package scipy;
 		----------
 		a : array_like
 		    Input array or object that can be converted to an array.
-		axis : int or sequence of int, optional
-		    Axis along which the medians are computed. The default (axis=None)
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the medians are computed. The default
 		    is to compute the median along a flattened version of the array.
 		    A sequence of axes is supported since version 1.9.0.
 		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape and buffer length as the expected output, but the
-		    type (of the output) will be cast if necessary.
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output,
+		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		   If True, then allow use of memory of input array (a) for
+		   If True, then allow use of memory of input array `a` for
 		   calculations. The input array will be modified by the call to
-		   median. This will save memory when you do not need to preserve the
-		   contents of the input array. Treat the input as undefined, but it
-		   will probably be fully or partially sorted. Default is False. Note
-		   that, if `overwrite_input` is True and the input is not already an
-		   ndarray, an error will be raised.
+		   `median`. This will save memory when you do not need to preserve
+		   the contents of the input array. Treat the input as undefined,
+		   but it will probably be fully or partially sorted. Default is
+		   False. If `overwrite_input` is ``True`` and `a` is not already an
+		   `ndarray`, an error will be raised.
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
@@ -11778,15 +11956,14 @@ package scipy;
 		
 		    .. versionadded:: 1.9.0
 		
-		
 		Returns
 		-------
 		median : ndarray
-		    A new array holding the result (unless `out` is specified, in which
-		    case that array is returned instead).  If the input contains
-		    integers, or floats of smaller precision than 64, then the output
-		    data-type is float64.  Otherwise, the output data-type is the same
-		    as that of the input.
+		    A new array holding the result. If the input contains integers
+		    or floats smaller than ``float64``, then the output data-type is
+		    ``np.float64``.  Otherwise, the data-type of the output is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
 		
 		See Also
 		--------
@@ -11794,10 +11971,10 @@ package scipy;
 		
 		Notes
 		-----
-		Given a vector V of length N, the median of V is the middle value of
-		a sorted copy of V, ``V_sorted`` - i.e., ``V_sorted[(N-1)/2]``, when N is
-		odd.  When N is even, it is the average of the two middle values of
-		``V_sorted``.
+		Given a vector ``V`` of length ``N``, the median of ``V`` is the
+		middle value of a sorted copy of ``V``, ``V_sorted`` - i
+		e., ``V_sorted[(N-1)/2]``, when ``N`` is odd, and the average of the
+		two middle values of ``V_sorted`` when ``N`` is even.
 		
 		Examples
 		--------
@@ -12140,9 +12317,9 @@ package scipy;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -12158,11 +12335,12 @@ package scipy;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -12211,6 +12389,54 @@ package scipy;
 		(-0.5, -0)
 	**/
 	static public function modf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Move axes of an array to new positions.
+		
+		Other axes remain in their original order.
+		
+		.. versionadded::1.11.0
+		
+		Parameters
+		----------
+		a : np.ndarray
+		    The array whose axes should be reordered.
+		source : int or sequence of int
+		    Original positions of the axes to move. These must be unique.
+		destination : int or sequence of int
+		    Destination positions for each of the original axes. These must also be
+		    unique.
+		
+		Returns
+		-------
+		result : np.ndarray
+		    Array with moved axes. This array is a view of the input array.
+		
+		See Also
+		--------
+		transpose: Permute the dimensions of an array.
+		swapaxes: Interchange two axes of an array.
+		
+		Examples
+		--------
+		
+		>>> x = np.zeros((3, 4, 5))
+		>>> np.moveaxis(x, 0, -1).shape
+		(4, 5, 3)
+		>>> np.moveaxis(x, -1, 0).shape
+		(5, 3, 4)
+		
+		These all achieve the same result:
+		
+		>>> np.transpose(x).shape
+		(5, 4, 3)
+		>>> np.swapaxis(x, 0, -1).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1], [-1, -2]).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
+		(5, 4, 3)
+	**/
+	static public function moveaxis(a:Dynamic, source:Dynamic, destination:Dynamic):Dynamic;
 	/**
 		Return a copy of an array sorted along the first axis.
 		
@@ -12538,36 +12764,35 @@ package scipy;
 		----------
 		a : array_like
 		    Input array or object that can be converted to an array.
-		axis : int, optional
-		    Axis along which the medians are computed. The default (axis=None)
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the medians are computed. The default
 		    is to compute the median along a flattened version of the array.
 		    A sequence of axes is supported since version 1.9.0.
 		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape and buffer length as the expected output, but the
-		    type (of the output) will be cast if necessary.
+		    Alternative output array in which to place the result. It must
+		    have the same shape and buffer length as the expected output,
+		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		   If True, then allow use of memory of input array (a) for
+		   If True, then allow use of memory of input array `a` for
 		   calculations. The input array will be modified by the call to
-		   median. This will save memory when you do not need to preserve
+		   `median`. This will save memory when you do not need to preserve
 		   the contents of the input array. Treat the input as undefined,
 		   but it will probably be fully or partially sorted. Default is
-		   False. Note that, if `overwrite_input` is True and the input
-		   is not already an ndarray, an error will be raised.
+		   False. If `overwrite_input` is ``True`` and `a` is not already an
+		   `ndarray`, an error will be raised.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original `arr`.
 		
 		Returns
 		-------
 		median : ndarray
-		    A new array holding the result. If the input contains integers, or
-		    floats of smaller precision than 64, then the output data-type is
-		    float64.  Otherwise, the output data-type is the same as that of the
-		    input.
+		    A new array holding the result. If the input contains integers
+		    or floats smaller than ``float64``, then the output data-type is
+		    ``np.float64``.  Otherwise, the data-type of the output is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
 		
 		See Also
 		--------
@@ -12575,10 +12800,10 @@ package scipy;
 		
 		Notes
 		-----
-		Given a vector V of length N, the median of V is the middle value of
-		a sorted copy of V, ``V_sorted`` - i.e., ``V_sorted[(N-1)/2]``, when N is
-		odd.  When N is even, it is the average of the two middle values of
-		``V_sorted``.
+		Given a vector ``V`` of length ``N``, the median of ``V`` is the
+		middle value of a sorted copy of ``V``, ``V_sorted`` - i.e.,
+		``V_sorted[(N-1)/2]``, when ``N`` is odd and the average of the two
+		middle values of ``V_sorted`` when ``N`` is even.
 		
 		Examples
 		--------
@@ -12684,10 +12909,10 @@ package scipy;
 	**/
 	static public function nanmin(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
-		Compute the qth percentile of the data along the specified axis, while
-		ignoring nan values.
+		Compute the qth percentile of the data along the specified axis,
+		while ignoring nan values.
 		
-		Returns the qth percentile of the array elements.
+		Returns the qth percentile(s) of the array elements.
 		
 		.. versionadded:: 1.9.0
 		
@@ -12696,11 +12921,13 @@ package scipy;
 		a : array_like
 		    Input array or object that can be converted to an array.
 		q : float in range of [0,100] (or sequence of floats)
-		    Percentile to compute which must be between 0 and 100 inclusive.
-		axis : int or sequence of int, optional
-		    Axis along which the percentiles are computed. The default (None)
-		    is to compute the percentiles along a flattened version of the array.
-		    A sequence of axes is supported since version 1.9.0.
+		    Percentile to compute, which must be between 0 and 100
+		    inclusive.
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the percentiles are computed. The
+		    default is to compute the percentile(s) along a flattened
+		    version of the array. A sequence of axes is supported since
+		    version 1.9.0.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must
 		    have the same shape and buffer length as the expected output,
@@ -12708,39 +12935,40 @@ package scipy;
 		overwrite_input : bool, optional
 		    If True, then allow use of memory of input array `a` for
 		    calculations. The input array will be modified by the call to
-		    percentile. This will save memory when you do not need to preserve
-		    the contents of the input array. In this case you should not make
-		    any assumptions about the content of the passed in array `a` after
-		    this function completes -- treat it as undefined. Default is False.
-		    Note that, if the `a` input is not already an array this parameter
-		    will have no effect, `a` will be converted to an array internally
-		    regardless of the value of this parameter.
+		    `percentile`. This will save memory when you do not need to
+		    preserve the contents of the input array. In this case you
+		    should not make any assumptions about the contents of the input
+		    `a` after this function completes -- treat it as undefined.
+		    Default is False. If `a` is not already an array, this parameter
+		    will have no effect as `a` will be converted to an array
+		    internally regardless of the value of this parameter.
 		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
-		    This optional parameter specifies the interpolation method to use,
-		    when the desired quantile lies between two data points `i` and `j`:
-		        * linear: `i + (j - i) * fraction`, where `fraction` is the
-		          fractional part of the index surrounded by `i` and `j`.
-		        * lower: `i`.
-		        * higher: `j`.
-		        * nearest: `i` or `j` whichever is nearest.
-		        * midpoint: (`i` + `j`) / 2.
-		
+		    This optional parameter specifies the interpolation method to
+		    use when the desired quantile lies between two data points
+		    ``i < j``:
+		        * linear: ``i + (j - i) * fraction``, where ``fraction`` is
+		          the fractional part of the index surrounded by ``i`` and
+		          ``j``.
+		        * lower: ``i``.
+		        * higher: ``j``.
+		        * nearest: ``i`` or ``j``, whichever is nearest.
+		        * midpoint: ``(i + j) / 2``.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
 		
 		Returns
 		-------
-		nanpercentile : scalar or ndarray
-		    If a single percentile `q` is given and axis=None a scalar is
-		    returned.  If multiple percentiles `q` are given an array holding
-		    the result is returned. The results are listed in the first axis.
-		    (If `out` is specified, in which case that array is returned
-		    instead).  If the input contains integers, or floats of smaller
-		    precision than 64, then the output data-type is float64. Otherwise,
-		    the output data-type is the same as that of the input.
+		percentile : scalar or ndarray
+		    If `q` is a single percentile and `axis=None`, then the result
+		    is a scalar. If multiple percentiles are given, first axis of
+		    the result corresponds to the percentiles. The other axes are
+		    the axes that remain after the reduction of `a`. If the input 
+		    contains integers or floats smaller than ``float64``, the output
+		    data-type is ``float64``. Otherwise, the output data-type is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
 		
 		See Also
 		--------
@@ -12748,12 +12976,14 @@ package scipy;
 		
 		Notes
 		-----
-		Given a vector V of length N, the q-th percentile of V is the q-th ranked
-		value in a sorted copy of V.  The values and distances of the two
-		nearest neighbors as well as the `interpolation` parameter will
-		determine the percentile if the normalized ranking does not match q
-		exactly. This function is the same as the median if ``q=50``, the same
-		as the minimum if ``q=0``and the same as the maximum if ``q=100``.
+		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+		``V`` is the value ``q/100`` of the way from the mimumum to the
+		maximum in in a sorted copy of ``V``. The values and distances of
+		the two nearest neighbors as well as the `interpolation` parameter
+		will determine the percentile if the normalized ranking does not
+		match the location of ``q`` exactly. This function is the same as
+		the median if ``q=50``, the same as the minimum if ``q=0`` and the
+		same as the maximum if ``q=100``.
 		
 		Examples
 		--------
@@ -12767,24 +12997,21 @@ package scipy;
 		>>> np.nanpercentile(a, 50)
 		3.5
 		>>> np.nanpercentile(a, 50, axis=0)
-		array([[ 6.5,  4.5,  2.5]])
-		>>> np.nanpercentile(a, 50, axis=1)
+		array([ 6.5,  2.,   2.5])
+		>>> np.nanpercentile(a, 50, axis=1, keepdims=True)
 		array([[ 7.],
 		       [ 2.]])
 		>>> m = np.nanpercentile(a, 50, axis=0)
 		>>> out = np.zeros_like(m)
-		>>> np.nanpercentile(a, 50, axis=0, out=m)
-		array([[ 6.5,  4.5,  2.5]])
+		>>> np.nanpercentile(a, 50, axis=0, out=out)
+		array([ 6.5,  2.,   2.5])
 		>>> m
-		array([[ 6.5,  4.5,  2.5]])
+		array([ 6.5,  2. ,  2.5])
+		
 		>>> b = a.copy()
 		>>> np.nanpercentile(b, 50, axis=1, overwrite_input=True)
-		array([[ 7.],
-		       [ 2.]])
+		array([  7.,  2.])
 		>>> assert not np.all(a==b)
-		>>> b = a.copy()
-		>>> np.nanpercentile(b, 50, axis=None, overwrite_input=True)
-		array([ 3.5])
 	**/
 	static public function nanpercentile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
@@ -13337,7 +13564,7 @@ package scipy;
 		If you only had $150/month to pay towards the loan, how long would it take
 		to pay-off a loan of $8,000 at 7% annual interest?
 		
-		>>> print round(np.nper(0.07/12, -150, 8000), 5)
+		>>> print(round(np.nper(0.07/12, -150, 8000), 5))
 		64.07335
 		
 		So, over 64 months would be required to pay off the loan.
@@ -13879,7 +14106,7 @@ package scipy;
 		       [10, 10, 10, 10, 10, 10, 10],
 		       [10, 10, 10, 10, 10, 10, 10]])
 	**/
-	static public function pad(array:Dynamic, pad_width:Dynamic, ?mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pad(array:Dynamic, pad_width:Dynamic, mode:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a partitioned copy of an array.
 		
@@ -13961,73 +14188,79 @@ package scipy;
 	/**
 		Compute the qth percentile of the data along the specified axis.
 		
-		Returns the qth percentile of the array elements.
+		Returns the qth percentile(s) of the array elements.
 		
 		Parameters
 		----------
 		a : array_like
 		    Input array or object that can be converted to an array.
 		q : float in range of [0,100] (or sequence of floats)
-		    Percentile to compute which must be between 0 and 100 inclusive.
-		axis : int or sequence of int, optional
-		    Axis along which the percentiles are computed. The default (None)
-		    is to compute the percentiles along a flattened version of the array.
-		    A sequence of axes is supported since version 1.9.0.
+		    Percentile to compute, which must be between 0 and 100 inclusive.
+		axis : {int, sequence of int, None}, optional
+		    Axis or axes along which the percentiles are computed. The
+		    default is to compute the percentile(s) along a flattened
+		    version of the array. A sequence of axes is supported since
+		    version 1.9.0.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must
 		    have the same shape and buffer length as the expected output,
 		    but the type (of the output) will be cast if necessary.
 		overwrite_input : bool, optional
-		    If True, then allow use of memory of input array `a` for
+		    If True, then allow use of memory of input array `a` 
 		    calculations. The input array will be modified by the call to
-		    percentile. This will save memory when you do not need to preserve
-		    the contents of the input array. In this case you should not make
-		    any assumptions about the content of the passed in array `a` after
-		    this function completes -- treat it as undefined. Default is False.
-		    Note that, if the `a` input is not already an array this parameter
-		    will have no effect, `a` will be converted to an array internally
-		    regardless of the value of this parameter.
+		    `percentile`. This will save memory when you do not need to
+		    preserve the contents of the input array. In this case you
+		    should not make any assumptions about the contents of the input
+		    `a` after this function completes -- treat it as undefined.
+		    Default is False. If `a` is not already an array, this parameter
+		    will have no effect as `a` will be converted to an array
+		    internally regardless of the value of this parameter.
 		interpolation : {'linear', 'lower', 'higher', 'midpoint', 'nearest'}
-		    This optional parameter specifies the interpolation method to use,
-		    when the desired quantile lies between two data points `i` and `j`:
-		        * linear: `i + (j - i) * fraction`, where `fraction` is the
-		          fractional part of the index surrounded by `i` and `j`.
-		        * lower: `i`.
-		        * higher: `j`.
-		        * nearest: `i` or `j` whichever is nearest.
-		        * midpoint: (`i` + `j`) / 2.
+		    This optional parameter specifies the interpolation method to
+		    use when the desired quantile lies between two data points
+		    ``i < j``:
+		        * linear: ``i + (j - i) * fraction``, where ``fraction``
+		          is the fractional part of the index surrounded by ``i``
+		          and ``j``.
+		        * lower: ``i``.
+		        * higher: ``j``.
+		        * nearest: ``i`` or ``j``, whichever is nearest.
+		        * midpoint: ``(i + j) / 2``.
 		
 		    .. versionadded:: 1.9.0
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original array `a`.
+		    If this is set to True, the axes which are reduced are left in
+		    the result as dimensions with size one. With this option, the
+		    result will broadcast correctly against the original array `a`.
 		
 		    .. versionadded:: 1.9.0
 		
 		Returns
 		-------
 		percentile : scalar or ndarray
-		    If a single percentile `q` is given and axis=None a scalar is
-		    returned.  If multiple percentiles `q` are given an array holding
-		    the result is returned. The results are listed in the first axis.
-		    (If `out` is specified, in which case that array is returned
-		    instead).  If the input contains integers, or floats of smaller
-		    precision than 64, then the output data-type is float64. Otherwise,
-		    the output data-type is the same as that of the input.
+		    If `q` is a single percentile and `axis=None`, then the result
+		    is a scalar. If multiple percentiles are given, first axis of
+		    the result corresponds to the percentiles. The other axes are
+		    the axes that remain after the reduction of `a`. If the input 
+		    contains integers or floats smaller than ``float64``, the output
+		    data-type is ``float64``. Otherwise, the output data-type is the
+		    same as that of the input. If `out` is specified, that array is
+		    returned instead.
 		
 		See Also
 		--------
-		mean, median
+		mean, median, nanpercentile
 		
 		Notes
 		-----
-		Given a vector V of length N, the q-th percentile of V is the q-th ranked
-		value in a sorted copy of V.  The values and distances of the two
-		nearest neighbors as well as the `interpolation` parameter will
-		determine the percentile if the normalized ranking does not match q
-		exactly. This function is the same as the median if ``q=50``, the same
-		as the minimum if ``q=0`` and the same as the maximum if ``q=100``.
+		Given a vector ``V`` of length ``N``, the ``q``-th percentile of
+		``V`` is the value ``q/100`` of the way from the mimumum to the
+		maximum in in a sorted copy of ``V``. The values and distances of
+		the two nearest neighbors as well as the `interpolation` parameter
+		will determine the percentile if the normalized ranking does not
+		match the location of ``q`` exactly. This function is the same as
+		the median if ``q=50``, the same as the minimum if ``q=0`` and the
+		same as the maximum if ``q=100``.
 		
 		Examples
 		--------
@@ -14036,28 +14269,26 @@ package scipy;
 		array([[10,  7,  4],
 		       [ 3,  2,  1]])
 		>>> np.percentile(a, 50)
-		array([ 3.5])
+		3.5
 		>>> np.percentile(a, 50, axis=0)
 		array([[ 6.5,  4.5,  2.5]])
 		>>> np.percentile(a, 50, axis=1)
+		array([ 7.,  2.])
+		>>> np.percentile(a, 50, axis=1, keepdims=True)
 		array([[ 7.],
 		       [ 2.]])
 		
 		>>> m = np.percentile(a, 50, axis=0)
 		>>> out = np.zeros_like(m)
-		>>> np.percentile(a, 50, axis=0, out=m)
+		>>> np.percentile(a, 50, axis=0, out=out)
 		array([[ 6.5,  4.5,  2.5]])
 		>>> m
 		array([[ 6.5,  4.5,  2.5]])
 		
 		>>> b = a.copy()
 		>>> np.percentile(b, 50, axis=1, overwrite_input=True)
-		array([[ 7.],
-		       [ 2.]])
-		>>> assert not np.all(a==b)
-		>>> b = a.copy()
-		>>> np.percentile(b, 50, axis=None, overwrite_input=True)
-		array([ 3.5])
+		array([ 7.,  2.])
+		>>> assert not np.all(a == b)
 	**/
 	static public function percentile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public var pi : Dynamic;
@@ -14191,7 +14422,7 @@ package scipy;
 		
 		Parameters
 		----------
-		arr : array_like
+		arr : ndarray
 		    Array to put data into.
 		mask : array_like
 		    Boolean mask array. Must have the same size as `a`.
@@ -14326,7 +14557,7 @@ package scipy;
 		
 		See Also
 		--------
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		roots : Return the roots of a polynomial.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
@@ -14419,12 +14650,12 @@ package scipy;
 		
 		>>> p1 = np.poly1d([1, 2])
 		>>> p2 = np.poly1d([9, 5, 4])
-		>>> print p1
+		>>> print(p1)
 		1 x + 2
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 4
-		>>> print np.polyadd(p1, p2)
+		>>> print(np.polyadd(p1, p2))
 		   2
 		9 x + 6 x + 6
 	**/
@@ -14551,7 +14782,8 @@ package scipy;
 		    default) just the coefficients are returned, when True diagnostic
 		    information from the singular value decomposition is also returned.
 		w : array_like, shape (M,), optional
-		    weights to apply to the y-coordinates of the sample points.
+		    Weights to apply to the y-coordinates of the sample points. For
+		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
 		cov : bool, optional
 		    Return the estimate and the covariance matrix of the estimate
 		    If full is True, then cov is not returned.
@@ -14589,7 +14821,7 @@ package scipy;
 		
 		See Also
 		--------
-		polyval : Computes polynomial values.
+		polyval : Compute polynomial values.
 		linalg.lstsq : Computes a least-squares fit.
 		scipy.interpolate.UnivariateSpline : Computes spline fits.
 		
@@ -14772,13 +15004,13 @@ package scipy;
 		
 		>>> p1 = np.poly1d([1, 2, 3])
 		>>> p2 = np.poly1d([9, 5, 1])
-		>>> print p1
+		>>> print(p1)
 		   2
 		1 x + 2 x + 3
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 1
-		>>> print np.polymul(p1, p2)
+		>>> print(np.polymul(p1, p2))
 		   4      3      2
 		9 x + 23 x + 38 x + 17 x + 3
 	**/
@@ -14830,7 +15062,7 @@ package scipy;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns
@@ -14941,29 +15173,31 @@ package scipy;
 		a : array_like
 		    Input data.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.
-		    The default (`axis` = `None`) is perform a product over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a product is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : data-type, optional
-		    The data-type of the returned array, as well as of the accumulator
-		    in which the elements are multiplied.  By default, if `a` is of
-		    integer type, `dtype` is the default platform integer. (Note: if
-		    the type of `a` is unsigned, then so is `dtype`.)  Otherwise,
-		    the dtype is the same as that of `a`.
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the
-		    output values will be cast if necessary.
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -15367,7 +15601,7 @@ package scipy;
 		
 		Random values in a given shape.
 		
-		Create an array of the given shape and propagate it with
+		Create an array of the given shape and populate it with
 		random samples from a uniform distribution
 		over ``[0, 1)``.
 		
@@ -15601,20 +15835,20 @@ package scipy;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -15848,9 +16082,9 @@ package scipy;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -15866,11 +16100,12 @@ package scipy;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -16340,6 +16575,7 @@ package scipy;
 		
 		See Also
 		--------
+		moveaxis : Move array axes to new positions.
 		roll : Roll the elements of an array by a number of positions along a
 		    given axis.
 		
@@ -16381,7 +16617,7 @@ package scipy;
 		--------
 		poly : Find the coefficients of a polynomial with a given sequence
 		       of roots.
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
 		
@@ -16827,7 +17063,7 @@ package scipy;
 		Examples
 		--------
 		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
-		...     print np.sctype2char(sctype)
+		...     print(np.sctype2char(sctype))
 		l
 		d
 		D
@@ -17039,13 +17275,13 @@ package scipy;
 		Floating point precision can be set:
 		
 		>>> np.set_printoptions(precision=4)
-		>>> print np.array([1.123456789])
+		>>> print(np.array([1.123456789]))
 		[ 1.1235]
 		
 		Long arrays can be summarised:
 		
 		>>> np.set_printoptions(threshold=5)
-		>>> print np.arange(10)
+		>>> print(np.arange(10))
 		[0 1 2 ..., 7 8 9]
 		
 		Small results can be suppressed:
@@ -17103,7 +17339,7 @@ package scipy;
 		>>> a = np.arange(10)
 		>>> a
 		HA! - What are you going to do now?
-		>>> print a
+		>>> print(a)
 		[0 1 2 3 4 5 6 7 8 9]
 		
 		We can reset the function to the default:
@@ -17287,7 +17523,7 @@ package scipy;
 		Callback upon error:
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		
 		>>> saved_handler = np.seterrcall(err_handler)
@@ -17306,7 +17542,7 @@ package scipy;
 		
 		>>> class Log(object):
 		...     def write(self, msg):
-		...         print "LOG: %s" % msg
+		...         print("LOG: %s" % msg)
 		...
 		
 		>>> log = Log()
@@ -17369,7 +17605,7 @@ package scipy;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> new_errobj = [20000, 12, err_handler]
 		>>> np.seterrobj(new_errobj)
@@ -17446,6 +17682,45 @@ package scipy;
 		(2,)
 	**/
 	static public function shape(a:Dynamic):Dynamic;
+	/**
+		shares_memory(a, b, max_work=None)
+		
+		Determine if two arrays share memory
+		
+		Parameters
+		----------
+		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem (maximum number
+		    of candidate solutions to consider). The following special
+		    values are recognized:
+		
+		    max_work=MAY_SHARE_EXACT  (default)
+		        The problem is solved exactly. In this case, the function returns
+		        True only if there is an element shared between the arrays.
+		    max_work=MAY_SHARE_BOUNDS
+		        Only the memory bounds of a and b are checked.
+		
+		Raises
+		------
+		numpy.TooHardError
+		    Exceeded max_work.
+		
+		Returns
+		-------
+		out : bool
+		
+		See Also
+		--------
+		may_share_memory
+		
+		Examples
+		--------
+		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
+		False
+	**/
+	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function show_config():Dynamic;
 	static public function show_numpy_config():Dynamic;
 	/**
@@ -17453,7 +17728,13 @@ package scipy;
 		
 		Returns an element-wise indication of the sign of a number.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
+		is returned for nan inputs.
+		
+		For complex inputs, the `sign` function returns
+		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
+		
+		complex(nan, 0) is returned for complex nan inputs.
 		
 		Parameters
 		----------
@@ -17465,12 +17746,20 @@ package scipy;
 		y : ndarray
 		  The sign of `x`.
 		
+		Notes
+		-----
+		There is more than one definition of sign in common use for complex
+		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
+		which is different from a common alternative, :math:`x/|x|`.
+		
 		Examples
 		--------
 		>>> np.sign([-5., 4.5])
 		array([-1.,  1.])
 		>>> np.sign(0)
 		0
+		>>> np.sign(5-2j)
+		(1+0j)
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -18268,31 +18557,30 @@ package scipy;
 		a : array_like
 		    Elements to sum.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a sum is performed.  The default,
+		    axis=None, will sum all of the elements of the input array.  If
+		    axis is negative it counts from the last to the first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
+		    If axis is a tuple of ints, a sum is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
+		    The type of the returned array and of the accumulator in which the
+		    elements are summed.  The dtype of `a` is used by default unless `a`
+		    has an integer dtype of less precision than the default platform
+		    integer.  In that case, if `a` is signed then the platform integer
+		    is used while if `a` is unsigned then an unsigned integer of the
+		    same precision as the platform integer is used.
 		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -18753,6 +19041,9 @@ package scipy;
 		Thus for an `A` of shape (2, 3, 4, 5), a `reps` of (2, 2) is treated as
 		(1, 1, 2, 2).
 		
+		Note : Although tile may be used for broadcasting, it is strongly
+		recommended to use numpy's broadcasting operations and functions.
+		
 		Parameters
 		----------
 		A : array_like
@@ -18768,6 +19059,7 @@ package scipy;
 		See Also
 		--------
 		repeat : Repeat elements of an array.
+		broadcast_to : Broadcast an array to a new shape
 		
 		Examples
 		--------
@@ -18790,6 +19082,13 @@ package scipy;
 		       [3, 4],
 		       [1, 2],
 		       [3, 4]])
+		
+		>>> c = np.array([1,2,3,4])
+		>>> np.tile(c,(4,1))
+		array([[1, 2, 3, 4],
+		       [1, 2, 3, 4],
+		       [1, 2, 3, 4],
+		       [1, 2, 3, 4]])
 	**/
 	static public function tile(A:Dynamic, reps:Dynamic):Dynamic;
 	/**
@@ -18866,7 +19165,7 @@ package scipy;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes
@@ -18902,11 +19201,13 @@ package scipy;
 		y : array_like
 		    Input array to integrate.
 		x : array_like, optional
-		    If `x` is None, then spacing between all `y` elements is `dx`.
+		    The sample points corresponding to the `y` values. If `x` is None,
+		    the sample points are assumed to be evenly spaced `dx` apart. The
+		    default is None.
 		dx : scalar, optional
-		    If `x` is None, spacing given by `dx` is assumed. Default is 1.
+		    The spacing between sample points when `x` is None. The default is 1.
 		axis : int, optional
-		    Specify the axis.
+		    The axis along which to integrate.
 		
 		Returns
 		-------
@@ -19382,7 +19683,7 @@ package scipy;
 		>>> typechars = ['S1', '?', 'B', 'D', 'G', 'F', 'I', 'H', 'L', 'O', 'Q',
 		...              'S', 'U', 'V', 'b', 'd', 'g', 'f', 'i', 'h', 'l', 'q']
 		>>> for typechar in typechars:
-		...     print typechar, ' : ', np.typename(typechar)
+		...     print(typechar, ' : ', np.typename(typechar))
 		...
 		S1  :  character
 		?  :  bool

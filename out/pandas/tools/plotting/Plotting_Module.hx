@@ -268,8 +268,8 @@ package pandas.tools.plotting;
 	/**
 		ceil(x)
 		
-		Return the ceiling of x as an int.
-		This is the smallest integral value >= x.
+		Return the ceiling of x as an Integral.
+		This is the smallest integer >= x.
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var colors : Dynamic;
@@ -346,6 +346,7 @@ package pandas.tools.plotting;
 	static public var df_kind : Dynamic;
 	static public var df_note : Dynamic;
 	static public var df_unique : Dynamic;
+	static public var division : Dynamic;
 	static public function format_date_labels(ax:Dynamic, rot:Dynamic):Dynamic;
 	/**
 		Grouped histogram
@@ -469,7 +470,7 @@ package pandas.tools.plotting;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']
@@ -735,6 +736,32 @@ package pandas.tools.plotting;
 		  From 0 (left/bottom-end) to 1 (right/top-end). Default is 0.5 (center)
 	**/
 	static public function plot_series(data:Dynamic, ?kind:Dynamic, ?ax:Dynamic, ?figsize:Dynamic, ?use_index:Dynamic, ?title:Dynamic, ?grid:Dynamic, ?legend:Dynamic, ?style:Dynamic, ?logx:Dynamic, ?logy:Dynamic, ?loglog:Dynamic, ?xticks:Dynamic, ?yticks:Dynamic, ?xlim:Dynamic, ?ylim:Dynamic, ?rot:Dynamic, ?fontsize:Dynamic, ?colormap:Dynamic, ?table:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?label:Dynamic, ?secondary_y:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
 	/**
 		RadViz - a multivariate data visualization algorithm
 		

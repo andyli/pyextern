@@ -193,7 +193,7 @@ package matplotlib.contour;
 		one contour line, but two filled regions, and therefore
 		three levels to provide boundaries for both regions.
 	**/
-	public function _autolev(z:Dynamic, N:Dynamic):Dynamic;
+	public function _autolev(N:Dynamic):Dynamic;
 	/**
 		Determine the contour levels and store in self.levels.
 	**/

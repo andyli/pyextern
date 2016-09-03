@@ -210,15 +210,37 @@ package scipy.cluster._hierarchy;
 		----------
 		dists : ndarray
 		    A condensed matrix stores the pairwise distances of the observations.
-		Z : ndarray
-		    A (n - 1) x 4 matrix to store the result (i.e. the linkage matrix).
 		n : int
 		    The number of observations.
 		method : int
 		    The linkage method. 0: single 1: complete 2: average 3: centroid
 		    4: median 5: ward 6: weighted
+		
+		Returns
+		-------
+		Z : ndarray, shape (n - 1, 4)
+		    Computed linkage matrix.
 	**/
 	static public function linkage(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Perform hierarchy clustering using nearest-neighbor chain algorithm.
+		
+		Parameters
+		----------
+		dists : ndarray
+		    A condensed matrix stores the pairwise distances of the observations.
+		n : int
+		    The number of observations.
+		method : int
+		    The linkage method. 0: single 1: complete 2: average 3: centroid
+		    4: median 5: ward 6: weighted
+		
+		Returns
+		-------
+		Z : ndarray, shape (n - 1, 4)
+		    Computed linkage matrix.
+	**/
+	static public function nn_chain(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Perform a pre-order traversal on the linkage tree and get a list of ids
 		of the leaves.
@@ -240,10 +262,13 @@ package scipy.cluster._hierarchy;
 		----------
 		dists : ndarray
 		    A condensed matrix stores the pairwise distances of the observations.
-		Z : ndarray
-		    A (n - 1) x 4 matrix to store the result (i.e. the linkage matrix).
 		n : int
 		    The number of observations.
+		
+		Returns
+		-------
+		Z : ndarray, shape (n - 1, 4)
+		    Compute linkage matrix.
 		
 		References
 		----------

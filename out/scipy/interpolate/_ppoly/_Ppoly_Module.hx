@@ -37,8 +37,8 @@ package scipy.interpolate._ppoly;
 		dx : int
 		    Order of derivative to evaluate.  The derivative is evaluated
 		    piecewise and may have discontinuities.
-		extrapolate : int, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
+		extrapolate : bint, optional
+		    Whether to extrapolate to out-of-bounds points based on first
 		    and last intervals, or to return NaNs.
 		out : ndarray, shape (r, n)
 		    Value of each polynomial at each of the input points.
@@ -61,14 +61,42 @@ package scipy.interpolate._ppoly;
 		nu : int
 		    Order of derivative to evaluate.  The derivative is evaluated
 		    piecewise and may have discontinuities.
-		extrapolate : int, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
+		extrapolate : bint, optional
+		    Whether to extrapolate to out-of-bounds points based on first
 		    and last intervals, or to return NaNs.
 		out : ndarray, shape (r, n)
 		    Value of each polynomial at each of the input points.
 		    This argument is modified in-place.
 	**/
 	static public function evaluate_bernstein(c:Dynamic, x:Dynamic, xp:Dynamic, nu:Dynamic, extrapolate:Dynamic, out:Dynamic):Dynamic;
+	/**
+		Evaluate a piecewise tensor-product polynomial.
+		
+		Parameters
+		----------
+		c : ndarray, shape (k_1*...*k_d, m_1*...*m_d, n)
+		    Coefficients local polynomials of order `k-1` in
+		    `m_1`, ..., `m_d` intervals. There are `n` polynomials
+		    in each interval.
+		ks : ndarray of int, shape (d,)
+		    Orders of polynomials in each dimension
+		xs : d-tuple of ndarray of shape (m_d+1,) each
+		    Breakpoints of polynomials
+		xp : ndarray, shape (r, d)
+		    Points to evaluate the piecewise polynomial at.
+		dx : ndarray of int, shape (d,)
+		    Orders of derivative to evaluate.  The derivative is evaluated
+		    piecewise and may have discontinuities.
+		extrapolate : int, optional
+		    Whether to extrapolate to out-of-bounds points based on first
+		    and last intervals, or to return NaNs.
+		out : ndarray, shape (r, n)
+		    Value of each polynomial at each of the input points.
+		    For points outside the span ``x[0] ... x[-1]``,
+		    ``nan`` is returned.
+		    This argument is modified in-place.
+	**/
+	static public function evaluate_nd(c:Dynamic, xs:Dynamic, ks:Dynamic, xp:Dynamic, dx:Dynamic, extrapolate:Dynamic, out:Dynamic):Dynamic;
 	/**
 		Make a piecewise polynomial continuously differentiable to given order.
 		
@@ -99,8 +127,8 @@ package scipy.interpolate._ppoly;
 		    Start point of integration.
 		b : double
 		    End point of integration.
-		extrapolate : int, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
+		extrapolate : bint, optional
+		    Whether to extrapolate to out-of-bounds points based on first
 		    and last intervals, or to return NaNs.
 		out : ndarray, shape (n,)
 		    Integral of the piecewise polynomial, assuming the polynomial
@@ -122,10 +150,12 @@ package scipy.interpolate._ppoly;
 		----------
 		c, x
 		    Polynomial coefficients, as above
-		report_discont : int, optional
+		y : float
+		    Find roots of ``pp(x) == y``.
+		report_discont : bint, optional
 		    Whether to report discontinuities across zero at breakpoints
 		    as roots
-		extrapolate : int, optional
+		extrapolate : bint, optional
 		    Whether to consider roots obtained by extrapolating based
 		    on first and last intervals.
 	**/

@@ -42,7 +42,7 @@ package scipy.special.orthogonal;
 		
 		gamma(z)
 		
-		Gamma function
+		Gamma function.
 		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
@@ -258,17 +258,50 @@ package scipy.special.orthogonal;
 		
 		Parameters
 		----------
-		z : float or complex
-		    Argument.
+		z : array_like
+		    Real or complex argument.
 		
 		Returns
 		-------
-		Ai, Aip, Bi, Bip
-		    Airy functions Ai and Bi, and their derivatives Aip and Bip
+		Ai, Aip, Bi, Bip : ndarrays
+		    Airy functions Ai and Bi, and their derivatives Aip and Bip.
 		
 		Notes
 		-----
-		The Airy functions Ai and Bi are two independent solutions of y''(x) = x y.
+		The Airy functions Ai and Bi are two independent solutions of
+		
+		.. math:: y''(x) = x y(x).
+		
+		For real `z` in [-10, 10], the computation is carried out by calling
+		the Cephes [1]_ `airy` routine, which uses power series summation
+		for small `z` and rational minimax approximations for large `z`.
+		
+		Outside this range, the AMOS [2]_ `zairy` and `zbiry` routines are
+		employed.  They are computed using power series for :math:`|z| < 1` and
+		the following relations to modified Bessel functions for larger `z`
+		(where :math:`t \equiv 2 z^{3/2}/3`):
+		
+		.. math::
+		
+		    Ai(z) = \frac{1}{\pi \sqrt{3}} K_{1/3}(t)
+		
+		    Ai'(z) = -\frac{z}{\pi \sqrt{3}} K_{2/3}(t)
+		
+		    Bi(z) = \sqrt{\frac{z}{3}} \left(I_{-1/3}(t) + I_{1/3}(t) \right)
+		
+		    Bi'(z) = \frac{z}{\sqrt{3}} \left(I_{-2/3}(t) + I_{2/3}(t)\right)
+		
+		See also
+		--------
+		airye : exponentially scaled Airy functions.
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
+		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/.org/amos/
 	**/
 	static public function airy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

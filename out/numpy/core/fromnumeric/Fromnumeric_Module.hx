@@ -37,7 +37,7 @@ package numpy.core.fromnumeric;
 		Examples
 		--------
 		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
-		...     print np.sctype2char(sctype)
+		...     print(np.sctype2char(sctype))
 		l
 		d
 		D
@@ -579,7 +579,7 @@ package numpy.core.fromnumeric;
 		-------
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
 		
 		See Also
 		--------
@@ -1308,7 +1308,7 @@ package numpy.core.fromnumeric;
 		
 		trapz : Integration of array values using the composite trapezoidal rule.
 		
-		diff :  Calculate the n-th order discrete difference along given axis.
+		diff :  Calculate the n-th discrete difference along given axis.
 		
 		Notes
 		-----
@@ -1352,11 +1352,11 @@ package numpy.core.fromnumeric;
 		but depending on this fact is deprecated. Writing to the resulting
 		array continues to work as it used to, but a FutureWarning is issued.
 		
-		In NumPy 1.9 it returns a read-only view on the original array.
+		Starting in NumPy 1.9 it returns a read-only view on the original array.
 		Attempting to write to the resulting array will produce an error.
 		
-		In NumPy 1.10, it will return a read/write view and writing to the
-		returned array will alter your original array.  The returned array
+		In some future release, it will return a read/write view and writing to
+		the returned array will alter your original array.  The returned array
 		will have the same type as the input array.
 		
 		If you don't write to the array returned by this function, then you can
@@ -1711,29 +1711,31 @@ package numpy.core.fromnumeric;
 		a : array_like
 		    Input data.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.
-		    The default (`axis` = `None`) is perform a product over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a product is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : data-type, optional
-		    The data-type of the returned array, as well as of the accumulator
-		    in which the elements are multiplied.  By default, if `a` is of
-		    integer type, `dtype` is the default platform integer. (Note: if
-		    the type of `a` is unsigned, then so is `dtype`.)  Otherwise,
-		    the dtype is the same as that of `a`.
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the
-		    output values will be cast if necessary.
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -1992,20 +1994,20 @@ package numpy.core.fromnumeric;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -2578,31 +2580,30 @@ package numpy.core.fromnumeric;
 		a : array_like
 		    Elements to sum.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a sum is performed.  The default,
+		    axis=None, will sum all of the elements of the input array.  If
+		    axis is negative it counts from the last to the first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
+		    If axis is a tuple of ints, a sum is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
+		    The type of the returned array and of the accumulator in which the
+		    elements are summed.  The dtype of `a` is used by default unless `a`
+		    has an integer dtype of less precision than the default platform
+		    integer.  In that case, if `a` is signed then the platform integer
+		    is used while if `a` is unsigned then an unsigned integer of the
+		    same precision as the platform integer is used.
 		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -2831,7 +2832,7 @@ package numpy.core.fromnumeric;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

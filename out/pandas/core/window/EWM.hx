@@ -217,11 +217,10 @@ package pandas.core.window;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _setup():Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
-	public function _shallow_copy(?obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var _window_type : Dynamic;
 	/**
 		wrap a single result 
@@ -396,6 +395,7 @@ package pandas.core.window;
 		pandas.DataFrame.ewm
 	**/
 	public function std(?bias:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function validate():Dynamic;
 	/**
 		exponential weighted moving variance
 		

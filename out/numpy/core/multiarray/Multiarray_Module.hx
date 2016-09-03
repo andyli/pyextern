@@ -9,6 +9,8 @@ package numpy.core.multiarray;
 	static public var ITEM_IS_POINTER : Dynamic;
 	static public var LIST_PICKLE : Dynamic;
 	static public var MAXDIMS : Dynamic;
+	static public var MAY_SHARE_BOUNDS : Dynamic;
+	static public var MAY_SHARE_EXACT : Dynamic;
 	static public var NEEDS_INIT : Dynamic;
 	static public var NEEDS_PYAPI : Dynamic;
 	static public var RAISE : Dynamic;
@@ -735,7 +737,7 @@ package numpy.core.multiarray;
 		>>> inds
 		array([1, 4, 3, 2])
 		>>> for n in range(x.size):
-		...   print bins[inds[n]-1], "<=", x[n], "<", bins[inds[n]]
+		...   print(bins[inds[n]-1], "<=", x[n], "<", bins[inds[n]])
 		...
 		0.0 <= 0.2 < 1.0
 		4.0 <= 6.4 < 10.0
@@ -830,7 +832,7 @@ package numpy.core.multiarray;
 		
 		Using the Einstein summation convention, many common multi-dimensional
 		array operations can be represented in a simple fashion.  This function
-		provides a way compute such summations. The best way to understand this
+		provides a way to compute such summations. The best way to understand this
 		function is to try the examples below, which show how many common NumPy
 		functions can be implemented as calls to `einsum`.
 		
@@ -1060,8 +1062,8 @@ package numpy.core.multiarray;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -1346,7 +1348,7 @@ package numpy.core.multiarray;
 		Parameters
 		----------
 		a, b : array_like
-		    If `a` and `b` are nonscalar, their last dimensions of must match.
+		    If `a` and `b` are nonscalar, their last dimensions must match.
 		
 		Returns
 		-------
@@ -1510,7 +1512,7 @@ package numpy.core.multiarray;
 		>>> a = [1,5,1,4,3,4,4] # First column
 		>>> b = [9,4,0,4,0,2,1] # Second column
 		>>> ind = np.lexsort((b,a)) # Sort by a, then by b
-		>>> print ind
+		>>> print(ind)
 		[2 0 4 6 5 3 1]
 		
 		>>> [(a[i],b[i]) for i in ind]
@@ -1655,26 +1657,39 @@ package numpy.core.multiarray;
 	**/
 	static public function matmul(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Determine if two arrays can share memory
+		may_share_memory(a, b, max_work=None)
 		
-		The memory-bounds of a and b are computed.  If they overlap then
-		this function returns True.  Otherwise, it returns False.
+		Determine if two arrays might share memory
 		
 		A return of True does not necessarily mean that the two arrays
 		share any element.  It just means that they *might*.
 		
+		Only the memory bounds of a and b are checked by default.
+		
 		Parameters
 		----------
 		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem.  See
+		    `shares_memory` for details.  Default for ``may_share_memory``
+		    is to do a bounds check.
 		
 		Returns
 		-------
 		out : bool
 		
+		See Also
+		--------
+		shares_memory
+		
 		Examples
 		--------
 		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
 		False
+		>>> x = np.zeros([3, 4])
+		>>> np.may_share_memory(x[:,0], x[:,1])
+		True
 	**/
 	static public function may_share_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2048,6 +2063,45 @@ package numpy.core.multiarray;
 		registered code.
 	**/
 	static public function set_typeDict(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		shares_memory(a, b, max_work=None)
+		
+		Determine if two arrays share memory
+		
+		Parameters
+		----------
+		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem (maximum number
+		    of candidate solutions to consider). The following special
+		    values are recognized:
+		
+		    max_work=MAY_SHARE_EXACT  (default)
+		        The problem is solved exactly. In this case, the function returns
+		        True only if there is an element shared between the arrays.
+		    max_work=MAY_SHARE_BOUNDS
+		        Only the memory bounds of a and b are checked.
+		
+		Raises
+		------
+		numpy.TooHardError
+		    Exceeded max_work.
+		
+		Returns
+		-------
+		out : bool
+		
+		See Also
+		--------
+		may_share_memory
+		
+		Examples
+		--------
+		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
+		False
+	**/
+	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function test_interrupt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var typeinfo : Dynamic;
 	/**

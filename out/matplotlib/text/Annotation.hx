@@ -39,280 +39,300 @@ package matplotlib.text;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		*arrowprops*, if not *None*, is a dictionary of line properties
-		(see :class:`matplotlib.lines.Line2D`) for the arrow that connects
-		annotation to the point.
+		Annotate the point ``xy`` with text ``s``.
 		
-		If the dictionary has a key *arrowstyle*, a
-		`~matplotlib.patches.FancyArrowPatch` instance is created with
-		the given dictionary and is drawn. Otherwise, a
-		`~matplotlib.patches.YAArrow` patch instance is created and
-		drawn. Valid keys for `~matplotlib.patches.YAArrow` are:
+		Additional kwargs are passed to `~matplotlib.text.Text`.
 		
+		Parameters
+		----------
 		
-		=========   ===========================================================
-		Key         Description
-		=========   ===========================================================
-		width       the width of the arrow in points
-		frac        the fraction of the arrow length occupied by the head
-		headwidth   the width of the base of the arrow head in points
-		shrink      oftentimes it is convenient to have the arrowtip
-		            and base a bit away from the text and point being
-		            annotated.  If *d* is the distance between the text and
-		            annotated point, shrink will shorten the arrow so the tip
-		            and base are shink percent of the distance *d* away from
-		            the endpoints.  i.e., ``shrink=0.05 is 5%``
-		?           any key for :class:`matplotlib.patches.polygon`
-		=========   ===========================================================
+		s : str
+		    The text of the annotation
 		
+		xy : iterable
+		    Length 2 sequence specifying the *(x,y)* point to annotate
 		
-		Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
+		xytext : iterable, optional
+		    Length 2 sequence specifying the *(x,y)* to place the text
+		    at.  If None, defaults to ``xy``.
 		
+		xycoords : str, Artist, Transform, callable or tuple, optional
 		
-		===============  ======================================================
-		Key              Description
-		===============  ======================================================
-		arrowstyle       the arrow style
-		connectionstyle  the connection style
-		relpos           default is (0.5, 0.5)
-		patchA           default is bounding box of the text
-		patchB           default is None
-		shrinkA          default is 2 points
-		shrinkB          default is 2 points
-		mutation_scale   default is text size (in points)
-		mutation_aspect  default is 1.
-		?                any key for :class:`matplotlib.patches.PathPatch`
-		===============  ======================================================
+		    The coordinate system that ``xy`` is given in.
 		
+		    For a `str` the allowed values are:
 		
-		*xycoords* and *textcoords* are strings that indicate the
-		coordinates of *xy* and *xytext*, and may be one of the
-		following values:
+		    =================   ===============================================
+		    Property            Description
+		    =================   ===============================================
+		    'figure points'     points from the lower left of the figure
+		    'figure pixels'     pixels from the lower left of the figure
+		    'figure fraction'   fraction of figure from lower left
+		    'axes points'       points from lower left corner of axes
+		    'axes pixels'       pixels from lower left corner of axes
+		    'axes fraction'     fraction of axes from lower left
+		    'data'              use the coordinate system of the object being
+		                        annotated (default)
+		    'polar'             *(theta,r)* if not native 'data' coordinates
+		    =================   ===============================================
 		
-		=================   ===================================================
-		Property            Description
-		=================   ===================================================
-		'figure points'     points from the lower left corner of the figure
-		'figure pixels'     pixels from the lower left corner of the figure
-		'figure fraction'   0,0 is lower left of figure and 1,1 is upper right
-		'axes points'       points from lower left corner of axes
-		'axes pixels'       pixels from lower left corner of axes
-		'axes fraction'     0,0 is lower left of axes and 1,1 is upper right
-		'data'              use the coordinate system of the object being
-		                    annotated (default)
-		'offset points'     Specify an offset (in points) from the *xy* value
+		    If a `~matplotlib.artist.Artist` object is passed in the units are
+		    fraction if it's bounding box.
 		
-		'polar'             you can specify *theta*, *r* for the annotation,
-		                    even in cartesian plots.  Note that if you
-		                    are using a polar axes, you do not need
-		                    to specify polar for the coordinate
-		                    system since that is the native "data" coordinate
-		                    system.
-		=================   ===================================================
+		    If a `~matplotlib.transforms.Transform` object is passed
+		    in use that to transform ``xy`` to screen coordinates
 		
-		If a 'points' or 'pixels' option is specified, values will be
-		added to the bottom-left and if negative, values will be
-		subtracted from the top-right.  e.g.::
+		    If a callable it must take a
+		    `~matplotlib.backend_bases.RendererBase` object as input
+		    and return a `~matplotlib.transforms.Transform` or
+		    `~matplotlib.transforms.Bbox` object
 		
-		  # 10 points to the right of the left border of the axes and
-		  # 5 points below the top border
-		  xy=(10,-5), xycoords='axes points'
+		    If a `tuple` must be length 2 tuple of str, `Artist`,
+		    `Transform` or callable objects.  The first transform is
+		    used for the *x* coordinate and the second for *y*.
 		
-		You may use an instance of
-		:class:`~matplotlib.transforms.Transform` or
-		:class:`~matplotlib.artist.Artist`. See
-		:ref:`plotting-guide-annotation` for more details.
+		    See :ref:`plotting-guide-annotation` for more details.
 		
-		The *annotation_clip* attribute controls the visibility of the
-		annotation when it goes outside the axes area. If `True`, the
-		annotation will only be drawn when the *xy* is inside the
-		axes. If `False`, the annotation will always be drawn
-		regardless of its position.  The default is `None`, which
-		behave as `True` only if *xycoords* is "data".
+		    Defaults to ``'data'``
 		
-		Additional kwargs are `~matplotlib.text.Text` properties:
+		textcoords : str, `Artist`, `Transform`, callable or tuple, optional
+		    The coordinate system that ``xytext`` is given, which
+		    may be different than the coordinate system used for
+		    ``xy``.
 		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  backgroundcolor: any matplotlib color 
-		  bbox: FancyBboxPatch prop dict 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: any matplotlib color 
-		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
-		  gid: an id string 
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
-		  label: string or anything printable with '%s' conversion. 
-		  linespacing: float (multiple of font size) 
-		  multialignment: ['left' | 'right' | 'center' ] 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  position: (x,y) 
-		  rasterized: [True | False | None] 
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
-		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
-		  sketch_params: unknown
-		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
-		  text: string or anything printable with '%s' conversion. 
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
-		  visible: [True | False] 
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
-		  wrap: unknown
-		  x: float 
-		  y: float 
-		  zorder: any number 
+		    All ``xycoords`` values are valid as well as the following
+		    strings:
+		
+		    =================   =========================================
+		    Property            Description
+		    =================   =========================================
+		    'offset points'     offset (in points) from the *xy* value
+		    'offset pixels'     offset (in pixels) from the *xy* value
+		    =================   =========================================
+		
+		    defaults to the input of ``xycoords``
+		
+		arrowprops : dict, optional
+		    If not None, properties used to draw a
+		    `~matplotlib.patches.FancyArrowPatch` arrow between ``xy`` and
+		    ``xytext``.
+		
+		    If `arrowprops` does not contain the key ``'arrowstyle'`` the
+		    allowed keys are:
+		
+		    ==========   ======================================================
+		    Key          Description
+		    ==========   ======================================================
+		    width        the width of the arrow in points
+		    headwidth    the width of the base of the arrow head in points
+		    headlength   the length of the arrow head in points
+		    shrink       fraction of total length to 'shrink' from both ends
+		    ?            any key to :class:`matplotlib.patches.FancyArrowPatch`
+		    ==========   ======================================================
+		
+		    If the `arrowprops` contains the key ``'arrowstyle'`` the
+		    above keys are forbidden.  The allowed values of
+		    ``'arrowstyle'`` are:
+		
+		    ============   =============================================
+		    Name           Attrs
+		    ============   =============================================
+		    ``'-'``        None
+		    ``'->'``       head_length=0.4,head_width=0.2
+		    ``'-['``       widthB=1.0,lengthB=0.2,angleB=None
+		    ``'|-|'``      widthA=1.0,widthB=1.0
+		    ``'-|>'``      head_length=0.4,head_width=0.2
+		    ``'<-'``       head_length=0.4,head_width=0.2
+		    ``'<->'``      head_length=0.4,head_width=0.2
+		    ``'<|-'``      head_length=0.4,head_width=0.2
+		    ``'<|-|>'``    head_length=0.4,head_width=0.2
+		    ``'fancy'``    head_length=0.4,head_width=0.4,tail_width=0.4
+		    ``'simple'``   head_length=0.5,head_width=0.5,tail_width=0.2
+		    ``'wedge'``    tail_width=0.3,shrink_factor=0.5
+		    ============   =============================================
+		
+		    Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
+		
+		    ===============  ==================================================
+		    Key              Description
+		    ===============  ==================================================
+		    arrowstyle       the arrow style
+		    connectionstyle  the connection style
+		    relpos           default is (0.5, 0.5)
+		    patchA           default is bounding box of the text
+		    patchB           default is None
+		    shrinkA          default is 2 points
+		    shrinkB          default is 2 points
+		    mutation_scale   default is text size (in points)
+		    mutation_aspect  default is 1.
+		    ?                any key for :class:`matplotlib.patches.PathPatch`
+		    ===============  ==================================================
+		
+		    Defaults to None
+		
+		annotation_clip : bool, optional
+		    Controls the visibility of the annotation when it goes
+		    outside the axes area.
+		
+		    If `True`, the annotation will only be drawn when the
+		    ``xy`` is inside the axes. If `False`, the annotation will
+		    always be drawn regardless of its position.
+		
+		    The default is `None`, which behave as `True` only if
+		    *xycoords* is "data".
+		
+		Returns
+		-------
+		Annotation
 	**/
 	@:native("__init__")
 	public function ___init__(s:Dynamic, xy:Dynamic, ?xytext:Dynamic, ?xycoords:Dynamic, ?textcoords:Dynamic, ?arrowprops:Dynamic, ?annotation_clip:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		*arrowprops*, if not *None*, is a dictionary of line properties
-		(see :class:`matplotlib.lines.Line2D`) for the arrow that connects
-		annotation to the point.
+		Annotate the point ``xy`` with text ``s``.
 		
-		If the dictionary has a key *arrowstyle*, a
-		`~matplotlib.patches.FancyArrowPatch` instance is created with
-		the given dictionary and is drawn. Otherwise, a
-		`~matplotlib.patches.YAArrow` patch instance is created and
-		drawn. Valid keys for `~matplotlib.patches.YAArrow` are:
+		Additional kwargs are passed to `~matplotlib.text.Text`.
 		
+		Parameters
+		----------
 		
-		=========   ===========================================================
-		Key         Description
-		=========   ===========================================================
-		width       the width of the arrow in points
-		frac        the fraction of the arrow length occupied by the head
-		headwidth   the width of the base of the arrow head in points
-		shrink      oftentimes it is convenient to have the arrowtip
-		            and base a bit away from the text and point being
-		            annotated.  If *d* is the distance between the text and
-		            annotated point, shrink will shorten the arrow so the tip
-		            and base are shink percent of the distance *d* away from
-		            the endpoints.  i.e., ``shrink=0.05 is 5%``
-		?           any key for :class:`matplotlib.patches.polygon`
-		=========   ===========================================================
+		s : str
+		    The text of the annotation
 		
+		xy : iterable
+		    Length 2 sequence specifying the *(x,y)* point to annotate
 		
-		Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
+		xytext : iterable, optional
+		    Length 2 sequence specifying the *(x,y)* to place the text
+		    at.  If None, defaults to ``xy``.
 		
+		xycoords : str, Artist, Transform, callable or tuple, optional
 		
-		===============  ======================================================
-		Key              Description
-		===============  ======================================================
-		arrowstyle       the arrow style
-		connectionstyle  the connection style
-		relpos           default is (0.5, 0.5)
-		patchA           default is bounding box of the text
-		patchB           default is None
-		shrinkA          default is 2 points
-		shrinkB          default is 2 points
-		mutation_scale   default is text size (in points)
-		mutation_aspect  default is 1.
-		?                any key for :class:`matplotlib.patches.PathPatch`
-		===============  ======================================================
+		    The coordinate system that ``xy`` is given in.
 		
+		    For a `str` the allowed values are:
 		
-		*xycoords* and *textcoords* are strings that indicate the
-		coordinates of *xy* and *xytext*, and may be one of the
-		following values:
+		    =================   ===============================================
+		    Property            Description
+		    =================   ===============================================
+		    'figure points'     points from the lower left of the figure
+		    'figure pixels'     pixels from the lower left of the figure
+		    'figure fraction'   fraction of figure from lower left
+		    'axes points'       points from lower left corner of axes
+		    'axes pixels'       pixels from lower left corner of axes
+		    'axes fraction'     fraction of axes from lower left
+		    'data'              use the coordinate system of the object being
+		                        annotated (default)
+		    'polar'             *(theta,r)* if not native 'data' coordinates
+		    =================   ===============================================
 		
-		=================   ===================================================
-		Property            Description
-		=================   ===================================================
-		'figure points'     points from the lower left corner of the figure
-		'figure pixels'     pixels from the lower left corner of the figure
-		'figure fraction'   0,0 is lower left of figure and 1,1 is upper right
-		'axes points'       points from lower left corner of axes
-		'axes pixels'       pixels from lower left corner of axes
-		'axes fraction'     0,0 is lower left of axes and 1,1 is upper right
-		'data'              use the coordinate system of the object being
-		                    annotated (default)
-		'offset points'     Specify an offset (in points) from the *xy* value
+		    If a `~matplotlib.artist.Artist` object is passed in the units are
+		    fraction if it's bounding box.
 		
-		'polar'             you can specify *theta*, *r* for the annotation,
-		                    even in cartesian plots.  Note that if you
-		                    are using a polar axes, you do not need
-		                    to specify polar for the coordinate
-		                    system since that is the native "data" coordinate
-		                    system.
-		=================   ===================================================
+		    If a `~matplotlib.transforms.Transform` object is passed
+		    in use that to transform ``xy`` to screen coordinates
 		
-		If a 'points' or 'pixels' option is specified, values will be
-		added to the bottom-left and if negative, values will be
-		subtracted from the top-right.  e.g.::
+		    If a callable it must take a
+		    `~matplotlib.backend_bases.RendererBase` object as input
+		    and return a `~matplotlib.transforms.Transform` or
+		    `~matplotlib.transforms.Bbox` object
 		
-		  # 10 points to the right of the left border of the axes and
-		  # 5 points below the top border
-		  xy=(10,-5), xycoords='axes points'
+		    If a `tuple` must be length 2 tuple of str, `Artist`,
+		    `Transform` or callable objects.  The first transform is
+		    used for the *x* coordinate and the second for *y*.
 		
-		You may use an instance of
-		:class:`~matplotlib.transforms.Transform` or
-		:class:`~matplotlib.artist.Artist`. See
-		:ref:`plotting-guide-annotation` for more details.
+		    See :ref:`plotting-guide-annotation` for more details.
 		
-		The *annotation_clip* attribute controls the visibility of the
-		annotation when it goes outside the axes area. If `True`, the
-		annotation will only be drawn when the *xy* is inside the
-		axes. If `False`, the annotation will always be drawn
-		regardless of its position.  The default is `None`, which
-		behave as `True` only if *xycoords* is "data".
+		    Defaults to ``'data'``
 		
-		Additional kwargs are `~matplotlib.text.Text` properties:
+		textcoords : str, `Artist`, `Transform`, callable or tuple, optional
+		    The coordinate system that ``xytext`` is given, which
+		    may be different than the coordinate system used for
+		    ``xy``.
 		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  backgroundcolor: any matplotlib color 
-		  bbox: FancyBboxPatch prop dict 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: any matplotlib color 
-		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
-		  gid: an id string 
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
-		  label: string or anything printable with '%s' conversion. 
-		  linespacing: float (multiple of font size) 
-		  multialignment: ['left' | 'right' | 'center' ] 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  position: (x,y) 
-		  rasterized: [True | False | None] 
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
-		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
-		  sketch_params: unknown
-		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
-		  text: string or anything printable with '%s' conversion. 
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
-		  visible: [True | False] 
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
-		  wrap: unknown
-		  x: float 
-		  y: float 
-		  zorder: any number 
+		    All ``xycoords`` values are valid as well as the following
+		    strings:
+		
+		    =================   =========================================
+		    Property            Description
+		    =================   =========================================
+		    'offset points'     offset (in points) from the *xy* value
+		    'offset pixels'     offset (in pixels) from the *xy* value
+		    =================   =========================================
+		
+		    defaults to the input of ``xycoords``
+		
+		arrowprops : dict, optional
+		    If not None, properties used to draw a
+		    `~matplotlib.patches.FancyArrowPatch` arrow between ``xy`` and
+		    ``xytext``.
+		
+		    If `arrowprops` does not contain the key ``'arrowstyle'`` the
+		    allowed keys are:
+		
+		    ==========   ======================================================
+		    Key          Description
+		    ==========   ======================================================
+		    width        the width of the arrow in points
+		    headwidth    the width of the base of the arrow head in points
+		    headlength   the length of the arrow head in points
+		    shrink       fraction of total length to 'shrink' from both ends
+		    ?            any key to :class:`matplotlib.patches.FancyArrowPatch`
+		    ==========   ======================================================
+		
+		    If the `arrowprops` contains the key ``'arrowstyle'`` the
+		    above keys are forbidden.  The allowed values of
+		    ``'arrowstyle'`` are:
+		
+		    ============   =============================================
+		    Name           Attrs
+		    ============   =============================================
+		    ``'-'``        None
+		    ``'->'``       head_length=0.4,head_width=0.2
+		    ``'-['``       widthB=1.0,lengthB=0.2,angleB=None
+		    ``'|-|'``      widthA=1.0,widthB=1.0
+		    ``'-|>'``      head_length=0.4,head_width=0.2
+		    ``'<-'``       head_length=0.4,head_width=0.2
+		    ``'<->'``      head_length=0.4,head_width=0.2
+		    ``'<|-'``      head_length=0.4,head_width=0.2
+		    ``'<|-|>'``    head_length=0.4,head_width=0.2
+		    ``'fancy'``    head_length=0.4,head_width=0.4,tail_width=0.4
+		    ``'simple'``   head_length=0.5,head_width=0.5,tail_width=0.2
+		    ``'wedge'``    tail_width=0.3,shrink_factor=0.5
+		    ============   =============================================
+		
+		    Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
+		
+		    ===============  ==================================================
+		    Key              Description
+		    ===============  ==================================================
+		    arrowstyle       the arrow style
+		    connectionstyle  the connection style
+		    relpos           default is (0.5, 0.5)
+		    patchA           default is bounding box of the text
+		    patchB           default is None
+		    shrinkA          default is 2 points
+		    shrinkB          default is 2 points
+		    mutation_scale   default is text size (in points)
+		    mutation_aspect  default is 1.
+		    ?                any key for :class:`matplotlib.patches.PathPatch`
+		    ===============  ==================================================
+		
+		    Defaults to None
+		
+		annotation_clip : bool, optional
+		    Controls the visibility of the annotation when it goes
+		    outside the axes area.
+		
+		    If `True`, the annotation will only be drawn when the
+		    ``xy`` is inside the axes. If `False`, the annotation will
+		    always be drawn regardless of its position.
+		
+		    The default is `None`, which behave as `True` only if
+		    *xycoords* is "data".
+		
+		Returns
+		-------
+		Annotation
 	**/
 	public function new(s:Dynamic, xy:Dynamic, ?xytext:Dynamic, ?xycoords:Dynamic, ?textcoords:Dynamic, ?arrowprops:Dynamic, ?annotation_clip:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**

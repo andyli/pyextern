@@ -156,6 +156,7 @@ package pandas.io.parsers;
 	public function _rows_to_cols(content:Dynamic):Dynamic;
 	public function _set_no_thousands_columns():Dynamic;
 	public function _should_parse_dates(i:Dynamic):Dynamic;
+	public function close():Dynamic;
 	public function get_chunk(?size:Dynamic):Dynamic;
 	public function read(?rows:Dynamic):Dynamic;
 }

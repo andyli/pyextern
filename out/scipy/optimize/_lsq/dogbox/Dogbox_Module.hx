@@ -9,6 +9,7 @@ package scipy.optimize._lsq.dogbox;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Return A as a LinearOperator.
 		
@@ -73,6 +74,7 @@ package scipy.optimize._lsq.dogbox;
 		Compute variables scale based on the Jacobian matrix.
 	**/
 	static public function compute_jac_scale(J:Dynamic, ?scale_inv_old:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function dogbox(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, lb:Dynamic, ub:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;
 	/**
 		Find dogleg step in a rectangular region.
@@ -316,7 +318,7 @@ package scipy.optimize._lsq.dogbox;
 		       [ 3.,  1.]])
 		
 		>>> m, c = np.linalg.lstsq(A, y)[0]
-		>>> print m, c
+		>>> print(m, c)
 		1.0 -0.95
 		
 		Plot the data along with the fitted line:
@@ -427,22 +429,22 @@ package scipy.optimize._lsq.dogbox;
 		>>> LA.norm(b, 'fro')
 		7.745966692414834
 		>>> LA.norm(a, np.inf)
-		4
+		4.0
 		>>> LA.norm(b, np.inf)
-		9
+		9.0
 		>>> LA.norm(a, -np.inf)
-		0
+		0.0
 		>>> LA.norm(b, -np.inf)
-		2
+		2.0
 		
 		>>> LA.norm(a, 1)
-		20
+		20.0
 		>>> LA.norm(b, 1)
-		7
+		7.0
 		>>> LA.norm(a, -1)
 		-4.6566128774142013e-010
 		>>> LA.norm(b, -1)
-		6
+		6.0
 		>>> LA.norm(a, 2)
 		7.745966692414834
 		>>> LA.norm(b, 2)
@@ -466,7 +468,7 @@ package scipy.optimize._lsq.dogbox;
 		>>> LA.norm(c, axis=1)
 		array([ 3.74165739,  4.24264069])
 		>>> LA.norm(c, ord=1, axis=1)
-		array([6, 6])
+		array([ 6.,  6.])
 		
 		Using the `axis` argument to compute matrix norms:
 		
@@ -477,6 +479,7 @@ package scipy.optimize._lsq.dogbox;
 		(3.7416573867739413, 11.224972160321824)
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function print_header_nonlinear():Dynamic;
 	static public function print_iteration_nonlinear(iteration:Dynamic, nfev:Dynamic, cost:Dynamic, cost_reduction:Dynamic, step_norm:Dynamic, optimality:Dynamic):Dynamic;
 	/**

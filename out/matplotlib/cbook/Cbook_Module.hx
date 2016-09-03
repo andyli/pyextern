@@ -68,37 +68,43 @@ package matplotlib.cbook;
 	**/
 	static public function alltrue(seq:Dynamic):Dynamic;
 	/**
-		Returns list of dictionaries of staticists to be use to draw a series of
-		box and whisker plots. See the `Returns` section below to the required
-		keys of the dictionary. Users can skip this function and pass a user-
-		defined set of dictionaries to the new `axes.bxp` method instead of
-		relying on MPL to do the calcs.
+		Returns list of dictionaries of statistics used to draw a series
+		of box and whisker plots. The `Returns` section enumerates the
+		required keys of the dictionary. Users can skip this function and
+		pass a user-defined set of dictionaries to the new `axes.bxp` method
+		instead of relying on MPL to do the calculations.
 		
 		Parameters
 		----------
 		X : array-like
-		    Data that will be represented in the boxplots. Should have 2 or fewer
-		    dimensions.
+		    Data that will be represented in the boxplots. Should have 2 or
+		    fewer dimensions.
 		
 		whis : float, string, or sequence (default = 1.5)
-		    As a float, determines the reach of the whiskers past the first and
-		    third quartiles (e.g., Q3 + whis*IQR, QR = interquartile range, Q3-Q1).
-		    Beyond the whiskers, data are considered outliers and are plotted as
-		    individual points. Set this to an unreasonably high value to force the
-		    whiskers to show the min and max data. Alternatively, set this to an
-		    ascending sequence of percentile (e.g., [5, 95]) to set the whiskers
-		    at specific percentiles of the data. Finally, can  `whis` be the
-		    string 'range' to force the whiskers to the min and max of the data.
-		    In the edge case that the 25th and 75th percentiles are equivalent,
-		    `whis` will be automatically set to 'range'
+		    As a float, determines the reach of the whiskers past the first
+		    and third quartiles (e.g., Q3 + whis*IQR, QR = interquartile
+		    range, Q3-Q1). Beyond the whiskers, data are considered outliers
+		    and are plotted as individual points. This can be set this to an
+		    ascending sequence of percentile (e.g., [5, 95]) to set the
+		    whiskers at specific percentiles of the data. Finally, `whis`
+		    can be the string ``'range'`` to force the whiskers to the
+		    minimum and maximum of the data. In the edge case that the 25th
+		    and 75th percentiles are equivalent, `whis` can be automatically
+		    set to ``'range'`` via the `autorange` option.
 		
-		bootstrap : int or None (default)
-		    Number of times the confidence intervals around the median should
-		    be bootstrapped (percentile method).
+		bootstrap : int, optional
+		    Number of times the confidence intervals around the median
+		    should be bootstrapped (percentile method).
 		
-		labels : sequence
-		    Labels for each dataset. Length must be compatible with dimensions
-		    of `X`
+		labels : array-like, optional
+		    Labels for each dataset. Length must be compatible with
+		    dimensions of `X`.
+		
+		autorange : bool, optional (False)
+		    When `True` and the data are distributed such that the  25th and
+		    75th percentiles are equal, ``whis`` is set to ``'range'`` such
+		    that the whisker ends are at the minimum and maximum of the
+		    data.
 		
 		Returns
 		-------
@@ -123,8 +129,8 @@ package matplotlib.cbook;
 		
 		Notes
 		-----
-		Non-bootstrapping approach to confidence interval uses Gaussian-based
-		asymptotic approximation:
+		Non-bootstrapping approach to confidence interval uses Gaussian-
+		based asymptotic approximation:
 		
 		.. math::
 		
@@ -134,7 +140,7 @@ package matplotlib.cbook;
 		McGill, R., Tukey, J.W., and Larsen, W.A. (1978) "Variations of
 		Boxplots", The American Statistician, 32:12-16.
 	**/
-	static public function boxplot_stats(X:Dynamic, ?whis:Dynamic, ?bootstrap:Dynamic, ?labels:Dynamic):Dynamic;
+	static public function boxplot_stats(X:Dynamic, ?whis:Dynamic, ?bootstrap:Dynamic, ?labels:Dynamic, ?autorange:Dynamic):Dynamic;
 	/**
 		Remove excess indentation from docstring *s*.
 		
@@ -305,6 +311,10 @@ package matplotlib.cbook;
 		   The x and y values to plot.
 	**/
 	static public function index_of(y:Dynamic):Dynamic;
+	/**
+		Returns true if *obj* can be hashed
+	**/
+	static public function is_hashable(obj:Dynamic):Dynamic;
 	static public function is_math_text(s:Dynamic):Dynamic;
 	/**
 		return true if *obj* looks like a number
@@ -388,6 +398,48 @@ package matplotlib.cbook;
 		    > chmod MODE NEWDIR
 	**/
 	static public function mkdirs(newdir:Dynamic, ?mode:Dynamic):Dynamic;
+	/**
+		Helper function to normalize kwarg inputs
+		
+		The order they are resolved are:
+		
+		 1. aliasing
+		 2. required
+		 3. forbidden
+		 4. allowed
+		
+		This order means that only the canonical names need appear in
+		`allowed`, `forbidden`, `required`
+		
+		Parameters
+		----------
+		
+		alias_mapping, dict, optional
+		    A mapping between a canonical name to a list of
+		    aliases, in order of precedence from lowest to highest.
+		
+		    If the canonical value is not in the list it is assumed to have
+		    the highest priority.
+		
+		required : iterable, optional
+		    A tuple of fields that must be in kwargs.
+		
+		forbidden : iterable, optional
+		    A list of keys which may not be in kwargs
+		
+		allowed : tuple, optional
+		    A tuple of allowed fields.  If this not None, then raise if
+		    `kw` contains any keys not in the union of `required`
+		    and `allowed`.  To allow only the required fields pass in
+		    ``()`` for `allowed`
+		
+		Raises
+		------
+		TypeError
+		    To match what python raises if invalid args/kwargs are passed to
+		    a callable.
+	**/
+	static public function normalize_kwargs(kw:Dynamic, ?alias_mapping:Dynamic, ?required:Dynamic, ?forbidden:Dynamic, ?allowed:Dynamic):Dynamic;
 	/**
 		Return *True* if one element of *seq* is *True*.  It *seq* is
 		empty, return *False*.
@@ -528,7 +580,7 @@ package matplotlib.cbook;
 	**/
 	static public function reverse_dict(d:Dynamic):Dynamic;
 	static public function safe_first_element(obj:Dynamic):Dynamic;
-	static public function safe_masked_invalid(x:Dynamic):Dynamic;
+	static public function safe_masked_invalid(x:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		make sure *args* are equal len before zipping
 	**/

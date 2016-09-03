@@ -612,7 +612,7 @@ package scipy.signal.bsplines;
 		
 		gamma(z)
 		
-		Gamma function
+		Gamma function.
 		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =

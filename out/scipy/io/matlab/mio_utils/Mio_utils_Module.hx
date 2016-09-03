@@ -6,6 +6,7 @@ package scipy.io.matlab.mio_utils;
 	static public var __loader__ : Dynamic;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
+	static public var __pyx_capi__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
 	/**
@@ -23,7 +24,6 @@ package scipy.io.matlab.mio_utils;
 		   ``arr``
 	**/
 	static public function chars_to_strings(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function cproduct(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return squeezed element
 		

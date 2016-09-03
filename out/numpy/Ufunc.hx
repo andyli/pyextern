@@ -240,7 +240,7 @@ package numpy;
 		1
 		>>> np.power.identity
 		1
-		>>> print np.exp.identity
+		>>> print(np.exp.identity)
 		None
 	**/
 	public var identity : Dynamic;

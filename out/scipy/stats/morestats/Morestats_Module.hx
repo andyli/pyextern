@@ -451,37 +451,6 @@ package scipy.stats.morestats;
 	**/
 	static public function anderson_ksamp(samples:Dynamic, ?midrank:Dynamic):Float;
 	/**
-		Return the angle of the complex argument.
-		
-		Parameters
-		----------
-		z : array_like
-		    A complex number or sequence of complex numbers.
-		deg : bool, optional
-		    Return angle in degrees if True, radians if False (default).
-		
-		Returns
-		-------
-		angle : ndarray or scalar
-		    The counterclockwise angle from the positive real axis on
-		    the complex plane, with dtype as numpy.float64.
-		
-		See Also
-		--------
-		arctan2
-		absolute
-		
-		
-		
-		Examples
-		--------
-		>>> np.angle([1.0, 1.0j, 1+1j])               # in radians
-		array([ 0.        ,  1.57079633,  0.78539816])
-		>>> np.angle(1+1j, deg=True)                  # in degrees
-		45.0
-	**/
-	static public function angle(z:Dynamic, ?deg:Dynamic):Dynamic;
-	/**
 		Perform the Ansari-Bradley test for equal scale parameters
 		
 		The Ansari-Bradley test is a non-parametric test for the equality
@@ -648,6 +617,83 @@ package scipy.stats.morestats;
 		array([3, 5])
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		arctan2(x1, x2[, out])
+		
+		Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.
+		
+		The quadrant (i.e., branch) is chosen so that ``arctan2(x1, x2)`` is
+		the signed angle in radians between the ray ending at the origin and
+		passing through the point (1,0), and the ray ending at the origin and
+		passing through the point (`x2`, `x1`).  (Note the role reversal: the
+		"`y`-coordinate" is the first function parameter, the "`x`-coordinate"
+		is the second.)  By IEEE convention, this function is defined for
+		`x2` = +/-0 and for either or both of `x1` and `x2` = +/-inf (see
+		Notes for specific values).
+		
+		This function is not defined for complex-valued arguments; for the
+		so-called argument of complex values, use `angle`.
+		
+		Parameters
+		----------
+		x1 : array_like, real-valued
+		    `y`-coordinates.
+		x2 : array_like, real-valued
+		    `x`-coordinates. `x2` must be broadcastable to match the shape of
+		    `x1` or vice versa.
+		
+		Returns
+		-------
+		angle : ndarray
+		    Array of angles in radians, in the range ``[-pi, pi]``.
+		
+		See Also
+		--------
+		arctan, tan, angle
+		
+		Notes
+		-----
+		*arctan2* is identical to the `atan2` function of the underlying
+		C library.  The following special values are defined in the C
+		standard: [1]_
+		
+		====== ====== ================
+		`x1`   `x2`   `arctan2(x1,x2)`
+		====== ====== ================
+		+/- 0  +0     +/- 0
+		+/- 0  -0     +/- pi
+		 > 0   +/-inf +0 / +pi
+		 < 0   +/-inf -0 / -pi
+		+/-inf +inf   +/- (pi/4)
+		+/-inf -inf   +/- (3*pi/4)
+		====== ====== ================
+		
+		Note that +0 and -0 are distinct floating point numbers, as are +inf
+		and -inf.
+		
+		References
+		----------
+		.. [1] ISO/IEC standard 9899:1999, "Programming language C."
+		
+		Examples
+		--------
+		Consider four points in different quadrants:
+		
+		>>> x = np.array([-1, +1, +1, -1])
+		>>> y = np.array([-1, -1, +1, +1])
+		>>> np.arctan2(y, x) * 180 / np.pi
+		array([-135.,  -45.,   45.,  135.])
+		
+		Note the order of the parameters. `arctan2` is defined also when `x2` = 0
+		and at several other special points, obtaining values in
+		the range ``[-pi, pi]``:
+		
+		>>> np.arctan2([1., -1.], [0., 0.])
+		array([ 1.57079633, -1.57079633])
+		>>> np.arctan2([0., 0., np.inf], [+0., -0., np.inf])
+		array([ 0.        ,  3.14159265,  0.78539816])
+	**/
+	static public function arctan2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Evenly round to the given number of decimals.
 		
@@ -1015,7 +1061,7 @@ package scipy.stats.morestats;
 		>>> mean
 		Mean(statistic=9.0, minmax=(7.1036502226125329, 10.896349777387467))
 		>>> var
-		Variance(statistic=10.0, minmax=(3.1767242068607087, 24.459103821334018))
+		Variance(statistic=10.0, minmax=(3.176724206..., 24.45910382...))
 		>>> std
 		Std_dev(statistic=2.9724954732045084, minmax=(1.7823367265645143, 4.9456146050146295))
 		
@@ -1062,6 +1108,9 @@ package scipy.stats.morestats;
 		p : float, optional
 		    The hypothesized probability of success.  0 <= p <= 1. The
 		    default value is p = 0.5
+		alternative : {'two-sided', 'greater', 'less'}, optional
+		    Indicates the alternative hypothesis. The default value is
+		    'two-sided'.
 		
 		Returns
 		-------
@@ -1663,6 +1712,55 @@ package scipy.stats.morestats;
 	**/
 	static public function compress(condition:Dynamic, a:Dynamic, ?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
+		cos(x[, out])
+		
+		Cosine element-wise.
+		
+		Parameters
+		----------
+		x : array_like
+		    Input array in radians.
+		out : ndarray, optional
+		    Output array of same shape as `x`.
+		
+		Returns
+		-------
+		y : ndarray
+		    The corresponding cosine values.
+		
+		Raises
+		------
+		ValueError: invalid return array shape
+		    if `out` is provided and `out.shape` != `x.shape` (See Examples)
+		
+		Notes
+		-----
+		If `out` is provided, the function writes the result into it,
+		and returns a reference to `out`.  (See Examples)
+		
+		References
+		----------
+		M. Abramowitz and I. A. Stegun, Handbook of Mathematical Functions.
+		New York, NY: Dover, 1972.
+		
+		Examples
+		--------
+		>>> np.cos(np.array([0, np.pi/2, np.pi]))
+		array([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])
+		>>>
+		>>> # Example of providing the optional output parameter
+		>>> out2 = np.cos([0.1], out1)
+		>>> out2 is out1
+		True
+		>>>
+		>>> # Example of ValueError due to provision of shape mis-matched `out`
+		>>> np.cos(np.zeros((3,3)),np.zeros((2,2)))
+		Traceback (most recent call last):
+		  File "<stdin>", line 1, in <module>
+		ValueError: invalid return array shape
+	**/
+	static public function cos(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		count_nonzero(a)
 		
 		Counts the number of non-zero values in the array ``a``.
@@ -1880,6 +1978,44 @@ package scipy.stats.morestats;
 		array([-2., -2., -1.,  0.,  1.,  1.,  2.])
 	**/
 	static public function floor(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		hypot(x1, x2[, out])
+		
+		Given the "legs" of a right triangle, return its hypotenuse.
+		
+		Equivalent to ``sqrt(x1**2 + x2**2)``, element-wise.  If `x1` or
+		`x2` is scalar_like (i.e., unambiguously cast-able to a scalar type),
+		it is broadcast for use with each element of the other argument.
+		(See Examples)
+		
+		Parameters
+		----------
+		x1, x2 : array_like
+		    Leg of the triangle(s).
+		out : ndarray, optional
+		    Array into which the output is placed. Its type is preserved and it
+		    must be of the right shape to hold the output. See doc.ufuncs.
+		
+		Returns
+		-------
+		z : ndarray
+		    The hypotenuse of the triangle(s).
+		
+		Examples
+		--------
+		>>> np.hypot(3*np.ones((3, 3)), 4*np.ones((3, 3)))
+		array([[ 5.,  5.,  5.],
+		       [ 5.,  5.,  5.],
+		       [ 5.,  5.,  5.]])
+		
+		Example showing broadcast of scalar_like argument:
+		
+		>>> np.hypot(3*np.ones((3, 3)), [4])
+		array([[ 5.,  5.,  5.],
+		       [ 5.,  5.,  5.],
+		       [ 5.,  5.,  5.]])
+	**/
+	static public function hypot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns True if the type of `num` is a scalar type.
 		
@@ -2368,7 +2504,7 @@ package scipy.stats.morestats;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']
@@ -2644,7 +2780,7 @@ package scipy.stats.morestats;
 		
 		>>> plt.show()
 	**/
-	static public function probplot(x:Dynamic, ?sparams:Dynamic, ?dist:Dynamic, ?fit:Dynamic, ?plot:Dynamic):Dynamic;
+	static public function probplot(x:Dynamic, ?sparams:Dynamic, ?dist:Dynamic, ?fit:Dynamic, ?plot:Dynamic, ?rvalue:Dynamic):Dynamic;
 	static public var r_ : Dynamic;
 	/**
 		Return a contiguous flattened array.
@@ -2710,20 +2846,20 @@ package scipy.stats.morestats;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -2835,6 +2971,62 @@ package scipy.stats.morestats;
 		(0.9772805571556091, 0.08144091814756393)
 	**/
 	static public function shapiro(x:Dynamic, ?a:Dynamic, ?reta:Dynamic):Float;
+	/**
+		sin(x[, out])
+		
+		Trigonometric sine, element-wise.
+		
+		Parameters
+		----------
+		x : array_like
+		    Angle, in radians (:math:`2 \pi` rad equals 360 degrees).
+		
+		Returns
+		-------
+		y : array_like
+		    The sine of each element of x.
+		
+		See Also
+		--------
+		arcsin, sinh, cos
+		
+		Notes
+		-----
+		The sine is one of the fundamental functions of trigonometry (the
+		mathematical study of triangles).  Consider a circle of radius 1
+		centered on the origin.  A ray comes in from the :math:`+x` axis, makes
+		an angle at the origin (measured counter-clockwise from that axis), and
+		departs from the origin.  The :math:`y` coordinate of the outgoing
+		ray's intersection with the unit circle is the sine of that angle.  It
+		ranges from -1 for :math:`x=3\pi / 2` to +1 for :math:`\pi / 2.`  The
+		function has zeroes where the angle is a multiple of :math:`\pi`.
+		Sines of angles between :math:`\pi` and :math:`2\pi` are negative.
+		The numerous properties of the sine and related functions are included
+		in any standard trigonometry text.
+		
+		Examples
+		--------
+		Print sine of one angle:
+		
+		>>> np.sin(np.pi/2.)
+		1.0
+		
+		Print sines of an array of angles given in degrees:
+		
+		>>> np.sin(np.array((0., 30., 45., 60., 90.)) * np.pi / 180. )
+		array([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])
+		
+		Plot the sine function:
+		
+		>>> import matplotlib.pylab as plt
+		>>> x = np.linspace(-np.pi, np.pi, 201)
+		>>> plt.plot(x, np.sin(x))
+		>>> plt.xlabel('Angle [rad]')
+		>>> plt.ylabel('sin(x)')
+		>>> plt.axis('tight')
+		>>> plt.show()
+	**/
+	static public function sin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return a sorted copy of an array.
 		

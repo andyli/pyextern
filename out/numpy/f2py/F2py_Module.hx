@@ -11,6 +11,7 @@ package numpy.f2py;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Run benchmarks for module using nose.
@@ -68,9 +69,23 @@ package numpy.f2py;
 	static public function bench(?label:Dynamic, ?verbose:Dynamic, ?extra_argv:Dynamic):Bool;
 	/**
 		Build extension module from processing source with f2py.
-		Read the source of this function for more information.
+		
+		Parameters
+		----------
+		source : str
+		    Fortran source of module / subroutine to compile
+		modulename : str, optional
+		    the name of compiled python module
+		extra_args: str, optional
+		    additional parameters passed to f2py
+		verbose: bool, optional
+		    print f2py output to screen
+		extension: {'.f', '.f90'}, optional
+		    filename extension influences the fortran compiler behavior
+		
+		    .. versionadded:: 1.11.0
 	**/
-	static public function compile(source:Dynamic, ?modulename:Dynamic, ?extra_args:Dynamic, ?verbose:Dynamic, ?source_fn:Dynamic):Dynamic;
+	static public function compile(source:Dynamic, ?modulename:Dynamic, ?extra_args:Dynamic, ?verbose:Dynamic, ?source_fn:Dynamic, ?extension:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	static public function main():Dynamic;
 	static public var print_function : Dynamic;

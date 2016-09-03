@@ -621,7 +621,7 @@ package numpy.lib.polynomial;
 		       [ 3.,  1.]])
 		
 		>>> m, c = np.linalg.lstsq(A, y)[0]
-		>>> print m, c
+		>>> print(m, c)
 		1.0 -0.95
 		
 		Plot the data along with the fitted line:
@@ -747,7 +747,7 @@ package numpy.lib.polynomial;
 		
 		See Also
 		--------
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		roots : Return the roots of a polynomial.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
@@ -840,12 +840,12 @@ package numpy.lib.polynomial;
 		
 		>>> p1 = np.poly1d([1, 2])
 		>>> p2 = np.poly1d([9, 5, 4])
-		>>> print p1
+		>>> print(p1)
 		1 x + 2
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 4
-		>>> print np.polyadd(p1, p2)
+		>>> print(np.polyadd(p1, p2))
 		   2
 		9 x + 6 x + 6
 	**/
@@ -972,7 +972,8 @@ package numpy.lib.polynomial;
 		    default) just the coefficients are returned, when True diagnostic
 		    information from the singular value decomposition is also returned.
 		w : array_like, shape (M,), optional
-		    weights to apply to the y-coordinates of the sample points.
+		    Weights to apply to the y-coordinates of the sample points. For
+		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
 		cov : bool, optional
 		    Return the estimate and the covariance matrix of the estimate
 		    If full is True, then cov is not returned.
@@ -1010,7 +1011,7 @@ package numpy.lib.polynomial;
 		
 		See Also
 		--------
-		polyval : Computes polynomial values.
+		polyval : Compute polynomial values.
 		linalg.lstsq : Computes a least-squares fit.
 		scipy.interpolate.UnivariateSpline : Computes spline fits.
 		
@@ -1193,13 +1194,13 @@ package numpy.lib.polynomial;
 		
 		>>> p1 = np.poly1d([1, 2, 3])
 		>>> p2 = np.poly1d([9, 5, 1])
-		>>> print p1
+		>>> print(p1)
 		   2
 		1 x + 2 x + 3
-		>>> print p2
+		>>> print(p2)
 		   2
 		9 x + 5 x + 1
-		>>> print np.polymul(p1, p2)
+		>>> print(np.polymul(p1, p2))
 		   4      3      2
 		9 x + 23 x + 38 x + 17 x + 3
 	**/
@@ -1251,7 +1252,7 @@ package numpy.lib.polynomial;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns
@@ -1350,7 +1351,7 @@ package numpy.lib.polynomial;
 		--------
 		poly : Find the coefficients of a polynomial with a given sequence
 		       of roots.
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
 		

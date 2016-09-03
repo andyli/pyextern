@@ -55,10 +55,11 @@ package scipy.optimize._basinhopping;
 		    Define a test which will be used to judge whether or not to accept the
 		    step.  This will be used in addition to the Metropolis test based on
 		    "temperature" ``T``.  The acceptable return values are True,
-		    False, or ``"force accept"``.  If the latter, then this will
-		    override any other tests in order to accept the step.  This can be
-		    used, for example, to forcefully escape from a local minimum that
-		    ``basinhopping`` is trapped in.
+		    False, or ``"force accept"``. If any of the tests return False
+		    then the step is rejected. If the latter, then this will override any
+		    other tests in order to accept the step. This can be used, for example,
+		    to forcefully escape from a local minimum that ``basinhopping`` is
+		    trapped in.
 		callback : callable, ``callback(x, f, accept)``, optional
 		    A callback function which will be called for all minima found.  ``x``
 		    and ``f`` are the coordinates and function value of the trial minimum,

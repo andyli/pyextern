@@ -121,6 +121,7 @@ package pandas.io.parsers;
 	public function _maybe_parse_dates(values:Dynamic, index:Dynamic, ?try_parse_dates:Dynamic):Dynamic;
 	public function _set_noconvert_columns():Dynamic;
 	public function _should_parse_dates(i:Dynamic):Dynamic;
+	public function close():Dynamic;
 	public function read(?nrows:Dynamic):Dynamic;
 	public function set_error_bad_lines(status:Dynamic):Dynamic;
 }

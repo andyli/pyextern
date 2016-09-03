@@ -48,9 +48,9 @@ package scipy.cluster.vq;
 		
 		Returns
 		-------
-		code_book :
+		code_book
 		    the lowest distortion codebook found.
-		avg_dist :
+		avg_dist
 		    the average distance a observation is from a code in the book.
 		    Lower means the code_book matches the data better.
 		
@@ -441,16 +441,13 @@ package scipy.cluster.vq;
 		    (not used yet)
 		minit : str, optional
 		    Method for initialization. Available methods are 'random',
-		    'points', 'uniform', and 'matrix':
+		    'points', and 'matrix':
 		
 		    'random': generate k centroids from a Gaussian with mean and
 		    variance estimated from the data.
 		
 		    'points': choose k observations (rows) at random from data for
 		    the initial centroids.
-		
-		    'uniform': generate k observations from the data from a uniform
-		    distribution defined by the data set (unsupported).
 		
 		    'matrix': interpret the k parameter as a k by M (or length k
 		    array for one-dimensional data) array of initial centroids.
@@ -691,13 +688,13 @@ package scipy.cluster.vq;
 	**/
 	static public function py_vq2(obs:Dynamic, code_book:Dynamic, ?check_finite:Dynamic):Dynamic;
 	/**
-		randint(low, high=None, size=None)
+		randint(low, high=None, size=None, dtype='l')
 		
 		Return random integers from `low` (inclusive) to `high` (exclusive).
 		
-		Return random integers from the "discrete uniform" distribution in the
-		"half-open" interval [`low`, `high`). If `high` is None (the default),
-		then results are from [0, `low`).
+		Return random integers from the "discrete uniform" distribution of
+		the specified dtype in the "half-open" interval [`low`, `high`). If
+		`high` is None (the default), then results are from [0, `low`).
 		
 		Parameters
 		----------
@@ -712,6 +709,13 @@ package scipy.cluster.vq;
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
 		    single value is returned.
+		dtype : dtype, optional
+		    Desired dtype of the result. All dtypes are determined by their
+		    name, i.e., 'int64', 'int', etc, so byteorder is not available
+		    and a specific precision may have different C types depending
+		    on the platform. The default value is 'np.int'.
+		
+		    .. versionadded:: 1.11.0
 		
 		Returns
 		-------

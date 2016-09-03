@@ -390,10 +390,6 @@ package pandas.core.series;
 		Internal function, should always return unicode string
 	**/
 	public function _get_repr(?name:Dynamic, ?header:Dynamic, ?index:Dynamic, ?length:Dynamic, ?dtype:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?max_rows:Dynamic):Dynamic;
-	/**
-		Return self[key].
-	**/
-	public function _get_val_at(key:Dynamic):Dynamic;
 	public function _get_values(indexer:Dynamic):Dynamic;
 	public function _get_values_tuple(key:Dynamic):Dynamic;
 	public function _get_with(key:Dynamic):Dynamic;
@@ -442,15 +438,6 @@ package pandas.core.series;
 	public function _make_cat_accessor():Dynamic;
 	public function _make_dt_accessor():Dynamic;
 	public function _make_str_accessor():Dynamic;
-	/**
-		evaluate a function with possible input/output conversion if we are i8
-		
-		Parameters
-		----------
-		dropna : bool, default False
-		   whether to drop values if necessary
-	**/
-	public function _maybe_box(func:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		The object has called back to us saying maybe it has changed.
 		
@@ -974,7 +961,7 @@ package pandas.core.series;
 		DataFrame.idxmax
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic, ?out:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function argmax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Index of first occurrence of minimum of values.
 		
@@ -996,7 +983,7 @@ package pandas.core.series;
 		DataFrame.idxmin
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic, ?out:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function argmin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Overrides ndarray.argsort. Argsorts the value, omitting NA/null values,
 		and places the result in the same locations as the non-NA values
@@ -1093,6 +1080,12 @@ package pandas.core.series;
 		converted : type of caller
 	**/
 	public function asfreq(freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic):Dynamic;
+	/**
+		return object Series which contains boxed values
+		
+		*this is an internal non-public method*
+	**/
+	public var asobject : Dynamic;
 	/**
 		Return last good (non-NaN) value in Series if value is NaN for
 		requested date.
@@ -1281,7 +1274,7 @@ package pandas.core.series;
 		3  0.230930  0.000000
 		4  1.100000  0.570967
 	**/
-	public function clip(?lower:Dynamic, ?upper:Dynamic, ?out:Dynamic, ?axis:Dynamic):pandas.Series;
+	public function clip(?lower:Dynamic, ?upper:Dynamic, ?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Return copy of the input with values below given value(s) truncated.
 		
@@ -1375,7 +1368,7 @@ package pandas.core.series;
 		--------
 		numpy.ndarray.compress
 	**/
-	public function compress(condition:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function compress(condition:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute NDFrame with "consolidated" internals (data of each dtype
 		grouped together in a single ndarray). Mainly an internal API function,
@@ -1425,12 +1418,18 @@ package pandas.core.series;
 	**/
 	public function convert_objects(?convert_dates:Dynamic, ?convert_numeric:Dynamic, ?convert_timedeltas:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Make a copy of this object
+		Make a copy of this objects data.
 		
 		Parameters
 		----------
 		deep : boolean or string, default True
-		    Make a deep copy, i.e. also copy data
+		    Make a deep copy, including a copy of the data and the indices.
+		    With ``deep=False`` neither the indices or the data are copied.
+		
+		    Note that when ``deep=True`` data is copied, actual python objects
+		    will not be copied recursively, only the reference to the object.
+		    This is in contrast to ``copy.deepcopy`` in the Standard Library,
+		    which recursively copies object data.
 		
 		Returns
 		-------
@@ -1487,7 +1486,7 @@ package pandas.core.series;
 	**/
 	public function cov(other:Dynamic, ?min_periods:Dynamic):Float;
 	/**
-		Return cumulative max over requested axis.
+		Return cumulative cummax over requested axis.
 		
 		Parameters
 		----------
@@ -1498,11 +1497,11 @@ package pandas.core.series;
 		
 		Returns
 		-------
-		max : scalar
+		cummax : scalar
 	**/
 	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return cumulative min over requested axis.
+		Return cumulative cummin over requested axis.
 		
 		Parameters
 		----------
@@ -1513,11 +1512,11 @@ package pandas.core.series;
 		
 		Returns
 		-------
-		min : scalar
+		cummin : scalar
 	**/
 	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return cumulative prod over requested axis.
+		Return cumulative cumprod over requested axis.
 		
 		Parameters
 		----------
@@ -1528,11 +1527,11 @@ package pandas.core.series;
 		
 		Returns
 		-------
-		prod : scalar
+		cumprod : scalar
 	**/
 	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return cumulative sum over requested axis.
+		Return cumulative cumsum over requested axis.
 		
 		Parameters
 		----------
@@ -1543,7 +1542,7 @@ package pandas.core.series;
 		
 		Returns
 		-------
-		sum : scalar
+		cumsum : scalar
 	**/
 	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -2188,7 +2187,7 @@ package pandas.core.series;
 		-------
 		GroupBy object
 	**/
-	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic):Dynamic;
+	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function gt(other:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var hasnans : Dynamic;
 	/**
@@ -2254,7 +2253,7 @@ package pandas.core.series;
 		DataFrame.idxmax
 		numpy.ndarray.argmax
 	**/
-	public function idxmax(?axis:Dynamic, ?out:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function idxmax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Index of first occurrence of minimum of values.
 		
@@ -2276,7 +2275,7 @@ package pandas.core.series;
 		DataFrame.idxmin
 		numpy.ndarray.argmin
 	**/
-	public function idxmin(?axis:Dynamic, ?out:Dynamic, ?skipna:Dynamic):Dynamic;
+	public function idxmin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		DEPRECATED. Use ``.iloc[i]`` or ``.iat[i]`` instead
 	**/
@@ -2298,6 +2297,8 @@ package pandas.core.series;
 		- A list or array of integers, e.g. ``[4, 3, 0]``.
 		- A slice object with ints, e.g. ``1:7``.
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.iloc`` will raise ``IndexError`` if a requested indexer is
 		out-of-bounds, except *slice* indexers which allow out-of-bounds
@@ -2318,7 +2319,8 @@ package pandas.core.series;
 		----------
 		method : {'linear', 'time', 'index', 'values', 'nearest', 'zero',
 		          'slinear', 'quadratic', 'cubic', 'barycentric', 'krogh',
-		          'polynomial', 'spline' 'piecewise_polynomial', 'pchip'}
+		          'polynomial', 'spline', 'piecewise_polynomial',
+		          'from_derivatives', 'pchip', 'akima'}
 		
 		    * 'linear': ignore the index and treat the values as equally
 		      spaced. This is the only method supported on MultiIndexes.
@@ -2332,12 +2334,21 @@ package pandas.core.series;
 		      require that you also specify an `order` (int),
 		      e.g. df.interpolate(method='polynomial', order=4).
 		      These use the actual numerical values of the index.
-		    * 'krogh', 'piecewise_polynomial', 'spline', and 'pchip' are all
+		    * 'krogh', 'piecewise_polynomial', 'spline', 'pchip' and 'akima' are all
 		      wrappers around the scipy interpolation methods of similar
 		      names. These use the actual numerical values of the index. See
 		      the scipy documentation for more on their behavior
 		      `here <http://docs.scipy.org/doc/scipy/reference/interpolate.html#univariate-interpolation>`__  # noqa
 		      `and here <http://docs.scipy.org/doc/scipy/reference/tutorial/interpolate.html>`__  # noqa
+		    * 'from_derivatives' refers to BPoly.from_derivatives which
+		      replaces 'piecewise_polynomial' interpolation method in scipy 0.18
+		
+		    .. versionadded:: 0.18.1
+		
+		       Added support for the 'akima' method
+		       Added interpolate method 'from_derivatives' which replaces
+		       'piecewise_polynomial' in scipy 0.18; backwards-compatible with
+		       scipy < 0.18
 		
 		axis : {0, 1}, default 0
 		    * 0: fill column-by-column
@@ -2399,10 +2410,14 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		values : list-like
+		values : set or list-like
 		    The sequence of values to test. Passing in a single string will
 		    raise a ``TypeError``. Instead, turn a single string into a
 		    ``list`` of one element.
+		
+		    .. versionadded:: 0.18.1
+		
+		    Support for values as a set
 		
 		Returns
 		-------
@@ -2573,6 +2588,8 @@ package pandas.core.series;
 		- A slice object with labels, e.g. ``'a':'f'`` (note that contrary
 		  to usual python slices, **both** the start and the stop are included!).
 		- A boolean array.
+		- A ``callable`` function with one argument (the calling Series, DataFrame
+		  or Panel) and that returns valid output for indexing (one of the above)
 		
 		``.loc`` will raise a ``KeyError`` when the items are not found.
 		
@@ -2641,8 +2658,26 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None
@@ -2863,6 +2898,7 @@ package pandas.core.series;
 		Series.rmul
 	**/
 	public function multiply(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
+	public var name : Dynamic;
 	/**
 		return the number of bytes in the underlying data 
 	**/
@@ -3208,7 +3244,8 @@ package pandas.core.series;
 	**/
 	public function ptp(?axis:Dynamic, ?skipna:Dynamic, ?level:Dynamic, ?numeric_only:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a ndarray with the values put
+		Applies the `put` method to its `values` attribute
+		if it has one.
 		
 		See also
 		--------
@@ -3656,13 +3693,14 @@ package pandas.core.series;
 	**/
 	public function reorder_levels(order:Dynamic):Dynamic;
 	/**
-		return a new Series with the values repeated reps times
+		Repeat elements of an Series. Refer to `numpy.ndarray.repeat`
+		for more information about the `reps` argument.
 		
 		See also
 		--------
 		numpy.ndarray.repeat
 	**/
-	public function repeat(reps:Dynamic):Dynamic;
+	public function repeat(reps:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Replace values given in 'to_replace' with 'value'.
 		
@@ -3905,13 +3943,13 @@ package pandas.core.series;
 	**/
 	public function reset_index(?level:Dynamic, ?drop:Dynamic, ?name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		return an ndarray with the values shape
-		if the specified shape matches exactly the current shape, then
-		return self (for compat)
+		Return the values attribute of `self` with shape `args`.
+		However, if the specified shape matches exactly the current
+		shape, `self` is returned for compatibility reasons.
 		
 		See also
 		--------
-		numpy.ndarray.take
+		numpy.ndarray.reshape
 	**/
 	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4059,8 +4097,9 @@ package pandas.core.series;
 		See Also
 		--------
 		numpy.around
+		DataFrame.round
 	**/
-	public function round(?decimals:Dynamic):Dynamic;
+	public function round(?decimals:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Exponential power of series and other, element-wise (binary operator `rpow`).
 		
@@ -4227,11 +4266,11 @@ package pandas.core.series;
 		Parameters
 		----------
 		v : array_like
-		    Values to insert into `a`.
+		    Values to insert into `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
 		    If 'right', return the last such index.  If there is no suitable
-		    index, return either 0 or N (where N is the length of `a`).
+		    index, return either 0 or N (where N is the length of `self`).
 		sorter : 1-D array_like, optional
 		    Optional array of integer indices that sort `self` into ascending
 		    order. They are typically the result of ``np.argsort``.
@@ -4243,7 +4282,6 @@ package pandas.core.series;
 		
 		See Also
 		--------
-		Series.sort_values
 		numpy.searchsorted
 		
 		Notes
@@ -4266,8 +4304,18 @@ package pandas.core.series;
 		array([0, 2])
 		>>> x.searchsorted([1, 3], side='right')
 		array([1, 3])
-		>>> x.searchsorted([1, 2], side='right', sorter=[0, 2, 1])
-		array([1, 3])
+		>>>
+		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		[apple, bread, bread, cheese, milk]
+		Categories (4, object): [apple < bread < cheese < milk]
+		>>> x.searchsorted('bread')
+		array([1])     # Note: an array, not a scalar
+		>>> x.searchsorted(['bread'])
+		array([1])
+		>>> x.searchsorted(['bread', 'eggs'])
+		array([1, 4])
+		>>> x.searchsorted(['bread', 'eggs'], side='right')
+		array([3, 4])    # eggs before milk
 	**/
 	public function searchsorted(v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
@@ -4510,7 +4558,7 @@ package pandas.core.series;
 	/**
 		Squeeze length 1 dimensions.
 	**/
-	public function squeeze():Dynamic;
+	public function squeeze(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return sample standard deviation over requested axis.
 		
@@ -4641,8 +4689,13 @@ package pandas.core.series;
 		Returns
 		-------
 		swapped : Series
+		
+		.. versionchanged:: 0.18.1
+		
+		   The indexes ``i`` and ``j`` are now optional, and default to
+		   the two innermost levels of the index.
 	**/
-	public function swaplevel(i:Dynamic, j:Dynamic, ?copy:Dynamic):pandas.Series;
+	public function swaplevel(?i:Dynamic, ?j:Dynamic, ?copy:Dynamic):pandas.Series;
 	/**
 		Returns last n rows
 	**/
@@ -4663,7 +4716,7 @@ package pandas.core.series;
 		--------
 		numpy.ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic):pandas.Series;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?convert:Dynamic, ?is_copy:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Attempt to write text representation of object to the system clipboard
 		This can be pasted into Excel, for example.
@@ -5064,7 +5117,7 @@ package pandas.core.series;
 	/**
 		return the transpose, which is by definition self 
 	**/
-	public function transpose():Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Floating division of series and other, element-wise (binary operator `truediv`).
 		
@@ -5332,8 +5385,26 @@ package pandas.core.series;
 		
 		Parameters
 		----------
-		cond : boolean NDFrame or array
-		other : scalar or NDFrame
+		cond : boolean NDFrame, array or callable
+		    If cond is callable, it is computed on the NDFrame and
+		    should return boolean NDFrame or array.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as cond.
+		
+		other : scalar, NDFrame, or callable
+		    If other is callable, it is computed on the NDFrame and
+		    should return scalar or NDFrame.
+		    The callable must not change input NDFrame
+		    (though pandas doesn't check it).
+		
+		    .. versionadded:: 0.18.1
+		
+		    A callable can be used as other.
+		
 		inplace : boolean, default False
 		    Whether to perform the operation in place on the data
 		axis : alignment axis if needed, default None

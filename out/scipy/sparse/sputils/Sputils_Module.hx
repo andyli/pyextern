@@ -10,91 +10,6 @@ package scipy.sparse.sputils;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		Find the unique elements of an array.
-		
-		Returns the sorted unique elements of an array. There are three optional
-		outputs in addition to the unique elements: the indices of the input array
-		that give the unique values, the indices of the unique array that
-		reconstruct the input array, and the number of times each unique value
-		comes up in the input array.
-		
-		Parameters
-		----------
-		ar : array_like
-		    Input array. This will be flattened if it is not already 1-D.
-		return_index : bool, optional
-		    If True, also return the indices of `ar` that result in the unique
-		    array.
-		return_inverse : bool, optional
-		    If True, also return the indices of the unique array that can be used
-		    to reconstruct `ar`.
-		return_counts : bool, optional
-		    If True, also return the number of times each unique value comes up
-		    in `ar`.
-		
-		    .. versionadded:: 1.9.0
-		
-		Returns
-		-------
-		unique : ndarray
-		    The sorted unique values.
-		unique_indices : ndarray, optional
-		    The indices of the first occurrences of the unique values in the
-		    (flattened) original array. Only provided if `return_index` is True.
-		unique_inverse : ndarray, optional
-		    The indices to reconstruct the (flattened) original array from the
-		    unique array. Only provided if `return_inverse` is True.
-		unique_counts : ndarray, optional
-		    The number of times each of the unique values comes up in the
-		    original array. Only provided if `return_counts` is True.
-		
-		    .. versionadded:: 1.9.0
-		
-		See Also
-		--------
-		numpy.lib.arraysetops : Module with a number of other functions for
-		                        performing set operations on arrays.
-		
-		Examples
-		--------
-		>>> np.unique([1, 1, 2, 2, 3, 3])
-		array([1, 2, 3])
-		>>> a = np.array([[1, 1], [2, 3]])
-		>>> np.unique(a)
-		array([1, 2, 3])
-		
-		Return the indices of the original array that give the unique values:
-		
-		>>> a = np.array(['a', 'b', 'b', 'c', 'a'])
-		>>> u, indices = np.unique(a, return_index=True)
-		>>> u
-		array(['a', 'b', 'c'],
-		       dtype='|S1')
-		>>> indices
-		array([0, 1, 3])
-		>>> a[indices]
-		array(['a', 'b', 'c'],
-		       dtype='|S1')
-		
-		Reconstruct the input array from the unique values:
-		
-		>>> a = np.array([1, 2, 6, 4, 2, 3, 2])
-		>>> u, indices = np.unique(a, return_inverse=True)
-		>>> u
-		array([1, 2, 3, 4, 6])
-		>>> indices
-		array([0, 1, 4, 3, 1, 2, 1])
-		>>> u[indices]
-		array([1, 2, 6, 4, 2, 3, 2])
-	**/
-	static public function _compat_unique(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic, ?return_counts:Dynamic):Dynamic;
-	/**
-		Copy of numpy.unique() from Numpy 1.7.1.
-		
-		Earlier versions have bugs in how return_index behaves.
-	**/
-	static public function _compat_unique_impl(ar:Dynamic, ?return_index:Dynamic, ?return_inverse:Dynamic):Dynamic;
 	static public var _upcast_memo : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
@@ -125,6 +40,10 @@ package scipy.sparse.sputils;
 		    Suitable index data type (int32 or int64)
 	**/
 	static public function get_index_dtype(?arrays:Dynamic, ?maxval:Dynamic, ?check_contents:Dynamic):Dynamic;
+	/**
+		Mimic numpy's casting for np.sum
+	**/
+	static public function get_sum_dtype(dtype:Dynamic):Dynamic;
 	/**
 		Function used to simplify argument processing.  If 'dtype' is not
 		specified (is None), returns a.dtype; otherwise returns a np.dtype
@@ -181,4 +100,5 @@ package scipy.sparse.sputils;
 		type `dtype` and a scalar.
 	**/
 	static public function upcast_scalar(dtype:Dynamic, scalar:Dynamic):Dynamic;
+	static public function validateaxis(axis:Dynamic):Dynamic;
 }

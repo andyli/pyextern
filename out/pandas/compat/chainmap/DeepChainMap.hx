@@ -96,6 +96,9 @@ package pandas.compat.chainmap;
 		helper for pickle
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
 	public function __repr__():Dynamic;
 	/**
 		Implement setattr(self, name, value).

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.axisgrid;
 @:pythonImport("seaborn.axisgrid") extern class Axisgrid_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -119,5 +120,4 @@ package seaborn.axisgrid;
 	**/
 	static public function dedent(text:Dynamic):Dynamic;
 	static public var division : Dynamic;
-	static public var string_types : Dynamic;
 }

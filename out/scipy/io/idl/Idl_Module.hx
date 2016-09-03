@@ -112,14 +112,14 @@ package scipy.io.idl;
 	static public var division : Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		Read an IDL .sav file
+		Read an IDL .sav file.
 		
 		Parameters
 		----------
 		file_name : str
 		    Name of the IDL save file.
 		idict : dict, optional
-		    Dictionary in which to insert .sav file variables
+		    Dictionary in which to insert .sav file variables.
 		python_dict : bool, optional
 		    By default, the object return is not a Python dictionary, but a
 		    case-insensitive dictionary with item, attribute, and call access

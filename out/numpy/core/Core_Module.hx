@@ -20,6 +20,8 @@ package numpy.core;
 	static public var Inf : Dynamic;
 	static public var Infinity : Dynamic;
 	static public var MAXDIMS : Dynamic;
+	static public var MAY_SHARE_BOUNDS : Dynamic;
+	static public var MAY_SHARE_EXACT : Dynamic;
 	static public var NAN : Dynamic;
 	static public var NINF : Dynamic;
 	static public var NZERO : Dynamic;
@@ -47,6 +49,7 @@ package numpy.core;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	static public function _ufunc_reconstruct(module:Dynamic, name:Dynamic):Dynamic;
 	/**
 		absolute(x[, out])
@@ -1240,7 +1243,7 @@ package numpy.core;
 		-------
 		index_array : ndarray, int
 		    Array of indices that sort `a` along the specified axis.
-		    In other words, ``a[index_array]`` yields a sorted `a`.
+		    If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.
 		
 		See Also
 		--------
@@ -1565,8 +1568,8 @@ package numpy.core;
 		Examples
 		--------
 		>>> x = np.array([1e-16,1,2,3])
-		>>> print np.array2string(x, precision=2, separator=',',
-		...                       suppress_small=True)
+		>>> print(np.array2string(x, precision=2, separator=',',
+		...                       suppress_small=True))
 		[ 0., 1., 2., 3.]
 		
 		>>> x  = np.arange(3.)
@@ -2014,7 +2017,7 @@ package numpy.core;
 		True
 		
 		>>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		...     print arr, arr.shape
+		...     print(arr, arr.shape)
 		...
 		[[[1]
 		  [2]]] (1, 2, 1)
@@ -3111,11 +3114,11 @@ package numpy.core;
 		      completely, and boundary effects may be seen.
 		
 		    'same':
-		      Mode `same` returns output of length ``max(M, N)``.  Boundary
+		      Mode 'same' returns output of length ``max(M, N)``.  Boundary
 		      effects are still visible.
 		
 		    'valid':
-		      Mode `valid` returns output of length
+		      Mode 'valid' returns output of length
 		      ``max(M, N) - min(M, N) + 1``.  The convolution product is only given
 		      for points where the signals overlap completely.  Values outside
 		      the signal boundary have no effect.
@@ -3259,7 +3262,7 @@ package numpy.core;
 		    Input sequences.
 		mode : {'valid', 'same', 'full'}, optional
 		    Refer to the `convolve` docstring.  Note that the default
-		    is `valid`, unlike `convolve`, which uses `full`.
+		    is 'valid', unlike `convolve`, which uses 'full'.
 		old_behavior : bool
 		    `old_behavior` was removed in NumPy 1.10. If you need the old
 		    behavior, use `multiarray.correlate`.
@@ -3628,7 +3631,7 @@ package numpy.core;
 		
 		trapz : Integration of array values using the composite trapezoidal rule.
 		
-		diff :  Calculate the n-th order discrete difference along given axis.
+		diff :  Calculate the n-th discrete difference along given axis.
 		
 		Notes
 		-----
@@ -3743,11 +3746,11 @@ package numpy.core;
 		but depending on this fact is deprecated. Writing to the resulting
 		array continues to work as it used to, but a FutureWarning is issued.
 		
-		In NumPy 1.9 it returns a read-only view on the original array.
+		Starting in NumPy 1.9 it returns a read-only view on the original array.
 		Attempting to write to the resulting array will produce an error.
 		
-		In NumPy 1.10, it will return a read/write view and writing to the
-		returned array will alter your original array.  The returned array
+		In some future release, it will return a read/write view and writing to
+		the returned array will alter your original array.  The returned array
 		will have the same type as the input array.
 		
 		If you don't write to the array returned by this function, then you can
@@ -3962,7 +3965,7 @@ package numpy.core;
 		
 		Using the Einstein summation convention, many common multi-dimensional
 		array operations can be represented in a simple fashion.  This function
-		provides a way compute such summations. The best way to understand this
+		provides a way to compute such summations. The best way to understand this
 		function is to try the examples below, which show how many common NumPy
 		functions can be implemented as calls to `einsum`.
 		
@@ -4192,8 +4195,8 @@ package numpy.core;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -4604,8 +4607,10 @@ package numpy.core;
 	/**
 		floor_divide(x1, x2[, out])
 		
-		Return the largest integer smaller or equal to the division of the
-		inputs.
+		Return the largest integer smaller or equal to the division of the inputs.
+		It is equivalent to the Python ``//`` operator and pairs with the
+		Python ``%`` (`remainder`), function so that ``b = a % b + b * (a // b)``
+		up to roundoff.
 		
 		Parameters
 		----------
@@ -4622,6 +4627,7 @@ package numpy.core;
 		
 		See Also
 		--------
+		remainder : Remainder complementary to floor_divide.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -5322,7 +5328,7 @@ package numpy.core;
 		
 		>>> oldsettings = np.seterr(all='call')
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		>>> oldhandler = np.seterrcall(err_handler)
 		>>> np.array([1, 2, 3]) / 0.0
 		Floating point error (divide by zero), with flag 1
@@ -5378,7 +5384,7 @@ package numpy.core;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> old_bufsize = np.setbufsize(20000)
 		>>> old_err = np.seterr(divide='raise')
@@ -5636,7 +5642,7 @@ package numpy.core;
 		Parameters
 		----------
 		a, b : array_like
-		    If `a` and `b` are nonscalar, their last dimensions of must match.
+		    If `a` and `b` are nonscalar, their last dimensions must match.
 		
 		Returns
 		-------
@@ -6384,7 +6390,7 @@ package numpy.core;
 		>>> a = [1,5,1,4,3,4,4] # First column
 		>>> b = [9,4,0,4,0,2,1] # Second column
 		>>> ind = np.lexsort((b,a)) # Sort by a, then by b
-		>>> print ind
+		>>> print(ind)
 		[2 0 4 6 5 3 1]
 		
 		>>> [(a[i],b[i]) for i in ind]
@@ -6503,7 +6509,7 @@ package numpy.core;
 		representation are ignored.
 		
 		Optional keyword arguments are *fix_imports*, *encoding* and *errors*,
-		which are used to control compatiblity support for pickle stream
+		which are used to control compatibility support for pickle stream
 		generated by Python 2.  If *fix_imports* is True, pickle will try to
 		map the old Python 2 names to the new names used in Python 3.  The
 		*encoding* and *errors* tell pickle how to decode 8-bit string
@@ -7301,26 +7307,39 @@ package numpy.core;
 	**/
 	static public function maximum_sctype(t:Dynamic):Dynamic;
 	/**
-		Determine if two arrays can share memory
+		may_share_memory(a, b, max_work=None)
 		
-		The memory-bounds of a and b are computed.  If they overlap then
-		this function returns True.  Otherwise, it returns False.
+		Determine if two arrays might share memory
 		
 		A return of True does not necessarily mean that the two arrays
 		share any element.  It just means that they *might*.
 		
+		Only the memory bounds of a and b are checked by default.
+		
 		Parameters
 		----------
 		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem.  See
+		    `shares_memory` for details.  Default for ``may_share_memory``
+		    is to do a bounds check.
 		
 		Returns
 		-------
 		out : bool
 		
+		See Also
+		--------
+		shares_memory
+		
 		Examples
 		--------
 		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
 		False
+		>>> x = np.zeros([3, 4])
+		>>> np.may_share_memory(x[:,0], x[:,1])
+		True
 	**/
 	static public function may_share_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -7589,9 +7608,9 @@ package numpy.core;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -7607,11 +7626,12 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -7660,6 +7680,54 @@ package numpy.core;
 		(-0.5, -0)
 	**/
 	static public function modf(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Move axes of an array to new positions.
+		
+		Other axes remain in their original order.
+		
+		.. versionadded::1.11.0
+		
+		Parameters
+		----------
+		a : np.ndarray
+		    The array whose axes should be reordered.
+		source : int or sequence of int
+		    Original positions of the axes to move. These must be unique.
+		destination : int or sequence of int
+		    Destination positions for each of the original axes. These must also be
+		    unique.
+		
+		Returns
+		-------
+		result : np.ndarray
+		    Array with moved axes. This array is a view of the input array.
+		
+		See Also
+		--------
+		transpose: Permute the dimensions of an array.
+		swapaxes: Interchange two axes of an array.
+		
+		Examples
+		--------
+		
+		>>> x = np.zeros((3, 4, 5))
+		>>> np.moveaxis(x, 0, -1).shape
+		(4, 5, 3)
+		>>> np.moveaxis(x, -1, 0).shape
+		(5, 3, 4)
+		
+		These all achieve the same result:
+		
+		>>> np.transpose(x).shape
+		(5, 4, 3)
+		>>> np.swapaxis(x, 0, -1).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1], [-1, -2]).shape
+		(5, 4, 3)
+		>>> np.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape
+		(5, 4, 3)
+	**/
+	static public function moveaxis(a:Dynamic, source:Dynamic, destination:Dynamic):Dynamic;
 	/**
 		multiply(x1, x2[, out])
 		
@@ -8228,29 +8296,31 @@ package numpy.core;
 		a : array_like
 		    Input data.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.
-		    The default (`axis` = `None`) is perform a product over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a product is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : data-type, optional
-		    The data-type of the returned array, as well as of the accumulator
-		    in which the elements are multiplied.  By default, if `a` is of
-		    integer type, `dtype` is the default platform integer. (Note: if
-		    the type of `a` is unsigned, then so is `dtype`.)  Otherwise,
-		    the dtype is the same as that of `a`.
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the
-		    output values will be cast if necessary.
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -8671,20 +8741,20 @@ package numpy.core;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -8747,9 +8817,9 @@ package numpy.core;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -8765,11 +8835,12 @@ package numpy.core;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -9239,6 +9310,7 @@ package numpy.core;
 		
 		See Also
 		--------
+		moveaxis : Move array axes to new positions.
 		roll : Roll the elements of an array by a number of positions along a
 		    given axis.
 		
@@ -9300,7 +9372,7 @@ package numpy.core;
 		Examples
 		--------
 		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
-		...     print np.sctype2char(sctype)
+		...     print(np.sctype2char(sctype))
 		l
 		d
 		D
@@ -9476,13 +9548,13 @@ package numpy.core;
 		Floating point precision can be set:
 		
 		>>> np.set_printoptions(precision=4)
-		>>> print np.array([1.123456789])
+		>>> print(np.array([1.123456789]))
 		[ 1.1235]
 		
 		Long arrays can be summarised:
 		
 		>>> np.set_printoptions(threshold=5)
-		>>> print np.arange(10)
+		>>> print(np.arange(10))
 		[0 1 2 ..., 7 8 9]
 		
 		Small results can be suppressed:
@@ -9540,7 +9612,7 @@ package numpy.core;
 		>>> a = np.arange(10)
 		>>> a
 		HA! - What are you going to do now?
-		>>> print a
+		>>> print(a)
 		[0 1 2 3 4 5 6 7 8 9]
 		
 		We can reset the function to the default:
@@ -9691,7 +9763,7 @@ package numpy.core;
 		Callback upon error:
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		
 		>>> saved_handler = np.seterrcall(err_handler)
@@ -9710,7 +9782,7 @@ package numpy.core;
 		
 		>>> class Log(object):
 		...     def write(self, msg):
-		...         print "LOG: %s" % msg
+		...         print("LOG: %s" % msg)
 		...
 		
 		>>> log = Log()
@@ -9773,7 +9845,7 @@ package numpy.core;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> new_errobj = [20000, 12, err_handler]
 		>>> np.seterrobj(new_errobj)
@@ -9823,11 +9895,56 @@ package numpy.core;
 	**/
 	static public function shape(a:Dynamic):Dynamic;
 	/**
+		shares_memory(a, b, max_work=None)
+		
+		Determine if two arrays share memory
+		
+		Parameters
+		----------
+		a, b : ndarray
+		    Input arrays
+		max_work : int, optional
+		    Effort to spend on solving the overlap problem (maximum number
+		    of candidate solutions to consider). The following special
+		    values are recognized:
+		
+		    max_work=MAY_SHARE_EXACT  (default)
+		        The problem is solved exactly. In this case, the function returns
+		        True only if there is an element shared between the arrays.
+		    max_work=MAY_SHARE_BOUNDS
+		        Only the memory bounds of a and b are checked.
+		
+		Raises
+		------
+		numpy.TooHardError
+		    Exceeded max_work.
+		
+		Returns
+		-------
+		out : bool
+		
+		See Also
+		--------
+		may_share_memory
+		
+		Examples
+		--------
+		>>> np.may_share_memory(np.array([1,2]), np.array([5,8,9]))
+		False
+	**/
+	static public function shares_memory(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		sign(x[, out])
 		
 		Returns an element-wise indication of the sign of a number.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
+		is returned for nan inputs.
+		
+		For complex inputs, the `sign` function returns
+		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
+		
+		complex(nan, 0) is returned for complex nan inputs.
 		
 		Parameters
 		----------
@@ -9839,12 +9956,20 @@ package numpy.core;
 		y : ndarray
 		  The sign of `x`.
 		
+		Notes
+		-----
+		There is more than one definition of sign in common use for complex
+		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
+		which is different from a common alternative, :math:`x/|x|`.
+		
 		Examples
 		--------
 		>>> np.sign([-5., 4.5])
 		array([-1.,  1.])
 		>>> np.sign(0)
 		0
+		>>> np.sign(5-2j)
+		(1+0j)
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -10453,31 +10578,30 @@ package numpy.core;
 		a : array_like
 		    Elements to sum.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a sum is performed.
-		    The default (`axis` = `None`) is perform a sum over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a sum is performed.  The default,
+		    axis=None, will sum all of the elements of the input array.  If
+		    axis is negative it counts from the last to the first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a sum is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
+		    If axis is a tuple of ints, a sum is performed on all of the axes
+		    specified in the tuple instead of a single axis or all the axes as
+		    before.
 		dtype : dtype, optional
-		    The type of the returned array and of the accumulator in which
-		    the elements are summed.  By default, the dtype of `a` is used.
-		    An exception is when `a` has an integer type with less precision
-		    than the default platform integer.  In that case, the default
-		    platform integer is used instead.
+		    The type of the returned array and of the accumulator in which the
+		    elements are summed.  The dtype of `a` is used by default unless `a`
+		    has an integer dtype of less precision than the default platform
+		    integer.  In that case, if `a` is signed then the platform integer
+		    is used while if `a` is unsigned then an unsigned integer of the
+		    same precision as the platform integer is used.
 		out : ndarray, optional
-		    Array into which the output is placed.  By default, a new array is
-		    created.  If `out` is given, it must be of the appropriate shape
-		    (the shape of `a` with `axis` removed, i.e.,
-		    ``numpy.delete(a.shape, axis)``).  Its type is preserved. See
-		    `doc.ufuncs` (Section "Output arguments") for more details.
+		    Alternative output array in which to place the result. It must have
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -10996,7 +11120,7 @@ package numpy.core;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

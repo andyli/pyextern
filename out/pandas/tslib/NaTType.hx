@@ -129,8 +129,11 @@ package pandas.tslib;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public var _date_repr : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _repr_base : Dynamic;
+	public var _time_repr : Dynamic;
 	public var asm8 : Dynamic;
 	public function astimezone(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function combine(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -184,5 +187,6 @@ package pandas.tslib;
 	public var value : Dynamic;
 	public var week : Dynamic;
 	public function weekday(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public var weekday_name : Dynamic;
 	public var year : Dynamic;
 }

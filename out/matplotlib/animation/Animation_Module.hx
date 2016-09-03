@@ -12,7 +12,7 @@ package matplotlib.animation;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
 	/**
-		Encode a bytestring into a bytestring containing multiple lines
+		Encode a bytestring into a bytes object containing multiple lines
 		of base-64 data.
 	**/
 	static public function encodebytes(s:Dynamic):Dynamic;

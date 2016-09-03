@@ -2,7 +2,18 @@
 package matplotlib.text;
 @:pythonImport("matplotlib.text", "OffsetFrom") extern class OffsetFrom {
 	/**
-		Call self as a function.
+		Return the offset transform.
+		
+		Parameters
+		----------
+		renderer : `RendererBase`
+		    The renderer to use to compute the offset
+		
+		Returns
+		-------
+		transform : `Transform`
+		    Maps (x, y) in pixel or point units to screen units
+		    relative to the given artist.
 	**/
 	public function __call__(renderer:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -42,12 +53,42 @@ package matplotlib.text;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		artist : `Artist`, `BboxBase`, or `Transform`
+		    The object to compute the offset from.
+		
+		ref_coord : length 2 sequence
+		    If `artist` is an `Artist` or `BboxBase`, this values is
+		    the location to of the offset origin in fractions of the
+		    `artist` bounding box.
+		
+		    If `artist` is a transform, the offset origin is the
+		    transform applied to this value.
+		
+		unit : {'points, 'pixels'}
+		    The screen units to use (pixels or points) for the offset
+		    input.
 	**/
 	@:native("__init__")
 	public function ___init__(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Dynamic;
 	/**
-		Initialize self.  See help(type(self)) for accurate signature.
+		Parameters
+		----------
+		artist : `Artist`, `BboxBase`, or `Transform`
+		    The object to compute the offset from.
+		
+		ref_coord : length 2 sequence
+		    If `artist` is an `Artist` or `BboxBase`, this values is
+		    the location to of the offset origin in fractions of the
+		    `artist` bounding box.
+		
+		    If `artist` is a transform, the offset origin is the
+		    transform applied to this value.
+		
+		unit : {'points, 'pixels'}
+		    The screen units to use (pixels or points) for the offset
+		    input.
 	**/
 	public function new(artist:Dynamic, ref_coord:Dynamic, ?unit:Dynamic):Void;
 	/**
@@ -106,6 +147,16 @@ package matplotlib.text;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_scale(renderer:Dynamic):Dynamic;
+	/**
+		The unit for input to the transform used by ``__call__``
+	**/
 	public function get_unit():Dynamic;
+	/**
+		The unit for input to the transform used by ``__call__``
+		
+		Parameters
+		----------
+		unit : {'points', 'pixels'}
+	**/
 	public function set_unit(unit:Dynamic):Dynamic;
 }

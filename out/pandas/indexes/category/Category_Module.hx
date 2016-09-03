@@ -9,7 +9,7 @@ package pandas.indexes.category;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _clean_reindex_fill_method(method:Dynamic):Dynamic;
+	static public var _index_shared_docs : Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -128,7 +128,7 @@ package pandas.indexes.category;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int

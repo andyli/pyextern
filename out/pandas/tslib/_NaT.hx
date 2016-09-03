@@ -144,8 +144,11 @@ package pandas.tslib;
 		Return self/value.
 	**/
 	public function __truediv__(value:Dynamic):Dynamic;
+	public var _date_repr : Dynamic;
 	public function _get_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _get_start_end_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _repr_base : Dynamic;
+	public var _time_repr : Dynamic;
 	public var asm8 : Dynamic;
 	/**
 		tz -> convert to local time in new timezone tz

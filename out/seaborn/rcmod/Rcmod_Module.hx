@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.rcmod;
 @:pythonImport("seaborn.rcmod") extern class Rcmod_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -10,6 +11,7 @@ package seaborn.rcmod;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var _context_keys : Dynamic;
+	static public var _orig_rc_params : Dynamic;
 	static public var _style_keys : Dynamic;
 	/**
 		Return a parameter dict for the aesthetic style of the plots.

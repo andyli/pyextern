@@ -51,14 +51,14 @@ package scipy.io.matlab.mio;
 	**/
 	static public function get_matfile_version(fileobj:Dynamic):Dynamic;
 	/**
-		Load MATLAB file
+		Load MATLAB file.
 		
 		Parameters
 		----------
 		file_name : str
 		   Name of the mat file (do not need .mat extension if
-		   appendmat==True) Can also pass open file-like object.
-		m_dict : dict, optional
+		   appendmat==True). Can also pass open file-like object.
+		mdict : dict, optional
 		    Dictionary in which to insert matfile variables.
 		appendmat : bool, optional
 		   True to append the .mat extension to the end of the given
@@ -101,7 +101,7 @@ package scipy.io.matlab.mio;
 		-------
 		mat_dict : dict
 		   dictionary with variable names as keys, and loaded matrices as
-		   values
+		   values.
 		
 		Notes
 		-----
@@ -113,7 +113,7 @@ package scipy.io.matlab.mio;
 	**/
 	static public function loadmat(file_name:Dynamic, ?mdict:Dynamic, ?appendmat:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Dict<Dynamic, Dynamic>;
 	/**
-		Create reader for matlab .mat format files
+		Create reader for matlab .mat format files.
 		
 		Parameters
 		----------
@@ -172,12 +172,12 @@ package scipy.io.matlab.mio;
 		    given filename, if not already present.
 		format : {'5', '4'}, string, optional
 		    '5' (the default) for MATLAB 5 and up (to 7.2),
-		    '4' for MATLAB 4 .mat files
+		    '4' for MATLAB 4 .mat files.
 		long_field_names : bool, optional
 		    False (the default) - maximum field name length in a structure is
 		    31 characters which is the documented maximum length.
 		    True - maximum field name length in a structure is 63 characters
-		    which works for MATLAB 7.6+
+		    which works for MATLAB 7.6+.
 		do_compression : bool, optional
 		    Whether or not to compress matrices on write.  Default is False.
 		oned_as : {'row', 'column'}, optional
@@ -192,7 +192,7 @@ package scipy.io.matlab.mio;
 	static public function savemat(file_name:Dynamic, mdict:Dynamic, ?appendmat:Dynamic, ?format:Dynamic, ?long_field_names:Dynamic, ?do_compression:Dynamic, ?oned_as:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	/**
-		List variables inside a MATLAB file
+		List variables inside a MATLAB file.
 		
 		Parameters
 		----------

@@ -148,7 +148,7 @@ package numpy.ma.extras;
 		>>> a = ma.arange(24).reshape(2,3,4)
 		>>> a[:,0,1] = ma.masked
 		>>> a[:,1,:] = ma.masked
-		>>> print a
+		>>> print(a)
 		[[[0 -- 2 3]
 		  [-- -- -- --]
 		  [8 9 10 11]]
@@ -156,14 +156,14 @@ package numpy.ma.extras;
 		 [[12 -- 14 15]
 		  [-- -- -- --]
 		  [20 21 22 23]]]
-		>>> print ma.apply_over_axes(ma.sum, a, [0,2])
+		>>> print(ma.apply_over_axes(ma.sum, a, [0,2]))
 		[[[46]
 		  [--]
 		  [124]]]
 		
 		Tuple axis arguments to ufuncs are equivalent:
 		
-		>>> print ma.sum(a, axis=(0,2)).reshape((1,-1,1))
+		>>> print(ma.sum(a, axis=(0,2)).reshape((1,-1,1)))
 		[[[46]
 		  [--]
 		  [124]]]
@@ -177,9 +177,9 @@ package numpy.ma.extras;
 		
 		Construction::
 		
-		  x = MaskedArray(data, mask=nomask, dtype=None,
-		                  copy=False, subok=True, ndmin=0, fill_value=None,
-		                  keep_mask=True, hard_mask=None, shrink=True)
+		  x = MaskedArray(data, mask=nomask, dtype=None, copy=False, subok=True,
+		                  ndmin=0, fill_value=None, keep_mask=True, hard_mask=None,
+		                  shrink=True, order=None)
 		
 		Parameters
 		----------
@@ -212,6 +212,14 @@ package numpy.ma.extras;
 		    cannot be unmasked. Default is False.
 		shrink : bool, optional
 		    Whether to force compression of an empty mask. Default is True.
+		order : {'C', 'F', 'A'}, optional
+		    Specify the order of the array.  If order is 'C', then the array
+		    will be in C-contiguous order (last-index varies the fastest).
+		    If order is 'F', then the returned array will be in
+		    Fortran-contiguous order (first-index varies the fastest).
+		    If order is 'A' (default), then the returned array may be
+		    in any order (either C-, Fortran-contiguous, or even discontiguous),
+		    unless a copy is required, in which case it will be C-contiguous.
 	**/
 	static public function array(data:Dynamic, ?dtype:Dynamic, ?copy:Dynamic, ?order:Dynamic, ?mask:Dynamic, ?fill_value:Dynamic, ?keep_mask:Dynamic, ?hard_mask:Dynamic, ?shrink:Dynamic, ?subok:Dynamic, ?ndmin:Dynamic):Dynamic;
 	/**
@@ -387,7 +395,7 @@ package numpy.ma.extras;
 		    True
 		
 		    >>> for arr in np.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):
-		    ...     print arr, arr.shape
+		    ...     print(arr, arr.shape)
 		    ...
 		    [[[1]
 		      [2]]] (1, 2, 1)
@@ -441,13 +449,13 @@ package numpy.ma.extras;
 		1.25
 		
 		>>> x = np.ma.arange(6.).reshape(3, 2)
-		>>> print x
+		>>> print(x)
 		[[ 0.  1.]
 		 [ 2.  3.]
 		 [ 4.  5.]]
 		>>> avg, sumweights = np.ma.average(x, axis=0, weights=[1, 2, 3],
 		...                                 returned=True)
-		>>> print avg
+		>>> print(avg)
 		[2.66666666667 3.66666666667]
 	**/
 	static public function average(a:Dynamic, ?axis:Dynamic, ?weights:Dynamic, ?returned:Dynamic):Dynamic;
@@ -709,7 +717,7 @@ package numpy.ma.extras;
 		    is transposed: each column represents a variable, while the rows
 		    contain observations.
 		bias : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		allow_masked : bool, optional
@@ -718,7 +726,7 @@ package numpy.ma.extras;
 		    If False, raises an exception.  Because `bias` is deprecated, this
 		    argument needs to be treated as keyword only to avoid a warning.
 		ddof : _NoValue, optional
-		    Has no affect, do not use.
+		    Has no effect, do not use.
 		
 		    .. deprecated:: 1.10.0
 		
@@ -735,6 +743,51 @@ package numpy.ma.extras;
 		safely ignored in this and previous versions of numpy.
 	**/
 	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?allow_masked:Dynamic, ?ddof:Dynamic):Dynamic;
+	/**
+		Count the non-masked elements of the array along the given axis.
+		
+		Parameters
+		----------
+		axis : int, optional
+		    Axis along which to count the non-masked elements. If `axis` is
+		    `None`, all non-masked elements are counted.
+		
+		Returns
+		-------
+		result : int or ndarray
+		    If `axis` is `None`, an integer count is returned. When `axis` is
+		    not `None`, an array with shape determined by the lengths of the
+		    remaining axes, is returned.
+		
+		See Also
+		--------
+		count_masked : Count masked elements in array or along a given axis.
+		
+		Examples
+		--------
+		>>> import numpy.ma as ma
+		>>> a = ma.arange(6).reshape((2, 3))
+		>>> a[1, :] = ma.masked
+		>>> a
+		masked_array(data =
+		 [[0 1 2]
+		 [-- -- --]],
+		             mask =
+		 [[False False False]
+		 [ True  True  True]],
+		       fill_value = 999999)
+		>>> a.count()
+		3
+		
+		When the `axis` keyword is specified an array of appropriate size is
+		returned.
+		
+		>>> a.count(axis=0)
+		array([1, 1, 1])
+		>>> a.count(axis=1)
+		array([3, 0])
+	**/
+	static public function count(a:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Count the number of masked elements along the given axis.
 		
@@ -1077,7 +1130,7 @@ package numpy.ma.extras;
 		>>> np.ma.flatnotmasked_contiguous(a)
 		[slice(3, 5, None), slice(6, 9, None)]
 		>>> a[:] = np.ma.masked
-		>>> print np.ma.flatnotmasked_edges(a)
+		>>> print(np.ma.flatnotmasked_edges(a))
 		None
 	**/
 	static public function flatnotmasked_contiguous(a:Dynamic):Array<Dynamic>;
@@ -1121,7 +1174,7 @@ package numpy.ma.extras;
 		array([3, 8])
 		
 		>>> a[:] = np.ma.masked
-		>>> print flatnotmasked_edges(ma)
+		>>> print(flatnotmasked_edges(ma))
 		None
 	**/
 	static public function flatnotmasked_edges(a:Dynamic):Dynamic;
@@ -2025,7 +2078,7 @@ package numpy.ma.extras;
 		array([[ 1.,  1.],
 		       [ 1.,  1.]])
 	**/
-	static public function ones(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function ones(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Least squares polynomial fit.
 		
@@ -2053,7 +2106,8 @@ package numpy.ma.extras;
 		    default) just the coefficients are returned, when True diagnostic
 		    information from the singular value decomposition is also returned.
 		w : array_like, shape (M,), optional
-		    weights to apply to the y-coordinates of the sample points.
+		    Weights to apply to the y-coordinates of the sample points. For
+		    gaussian uncertainties, use 1/sigma (not 1/sigma**2).
 		cov : bool, optional
 		    Return the estimate and the covariance matrix of the estimate
 		    If full is True, then cov is not returned.
@@ -2091,7 +2145,7 @@ package numpy.ma.extras;
 		
 		See Also
 		--------
-		polyval : Computes polynomial values.
+		polyval : Compute polynomial values.
 		linalg.lstsq : Computes a least-squares fit.
 		scipy.interpolate.UnivariateSpline : Computes spline fits.
 		
@@ -2312,19 +2366,19 @@ package numpy.ma.extras;
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Default
 		>>> a.sort()
-		>>> print a
+		>>> print(a)
 		[1 3 5 -- --]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Put missing values in the front
 		>>> a.sort(endwith=False)
-		>>> print a
+		>>> print(a)
 		[-- -- 1 3 5]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # fill_value takes over endwith
 		>>> a.sort(endwith=False, fill_value=3)
-		>>> print a
+		>>> print(a)
 		[1 -- -- 3 5]
 	**/
 	static public function sort(a:Dynamic, ?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
@@ -2533,5 +2587,5 @@ package numpy.ma.extras;
 		array([(0, 0), (0, 0)],
 		      dtype=[('x', '<i4'), ('y', '<i4')])
 	**/
-	static public function zeros(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function zeros(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 }

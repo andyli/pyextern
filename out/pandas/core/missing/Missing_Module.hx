@@ -9,13 +9,78 @@ package pandas.core.missing;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Convenience function for akima interpolation.
+		xi and yi are arrays of values used to approximate some function f,
+		with ``yi = f(xi)``.
+		
+		See `Akima1DInterpolator` for details.
+		
+		Parameters
+		----------
+		xi : array_like
+		    A sorted list of x-coordinates, of length N.
+		yi :  array_like
+		    A 1-D array of real values.  `yi`'s length along the interpolation
+		    axis must be equal to the length of `xi`. If N-D array, use axis
+		    parameter to select correct axis.
+		x : scalar or array_like
+		    Of length M.
+		der : int or list, optional
+		    How many derivatives to extract; None for all potentially
+		    nonzero derivatives (that is a number equal to the number
+		    of points), or a list of derivatives to extract. This number
+		    includes the function value as 0th derivative.
+		axis : int, optional
+		    Axis in the yi array corresponding to the x-coordinate values.
+		
+		See Also
+		--------
+		scipy.interpolate.Akima1DInterpolator
+		
+		Returns
+		-------
+		y : scalar or array_like
+		    The result, of length R or length M or M by R,
+	**/
+	static public function _akima_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _backfill_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _backfill_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
-	static public function _clean_fill_method(method:Dynamic, ?allow_nearest:Dynamic):Dynamic;
-	static public function _clean_interp_method(method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function _clean_reindex_fill_method(method:Dynamic):Dynamic;
 	static public var _fill_methods : Dynamic;
-	static public function _get_fill_func(method:Dynamic):Dynamic;
+	/**
+		Convenience function for interpolate.BPoly.from_derivatives
+		
+		Construct a piecewise polynomial in the Bernstein basis, compatible
+		with the specified values and derivatives at breakpoints.
+		
+		Parameters
+		----------
+		xi : array_like
+		    sorted 1D array of x-coordinates
+		yi : array_like or list of array-likes
+		    yi[i][j] is the j-th derivative known at xi[i]
+		orders : None or int or array_like of ints. Default: None.
+		    Specifies the degree of local polynomials. If not None, some
+		    derivatives are ignored.
+		der : int or list
+		    How many derivatives to extract; None for all potentially nonzero
+		    derivatives (that is a number equal to the number of points), or a
+		    list of derivatives to extract. This numberincludes the function
+		    value as 0th derivative.
+		 extrapolate : bool, optional
+		    Whether to extrapolate to ouf-of-bounds points based on first and last
+		    intervals, or to return NaNs. Default: True.
+		
+		See Also
+		--------
+		scipy.interpolate.BPoly.from_derivatives
+		
+		Returns
+		-------
+		y : scalar or array_like
+		    The result, of length R or length M or M by R,
+	**/
+	static public function _from_derivatives(xi:Dynamic, yi:Dynamic, x:Dynamic, ?order:Dynamic, ?der:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	static public function _interp_wrapper(f:Dynamic, wrap_dtype:Dynamic, ?na_override:Dynamic):Dynamic;
 	/**
 		passed off to scipy.interpolate.interp1d. method is scipy's kind.
@@ -27,6 +92,20 @@ package pandas.core.missing;
 	static public function _pad_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function backfill_1d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function backfill_2d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function clean_fill_method(method:Dynamic, ?allow_nearest:Dynamic):Dynamic;
+	static public function clean_interp_method(method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function clean_reindex_fill_method(method:Dynamic):Dynamic;
+	/**
+		if this is a reversed op, then flip x,y
+		
+		if we have an integer value (or array in y)
+		and we have 0's, fill them with the fill,
+		return the result
+		
+		mask the nan's from x
+	**/
+	static public function fill_zeros(result:Dynamic, x:Dynamic, y:Dynamic, name:Dynamic, fill:Dynamic):Dynamic;
+	static public function get_fill_func(method:Dynamic):Dynamic;
 	/**
 		Logic for the 1-d interpolation.  The result should be 1-d, inputs
 		xvalues and yvalues will each be 1-d arrays of the same length.
@@ -40,6 +119,12 @@ package pandas.core.missing;
 		needed fills inplace, returns the result
 	**/
 	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		Return a masking array of same size/shape as arr
+		with entries equaling any member of values_to_mask set to True
+	**/
+	static public function mask_missing(arr:Dynamic, values_to_mask:Dynamic):Dynamic;
 	static public function pad_1d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function pad_2d(values:Dynamic, ?limit:Dynamic, ?mask:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var string_types : Dynamic;
 }

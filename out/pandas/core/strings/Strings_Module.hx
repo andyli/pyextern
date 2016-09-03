@@ -9,6 +9,8 @@ package pandas.core.strings;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _cpython_optimized_decoders : Dynamic;
+	static public var _cpython_optimized_encoders : Dynamic;
 	static public function _get_array_list(arr:Dynamic, others:Dynamic):Dynamic;
 	static public function _get_single_group_name(rx:Dynamic):Dynamic;
 	/**

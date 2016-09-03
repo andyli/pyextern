@@ -141,10 +141,11 @@ package scipy.sparse.coo;
 		Checks data structure for consistency 
 	**/
 	public function _check():Dynamic;
+	public function _deduped_data():Dynamic;
 	public function _divide(other:Dynamic, ?true_divide:Dynamic, ?rdivide:Dynamic):Dynamic;
 	public function _get_dtype():Dynamic;
 	public function _imag():Dynamic;
-	public function _min_or_max(axis:Dynamic, min_or_max:Dynamic):Dynamic;
+	public function _min_or_max(axis:Dynamic, out:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _mul_multivector(other:Dynamic):Dynamic;
 	public function _mul_scalar(other:Dynamic):Dynamic;
@@ -154,6 +155,7 @@ package scipy.sparse.coo;
 	public function _real():Dynamic;
 	public function _set_dtype(newtype:Dynamic):Dynamic;
 	public function _setdiag(values:Dynamic, k:Dynamic):Dynamic;
+	public function _sum_duplicates(row:Dynamic, col:Dynamic, data:Dynamic):Dynamic;
 	/**
 		Returns a matrix with the same sparsity structure as self,
 		but with different data.  By default the index arrays
@@ -211,7 +213,23 @@ package scipy.sparse.coo;
 	public function ceil():Dynamic;
 	public function conj():Dynamic;
 	public function conjugate():Dynamic;
+	/**
+		Returns a copy of this matrix.
+		
+		No data/indices will be shared between the returned value and current
+		matrix.
+	**/
 	public function copy():Dynamic;
+	/**
+		Number of non-zero entries, equivalent to
+		
+		np.count_nonzero(a.toarray())
+		
+		Unlike getnnz() and the nnz property, which return the number of stored
+		entries (the length of the data attribute), this method counts the
+		actual number of non-zero entries in data.
+	**/
+	public function count_nonzero():Dynamic;
 	/**
 		Element-wise deg2rad.
 		
@@ -238,6 +256,12 @@ package scipy.sparse.coo;
 	public function dot(other:Dynamic):Dynamic;
 	public var dtype : Dynamic;
 	/**
+		Remove zero entries from the matrix
+		
+		This is an *in place* operation
+	**/
+	public function eliminate_zeros():Dynamic;
+	/**
 		Element-wise expm1.
 		
 		See numpy.expm1 for more information.
@@ -249,6 +273,7 @@ package scipy.sparse.coo;
 		See numpy.floor for more information.
 	**/
 	public function floor():Dynamic;
+	static public var format : Dynamic;
 	public function getH():Dynamic;
 	public function get_shape():Dynamic;
 	/**
@@ -259,13 +284,17 @@ package scipy.sparse.coo;
 	public function getformat():Dynamic;
 	public function getmaxprint():Dynamic;
 	/**
-		Get the count of explicitly-stored values (nonzeros)
+		Number of stored values, including explicit zeros.
 		
 		Parameters
 		----------
 		axis : None, 0, or 1
 		    Select between the number of values across the whole matrix, in
 		    each column, or in each row.
+		
+		See also
+		--------
+		count_nonzero : Number of non-zero entries
 	**/
 	public function getnnz(?axis:Dynamic):Dynamic;
 	/**
@@ -280,33 +309,100 @@ package scipy.sparse.coo;
 	**/
 	public function log1p():Dynamic;
 	/**
-		Maximum of the elements of this matrix.
-		
+		Return the maximum of the matrix or maximum along an axis.
 		This takes all elements into account, not just the non-zero ones.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the sum is computed. The default is to
+		    compute the maximum over all the matrix elements, returning
+		    a scalar (i.e. `axis` = `None`).
+		
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except
+		    for the default value, as this argument is not used.
 		
 		Returns
 		-------
-		amax : self.dtype
-		    Maximum element.
+		amax : coo_matrix or scalar
+		    Maximum of `a`. If `axis` is None, the result is a scalar value.
+		    If `axis` is given, the result is a sparse.coo_matrix of dimension
+		    ``a.ndim - 1``.
+		
+		See Also
+		--------
+		min : The minimum value of a sparse matrix along a given axis.
+		np.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
-	public function max(?axis:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	public function maximum(other:Dynamic):Dynamic;
 	/**
-		Average the matrix over the given axis.  If the axis is None,
-		average over both rows and columns, returning a scalar.
-	**/
-	public function mean(?axis:Dynamic):Dynamic;
-	/**
-		Minimum of the elements of this matrix.
+		Compute the arithmetic mean along the specified axis.
 		
-		This takes all elements into account, not just the non-zero ones.
+		Returns the average of the matrix elements. The average is taken
+		over all elements in the matrix by default, otherwise over the
+		specified axis. `float64` intermediate and return values are used
+		for integer inputs.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the mean is computed. The default is to compute
+		    the mean of all elements in the matrix (i.e. `axis` = `None`).
+		dtype : data-type, optional
+		    Type to use in computing the mean. For integer inputs, the default
+		    is `float64`; for floating point inputs, it is the same as the
+		    input dtype.
+		
+		    .. versionadded: 0.18.0
+		
+		out : np.matrix, optional
+		    Alternative output matrix in which to place the result. It must
+		    have the same shape as the expected output, but the type of the
+		    output values will be cast if necessary.
+		
+		    .. versionadded: 0.18.0
 		
 		Returns
 		-------
-		amin : self.dtype
-		    Minimum element.
+		m : np.matrix
+		
+		See Also
+		--------
+		np.matrix.mean : NumPy's implementation of 'mean' for matrices
 	**/
-	public function min(?axis:Dynamic):Dynamic;
+	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
+	/**
+		Return the minimum of the matrix or maximum along an axis.
+		This takes all elements into account, not just the non-zero ones.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the sum is computed. The default is to
+		    compute the minimum over all the matrix elements, returning
+		    a scalar (i.e. `axis` = `None`).
+		
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
+		
+		Returns
+		-------
+		amin : coo_matrix or scalar
+		    Minimum of `a`. If `axis` is None, the result is a scalar value.
+		    If `axis` is given, the result is a sparse.coo_matrix of dimension
+		    ``a.ndim - 1``.
+		
+		See Also
+		--------
+		max : The maximum value of a sparse matrix along a given axis.
+		np.matrix.min : NumPy's implementation of 'min' for matrices
+	**/
+	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	public function minimum(other:Dynamic):Dynamic;
 	/**
 		Point-wise multiplication by another matrix
@@ -315,13 +411,11 @@ package scipy.sparse.coo;
 	public function multiply(other:Dynamic):Dynamic;
 	static public var ndim : Dynamic;
 	/**
-		Get the count of explicitly-stored values (nonzeros)
+		Number of stored values, including explicit zeros.
 		
-		Parameters
-		----------
-		axis : None, 0, or 1
-		    Select between the number of values across the whole matrix, in
-		    each column, or in each row.
+		See also
+		--------
+		count_nonzero : Number of non-zero entries
 	**/
 	public var nnz : Dynamic;
 	/**
@@ -354,7 +448,27 @@ package scipy.sparse.coo;
 		See numpy.rad2deg for more information.
 	**/
 	public function rad2deg():Dynamic;
-	public function reshape(shape:Dynamic):Dynamic;
+	/**
+		Gives a new shape to a sparse matrix without changing its data.
+		
+		Parameters
+		----------
+		shape : length-2 tuple of ints
+		    The new shape should be compatible with the original shape.
+		order : 'C', optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except
+		    for the default value, as this argument is not used.
+		
+		Returns
+		-------
+		reshaped_matrix : `self` with the new dimensions of `shape`
+		
+		See Also
+		--------
+		np.matrix.reshape : NumPy's implementation of 'reshape' for matrices
+	**/
+	public function reshape(shape:Dynamic, ?order:Dynamic):Dynamic;
 	/**
 		Element-wise rint.
 		
@@ -407,10 +521,42 @@ package scipy.sparse.coo;
 	**/
 	public function sqrt():Dynamic;
 	/**
-		Sum the matrix over the given axis.  If the axis is None, sum
-		over both rows and columns, returning a scalar.
+		Sum the matrix elements over a given axis.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the sum is computed. The default is to
+		    compute the sum of all the matrix elements, returning a scalar
+		    (i.e. `axis` = `None`).
+		dtype : dtype, optional
+		    The type of the returned matrix and of the accumulator in which
+		    the elements are summed.  The dtype of `a` is used by default
+		    unless `a` has an integer dtype of less precision than the default
+		    platform integer.  In that case, if `a` is signed then the platform
+		    integer is used while if `a` is unsigned then an unsigned integer
+		    of the same precision as the platform integer is used.
+		
+		    .. versionadded: 0.18.0
+		
+		out : np.matrix, optional
+		    Alternative output matrix in which to place the result. It must
+		    have the same shape as the expected output, but the type of the
+		    output values will be cast if necessary.
+		
+		    .. versionadded: 0.18.0
+		
+		Returns
+		-------
+		sum_along_axis : np.matrix
+		    A matrix with the same shape as `self`, with the specified
+		    axis removed.
+		
+		See Also
+		--------
+		np.matrix.sum : NumPy's implementation of 'sum' for matrices
 	**/
-	public function sum(?axis:Dynamic):Dynamic;
+	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
 	/**
 		Eliminate duplicate matrix entries by adding them together
 		
@@ -433,10 +579,25 @@ package scipy.sparse.coo;
 		See the docstring for `spmatrix.toarray`.
 	**/
 	public function toarray(?order:Dynamic, ?out:Dynamic):Dynamic;
-	public function tobsr(?blocksize:Dynamic):Dynamic;
+	/**
+		Convert this matrix to Block Sparse Row format.
+		
+		With copy=False, the data/indices may be shared between this matrix and
+		the resultant bsr_matrix.
+		
+		When blocksize=(R, C) is provided, it will be used for construction of
+		the bsr_matrix.
+	**/
+	public function tobsr(?blocksize:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		Convert this matrix to COOrdinate format.
+		
+		With copy=False, the data/indices may be shared between this matrix and
+		the resultant coo_matrix.
+	**/
 	public function tocoo(?copy:Dynamic):Dynamic;
 	/**
-		Return a copy of this matrix in Compressed Sparse Column format
+		Convert this matrix to Compressed Sparse Column format
 		
 		Duplicate entries will be summed together.
 		
@@ -454,9 +615,9 @@ package scipy.sparse.coo;
 		       [0, 0, 0, 0],
 		       [0, 0, 0, 1]])
 	**/
-	public function tocsc():Dynamic;
+	public function tocsc(?copy:Dynamic):Dynamic;
 	/**
-		Return a copy of this matrix in Compressed Sparse Row format
+		Convert this matrix to Compressed Sparse Row format
 		
 		Duplicate entries will be summed together.
 		
@@ -474,7 +635,7 @@ package scipy.sparse.coo;
 		       [0, 0, 0, 0],
 		       [0, 0, 0, 1]])
 	**/
-	public function tocsr():Dynamic;
+	public function tocsr(?copy:Dynamic):Dynamic;
 	/**
 		Return a dense matrix representation of this matrix.
 		
@@ -505,10 +666,52 @@ package scipy.sparse.coo;
 		    `numpy.matrix` object that shares the same memory.
 	**/
 	public function todense(?order:Dynamic, ?out:Dynamic):Dynamic;
-	public function todia():Dynamic;
-	public function todok():Dynamic;
-	public function tolil():Dynamic;
-	public function transpose(?copy:Dynamic):Dynamic;
+	/**
+		Convert this matrix to sparse DIAgonal format.
+		
+		With copy=False, the data/indices may be shared between this matrix and
+		the resultant dia_matrix.
+	**/
+	public function todia(?copy:Dynamic):Dynamic;
+	/**
+		Convert this matrix to Dictionary Of Keys format.
+		
+		With copy=False, the data/indices may be shared between this matrix and
+		the resultant dok_matrix.
+	**/
+	public function todok(?copy:Dynamic):Dynamic;
+	/**
+		Convert this matrix to LInked List format.
+		
+		With copy=False, the data/indices may be shared between this matrix and
+		the resultant lil_matrix.
+	**/
+	public function tolil(?copy:Dynamic):Dynamic;
+	/**
+		Reverses the dimensions of the sparse matrix.
+		
+		Parameters
+		----------
+		axes : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except
+		    for the default value.
+		copy : bool, optional
+		    Indicates whether or not attributes of `self` should be
+		    copied whenever possible. The degree to which attributes
+		    are copied varies depending on the type of sparse matrix
+		    being used.
+		
+		Returns
+		-------
+		p : `self` with the dimensions reversed.
+		
+		See Also
+		--------
+		np.matrix.transpose : NumPy's implementation of 'transpose'
+		                      for matrices
+	**/
+	public function transpose(?axes:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Element-wise trunc.
 		

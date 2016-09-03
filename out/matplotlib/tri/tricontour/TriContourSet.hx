@@ -125,7 +125,7 @@ package matplotlib.tri.tricontour;
 		one contour line, but two filled regions, and therefore
 		three levels to provide boundaries for both regions.
 	**/
-	public function _autolev(z:Dynamic, N:Dynamic):Dynamic;
+	public function _autolev(N:Dynamic):Dynamic;
 	public function _contour_args(args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Determine the contour levels and store in self.levels.

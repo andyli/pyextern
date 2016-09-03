@@ -201,14 +201,20 @@ package pandas.core.internals;
 		    integrity check
 		consolidate: boolean, default True. Join together blocks having same
 		    dtype
+		raw: boolean, default False. Return the raw returned results
 		
 		Returns
 		-------
 		Block Manager (new object)
 	**/
-	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?raw:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var array_dtype : Dynamic;
 	public function as_matrix(?items:Dynamic):Dynamic;
+	/**
+		return a object dtype array. datetime/timedelta like values are boxed
+		to Timestamp/Timedelta instances.
+	**/
+	public var asobject : Dynamic;
 	public function astype(dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var axes : Dynamic;
 	public var blocks : Dynamic;
@@ -335,6 +341,7 @@ package pandas.core.internals;
 	public var nblocks : Dynamic;
 	static public var ndim : Dynamic;
 	public function putmask(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function quantile(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function reindex(new_axis:Dynamic, ?indexer:Dynamic, ?method:Dynamic, ?fill_value:Dynamic, ?limit:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		Conform block manager to new index.

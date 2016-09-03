@@ -89,6 +89,26 @@ package scipy.sparse._csparsetools;
 	**/
 	static public function lil_get1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Column-slicing fast path for LIL matrices.
+		Extracts values from rows/datas and inserts in to
+		new_rows/new_datas.
+		Parameters
+		----------
+		M, N
+		     Shape of input array
+		rows, datas
+		     LIL data for input array, shape (M, N)
+		new_rows, new_datas
+		     LIL data for output array, shape (len(irows), nj)
+		irows : iterator
+		     Iterator yielding row indices
+		j_start, j_stop, j_stride
+		     Column range(j_start, j_stop, j_stride) to get
+		nj : int
+		     Number of columns corresponding to j_* variables.
+	**/
+	static public function lil_get_row_ranges(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Insert a single item to LIL matrix.
 		
 		Checks for bounds errors and deletes item if x is zero.

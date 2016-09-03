@@ -863,6 +863,46 @@ package scipy.fftpack;
 		For more details, see `tilbert`.
 	**/
 	static public function itilbert(x:Dynamic, h:Dynamic, ?period:Dynamic, ?_cache:Dynamic):Dynamic;
+	/**
+		Find the next fast size of input data to `fft`, for zero-padding, etc.
+		
+		SciPy's FFTPACK has efficient functions for radix {2, 3, 4, 5}, so this
+		returns the next composite of the prime factors 2, 3, and 5 which is
+		greater than or equal to `target`. (These are also known as 5-smooth
+		numbers, regular numbers, or Hamming numbers.)
+		
+		Parameters
+		----------
+		target : int
+		    Length to start searching from.  Must be a positive integer.
+		
+		Returns
+		-------
+		out : int
+		    The first 5-smooth number greater than or equal to `target`.
+		
+		Examples
+		--------
+		On a particular machine, an FFT of prime length takes 133 ms:
+		
+		>>> from scipy import fftpack
+		>>> min_len = 10007  # prime length is worst case for speed
+		>>> a = np.random.randn(min_len)
+		>>> b = fftpack.fft(a)
+		
+		Zero-padding to the next 5-smooth length reduces computation time to
+		211 us, a speedup of 630 times:
+		
+		>>> fftpack.helper.next_fast_len(min_len)
+		10125
+		>>> b = fftpack.fft(a, 10125)
+		
+		Rounding up to the next power of 2 is not optimal, taking 367 us to
+		compute, 1.7 times as long as the 5-smooth size:
+		
+		>>> b = fftpack.fft(a, 16384)
+	**/
+	static public function next_fast_len(target:Dynamic):Int;
 	static public var print_function : Dynamic;
 	/**
 		Discrete Fourier transform of a real sequence.

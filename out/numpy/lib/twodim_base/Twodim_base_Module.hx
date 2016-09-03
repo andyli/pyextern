@@ -300,11 +300,11 @@ package numpy.lib.twodim_base;
 		but depending on this fact is deprecated. Writing to the resulting
 		array continues to work as it used to, but a FutureWarning is issued.
 		
-		In NumPy 1.9 it returns a read-only view on the original array.
+		Starting in NumPy 1.9 it returns a read-only view on the original array.
 		Attempting to write to the resulting array will produce an error.
 		
-		In NumPy 1.10, it will return a read/write view and writing to the
-		returned array will alter your original array.  The returned array
+		In some future release, it will return a read/write view and writing to
+		the returned array will alter your original array.  The returned array
 		will have the same type as the input array.
 		
 		If you don't write to the array returned by this function, then you can
@@ -407,8 +407,8 @@ package numpy.lib.twodim_base;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -673,7 +673,7 @@ package numpy.lib.twodim_base;
 		Or we fill the histogram H with a determined bin content:
 		
 		>>> H = np.ones((4, 4)).cumsum().reshape(4, 4)
-		>>> print H[::-1]  # This shows the bin content in the order as plotted
+		>>> print(H[::-1])  # This shows the bin content in the order as plotted
 		[[ 13.  14.  15.  16.]
 		 [  9.  10.  11.  12.]
 		 [  5.   6.   7.   8.]

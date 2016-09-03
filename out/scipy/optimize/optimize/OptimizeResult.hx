@@ -19,7 +19,7 @@ package scipy.optimize.optimize;
 		__dir__() -> list
 		default dir() implementation
 	**/
-	public function __dir__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __dir__():Dynamic;
 	static public var __doc__ : Dynamic;
 	/**
 		Return self==value.

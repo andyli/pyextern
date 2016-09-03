@@ -68,10 +68,6 @@ package pandas.io.excel;
 	static public function _conv_value(val:Dynamic):Dynamic;
 	static public function _fill_mi_header(row:Dynamic):Dynamic;
 	/**
-		Check for an s3, s3n, or s3a url
-	**/
-	static public function _is_s3_url(url:Dynamic):Dynamic;
-	/**
 		Check to see if a URL has a valid protocol.
 		
 		Parameters
@@ -145,7 +141,8 @@ package pandas.io.excel;
 		
 		Parameters
 		----------
-		io : string, file-like object, pandas ExcelFile, or xlrd workbook.
+		io : string, path object (pathlib.Path or py._path.local.LocalPath),
+		    file-like object, pandas ExcelFile, or xlrd workbook.
 		    The string could be a URL. Valid URL schemes include http, ftp, s3,
 		    and file. For file URLs, a host is expected. For instance, a local
 		    file could be file://localhost/path/to/workbook.xlsx

@@ -11,30 +11,6 @@ package pandas.tseries.common;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	/**
-		provide concatenation of an datetimelike array of arrays each of which is a
-		single M8[ns], datetimet64[ns, tz] or m8[ns] dtype
-		
-		Parameters
-		----------
-		to_concat : array of arrays
-		axis : axis to provide concatenation
-		
-		Returns
-		-------
-		a single array, preserving the combined dtypes
-	**/
-	static public function _concat_compat(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		Parameters
-		----------
-		l : list of arrays
-		
-		Returns
-		-------
-		a set of kinds that exist in this list of arrays
-	**/
-	static public function get_dtype_kinds(l:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;

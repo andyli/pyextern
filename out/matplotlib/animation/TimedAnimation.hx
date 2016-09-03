@@ -144,12 +144,27 @@ package matplotlib.animation;
 		If nothing is passed, the value of the rcparam `animation.writer` is
 		used.
 		
+		*dpi* controls the dots per inch for the movie frames. This combined
+		with the figure's size in inches controls the size of the movie.
+		
+		*savefig_kwargs* is a dictionary containing keyword arguments to be
+		passed on to the 'savefig' command which is called repeatedly to save
+		the individual frames. This can be used to set tight bounding boxes,
+		for example.
+		
+		*extra_anim* is a list of additional `Animation` objects that should
+		be included in the saved movie file. These need to be from the same
+		`matplotlib.Figure` instance. Also, animation frames will just be
+		simply combined, so there should be a 1:1 correspondence between
+		the frames from the different animations.
+		
+		These remaining arguments are used to construct a :class:`MovieWriter`
+		instance when necessary and are only considered valid if *writer* is
+		not a :class:`MovieWriter` instance.
+		
 		*fps* is the frames per second in the movie. Defaults to None,
 		which will use the animation's specified interval to set the frames
 		per second.
-		
-		*dpi* controls the dots per inch for the movie frames. This combined
-		with the figure's size in inches controls the size of the movie.
 		
 		*codec* is the video codec to be used. Not all codecs are supported
 		by a given :class:`MovieWriter`. If none is given, this defaults to the
@@ -162,23 +177,12 @@ package matplotlib.animation;
 		`animation.bitrate`.
 		
 		*extra_args* is a list of extra string arguments to be passed to the
-		underlying movie utiltiy. The default is None, which passes the
-		additional argurments in the 'animation.extra_args' rcParam.
+		underlying movie utility. The default is None, which passes the
+		additional arguments in the 'animation.extra_args' rcParam.
 		
 		*metadata* is a dictionary of keys and values for metadata to include
 		in the output file. Some keys that may be of use include:
 		title, artist, genre, subject, copyright, srcform, comment.
-		
-		*extra_anim* is a list of additional `Animation` objects that should
-		be included in the saved movie file. These need to be from the same
-		`matplotlib.Figure` instance. Also, animation frames will just be
-		simply combined, so there should be a 1:1 correspondence between
-		the frames from the different animations.
-		
-		*savefig_kwargs* is a dictionary containing keyword arguments to be
-		passed on to the 'savefig' command which is called repeatedly to save
-		the individual frames. This can be used to set tight bounding boxes,
-		for example.
 	**/
 	public function save(filename:Dynamic, ?writer:Dynamic, ?fps:Dynamic, ?dpi:Dynamic, ?codec:Dynamic, ?bitrate:Dynamic, ?extra_args:Dynamic, ?metadata:Dynamic, ?extra_anim:Dynamic, ?savefig_kwargs:Dynamic):Dynamic;
 	/**
@@ -188,7 +192,7 @@ package matplotlib.animation;
 		directly into the HTML5 video tag. This respects the rc parameters
 		for the writer as well as the bitrate. This also makes use of the
 		``interval`` to control the speed, and uses the ``repeat``
-		paramter to decide whether to loop.
+		parameter to decide whether to loop.
 	**/
 	public function to_html5_video():Dynamic;
 }

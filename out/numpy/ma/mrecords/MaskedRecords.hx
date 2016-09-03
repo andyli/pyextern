@@ -576,6 +576,8 @@ package numpy.ma.mrecords;
 		Alias to mask.
 	**/
 	public function _getfieldmask():Dynamic;
+	static public var _print_width : Dynamic;
+	static public var _print_width_1d : Dynamic;
 	/**
 		Set a flattened version of self to value.
 	**/
@@ -732,12 +734,12 @@ package numpy.ma.mrecords;
 		--------
 		>>> x = np.ma.array(arange(4), mask=[1,1,0,0])
 		>>> x.shape = (2,2)
-		>>> print x
+		>>> print(x)
 		[[-- --]
 		 [2 3]]
-		>>> print x.argmin(axis=0, fill_value=-1)
+		>>> print(x.argmin(axis=0, fill_value=-1))
 		[0 0]
-		>>> print x.argmin(axis=0, fill_value=9)
+		>>> print(x.argmin(axis=0, fill_value=9))
 		[1 1]
 	**/
 	public function argmin(?axis:Dynamic, ?fill_value:Dynamic, ?out:Dynamic):Dynamic;
@@ -814,11 +816,11 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3.1],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1.0 -- 3.1]
 		 [-- 5.0 --]
 		 [7.0 -- 9.0]]
-		>>> print x.astype(int32)
+		>>> print(x.astype(int32))
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
@@ -907,7 +909,7 @@ package numpy.ma.mrecords;
 		--------
 		numpy.clip : equivalent function
 	**/
-	public function clip(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function clip(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return `a` where condition is ``True``.
 		
@@ -941,7 +943,7 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
@@ -1237,7 +1239,7 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> marr = np.ma.array(np.arange(10), mask=[0,0,0,1,1,1,0,0,0,0])
-		>>> print marr.cumsum()
+		>>> print(marr.cumsum())
 		[0 1 3 -- -- -- 9 16 24 33]
 	**/
 	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
@@ -1251,7 +1253,7 @@ package numpy.ma.mrecords;
 		
 		Return specified diagonals. In NumPy 1.9 the returned array is a
 		read-only view instead of a copy as in previous NumPy versions.  In
-		NumPy 1.10 the read-only restriction will be removed.
+		a future version the read-only restriction will be removed.
 		
 		Refer to :func:`numpy.diagonal` for full documentation.
 		
@@ -1259,7 +1261,7 @@ package numpy.ma.mrecords;
 		--------
 		numpy.diagonal : equivalent function
 	**/
-	public function diagonal(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function diagonal(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		a.dot(b, out=None)
 		
@@ -1373,6 +1375,8 @@ package numpy.ma.mrecords;
 	public var fill_value : Dynamic;
 	/**
 		Return a copy of self, with masked values filled with a given value.
+		**However**, if there are no masked values to fill, self will be
+		returned instead as an ndarray.
 		
 		Parameters
 		----------
@@ -1384,7 +1388,9 @@ package numpy.ma.mrecords;
 		-------
 		filled_array : ndarray
 		    A copy of ``self`` with invalid entries replaced by *fill_value*
-		    (be it the function argument or the attribute of ``self``.
+		    (be it the function argument or the attribute of ``self``), or
+		    ``self`` itself as an ndarray if there are no invalid entries to
+		    be replaced.
 		
 		Notes
 		-----
@@ -1487,10 +1493,14 @@ package numpy.ma.mrecords;
 		
 		Parameters
 		----------
-		order : {'C', 'F', 'A'}, optional
-		    Whether to flatten in row-major (C-style) or
-		    column-major (Fortran-style) order or preserve the
-		    C/Fortran ordering from `a`.  The default is 'C'.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    'C' means to flatten in row-major (C-style) order.
+		    'F' means to flatten in column-major (Fortran-
+		    style) order. 'A' means to flatten in column-major
+		    order if `a` is Fortran *contiguous* in memory,
+		    row-major order otherwise. 'K' means to flatten
+		    `a` in the order the elements occur in memory.
+		    The default is 'C'.
 		
 		Returns
 		-------
@@ -1510,7 +1520,7 @@ package numpy.ma.mrecords;
 		>>> a.flatten('F')
 		array([1, 3, 2, 4])
 	**/
-	public function flatten(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function flatten(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Return the filling value of the masked array.
 		
@@ -1921,7 +1931,7 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array(np.arange(6), mask=[0 ,1, 0, 0, 0 ,1]).reshape(3, 2)
-		>>> print x
+		>>> print(x)
 		[[0 --]
 		 [2 3]
 		 [4 --]]
@@ -1931,7 +1941,7 @@ package numpy.ma.mrecords;
 		masked_array(data = [0 3],
 		             mask = [False False],
 		       fill_value = 999999)
-		>>> print x.mini(axis=1)
+		>>> print(x.mini(axis=1))
 		[0 2 4]
 	**/
 	public function mini(?axis:Dynamic):Dynamic;
@@ -2301,18 +2311,18 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
 		>>> x.put([0,4,8],[10,20,30])
-		>>> print x
+		>>> print(x)
 		[[10 -- 3]
 		 [-- 20 --]
 		 [7 -- 30]]
 		
 		>>> x.put(4,999)
-		>>> print x
+		>>> print(x)
 		[[10 -- 3]
 		 [-- 999 --]
 		 [7 -- 30]]
@@ -2346,11 +2356,11 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.ravel()
+		>>> print(x.ravel())
 		[1 -- 3 -- 5 -- 7 -- 9]
 	**/
 	public function ravel(?order:Dynamic):Dynamic;
@@ -2375,7 +2385,7 @@ package numpy.ma.mrecords;
 		--------
 		numpy.repeat : equivalent function
 	**/
-	public function repeat(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function repeat(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Give a new shape to the array without changing its data.
 		
@@ -2412,11 +2422,11 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2],[3,4]], mask=[1,0,0,1])
-		>>> print x
+		>>> print(x)
 		[[-- 2]
 		 [3 --]]
 		>>> x = x.reshape((4,1))
-		>>> print x
+		>>> print(x)
 		[[--]
 		 [2]
 		 [3]
@@ -2724,19 +2734,19 @@ package numpy.ma.mrecords;
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Default
 		>>> a.sort()
-		>>> print a
+		>>> print(a)
 		[1 3 5 -- --]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # Put missing values in the front
 		>>> a.sort(endwith=False)
-		>>> print a
+		>>> print(a)
 		[-- -- 1 3 5]
 		
 		>>> a = ma.array([1, 2, 5, 4, 3],mask=[0, 1, 0, 1, 0])
 		>>> # fill_value takes over endwith
 		>>> a.sort(endwith=False, fill_value=3)
-		>>> print a
+		>>> print(a)
 		[1 -- -- 3 5]
 	**/
 	public function sort(?axis:Dynamic, ?kind:Dynamic, ?order:Dynamic, ?endwith:Dynamic, ?fill_value:Dynamic):numpy.Ndarray;
@@ -2751,7 +2761,7 @@ package numpy.ma.mrecords;
 		--------
 		numpy.squeeze : equivalent function
 	**/
-	public function squeeze(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function squeeze(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute the standard deviation along the specified axis.
 		
@@ -2937,17 +2947,17 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.sum()
+		>>> print(x.sum())
 		25
-		>>> print x.sum(axis=1)
+		>>> print(x.sum(axis=1))
 		[4 5 16]
-		>>> print x.sum(axis=0)
+		>>> print(x.sum(axis=0))
 		[8 5 12]
-		>>> print type(x.sum(axis=0, dtype=np.int64)[0])
+		>>> print(type(x.sum(axis=0, dtype=np.int64)[0]))
 		<type 'numpy.int64'>
 	**/
 	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Dynamic;
@@ -2962,7 +2972,7 @@ package numpy.ma.mrecords;
 		--------
 		numpy.swapaxes : equivalent function
 	**/
-	public function swapaxes(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function swapaxes(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		        
 	**/
@@ -3043,11 +3053,11 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.toflex()
+		>>> print(x.toflex())
 		[[(1, False) (2, True) (3, False)]
 		 [(4, True) (5, False) (6, True)]
 		 [(7, False) (8, True) (9, False)]]
@@ -3088,11 +3098,11 @@ package numpy.ma.mrecords;
 		Examples
 		--------
 		>>> x = np.ma.array([[1,2,3],[4,5,6],[7,8,9]], mask=[0] + [1,0]*4)
-		>>> print x
+		>>> print(x)
 		[[1 -- 3]
 		 [-- 5 --]
 		 [7 -- 9]]
-		>>> print x.toflex()
+		>>> print(x.toflex())
 		[[(1, False) (2, True) (3, False)]
 		 [(4, True) (5, False) (6, True)]
 		 [(7, False) (8, True) (9, False)]]
@@ -3165,7 +3175,7 @@ package numpy.ma.mrecords;
 		array([[1, 3],
 		       [2, 4]])
 	**/
-	public function transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Copy the mask and set the sharedmask flag to False.
 		

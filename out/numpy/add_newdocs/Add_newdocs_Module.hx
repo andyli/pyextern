@@ -29,7 +29,6 @@ package numpy.add_newdocs;
 		in new-style classes or built-in functions. Because this
 		routine never raises an error the caller must check manually
 		that the docstrings were changed.
-		   
 	**/
 	static public function add_newdoc(place:Dynamic, obj:Dynamic, doc:Dynamic):Dynamic;
 	static public var division : Dynamic;

@@ -462,15 +462,29 @@ package pandas.algos;
 	static public function roll_generic(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Moving max of 1d array of dtype=float64 along axis=0 ignoring NaNs.
+		Moving max of 1d array of any numeric type along axis=0 ignoring NaNs.
+		
+		Parameters
+		----------
+		a: numpy array
+		window: int, size of rolling window
+		minp: if number of observations in window
+		      is below this, output a NaN
 	**/
-	static public function roll_max(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function roll_max(a:Dynamic, window:Dynamic, minp:Dynamic):Dynamic;
 	static public function roll_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function roll_median_c(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Moving min of 1d array of dtype=float64 along axis=0 ignoring NaNs.
+		Moving max of 1d array of any numeric type along axis=0 ignoring NaNs.
+		
+		Parameters
+		----------
+		a: numpy array
+		window: int, size of rolling window
+		minp: if number of observations in window
+		      is below this, output a NaN
 	**/
-	static public function roll_min(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function roll_min(a:Dynamic, window:Dynamic, minp:Dynamic):Dynamic;
 	/**
 		O(N log(window)) implementation using skip list
 	**/

@@ -15,6 +15,10 @@ package scipy.sparse.base;
 	static public var _ufuncs_with_fixed_point_at_zero : Dynamic;
 	static public var absolute_import : Dynamic;
 	static public var division : Dynamic;
+	/**
+		Mimic numpy's casting for np.sum
+	**/
+	static public function get_sum_dtype(dtype:Dynamic):Dynamic;
 	static public function isdense(x:Dynamic):Dynamic;
 	/**
 		Is x appropriate as an index into a sparse matrix? Returns True
@@ -28,4 +32,5 @@ package scipy.sparse.base;
 	static public function issparse(x:Dynamic):Dynamic;
 	static public function isspmatrix(x:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
+	static public function validateaxis(axis:Dynamic):Dynamic;
 }

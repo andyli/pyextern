@@ -11,6 +11,32 @@ package scipy.special.basic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _bessel_diff_formula(v:Dynamic, z:Dynamic, n:Dynamic, L:Dynamic, phase:Dynamic):Dynamic;
+	static public function _comb_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		_gammaln(x[, out])
+		
+		Internal function, use ``gammaln`` instead.
+	**/
+	static public function _gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Product of a range of numbers.
+		
+		Returns the product of
+		lo * (lo+1) * (lo+2) * ... * (hi-2) * (hi-1) * hi
+		= hi! / (lo-1)!
+		
+		Breaks into smaller products first for speed:
+		_range_prod(2, 9) = ((2*3)*(4*5))*((6*7)*(8*9))
+	**/
+	static public function _range_prod(lo:Dynamic, hi:Dynamic):Dynamic;
+	/**
+		_zeta(x1, x2[, out])
+		
+		_zeta(x, q)
+		
+		Internal function, Hurwitz zeta.
+	**/
+	static public function _zeta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Arithmetic, Geometric Mean.
@@ -127,10 +153,10 @@ package scipy.special.basic;
 	**/
 	static public function asarray(a:Dynamic, ?dtype:Dynamic, ?order:Dynamic):Dynamic;
 	/**
-		Compute nth-order generalized (associated) Laguerre polynomial.
+		Compute the generalized (associated) Laguerre polynomial of degree n and order k.
 		
-		The polynomial :math:`L^(alpha)_n(x)` is orthogonal over ``[0, inf)``,
-		with weighting function ``exp(-x) * x**alpha`` with ``alpha > -1``.
+		The polynomial :math:`L^{(k)}_n(x)` is orthogonal over ``[0, inf)``,
+		with weighting function ``exp(-x) * x**k`` with ``k > -1``.
 		
 		Notes
 		-----
@@ -369,12 +395,47 @@ package scipy.special.basic;
 	/**
 		psi(x[, out])
 		
-		psi(z)
+		psi(z, out=None)
 		
-		Digamma function
+		The digamma function.
 		
-		The derivative of the logarithm of the gamma function evaluated at
-		`z` (also called the digamma function).
+		The logarithmic derivative of the gamma function evaluated at ``z``.
+		
+		Parameters
+		----------
+		z : array_like
+		    Real or complex argument.
+		out : ndarray, optional
+		    Array for the computed values of ``psi``.
+		
+		Returns
+		-------
+		digamma : ndarray
+		    Computed values of ``psi``.
+		
+		Notes
+		-----
+		For large values not close to the negative real axis ``psi`` is
+		computed using the asymptotic series (5.11.2) from [1]_. For small
+		arguments not close to the negative real axis the recurrence
+		relation (5.5.2) from [1]_ is used until the argument is large
+		enough to use the asymptotic series. For values close to the
+		negative real axis the reflection formula (5.5.4) from [1]_ is
+		used first.  Note that ``psi`` has a family of zeros on the
+		negative real axis which occur between the poles at nonpositive
+		integers. Around the zeros the reflection formula suffers from
+		cancellation and the implementation loses precision. The sole
+		positive zero and the first negative zero, however, are handled
+		separately by precomputing series expansions using [2]_, so the
+		function should maintain full accuracy around the origin.
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/5
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function digamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -462,7 +523,8 @@ package scipy.special.basic;
 		
 		Notes
 		-----
-		For more precision around point m = 1, use `ellipkm1`.
+		For more precision around point m = 1, use `ellipkm1`, which this
+		function calls.
 		
 		See Also
 		--------
@@ -488,12 +550,29 @@ package scipy.special.basic;
 		Parameters
 		----------
 		p : array_like
-		    Defines the parameter of the elliptic integral as `m` = 1 - p.
+		    Defines the parameter of the elliptic integral as `m = 1 - p`.
 		
 		Returns
 		-------
 		K : ndarray
 		    Value of the elliptic integral.
+		
+		Notes
+		-----
+		Wrapper for the Cephes [1]_ routine `ellpk`.
+		
+		For `p <= 1`, computation uses the approximation,
+		
+		.. math:: K(p) \approx P(p) - \log(p) Q(p),
+		
+		where :math:`P` and :math:`Q` are tenth-order polynomials.  The
+		argument `p` is used internally rather than `m` so that the logarithmic
+		singularity at `m = 1` will be shifted to the origin; this preserves
+		maximum accuracy.  For `p > 1`, the identity
+		
+		.. math:: K(p) = K(1/p)/\sqrt(p)
+		
+		is used.
 		
 		See Also
 		--------
@@ -501,6 +580,11 @@ package scipy.special.basic;
 		ellipkinc : Incomplete elliptic integral of the first kind
 		ellipe : Complete elliptic integral of the second kind
 		ellipeinc : Incomplete elliptic integral of the second kind
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function ellipkm1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -599,28 +683,38 @@ package scipy.special.basic;
 	**/
 	static public function extract(condition:Dynamic, arr:Dynamic):Dynamic;
 	/**
-		The factorial function, n! = special.gamma(n+1).
+		The factorial of a number or array of numbers.
 		
-		If exact is 0, then floating point precision is used, otherwise
-		exact long integer is computed.
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
 		
-		- Array argument accepted only for exact=False case.
-		- If n<0, the return value is 0.
+		    n! = n * (n - 1) * (n - 2) * ... * 1
 		
 		Parameters
 		----------
 		n : int or array_like of ints
-		    Calculate ``n!``.  Arrays are only supported with `exact` set
-		    to False.  If ``n < 0``, the return value is 0.
+		    Input values.  If ``n < 0``, the return value is 0.
 		exact : bool, optional
-		    The result can be approximated rapidly using the gamma-formula
-		    above.  If `exact` is set to True, calculate the
-		    answer exactly using integer arithmetic. Default is False.
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
 		
 		Returns
 		-------
-		nf : float or int
-		    Factorial of `n`, as an integer or a float depending on `exact`.
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
 		
 		Examples
 		--------
@@ -628,6 +722,8 @@ package scipy.special.basic;
 		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
 		>>> factorial(5, exact=True)
 		120L
 	**/
@@ -778,7 +874,7 @@ package scipy.special.basic;
 		
 		gamma(z)
 		
-		Gamma function
+		Gamma function.
 		
 		The gamma function is often referred to as the generalized
 		factorial since ``z*gamma(z) = gamma(z+1)`` and ``gamma(n+1) =
@@ -786,21 +882,37 @@ package scipy.special.basic;
 	**/
 	static public function gamma(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		gammaln(x[, out])
+		Logarithm of the absolute value of the Gamma function for real inputs.
 		
-		gammaln(z)
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
 		
-		Logarithm of absolute value of gamma function
-		
-		Defined as::
-		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gammaln(x:Dynamic):Dynamic;
 	/**
 		Compute nth derivative of Hankel function H1v(z) with respect to `z`.
 		
@@ -813,11 +925,17 @@ package scipy.special.basic;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h1vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -832,11 +950,17 @@ package scipy.special.basic;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function h2vp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -848,10 +972,38 @@ package scipy.special.basic;
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : float or complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the Hankel function of the first kind.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(1)}_v(z) = \frac{2}{\imath\pi} \exp(-\imath \pi v/2) K_v(z \exp(-\imath\pi/2))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(1)}_{-v}(z) = H^{(1)}_v(z) \exp(\imath\pi v)
+		
+		is used.
+		
+		See also
+		--------
+		hankel1e : this function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -863,13 +1015,45 @@ package scipy.special.basic;
 		
 		Parameters
 		----------
-		v : float
-		    Order
-		z : complex
-		    Argument
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		out : Values of the Hankel function of the second kind.
+		
+		Notes
+		-----
+		A wrapper for the AMOS [1]_ routine `zbesh`, which carries out the
+		computation using the relation,
+		
+		.. math:: H^{(2)}_v(z) = -\frac{2}{\imath\pi} \exp(\imath \pi v/2) K_v(z \exp(\imath\pi/2))
+		
+		where :math:`K_v` is the modified Bessel function of the second kind.
+		For negative orders, the relation
+		
+		.. math:: H^{(2)}_{-v}(z) = H^{(2)}_v(z) \exp(-\imath\pi v)
+		
+		is used.
+		
+		See also
+		--------
+		hankel2e : this function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function hankel2(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		hyp0f1(x1, x2[, out])
+		
+		hyp0f1(v, x)
+		
 		Confluent hypergeometric limit function 0F1.
 		
 		Parameters
@@ -886,12 +1070,12 @@ package scipy.special.basic;
 		-----
 		This function is defined as:
 		
-		.. math:: _0F_1(v, z) = \sum_{k=0}^{\inf}\frac{z^k}{(v)_k k!}.
+		.. math:: _0F_1(v, z) = \sum_{k=0}^{\infty}\frac{z^k}{(v)_k k!}.
 		
-		It's also the limit as q -> infinity of ``1F1(q;v;z/q)``, and satisfies
-		the differential equation :math:`f''(z) + vf'(z) = f(z)`.
+		It's also the limit as :math:`q \to \infty` of :math:`_1F_1(q; v; z/q)`,
+		and satisfies the differential equation :math:`f''(z) + vf'(z) = f(z)`.
 	**/
-	static public function hyp0f1(v:Dynamic, z:Dynamic):Dynamic;
+	static public function hyp0f1(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the imaginary part of the elements of the array.
 		
@@ -1001,14 +1185,58 @@ package scipy.special.basic;
 		
 		iv(v, z)
 		
-		Modified Bessel function of the first kind  of real order
+		Modified Bessel function of the first kind of real order.
 		
 		Parameters
 		----------
-		v
-		    Order. If `z` is of real type and negative, `v` must be integer valued.
-		z
+		v : array_like
+		    Order. If `z` is of real type and negative, `v` must be integer
+		    valued.
+		z : array_like of float or complex
 		    Argument.
+		
+		Returns
+		-------
+		out : ndarray
+		    Values of the modified Bessel function.
+		
+		Notes
+		-----
+		For real `z` and :math:`v \in [-50, 50]`, the evaluation is carried out
+		using Temme's method [1]_.  For larger orders, uniform asymptotic
+		expansions are applied.
+		
+		For complex `z` and positive `v`, the AMOS [2]_ `zbesi` routine is
+		called. It uses a power series for small `z`, the asymptitic expansion
+		for large `abs(z)`, the Miller algorithm normalized by the Wronskian
+		and a Neumann series for intermediate magnitudes, and the uniform
+		asymptitic expansions for :math:`I_v(z)` and :math:`J_v(z)` for large
+		orders.  Backward recurrence is used to generate sequences or reduce
+		orders when necessary.
+		
+		The calculations above are done in the right half plane and continued
+		into the left half plane by the formula,
+		
+		.. math:: I_v(z \exp(\pm\imath\pi)) = \exp(\pm\pi v) I_v(z)
+		
+		(valid when the real part of `z` is positive).  For negative `v`, the
+		formula
+		
+		.. math:: I_{-v}(z) = I_v(z) + \frac{2}{\pi} \sin(\pi v) K_v(z)
+		
+		is used, where :math:`K_v(z)` is the modified Bessel function of the
+		second kind, evaluated using the AMOS routine `zbesk`.
+		
+		See also
+		--------
+		kve : This function with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Temme, Journal of Computational Physics, vol 21, 343 (1976)
+		.. [2] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function iv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1024,24 +1252,17 @@ package scipy.special.basic;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.29.5 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       http://jin.ece.illinois.edu/specfunc.html
-		
-		Examples
-		--------
-		Calculate multiple values at order 5:
-		
-		>>> from scipy.special import kvp
-		>>> kvp(5, (1, 2, 3+5j))
-		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
-		
-		Calculate for a single value at multiple orders:
-		
-		>>> kvp((4, 4.5, 5), 1)
-		array([ -184.0309,  -568.9585, -1849.0354])
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.29.E5
 	**/
 	static public function ivp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1139,7 +1360,49 @@ package scipy.special.basic;
 		
 		jv(v, z)
 		
-		Bessel function of the first kind of real order `v`
+		Bessel function of the first kind of real order and complex argument.
+		
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		J : ndarray
+		    Value of the Bessel function, :math:`J_v(z)`.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the AMOS
+		[1]_ `zbesj` routine, which exploits the connection to the modified
+		Bessel function :math:`I_v`,
+		
+		.. math::
+		    J_v(z) = \exp(n\pi\imath/2) I_v(-\imath z)\qquad (\Im z > 0)
+		
+		    J_v(z) = \exp(-n\pi\imath/2) I_v(\imath z)\qquad (\Im z < 0)
+		
+		For negative `v` values the formula,
+		
+		.. math:: J_{-v}(z) = J_v(z) \cos(\pi v) - Y_v(z) \sin(\pi v)
+		
+		is used, where :math:`Y_v(z)` is the Bessel function of the second
+		kind, computed using the AMOS routine `zbesy`.  Note that the second
+		term is exactly zero for integer `v`; to improve accuracy the second
+		term is explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		See also
+		--------
+		jve : :math:`J_v` with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function jv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1154,11 +1417,17 @@ package scipy.special.basic;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function jvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1220,7 +1489,13 @@ package scipy.special.basic;
 		`v` at complex `z`.
 		
 		These are also sometimes called functions of the third kind, Basset
-		functions, or Macdonald functions.
+		functions, or Macdonald functions.  They are defined as those solutions
+		of the modified Bessel equation for which,
+		
+		.. math::
+		    K_v(x) \sim \sqrt{\pi/(2x)} \exp(-x)
+		
+		as :math:`x \to \infty` [3]_.
 		
 		Parameters
 		----------
@@ -1235,9 +1510,26 @@ package scipy.special.basic;
 		    The results. Note that input must be of complex type to get complex
 		    output, e.g. ``kv(3, -2+0j)`` instead of ``kv(3, -2)``.
 		
+		Notes
+		-----
+		Wrapper for AMOS [1]_ routine `zbesk`.  For a discussion of the
+		algorithm used, see [2]_ and the references therein.
+		
 		See Also
 		--------
+		kve : This function with leading exponential behavior stripped off.
 		kvp : Derivative of this function
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
+		.. [2] Donald E. Amos, "Algorithm 644: A portable package for Bessel
+		       functions of a complex argument and nonnegative order", ACM
+		       TOMS Vol. 12 Issue 3, Sept. 1986, p. 265
+		.. [3] NIST Digital Library of Mathematical Functions,
+		       Eq. 10.25.E3. http://dlmf.nist.gov/10.25.E3
 		
 		Examples
 		--------
@@ -1279,11 +1571,30 @@ package scipy.special.basic;
 		out : ndarray
 		    The results
 		
+		Examples
+		--------
+		Calculate multiple values at order 5:
+		
+		>>> from scipy.special import kvp
+		>>> kvp(5, (1, 2, 3+5j))
+		array([-1849.0354+0.j    ,   -25.7735+0.j    ,    -0.0307+0.0875j])
+		
+		Calculate for a single value at multiple orders:
+		
+		>>> kvp((4, 4.5, 5), 1)
+		array([ -184.0309,  -568.9585, -1849.0354])
+		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.29.5 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 6.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.29.E5
 	**/
 	static public function kvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -1316,6 +1627,13 @@ package scipy.special.basic;
 	/**
 		Jahnke-Emden Lambda function, Lambdav(x).
 		
+		This function is defined as [2]_,
+		
+		.. math:: \Lambda_v(x) = \Gamma(v+1) \frac{J_v(x)}{(x/2)^v},
+		
+		where :math:`\Gamma` is the gamma function and :math:`J_v` is the
+		Bessel function of the first kind.
+		
 		Parameters
 		----------
 		v : float
@@ -1335,6 +1653,8 @@ package scipy.special.basic;
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] Jahnke, E. and Emde, F. "Tables of Functions with Formulae and
+		       Curves" (4th ed.), Dover, 1945
 	**/
 	static public function lmbda(v:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -1725,7 +2045,7 @@ package scipy.special.basic;
 		
 		Parameters
 		----------
-		arr : array_like
+		arr : ndarray
 		    Array to put data into.
 		mask : array_like
 		    Boolean mask array. Must have the same size as `a`.
@@ -1808,12 +2128,47 @@ package scipy.special.basic;
 	/**
 		psi(x[, out])
 		
-		psi(z)
+		psi(z, out=None)
 		
-		Digamma function
+		The digamma function.
 		
-		The derivative of the logarithm of the gamma function evaluated at
-		`z` (also called the digamma function).
+		The logarithmic derivative of the gamma function evaluated at ``z``.
+		
+		Parameters
+		----------
+		z : array_like
+		    Real or complex argument.
+		out : ndarray, optional
+		    Array for the computed values of ``psi``.
+		
+		Returns
+		-------
+		digamma : ndarray
+		    Computed values of ``psi``.
+		
+		Notes
+		-----
+		For large values not close to the negative real axis ``psi`` is
+		computed using the asymptotic series (5.11.2) from [1]_. For small
+		arguments not close to the negative real axis the recurrence
+		relation (5.5.2) from [1]_ is used until the argument is large
+		enough to use the asymptotic series. For values close to the
+		negative real axis the reflection formula (5.5.4) from [1]_ is
+		used first.  Note that ``psi`` has a family of zeros on the
+		negative real axis which occur between the poles at nonpositive
+		integers. Around the zeros the reflection formula suffers from
+		cancellation and the implementation loses precision. The sole
+		positive zero and the first negative zero, however, are handled
+		separately by precomputing series expansions using [2]_, so the
+		function should maintain full accuracy around the origin.
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/5
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1848,10 +2203,14 @@ package scipy.special.basic;
 	**/
 	static public function real(val:Dynamic):Dynamic;
 	/**
-		Compute Ricatti-Bessel function of the first kind and derivative.
+		Compute Ricatti-Bessel function of the first kind and its derivative.
 		
-		This function computes the value and first derivative of the function for
-		all orders up to and including n.
+		The Ricatti-Bessel function of the first kind is defined as :math:`x
+		j_n(x)`, where :math:`j_n` is the spherical Bessel function of the first
+		kind of order :math:`n`.
+		
+		This function computes the value and first derivative of the
+		Ricatti-Bessel function for all orders up to and including `n`.
 		
 		Parameters
 		----------
@@ -1867,18 +2226,32 @@ package scipy.special.basic;
 		jnp : ndarray
 		    First derivative j0'(x), ..., jn'(x)
 		
+		Notes
+		-----
+		The computation is carried out via backward recurrence, using the
+		relation DLMF 10.51.1 [2]_.
+		
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_jn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
-		Compute Ricatti-Bessel function of the second kind and derivative.
+		Compute Ricatti-Bessel function of the second kind and its derivative.
+		
+		The Ricatti-Bessel function of the second kind is defined as :math:`x
+		y_n(x)`, where :math:`y_n` is the spherical Bessel function of the second
+		kind of order :math:`n`.
 		
 		This function computes the value and first derivative of the function for
-		all orders up to and including n.
+		all orders up to and including `n`.
 		
 		Parameters
 		----------
@@ -1894,11 +2267,21 @@ package scipy.special.basic;
 		ynp : ndarray
 		    First derivative y0'(x), ..., yn'(x)
 		
+		Notes
+		-----
+		The computation is carried out via ascending recurrence, using the
+		relation DLMF 10.51.1 [2]_.
+		
+		Wrapper for a Fortran routine created by Shanjie Zhang and Jianming
+		Jin [1]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.51.E1
 	**/
 	static public function riccati_yn(n:Dynamic, x:Dynamic):Dynamic;
 	/**
@@ -2031,175 +2414,231 @@ package scipy.special.basic;
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
 	/**
+		`sph_in` is deprecated!
+		scipy.special.sph_in is deprecated in scipy 0.18.0. Use scipy.special.spherical_in instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel function in(z) and derivative.
 		
-		This function computes the value and first derivative of in(z) for all
-		orders up to and including n.
+		    This function computes the value and first derivative of in(z) for all
+		    orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of in to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of in to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		in : ndarray
-		    Value of i0(z), ..., in(z)
-		inp : ndarray
-		    First derivative i0'(z), ..., in'(z)
+		    Returns
+		    -------
+		    in : ndarray
+		        Value of i0(z), ..., in(z)
+		    inp : ndarray
+		        First derivative i0'(z), ..., in'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_in
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_in(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_in(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_inkn` is deprecated!
+		scipy.special.sph_inkn is deprecated in scipy 0.18.0. Use scipy.special.spherical_in and scipy.special.spherical_kn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel functions in(z), kn(z), and derivatives.
 		
-		This function computes the value and first derivative of in(z) and kn(z)
-		for all orders up to and including n.
+		    This function computes the value and first derivative of in(z) and kn(z)
+		    for all orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of in and kn to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of in and kn to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		in : ndarray
-		    Value of i0(z), ..., in(z)
-		inp : ndarray
-		    First derivative i0'(z), ..., in'(z)
-		kn : ndarray
-		    Value of k0(z), ..., kn(z)
-		knp : ndarray
-		    First derivative k0'(z), ..., kn'(z)
+		    Returns
+		    -------
+		    in : ndarray
+		        Value of i0(z), ..., in(z)
+		    inp : ndarray
+		        First derivative i0'(z), ..., in'(z)
+		    kn : ndarray
+		        Value of k0(z), ..., kn(z)
+		    knp : ndarray
+		        First derivative k0'(z), ..., kn'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_in
+		    spherical_kn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_inkn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_inkn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_jn` is deprecated!
+		scipy.special.sph_jn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel function jn(z) and derivative.
 		
-		This function computes the value and first derivative of jn(z) for all
-		orders up to and including n.
+		    This function computes the value and first derivative of jn(z) for all
+		    orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of jn to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of jn to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		jn : ndarray
-		    Value of j0(z), ..., jn(z)
-		jnp : ndarray
-		    First derivative j0'(z), ..., jn'(z)
+		    Returns
+		    -------
+		    jn : ndarray
+		        Value of j0(z), ..., jn(z)
+		    jnp : ndarray
+		        First derivative j0'(z), ..., jn'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_jn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_jn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_jn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_jnyn` is deprecated!
+		scipy.special.sph_jnyn is deprecated in scipy 0.18.0. Use scipy.special.spherical_jn and scipy.special.spherical_yn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel functions jn(z) and yn(z) and derivatives.
 		
-		This function computes the value and first derivative of jn(z) and yn(z)
-		for all orders up to and including n.
+		    This function computes the value and first derivative of jn(z) and yn(z)
+		    for all orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of jn and yn to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of jn and yn to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		jn : ndarray
-		    Value of j0(z), ..., jn(z)
-		jnp : ndarray
-		    First derivative j0'(z), ..., jn'(z)
-		yn : ndarray
-		    Value of y0(z), ..., yn(z)
-		ynp : ndarray
-		    First derivative y0'(z), ..., yn'(z)
+		    Returns
+		    -------
+		    jn : ndarray
+		        Value of j0(z), ..., jn(z)
+		    jnp : ndarray
+		        First derivative j0'(z), ..., jn'(z)
+		    yn : ndarray
+		        Value of y0(z), ..., yn(z)
+		    ynp : ndarray
+		        First derivative y0'(z), ..., yn'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_jn
+		    spherical_yn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_jnyn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_jnyn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_kn` is deprecated!
+		scipy.special.sph_kn is deprecated in scipy 0.18.0. Use scipy.special.spherical_kn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel function kn(z) and derivative.
 		
-		This function computes the value and first derivative of kn(z) for all
-		orders up to and including n.
+		    This function computes the value and first derivative of kn(z) for all
+		    orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of kn to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of kn to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		kn : ndarray
-		    Value of k0(z), ..., kn(z)
-		knp : ndarray
-		    First derivative k0'(z), ..., kn'(z)
+		    Returns
+		    -------
+		    kn : ndarray
+		        Value of k0(z), ..., kn(z)
+		    knp : ndarray
+		        First derivative k0'(z), ..., kn'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_kn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_kn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_kn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		`sph_yn` is deprecated!
+		scipy.special.sph_yn is deprecated in scipy 0.18.0. Use scipy.special.spherical_yn instead. Note that the new function has a different signature.
+		
 		Compute spherical Bessel function yn(z) and derivative.
 		
-		This function computes the value and first derivative of yn(z) for all
-		orders up to and including n.
+		    This function computes the value and first derivative of yn(z) for all
+		    orders up to and including n.
 		
-		Parameters
-		----------
-		n : int
-		    Maximum order of yn to compute
-		z : complex
-		    Argument at which to evaluate
+		    Parameters
+		    ----------
+		    n : int
+		        Maximum order of yn to compute
+		    z : complex
+		        Argument at which to evaluate
 		
-		Returns
-		-------
-		yn : ndarray
-		    Value of y0(z), ..., yn(z)
-		ynp : ndarray
-		    First derivative y0'(z), ..., yn'(z)
+		    Returns
+		    -------
+		    yn : ndarray
+		        Value of y0(z), ..., yn(z)
+		    ynp : ndarray
+		        First derivative y0'(z), ..., yn'(z)
 		
-		References
-		----------
-		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
-		       Functions", John Wiley and Sons, 1996, chapter 8.
-		       http://jin.ece.illinois.edu/specfunc.html
+		    See also
+		    --------
+		    spherical_yn
+		
+		    References
+		    ----------
+		    .. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
+		           Functions", John Wiley and Sons, 1996, chapter 8.
+		           http://jin.ece.illinois.edu/specfunc.html
+		
+		    
 	**/
-	static public function sph_yn(n:Dynamic, z:Dynamic):Dynamic;
+	static public function sph_yn(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		sqrt(x[, out])
 		
@@ -2442,10 +2881,46 @@ package scipy.special.basic;
 		
 		yv(v, z)
 		
-		Bessel function of the second kind of real order
+		Bessel function of the second kind of real order and complex argument.
 		
-		Returns the Bessel function of the second kind of real order `v` at
-		complex `z`.
+		Parameters
+		----------
+		v : array_like
+		    Order (float).
+		z : array_like
+		    Argument (float or complex).
+		
+		Returns
+		-------
+		Y : ndarray
+		    Value of the Bessel function of the second kind, :math:`Y_v(x)`.
+		
+		Notes
+		-----
+		For positive `v` values, the computation is carried out using the
+		AMOS [1]_ `zbesy` routine, which exploits the connection to the Hankel
+		Bessel functions :math:`H_v^{(1)}` and :math:`H_v^{(2)}`,
+		
+		.. math:: Y_v(z) = \frac{1}{2\imath} (H_v^{(1)} - H_v^{(2)}).
+		
+		For negative `v` values the formula,
+		
+		.. math:: Y_{-v}(z) = Y_v(z) \cos(\pi v) + J_v(z) \sin(\pi v)
+		
+		is used, where :math:`J_v(z)` is the Bessel function of the first kind,
+		computed using the AMOS routine `zbesj`.  Note that the second term is
+		exactly zero for integer `v`; to improve accuracy the second term is
+		explicitly omitted for `v` values such that `v = floor(v)`.
+		
+		See also
+		--------
+		yve : :math:`Y_v` with leading exponential behavior stripped off.
+		
+		References
+		----------
+		.. [1] Donald E. Amos, "AMOS, A Portable Package for Bessel Functions
+		       of a Complex Argument and Nonnegative Order",
+		       http://netlib.org/amos/
 	**/
 	static public function yv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -2460,11 +2935,17 @@ package scipy.special.basic;
 		n : int, default 1
 		    Order of derivative
 		
+		Notes
+		-----
+		The derivative is computed using the relation DLFM 10.6.7 [2]_.
+		
 		References
 		----------
 		.. [1] Zhang, Shanjie and Jin, Jianming. "Computation of Special
 		       Functions", John Wiley and Sons, 1996, chapter 5.
 		       http://jin.ece.illinois.edu/specfunc.html
+		.. [2] NIST Digital Library of Mathematical Functions.
+		       http://dlmf.nist.gov/10.6.E7
 	**/
 	static public function yvp(v:Dynamic, z:Dynamic, ?n:Dynamic):Dynamic;
 	/**
@@ -2519,24 +3000,17 @@ package scipy.special.basic;
 	**/
 	static public function zeros(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		zeta(x1, x2[, out])
+		Riemann zeta function.
 		
-		zeta(x, q)
+		The two-argument version is the Hurwitz zeta function:
 		
-		Hurwitz zeta function
+		.. math:: \zeta(x, q) = \sum_{k=0}^{\infty} \frac{1}{(k + q)^x},
 		
-		The Riemann zeta function of two arguments (also known as the
-		Hurwitz zeta function).
-		
-		This function is defined as
-		
-		.. math:: \zeta(x, q) = \sum_{k=0}^{\infty} 1 / (k+q)^x,
-		
-		where ``x > 1`` and ``q > 0``.
+		Riemann zeta function corresponds to ``q = 1``.
 		
 		See also
 		--------
 		zetac
 	**/
-	static public function zeta(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function zeta(x:Dynamic, ?q:Dynamic, ?out:Dynamic):Dynamic;
 }

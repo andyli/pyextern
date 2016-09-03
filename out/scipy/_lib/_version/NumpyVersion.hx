@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package scipy._lib._version;
 @:pythonImport("scipy._lib._version", "NumpyVersion") extern class NumpyVersion {
-	public function _NumpyVersion__repr():Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).

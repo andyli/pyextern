@@ -166,7 +166,6 @@ package scipy.io.arff.arffread;
 	static public var r_datameta : Dynamic;
 	static public var r_empty : Dynamic;
 	static public var r_headerline : Dynamic;
-	static public var r_mcomattrval : Dynamic;
 	static public var r_meta : Dynamic;
 	static public var r_relation : Dynamic;
 	static public var r_wcomattrval : Dynamic;

@@ -11,8 +11,6 @@ package scipy.integrate.quadpack;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public function _infunc(x:Dynamic, func:Dynamic, gfun:Dynamic, hfun:Dynamic, more_args:Dynamic):Dynamic;
-	static public function _infunc2(y:Dynamic, x:Dynamic, func:Dynamic, qfun:Dynamic, rfun:Dynamic, more_args:Dynamic):Dynamic;
 	static public function _quad(func:Dynamic, a:Dynamic, b:Dynamic, args:Dynamic, full_output:Dynamic, epsabs:Dynamic, epsrel:Dynamic, limit:Dynamic, points:Dynamic):Dynamic;
 	static public function _quad_weight(func:Dynamic, a:Dynamic, b:Dynamic, args:Dynamic, full_output:Dynamic, epsabs:Dynamic, epsrel:Dynamic, limlst:Dynamic, limit:Dynamic, maxp1:Dynamic, weight:Dynamic, wvar:Dynamic, wopts:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
@@ -100,18 +98,21 @@ package scipy.integrate.quadpack;
 		    Each element of ranges may be either a sequence  of 2 numbers, or else
 		    a callable that returns such a sequence.  ``ranges[0]`` corresponds to
 		    integration over x0, and so on.  If an element of ranges is a callable,
-		    then it will be called with all of the integration arguments available.
-		    e.g. if ``func = f(x0, x1, x2)``, then ``ranges[0]`` may be defined as
-		    either ``(a, b)`` or else as ``(a, b) = range0(x1, x2)``.
+		    then it will be called with all of the integration arguments available,
+		    as well as any parametric arguments. e.g. if 
+		    ``func = f(x0, x1, x2, t0, t1)``, then ``ranges[0]`` may be defined as
+		    either ``(a, b)`` or else as ``(a, b) = range0(x1, x2, t0, t1)``.
 		args : iterable object, optional
-		    Additional arguments ``t0, ..., tn``, required by `func`.
+		    Additional arguments ``t0, ..., tn``, required by `func`, `ranges`, and
+		    ``opts``.
 		opts : iterable object or dict, optional
 		    Options to be passed to `quad`.  May be empty, a dict, or
 		    a sequence of dicts or functions that return a dict.  If empty, the
-		    default options from scipy.integrate.quadare used.  If a dict, the same
+		    default options from scipy.integrate.quad are used.  If a dict, the same
 		    options are used for all levels of integraion.  If a sequence, then each
 		    element of the sequence corresponds to a particular integration. e.g.
-		    opts[0] corresponds to integration over x0, and so on. The available
+		    opts[0] corresponds to integration over x0, and so on. If a callable, 
+		    the signature must be the same as for ``ranges``. The available
 		    options together with their default values are:
 		
 		      - epsabs = 1.49e-08
@@ -122,10 +123,12 @@ package scipy.integrate.quadpack;
 		      - wvar   = None
 		      - wopts  = None
 		
-		    The ``full_output`` option from `quad` is unavailable, due to the
-		    complexity of handling the large amount of data such an option would
-		    return for this kind of nested integration.  For more information on
-		    these options, see `quad` and `quad_explain`.
+		    For more information on these options, see `quad` and `quad_explain`.
+		
+		full_output : bool, optional
+		    Partial implementation of ``full_output`` from scipy.integrate.quad. 
+		    The number of integrand function evaluations ``neval`` can be obtained 
+		    by setting ``full_output=True`` when calling nquad.
 		
 		Returns
 		-------
@@ -134,6 +137,8 @@ package scipy.integrate.quadpack;
 		abserr : float
 		    The maximum of the estimates of the absolute error in the various
 		    integration results.
+		out_dict : dict, optional
+		    A dict containing additional information on the integration. 
 		
 		See Also
 		--------
@@ -147,12 +152,12 @@ package scipy.integrate.quadpack;
 		>>> from scipy import integrate
 		>>> func = lambda x0,x1,x2,x3 : x0**2 + x1*x2 - x3**3 + np.sin(x0) + (
 		...                                 1 if (x0-.2*x3-.5-.25*x1>0) else 0)
-		>>> points = [[lambda (x1,x2,x3) : 0.2*x3 + 0.5 + 0.25*x1], [], [], []]
+		>>> points = [[lambda x1,x2,x3 : 0.2*x3 + 0.5 + 0.25*x1], [], [], []]
 		>>> def opts0(*args, **kwargs):
 		...     return {'points':[0.2*args[2] + 0.5 + 0.25*args[0]]}
 		>>> integrate.nquad(func, [[0,1], [-1,1], [.13,.8], [-.15,1]],
-		...                 opts=[opts0,{},{},{}])
-		(1.5267454070738633, 2.9437360001402324e-14)
+		...                 opts=[opts0,{},{},{}], full_output=True)
+		(1.5267454070738633, 2.9437360001402324e-14, {'neval': 388962})
 		
 		>>> scale = .1
 		>>> def func2(x0, x1, x2, x3, t0, t1):
@@ -180,7 +185,7 @@ package scipy.integrate.quadpack;
 		...                 opts=[opts0, opts1, opts2, opts3])
 		(25.066666666666666, 2.7829590483937256e-13)
 	**/
-	static public function nquad(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?opts:Dynamic):Float;
+	static public function nquad(func:Dynamic, ranges:Dynamic, ?args:Dynamic, ?opts:Dynamic, ?full_output:Dynamic):Float;
 	static public var print_function : Dynamic;
 	/**
 		Compute a definite integral.
@@ -222,9 +227,9 @@ package scipy.integrate.quadpack;
 		infodict : dict
 		    A dictionary containing additional information.
 		    Run scipy.integrate.quad_explain() for more information.
-		message :
+		message
 		    A convergence message.
-		explain :
+		explain
 		    Appended only with 'cos' or 'sin' weighting and infinite
 		    integration limits, it contains an explanation of the codes in
 		    infodict['ierlst']

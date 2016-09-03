@@ -561,10 +561,8 @@ package scipy.interpolate;
 		x : scalar or array_like
 		    Of length M.
 		der : int or list, optional
-		    How many derivatives to extract; None for all potentially
-		    nonzero derivatives (that is a number equal to the number
-		    of points), or a list of derivatives to extract. This number
-		    includes the function value as 0th derivative.
+		    Derivatives to extract.  The 0-th derivative can be included to
+		    return the function value.
 		axis : int, optional
 		    Axis in the yi array corresponding to the x-coordinate values.
 		
@@ -578,52 +576,6 @@ package scipy.interpolate;
 		    The result, of length R or length M or M by R,
 	**/
 	static public function pchip_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		Convenience function for piecewise polynomial interpolation.
-		
-		Parameters
-		----------
-		xi : array_like
-		    A sorted list of x-coordinates.
-		yi : list of lists
-		    ``yi[i]`` is the list of derivatives known at ``xi[i]``.
-		x : scalar or array_like
-		    Coordinates at which to evalualte the polynomial.
-		orders : int or list of ints, optional
-		    A list of polynomial orders, or a single universal order.
-		der : int or list, optional
-		    How many derivatives to extract; None for all potentially
-		    nonzero derivatives (that is a number equal to the number
-		    of points), or a list of derivatives to extract. This number
-		    includes the function value as 0th derivative.
-		axis : int, optional
-		    Axis in the `yi` array corresponding to the x-coordinate values.
-		
-		Returns
-		-------
-		y : ndarray
-		    Interpolated values or derivatives. If multiple derivatives
-		    were requested, these are given along the first axis.
-		
-		See Also
-		--------
-		PiecewisePolynomial
-		
-		Notes
-		-----
-		If `orders` is None, or ``orders[i]`` is None, then the degree of the
-		polynomial segment is exactly the degree required to match all i
-		available derivatives at both endpoints.  If ``orders[i]`` is not None,
-		then some derivatives will be ignored.  The code will try to use an
-		equal number of derivatives from each end; if the total number of
-		derivatives needed is odd, it will prefer the rightmost endpoint. If
-		not enough derivatives are available, an exception is raised.
-		
-		Construction of these piecewise polynomials can be an expensive process;
-		if you repeatedly evaluate the same polynomial, consider using the class
-		PiecewisePolynomial (which is what this function does).
-	**/
-	static public function piecewise_polynomial_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?orders:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Evaluate all derivatives of a B-spline.
@@ -1067,8 +1019,8 @@ package scipy.interpolate;
 		    The interval to fit.  If None, these default to x[0] and x[-1]
 		    respectively.
 		k : int, optional
-		    The order of the spline fit. It is recommended to use cubic splines.
-		    Even order splines should be avoided especially with small s values.
+		    The degree of the spline fit. It is recommended to use cubic splines.
+		    Even values of k should be avoided especially with small s values.
 		    1 <= k <= 5
 		task : {1, 0, -1}, optional
 		    If task==0 find t and c for a given smoothing factor, s.

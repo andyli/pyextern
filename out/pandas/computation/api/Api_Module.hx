@@ -36,10 +36,11 @@ package pandas.computation.api;
 		    ``'python'`` parser to retain strict Python semantics.  See the
 		    :ref:`enhancing performance <enhancingperf.eval>` documentation for
 		    more details.
-		engine : string, default 'numexpr', {'python', 'numexpr'}
+		engine : string or None, default 'numexpr', {'python', 'numexpr'}
 		
 		    The engine used to evaluate the expression. Supported engines are
 		
+		    - None         : tries to use ``numexpr``, falls back to ``python``
 		    - ``'numexpr'``: This default engine evaluates pandas objects using
 		                     numexpr for large speed ups in complex expressions
 		                     with large frames.

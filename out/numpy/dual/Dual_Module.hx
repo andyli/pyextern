@@ -224,7 +224,7 @@ package numpy.dual;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -329,7 +329,7 @@ package numpy.dual;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If eigenvalue computation does not converge,
 		    an error occurred, or b matrix is not definite positive. Note that
 		    if input matrices are not symmetric or hermitian, no error is reported
@@ -475,7 +475,41 @@ package numpy.dual;
 		
 		i0(x)
 		
-		Modified Bessel function of order 0
+		Modified Bessel function of order 0.
+		
+		Defined as,
+		
+		.. math::
+		    I_0(x) = \sum_{k=0}^\infty \frac{(x^2/4)^k}{(k!)^2} = J_0(\imath x),
+		
+		where :math:`J_0` is the Bessel function of the first kind of order 0.
+		
+		Parameters
+		----------
+		x : array_like
+		    Argument (float)
+		
+		Returns
+		-------
+		I : ndarray
+		    Value of the modified Bessel function of order 0 at `x`.
+		
+		Notes
+		-----
+		The range is partitioned into the two intervals [0, 8] and (8, infinity).
+		Chebyshev polynomial expansions are employed in each interval.
+		
+		This function is a wrapper for the Cephes [1]_ routine `i0`.
+		
+		See also
+		--------
+		iv
+		i0e
+		
+		References
+		----------
+		.. [1] Cephes Mathematical Functions Library,
+		       http://www.netlib.org/cephes/index.html
 	**/
 	static public function i0(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -569,9 +603,9 @@ package numpy.dual;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If `a` is singular.
-		ValueError :
+		ValueError
 		    If `a` is not square, or not 2-dimensional.
 		
 		Examples
@@ -635,10 +669,10 @@ package numpy.dual;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If computation does not converge.
 		
-		ValueError :
+		ValueError
 		    When parameters are wrong.
 		
 		See Also
@@ -890,6 +924,13 @@ package numpy.dual;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -903,7 +944,7 @@ package numpy.dual;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -934,5 +975,5 @@ package numpy.dual;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):numpy.Ndarray;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):numpy.Ndarray;
 }

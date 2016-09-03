@@ -16,7 +16,7 @@ package scipy.optimize._linprog;
 		Solve the following linear programming problem via a two-phase
 		simplex algorithm.
 		
-		maximize:     c^T * x
+		minimize:     c^T * x
 		
 		subject to:   A_ub * x <= b_ub
 		              A_eq * x == b_eq
@@ -24,7 +24,7 @@ package scipy.optimize._linprog;
 		Parameters
 		----------
 		c : array_like
-		    Coefficients of the linear objective function to be maximized.
+		    Coefficients of the linear objective function to be minimized.
 		A_ub : array_like
 		    2-D array which, when matrix-multiplied by x, gives the values of the
 		    upper-bound inequality constraints at x.
@@ -82,6 +82,8 @@ package scipy.optimize._linprog;
 		    x : ndarray
 		        The independent variable vector which optimizes the linear
 		        programming problem.
+		    fun : float
+		        Value of the objective function.
 		    slack : ndarray
 		        The values of the slack variables.  Each slack variable corresponds
 		        to an inequality constraint.  If the slack is zero, then the
@@ -366,6 +368,8 @@ package scipy.optimize._linprog;
 		    x : ndarray
 		        The independent variable vector which optimizes the linear
 		        programming problem.
+		    fun : float
+		        Value of the objective function.
 		    slack : ndarray
 		        The values of the slack variables.  Each slack variable corresponds
 		        to an inequality constraint.  If the slack is zero, then the

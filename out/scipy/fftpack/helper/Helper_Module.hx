@@ -70,6 +70,19 @@ package scipy.fftpack.helper;
 		array([3, 5])
 	**/
 	static public function arange(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		bisect_left(a, x[, lo[, hi]]) -> index
+		
+		Return the index where to insert item x in list a, assuming a is sorted.
+		
+		The return value i is such that all e in a[:i] have e < x, and all e in
+		a[i:] have e >= x.  So if x already appears in the list, i points just
+		before the leftmost x already there.
+		
+		Optional args lo (default 0) and hi (default len(a)) bound the
+		slice of a to be searched.
+	**/
+	static public function bisect_left(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Return the Discrete Fourier Transform sample frequencies.
@@ -182,6 +195,46 @@ package scipy.fftpack.helper;
 		       [-3., -2., -1.]])
 	**/
 	static public function ifftshift(x:Dynamic, ?axes:Dynamic):Dynamic;
+	/**
+		Find the next fast size of input data to `fft`, for zero-padding, etc.
+		
+		SciPy's FFTPACK has efficient functions for radix {2, 3, 4, 5}, so this
+		returns the next composite of the prime factors 2, 3, and 5 which is
+		greater than or equal to `target`. (These are also known as 5-smooth
+		numbers, regular numbers, or Hamming numbers.)
+		
+		Parameters
+		----------
+		target : int
+		    Length to start searching from.  Must be a positive integer.
+		
+		Returns
+		-------
+		out : int
+		    The first 5-smooth number greater than or equal to `target`.
+		
+		Examples
+		--------
+		On a particular machine, an FFT of prime length takes 133 ms:
+		
+		>>> from scipy import fftpack
+		>>> min_len = 10007  # prime length is worst case for speed
+		>>> a = np.random.randn(min_len)
+		>>> b = fftpack.fft(a)
+		
+		Zero-padding to the next 5-smooth length reduces computation time to
+		211 us, a speedup of 630 times:
+		
+		>>> fftpack.helper.next_fast_len(min_len)
+		10125
+		>>> b = fftpack.fft(a, 10125)
+		
+		Rounding up to the next power of 2 is not optimal, taking 367 us to
+		compute, 1.7 times as long as the 5-smooth size:
+		
+		>>> b = fftpack.fft(a, 16384)
+	**/
+	static public function next_fast_len(target:Dynamic):Int;
 	static public var print_function : Dynamic;
 	/**
 		DFT sample frequencies (for usage with rfft, irfft).

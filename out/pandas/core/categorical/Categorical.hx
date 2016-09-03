@@ -276,17 +276,25 @@ package pandas.core.categorical;
 	**/
 	public function add_categories(new_categories:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Implements ndarray.argsort.
+		Returns the indices that would sort the Categorical instance if
+		'sort_values' was called. This function is implemented to provide
+		compatibility with numpy ndarray objects.
 		
-		For internal compatibility with numpy arrays.
-		
-		Only ordered Categoricals can be argsorted!
+		While an ordering is applied to the category values, arg-sorting
+		in this context refers more to organizing and grouping together
+		based on matching category values. Thus, this function can be
+		called on an unordered Categorical instance unlike the functions
+		'Categorical.min' and 'Categorical.max'.
 		
 		Returns
 		-------
 		argsorted : numpy array
+		
+		See also
+		--------
+		numpy.ndarray.argsort
 	**/
-	public function argsort(?ascending:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function argsort(?ascending:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Sets the Categorical to be ordered
 		
@@ -506,6 +514,22 @@ package pandas.core.categorical;
 	**/
 	public var levels : Dynamic;
 	/**
+		Apply mapper function to its categories (not codes).
+		
+		Parameters
+		----------
+		mapper : callable
+		    Function to be applied. When all categories are mapped
+		    to different categories, the result will be Categorical which has
+		    the same order property as the original. Otherwise, the result will
+		    be np.ndarray.
+		
+		Returns
+		-------
+		applied : Categorical or np.ndarray.
+	**/
+	public function map(mapper:Dynamic):Dynamic;
+	/**
 		The maximum value of the object.
 		
 		Only ordered `Categoricals` have a maximum!
@@ -588,38 +612,22 @@ package pandas.core.categorical;
 	**/
 	public function notnull():Dynamic;
 	/**
-		DEPRECATED: use :meth:`Categorical.sort_values`
-		
-		Sorts the Category by category value returning a new Categorical by
-		default.
-		
-		Only ordered Categoricals can be sorted!
-		
-		Categorical.sort is the equivalent but sorts the Categorical inplace.
-		
-		Parameters
-		----------
-		inplace : boolean, default False
-		    Do operation in place.
-		ascending : boolean, default True
-		    Sort ascending. Passing False sorts descending
-		na_position : {'first', 'last'} (optional, default='last')
-		    'first' puts NaNs at the beginning
-		    'last' puts NaNs at the end
-		
-		Returns
-		-------
-		y : Category or None
+		DEPRECATED: use :meth:`Categorical.sort_values`. That function
+		is entirely equivalent to this one.
 		
 		See Also
 		--------
-		Category.sort
+		Categorical.sort_values
 	**/
 	public function order(?inplace:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;
 	/**
 		Gets the ordered attribute 
 	**/
 	public var ordered : Dynamic;
+	/**
+		Replace specific elements in the Categorical with given values.
+	**/
+	public function put(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a flattened (numpy) array.
 		
@@ -761,11 +769,13 @@ package pandas.core.categorical;
 		--------
 		numpy.ndarray.repeat
 	**/
-	public function repeat(repeats:Dynamic):Dynamic;
+	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		compat with .reshape 
+		An ndarray-compatible method that returns
+		`self` because categorical instances cannot
+		actually be reshaped.
 	**/
-	public function reshape(new_shape:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function reshape(new_shape:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find indices where elements should be inserted to maintain order.
 		
@@ -776,12 +786,11 @@ package pandas.core.categorical;
 		Parameters
 		----------
 		v : array_like
-		    Array-like values or a scalar value, to insert/search for in
-		    `self`.
+		    Values to insert into `self`.
 		side : {'left', 'right'}, optional
 		    If 'left', the index of the first suitable location found is given.
 		    If 'right', return the last such index.  If there is no suitable
-		    index, return either 0 or N (where N is the length of `a`).
+		    index, return either 0 or N (where N is the length of `self`).
 		sorter : 1-D array_like, optional
 		    Optional array of integer indices that sort `self` into ascending
 		    order. They are typically the result of ``np.argsort``.
@@ -793,7 +802,6 @@ package pandas.core.categorical;
 		
 		See Also
 		--------
-		Series.searchsorted
 		numpy.searchsorted
 		
 		Notes
@@ -802,6 +810,21 @@ package pandas.core.categorical;
 		
 		Examples
 		--------
+		>>> x = pd.Series([1, 2, 3])
+		>>> x
+		0    1
+		1    2
+		2    3
+		dtype: int64
+		>>> x.searchsorted(4)
+		array([3])
+		>>> x.searchsorted([0, 4])
+		array([0, 3])
+		>>> x.searchsorted([1, 3], side='left')
+		array([0, 2])
+		>>> x.searchsorted([1, 3], side='right')
+		array([1, 3])
+		>>>
 		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
 		[apple, bread, bread, cheese, milk]
 		Categories (4, object): [apple < bread < cheese < milk]
@@ -812,12 +835,7 @@ package pandas.core.categorical;
 		>>> x.searchsorted(['bread', 'eggs'])
 		array([1, 4])
 		>>> x.searchsorted(['bread', 'eggs'], side='right')
-		array([3, 4])       # eggs before milk
-		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk',
-		                        'donuts' ])
-		>>> x.searchsorted(['bread', 'eggs'], side='right',
-		                   sorter=[0, 1, 2, 3, 5, 4])
-		array([3, 5]) # eggs after donuts, after switching milk and donuts
+		array([3, 4])    # eggs before milk
 	**/
 	public function searchsorted(v:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
@@ -908,56 +926,87 @@ package pandas.core.categorical;
 	public function shift(periods:Dynamic):pandas.Categorical;
 	static public var size : Dynamic;
 	/**
-		Sorts the Category inplace by category value.
-		
-		Only ordered Categoricals can be sorted!
-		
-		Catgorical.order is the equivalent but returns a new Categorical.
-		
-		Parameters
-		----------
-		ascending : boolean, default True
-		    Sort ascending. Passing False sorts descending
-		inplace : boolean, default False
-		    Do operation in place.
-		na_position : {'first', 'last'} (optional, default='last')
-		    'first' puts NaNs at the beginning
-		    'last' puts NaNs at the end
-		
-		Returns
-		-------
-		y : Category or None
+		DEPRECATED: use :meth:`Categorical.sort_values`. That function
+		is just like this one, except that a new Categorical is returned
+		by default, so make sure to pass in 'inplace=True' to get
+		inplace sorting.
 		
 		See Also
 		--------
-		Category.sort_values
+		Categorical.sort_values
 	**/
-	public function sort(?inplace:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;
+	public function sort(?inplace:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Sorts the Category by category value returning a new Categorical by
-		default.
+		Sorts the Categorical by category value returning a new
+		Categorical by default.
 		
-		Only ordered Categoricals can be sorted!
-		
-		Categorical.sort is the equivalent but sorts the Categorical inplace.
+		While an ordering is applied to the category values, sorting in this
+		context refers more to organizing and grouping together based on
+		matching category values. Thus, this function can be called on an
+		unordered Categorical instance unlike the functions 'Categorical.min'
+		and 'Categorical.max'.
 		
 		Parameters
 		----------
 		inplace : boolean, default False
 		    Do operation in place.
 		ascending : boolean, default True
-		    Sort ascending. Passing False sorts descending
+		    Order ascending. Passing False orders descending. The
+		    ordering parameter provides the method by which the
+		    category values are organized.
 		na_position : {'first', 'last'} (optional, default='last')
 		    'first' puts NaNs at the beginning
 		    'last' puts NaNs at the end
 		
 		Returns
 		-------
-		y : Category or None
+		y : Categorical or None
 		
 		See Also
 		--------
-		Category.sort
+		Categorical.sort
+		
+		Examples
+		--------
+		>>> c = pd.Categorical([1, 2, 2, 1, 5])
+		>>> c
+		[1, 2, 2, 1, 5]
+		Categories (3, int64): [1, 2, 5]
+		>>> c.sort_values()
+		[1, 1, 2, 2, 5]
+		Categories (3, int64): [1, 2, 5]
+		>>> c.sort_values(ascending=False)
+		[5, 2, 2, 1, 1]
+		Categories (3, int64): [1, 2, 5]
+		
+		Inplace sorting can be done as well:
+		
+		>>> c.sort_values(inplace=True)
+		>>> c
+		[1, 1, 2, 2, 5]
+		Categories (3, int64): [1, 2, 5]
+		>>>
+		>>> c = pd.Categorical([1, 2, 2, 1, 5])
+		
+		'sort_values' behaviour with NaNs. Note that 'na_position'
+		is independent of the 'ascending' parameter:
+		
+		>>> c = pd.Categorical([np.nan, 2, 2, np.nan, 5])
+		>>> c
+		[NaN, 2.0, 2.0, NaN, 5.0]
+		Categories (2, int64): [2, 5]
+		>>> c.sort_values()
+		[2.0, 2.0, 5.0, NaN, NaN]
+		Categories (2, int64): [2, 5]
+		>>> c.sort_values(ascending=False)
+		[5.0, 2.0, 2.0, NaN, NaN]
+		Categories (2, int64): [2, 5]
+		>>> c.sort_values(na_position='first')
+		[NaN, NaN, 2.0, 2.0, 5.0]
+		Categories (2, int64): [2, 5]
+		>>> c.sort_values(ascending=False, na_position='first')
+		[NaN, NaN, 5.0, 2.0, 2.0]
+		Categories (2, int64): [2, 5]
 	**/
 	public function sort_values(?inplace:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;
 	/**

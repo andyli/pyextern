@@ -14,28 +14,24 @@ package pandas.sparse.array;
 		code duplication.
 	**/
 	static public function _arith_method(op:Dynamic, name:Dynamic, ?str_rep:Dynamic, ?default_axis:Dynamic, ?fill_zeros:Dynamic, ?eval_kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		provide concatenation of an sparse/dense array of arrays each of which is a
-		single dtype
-		
-		Parameters
-		----------
-		to_concat : array of arrays
-		axis : axis to provide concatenation
-		
-		Returns
-		-------
-		a single array, preserving the combined dtypes
-	**/
-	static public function _concat_compat(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
+	static public var _index_shared_docs : Dynamic;
+	static public function _make_index(length:Dynamic, indices:Dynamic, kind:Dynamic):Dynamic;
 	/**
 		try to convert to dense 
 	**/
 	static public function _maybe_to_dense(obj:Dynamic):Dynamic;
 	static public function _maybe_to_sparse(array:Dynamic):Dynamic;
+	/**
+		return an ndarray for our input,
+		in a platform independent manner
+	**/
+	static public function _sanitize_values(arr:Dynamic):Dynamic;
+	static public var _sparray_doc_kwargs : Dynamic;
 	static public function _sparse_array_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
-	static public function _sparse_fillop(_this:Dynamic, other:Dynamic, name:Dynamic):Dynamic;
-	static public function _sparse_nanop(_this:Dynamic, other:Dynamic, name:Dynamic):Dynamic;
+	/**
+		wrap op result to have correct dtype 
+	**/
+	static public function _wrap_result(name:Dynamic, data:Dynamic, sparse_index:Dynamic, fill_value:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
 		Convert ndarray to sparse format

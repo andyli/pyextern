@@ -16,10 +16,10 @@ package pandas.core.generic;
 	**/
 	static public function _doc_parms(cls:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
-	static public function _make_cum_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, mask_a:Dynamic, mask_b:Dynamic):Dynamic;
-	static public function _make_logical_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
-	static public function _make_stat_function(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
-	static public function _make_stat_function_ddof(name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, mask_a:Dynamic, mask_b:Dynamic):Dynamic;
+	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
+	static public function _make_stat_function_ddof(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public var _name : Dynamic;
@@ -28,12 +28,6 @@ package pandas.core.generic;
 	static public var _shared_doc_kwargs : Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _single_replace(self:Dynamic, to_replace:Dynamic, method:Dynamic, inplace:Dynamic, limit:Dynamic):Dynamic;
-	/**
-		Checks whether parameters passed to the
-		**kwargs argument in a 'stat' function 'fname'
-		are valid parameters as specified in *compat_args
-	**/
-	static public function _validate_kwargs(fname:Dynamic, kwargs:Dynamic, ?compat_args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		return my values or the object if we are say an ndarray 
 	**/
@@ -121,5 +115,35 @@ package pandas.core.generic;
 		pandas.isnull : boolean inverse of pandas.notnull
 	**/
 	static public function notnull(obj:Dynamic):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	/**
+		Bind the name/qualname attributes of the function 
+	**/
+	static public function set_function_name(f:Dynamic, name:Dynamic, cls:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 }

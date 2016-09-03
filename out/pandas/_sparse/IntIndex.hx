@@ -105,7 +105,15 @@ package pandas._sparse;
 	public var indices : Dynamic;
 	public function intersect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var length : Dynamic;
+	/**
+		Return the internal location if value exists on given index.
+		Return -1 otherwise.
+	**/
 	public function lookup(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Vectorized lookup, returns ndarray[int32_t]
+	**/
+	public function lookup_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function make_union(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var ngaps : Dynamic;
 	public var npoints : Dynamic;

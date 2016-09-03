@@ -54,9 +54,17 @@ package pandas.compat;
 		Returns the east asian width assigned to the character chr as string.
 	**/
 	static public function east_asian_width(chr:Dynamic):Dynamic;
+	/**
+		import lzma from the std library 
+	**/
+	static public function import_lzma():Dynamic;
 	static public var integer_types : Dynamic;
 	static public function is_platform_32bit():Dynamic;
 	static public function is_platform_linux():Dynamic;
+	/**
+		am I little endian 
+	**/
+	static public function is_platform_little_endian():Dynamic;
 	static public function is_platform_mac():Dynamic;
 	static public function is_platform_windows():Dynamic;
 	static public function isidentifier(s:Dynamic):Dynamic;
@@ -79,7 +87,7 @@ package pandas.compat;
 		>>> x, y = p                        # unpack like a regular tuple
 		>>> x, y
 		(11, 22)
-		>>> p.x + p.y                       # fields also accessable by name
+		>>> p.x + p.y                       # fields also accessible by name
 		33
 		>>> d = p._asdict()                 # convert to a dictionary
 		>>> d['x']
@@ -207,6 +215,10 @@ package pandas.compat;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Bind the name/qualname attributes of the function 
+	**/
+	static public function set_function_name(f:Dynamic, name:Dynamic, cls:Dynamic):Dynamic;
 	static public function signature(f:Dynamic):Dynamic;
 	static public function str_to_bytes(s:Dynamic, ?encoding:Dynamic):Dynamic;
 	static public var string_and_binary_types : Dynamic;

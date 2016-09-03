@@ -190,6 +190,7 @@ package scipy.linalg.decomp_svd;
 	static public function orth(A:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public var r_ : Dynamic;
+	static public var string_types : Dynamic;
 	/**
 		Singular Value Decomposition.
 		
@@ -216,6 +217,13 @@ package scipy.linalg.decomp_svd;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -229,7 +237,7 @@ package scipy.linalg.decomp_svd;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -260,7 +268,7 @@ package scipy.linalg.decomp_svd;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute singular values of a matrix.
 		

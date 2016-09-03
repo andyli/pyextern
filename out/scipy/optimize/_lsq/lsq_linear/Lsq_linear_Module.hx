@@ -10,11 +10,13 @@ package scipy.optimize._lsq.lsq_linear;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	static public function bvls(A:Dynamic, b:Dynamic, x_lsq:Dynamic, lb:Dynamic, ub:Dynamic, tol:Dynamic, max_iter:Dynamic, verbose:Dynamic):Dynamic;
 	/**
 		Compute gradient of the least-squares cost function.
 	**/
 	static public function compute_grad(J:Dynamic, f:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	/**
 		Check if a point lies within bounds.
 	**/
@@ -128,9 +130,14 @@ package scipy.optimize._lsq.lsq_linear;
 	/**
 		Solve a linear least-squares problem with bounds on the variables.
 		
-		`lsq_linear` finds a minimum of the cost function 0.5 * ||A x - b||**2,
-		such that lb <= x <= ub. Where A is an m-by-n design matrix and b is a
-		target vector with m elements.
+		Given a m-by-n design matrix A and a target vector b with m elements,
+		`lsq_linear` solves the following optimization problem::
+		
+		    minimize 0.5 * ||A x - b||**2
+		    subject to lb <= x <= ub
+		
+		This optimization problem is convex, hence a found minimum (if iterations
+		have converged) is guaranteed to be global.
 		
 		Parameters
 		----------
@@ -151,12 +158,13 @@ package scipy.optimize._lsq.lsq_linear;
 		          and the required number of iterations is weakly correlated with
 		          the number of variables.
 		        * 'bvls' : Bounded-Variable Least-Squares algorithm. This is
-		          an active set method, which requires the number iterations
-		          comparable to the number of variables. Does not support sparse
-		          matrices.
+		          an active set method, which requires the number of iterations
+		          comparable to the number of variables. Can't be used when `A` is
+		          sparse or LinearOperator.
 		
+		    Default is 'trf'.
 		tol : float, optional
-		    Tolerance parameter. The algorithm terminates if the relative change
+		    Tolerance parameter. The algorithm terminates if a relative change
 		    of the cost function is less than `tol` on the last iteration.
 		    Additionally the first-order optimality measure is considered:
 		
@@ -164,7 +172,7 @@ package scipy.optimize._lsq.lsq_linear;
 		          scaled to account for the presence of the bounds, is less than
 		          `tol`.
 		        * ``method='bvls'`` terminates if Karush-Kuhn-Tucker conditions
-		          are violated by less than `tol`.
+		          are satisfied within `tol` tolerance.
 		
 		lsq_solver : {None, 'exact', 'lsmr'}, optional
 		    Method of solving unbounded least-squares problems throughout
@@ -178,10 +186,11 @@ package scipy.optimize._lsq.lsq_linear;
 		
 		    If None (default) the solver is chosen based on type of `A`.
 		lsmr_tol : None, float or 'auto', optional
-		    Tolerance parameters 'atol' and 'btol' for 'lsmr' solver. If None
-		    (default), it is set to ``1e-2 * tol``. If 'auto', the tolerance will
-		    be adjusted based on the optimality of the current iterate. It can
-		    speed up the optimization process, but not always reliable.
+		    Tolerance parameters 'atol' and 'btol' for `scipy.sparse.linalg.lsmr`
+		    If None (default), it is set to ``1e-2 * tol``. If 'auto', the
+		    tolerance will be adjusted based on the optimality of the current
+		    iterate, which can speed up the optimization process, but is not always
+		    reliable.
 		max_iter : None or int, optional
 		    Maximum number of iterations before termination. If None (default), it
 		    is set to 100 for ``method='trf'`` or to the number of variables for
@@ -213,8 +222,9 @@ package scipy.optimize._lsq.lsq_linear;
 		        * -1 : a lower bound is active.
 		        *  1 : an upper bound is active.
 		
-		    Somewhat arbitrary because it is determined within a tolerance
-		    threshold.
+		    Might be somewhat arbitrary for the `trf` method as it generates a
+		    sequence of strictly feasible iterates and active_mask is determined
+		    within a tolerance threshold.
 		nit : int
 		    Number of iterations. Zero if the unconstrained solution is optimal.
 		status : int
@@ -295,7 +305,8 @@ package scipy.optimize._lsq.lsq_linear;
 		>>> res = lsq_linear(A, b, bounds=(lb, ub), lsmr_tol='auto', verbose=1)
 		# may vary
 		The relative change of the cost function is less than `tol`.
-		Number of iterations: 16, initial cost: 1.5039e+04,final cost 1.1112e+04, first-order optimality 4.66e-08.
+		Number of iterations 16, initial cost 1.5039e+04, final cost 1.1112e+04,
+		first-order optimality 4.66e-08.
 	**/
 	static public function lsq_linear(A:Dynamic, b:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?lsq_solver:Dynamic, ?lsmr_tol:Dynamic, ?max_iter:Dynamic, ?verbose:Dynamic):Float;
 	/**
@@ -368,7 +379,7 @@ package scipy.optimize._lsq.lsq_linear;
 		       [ 3.,  1.]])
 		
 		>>> m, c = np.linalg.lstsq(A, y)[0]
-		>>> print m, c
+		>>> print(m, c)
 		1.0 -0.95
 		
 		Plot the data along with the fitted line:
@@ -466,22 +477,22 @@ package scipy.optimize._lsq.lsq_linear;
 		>>> LA.norm(b, 'fro')
 		7.745966692414834
 		>>> LA.norm(a, np.inf)
-		4
+		4.0
 		>>> LA.norm(b, np.inf)
-		9
+		9.0
 		>>> LA.norm(a, -np.inf)
-		0
+		0.0
 		>>> LA.norm(b, -np.inf)
-		2
+		2.0
 		
 		>>> LA.norm(a, 1)
-		20
+		20.0
 		>>> LA.norm(b, 1)
-		7
+		7.0
 		>>> LA.norm(a, -1)
 		-4.6566128774142013e-010
 		>>> LA.norm(b, -1)
-		6
+		6.0
 		>>> LA.norm(a, 2)
 		7.745966692414834
 		>>> LA.norm(b, 2)
@@ -505,7 +516,7 @@ package scipy.optimize._lsq.lsq_linear;
 		>>> LA.norm(c, axis=1)
 		array([ 3.74165739,  4.24264069])
 		>>> LA.norm(c, ord=1, axis=1)
-		array([6, 6])
+		array([ 6.,  6.])
 		
 		Using the `axis` argument to compute matrix norms:
 		
@@ -517,5 +528,6 @@ package scipy.optimize._lsq.lsq_linear;
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public function prepare_bounds(bounds:Dynamic, n:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function trf_linear(A:Dynamic, b:Dynamic, x_lsq:Dynamic, lb:Dynamic, ub:Dynamic, tol:Dynamic, lsq_solver:Dynamic, lsmr_tol:Dynamic, max_iter:Dynamic, verbose:Dynamic):Dynamic;
 }

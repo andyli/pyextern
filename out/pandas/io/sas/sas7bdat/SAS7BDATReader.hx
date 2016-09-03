@@ -41,11 +41,11 @@ package pandas.io.sas.sas7bdat;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(path_or_buf:Dynamic, ?index:Dynamic, ?convert_dates:Dynamic, ?blank_missing:Dynamic, ?chunksize:Dynamic, ?encoding:Dynamic):Dynamic;
+	public function ___init__(path_or_buf:Dynamic, ?index:Dynamic, ?convert_dates:Dynamic, ?blank_missing:Dynamic, ?chunksize:Dynamic, ?encoding:Dynamic, ?convert_text:Dynamic, ?convert_header_text:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(path_or_buf:Dynamic, ?index:Dynamic, ?convert_dates:Dynamic, ?blank_missing:Dynamic, ?chunksize:Dynamic, ?encoding:Dynamic):Void;
+	public function new(path_or_buf:Dynamic, ?index:Dynamic, ?convert_dates:Dynamic, ?blank_missing:Dynamic, ?chunksize:Dynamic, ?encoding:Dynamic, ?convert_text:Dynamic, ?convert_header_text:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.
@@ -104,7 +104,6 @@ package pandas.io.sas.sas7bdat;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _chunk_to_dataframe():Dynamic;
-	public function _decompress(row_length:Dynamic, page:Dynamic):Dynamic;
 	public function _get_properties():Dynamic;
 	public function _get_subheader_index(signature:Dynamic, compression:Dynamic, ptype:Dynamic):Dynamic;
 	public function _parse_metadata():Dynamic;
@@ -126,6 +125,5 @@ package pandas.io.sas.sas7bdat;
 	public function _read_next_page():Dynamic;
 	public function _read_page_header():Dynamic;
 	public function _read_subheader_signature(offset:Dynamic):Dynamic;
-	public function _readline():Dynamic;
 	public function read(?nrows:Dynamic):Dynamic;
 }

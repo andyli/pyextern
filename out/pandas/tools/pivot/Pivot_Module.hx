@@ -15,6 +15,7 @@ package pandas.tools.pivot;
 	static public function _generate_marginal_results(table:Dynamic, data:Dynamic, values:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, grand_margin:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _generate_marginal_results_without_values(table:Dynamic, data:Dynamic, rows:Dynamic, cols:Dynamic, aggfunc:Dynamic, ?margins_name:Dynamic):Dynamic;
 	static public function _get_names(arrs:Dynamic, names:Dynamic, ?prefix:Dynamic):Dynamic;
+	static public function _normalize(table:Dynamic, normalize:Dynamic, margins:Dynamic):Dynamic;
 	/**
 		Numpy version of itertools.product or pandas.compat.product.
 		Sometimes faster (for large inputs)...
@@ -87,9 +88,10 @@ package pandas.tools.pivot;
 		columns : array-like, Series, or list of arrays/Series
 		    Values to group by in the columns
 		values : array-like, optional
-		    Array of values to aggregate according to the factors
+		    Array of values to aggregate according to the factors.
+		    Requires `aggfunc` be specified.
 		aggfunc : function, optional
-		    If no values array is passed, computes a frequency table
+		    If specified, requires `values` be specified as well
 		rownames : sequence, default None
 		    If passed, must match number of row arrays passed
 		colnames : sequence, default None
@@ -98,6 +100,16 @@ package pandas.tools.pivot;
 		    Add row/column margins (subtotals)
 		dropna : boolean, default True
 		    Do not include columns whose entries are all NaN
+		normalize : boolean, {'all', 'index', 'columns'}, or {0,1}, default False
+		    Normalize by dividing all values by the sum of values.
+		
+		    - If passed 'all' or `True`, will normalize over all values.
+		    - If passed 'index' will normalize over each row.
+		    - If passed 'columns' will normalize over each column.
+		    - If margins is `True`, will also normalize margin values.
+		
+		    .. versionadded:: 0.18.1
+		
 		
 		Notes
 		-----
@@ -130,7 +142,7 @@ package pandas.tools.pivot;
 		-------
 		crosstab : DataFrame
 	**/
-	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic):pandas.DataFrame;
+	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?normalize:Dynamic):pandas.DataFrame;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the

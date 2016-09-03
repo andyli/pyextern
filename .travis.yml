@@ -25,6 +25,7 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda install psutil
+  - conda config --add channels conda-forge
   - conda create -q --name pyextern --file $REQUIREMENTS python=3.5
   - source activate pyextern
   - conda env export

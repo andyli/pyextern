@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package seaborn.apionly;
 @:pythonImport("seaborn.apionly") extern class Apionly_Module {
-	static public var SEABORN_PALETTES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -46,36 +45,6 @@ package seaborn.apionly;
 		color_palette : define the color palette for a plot
 	**/
 	static public function axes_style(?style:Dynamic, ?rc:Dynamic):Dynamic;
-	/**
-		Return booleans for whether the x and y ticklabels on an Axes overlap.
-		
-		Parameters
-		----------
-		ax : matplotlib Axes
-		
-		Returns
-		-------
-		x_overlap, y_overlap : booleans
-		    True when the labels on that axis overlap.
-	**/
-	static public function axes_ticklabels_overlap(ax:Dynamic):Dynamic;
-	/**
-		Return a boolean for whether the list of ticklabels have overlaps.
-		
-		Parameters
-		----------
-		labels : list of ticklabels
-		
-		Returns
-		-------
-		overlap : boolean
-		    True if any of the labels overlap.
-	**/
-	static public function axis_ticklabels_overlap(labels:Dynamic):Dynamic;
-	/**
-		Grab current axis and label it.
-	**/
-	static public function axlabel(xlabel:Dynamic, ylabel:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Show point estimates and confidence intervals as rectangular bars.
 		
@@ -153,6 +122,11 @@ package seaborn.apionly;
 		    Color for the lines that represent the confidence interval.
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
+		errwidth : float, optional
+		    Thickness of error bar lines (and caps).         
+		capsize : float, optional
+		    Width of the "caps" on error bars.
+		
 		kwargs : key, value mappings
 		    Other keyword arguments are passed through to ``plt.bar`` at draw
 		    time.
@@ -219,6 +193,13 @@ package seaborn.apionly;
 		
 		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci=68)
 		
+		Add "caps" to the error bars:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.barplot(x="day", y="tip", data=tips, capsize=.2)
+		
 		Use a different color palette for the bars:
 		
 		.. plot::
@@ -244,7 +225,7 @@ package seaborn.apionly;
 		    ...                  linewidth=2.5, facecolor=(1, 1, 1, 0),
 		    ...                  errcolor=".2", edgecolor=".2")
 	**/
-	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Make a palette that blends between a list of colors.
 		
@@ -265,37 +246,6 @@ package seaborn.apionly;
 		    ``as_cmap`` parameter.
 	**/
 	static public function blend_palette(colors:Dynamic, ?n_colors:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
-	/**
-		Resample one or more arrays with replacement and store aggregate values.
-		
-		Positional arguments are a sequence of arrays to bootstrap along the first
-		axis and pass to a summary function.
-		
-		Keyword arguments:
-		    n_boot : int, default 10000
-		        Number of iterations
-		    axis : int, default None
-		        Will pass axis to ``func`` as a keyword argument.
-		    units : array, default None
-		        Array of sampling unit IDs. When used the bootstrap resamples units
-		        and then observations within units instead of individual
-		        datapoints.
-		    smooth : bool, default False
-		        If True, performs a smoothed bootstrap (draws samples from a kernel
-		        destiny estimate); only works for one-dimensional inputs and cannot
-		        be used `units` is present.
-		    func : callable, default np.mean
-		        Function to call on the args that are passed in.
-		    random_seed : int | None, default None
-		        Seed for the random number generator; useful if you want
-		        reproducible resamples.
-		
-		Returns
-		-------
-		boot_dist: array
-		    array of bootstrapped statistic values
-	**/
-	static public function bootstrap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Draw a box plot to show distributions with respect to categories.
 		
@@ -456,25 +406,6 @@ package seaborn.apionly;
 	**/
 	static public function boxplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?fliersize:Dynamic, ?linewidth:Dynamic, ?whis:Dynamic, ?notch:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return a list of unique data values.
-		
-		Determine an ordered list of levels in ``values``.
-		
-		Parameters
-		----------
-		values : list, array, Categorical, or Series
-		    Vector of "categorical" values
-		order : list-like, optional
-		    Desired order of category levels to override the order determined
-		    from the ``values`` object.
-		
-		Returns
-		-------
-		order : list
-		    Ordered list of category levels not including null values.
-	**/
-	static public function categorical_order(values:Dynamic, ?order:Dynamic):Array<Dynamic>;
-	/**
 		Select a palette from the ColorBrewer set.
 		
 		These palettes are built into matplotlib and can be used by name in
@@ -624,27 +555,6 @@ package seaborn.apionly;
 	**/
 	static public function choose_light_palette(?input:Dynamic, ?as_cmap:Dynamic):Dynamic;
 	/**
-		Return a percentile range from an array of values.
-	**/
-	static public function ci(a:Dynamic, ?which:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		Convert intervals to error arguments relative to plot heights.
-		
-		Parameters
-		----------
-		cis: 2 x n sequence
-		    sequence of confidence interval limits
-		heights : n sequence
-		    sequence of plot heights
-		
-		Returns
-		-------
-		errsize : 2 x n array
-		    sequence of error size relative to height values in correct
-		    format as argument for plt.bar
-	**/
-	static public function ci_to_errsize(cis:Dynamic, heights:Dynamic):Dynamic;
-	/**
 		Plot a hierarchically clustered heatmap of a pandas DataFrame
 		
 		Parameters
@@ -682,10 +592,14 @@ package seaborn.apionly;
 		{row,col}_linkage : numpy.array, optional
 		    Precomputed linkage matrix for the rows or columns. See
 		    scipy.cluster.hierarchy.linkage for specific formats.
-		{row,col}_colors : list-like, optional
+		{row,col}_colors : list-like or pandas DataFrame/Series, optional
 		    List of colors to label for either the rows or columns. Useful to
 		    evaluate whether samples within a group are clustered together. Can
-		    use nested lists for multiple color levels of labeling.
+		    use nested lists or DataFrame for multiple color levels of labeling.
+		    If given as a DataFrame or Series, labels for the colors are extracted
+		    from the DataFrames column names or from the name of the Series.
+		    DataFrame/Series colors are also matched to the data by their
+		    index, ensuring colors are drawn in the correct order.
 		mask : boolean array or DataFrame, optional
 		    If passed, data will not be shown in cells where ``mask`` is True.
 		    Cells with missing values are automatically masked. Only used for
@@ -890,48 +804,6 @@ package seaborn.apionly;
 		    ...    _ = plt.plot(np.c_[np.zeros(8), np.arange(8)].T)
 	**/
 	static public function color_palette(?palette:Dynamic, ?n_colors:Dynamic, ?desat:Dynamic):Dynamic;
-	/**
-		Plot a correlation matrix with colormap and r values.
-		
-		NOTE: This function is deprecated in favor of :func:`heatmap` and will
-		be removed in a forthcoming release.
-		
-		Parameters
-		----------
-		data : Dataframe or nobs x nvars array
-		    Rectangular input data with variabes in the columns.
-		names : sequence of strings
-		    Names to associate with variables if `data` is not a DataFrame.
-		annot : bool
-		    Whether to annotate the upper triangle with correlation coefficients.
-		sig_stars : bool
-		    If True, get significance with permutation test and denote with stars.
-		sig_tail : both | upper | lower
-		    Direction for significance test. Also controls the default colorbar.
-		sig_corr : bool
-		    If True, use FWE-corrected p values for the sig stars.
-		cmap : colormap
-		    Colormap name as string or colormap object.
-		cmap_range : None, "full", (low, high)
-		    Either truncate colormap at (-max(abs(r)), max(abs(r))), use the
-		    full range (-1, 1), or specify (min, max) values for the colormap.
-		cbar : bool
-		    If true, plot the colorbar legend.
-		method: None (pearson) | kendall | spearman
-		    Correlation method to compute pairwise correlations. Methods other
-		    than the default pearson correlation will not have a significance
-		    computed.
-		ax : matplotlib axis
-		    Axis to draw plot in.
-		kwargs : other keyword arguments
-		    Passed to ax.matshow()
-		
-		Returns
-		-------
-		ax : matplotlib axis
-		    Axis object with plot.
-	**/
-	static public function corrplot(data:Dynamic, ?names:Dynamic, ?annot:Dynamic, ?sig_stars:Dynamic, ?sig_tail:Dynamic, ?sig_corr:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?diag_names:Dynamic, ?method:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Show the counts of observations in each categorical bin using bars.
 		
@@ -1244,55 +1116,6 @@ package seaborn.apionly;
 		    >>> ax = sns.heatmap(x, cmap=cmap)
 	**/
 	static public function dark_palette(color:Dynamic, ?n_colors:Dynamic, ?reverse:Dynamic, ?as_cmap:Dynamic, ?input:Dynamic):Dynamic;
-	/**
-		Remove any common leading whitespace from every line in `text`.
-		
-		This can be used to make triple-quoted strings line up with the left
-		edge of the display, while still presenting them in the source code
-		in indented form.
-		
-		Note that tabs and spaces are both treated as whitespace, but they
-		are not equal: the lines "  hello" and "\thello" are
-		considered to have no common leading whitespace.  (This behaviour is
-		new in Python 2.5; older versions of this module incorrectly
-		expanded tabs before searching for common leading whitespace.)
-	**/
-	static public function dedent(text:Dynamic):Dynamic;
-	/**
-		Draw a tree diagram of relationships within a matrix
-		
-		Parameters
-		----------
-		data : pandas.DataFrame
-		    Rectangular data
-		linkage : numpy.array, optional
-		    Linkage matrix
-		axis : int, optional
-		    Which axis to use to calculate linkage. 0 is rows, 1 is columns.
-		label : bool, optional
-		    If True, label the dendrogram at leaves with column or row names
-		metric : str, optional
-		    Distance metric. Anything valid for scipy.spatial.distance.pdist
-		method : str, optional
-		    Linkage method to use. Anything valid for
-		    scipy.cluster.hierarchy.linkage
-		rotate : bool, optional
-		    When plotting the matrix, whether to rotate it 90 degrees
-		    counter-clockwise, so the leaves face right
-		ax : matplotlib axis, optional
-		    Axis to plot on, otherwise uses current axis
-		
-		Returns
-		-------
-		dendrogramplotter : _DendrogramPlotter
-		    A Dendrogram plotter object.
-		
-		Notes
-		-----
-		Access the reordered dendrogram indices with
-		dendrogramplotter.reordered_ind
-	**/
-	static public function dendrogram(data:Dynamic, ?linkage:Dynamic, ?axis:Dynamic, ?label:Dynamic, ?metric:Dynamic, ?method:Dynamic, ?rotate:Dynamic, ?ax:Dynamic):Dynamic;
 	/**
 		Decrease the saturation channel of a color by some percent.
 		
@@ -1700,19 +1523,6 @@ package seaborn.apionly;
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
 	static public function factorplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?row:Dynamic, ?col:Dynamic, ?col_wrap:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?row_order:Dynamic, ?col_order:Dynamic, ?kind:Dynamic, ?size:Dynamic, ?aspect:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?legend:Dynamic, ?legend_out:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?margin_titles:Dynamic, ?facet_kws:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function get_color_cycle():Dynamic;
-	/**
-		Return the path of the seaborn data directory.
-		
-		This is used by the ``load_dataset`` function.
-		
-		If the ``data_home`` argument is not specified, the default location
-		is ``~/seaborn-data``.
-		
-		Alternatively, a different default location can be specified using the
-		environment variable ``SEABORN_DATA``.
-	**/
-	static public function get_data_home(?data_home:Dynamic):Dynamic;
 	/**
 		Report available example datasets, useful for reporting issues.
 	**/
@@ -1749,10 +1559,12 @@ package seaborn.apionly;
 		robust : bool, optional
 		    If True and ``vmin`` or ``vmax`` are absent, the colormap range is
 		    computed with robust quantiles instead of the extreme values.
-		annot : bool, optional
-		    If True, write the data value in each cell.
+		annot : bool or rectangular dataset, optional
+		    If True, write the data value in each cell. If an array-like with the
+		    same shape as ``data``, then use this to annotate the heatmap instead
+		    of the raw data.
 		fmt : string, optional
-		    String formatting code to use when ``annot`` is True.
+		    String formatting code to use when adding annotations.
 		annot_kws : dict of key, value mappings, optional
 		    Keyword arguments for ``ax.text`` when ``annot`` is True.
 		linewidths : float, optional
@@ -2049,10 +1861,6 @@ package seaborn.apionly;
 		    Axis with the contour plot.
 	**/
 	static public function interactplot(x1:Dynamic, x2:Dynamic, y:Dynamic, ?data:Dynamic, ?filled:Dynamic, ?cmap:Dynamic, ?colorbar:Dynamic, ?levels:Dynamic, ?logistic:Dynamic, ?contour_kws:Dynamic, ?scatter_kws:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Calculate the IQR for an array of numbers.
-	**/
-	static public function iqr(a:Dynamic):Dynamic;
 	/**
 		Draw a plot of two variables with bivariate and univariate graphs.
 		
@@ -2827,7 +2635,6 @@ package seaborn.apionly;
 		    <seaborn.axisgrid.FacetGrid object at 0x...>
 	**/
 	static public function lvplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?width:Dynamic, ?k_depth:Dynamic, ?linewidth:Dynamic, ?scale:Dynamic, ?outlier_prop:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var mpl_ge_150 : Dynamic;
 	/**
 		Return discrete colors from a matplotlib palette.
 		
@@ -2888,28 +2695,6 @@ package seaborn.apionly;
 		    >>> sns.palplot(sns.mpl_palette("GnBu_d"))
 	**/
 	static public function mpl_palette(name:Dynamic, ?n_colors:Dynamic):Dynamic;
-	/**
-		Simple function to offset spines away from axes.
-		
-		Use this immediately after creating figure and axes objects.
-		Offsetting spines after plotting or manipulating the axes
-		objects may result in loss of labels, ticks, and formatting.
-		
-		Parameters
-		----------
-		offset : int, optional
-		    Absolute distance, in points, spines should be moved away
-		    from the axes (negative values move spines inward).
-		fig : matplotlib figure, optional
-		    Figure to despine all axes of, default uses current figure.
-		ax : matplotlib axes, optional
-		    Specific axes object to despine
-		
-		Returns
-		-------
-		None
-	**/
-	static public function offset_spines(?offset:Dynamic, ?fig:Dynamic, ?ax:Dynamic):Dynamic;
 	/**
 		Plot pairwise relationships in a dataset.
 		
@@ -3067,26 +2852,6 @@ package seaborn.apionly;
 		    scaling factor for size of plot
 	**/
 	static public function palplot(pal:Dynamic, ?size:Dynamic):Dynamic;
-	static public var pandas_has_categoricals : Dynamic;
-	/**
-		Like scoreatpercentile but can take and return array of percentiles.
-		
-		Parameters
-		----------
-		a : array
-		    data
-		pcts : sequence of percentile values
-		    percentile or percentiles to find score at
-		axis : int or None
-		    if not None, computes scores over this axis
-		
-		Returns
-		-------
-		scores: array
-		    array of scores at requested percentiles
-		    first dimension is length of object passed to ``pcts``
-	**/
-	static public function percentiles(a:Dynamic, pcts:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return a parameter dict to scale elements of the figure.
 		
@@ -3131,26 +2896,6 @@ package seaborn.apionly;
 		color_palette : define the color palette for a plot
 	**/
 	static public function plotting_context(?context:Dynamic, ?font_scale:Dynamic, ?rc:Dynamic):Dynamic;
-	/**
-		Return arguments to plt.bar for pmf-like histogram of an array.
-		
-		Parameters
-		----------
-		a: array-like
-		    array to make histogram of
-		bins: int
-		    number of bins
-		
-		Returns
-		-------
-		x: array
-		    left x position of bars
-		h: array
-		    height of bars
-		w: float
-		    width of bars
-	**/
-	static public function pmf_hist(a:Dynamic, ?bins:Dynamic):Dynamic;
 	/**
 		Show point estimates and confidence intervals using scatter plot glyphs.
 		
@@ -3337,9 +3082,15 @@ package seaborn.apionly;
 		    :context: close-figs
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci=68)
+		
+		Add "caps" to the error bars:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, capsize=.2)
 	**/
-	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public var print_function : Dynamic;
+	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Plot today's daily puppy. Only works in the IPython notebook.
 	**/
@@ -3586,10 +3337,6 @@ package seaborn.apionly;
 		    ...                  x_estimator=np.mean, logx=True, truncate=True)
 	**/
 	static public function regplot(x:Dynamic, y:Dynamic, ?data:Dynamic, ?x_estimator:Dynamic, ?x_bins:Dynamic, ?x_ci:Dynamic, ?scatter:Dynamic, ?fit_reg:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?order:Dynamic, ?logistic:Dynamic, ?lowess:Dynamic, ?robust:Dynamic, ?logx:Dynamic, ?x_partial:Dynamic, ?y_partial:Dynamic, ?truncate:Dynamic, ?dropna:Dynamic, ?x_jitter:Dynamic, ?y_jitter:Dynamic, ?label:Dynamic, ?color:Dynamic, ?marker:Dynamic, ?scatter_kws:Dynamic, ?line_kws:Dynamic, ?ax:Dynamic):Dynamic;
-	/**
-		Return series containing only true/non-NaN values, possibly empty.
-	**/
-	static public function remove_na(series:Dynamic):Dynamic;
 	/**
 		Restore all RC params to default settings.
 	**/
@@ -3867,11 +3614,6 @@ package seaborn.apionly;
 		set_palette : set the default color palette for figures
 	**/
 	static public function set_style(?style:Dynamic, ?rc:Dynamic):Dynamic;
-	/**
-		Return a R-style significance string corresponding to p values.
-	**/
-	static public function sig_stars(p:Dynamic):Dynamic;
-	static public var string_types : Dynamic;
 	/**
 		Draw a scatterplot where one variable is categorical.
 		
@@ -4218,13 +3960,6 @@ package seaborn.apionly;
 	**/
 	static public function swarmplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?split:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?size:Dynamic, ?edgecolor:Dynamic, ?linewidth:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Plot a symmetric matrix with colormap and statistic values.
-		
-		NOTE: This function is deprecated in favor of :func:`heatmap` and will
-		be removed in a forthcoming release.
-	**/
-	static public function symmatplot(mat:Dynamic, ?p_mat:Dynamic, ?names:Dynamic, ?cmap:Dynamic, ?cmap_range:Dynamic, ?cbar:Dynamic, ?annot:Dynamic, ?diag_names:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Plot one or more timeseries with flexible representation of uncertainty.
 		
 		This function is intended to be used with data where observations are
@@ -4371,23 +4106,6 @@ package seaborn.apionly;
 		    >>> ax = sns.tsplot(data=data, err_style="unit_traces")
 	**/
 	static public function tsplot(data:Dynamic, ?time:Dynamic, ?unit:Dynamic, ?condition:Dynamic, ?value:Dynamic, ?err_style:Dynamic, ?ci:Dynamic, ?interpolate:Dynamic, ?color:Dynamic, ?estimator:Dynamic, ?n_boot:Dynamic, ?err_palette:Dynamic, ?err_kws:Dynamic, ?legend:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
-	/**
-		Retrieve a URL into a temporary location on disk.
-		
-		Requires a URL argument. If a filename is passed, it is used as
-		the temporary file location. The reporthook argument should be
-		a callable that accepts a block number, a read size, and the
-		total file size of the URL target. The data argument should be
-		valid URL encoded data.
-		
-		If a filename is passed and the URL points to a local resource,
-		the result is a copy from local file to new file.
-		
-		Returns a tuple containing the path to the newly created
-		data file as well as the resulting HTTPMessage object.
-	**/
-	static public function urlretrieve(url:Dynamic, ?filename:Dynamic, ?reporthook:Dynamic, ?data:Dynamic):Dynamic;
 	/**
 		Draw a combination of boxplot and kernel density estimate.
 		

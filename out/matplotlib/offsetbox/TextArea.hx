@@ -310,7 +310,7 @@ package matplotlib.offsetbox;
 	**/
 	public function get_snap():Dynamic;
 	/**
-		get text
+		Returns the string representation of this area's text
 	**/
 	public function get_text():Dynamic;
 	/**
@@ -616,7 +616,7 @@ package matplotlib.offsetbox;
 	**/
 	public function set_snap(snap:Dynamic):Dynamic;
 	/**
-		set text
+		Set the text of this area as a string.
 	**/
 	public function set_text(s:Dynamic):Dynamic;
 	/**

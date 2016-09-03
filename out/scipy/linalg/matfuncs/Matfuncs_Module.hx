@@ -818,9 +818,9 @@ package scipy.linalg.matfuncs;
 		
 		Raises
 		------
-		LinAlgError :
+		LinAlgError
 		    If `a` is singular.
-		ValueError :
+		ValueError
 		    If `a` is not square, or not 2-dimensional.
 		
 		Examples
@@ -1176,20 +1176,20 @@ package scipy.linalg.matfuncs;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -1315,7 +1315,13 @@ package scipy.linalg.matfuncs;
 		
 		Returns an element-wise indication of the sign of a number.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
+		is returned for nan inputs.
+		
+		For complex inputs, the `sign` function returns
+		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
+		
+		complex(nan, 0) is returned for complex nan inputs.
 		
 		Parameters
 		----------
@@ -1327,12 +1333,20 @@ package scipy.linalg.matfuncs;
 		y : ndarray
 		  The sign of `x`.
 		
+		Notes
+		-----
+		There is more than one definition of sign in common use for complex
+		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
+		which is different from a common alternative, :math:`x/|x|`.
+		
 		Examples
 		--------
 		>>> np.sign([-5., 4.5])
 		array([-1.,  1.])
 		>>> np.sign(0)
 		0
+		>>> np.sign(5-2j)
+		(1+0j)
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1599,6 +1613,13 @@ package scipy.linalg.matfuncs;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -1612,7 +1633,7 @@ package scipy.linalg.matfuncs;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -1643,7 +1664,7 @@ package scipy.linalg.matfuncs;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Compute the hyperbolic matrix tangent.
 		
@@ -1729,7 +1750,7 @@ package scipy.linalg.matfuncs;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

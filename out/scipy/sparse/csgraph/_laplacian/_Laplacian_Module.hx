@@ -33,8 +33,9 @@ package scipy.sparse.csgraph._laplacian;
 		
 		Returns
 		-------
-		lap : ndarray
-		    The N x N laplacian matrix of graph.
+		lap : ndarray or sparse matrix
+		    The N x N laplacian matrix of csgraph. It will be a numpy array (dense)
+		    if the input was dense, or a sparse matrix otherwise.
 		diag : ndarray, optional
 		    The length-N diagonal of the Laplacian matrix.
 		    For the normalized Laplacian, this is the array of square roots

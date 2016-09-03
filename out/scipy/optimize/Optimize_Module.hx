@@ -174,10 +174,11 @@ package scipy.optimize;
 		    Define a test which will be used to judge whether or not to accept the
 		    step.  This will be used in addition to the Metropolis test based on
 		    "temperature" ``T``.  The acceptable return values are True,
-		    False, or ``"force accept"``.  If the latter, then this will
-		    override any other tests in order to accept the step.  This can be
-		    used, for example, to forcefully escape from a local minimum that
-		    ``basinhopping`` is trapped in.
+		    False, or ``"force accept"``. If any of the tests return False
+		    then the step is rejected. If the latter, then this will override any
+		    other tests in order to accept the step. This can be used, for example,
+		    to forcefully escape from a local minimum that ``basinhopping`` is
+		    trapped in.
 		callback : callable, ``callback(x, f, accept)``, optional
 		    A callback function which will be called for all minima found.  ``x``
 		    and ``f`` are the coordinates and function value of the trial minimum,
@@ -468,13 +469,14 @@ package scipy.optimize;
 		b : number
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
-		    The routine converges when a root is known to lie within `xtol` of the
-		    value return. Should be >= 0.  The routine modifies this to take into
-		    account the relative precision of doubles.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative.
 		rtol : number, optional
-		    The routine converges when a root is known to lie within `rtol` times
-		    the value returned of the value returned. Should be >= 0. Defaults to
-		    ``np.finfo(float).eps * 2``.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter cannot be smaller than its default value of
+		    ``4*np.finfo(float).eps``.
 		maxiter : number, optional
 		    if convergence is not achieved in `maxiter` iterations, an error is
 		    raised.  Must be >= 0.
@@ -603,13 +605,18 @@ package scipy.optimize;
 		b : number
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
-		    The routine converges when a root is known to lie within xtol of the
-		    value return. Should be >= 0.  The routine modifies this to take into
-		    account the relative precision of doubles.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative. As with `brentq`, for nice
+		    functions the method will often satisfy the above condition
+		    will ``xtol/2`` and ``rtol/2``.
 		rtol : number, optional
-		    The routine converges when a root is known to lie within `rtol` times
-		    the value returned of the value returned. Should be >= 0. Defaults to
-		    ``np.finfo(float).eps * 2``.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter cannot be smaller than its default value of
+		    ``4*np.finfo(float).eps``. As with `brentq`, for nice functions
+		    the method will often satisfy the above condition will
+		    ``xtol/2`` and ``rtol/2``.
 		maxiter : number, optional
 		    if convergence is not achieved in maxiter iterations, an error is
 		    raised.  Must be >= 0.
@@ -652,13 +659,9 @@ package scipy.optimize;
 	**/
 	static public function brenth(f:Dynamic, a:Dynamic, b:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic, ?full_output:Dynamic, ?disp:Dynamic):Float;
 	/**
-		Find a root of a function in given interval.
+		Find a root of a function in a bracketing interval using Brent's method.
 		
-		Return float, a zero of `f` between `a` and `b`.  `f` must be a continuous
-		function, and [a,b] must be a sign changing interval.
-		
-		Description:
-		Uses the classic Brent (1973) method to find a zero of the function `f` on
+		Uses the classic Brent's method to find a zero of the function `f` on
 		the sign changing interval [a , b].  Generally considered the best of the
 		rootfinding routines here.  It is a safe version of the secant method that
 		uses inverse quadratic extrapolation.  Brent's method combines root
@@ -677,20 +680,26 @@ package scipy.optimize;
 		Parameters
 		----------
 		f : function
-		    Python function returning a number.  f must be continuous, and f(a) and
-		    f(b) must have opposite signs.
+		    Python function returning a number.  The function :math:`f`
+		    must be continuous, and :math:`f(a)` and :math:`f(b)` must
+		    have opposite signs.
 		a : number
-		    One end of the bracketing interval [a,b].
+		    One end of the bracketing interval :math:`[a, b]`.
 		b : number
-		    The other end of the bracketing interval [a,b].
+		    The other end of the bracketing interval :math:`[a, b]`.
 		xtol : number, optional
-		    The routine converges when a root is known to lie within xtol of the
-		    value return. Should be >= 0.  The routine modifies this to take into
-		    account the relative precision of doubles.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative. For nice functions, Brent's
+		    method will often satisfy the above condition will ``xtol/2``
+		    and ``rtol/2``. [Brent1973]_
 		rtol : number, optional
-		    The routine converges when a root is known to lie within `rtol` times
-		    the value returned of the value returned. Should be >= 0. Defaults to
-		    ``np.finfo(float).eps * 2``.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter cannot be smaller than its default value of
+		    ``4*np.finfo(float).eps``. For nice functions, Brent's
+		    method will often satisfy the above condition will ``xtol/2``
+		    and ``rtol/2``. [Brent1973]_
 		maxiter : number, optional
 		    if convergence is not achieved in maxiter iterations, an error is
 		    raised.  Must be >= 0.
@@ -1004,7 +1013,7 @@ package scipy.optimize;
 		of the objective function occurs.  If `finish` is None, that is the
 		point returned.  When the global minimum occurs within (or not very far
 		outside) the grid's boundaries, and the grid is fine enough, that
-		point will be in the neighborhood of the gobal minimum.
+		point will be in the neighborhood of the global minimum.
 		
 		However, users often employ some other optimization program to
 		"polish" the gridpoint values, `i.e.`, to seek a more precise
@@ -1026,7 +1035,9 @@ package scipy.optimize;
 		of the `finish` program, *not* the gridpoint ones.  Consequently,
 		while `brute` confines its search to the input grid points,
 		the `finish` program's results usually will not coincide with any
-		gridpoint, and may fall outside the grid's boundary.
+		gridpoint, and may fall outside the grid's boundary. Thus, if a
+		minimum only needs to be found over the provided grid points, make
+		sure to pass in `finish=None`.
 		
 		*Note 2*: The grid of points is a `numpy.mgrid` object.
 		For `brute` the `ranges` and `Ns` inputs have the following effect.
@@ -1181,6 +1192,15 @@ package scipy.optimize;
 		    case.
 		
 		    .. versionadded:: 0.17
+		jac : callable, string or None, optional
+		    Function with signature ``jac(x, ...)`` which computes the Jacobian
+		    matrix of the model function with respect to parameters as a dense
+		    array_like structure. It will be scaled according to provided `sigma`.
+		    If None (default), the Jacobian will be estimated numerically.
+		    String keywords for 'trf' and 'dogbox' methods can be used to select
+		    a finite difference scheme, see `least_squares`.
+		
+		    .. versionadded:: 0.18
 		kwargs
 		    Keyword arguments passed to `leastsq` for ``method='lm'`` or
 		    `least_squares` otherwise.
@@ -1205,11 +1225,15 @@ package scipy.optimize;
 		
 		Raises
 		------
+		ValueError
+		    if either `ydata` or `xdata` contain NaNs, or if incompatible options
+		    are used.
+		
+		RuntimeError
+		    if the least-squares minimization fails.
+		
 		OptimizeWarning
 		    if covariance of the parameters can not be estimated.
-		
-		ValueError
-		    if either `ydata` or `xdata` contain NaNs.
 		
 		See Also
 		--------
@@ -1244,7 +1268,7 @@ package scipy.optimize;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
 	/**
 		Find a root of a function, using diagonal Broyden Jacobian approximation.
 		
@@ -1599,13 +1623,12 @@ package scipy.optimize;
 		    Initial guess.
 		args : tuple, optional
 		    Extra arguments passed to func, i.e. ``f(x,*args)``.
-		callback : callable, optional
-		    Called after each iteration, as callback(xk), where xk is the
-		    current parameter vector.
 		xtol : float, optional
-		    Relative error in xopt acceptable for convergence.
+		    Absolute error in xopt between iterations that is acceptable for
+		    convergence.
 		ftol : number, optional
-		    Relative error in func(xopt) acceptable for convergence.
+		    Absolute error in func(xopt) between iterations that is acceptable for
+		    convergence.
 		maxiter : int, optional
 		    Maximum number of iterations to perform.
 		maxfun : number, optional
@@ -1616,6 +1639,14 @@ package scipy.optimize;
 		    Set to True to print convergence messages.
 		retall : bool, optional
 		    Set to True to return list of solutions at each iteration.
+		callback : callable, optional
+		    Called after each iteration, as callback(xk), where xk is the
+		    current parameter vector.
+		initial_simplex : array_like of shape (N + 1, N), optional
+		    Initial simplex. If given, overrides `x0`.
+		    ``initial_simplex[j,:]`` should contain the coordinates of
+		    the j-th vertex of the ``N+1`` vertices in the simplex, where
+		    ``N`` is the dimension.
 		
 		Returns
 		-------
@@ -1649,7 +1680,8 @@ package scipy.optimize;
 		performance in high-dimensional problems and is not robust to
 		minimizing complicated functions. Additionally, there currently is no
 		complete theory describing when the algorithm will successfully
-		converge to the minimum, or how fast it will if it does.
+		converge to the minimum, or how fast it will if it does. Both the ftol and
+		xtol criteria must be met for convergence.
 		
 		References
 		----------
@@ -1662,7 +1694,7 @@ package scipy.optimize;
 		       Griffiths and G.A. Watson (Eds.), Addison Wesley Longman,
 		       Harlow, UK, pp. 191-208.
 	**/
-	static public function fmin(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic):Dynamic;
+	static public function fmin(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?xtol:Dynamic, ?ftol:Dynamic, ?maxiter:Dynamic, ?maxfun:Dynamic, ?full_output:Dynamic, ?disp:Dynamic, ?retall:Dynamic, ?callback:Dynamic, ?initial_simplex:Dynamic):Dynamic;
 	/**
 		Minimize a function using the BFGS algorithm.
 		
@@ -1853,9 +1885,9 @@ package scipy.optimize;
 		>>> res1 = optimize.fmin_cg(f, x0, fprime=gradf, args=args)
 		Optimization terminated successfully.
 		         Current function value: 1.617021
-		         Iterations: 2
-		         Function evaluations: 5
-		         Gradient evaluations: 5
+		         Iterations: 4
+		         Function evaluations: 8
+		         Gradient evaluations: 8
 		>>> res1
 		array([-1.80851064, -0.25531915])
 		
@@ -1873,9 +1905,9 @@ package scipy.optimize;
 		...                          method='CG', options=opts)
 		Optimization terminated successfully.
 		        Current function value: 1.617021
-		        Iterations: 2
-		        Function evaluations: 5
-		        Gradient evaluations: 5
+		        Iterations: 4
+		        Function evaluations: 8
+		        Gradient evaluations: 8
 		>>> res2.x  # minimum found
 		array([-1.80851064, -0.25531915])
 	**/
@@ -2715,7 +2747,8 @@ package scipy.optimize;
 		the loss function rho(s) (a scalar function), `least_squares` finds a
 		local minimum of the cost function F(x)::
 		
-		    F(x) = 0.5 * sum(rho(f_i(x)**2), i = 1, ..., m), lb <= x <= ub
+		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
+		    subject to lb <= x <= ub
 		
 		The purpose of the loss function rho(s) is to reduce the influence of
 		outliers on the solution.
@@ -2764,14 +2797,13 @@ package scipy.optimize;
 		
 		    Default is 'trf'. See Notes for more information.
 		ftol : float, optional
-		    Tolerance for termination by the change of the cost function.
-		    Default is the square root of machine epsilon. The optimization process
-		    is stopped when ``dF < ftol * F``, and there was an adequate agreement
-		    between a local quadratic model and the true model in the last step.
+		    Tolerance for termination by the change of the cost function. Default
+		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
+		    and there was an adequate agreement between a local quadratic model and
+		    the true model in the last step.
 		xtol : float, optional
 		    Tolerance for termination by the change of the independent variables.
-		    Default is the square root of machine epsilon. The exact condition
-		    checked depends on the `method` used:
+		    Default is 1e-8. The exact condition depends on the `method` used:
 		
 		        * For 'trf' and 'dogbox' : ``norm(dx) < xtol * (xtol + norm(x))``
 		        * For 'lm' : ``Delta < xtol * norm(xs)``, where ``Delta`` is
@@ -2779,9 +2811,8 @@ package scipy.optimize;
 		          scaled according to `x_scale` parameter (see below).
 		
 		gtol : float, optional
-		    Tolerance for termination by the norm of the gradient. Default is
-		    the square root of machine epsilon. The exact condition depends
-		    on a `method` used:
+		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
+		    The exact condition depends on a `method` used:
 		
 		        * For 'trf' : ``norm(g_scaled, ord=np.inf) < gtol``, where
 		          ``g_scaled`` is the value of the gradient scaled to account for
@@ -2796,9 +2827,9 @@ package scipy.optimize;
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
-		    An alternative view is that the size of a trust-region along j-th
+		    An alternative view is that the size of a trust region along j-th
 		    dimension is proportional to ``x_scale[j]``. Improved convergence may
-		    be achieved by setting `x_scale` such that a step of a given length
+		    be achieved by setting `x_scale` such that a step of a given size
 		    along any of the scaled variables has a similar effect on the cost
 		    function. If set to 'jac', the scale is iteratively updated using the
 		    inverse norms of the columns of the Jacobian matrix (as described in
@@ -2811,7 +2842,7 @@ package scipy.optimize;
 		        * 'soft_l1' : ``rho(z) = 2 * ((1 + z)**0.5 - 1)``. The smooth
 		          approximation of l1 (absolute value) loss. Usually a good
 		          choice for robust least squares.
-		        * 'huber' : ``rho(z) = z if z <= 1 else z**0.5 - 1``. Works
+		        * 'huber' : ``rho(z) = z if z <= 1 else 2*z**0.5 - 1``. Works
 		          similarly to 'soft_l1'.
 		        * 'cauchy' : ``rho(z) = ln(1 + z)``. Severely weakens outliers
 		          influence, but may cause difficulties in optimization process.
@@ -2858,7 +2889,7 @@ package scipy.optimize;
 		          least-squares problem and only requires matrix-vector product
 		          evaluations.
 		
-		    If None (default) the solver is chosen based on type of Jacobian
+		    If None (default) the solver is chosen based on the type of Jacobian
 		    returned on the first iteration.
 		tr_options : dict, optional
 		    Keyword options passed to trust-region solver.
@@ -2867,17 +2898,18 @@ package scipy.optimize;
 		        * ``tr_solver='lsmr'``: options for `scipy.sparse.linalg.lsmr`.
 		          Additionally  ``method='trf'`` supports  'regularize' option
 		          (bool, default is True) which adds a regularization term to the
-		          normal equations, which improves convergence if Jacobian is
+		          normal equation, which improves convergence if the Jacobian is
 		          rank-deficient [Byrd]_ (eq. 3.4).
 		
 		jac_sparsity : {None, array_like, sparse matrix}, optional
 		    Defines the sparsity structure of the Jacobian matrix for finite
-		    differences. If the Jacobian has only few non-zeros in *each* row,
-		    providing the sparsity structure will greatly speed up the computations
-		    [Curtis]_. Should have shape (m, n). A zero entry means that a
-		    corresponding element in the Jacobian is identically zero. If provided,
-		    forces the use of 'lsmr' trust-region solver. If None (default) then
-		    dense differencing will be used. Has no effect for 'lm' method.
+		    difference estimation, its shape must be (m, n). If the Jacobian has
+		    only few non-zero elements in *each* row, providing the sparsity
+		    structure will greatly speed up the computations [Curtis]_. A zero
+		    entry means that a corresponding element in the Jacobian is identically
+		    zero. If provided, forces the use of 'lsmr' trust-region solver.
+		    If None (default) then dense differencing will be used. Has no effect
+		    for 'lm' method.
 		verbose : {0, 1, 2}, optional
 		    Level of algorithm's verbosity:
 		
@@ -3049,9 +3081,9 @@ package scipy.optimize;
 		>>> res_1.x
 		array([ 1.,  1.])
 		>>> res_1.cost
-		2.4651903288156619e-30
+		9.8669242910846867e-30
 		>>> res_1.optimality
-		4.4408921315878507e-14
+		8.8928864934219529e-14
 		
 		We now constrain the variables, in such a way that the previous solution
 		becomes infeasible. Specifically, we require that ``x[1] >= 1.5``, and
@@ -3107,7 +3139,7 @@ package scipy.optimize;
 		>>> res_3 = least_squares(fun_broyden, x0_broyden,
 		...                       jac_sparsity=sparsity_broyden(n))
 		>>> res_3.cost
-		4.5687161966109073e-23
+		4.5687069299604613e-23
 		>>> res_3.optimality
 		1.1650454296851518e-11
 		
@@ -3407,7 +3439,7 @@ package scipy.optimize;
 		
 		References
 		----------
-		1. http://www.public.iastate.edu/~ddoty/HungarianAlgorithm.html
+		1. http://csclab.murraystate.edu/bob.pilgrim/445/munkres.html
 		
 		2. Harold W. Kuhn. The Hungarian Method for the assignment problem.
 		   *Naval Research Logistics Quarterly*, 2:83-97, 1955.
@@ -3545,6 +3577,8 @@ package scipy.optimize;
 		    x : ndarray
 		        The independent variable vector which optimizes the linear
 		        programming problem.
+		    fun : float
+		        Value of the objective function.
 		    slack : ndarray
 		        The values of the slack variables.  Each slack variable corresponds
 		        to an inequality constraint.  If the slack is zero, then the
@@ -3669,9 +3703,14 @@ package scipy.optimize;
 	/**
 		Solve a linear least-squares problem with bounds on the variables.
 		
-		`lsq_linear` finds a minimum of the cost function 0.5 * ||A x - b||**2,
-		such that lb <= x <= ub. Where A is an m-by-n design matrix and b is a
-		target vector with m elements.
+		Given a m-by-n design matrix A and a target vector b with m elements,
+		`lsq_linear` solves the following optimization problem::
+		
+		    minimize 0.5 * ||A x - b||**2
+		    subject to lb <= x <= ub
+		
+		This optimization problem is convex, hence a found minimum (if iterations
+		have converged) is guaranteed to be global.
 		
 		Parameters
 		----------
@@ -3692,12 +3731,13 @@ package scipy.optimize;
 		          and the required number of iterations is weakly correlated with
 		          the number of variables.
 		        * 'bvls' : Bounded-Variable Least-Squares algorithm. This is
-		          an active set method, which requires the number iterations
-		          comparable to the number of variables. Does not support sparse
-		          matrices.
+		          an active set method, which requires the number of iterations
+		          comparable to the number of variables. Can't be used when `A` is
+		          sparse or LinearOperator.
 		
+		    Default is 'trf'.
 		tol : float, optional
-		    Tolerance parameter. The algorithm terminates if the relative change
+		    Tolerance parameter. The algorithm terminates if a relative change
 		    of the cost function is less than `tol` on the last iteration.
 		    Additionally the first-order optimality measure is considered:
 		
@@ -3705,7 +3745,7 @@ package scipy.optimize;
 		          scaled to account for the presence of the bounds, is less than
 		          `tol`.
 		        * ``method='bvls'`` terminates if Karush-Kuhn-Tucker conditions
-		          are violated by less than `tol`.
+		          are satisfied within `tol` tolerance.
 		
 		lsq_solver : {None, 'exact', 'lsmr'}, optional
 		    Method of solving unbounded least-squares problems throughout
@@ -3719,10 +3759,11 @@ package scipy.optimize;
 		
 		    If None (default) the solver is chosen based on type of `A`.
 		lsmr_tol : None, float or 'auto', optional
-		    Tolerance parameters 'atol' and 'btol' for 'lsmr' solver. If None
-		    (default), it is set to ``1e-2 * tol``. If 'auto', the tolerance will
-		    be adjusted based on the optimality of the current iterate. It can
-		    speed up the optimization process, but not always reliable.
+		    Tolerance parameters 'atol' and 'btol' for `scipy.sparse.linalg.lsmr`
+		    If None (default), it is set to ``1e-2 * tol``. If 'auto', the
+		    tolerance will be adjusted based on the optimality of the current
+		    iterate, which can speed up the optimization process, but is not always
+		    reliable.
 		max_iter : None or int, optional
 		    Maximum number of iterations before termination. If None (default), it
 		    is set to 100 for ``method='trf'`` or to the number of variables for
@@ -3754,8 +3795,9 @@ package scipy.optimize;
 		        * -1 : a lower bound is active.
 		        *  1 : an upper bound is active.
 		
-		    Somewhat arbitrary because it is determined within a tolerance
-		    threshold.
+		    Might be somewhat arbitrary for the `trf` method as it generates a
+		    sequence of strictly feasible iterates and active_mask is determined
+		    within a tolerance threshold.
 		nit : int
 		    Number of iterations. Zero if the unconstrained solution is optimal.
 		status : int
@@ -3836,7 +3878,8 @@ package scipy.optimize;
 		>>> res = lsq_linear(A, b, bounds=(lb, ub), lsmr_tol='auto', verbose=1)
 		# may vary
 		The relative change of the cost function is less than `tol`.
-		Number of iterations: 16, initial cost: 1.5039e+04,final cost 1.1112e+04, first-order optimality 4.66e-08.
+		Number of iterations 16, initial cost 1.5039e+04, final cost 1.1112e+04,
+		first-order optimality 4.66e-08.
 	**/
 	static public function lsq_linear(A:Dynamic, b:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?tol:Dynamic, ?lsq_solver:Dynamic, ?lsmr_tol:Dynamic, ?max_iter:Dynamic, ?verbose:Dynamic):Float;
 	/**
@@ -3853,8 +3896,8 @@ package scipy.optimize;
 		``g_i(x)`` are the inequality constraints.
 		``h_j(x)`` are the equality constrains.
 		
-		Optionally, the lower and upper bounds for each element in x can also be specified 
-		using the `bounds` argument.
+		Optionally, the lower and upper bounds for each element in x can also be
+		specified using the `bounds` argument.
 		
 		Parameters
 		----------
@@ -4117,9 +4160,9 @@ package scipy.optimize;
 		...                options={'gtol': 1e-6, 'disp': True})
 		Optimization terminated successfully.
 		         Current function value: 0.000000
-		         Iterations: 52
-		         Function evaluations: 64
-		         Gradient evaluations: 64
+		         Iterations: 26
+		         Function evaluations: 31
+		         Gradient evaluations: 31
 		>>> res.x
 		array([ 1.,  1.,  1.,  1.,  1.])
 		>>> print(res.message)
@@ -4485,13 +4528,14 @@ package scipy.optimize;
 		b : number
 		    The other end of the bracketing interval [a,b].
 		xtol : number, optional
-		    The routine converges when a root is known to lie within xtol of the
-		    value return. Should be >= 0.  The routine modifies this to take into
-		    account the relative precision of doubles.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter must be nonnegative.
 		rtol : number, optional
-		    The routine converges when a root is known to lie within `rtol` times
-		    the value returned of the value returned. Should be >= 0. Defaults to
-		    ``np.finfo(float).eps * 2``.
+		    The computed root ``x0`` will satisfy ``np.allclose(x, x0,
+		    atol=xtol, rtol=rtol)``, where ``x`` is the exact root. The
+		    parameter cannot be smaller than its default value of
+		    ``4*np.finfo(float).eps``.
 		maxiter : number, optional
 		    if convergence is not achieved in maxiter iterations, an error is
 		    raised.  Must be >= 0.
@@ -4669,7 +4713,7 @@ package scipy.optimize;
 		
 		The function computed is::
 		
-		    sum(100.0*(x[1:] - x[:-1]**2.0)**2.0 + (1 - x[:-1])**2.0
+		    sum(100.0*(x[1:] - x[:-1]**2.0)**2.0 + (1 - x[:-1])**2.0)
 		
 		Parameters
 		----------

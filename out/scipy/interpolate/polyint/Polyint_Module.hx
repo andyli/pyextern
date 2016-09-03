@@ -132,28 +132,38 @@ package scipy.interpolate.polyint;
 	static public function barycentric_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
 	/**
-		The factorial function, n! = special.gamma(n+1).
+		The factorial of a number or array of numbers.
 		
-		If exact is 0, then floating point precision is used, otherwise
-		exact long integer is computed.
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
 		
-		- Array argument accepted only for exact=False case.
-		- If n<0, the return value is 0.
+		    n! = n * (n - 1) * (n - 2) * ... * 1
 		
 		Parameters
 		----------
 		n : int or array_like of ints
-		    Calculate ``n!``.  Arrays are only supported with `exact` set
-		    to False.  If ``n < 0``, the return value is 0.
+		    Input values.  If ``n < 0``, the return value is 0.
 		exact : bool, optional
-		    The result can be approximated rapidly using the gamma-formula
-		    above.  If `exact` is set to True, calculate the
-		    answer exactly using integer arithmetic. Default is False.
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
 		
 		Returns
 		-------
-		nf : float or int
-		    Factorial of `n`, as an integer or a float depending on `exact`.
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
 		
 		Examples
 		--------
@@ -161,6 +171,8 @@ package scipy.interpolate.polyint;
 		>>> arr = np.array([3, 4, 5])
 		>>> factorial(arr, exact=False)
 		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
 		>>> factorial(5, exact=True)
 		120L
 	**/
@@ -206,51 +218,5 @@ package scipy.interpolate.polyint;
 		KroghInterpolator (which is what this function uses).
 	**/
 	static public function krogh_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
-	/**
-		Convenience function for piecewise polynomial interpolation.
-		
-		Parameters
-		----------
-		xi : array_like
-		    A sorted list of x-coordinates.
-		yi : list of lists
-		    ``yi[i]`` is the list of derivatives known at ``xi[i]``.
-		x : scalar or array_like
-		    Coordinates at which to evalualte the polynomial.
-		orders : int or list of ints, optional
-		    A list of polynomial orders, or a single universal order.
-		der : int or list, optional
-		    How many derivatives to extract; None for all potentially
-		    nonzero derivatives (that is a number equal to the number
-		    of points), or a list of derivatives to extract. This number
-		    includes the function value as 0th derivative.
-		axis : int, optional
-		    Axis in the `yi` array corresponding to the x-coordinate values.
-		
-		Returns
-		-------
-		y : ndarray
-		    Interpolated values or derivatives. If multiple derivatives
-		    were requested, these are given along the first axis.
-		
-		See Also
-		--------
-		PiecewisePolynomial
-		
-		Notes
-		-----
-		If `orders` is None, or ``orders[i]`` is None, then the degree of the
-		polynomial segment is exactly the degree required to match all i
-		available derivatives at both endpoints.  If ``orders[i]`` is not None,
-		then some derivatives will be ignored.  The code will try to use an
-		equal number of derivatives from each end; if the total number of
-		derivatives needed is odd, it will prefer the rightmost endpoint. If
-		not enough derivatives are available, an exception is raised.
-		
-		Construction of these piecewise polynomials can be an expensive process;
-		if you repeatedly evaluate the same polynomial, consider using the class
-		PiecewisePolynomial (which is what this function does).
-	**/
-	static public function piecewise_polynomial_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?orders:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 }

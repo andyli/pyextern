@@ -17,6 +17,11 @@ package pandas.core.common;
 	static public function _all_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _all_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _any_none(?args:python.VarArgs<Dynamic>):Dynamic;
+	/**
+		Evaluate possibly callable input using obj and kwargs if it is callable,
+		otherwise return as it is
+	**/
+	static public function _apply_if_callable(maybe_callable:Dynamic, obj:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		return a view if copy is False, but
@@ -36,24 +41,7 @@ package pandas.core.common;
 		dtypes
 	**/
 	static public function _coerce_to_dtypes(result:Dynamic, dtypes:Dynamic):Dynamic;
-	/**
-		provide concatenation of an array of arrays each of which is a single
-		'normalized' dtypes (in that for example, if it's object, then it is a
-		non-datetimelike and provide a combined dtype for the resulting array that
-		preserves the overall dtype if possible)
-		
-		Parameters
-		----------
-		to_concat : array of arrays
-		axis : axis to provide concatenation
-		
-		Returns
-		-------
-		a single array, preserving the combined dtypes
-	**/
-	static public function _concat_compat(to_concat:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _consensus_name_attr(objs:Dynamic):Dynamic;
-	static public function _convert_wrapper(f:Dynamic, conv_dtype:Dynamic):Dynamic;
 	static public function _count_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	/**
@@ -68,7 +56,6 @@ package pandas.core.common;
 		dict
 	**/
 	static public function _dict_compat(d:Dynamic):Dynamic;
-	static public var _diff_special : Dynamic;
 	static public function _ensure_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_int16(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -77,16 +64,6 @@ package pandas.core.common;
 	static public function _ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		if this is a reversed op, then flip x,y
-		
-		if we have an integer value (or array in y)
-		and we have 0's, fill them with the fill,
-		return the result
-		
-		mask the nan's from x
-	**/
-	static public function _fill_zeros(result:Dynamic, x:Dynamic, y:Dynamic, name:Dynamic, fill:Dynamic):Dynamic;
 	static public function _get_callable_name(obj:Dynamic):Dynamic;
 	static public function _get_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
@@ -103,7 +80,6 @@ package pandas.core.common;
 		Slice the info axis of `obj` with `indexer`.
 	**/
 	static public function _get_info_slice(obj:Dynamic, indexer:Dynamic):Dynamic;
-	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
 	static public function _index_labels_to_array(labels:Dynamic):Dynamic;
 	/**
 		interpret the dtype from a scalar 
@@ -152,11 +128,6 @@ package pandas.core.common;
 	**/
 	static public function _isnull_old(obj:Dynamic):Dynamic;
 	static public function _iterable_not_string(x:Dynamic):Dynamic;
-	static public function _join_unicode(lines:Dynamic, ?sep:Dynamic):Dynamic;
-	/**
-		Perform ljust, center, rjust against string or list-like
-	**/
-	static public function _justify(texts:Dynamic, max_len:Dynamic, ?mode:Dynamic):Dynamic;
 	/**
 		return the lcd dtype to hold these types 
 	**/
@@ -164,6 +135,11 @@ package pandas.core.common;
 	static public function _long_prod(vals:Dynamic):Dynamic;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
+	/**
+		Convert a python scalar to the appropriate numpy dtype if possible
+		This avoids numpy directly converting according to platform preferences
+	**/
+	static public function _maybe_convert_scalar(values:Dynamic):Dynamic;
 	/**
 		Convert string-like and string-like array to convert object dtype.
 		This is to avoid numpy to handle the array as str dtype.
@@ -208,7 +184,6 @@ package pandas.core.common;
 	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public function _mut_exclusive(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _not_none(?args:python.VarArgs<Dynamic>):Dynamic;
-	static public function _pickle_array(arr:Dynamic):Dynamic;
 	static public function _possibly_cast_item(obj:Dynamic, item:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		try to cast the array/value to a datetimelike dtype, converting float
@@ -244,18 +219,6 @@ package pandas.core.common;
 	**/
 	static public function _possibly_infer_to_datetimelike(value:Dynamic, ?convert_dates:Dynamic):Dynamic;
 	/**
-		internal. pprinter for iterables. you should probably use pprint_thing()
-		rather then calling this directly.
-	**/
-	static public function _pprint_dict(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		internal. pprinter for iterables. you should probably use pprint_thing()
-		rather then calling this directly.
-		
-		bounds length of printed sequence, depending on options
-	**/
-	static public function _pprint_seq(seq:Dynamic, ?_nest_lvl:Dynamic, ?max_seq_items:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
 		Helper function for processing random_state arguments.
 		
 		Parameters
@@ -273,14 +236,7 @@ package pandas.core.common;
 	**/
 	static public function _random_state(?state:Dynamic):Dynamic;
 	static public var _string_dtypes : Dynamic;
-	static public var _take_1d_dict : Dynamic;
-	static public var _take_2d_axis0_dict : Dynamic;
-	static public var _take_2d_axis1_dict : Dynamic;
-	static public var _take_2d_multi_dict : Dynamic;
-	static public function _take_2d_multi_generic(arr:Dynamic, indexer:Dynamic, out:Dynamic, fill_value:Dynamic, mask_info:Dynamic):Dynamic;
-	static public function _take_nd_generic(arr:Dynamic, indexer:Dynamic, out:Dynamic, axis:Dynamic, fill_value:Dynamic, mask_info:Dynamic):Dynamic;
 	static public function _try_sort(iterable:Dynamic):Dynamic;
-	static public function _unpickle_array(bytes:Dynamic):Dynamic;
 	/**
 		Option change callback for null/inf behaviour
 		Choose which replacement for numpy.isnan / -numpy.isfinite is used.
@@ -306,24 +262,7 @@ package pandas.core.common;
 		return my values or the object if we are say an ndarray 
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _view_wrapper(f:Dynamic, ?arr_dtype:Dynamic, ?out_dtype:Dynamic, ?fill_wrap:Dynamic):Dynamic;
 	static public function _where_compat(mask:Dynamic, arr1:Dynamic, arr2:Dynamic):Dynamic;
-	/**
-		Glues together two sets of strings using the amount of space requested.
-		The idea is to prettify.
-		
-		----------
-		space : int
-		    number of spaces for padding
-		lists : str
-		    list of str which being joined
-		strlen : callable
-		    function used to calculate the length of each str. Needed for unicode
-		    handling.
-		justfunc : callable
-		    function used to justify str. Needed for unicode handling.
-	**/
-	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		True if two arrays, left and right, have equal non-NaN elements, and NaNs
 		in corresponding locations.  False otherwise. It is assumed that left and
@@ -354,43 +293,6 @@ package pandas.core.common;
 		False
 	**/
 	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
-	/**
-		Return 80-char width message declaration with = bars on top and bottom.
-	**/
-	static public function banner(message:Dynamic):Dynamic;
-	/**
-		Bind a method to class, python 2 and python 3 compatible.
-		
-		Parameters
-		----------
-		
-		cls : type
-		    class to receive bound method
-		name : basestring
-		    name of method on class instance
-		func : function
-		    function to be bound as method
-		
-		
-		Returns
-		-------
-		None
-	**/
-	static public function bind_method(cls:Dynamic, name:Dynamic, func:Dynamic):Dynamic;
-	/**
-		this is the sanctioned way to prepare something for
-		sending *to the console*, it delegates to pprint_thing() to get
-		a unicode representation of the object relies on the global encoding
-		set in display.encoding. Use this everywhere
-		where you output to the console.
-	**/
-	static public function console_encode(object:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	static public function create_pandas_abc_type(name:Dynamic, attr:Dynamic, comp:Dynamic):Dynamic;
-	/**
-		difference of n between self,
-		analagoust to s-s.shift(n) 
-	**/
-	static public function diff(arr:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function difference(a:Dynamic, b:Dynamic):Dynamic;
 	static public function ensure_float(arr:Dynamic):Dynamic;
 	/**
@@ -410,16 +312,6 @@ package pandas.core.common;
 		flattened : generator
 	**/
 	static public function flatten(l:Dynamic):python.NativeIterable<Dynamic>;
-	/**
-		Parameters
-		----------
-		l : list of arrays
-		
-		Returns
-		-------
-		a set of kinds that exist in this list of arrays
-	**/
-	static public function get_dtype_kinds(l:Dynamic):Dynamic;
 	/**
 		get_option(pat)
 		
@@ -498,7 +390,7 @@ package pandas.core.common;
 		    The callable should accept a floating point number and return
 		    a string with the desired format of the number. This is used
 		    in some places like SeriesFormatter.
-		    See core.format.EngFormatter for an example.
+		    See formats.format.EngFormatter for an example.
 		    [default: None] [currently: None]
 		
 		display.height : int
@@ -689,10 +581,6 @@ package pandas.core.common;
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return the scalar boxer for the dtype 
-	**/
-	static public function i8_boxer(arr_or_dtype:Dynamic):Dynamic;
-	/**
 		check if we're running in an interactive shell
 		
 		returns True if running under python/ipython interactive shell
@@ -715,7 +603,6 @@ package pandas.core.common;
 		DEPRECATED: This is no longer needed, or working, in IPython 3 and above.
 	**/
 	static public function in_qtconsole():Dynamic;
-	static public function indent(string:Dynamic, ?spaces:Dynamic):Dynamic;
 	static public function intersection(?seqs:python.VarArgs<Dynamic>):Dynamic;
 	static public function is_any_int_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -749,6 +636,11 @@ package pandas.core.common;
 		return a boolean if the dtypes are equal 
 	**/
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
+		if we are a klass that is preserved by the internals
+		these are internal klasses that we represent (and don't use a np.array)
+	**/
+	static public function is_extension_type(value:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_floating_dtype(arr_or_dtype:Dynamic):Dynamic;
@@ -778,11 +670,6 @@ package pandas.core.common;
 	static public function is_int_or_datetime_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
-	/**
-		if we are a klass that is preserved by the internals
-		these are internal klasses that we represent (and don't use a np.array)
-	**/
-	static public function is_internal_type(value:Dynamic):Dynamic;
 	static public function is_iterator(obj:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_named_tuple(arg:Dynamic):Dynamic;
@@ -860,11 +747,6 @@ package pandas.core.common;
 		given array/list
 	**/
 	static public function map_indices_py(arr:Dynamic):Dynamic;
-	/**
-		Return a masking array of same size/shape as arr
-		with entries equaling any member of values_to_mask set to True
-	**/
-	static public function mask_missing(arr:Dynamic, values_to_mask:Dynamic):Dynamic;
 	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
@@ -898,60 +780,6 @@ package pandas.core.common;
 		np.dtype or a pandas dtype
 	**/
 	static public function pandas_dtype(dtype:Dynamic):Dynamic;
-	/**
-		This function is the sanctioned way of converting objects
-		to a unicode representation.
-		
-		properly handles nested sequences containing unicode strings
-		(unicode(object) does not)
-		
-		Parameters
-		----------
-		thing : anything to be formatted
-		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
-		    with pprint_sequence, this argument is used to keep track of the
-		    current nesting level, and limit it.
-		escape_chars : list or dict, optional
-		    Characters to escape. If a dict is passed the values are the
-		    replacements
-		default_escapes : bool, default False
-		    Whether the input escape characters replaces or adds to the defaults
-		max_seq_items : False, int, default None
-		    Pass thru to other pretty printers to limit sequence printing
-		
-		Returns
-		-------
-		result - unicode object on py2, str on py3. Always Unicode.
-	**/
-	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
-	static public function pprint_thing_encoded(object:Dynamic, ?encoding:Dynamic, ?errors:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		Read an array from an NPY file.
-		
-		Parameters
-		----------
-		fp : file_like object
-		    If this is not a real file object, then this may take extra memory
-		    and time.
-		allow_pickle : bool, optional
-		    Whether to allow reading pickled data. Default: True
-		pickle_kwargs : dict
-		    Additional keyword arguments to pass to pickle.load. These are only
-		    useful when loading object arrays saved on Python 2 when using
-		    Python 3.
-		
-		Returns
-		-------
-		array : ndarray
-		    The array from the data on disk.
-		
-		Raises
-		------
-		ValueError
-		    If the data is invalid, or allow_pickle=False and the file contains
-		    an object array.
-	**/
-	static public function read_array(fp:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):numpy.Ndarray;
 	static public function sentinel_factory():Dynamic;
 	/**
 		Generates tuples of ranges which cover all True value in mask
@@ -961,101 +789,5 @@ package pandas.core.common;
 	**/
 	static public function split_ranges(mask:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
-	/**
-		Specialized Cython take which sets NaN values in one pass
-		
-		Parameters
-		----------
-		arr : ndarray
-		    Input array
-		indexer : ndarray
-		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
-		axis : int, default 0
-		    Axis to take from
-		out : ndarray or None, default None
-		    Optional output array, must be appropriate type to hold input and
-		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
-		fill_value : any, default np.nan
-		    Fill value to replace -1 values with
-		mask_info : tuple of (ndarray, boolean)
-		    If provided, value should correspond to:
-		        (indexer != -1, (indexer != -1).any())
-		    If not provided, it will be computed internally if necessary
-		allow_fill : boolean, default True
-		    If False, indexer is assumed to contain no -1 values so no filling
-		    will be done.  This short-circuits computation of a mask.  Result is
-		    undefined if allow_fill == False and -1 is present in indexer.
-	**/
-	static public function take_1d(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
-	/**
-		Specialized Cython take which sets NaN values in one pass
-	**/
-	static public function take_2d_multi(arr:Dynamic, indexer:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
-	/**
-		Specialized Cython take which sets NaN values in one pass
-		
-		Parameters
-		----------
-		arr : ndarray
-		    Input array
-		indexer : ndarray
-		    1-D array of indices to take, subarrays corresponding to -1 value
-		    indicies are filed with fill_value
-		axis : int, default 0
-		    Axis to take from
-		out : ndarray or None, default None
-		    Optional output array, must be appropriate type to hold input and
-		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
-		fill_value : any, default np.nan
-		    Fill value to replace -1 values with
-		mask_info : tuple of (ndarray, boolean)
-		    If provided, value should correspond to:
-		        (indexer != -1, (indexer != -1).any())
-		    If not provided, it will be computed internally if necessary
-		allow_fill : boolean, default True
-		    If False, indexer is assumed to contain no -1 values so no filling
-		    will be done.  This short-circuits computation of a mask.  Result is
-		    undefined if allow_fill == False and -1 is present in indexer.
-	**/
-	static public function take_nd(arr:Dynamic, indexer:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?mask_info:Dynamic, ?allow_fill:Dynamic):Dynamic;
-	static public function u(s:Dynamic):Dynamic;
 	static public function union(?seqs:python.VarArgs<Dynamic>):Dynamic;
-	/**
-		Write an array to an NPY file, including a header.
-		
-		If the array is neither C-contiguous nor Fortran-contiguous AND the
-		file_like object is not a real file object, this function will have to
-		copy data in memory.
-		
-		Parameters
-		----------
-		fp : file_like object
-		    An open, writable file object, or similar object with a
-		    ``.write()`` method.
-		array : ndarray
-		    The array to write to disk.
-		version : (int, int) or None, optional
-		    The version number of the format. None means use the oldest
-		    supported version that is able to store the data.  Default: None
-		allow_pickle : bool, optional
-		    Whether to allow writing pickled data. Default: True
-		pickle_kwargs : dict, optional
-		    Additional keyword arguments to pass to pickle.dump, excluding
-		    'protocol'. These are only useful when pickling objects in object
-		    arrays on Python 3 to Python 2 compatible format.
-		
-		Raises
-		------
-		ValueError
-		    If the array cannot be persisted. This includes the case of
-		    allow_pickle=False and array being an object array.
-		Various other errors
-		    If the array contains Python objects as part of its dtype, the
-		    process of pickling them may raise various errors if the objects
-		    are not picklable.
-	**/
-	static public function write_array(fp:Dynamic, array:Dynamic, ?version:Dynamic, ?allow_pickle:Dynamic, ?pickle_kwargs:Dynamic):Dynamic;
 }

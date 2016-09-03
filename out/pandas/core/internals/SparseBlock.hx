@@ -149,11 +149,11 @@ package pandas.core.internals;
 	static public var _downcast_dtype : Dynamic;
 	static public var _ftype : Dynamic;
 	/**
-		Data structure for labeled, sparse floating point data
+		Data structure for labeled, sparse floating point 1-D data
 		
 		Parameters
 		----------
-		data : {array-like, Series, SparseSeries, dict}
+		data : {array-like (1-D), Series, SparseSeries, dict}
 		kind : {'block', 'integer'}
 		fill_value : float
 		    Defaults to NaN (code for missing)
@@ -178,6 +178,7 @@ package pandas.core.internals;
 	public var _is_single_block : Dynamic;
 	public function _maybe_downcast(blocks:Dynamic, ?downcast:Dynamic):Dynamic;
 	public var _mgr_locs : Dynamic;
+	public var _na_value : Dynamic;
 	/**
 		no-op on a non-ObjectBlock 
 	**/
@@ -315,7 +316,7 @@ package pandas.core.internals;
 	public var itemsize : Dynamic;
 	public var kind : Dynamic;
 	/**
-		Create a new block, with type inference propogate any values that are
+		Create a new block, with type inference propagate any values that are
 		not specified
 	**/
 	public function make_block(values:Dynamic, ?placement:Dynamic, ?ndim:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -344,6 +345,14 @@ package pandas.core.internals;
 		a new block(s), the result of the putmask
 	**/
 	public function putmask(mask:Dynamic, _new:Dynamic, ?align:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?transpose:Dynamic, ?mgr:Dynamic):Dynamic;
+	/**
+		compute the quantiles of the
+		
+		Parameters
+		----------
+		qs : a scalar or list of the quantiles to be computed
+	**/
+	public function quantile(qs:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Reindex using pre-computed indexer information
 	**/

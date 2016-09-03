@@ -71,6 +71,9 @@ package pandas.tslib;
 		helper for pickle
 	**/
 	public function __reduce_ex__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return repr(self).
+	**/
 	public function __repr__():Dynamic;
 	/**
 		Return value-self.
@@ -229,11 +232,19 @@ package pandas.tslib;
 	public function replace(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	/**
-		return a new Timestamp rounded to this resolution
+		Round the Timestamp to the specified resolution
+		
+		Returns
+		-------
+		a new Timestamp rounded to the given resolution of `freq`
 		
 		Parameters
 		----------
 		freq : a freq string indicating the rounding resolution
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
 	public function round(freq:Dynamic):Dynamic;
 	public var second : Dynamic;
@@ -370,6 +381,7 @@ package pandas.tslib;
 		Monday == 0 ... Sunday == 6
 	**/
 	public function weekday(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var weekday_name : Dynamic;
 	public var weekofyear : Dynamic;
 	public var year : Dynamic;
 }

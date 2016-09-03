@@ -104,6 +104,24 @@ package scipy.io.netcdf;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
+		Applies the given missing value to the data array.
+		
+		Returns a numpy.ma array, with any value equal to missing_value masked
+		out (unless missing_value is None, in which case the original array is
+		returned).
+	**/
+	static public function _apply_missing_value(data:Dynamic, missing_value:Dynamic):Dynamic;
+	/**
+		Returns the value denoting "no data" for this variable.
+		
+		If this variable does not have a missing/fill value, returns None.
+		
+		If both _FillValue and missing_value are given, give precedence to
+		_FillValue. The netCDF standard gives special meaning to _FillValue;
+		missing_value is  just used for compatibility with old datasets.
+	**/
+	public function _get_missing_value():Dynamic;
+	/**
 		Assign a scalar value to a `netcdf_variable` of length one.
 		
 		Parameters

@@ -2,7 +2,7 @@
 package scipy.interpolate.interpolate;
 @:pythonImport("scipy.interpolate.interpolate", "PPoly") extern class PPoly {
 	/**
-		Evaluate the piecewise polynomial or its derivative
+		Evaluate the piecewise polynomial or its derivative.
 		
 		Parameters
 		----------
@@ -10,9 +10,11 @@ package scipy.interpolate.interpolate;
 		    Points to evaluate the interpolant at.
 		nu : int, optional
 		    Order of derivative to evaluate. Must be non-negative.
-		extrapolate : bool, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
-		    and last intervals, or to return NaNs.
+		extrapolate : {bool, 'periodic', None}, optional
+		    If bool, determines whether to extrapolate to out-of-bounds points
+		    based on first and last intervals, or to return NaNs.
+		    If 'periodic', periodic extrapolation is used.
+		    If None (default), use `self.extrapolate`.
 		
 		Returns
 		-------
@@ -146,8 +148,8 @@ package scipy.interpolate.interpolate;
 		Parameters
 		----------
 		nu : int, optional
-		    Order of antiderivative to evaluate. (Default: 1)
-		    If negative, the derivative is returned.
+		    Order of antiderivative to evaluate. Default is 1, i.e. compute
+		    the first integral. If negative, the derivative is returned.
 		
 		Returns
 		-------
@@ -160,6 +162,11 @@ package scipy.interpolate.interpolate;
 		The antiderivative returned by this function is continuous and
 		continuously differentiable to order n-1, up to floating point
 		rounding error.
+		
+		If antiderivative is computed and ``self.extrapolate='periodic'``,
+		it will be set to False for the returned instance. This is done because
+		the antiderivative is no longer periodic and its correct evaluation
+		outside of the initially given x interval is difficult.
 	**/
 	public function antiderivative(?nu:Dynamic):Dynamic;
 	public var axis : Dynamic;
@@ -179,8 +186,8 @@ package scipy.interpolate.interpolate;
 		Parameters
 		----------
 		nu : int, optional
-		    Order of derivative to evaluate. (Default: 1)
-		    If negative, the antiderivative is returned.
+		    Order of derivative to evaluate. Default is 1, i.e. compute the
+		    first derivative. If negative, the antiderivative is returned.
 		
 		Returns
 		-------
@@ -223,9 +230,10 @@ package scipy.interpolate.interpolate;
 		----------
 		bp : BPoly
 		    A Bernstein basis polynomial, as created by BPoly
-		extrapolate : bool, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
-		    and last intervals, or to return NaNs. Default: True.
+		extrapolate : bool or 'periodic', optional
+		    If bool, determines whether to extrapolate to out-of-bounds points
+		    based on first and last intervals, or to return NaNs.
+		    If 'periodic', periodic extrapolation is used. Default is True.
 	**/
 	static public function from_bernstein_basis(bp:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
@@ -235,9 +243,10 @@ package scipy.interpolate.interpolate;
 		----------
 		tck
 		    A spline, as returned by `splrep`
-		extrapolate : bool, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
-		    and last intervals, or to return NaNs. Default: True.
+		extrapolate : bool or 'periodic', optional
+		    If bool, determines whether to extrapolate to out-of-bounds points
+		    based on first and last intervals, or to return NaNs.
+		    If 'periodic', periodic extrapolation is used. Default is True.
 	**/
 	static public function from_spline(tck:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
@@ -249,9 +258,11 @@ package scipy.interpolate.interpolate;
 		    Lower integration bound
 		b : float
 		    Upper integration bound
-		extrapolate : bool, optional
-		    Whether to extrapolate to ouf-of-bounds points based on first
-		    and last intervals, or to return NaNs.
+		extrapolate : {bool, 'periodic', None}, optional
+		    If bool, determines whether to extrapolate to out-of-bounds points
+		    based on first and last intervals, or to return NaNs.
+		    If 'periodic', periodic extrapolation is used.
+		    If None (default), use `self.extrapolate`.
 		
 		Returns
 		-------
@@ -260,16 +271,46 @@ package scipy.interpolate.interpolate;
 	**/
 	public function integrate(a:Dynamic, b:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	/**
-		Find real roots of the piecewise polynomial.
+		Find real roots of the the piecewise polynomial.
 		
 		Parameters
 		----------
 		discontinuity : bool, optional
 		    Whether to report sign changes across discontinuities at
 		    breakpoints as roots.
-		extrapolate : bool, optional
-		    Whether to return roots from the polynomial extrapolated
-		    based on first and last intervals.
+		extrapolate : {bool, 'periodic', None}, optional
+		    If bool, determines whether to return roots from the polynomial
+		    extrapolated based on first and last intervals, 'periodic' works
+		    the same as False. If None (default), use `self.extrapolate`.
+		
+		Returns
+		-------
+		roots : ndarray
+		    Roots of the polynomial(s).
+		
+		    If the PPoly object describes multiple polynomials, the
+		    return value is an object array whose each element is an
+		    ndarray containing the roots.
+		
+		See Also
+		--------
+		PPoly.solve
+	**/
+	public function roots(?discontinuity:Dynamic, ?extrapolate:Dynamic):Dynamic;
+	/**
+		Find real solutions of the the equation ``pp(x) == y``.
+		
+		Parameters
+		----------
+		y : float, optional
+		    Right-hand side. Default is zero.
+		discontinuity : bool, optional
+		    Whether to report sign changes across discontinuities at
+		    breakpoints as roots.
+		extrapolate : {bool, 'periodic', None}, optional
+		    If bool, determines whether to return roots from the polynomial
+		    extrapolated based on first and last intervals, 'periodic' works
+		    the same as False. If None (default), use `self.extrapolate`.
 		
 		Returns
 		-------
@@ -303,6 +344,6 @@ package scipy.interpolate.interpolate;
 		>>> pp.roots()
 		array([-1.,  1.])
 	**/
-	public function roots(?discontinuity:Dynamic, ?extrapolate:Dynamic):Dynamic;
+	public function solve(?y:Dynamic, ?discontinuity:Dynamic, ?extrapolate:Dynamic):Dynamic;
 	public var x : Dynamic;
 }

@@ -1315,8 +1315,10 @@ package numpy.core.umath;
 	/**
 		floor_divide(x1, x2[, out])
 		
-		Return the largest integer smaller or equal to the division of the
-		inputs.
+		Return the largest integer smaller or equal to the division of the inputs.
+		It is equivalent to the Python ``//`` operator and pairs with the
+		Python ``%`` (`remainder`), function so that ``b = a % b + b * (a // b)``
+		up to roundoff.
 		
 		Parameters
 		----------
@@ -1333,6 +1335,7 @@ package numpy.core.umath;
 		
 		See Also
 		--------
+		remainder : Remainder complementary to floor_divide.
 		divide : Standard division.
 		floor : Round a number to the nearest integer toward minus infinity.
 		ceil : Round a number to the nearest integer toward infinity.
@@ -1642,7 +1645,7 @@ package numpy.core.umath;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> old_bufsize = np.setbufsize(20000)
 		>>> old_err = np.seterr(divide='raise')
@@ -2686,9 +2689,9 @@ package numpy.core.umath;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -2704,11 +2707,12 @@ package numpy.core.umath;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -3032,9 +3036,9 @@ package numpy.core.umath;
 		
 		Return element-wise remainder of division.
 		
-		Computes ``x1 - floor(x1 / x2) * x2``, the result has the same sign as
-		the divisor `x2`. It is equivalent to the Python modulus operator
-		``x1 % x2`` and should not be confused with the Matlab(TM) ``rem``
+		Computes the remainder complementary to the `floor_divide` function.  It is
+		equivalent to the Python modulus operator``x1 % x2`` and has the same sign
+		as the divisor `x2`. It should not be confused with the Matlab(TM) ``rem``
 		function.
 		
 		Parameters
@@ -3050,11 +3054,12 @@ package numpy.core.umath;
 		Returns
 		-------
 		y : ndarray
-		    The remainder of the quotient ``x1/x2``, element-wise. Returns a
-		    scalar if both  `x1` and `x2` are scalars.
+		    The element-wise remainder of the quotient ``floor_divide(x1, x2)``.
+		    Returns a scalar if both  `x1` and `x2` are scalars.
 		
 		See Also
 		--------
+		floor_divide : Equivalent of Python ``//`` operator.
 		fmod : Equivalent of the Matlab(TM) ``rem`` function.
 		divide, floor
 		
@@ -3182,7 +3187,7 @@ package numpy.core.umath;
 		[10000, 0, None]
 		
 		>>> def err_handler(type, flag):
-		...     print "Floating point error (%s), with flag %s" % (type, flag)
+		...     print("Floating point error (%s), with flag %s" % (type, flag))
 		...
 		>>> new_errobj = [20000, 12, err_handler]
 		>>> np.seterrobj(new_errobj)
@@ -3199,7 +3204,13 @@ package numpy.core.umath;
 		
 		Returns an element-wise indication of the sign of a number.
 		
-		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+		The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.  nan
+		is returned for nan inputs.
+		
+		For complex inputs, the `sign` function returns
+		``sign(x.real) + 0j if x.real != 0 else sign(x.imag) + 0j``.
+		
+		complex(nan, 0) is returned for complex nan inputs.
 		
 		Parameters
 		----------
@@ -3211,12 +3222,20 @@ package numpy.core.umath;
 		y : ndarray
 		  The sign of `x`.
 		
+		Notes
+		-----
+		There is more than one definition of sign in common use for complex
+		numbers.  The definition used here is equivalent to :math:`x/\sqrt{x*x}`
+		which is different from a common alternative, :math:`x/|x|`.
+		
 		Examples
 		--------
 		>>> np.sign([-5., 4.5])
 		array([-1.,  1.])
 		>>> np.sign(0)
 		0
+		>>> np.sign(5-2j)
+		(1+0j)
 	**/
 	static public function sign(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**

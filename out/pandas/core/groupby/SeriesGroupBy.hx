@@ -50,11 +50,11 @@ package pandas.core.groupby;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic):Dynamic;
+	public function ___init__(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic):Void;
+	public function new(obj:Dynamic, ?keys:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?grouper:Dynamic, ?exclusions:Dynamic, ?selection:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		Groupby iterator
 		
@@ -172,14 +172,17 @@ package pandas.core.groupby;
 	**/
 	public var _constructor : Dynamic;
 	/**
-		arr is where cumcount gets its values from
+		Parameters
+		----------
+		ascending : bool, default True
+		    If False, number in reverse, from length of group - 1 to 0.
 		
 		Note
 		----
 		this is currently implementing sort=False
 		(though the default is sort=True) for groupby in general
 	**/
-	public function _cumcount_array(?arr:Dynamic, ?ascending:Dynamic):Dynamic;
+	public function _cumcount_array(?ascending:Dynamic):Dynamic;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
@@ -248,6 +251,10 @@ package pandas.core.groupby;
 		we may need create a selection if we have non-level groupers 
 	**/
 	public function _set_selection_from_grouper():Dynamic;
+	/**
+		return a new object with the replacement attributes 
+	**/
+	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		fast version of transform, only applicable to
 		builtin/cythonizable functions
@@ -589,7 +596,7 @@ package pandas.core.groupby;
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
-		    Return cumulative max over requested axis.
+		    Return cumulative cummax over requested axis.
 		
 		Parameters
 		----------
@@ -600,13 +607,13 @@ package pandas.core.groupby;
 		
 		Returns
 		-------
-		max : scalar
+		cummax : scalar
 		
 		    
 	**/
 	public var cummax : Dynamic;
 	/**
-		    Return cumulative min over requested axis.
+		    Return cumulative cummin over requested axis.
 		
 		Parameters
 		----------
@@ -617,7 +624,7 @@ package pandas.core.groupby;
 		
 		Returns
 		-------
-		min : scalar
+		cummin : scalar
 		
 		    
 	**/
@@ -714,6 +721,19 @@ package pandas.core.groupby;
 		return the dtype object of the underlying data 
 	**/
 	public var dtype : Dynamic;
+	/**
+		Return an expanding grouper, providing expanding
+		functionaility per group
+		
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function expanding(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Forward fill the values
 		
@@ -1022,6 +1042,11 @@ package pandas.core.groupby;
 		pandas.Panel.groupby
 	**/
 	public function min():Dynamic;
+	/**
+		since we are a series, we by definition only have
+		a single name, but may be the result of a selection or
+		the name of our object
+	**/
 	public var name : Dynamic;
 	static public var ndim : Dynamic;
 	public var ngroups : Dynamic;
@@ -1308,7 +1333,20 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function resample(rule:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function resample(rule:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Return a rolling grouper, providing rolling
+		functionaility per group
+		
+		
+		
+		See also
+		--------
+		pandas.Series.groupby
+		pandas.DataFrame.groupby
+		pandas.Panel.groupby
+	**/
+	public function rolling(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		

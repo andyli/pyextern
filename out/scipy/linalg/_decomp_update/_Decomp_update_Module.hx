@@ -15,9 +15,8 @@ package scipy.linalg._decomp_update;
 		inputs meet the requirements below.
 	**/
 	static public function _form_qTu(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _reorth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		qr_delete(Q, R, k, p=1, which='row', overwrite_qr=False, check_finite=True)
+		qr_delete(Q, R, k, int p=1, which='row', overwrite_qr=False, check_finite=True)
 		
 		QR downdate on row or column deletions
 		
@@ -39,7 +38,7 @@ package scipy.linalg._decomp_update;
 		    Determines if rows or columns will be deleted, defaults to 'row'
 		overwrite_qr : bool, optional
 		    If True, consume Q and R, overwriting their contents with their
-		    downdated versions, and returning approriately sized views.  
+		    downdated versions, and returning approriately sized views.
 		    Defaults to False.
 		check_finite : bool, optional
 		    Whether to check that the input matrix contains only finite numbers.
@@ -148,7 +147,7 @@ package scipy.linalg._decomp_update;
 		rcond : float
 		    Lower bound on the reciprocal condition number of ``Q`` augmented with
 		    ``u/||u||`` Only used when updating economic mode (thin, (M,N) (N,N))
-		    decompositions.  If None, machine precision is used.  Defaults to 
+		    decompositions.  If None, machine precision is used.  Defaults to
 		    None.
 		overwrite_qru : bool, optional
 		    If True, consume Q, R, and u, if possible, while performing the update,
@@ -206,8 +205,8 @@ package scipy.linalg._decomp_update;
 		>>> q, r = linalg.qr(a)
 		
 		Given this QR decomposition, update q and r when 2 rows are inserted.
-		                  
-		>>> u = np.array([[  6.,  -9.,  -3.], 
+		
+		>>> u = np.array([[  6.,  -9.,  -3.],
 		...               [ -3.,  10.,   1.]])
 		>>> q1, r1 = linalg.qr_insert(q, r, u, 2, 'row')
 		>>> q1
@@ -252,8 +251,6 @@ package scipy.linalg._decomp_update;
 		True
 	**/
 	static public function qr_insert(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function qr_insert_col(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function qr_insert_row(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		qr_update(Q, R, u, v, overwrite_qruv=False, check_finite=True)
 		

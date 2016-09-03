@@ -11,6 +11,7 @@ package numpy.matrixlib;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Interpret the input as a matrix.

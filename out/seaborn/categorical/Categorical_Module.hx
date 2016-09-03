@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package seaborn.categorical;
 @:pythonImport("seaborn.categorical") extern class Categorical_Module {
+	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -88,6 +89,11 @@ package seaborn.categorical;
 		    Color for the lines that represent the confidence interval.
 		ax : matplotlib Axes, optional
 		    Axes object to draw the plot onto, otherwise uses the current Axes.    
+		errwidth : float, optional
+		    Thickness of error bar lines (and caps).         
+		capsize : float, optional
+		    Width of the "caps" on error bars.
+		
 		kwargs : key, value mappings
 		    Other keyword arguments are passed through to ``plt.bar`` at draw
 		    time.
@@ -154,6 +160,13 @@ package seaborn.categorical;
 		
 		    >>> ax = sns.barplot(x="day", y="tip", data=tips, ci=68)
 		
+		Add "caps" to the error bars:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.barplot(x="day", y="tip", data=tips, capsize=.2)
+		
 		Use a different color palette for the bars:
 		
 		.. plot::
@@ -179,7 +192,7 @@ package seaborn.categorical;
 		    ...                  linewidth=2.5, facecolor=(1, 1, 1, 0),
 		    ...                  errcolor=".2", edgecolor=".2")
 	**/
-	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function barplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?saturation:Dynamic, ?errcolor:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Resample one or more arrays with replacement and store aggregate values.
 		
@@ -1273,8 +1286,15 @@ package seaborn.categorical;
 		    :context: close-figs
 		
 		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, ci=68)
+		
+		Add "caps" to the error bars:
+		
+		.. plot::
+		    :context: close-figs
+		
+		    >>> ax = sns.pointplot(x="day", y="tip", data=tips, capsize=.2)
 	**/
-	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function pointplot(?x:Dynamic, ?y:Dynamic, ?hue:Dynamic, ?data:Dynamic, ?order:Dynamic, ?hue_order:Dynamic, ?estimator:Dynamic, ?ci:Dynamic, ?n_boot:Dynamic, ?units:Dynamic, ?markers:Dynamic, ?linestyles:Dynamic, ?dodge:Dynamic, ?join:Dynamic, ?scale:Dynamic, ?orient:Dynamic, ?color:Dynamic, ?palette:Dynamic, ?ax:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return series containing only true/non-NaN values, possibly empty.
 	**/

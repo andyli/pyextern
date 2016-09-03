@@ -185,7 +185,7 @@ package scipy.stats._multivariate;
 		    array_like.
 		    
 	**/
-	public function logpdf(x:Dynamic, mean:Dynamic, cov:Dynamic, ?allow_singular:Dynamic):Dynamic;
+	public function logpdf(x:Dynamic, ?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic):Dynamic;
 	/**
 		Multivariate normal probability density function.
 		
@@ -214,7 +214,7 @@ package scipy.stats._multivariate;
 		    array_like.
 		    
 	**/
-	public function pdf(x:Dynamic, mean:Dynamic, cov:Dynamic, ?allow_singular:Dynamic):Dynamic;
+	public function pdf(x:Dynamic, ?mean:Dynamic, ?cov:Dynamic, ?allow_singular:Dynamic):Dynamic;
 	/**
 		Get or set the RandomState object for generating random variates.
 		

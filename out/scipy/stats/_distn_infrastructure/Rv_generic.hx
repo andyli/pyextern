@@ -125,6 +125,7 @@ package scipy.stats._distn_infrastructure;
 		 0's where they are not.
 	**/
 	public function _argcheck(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _argcheck_rvs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Construct the parser for the shape arguments.
 		
@@ -152,10 +153,12 @@ package scipy.stats._distn_infrastructure;
 	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _open_support_mask(x:Dynamic):Dynamic;
 	public function _ppf(q:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _rvs(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _sf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _stats(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	public function _support_mask(x:Dynamic):Dynamic;
 	/**
 		Differential entropy of the RV.
 		

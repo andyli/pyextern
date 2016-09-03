@@ -34,6 +34,7 @@ package matplotlib.axes;
 		sequence is empty.
 	**/
 	static public function reduce(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function safe_first_element(obj:Dynamic):Dynamic;
 	static public function subplot_class_factory(?axes_class:Dynamic):Dynamic;
 	static public var unicode_literals : Dynamic;
 	/**

@@ -528,188 +528,151 @@ package matplotlib.projections.geo;
 	**/
 	public function angle_spectrum(x:Dynamic, ?Fs:Dynamic, ?Fc:Dynamic, ?window:Dynamic, ?pad_to:Dynamic, ?sides:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Create an annotation: a piece of text referring to a data
-		point.
+		Annotate the point ``xy`` with text ``s``.
+		
+		Additional kwargs are passed to `~matplotlib.text.Text`.
 		
 		Parameters
 		----------
-		s : string
-		    label
 		
-		xy : (x, y)
-		    position of element to annotate. See *xycoords* to control what
-		    coordinate system this value is interpretated in.
+		s : str
+		    The text of the annotation
 		
-		xytext : (x, y) , optional, default: None
-		    position of the label `s`. See *textcoords* to control what
-		    coordinate system this value is interpreted in.
+		xy : iterable
+		    Length 2 sequence specifying the *(x,y)* point to annotate
 		
-		xycoords : string, optional, default: "data"
-		    string that indicates what type of coordinates `xy` is. Examples:
-		    "figure points", "figure pixels", "figure fraction", "axes
-		    points", .... See `matplotlib.text.Annotation` for more details.
+		xytext : iterable, optional
+		    Length 2 sequence specifying the *(x,y)* to place the text
+		    at.  If None, defaults to ``xy``.
 		
-		textcoords : string, optional, default: None
-		    string that indicates what type of coordinates `text` is. Examples:
-		    "figure points", "figure pixels", "figure fraction", "axes
-		    points", .... See `matplotlib.text.Annotation` for more details.
+		xycoords : str, Artist, Transform, callable or tuple, optional
 		
-		arrowprops : `matplotlib.lines.Line2D` properties, optional
-		    Dictionary of line properties for the arrow that connects
-		    the annotation to the point. If the dictionnary has a key
-		    `arrowstyle`, a `~matplotlib.patches.FancyArrowPatch`
-		    instance is created and drawn.  See
-		    `matplotlib.text.Annotation` for more details on valid
-		    options. Default is None.
+		    The coordinate system that ``xy`` is given in.
+		
+		    For a `str` the allowed values are:
+		
+		    =================   ===============================================
+		    Property            Description
+		    =================   ===============================================
+		    'figure points'     points from the lower left of the figure
+		    'figure pixels'     pixels from the lower left of the figure
+		    'figure fraction'   fraction of figure from lower left
+		    'axes points'       points from lower left corner of axes
+		    'axes pixels'       pixels from lower left corner of axes
+		    'axes fraction'     fraction of axes from lower left
+		    'data'              use the coordinate system of the object being
+		                        annotated (default)
+		    'polar'             *(theta,r)* if not native 'data' coordinates
+		    =================   ===============================================
+		
+		    If a `~matplotlib.artist.Artist` object is passed in the units are
+		    fraction if it's bounding box.
+		
+		    If a `~matplotlib.transforms.Transform` object is passed
+		    in use that to transform ``xy`` to screen coordinates
+		
+		    If a callable it must take a
+		    `~matplotlib.backend_bases.RendererBase` object as input
+		    and return a `~matplotlib.transforms.Transform` or
+		    `~matplotlib.transforms.Bbox` object
+		
+		    If a `tuple` must be length 2 tuple of str, `Artist`,
+		    `Transform` or callable objects.  The first transform is
+		    used for the *x* coordinate and the second for *y*.
+		
+		    See :ref:`plotting-guide-annotation` for more details.
+		
+		    Defaults to ``'data'``
+		
+		textcoords : str, `Artist`, `Transform`, callable or tuple, optional
+		    The coordinate system that ``xytext`` is given, which
+		    may be different than the coordinate system used for
+		    ``xy``.
+		
+		    All ``xycoords`` values are valid as well as the following
+		    strings:
+		
+		    =================   =========================================
+		    Property            Description
+		    =================   =========================================
+		    'offset points'     offset (in points) from the *xy* value
+		    'offset pixels'     offset (in pixels) from the *xy* value
+		    =================   =========================================
+		
+		    defaults to the input of ``xycoords``
+		
+		arrowprops : dict, optional
+		    If not None, properties used to draw a
+		    `~matplotlib.patches.FancyArrowPatch` arrow between ``xy`` and
+		    ``xytext``.
+		
+		    If `arrowprops` does not contain the key ``'arrowstyle'`` the
+		    allowed keys are:
+		
+		    ==========   ======================================================
+		    Key          Description
+		    ==========   ======================================================
+		    width        the width of the arrow in points
+		    headwidth    the width of the base of the arrow head in points
+		    headlength   the length of the arrow head in points
+		    shrink       fraction of total length to 'shrink' from both ends
+		    ?            any key to :class:`matplotlib.patches.FancyArrowPatch`
+		    ==========   ======================================================
+		
+		    If the `arrowprops` contains the key ``'arrowstyle'`` the
+		    above keys are forbidden.  The allowed values of
+		    ``'arrowstyle'`` are:
+		
+		    ============   =============================================
+		    Name           Attrs
+		    ============   =============================================
+		    ``'-'``        None
+		    ``'->'``       head_length=0.4,head_width=0.2
+		    ``'-['``       widthB=1.0,lengthB=0.2,angleB=None
+		    ``'|-|'``      widthA=1.0,widthB=1.0
+		    ``'-|>'``      head_length=0.4,head_width=0.2
+		    ``'<-'``       head_length=0.4,head_width=0.2
+		    ``'<->'``      head_length=0.4,head_width=0.2
+		    ``'<|-'``      head_length=0.4,head_width=0.2
+		    ``'<|-|>'``    head_length=0.4,head_width=0.2
+		    ``'fancy'``    head_length=0.4,head_width=0.4,tail_width=0.4
+		    ``'simple'``   head_length=0.5,head_width=0.5,tail_width=0.2
+		    ``'wedge'``    tail_width=0.3,shrink_factor=0.5
+		    ============   =============================================
+		
+		    Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
+		
+		    ===============  ==================================================
+		    Key              Description
+		    ===============  ==================================================
+		    arrowstyle       the arrow style
+		    connectionstyle  the connection style
+		    relpos           default is (0.5, 0.5)
+		    patchA           default is bounding box of the text
+		    patchB           default is None
+		    shrinkA          default is 2 points
+		    shrinkB          default is 2 points
+		    mutation_scale   default is text size (in points)
+		    mutation_aspect  default is 1.
+		    ?                any key for :class:`matplotlib.patches.PathPatch`
+		    ===============  ==================================================
+		
+		    Defaults to None
+		
+		annotation_clip : bool, optional
+		    Controls the visibility of the annotation when it goes
+		    outside the axes area.
+		
+		    If `True`, the annotation will only be drawn when the
+		    ``xy`` is inside the axes. If `False`, the annotation will
+		    always be drawn regardless of its position.
+		
+		    The default is `None`, which behave as `True` only if
+		    *xycoords* is "data".
 		
 		Returns
 		-------
-		a : `~matplotlib.text.Annotation`
-		
-		
-		Notes
-		-----
-		
-		*arrowprops*, if not *None*, is a dictionary of line properties
-		(see :class:`matplotlib.lines.Line2D`) for the arrow that connects
-		annotation to the point.
-		
-		If the dictionary has a key *arrowstyle*, a
-		`~matplotlib.patches.FancyArrowPatch` instance is created with
-		the given dictionary and is drawn. Otherwise, a
-		`~matplotlib.patches.YAArrow` patch instance is created and
-		drawn. Valid keys for `~matplotlib.patches.YAArrow` are:
-		
-		
-		=========   ===========================================================
-		Key         Description
-		=========   ===========================================================
-		width       the width of the arrow in points
-		frac        the fraction of the arrow length occupied by the head
-		headwidth   the width of the base of the arrow head in points
-		shrink      oftentimes it is convenient to have the arrowtip
-		            and base a bit away from the text and point being
-		            annotated.  If *d* is the distance between the text and
-		            annotated point, shrink will shorten the arrow so the tip
-		            and base are shink percent of the distance *d* away from
-		            the endpoints.  i.e., ``shrink=0.05 is 5%``
-		?           any key for :class:`matplotlib.patches.polygon`
-		=========   ===========================================================
-		
-		
-		Valid keys for `~matplotlib.patches.FancyArrowPatch` are:
-		
-		
-		===============  ======================================================
-		Key              Description
-		===============  ======================================================
-		arrowstyle       the arrow style
-		connectionstyle  the connection style
-		relpos           default is (0.5, 0.5)
-		patchA           default is bounding box of the text
-		patchB           default is None
-		shrinkA          default is 2 points
-		shrinkB          default is 2 points
-		mutation_scale   default is text size (in points)
-		mutation_aspect  default is 1.
-		?                any key for :class:`matplotlib.patches.PathPatch`
-		===============  ======================================================
-		
-		
-		*xycoords* and *textcoords* are strings that indicate the
-		coordinates of *xy* and *xytext*, and may be one of the
-		following values:
-		
-		=================   ===================================================
-		Property            Description
-		=================   ===================================================
-		'figure points'     points from the lower left corner of the figure
-		'figure pixels'     pixels from the lower left corner of the figure
-		'figure fraction'   0,0 is lower left of figure and 1,1 is upper right
-		'axes points'       points from lower left corner of axes
-		'axes pixels'       pixels from lower left corner of axes
-		'axes fraction'     0,0 is lower left of axes and 1,1 is upper right
-		'data'              use the coordinate system of the object being
-		                    annotated (default)
-		'offset points'     Specify an offset (in points) from the *xy* value
-		
-		'polar'             you can specify *theta*, *r* for the annotation,
-		                    even in cartesian plots.  Note that if you
-		                    are using a polar axes, you do not need
-		                    to specify polar for the coordinate
-		                    system since that is the native "data" coordinate
-		                    system.
-		=================   ===================================================
-		
-		If a 'points' or 'pixels' option is specified, values will be
-		added to the bottom-left and if negative, values will be
-		subtracted from the top-right.  e.g.::
-		
-		  # 10 points to the right of the left border of the axes and
-		  # 5 points below the top border
-		  xy=(10,-5), xycoords='axes points'
-		
-		You may use an instance of
-		:class:`~matplotlib.transforms.Transform` or
-		:class:`~matplotlib.artist.Artist`. See
-		:ref:`plotting-guide-annotation` for more details.
-		
-		The *annotation_clip* attribute controls the visibility of the
-		annotation when it goes outside the axes area. If `True`, the
-		annotation will only be drawn when the *xy* is inside the
-		axes. If `False`, the annotation will always be drawn
-		regardless of its position.  The default is `None`, which
-		behave as `True` only if *xycoords* is "data".
-		
-		Additional kwargs are `~matplotlib.text.Text` properties:
-		
-		  agg_filter: unknown
-		  alpha: float (0.0 transparent through 1.0 opaque) 
-		  animated: [True | False] 
-		  axes: an :class:`~matplotlib.axes.Axes` instance 
-		  backgroundcolor: any matplotlib color 
-		  bbox: FancyBboxPatch prop dict 
-		  clip_box: a :class:`matplotlib.transforms.Bbox` instance 
-		  clip_on: [True | False] 
-		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
-		  color: any matplotlib color 
-		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
-		  figure: a :class:`matplotlib.figure.Figure` instance 
-		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
-		  gid: an id string 
-		  horizontalalignment or ha: [ 'center' | 'right' | 'left' ] 
-		  label: string or anything printable with '%s' conversion. 
-		  linespacing: float (multiple of font size) 
-		  multialignment: ['left' | 'right' | 'center' ] 
-		  path_effects: unknown
-		  picker: [None|float|boolean|callable] 
-		  position: (x,y) 
-		  rasterized: [True | False | None] 
-		  rotation: [ angle in degrees | 'vertical' | 'horizontal' ] 
-		  rotation_mode: unknown
-		  size or fontsize: [size in points | 'xx-small' | 'x-small' | 'small' | 'medium' | 'large' | 'x-large' | 'xx-large' ] 
-		  sketch_params: unknown
-		  snap: unknown
-		  stretch or fontstretch: [a numeric value in range 0-1000 | 'ultra-condensed' | 'extra-condensed' | 'condensed' | 'semi-condensed' | 'normal' | 'semi-expanded' | 'expanded' | 'extra-expanded' | 'ultra-expanded' ] 
-		  style or fontstyle: [ 'normal' | 'italic' | 'oblique'] 
-		  text: string or anything printable with '%s' conversion. 
-		  transform: :class:`~matplotlib.transforms.Transform` instance 
-		  url: a url string 
-		  usetex: unknown
-		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
-		  visible: [True | False] 
-		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
-		  wrap: unknown
-		  x: float 
-		  y: float 
-		  zorder: any number 
-		
-		Examples
-		--------
-		
-		.. plot:: mpl_examples/pylab_examples/annotation_demo2.py
+		Annotation
 	**/
 	public function annotate(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1336,7 +1299,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidth', 'tick_label', 'bottom', 'color', 'yerr', 'left', 'xerr', 'ecolor', 'height', 'edgecolor', 'width'.
+		* All arguments with the following names: 'yerr', 'ecolor', 'left', 'width', 'edgecolor', 'height', 'xerr', 'bottom', 'tick_label', 'linewidth', 'color'.
 	**/
 	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1492,7 +1455,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -1651,12 +1614,13 @@ package matplotlib.projections.geo;
 		          positions=None, widths=None, patch_artist=False,
 		          bootstrap=None, usermedians=None, conf_intervals=None,
 		          meanline=False, showmeans=False, showcaps=True,
-		          showbox=True, showfliers=True, boxprops=None, labels=None,
-		          flierprops=None, medianprops=None, meanprops=None,
-		          capprops=None, whiskerprops=None, manage_xticks=True):
+		          showbox=True, showfliers=True, boxprops=None,
+		          labels=None, flierprops=None, medianprops=None,
+		          meanprops=None, capprops=None, whiskerprops=None,
+		          manage_xticks=True, autorange=False):
 		
-		Make a box and whisker plot for each column of *x* or each
-		vector in sequence *x*.  The box extends from the lower to
+		Make a box and whisker plot for each column of ``x`` or each
+		vector in sequence ``x``.  The box extends from the lower to
 		upper quartile values of the data, with a line at the median.
 		The whiskers extend from the box to show the range of the
 		data.  Flier points are those past the end of the whiskers.
@@ -1664,138 +1628,141 @@ package matplotlib.projections.geo;
 		Parameters
 		----------
 		x : Array or a sequence of vectors.
-		   The input data.
+		    The input data.
 		
-		notch : bool, default = False
-		   If False, produces a rectangular box plot.
-		   If True, will produce a notched box plot
+		notch : bool, optional (False)
+		    If `True`, will produce a notched box plot. Otherwise, a
+		    rectangular boxplot is produced.
 		
-		sym : str or None, default = None
-		   The default symbol for flier points.
-		   Enter an empty string ('') if you don't want to show fliers.
-		   If `None`, then the fliers default to 'b+'  If you want more
-		   control use the flierprops kwarg.
+		sym : str, optional
+		    The default symbol for flier points. Enter an empty string
+		    ('') if you don't want to show fliers. If `None`, then the
+		    fliers default to 'b+'  If you want more control use the
+		    flierprops kwarg.
 		
-		vert : bool, default = True
-		   If True (default), makes the boxes vertical.
-		   If False, makes horizontal boxes.
+		vert : bool, optional (True)
+		    If `True` (default), makes the boxes vertical. If `False`,
+		    everything is drawn horizontally.
 		
-		whis : float, sequence (default = 1.5) or string
-		   As a float, determines the reach of the whiskers past the first
-		   and third quartiles (e.g., Q3 + whis*IQR, IQR = interquartile
-		   range, Q3-Q1). Beyond the whiskers, data are considered outliers
-		   and are plotted as individual points. Set this to an unreasonably
-		   high value to force the whiskers to show the min and max values.
-		   Alternatively, set this to an ascending sequence of percentile
-		   (e.g., [5, 95]) to set the whiskers at specific percentiles of
-		   the data. Finally, *whis* can be the string 'range' to force the
-		   whiskers to the min and max of the data. In the edge case that
-		   the 25th and 75th percentiles are equivalent, *whis* will be
-		   automatically set to 'range'.
+		whis : float, sequence, or string (default = 1.5)
+		    As a float, determines the reach of the whiskers past the
+		    first and third quartiles (e.g., Q3 + whis*IQR,
+		    IQR = interquartile range, Q3-Q1). Beyond the whiskers, data
+		    are considered outliers and are plotted as individual
+		    points. Set this to an unreasonably high value to force the
+		    whiskers to show the min and max values. Alternatively, set
+		    this to an ascending sequence of percentile (e.g., [5, 95])
+		    to set the whiskers at specific percentiles of the data.
+		    Finally, ``whis`` can be the string ``'range'`` to force the
+		    whiskers to the min and max of the data.
 		
-		bootstrap : None (default) or integer
-		   Specifies whether to bootstrap the confidence intervals
-		   around the median for notched boxplots. If bootstrap==None,
-		   no bootstrapping is performed, and notches are calculated
-		   using a Gaussian-based asymptotic approximation  (see McGill, R.,
-		   Tukey, J.W., and Larsen, W.A., 1978, and Kendall and Stuart,
-		   1967). Otherwise, bootstrap specifies the number of times to
-		   bootstrap the median to determine it's 95% confidence intervals.
-		   Values between 1000 and 10000 are recommended.
+		bootstrap : int, optional
+		    Specifies whether to bootstrap the confidence intervals
+		    around the median for notched boxplots. If `bootstrap` is None,
+		    no bootstrapping is performed, and notches are calculated
+		    using a Gaussian-based asymptotic approximation (see McGill,
+		    R., Tukey, J.W., and Larsen, W.A., 1978, and Kendall and
+		    Stuart, 1967). Otherwise, bootstrap specifies the number of
+		    times to bootstrap the median to determine its 95%
+		    confidence intervals. Values between 1000 and 10000 are
+		    recommended.
 		
-		usermedians : array-like or None (default)
-		   An array or sequence whose first dimension (or length) is
-		   compatible with *x*. This overrides the medians computed by
-		   matplotlib for each element of *usermedians* that is not None.
-		   When an element of *usermedians* == None, the median will be
-		   computed by matplotlib as normal.
+		usermedians : array-like, optional
+		    An array or sequence whose first dimension (or length) is
+		    compatible with ``x``. This overrides the medians computed
+		    by matplotlib for each element of ``usermedians`` that is not
+		    `None`. When an element of ``usermedians`` is None, the median
+		    will be computed by matplotlib as normal.
 		
-		conf_intervals : array-like or None (default)
-		   Array or sequence whose first dimension (or length) is compatible
-		   with *x* and whose second dimension is 2. When the current element
-		   of *conf_intervals* is not None, the notch locations computed by
-		   matplotlib are overridden (assuming notch is True). When an
-		   element of *conf_intervals* is None, boxplot compute notches the
-		   method specified by the other kwargs (e.g., *bootstrap*).
+		conf_intervals : array-like, optional
+		    Array or sequence whose first dimension (or length) is
+		    compatible with ``x`` and whose second dimension is 2. When
+		    the an element of ``conf_intervals`` is not None, the
+		    notch locations computed by matplotlib are overridden
+		    (provided ``notch`` is `True`). When an element of
+		    ``conf_intervals`` is `None`, the notches are computed by the
+		    method specified by the other kwargs (e.g., ``bootstrap``).
 		
-		positions : array-like, default = [1, 2, ..., n]
-		   Sets the positions of the boxes. The ticks and limits
-		   are automatically set to match the positions.
+		positions : array-like, optional
+		    Sets the positions of the boxes. The ticks and limits are
+		    automatically set to match the positions. Defaults to
+		    `range(1, N+1)` where N is the number of boxes to be drawn.
 		
-		widths : array-like, default = 0.5
-		   Either a scalar or a vector and sets the width of each box. The
-		   default is 0.5, or ``0.15*(distance between extreme positions)``
-		   if that is smaller.
+		widths : scalar or array-like
+		    Sets the width of each box either with a scalar or a
+		    sequence. The default is 0.5, or ``0.15*(distance between
+		    extreme positions)``, if that is smaller.
 		
-		labels : sequence or None (default)
-		   Labels for each dataset. Length must be compatible with
-		   dimensions  of *x*
+		patch_artist : bool, optional (False)
+		    If `False` produces boxes with the Line2D artist. Otherwise,
+		    boxes and drawn with Patch artists.
 		
-		patch_artist : bool, default = False
-		   If False produces boxes with the Line2D artist
-		   If True produces boxes with the Patch artist
+		labels : sequence, optional
+		    Labels for each dataset. Length must be compatible with
+		    dimensions  of ``x``.
 		
-		showmeans : bool, default = False
-		   If True, will toggle one the rendering of the means
-		
-		showcaps : bool, default = True
-		   If True, will toggle one the rendering of the caps
-		
-		showbox : bool, default = True
-		   If True, will toggle one the rendering of box
-		
-		showfliers : bool, default = True
-		   If True, will toggle one the rendering of the fliers
-		
-		boxprops : dict or None (default)
-		   If provided, will set the plotting style of the boxes
-		
-		whiskerprops : dict or None (default)
-		   If provided, will set the plotting style of the whiskers
-		
-		capprops : dict or None (default)
-		   If provided, will set the plotting style of the caps
-		
-		flierprops : dict or None (default)
-		   If provided, will set the plotting style of the fliers
-		
-		medianprops : dict or None (default)
-		   If provided, will set the plotting style of the medians
-		
-		meanprops : dict or None (default)
-		    If provided, will set the plotting style of the means
-		
-		meanline : bool, default = False
-		    If True (and *showmeans* is True), will try to render the mean
-		    as a line spanning the full width of the box according to
-		    *meanprops*. Not recommended if *shownotches* is also True.
-		    Otherwise, means will be shown as points.
-		
-		manage_xticks : bool, default = True
+		manage_xticks : bool, optional (True)
 		    If the function should adjust the xlim and xtick locations.
+		
+		autorange : bool, optional (False)
+		    When `True` and the data are distributed such that the  25th and
+		    75th percentiles are equal, ``whis`` is set to ``'range'`` such
+		    that the whisker ends are at the minimum and maximum of the
+		    data.
+		
+		meanline : bool, optional (False)
+		    If `True` (and ``showmeans`` is `True`), will try to render
+		    the mean as a line spanning the full width of the box
+		    according to ``meanprops`` (see below). Not recommended if
+		    ``shownotches`` is also True. Otherwise, means will be shown
+		    as points.
+		
+		Other Parameters
+		----------------
+		The following boolean options toggle the drawing of individual
+		components of the boxplots:
+		    - showcaps: the caps on the ends of whiskers
+		      (default is True)
+		    - showbox: the central box (default is True)
+		    - showfliers: the outliers beyond the caps (default is True)
+		    - showmeans: the arithmetic means (default is False)
+		
+		The remaining options can accept dictionaries that specify the
+		style of the individual artists:
+		    - capprops
+		    - boxprops
+		    - whiskerprops
+		    - flierprops
+		    - medianprops
+		    - meanprops
 		
 		Returns
 		-------
-		
 		result : dict
-		    A dictionary mapping each component of the boxplot
-		    to a list of the :class:`matplotlib.lines.Line2D`
-		    instances created. That dictionary has the following keys
-		    (assuming vertical boxplots):
+		  A dictionary mapping each component of the boxplot to a list
+		  of the :class:`matplotlib.lines.Line2D` instances
+		  created. That dictionary has the following keys (assuming
+		  vertical boxplots):
 		
-		    - boxes: the main body of the boxplot showing the quartiles
-		      and the median's confidence intervals if enabled.
-		    - medians: horizonal lines at the median of each box.
-		    - whiskers: the vertical lines extending to the most extreme,
-		      n-outlier data points.
-		    - caps: the horizontal lines at the ends of the whiskers.
-		    - fliers: points representing data that extend beyond the
-		      whiskers (outliers).
-		    - means: points or lines representing the means.
+		  - ``boxes``: the main body of the boxplot showing the
+		    quartiles and the median's confidence intervals if
+		    enabled.
+		
+		  - ``medians``: horizontal lines at the median of each box.
+		
+		  - ``whiskers``: the vertical lines extending to the most
+		    extreme, non-outlier data points.
+		
+		  - ``caps``: the horizontal lines at the ends of the
+		    whiskers.
+		
+		  - ``fliers``: points representing data that extend beyond
+		    the whiskers (fliers).
+		
+		  - ``means``: points or lines representing the means.
 		
 		Examples
 		--------
-		
 		.. plot:: mpl_examples/statistics/boxplot_demo.py
 		
 		Notes
@@ -1807,7 +1774,7 @@ package matplotlib.projections.geo;
 		
 		* All positional and all keyword arguments.
 	**/
-	public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
+	public function boxplot(x:Dynamic, ?notch:Dynamic, ?sym:Dynamic, ?vert:Dynamic, ?whis:Dynamic, ?positions:Dynamic, ?widths:Dynamic, ?patch_artist:Dynamic, ?bootstrap:Dynamic, ?usermedians:Dynamic, ?conf_intervals:Dynamic, ?meanline:Dynamic, ?showmeans:Dynamic, ?showcaps:Dynamic, ?showbox:Dynamic, ?showfliers:Dynamic, ?boxprops:Dynamic, ?labels:Dynamic, ?flierprops:Dynamic, ?medianprops:Dynamic, ?meanprops:Dynamic, ?capprops:Dynamic, ?whiskerprops:Dynamic, ?manage_xticks:Dynamic, ?autorange:Dynamic, ?data:Dynamic):python.Dict<Dynamic, Dynamic>;
 	/**
 		Plot horizontal bars.
 		
@@ -1850,7 +1817,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -1965,16 +1932,16 @@ package matplotlib.projections.geo;
 		  If `True`, will produce a notched box plot
 		
 		showmeans : bool, default = False
-		  If `True`, will toggle one the rendering of the means
+		  If `True`, will toggle on the rendering of the means
 		
 		showcaps  : bool, default = True
-		  If `True`, will toggle one the rendering of the caps
+		  If `True`, will toggle on the rendering of the caps
 		
 		showbox  : bool, default = True
-		  If `True`, will toggle one the rendering of box
+		  If `True`, will toggle on the rendering of the box
 		
 		showfliers : bool, default = True
-		  If `True`, will toggle one the rendering of the fliers
+		  If `True`, will toggle on the rendering of the fliers
 		
 		boxprops : dict or None (default)
 		  If provided, will set the plotting style of the boxes
@@ -2015,10 +1982,10 @@ package matplotlib.projections.geo;
 		    quartiles and the median's confidence intervals if
 		    enabled.
 		
-		  - ``medians``: horizonal lines at the median of each box.
+		  - ``medians``: horizontal lines at the median of each box.
 		
 		  - ``whiskers``: the vertical lines extending to the most
-		    extreme, n-outlier data points.
+		    extreme, non-outlier data points.
 		
 		  - ``caps``: the horizontal lines at the ends of the
 		    whiskers.
@@ -3111,7 +3078,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y', 'yerr', 'xerr'.
+		* All arguments with the following names: 'xerr', 'yerr', 'x', 'y'.
 	**/
 	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3186,7 +3153,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3217,7 +3184,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'positions', 'linestyles', 'lineoffsets', 'linelengths', 'linewidths', 'colors'.
+		* All arguments with the following names: 'linewidths', 'lineoffsets', 'positions', 'linestyles', 'colors', 'linelengths'.
 	**/
 	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3358,7 +3325,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3393,7 +3360,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y2', 'where', 'y1'.
+		* All arguments with the following names: 'x', 'where', 'y2', 'y1'.
 	**/
 	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3453,7 +3420,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3488,7 +3455,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'x1', 'where', 'x2'.
+		* All arguments with the following names: 'x2', 'x1', 'where', 'y'.
 	**/
 	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4226,7 +4193,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -4538,7 +4505,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'y', 'weights'.
+		* All arguments with the following names: 'x', 'weights', 'y'.
 	**/
 	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4586,7 +4553,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y', 'xmin', 'xmax'.
+		* All arguments with the following names: 'xmax', 'xmin', 'y'.
 	**/
 	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5435,7 +5402,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -5656,7 +5623,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -5944,7 +5911,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'colors', 'explode', 'labels'.
+		* All arguments with the following names: 'colors', 'x', 'explode', 'labels'.
 	**/
 	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?data:Dynamic):Dynamic;
 	/**
@@ -6568,7 +6535,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -6691,7 +6658,7 @@ package matplotlib.projections.geo;
 	public function reset_position():Dynamic;
 	/**
 		Make a scatter plot of x vs y, where x and y are sequence like objects
-		of the same lengths.
+		of the same length.
 		
 		Parameters
 		----------
@@ -6701,7 +6668,7 @@ package matplotlib.projections.geo;
 		s : scalar or array_like, shape (n, ), optional, default: 20
 		    size in points^2.
 		
-		c : color or sequence of color, optional, default : 'b'
+		c : color, sequence, or sequence of color, optional, default: 'b'
 		    `c` can be a single color format string, or a sequence of color
 		    specifications of length `N`, or a sequence of `N` numbers to be
 		    mapped to colors using the `cmap` and `norm` specified via kwargs
@@ -6777,7 +6744,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'facecolor', 'y', 's', 'x', 'linewidths', 'color', 'c', 'edgecolors', 'facecolors'.
+		* All arguments with the following names: 'facecolor', 'linewidths', 'edgecolors', 'facecolors', 's', 'y', 'c', 'x', 'color'.
 	**/
 	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7569,7 +7536,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7593,7 +7560,7 @@ package matplotlib.projections.geo;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -7777,7 +7744,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7801,7 +7768,7 @@ package matplotlib.projections.geo;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -9161,7 +9128,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'ymax', 'ymin', 'colors'.
+		* All arguments with the following names: 'ymin', 'x', 'ymax', 'colors'.
 	**/
 	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

@@ -12,6 +12,24 @@ package pandas.tseries.tools;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		assemble the unit specifed fields from the arg (DataFrame)
+		Return a Series for actual parsing
+		
+		Parameters
+		----------
+		arg : DataFrame
+		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
+		
+		    - If 'raise', then invalid parsing will raise an exception
+		    - If 'coerce', then invalid parsing will be set as NaT
+		    - If 'ignore', then invalid parsing will return the input
+		
+		Returns
+		-------
+		Series
+	**/
+	static public function _assemble_from_unit_mappings(arg:Dynamic, errors:Dynamic):Dynamic;
+	/**
 		try to parse the YYYYMMDD/%Y%m%d format, try to deal with NaT-like,
 		    arg is a passed in as an object dtype, but could really be ints/strings
 		    with nan-like/or floats (e.g. with nan)
@@ -61,6 +79,7 @@ package pandas.tseries.tools;
 		DatetimeIndex internal construction
 	**/
 	static public function _to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?freq:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
+	static public var _unit_map : Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -142,7 +161,12 @@ package pandas.tseries.tools;
 		
 		Parameters
 		----------
-		arg : string, datetime, list, tuple, 1-d array, or Series
+		arg : string, datetime, list, tuple, 1-d array, Series
+		
+		    .. versionadded: 0.18.1
+		
+		       or DataFrame/dict-like
+		
 		errors : {'ignore', 'raise', 'coerce'}, default 'raise'
 		
 		    - If 'raise', then invalid parsing will raise an exception
@@ -185,8 +209,10 @@ package pandas.tseries.tools;
 		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
-		    If no `format` is given, try to infer the format based on the first
-		    datetime string. Provides a large speed-up in many cases.
+		    If True and no `format` is given, attempt to infer the format of the
+		    datetime strings, and if it can be inferred, switch to a faster
+		    method of parsing them. In some cases this can increase the parsing
+		    speed by ~5-10x.
 		
 		Returns
 		-------
@@ -203,36 +229,45 @@ package pandas.tseries.tools;
 		
 		Examples
 		--------
-		Take separate series and convert to datetime
 		
-		>>> import pandas as pd
-		>>> i = pd.date_range('20000101',periods=100)
-		>>> df = pd.DataFrame(dict(year = i.year, month = i.month, day = i.day))
-		>>> pd.to_datetime(df.year*10000 + df.month*100 + df.day, format='%Y%m%d')
-		0    2000-01-01
-		1    2000-01-02
-		...
-		98   2000-04-08
-		99   2000-04-09
-		Length: 100, dtype: datetime64[ns]
+		Assembling a datetime from multiple columns of a DataFrame. The keys can be
+		common abbreviations like ['year', 'month', 'day', 'minute', 'second',
+		'ms', 'us', 'ns']) or plurals of the same
 		
-		Or from strings
+		>>> df = pd.DataFrame({'year': [2015, 2016],
+		                       'month': [2, 3],
+		                       'day': [4, 5]})
+		>>> pd.to_datetime(df)
+		0   2015-02-04
+		1   2016-03-05
+		dtype: datetime64[ns]
 		
-		>>> df = df.astype(str)
-		>>> pd.to_datetime(df.day + df.month + df.year, format="%d%m%Y")
-		0    2000-01-01
-		1    2000-01-02
-		...
-		98   2000-04-08
-		99   2000-04-09
-		Length: 100, dtype: datetime64[ns]
-		
-		Date that does not meet timestamp limitations:
+		If a date that does not meet timestamp limitations, passing errors='coerce'
+		will force to NaT. Furthermore this will force non-dates to NaT as well.
 		
 		>>> pd.to_datetime('13000101', format='%Y%m%d')
 		datetime.datetime(1300, 1, 1, 0, 0)
 		>>> pd.to_datetime('13000101', format='%Y%m%d', errors='coerce')
 		NaT
+		
+		Passing infer_datetime_format=True can often-times speedup a parsing
+		if its not an ISO8601 format exactly, but in a regular format.
+		
+		>>> s = pd.Series(['3/11/2000', '3/12/2000', '3/13/2000']*1000)
+		
+		>>> s.head()
+		0    3/11/2000
+		1    3/12/2000
+		2    3/13/2000
+		3    3/11/2000
+		4    3/12/2000
+		dtype: object
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=True)
+		100 loops, best of 3: 10.4 ms per loop
+		
+		>>> %timeit pd.to_datetime(s,infer_datetime_format=False)
+		1 loop, best of 3: 471 ms per loop
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
 	/**

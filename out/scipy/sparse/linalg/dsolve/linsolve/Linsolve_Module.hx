@@ -10,6 +10,10 @@ package scipy.sparse.linalg.dsolve.linsolve;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	/**
+		Get umfpack family string given the sparse matrix dtype.
+	**/
+	static public function _get_umf_family(A:Dynamic):Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Convert the input to an array.
@@ -99,8 +103,8 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -293,20 +297,20 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		It is equivalent to ``reshape(-1, order=order)``.
 		
 		>>> x = np.array([[1, 2, 3], [4, 5, 6]])
-		>>> print np.ravel(x)
+		>>> print(np.ravel(x))
 		[1 2 3 4 5 6]
 		
-		>>> print x.reshape(-1)
+		>>> print(x.reshape(-1))
 		[1 2 3 4 5 6]
 		
-		>>> print np.ravel(x, order='F')
+		>>> print(np.ravel(x, order='F'))
 		[1 4 2 5 3 6]
 		
 		When ``order`` is 'A', it will preserve the array's 'C' or 'F' ordering:
 		
-		>>> print np.ravel(x.T)
+		>>> print(np.ravel(x.T))
 		[1 4 2 5 3 6]
-		>>> print np.ravel(x.T, order='A')
+		>>> print(np.ravel(x.T, order='A'))
 		[1 2 3 4 5 6]
 		
 		When ``order`` is 'K', it will preserve orderings that are neither 'C'
@@ -432,7 +436,7 @@ package scipy.sparse.linalg.dsolve.linsolve;
 		    The square matrix A will be converted into CSC or CSR form
 		b : ndarray or sparse matrix
 		    The matrix or vector representing the right hand side of the equation.
-		    If a vector, b.size must be (n,) or (n, 1)
+		    If a vector, b.shape must be (n,) or (n, 1).
 		permc_spec : str, optional
 		    How to permute the columns of the matrix for sparsity preservation.
 		    (default: 'COLAMD')

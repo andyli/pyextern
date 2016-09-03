@@ -108,6 +108,7 @@ package pandas.io.parsers;
 	public function _failover_to_python():Dynamic;
 	public function _get_options_with_defaults(engine:Dynamic):Dynamic;
 	public function _make_engine(?engine:Dynamic):Dynamic;
+	public function close():Dynamic;
 	public function get_chunk(?size:Dynamic):Dynamic;
 	public function read(?nrows:Dynamic):Dynamic;
 }

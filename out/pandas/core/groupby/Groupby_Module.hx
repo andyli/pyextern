@@ -55,7 +55,7 @@ package pandas.core.groupby;
 		are and then creates a Grouping for each one, combined into
 		a BaseGrouper.
 	**/
-	static public function _get_grouper(obj:Dynamic, ?key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?sort:Dynamic):Dynamic;
+	static public function _get_grouper(obj:Dynamic, ?key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?sort:Dynamic, ?mutated:Dynamic):Dynamic;
 	static public function _get_indices_dict(label_list:Dynamic, keys:Dynamic):Dynamic;
 	static public function _groupby_function(name:Dynamic, alias:Dynamic, npfunc:Dynamic, ?numeric_only:Dynamic, ?_convert:Dynamic):Dynamic;
 	static public function _groupby_indices(values:Dynamic):Dynamic;
@@ -75,6 +75,7 @@ package pandas.core.groupby;
 		GH #6399, #5231
 	**/
 	static public function _nargsort(items:Dynamic, ?kind:Dynamic, ?ascending:Dynamic, ?na_position:Dynamic):Dynamic;
+	static public var _np_version_under1p8 : Dynamic;
 	static public var _plotting_methods : Dynamic;
 	/**
 		try to cast to the specified dtype (e.g. convert back to bool/int
@@ -381,6 +382,56 @@ package pandas.core.groupby;
 	**/
 	static public function notnull(obj:Dynamic):Dynamic;
 	static public function numpy_groupby(data:Dynamic, labels:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		This function is the sanctioned way of converting objects
+		to a unicode representation.
+		
+		properly handles nested sequences containing unicode strings
+		(unicode(object) does not)
+		
+		Parameters
+		----------
+		thing : anything to be formatted
+		_nest_lvl : internal use only. pprint_thing() is mutually-recursive
+		    with pprint_sequence, this argument is used to keep track of the
+		    current nesting level, and limit it.
+		escape_chars : list or dict, optional
+		    Characters to escape. If a dict is passed the values are the
+		    replacements
+		default_escapes : bool, default False
+		    Whether the input escape characters replaces or adds to the defaults
+		max_seq_items : False, int, default None
+		    Pass thru to other pretty printers to limit sequence printing
+		
+		Returns
+		-------
+		result - unicode object on py2, str on py3. Always Unicode.
+	**/
+	static public function pprint_thing(thing:Dynamic, ?_nest_lvl:Dynamic, ?escape_chars:Dynamic, ?default_escapes:Dynamic, ?quote_strings:Dynamic, ?max_seq_items:Dynamic):Dynamic;
+	/**
+		Checks whether parameters passed to the **kwargs argument in a
+		function `fname` are valid parameters as specified in `*compat_args`
+		and whether or not they are set to their default values.
+		
+		Parameters
+		----------
+		fname: str
+		    The name of the function being passed the `**kwargs` parameter
+		
+		kwargs: dict
+		    The `**kwargs` parameter passed into `fname`
+		
+		compat_args: dict
+		    A dictionary of keys that `kwargs` is allowed to have and their
+		    associated default values
+		
+		Raises
+		------
+		TypeError if `kwargs` contains keys not in `compat_args`
+		ValueError if `kwargs` contains keys in `compat_args` that do not
+		map to the default values specified in `compat_args`
+	**/
+	static public function validate_kwargs(fname:Dynamic, kwargs:Dynamic, compat_args:Dynamic):Dynamic;
 	/**
 		Decorator factory to apply update_wrapper() to a wrapper function
 		

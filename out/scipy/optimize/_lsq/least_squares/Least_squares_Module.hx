@@ -13,13 +13,14 @@ package scipy.optimize._lsq.least_squares;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var absolute_import : Dynamic;
 	/**
 		Compute finite difference approximation of the derivatives of a
 		vector-valued function.
 		
 		If a function maps from R^n to R^m, its derivatives form m-by-n matrix
-		called Jacobian, where an element (i, j) is a partial derivative of f[i]
-		with respect to x[j].
+		called the Jacobian, where an element (i, j) is a partial derivative of
+		f[i] with respect to x[j].
 		
 		Parameters
 		----------
@@ -50,36 +51,42 @@ package scipy.optimize._lsq.least_squares;
 		f0 : None or array_like, optional
 		    If not None it is assumed to be equal to ``fun(x0)``, in  this case
 		    the ``fun(x0)`` is not called. Default is None.
-		args, kwargs : tuple and dict, optional
-		    Additional arguments passed to `fun`. Both empty by default.
-		    The calling signature is ``fun(x, *args, **kwargs)``.
 		bounds : tuple of array_like, optional
 		    Lower and upper bounds on independent variables. Defaults to no bounds.
 		    Each bound must match the size of `x0` or be a scalar, in the latter
 		    case the bound will be the same for all variables. Use it to limit the
 		    range of function evaluation.
-		sparsity : None or (structure, groups) tuple, optional
-		    Defines sparsity structure of Jacobian.
+		sparsity : {None, array_like, sparse matrix, 2-tuple}, optional
+		    Defines a sparsity structure of the Jacobian matrix. If the Jacobian
+		    matrix is known to have only few non-zero elements in each row, then
+		    it's possible to estimate its several columns by a single function
+		    evaluation [3]_. To perform such economic computations two ingredients
+		    are required:
 		
 		    * structure : array_like or sparse matrix of shape (m, n). A zero
-		      element means that a corresponding element of Jacobian identically
-		      equals to zero.
-		    * groups : array_like of shape (n,). Precomputed columns grouping
-		      for a given sparsity structure, function `group_columns` should be
-		      used beforehand to compute it.
+		      element means that a corresponding element of the Jacobian
+		      identically equals to zero.
+		    * groups : array_like of shape (n,). A column grouping for a given
+		      sparsity structure, use `group_columns` to obtain it.
 		
-		    Note, that sparse differencing makes sense only for actually large
-		    and sparse Jacobians. If None (default) standard dense differencing
-		    will be used.
+		    A single array or a sparse matrix is interpreted as a sparsity
+		    structure, and groups are computed inside the function. A tuple is
+		    interpreted as (structure, groups). If None (default), a standard
+		    dense differencing will be used.
+		
+		    Note, that sparse differencing makes sense only for large Jacobian
+		    matrices where each row contains few non-zero elements.
+		args, kwargs : tuple and dict, optional
+		    Additional arguments passed to `fun`. Both empty by default.
+		    The calling signature is ``fun(x, *args, **kwargs)``.
 		
 		Returns
 		-------
 		J : ndarray or csr_matrix
-		    Finite difference approximation of derivatives in the form of Jacobian
-		    matrix. If `sparse` is None then ndarray with shape (m, n) is
-		    returned. Although if m=1 it is returned as a gradient with
-		    shape (n,). If `sparse` is not None, csr_matrix with shape (m, n) is
-		    returned.
+		    Finite difference approximation of the Jacobian matrix. If `sparsity`
+		    is None then ndarray with shape (m, n) is returned. Although if m=1 it
+		    is returned as a gradient with shape (n,). If `sparsity` is not None,
+		    csr_matrix with shape (m, n) is returned.
 		
 		See Also
 		--------
@@ -111,7 +118,11 @@ package scipy.optimize._lsq.least_squares;
 		.. [1] W. H. Press et. al. "Numerical Recipes. The Art of Scientific
 		       Computing. 3rd edition", sec. 5.7.
 		
-		.. [2] B. Fornberg, "Generation of Finite Difference Formulas on
+		.. [2] A. Curtis, M. J. D. Powell, and J. Reid, "On the estimation of
+		       sparse Jacobian matrices", Journal of the Institute of Mathematics
+		       and its Applications, 13 (1974), pp. 117-120.
+		
+		.. [3] B. Fornberg, "Generation of Finite Difference Formulas on
 		       Arbitrarily Spaced Grids", Mathematics of Computation 51, 1988.
 		
 		Examples
@@ -140,7 +151,7 @@ package scipy.optimize._lsq.least_squares;
 		>>> approx_derivative(g, x0, bounds=(1.0, np.inf))
 		array([ 2.])
 	**/
-	static public function approx_derivative(fun:Dynamic, x0:Dynamic, ?method:Dynamic, ?rel_step:Dynamic, ?f0:Dynamic, ?args:Dynamic, ?kwargs:Dynamic, ?bounds:Dynamic, ?sparsity:Dynamic):Dynamic;
+	static public function approx_derivative(fun:Dynamic, x0:Dynamic, ?method:Dynamic, ?rel_step:Dynamic, ?f0:Dynamic, ?bounds:Dynamic, ?sparsity:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	static public function arctan(z:Dynamic, rho:Dynamic, cost_only:Dynamic):Dynamic;
 	static public function call_minpack(fun:Dynamic, x0:Dynamic, jac:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, diff_step:Dynamic):Dynamic;
 	static public function cauchy(z:Dynamic, rho:Dynamic, cost_only:Dynamic):Dynamic;
@@ -148,6 +159,7 @@ package scipy.optimize._lsq.least_squares;
 	static public function check_tolerance(ftol:Dynamic, xtol:Dynamic, gtol:Dynamic):Dynamic;
 	static public function check_x_scale(x_scale:Dynamic, x0:Dynamic):Dynamic;
 	static public function construct_loss_function(m:Dynamic, loss:Dynamic, f_scale:Dynamic):Dynamic;
+	static public var division : Dynamic;
 	static public function dogbox(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, lb:Dynamic, ub:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;
 	/**
 		Group columns of a 2-d matrix for sparse finite differencing [1]_.
@@ -193,7 +205,8 @@ package scipy.optimize._lsq.least_squares;
 		the loss function rho(s) (a scalar function), `least_squares` finds a
 		local minimum of the cost function F(x)::
 		
-		    F(x) = 0.5 * sum(rho(f_i(x)**2), i = 1, ..., m), lb <= x <= ub
+		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
+		    subject to lb <= x <= ub
 		
 		The purpose of the loss function rho(s) is to reduce the influence of
 		outliers on the solution.
@@ -242,14 +255,13 @@ package scipy.optimize._lsq.least_squares;
 		
 		    Default is 'trf'. See Notes for more information.
 		ftol : float, optional
-		    Tolerance for termination by the change of the cost function.
-		    Default is the square root of machine epsilon. The optimization process
-		    is stopped when ``dF < ftol * F``, and there was an adequate agreement
-		    between a local quadratic model and the true model in the last step.
+		    Tolerance for termination by the change of the cost function. Default
+		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
+		    and there was an adequate agreement between a local quadratic model and
+		    the true model in the last step.
 		xtol : float, optional
 		    Tolerance for termination by the change of the independent variables.
-		    Default is the square root of machine epsilon. The exact condition
-		    checked depends on the `method` used:
+		    Default is 1e-8. The exact condition depends on the `method` used:
 		
 		        * For 'trf' and 'dogbox' : ``norm(dx) < xtol * (xtol + norm(x))``
 		        * For 'lm' : ``Delta < xtol * norm(xs)``, where ``Delta`` is
@@ -257,9 +269,8 @@ package scipy.optimize._lsq.least_squares;
 		          scaled according to `x_scale` parameter (see below).
 		
 		gtol : float, optional
-		    Tolerance for termination by the norm of the gradient. Default is
-		    the square root of machine epsilon. The exact condition depends
-		    on a `method` used:
+		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
+		    The exact condition depends on a `method` used:
 		
 		        * For 'trf' : ``norm(g_scaled, ord=np.inf) < gtol``, where
 		          ``g_scaled`` is the value of the gradient scaled to account for
@@ -274,9 +285,9 @@ package scipy.optimize._lsq.least_squares;
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
-		    An alternative view is that the size of a trust-region along j-th
+		    An alternative view is that the size of a trust region along j-th
 		    dimension is proportional to ``x_scale[j]``. Improved convergence may
-		    be achieved by setting `x_scale` such that a step of a given length
+		    be achieved by setting `x_scale` such that a step of a given size
 		    along any of the scaled variables has a similar effect on the cost
 		    function. If set to 'jac', the scale is iteratively updated using the
 		    inverse norms of the columns of the Jacobian matrix (as described in
@@ -289,7 +300,7 @@ package scipy.optimize._lsq.least_squares;
 		        * 'soft_l1' : ``rho(z) = 2 * ((1 + z)**0.5 - 1)``. The smooth
 		          approximation of l1 (absolute value) loss. Usually a good
 		          choice for robust least squares.
-		        * 'huber' : ``rho(z) = z if z <= 1 else z**0.5 - 1``. Works
+		        * 'huber' : ``rho(z) = z if z <= 1 else 2*z**0.5 - 1``. Works
 		          similarly to 'soft_l1'.
 		        * 'cauchy' : ``rho(z) = ln(1 + z)``. Severely weakens outliers
 		          influence, but may cause difficulties in optimization process.
@@ -336,7 +347,7 @@ package scipy.optimize._lsq.least_squares;
 		          least-squares problem and only requires matrix-vector product
 		          evaluations.
 		
-		    If None (default) the solver is chosen based on type of Jacobian
+		    If None (default) the solver is chosen based on the type of Jacobian
 		    returned on the first iteration.
 		tr_options : dict, optional
 		    Keyword options passed to trust-region solver.
@@ -345,17 +356,18 @@ package scipy.optimize._lsq.least_squares;
 		        * ``tr_solver='lsmr'``: options for `scipy.sparse.linalg.lsmr`.
 		          Additionally  ``method='trf'`` supports  'regularize' option
 		          (bool, default is True) which adds a regularization term to the
-		          normal equations, which improves convergence if Jacobian is
+		          normal equation, which improves convergence if the Jacobian is
 		          rank-deficient [Byrd]_ (eq. 3.4).
 		
 		jac_sparsity : {None, array_like, sparse matrix}, optional
 		    Defines the sparsity structure of the Jacobian matrix for finite
-		    differences. If the Jacobian has only few non-zeros in *each* row,
-		    providing the sparsity structure will greatly speed up the computations
-		    [Curtis]_. Should have shape (m, n). A zero entry means that a
-		    corresponding element in the Jacobian is identically zero. If provided,
-		    forces the use of 'lsmr' trust-region solver. If None (default) then
-		    dense differencing will be used. Has no effect for 'lm' method.
+		    difference estimation, its shape must be (m, n). If the Jacobian has
+		    only few non-zero elements in *each* row, providing the sparsity
+		    structure will greatly speed up the computations [Curtis]_. A zero
+		    entry means that a corresponding element in the Jacobian is identically
+		    zero. If provided, forces the use of 'lsmr' trust-region solver.
+		    If None (default) then dense differencing will be used. Has no effect
+		    for 'lm' method.
 		verbose : {0, 1, 2}, optional
 		    Level of algorithm's verbosity:
 		
@@ -527,9 +539,9 @@ package scipy.optimize._lsq.least_squares;
 		>>> res_1.x
 		array([ 1.,  1.])
 		>>> res_1.cost
-		2.4651903288156619e-30
+		9.8669242910846867e-30
 		>>> res_1.optimality
-		4.4408921315878507e-14
+		8.8928864934219529e-14
 		
 		We now constrain the variables, in such a way that the previous solution
 		becomes infeasible. Specifically, we require that ``x[1] >= 1.5``, and
@@ -585,7 +597,7 @@ package scipy.optimize._lsq.least_squares;
 		>>> res_3 = least_squares(fun_broyden, x0_broyden,
 		...                       jac_sparsity=sparsity_broyden(n))
 		>>> res_3.cost
-		4.5687161966109073e-23
+		4.5687069299604613e-23
 		>>> res_3.optimality
 		1.1650454296851518e-11
 		
@@ -755,22 +767,22 @@ package scipy.optimize._lsq.least_squares;
 		>>> LA.norm(b, 'fro')
 		7.745966692414834
 		>>> LA.norm(a, np.inf)
-		4
+		4.0
 		>>> LA.norm(b, np.inf)
-		9
+		9.0
 		>>> LA.norm(a, -np.inf)
-		0
+		0.0
 		>>> LA.norm(b, -np.inf)
-		2
+		2.0
 		
 		>>> LA.norm(a, 1)
-		20
+		20.0
 		>>> LA.norm(b, 1)
-		7
+		7.0
 		>>> LA.norm(a, -1)
 		-4.6566128774142013e-010
 		>>> LA.norm(b, -1)
-		6
+		6.0
 		>>> LA.norm(a, 2)
 		7.745966692414834
 		>>> LA.norm(b, 2)
@@ -794,7 +806,7 @@ package scipy.optimize._lsq.least_squares;
 		>>> LA.norm(c, axis=1)
 		array([ 3.74165739,  4.24264069])
 		>>> LA.norm(c, ord=1, axis=1)
-		array([6, 6])
+		array([ 6.,  6.])
 		
 		Using the `axis` argument to compute matrix norms:
 		
@@ -806,6 +818,7 @@ package scipy.optimize._lsq.least_squares;
 	**/
 	static public function norm(x:Dynamic, ?ord:Dynamic, ?axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	static public function prepare_bounds(bounds:Dynamic, n:Dynamic):Dynamic;
+	static public var print_function : Dynamic;
 	static public function soft_l1(z:Dynamic, rho:Dynamic, cost_only:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	static public function trf(fun:Dynamic, jac:Dynamic, x0:Dynamic, f0:Dynamic, J0:Dynamic, lb:Dynamic, ub:Dynamic, ftol:Dynamic, xtol:Dynamic, gtol:Dynamic, max_nfev:Dynamic, x_scale:Dynamic, loss_function:Dynamic, tr_solver:Dynamic, tr_options:Dynamic, verbose:Dynamic):Dynamic;

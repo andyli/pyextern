@@ -116,10 +116,7 @@ package pandas.sparse.array;
 	**/
 	public function __divmod__(value:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
-	/**
-		Return self==value.
-	**/
-	public function __eq__(value:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		float(self)
 	**/
@@ -129,10 +126,7 @@ package pandas.sparse.array;
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Return self>=value.
-	**/
-	public function __ge__(value:Dynamic):Dynamic;
+	public function __ge__(other:Dynamic):Dynamic;
 	/**
 		Return getattr(self, name).
 	**/
@@ -142,10 +136,7 @@ package pandas.sparse.array;
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	public function __getslice__(i:Dynamic, j:Dynamic):Dynamic;
-	/**
-		Return self>value.
-	**/
-	public function __gt__(value:Dynamic):Dynamic;
+	public function __gt__(other:Dynamic):Dynamic;
 	static public var __hash__ : Dynamic;
 	public function __iadd__(other:Dynamic):Dynamic;
 	/**
@@ -206,10 +197,7 @@ package pandas.sparse.array;
 		Return self^=value.
 	**/
 	public function __ixor__(value:Dynamic):Dynamic;
-	/**
-		Return self<=value.
-	**/
-	public function __le__(value:Dynamic):Dynamic;
+	public function __le__(other:Dynamic):Dynamic;
 	/**
 		Return len(self).
 	**/
@@ -218,10 +206,7 @@ package pandas.sparse.array;
 		Return self<<value.
 	**/
 	public function __lshift__(value:Dynamic):Dynamic;
-	/**
-		Return self<value.
-	**/
-	public function __lt__(value:Dynamic):Dynamic;
+	public function __lt__(other:Dynamic):Dynamic;
 	/**
 		Return self@value.
 	**/
@@ -229,10 +214,7 @@ package pandas.sparse.array;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
-	/**
-		Return self!=value.
-	**/
-	public function __ne__(value:Dynamic):Dynamic;
+	public function __ne__(other:Dynamic):Dynamic;
 	/**
 		-self
 	**/
@@ -373,6 +355,7 @@ package pandas.sparse.array;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	static public function _simple_new(data:Dynamic, sp_index:Dynamic, fill_value:Dynamic):Dynamic;
 	static public var _subtyp : Dynamic;
 	static public var _typ : Dynamic;
 	public var _valid_sp_values : Dynamic;
@@ -700,13 +683,11 @@ package pandas.sparse.array;
 	/**
 		Cumulative sum of values. Preserves locations of NaN values
 		
-		Extra parameters are to preserve ndarray interface.
-		
 		Returns
 		-------
 		cumsum : Series
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):pandas.Series;
+	public function cumsum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
 		Python buffer object pointing to the start of the array's data.
 	**/
@@ -716,7 +697,7 @@ package pandas.sparse.array;
 		
 		Return specified diagonals. In NumPy 1.9 the returned array is a
 		read-only view instead of a copy as in previous NumPy versions.  In
-		NumPy 1.10 the read-only restriction will be removed.
+		a future version the read-only restriction will be removed.
 		
 		Refer to :func:`numpy.diagonal` for full documentation.
 		
@@ -824,6 +805,24 @@ package pandas.sparse.array;
 	**/
 	public function fill(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var fill_value : Dynamic;
+	/**
+		Fill NA/NaN values with the specified value
+		
+		Parameters
+		----------
+		value : scalar
+		    Scalar value to use to fill holes (e.g. 0).
+		    This value cannot be a list-likes.
+		downcast : dict, default is None
+		    a dict of item->dtype of what to downcast if possible,
+		    or the string 'infer' which will try to downcast to an appropriate
+		    equal type (e.g. float64 to int64 if possible)
+		
+		Returns
+		-------
+		filled : SparseArray
+	**/
+	public function fillna(value:Dynamic, ?downcast:Dynamic):pandas.SparseArray;
 	/**
 		Information about the memory layout of the array.
 		
@@ -939,10 +938,14 @@ package pandas.sparse.array;
 		
 		Parameters
 		----------
-		order : {'C', 'F', 'A'}, optional
-		    Whether to flatten in row-major (C-style) or
-		    column-major (Fortran-style) order or preserve the
-		    C/Fortran ordering from `a`.  The default is 'C'.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    'C' means to flatten in row-major (C-style) order.
+		    'F' means to flatten in column-major (Fortran-
+		    style) order. 'A' means to flatten in column-major
+		    order if `a` is Fortran *contiguous* in memory,
+		    row-major order otherwise. 'K' means to flatten
+		    `a` in the order the elements occur in memory.
+		    The default is 'C'.
 		
 		Returns
 		-------
@@ -1149,7 +1152,7 @@ package pandas.sparse.array;
 		-------
 		mean : float
 	**/
-	public function mean(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Float;
+	public function mean(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		a.min(axis=None, out=None, keepdims=False)
 		
@@ -1800,7 +1803,7 @@ package pandas.sparse.array;
 		-------
 		sum : float
 	**/
-	public function sum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic):Float;
+	public function sum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Float;
 	/**
 		a.swapaxes(axis1, axis2)
 		
@@ -1819,8 +1822,27 @@ package pandas.sparse.array;
 		Returns
 		-------
 		taken : ndarray
+		
+		return a new SparseArray of the values selected by the indices
+		
+		For internal compatibility with numpy arrays.
+		
+		Parameters
+		----------
+		indices : list
+		    Indices to be taken
+		axis : int, optional
+		    The axis over which to select values, always 0.
+		allow_fill : bool, default True
+		fill_value : bool, default None
+		    If allow_fill=True and fill_value is not None, indices specified by
+		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
+		
+		See also
+		--------
+		numpy.ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic):numpy.Ndarray;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
 		Convert SparseSeries to (dense) Series
 	**/
@@ -2024,6 +2046,19 @@ package pandas.sparse.array;
 	**/
 	public function transpose(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Returns a Series containing counts of unique values.
+		
+		Parameters
+		----------
+		dropna : boolean, default True
+		    Don't include counts of NaN, even if NaN is in sp_values.
+		
+		Returns
+		-------
+		counts : Series
+	**/
+	public function value_counts(?dropna:Dynamic):pandas.Series;
+	/**
 		Dense values
 	**/
 	public var values : Dynamic;
@@ -2089,7 +2124,7 @@ package pandas.sparse.array;
 		>>> y = x.view(dtype=np.int16, type=np.matrix)
 		>>> y
 		matrix([[513]], dtype=int16)
-		>>> print type(y)
+		>>> print(type(y))
 		<class 'numpy.matrixlib.defmatrix.matrix'>
 		
 		Creating a view on a structured array so it can be used in calculations
@@ -2105,7 +2140,7 @@ package pandas.sparse.array;
 		Making changes to the view changes the underlying array
 		
 		>>> xv[0,1] = 20
-		>>> print x
+		>>> print(x)
 		[(1, 20) (3, 4)]
 		
 		Using a view to convert an array to a recarray:

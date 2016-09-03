@@ -133,6 +133,12 @@ package pandas.tseries.base;
 	public function _convert_scalar_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
 	/**
+		We have been called because a comparison between
+		8 aware arrays. numpy >= 1.11 will
+		now warn about NaT comparisons
+	**/
+	public function _evaluate_compare(other:Dynamic, op:Dynamic):Dynamic;
+	/**
 		Return a list of tuples of the (attr,formatted_value)
 	**/
 	public function _format_attrs():Dynamic;
@@ -173,21 +179,30 @@ package pandas.tseries.base;
 	static public var _resolution : Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
 	/**
-		return a ndarray of the maximum argument indexer
+		Returns the indices of the maximum values along an axis.
+		See `numpy.ndarray.argmax` for more information on the
+		`axis` parameter.
 		
 		See also
 		--------
 		numpy.ndarray.argmax
 	**/
-	public function argmax(?axis:Dynamic):Dynamic;
+	public function argmax(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return a ndarray of the minimum argument indexer
+		Returns the indices of the minimum values along an axis.
+		See `numpy.ndarray.argmin` for more information on the
+		`axis` parameter.
 		
 		See also
 		--------
 		numpy.ndarray.argmin
 	**/
-	public function argmin(?axis:Dynamic):Dynamic;
+	public function argmin(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		return object Index which contains boxed values
+		
+		*this is an internal non-public method*
+	**/
 	public var asobject : Dynamic;
 	/**
 		Return the frequency object as a string if its set, otherwise None
@@ -212,25 +227,27 @@ package pandas.tseries.base;
 	public function isin(values:Dynamic):Dynamic;
 	public function map(f:Dynamic):Dynamic;
 	/**
-		return the maximum value of the Index
+		Return the maximum value of the Index or maximum along
+		an axis.
 		
 		See also
 		--------
 		numpy.ndarray.max
 	**/
-	public function max(?axis:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		return the minimum value of the Index
+		Return the minimum value of the Index or minimum along
+		an axis.
 		
 		See also
 		--------
 		numpy.ndarray.min
 	**/
-	public function min(?axis:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Analogous to ndarray.repeat
 	**/
-	public function repeat(repeats:Dynamic, ?axis:Dynamic):Dynamic;
+	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	/**
 		Specialized shift which produces a DatetimeIndex
@@ -255,9 +272,26 @@ package pandas.tseries.base;
 	**/
 	public function summary(?name:Dynamic):Dynamic;
 	/**
-		Analogous to ndarray.take
+		return a new %(klass)s of the values selected by the indices
+		
+		For internal compatibility with numpy arrays.
+		
+		Parameters
+		----------
+		indices : list
+		    Indices to be taken
+		axis : int, optional
+		    The axis over which to select values, always 0.
+		allow_fill : bool, default True
+		fill_value : bool, default None
+		    If allow_fill=True and fill_value is not None, indices specified by
+		    -1 is regarded as NA. If Index doesn't hold NA, raise ValueError
+		
+		See also
+		--------
+		numpy.ndarray.take
 	**/
-	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic):Dynamic;
+	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		return a list of the underlying data
 	**/

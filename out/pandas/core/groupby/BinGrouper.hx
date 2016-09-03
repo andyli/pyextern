@@ -41,11 +41,11 @@ package pandas.core.groupby;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(bins:Dynamic, binlabels:Dynamic, ?filter_empty:Dynamic):Dynamic;
+	public function ___init__(bins:Dynamic, binlabels:Dynamic, ?filter_empty:Dynamic, ?mutated:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(bins:Dynamic, binlabels:Dynamic, ?filter_empty:Dynamic):Void;
+	public function new(bins:Dynamic, binlabels:Dynamic, ?filter_empty:Dynamic, ?mutated:Dynamic):Void;
 	public function __iter__():Dynamic;
 	/**
 		Return self<=value.

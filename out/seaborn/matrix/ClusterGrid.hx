@@ -112,6 +112,10 @@ package seaborn.matrix;
 	static public var _legend_out : Dynamic;
 	static public var _margin_titles : Dynamic;
 	/**
+		Preprocess {row/col}_colors to extract labels and convert colors.
+	**/
+	public function _preprocess_colors(data:Dynamic, colors:Dynamic, axis:Dynamic):Dynamic;
+	/**
 		Extract the legend data from an axes object and save it.
 	**/
 	public function _update_legend_data(ax:Dynamic):Dynamic;

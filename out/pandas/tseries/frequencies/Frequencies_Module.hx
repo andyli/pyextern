@@ -2,7 +2,13 @@
 package pandas.tseries.frequencies;
 @:pythonImport("pandas.tseries.frequencies") extern class Frequencies_Module {
 	static public var DAYS : Dynamic;
+	static public var D_RESO : Dynamic;
+	static public var H_RESO : Dynamic;
 	static public var MONTHS : Dynamic;
+	static public var MS_RESO : Dynamic;
+	static public var S_RESO : Dynamic;
+	static public var T_RESO : Dynamic;
+	static public var US_RESO : Dynamic;
 	static public var _LEGACY_FREQ_WARNING : Dynamic;
 	static public var _ONE_DAY : Dynamic;
 	static public var _ONE_HOUR : Dynamic;
@@ -56,6 +62,20 @@ package pandas.tseries.frequencies;
 	static public var _lite_rule_alias : Dynamic;
 	static public var _m : Dynamic;
 	static public function _maybe_add_count(base:Dynamic, count:Dynamic):Dynamic;
+	/**
+		we might need to coerce a code to a rule_code
+		and uppercase it
+		
+		Parameters
+		----------
+		source : string
+		    Frequency converting from
+		
+		Returns
+		-------
+		string code
+	**/
+	static public function _maybe_coerce_freq(code:Dynamic):Dynamic;
 	static public var _month_aliases : Dynamic;
 	static public var _month_numbers : Dynamic;
 	static public var _name : Dynamic;

@@ -67,7 +67,8 @@ package pandas.tslib;
 		allocate_lock() -> lock object
 		(allocate() is an obsolete synonym)
 		
-		Create a new lock object.  See help(LockType) for information about locks.
+		Create a new lock object. See help(type(threading.Lock())) for
+		information about locks.
 	**/
 	static public function _thread_allocate_lock(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _unbox_utcoffsets(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -90,6 +91,16 @@ package pandas.tslib;
 	**/
 	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		convert the ndarray according to the unit
+		if errors:
+		  - raise: return converted values or raise OutOfBoundsDatetime
+		      if out of range on the conversion or
+		      ValueError for other conversions (e.g. a string)
+		  - ignore: return non-convertible values as the same unit
+		  - coerce: NaT for non-convertibles
+	**/
+	static public function array_with_unit_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Datetime as int64 representation to a structured array of fields
 	**/
 	static public function build_field_sarray(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -107,6 +118,9 @@ package pandas.tslib;
 	static public function cast_from_unit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function cast_to_nanoseconds(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var compat_NaT : Dynamic;
+	/**
+		ts must be a string 
+	**/
 	static public function convert_str_to_tsobject(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function convert_to_timedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function date_normalize(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -137,6 +151,11 @@ package pandas.tslib;
 		field and return an array of these values.
 	**/
 	static public function get_date_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Given a int64-based datetime index, return array of strings of date
+		name based on requested field (e.g. weekday_name)
+	**/
+	static public function get_date_name_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Given an int64-based datetime index return array of indicators
 		of whether timestamps are at the start/end of the month/quarter/year

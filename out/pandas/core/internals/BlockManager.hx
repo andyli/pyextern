@@ -198,12 +198,13 @@ package pandas.core.internals;
 		    integrity check
 		consolidate: boolean, default True. Join together blocks having same
 		    dtype
+		raw: boolean, default False. Return the raw returned results
 		
 		Returns
 		-------
 		Block Manager (new object)
 	**/
-	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?raw:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function as_matrix(?items:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var axes : Dynamic;
@@ -319,6 +320,7 @@ package pandas.core.internals;
 	public var nblocks : Dynamic;
 	public var ndim : Dynamic;
 	public function putmask(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function quantile(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conform block manager to new index.
 	**/

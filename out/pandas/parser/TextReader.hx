@@ -101,6 +101,7 @@ package pandas.parser;
 	public var allow_leading_cols : Dynamic;
 	public var as_recarray : Dynamic;
 	public var buffer_lines : Dynamic;
+	public function close(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public var compact_ints : Dynamic;
 	public var compression : Dynamic;
 	public var converters : Dynamic;

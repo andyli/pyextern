@@ -95,25 +95,6 @@ package pandas.tools.merge;
 	**/
 	static public function concatenate_block_managers(mgrs_indexers:Dynamic, axes:Dynamic, concat_axis:Dynamic, copy:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
-		
-		Parameters
-		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
-		
-		Returns
-		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
-		
-		See also
-		--------
-		pandas.notnull: boolean inverse of pandas.isnull
-	**/
-	static public function isnull(obj:Dynamic):Dynamic;
-	/**
 		If two indices overlap, add suffixes to overlapping entries.
 		
 		If corresponding suffix is empty, the entry is simply converted to string.

@@ -8,7 +8,4 @@ package pandas.io.sas.saslib;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	static public function _rdc_decompress(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _rle_decompress(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function process_byte_array_with_data(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

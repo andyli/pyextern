@@ -355,15 +355,13 @@ package scipy.linalg._solvers;
 	**/
 	static public function solve_discrete_are(a:Dynamic, b:Dynamic, q:Dynamic, r:Dynamic):Dynamic;
 	/**
-		Solves the discrete Lyapunov equation :math:`A'XA-X=-Q`.
+		Solves the discrete Lyapunov equation :math:`AXA^H - X + Q = 0`.
 		
 		Parameters
 		----------
-		a : (M, M) array_like
-		    A square matrix
-		
-		q : (M, M) array_like
-		    Right-hand side square matrix
+		a, q : (M, M) array_like
+		    Square matrices corresponding to A and Q in the equation
+		    above respectively. Must have the same shape.
 		
 		method : {'direct', 'bilinear'}, optional
 		    Type of solver.
@@ -392,7 +390,7 @@ package scipy.linalg._solvers;
 		performance degrades rapidly for even moderately sized matrices.
 		
 		Method *bilinear* uses a bilinear transformation to convert the discrete
-		Lyapunov equation to a continuous Lyapunov equation :math:`(B'X+XB=-C)`
+		Lyapunov equation to a continuous Lyapunov equation :math:`(BX+XB'=-C)`
 		where :math:`B=(A-I)(A+I)^{-1}` and
 		:math:`C=2(A' + I)^{-1} Q (A + I)^{-1}`. The continuous equation can be
 		efficiently solved since it is a special case of a Sylvester equation.

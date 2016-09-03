@@ -17,6 +17,8 @@ package pandas.tseries.resample;
 		but call the appropriate methods anyhow 
 	**/
 	static public function _maybe_process_deprecations(r:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
+	static public var _shared_docs_kwargs : Dynamic;
 	static public function _take_new_index(obj:Dynamic, indexer:Dynamic, new_index:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Utility frequency conversion method for Series/DataFrame
@@ -60,6 +62,10 @@ package pandas.tseries.resample;
 		Returns number of unique elements in the group 
 	**/
 	static public function f(self:Dynamic, ?_method:Dynamic):Dynamic;
+	/**
+		return our appropriate resampler when grouping as well 
+	**/
+	static public function get_resampler_for_grouping(groupby:Dynamic, rule:Dynamic, ?how:Dynamic, ?fill_method:Dynamic, ?limit:Dynamic, ?kind:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Class for grouping and aggregating relational data. See aggregate,
 		transform, and apply functions on this object.

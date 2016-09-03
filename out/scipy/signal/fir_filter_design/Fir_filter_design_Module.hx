@@ -14,11 +14,111 @@ package scipy.signal.fir_filter_design;
 	/**
 		ceil(x)
 		
-		Return the ceiling of x as an int.
-		This is the smallest integral value >= x.
+		Return the ceiling of x as an Integral.
+		This is the smallest integer >= x.
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var division : Dynamic;
+	/**
+		FIR filter design using least-squares error minimization.
+		
+		Calculate the filter coefficients for the linear-phase finite
+		impulse response (FIR) filter which has the best approximation
+		to the desired frequency response described by `bands` and
+		`desired` in the least squares sense (i.e., the integral of the
+		weighted mean-squared error within the specified bands is
+		minimized).
+		
+		Parameters
+		----------
+		numtaps : int
+		    The number of taps in the FIR filter.  `numtaps` must be odd.
+		bands : array_like
+		    A monotonic nondecreasing sequence containing the band edges in
+		    Hz. All elements must be non-negative and less than or equal to
+		    the Nyquist frequency given by `nyq`.
+		desired : array_like
+		    A sequence the same size as `bands` containing the desired gain
+		    at the start and end point of each band.
+		weight : array_like, optional
+		    A relative weighting to give to each band region when solving
+		    the least squares problem. `weight` has to be half the size of
+		    `bands`.
+		nyq : float, optional
+		    Nyquist frequency. Each frequency in `bands` must be between 0
+		    and `nyq` (inclusive).
+		
+		Returns
+		-------
+		coeffs : ndarray
+		    Coefficients of the optimal (in a least squares sense) FIR filter.
+		
+		See also
+		--------
+		firwin
+		firwin2
+		
+		Notes
+		-----
+		This implementation follows the algorithm given in [1]_.
+		As noted there, least squares design has multiple advantages:
+		
+		    1. Optimal in a least-squares sense.
+		    2. Simple, non-iterative method.
+		    3. The general solution can obtained by solving a linear
+		       system of equations.
+		    4. Allows the use of a frequency dependent weighting function.
+		
+		This function constructs a Type I linear phase FIR filter, which
+		contains an odd number of `coeffs` satisfying for :math:`n < numtaps`:
+		
+		.. math:: coeffs(n) = coeffs(numtaps - 1 - n)
+		
+		The odd number of coefficients and filter symmetry avoid boundary
+		conditions that could otherwise occur at the Nyquist and 0 frequencies
+		(e.g., for Type II, III, or IV variants).
+		
+		.. versionadded:: 0.18
+		
+		References
+		----------
+		.. [1] Ivan Selesnick, Linear-Phase Fir Filter Design By Least Squares.
+		       OpenStax CNX. Aug 9, 2005.
+		       http://cnx.org/contents/eb1ecb35-03a9-4610-ba87-41cd771c95f2@7
+		
+		Examples
+		--------
+		We want to construct a band-pass filter. Note that the behavior in the
+		frequency ranges between our stop bands and pass bands is unspecified,
+		and thus may overshoot depending on the parameters of our filter:
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		>>> fig, axs = plt.subplots(2)
+		>>> nyq = 5.  # Hz
+		>>> desired = (0, 0, 1, 1, 0, 0)
+		>>> for bi, bands in enumerate(((0, 1, 2, 3, 4, 5), (0, 1, 2, 4, 4.5, 5))):
+		...     fir_firls = signal.firls(73, bands, desired, nyq=nyq)
+		...     fir_remez = signal.remez(73, bands, desired[::2], Hz=2 * nyq)
+		...     fir_firwin2 = signal.firwin2(73, bands, desired, nyq=nyq)
+		...     hs = list()
+		...     ax = axs[bi]
+		...     for fir in (fir_firls, fir_remez, fir_firwin2):
+		...         freq, response = signal.freqz(fir)
+		...         hs.append(ax.semilogy(nyq*freq/(np.pi), np.abs(response))[0])
+		...     for band, gains in zip(zip(bands[::2], bands[1::2]), zip(desired[::2], desired[1::2])):
+		...         ax.semilogy(band, np.maximum(gains, 1e-7), 'k--', linewidth=2)
+		...     if bi == 0:
+		...         ax.legend(hs, ('firls', 'remez', 'firwin2'), loc='lower center', frameon=False)
+		...     else:
+		...         ax.set_xlabel('Frequency (Hz)')
+		...     ax.grid(True)
+		...     ax.set(title='Band-pass %d-%d Hz' % bands[2:4], ylabel='Magnitude')
+		...
+		>>> fig.tight_layout()
+		>>> plt.show()
+	**/
+	static public function firls(numtaps:Dynamic, bands:Dynamic, desired:Dynamic, ?weight:Dynamic, ?nyq:Dynamic):Dynamic;
 	/**
 		FIR filter design using the window method.
 		
@@ -83,7 +183,9 @@ package scipy.signal.fir_filter_design;
 		
 		See also
 		--------
-		scipy.signal.firwin2
+		firwin2
+		firls
+		remez
 		
 		Examples
 		--------
@@ -176,7 +278,9 @@ package scipy.signal.fir_filter_design;
 		
 		See also
 		--------
-		scipy.signal.firwin
+		firls
+		firwin
+		remez
 		
 		Notes
 		-----
@@ -224,6 +328,48 @@ package scipy.signal.fir_filter_design;
 		[-0.02286961 -0.06362756  0.57310236  0.57310236 -0.06362756 -0.02286961]
 	**/
 	static public function firwin2(numtaps:Dynamic, freq:Dynamic, gain:Dynamic, ?nfreqs:Dynamic, ?window:Dynamic, ?nyq:Dynamic, ?antisymmetric:Dynamic):Dynamic;
+	/**
+		Construct a Hankel matrix.
+		
+		The Hankel matrix has constant anti-diagonals, with `c` as its
+		first column and `r` as its last row.  If `r` is not given, then
+		`r = zeros_like(c)` is assumed.
+		
+		Parameters
+		----------
+		c : array_like
+		    First column of the matrix.  Whatever the actual shape of `c`, it
+		    will be converted to a 1-D array.
+		r : array_like, optional
+		    Last row of the matrix. If None, ``r = zeros_like(c)`` is assumed.
+		    r[0] is ignored; the last row of the returned matrix is
+		    ``[c[-1], r[1:]]``.  Whatever the actual shape of `r`, it will be
+		    converted to a 1-D array.
+		
+		Returns
+		-------
+		A : (len(c), len(r)) ndarray
+		    The Hankel matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
+		
+		See also
+		--------
+		toeplitz : Toeplitz matrix
+		circulant : circulant matrix
+		
+		Examples
+		--------
+		>>> from scipy.linalg import hankel
+		>>> hankel([1, 17, 99])
+		array([[ 1, 17, 99],
+		       [17, 99,  0],
+		       [99,  0,  0]])
+		>>> hankel([1,2,3,4], [4,7,7,8,9])
+		array([[1, 2, 3, 4, 7],
+		       [2, 3, 4, 7, 7],
+		       [3, 4, 7, 7, 8],
+		       [4, 7, 7, 8, 9]])
+	**/
+	static public function hankel(c:Dynamic, ?r:Dynamic):Dynamic;
 	/**
 		Compute the inverse of the n-point DFT for real input.
 		
@@ -374,7 +520,7 @@ package scipy.signal.fir_filter_design;
 		-----
 		There are several ways to obtain the Kaiser window:
 		
-		- ``signal.kaiser(numtaps, beta, sym=0)``
+		- ``signal.kaiser(numtaps, beta, sym=True)``
 		- ``signal.get_window(beta, numtaps)``
 		- ``signal.get_window(('kaiser', beta), numtaps)``
 		
@@ -392,6 +538,50 @@ package scipy.signal.fir_filter_design;
 		If the base not specified, returns the natural logarithm (base e) of x.
 	**/
 	static public function log(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Compute the (Moore-Penrose) pseudo-inverse of a matrix.
+		
+		Calculate a generalized inverse of a matrix using a least-squares
+		solver.
+		
+		Parameters
+		----------
+		a : (M, N) array_like
+		    Matrix to be pseudo-inverted.
+		cond, rcond : float, optional
+		    Cutoff for 'small' singular values in the least-squares solver.
+		    Singular values smaller than ``rcond * largest_singular_value``
+		    are considered zero.
+		return_rank : bool, optional
+		    if True, return the effective rank of the matrix
+		check_finite : bool, optional
+		    Whether to check that the input matrix contains only finite numbers.
+		    Disabling may give a performance gain, but may result in problems
+		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		
+		Returns
+		-------
+		B : (N, M) ndarray
+		    The pseudo-inverse of matrix `a`.
+		rank : int
+		    The effective rank of the matrix.  Returned if return_rank == True
+		
+		Raises
+		------
+		LinAlgError
+		    If computation does not converge.
+		
+		Examples
+		--------
+		>>> from scipy import linalg
+		>>> a = np.random.randn(9, 6)
+		>>> B = linalg.pinv(a)
+		>>> np.allclose(a, np.dot(a, np.dot(B, a)))
+		True
+		>>> np.allclose(B, np.dot(B, np.dot(a, B)))
+		True
+	**/
+	static public function pinv(a:Dynamic, ?cond:Dynamic, ?rcond:Dynamic, ?return_rank:Dynamic, ?check_finite:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		Calculate the minimax optimal filter using the Remez exchange algorithm.
@@ -421,13 +611,13 @@ package scipy.signal.fir_filter_design;
 		type : {'bandpass', 'differentiator', 'hilbert'}, optional
 		    The type of filter:
 		
-		      'bandpass' : flat response in bands. This is the default.
+		      * 'bandpass' : flat response in bands. This is the default.
 		
-		      'differentiator' : frequency proportional response in bands.
+		      * 'differentiator' : frequency proportional response in bands.
 		
-		      'hilbert' : filter with odd symmetry, that is, type III
-		                  (for even order) or type IV (for odd order)
-		                  linear phase filters.
+		      * 'hilbert' : filter with odd symmetry, that is, type III
+		                    (for even order) or type IV (for odd order)
+		                    linear phase filters.
 		
 		maxiter : int, optional
 		    Maximum number of iterations of the algorithm. Default is 25.
@@ -443,7 +633,10 @@ package scipy.signal.fir_filter_design;
 		
 		See Also
 		--------
-		freqz : Compute the frequency response of a digital filter.
+		freqz
+		firls
+		firwin
+		firwin2
 		
 		References
 		----------
@@ -547,4 +740,52 @@ package scipy.signal.fir_filter_design;
 		<matplotlib.image.AxesImage object at 0x...>
 	**/
 	static public function sinc(x:Dynamic):Dynamic;
+	/**
+		Construct a Toeplitz matrix.
+		
+		The Toeplitz matrix has constant diagonals, with c as its first column
+		and r as its first row.  If r is not given, ``r == conjugate(c)`` is
+		assumed.
+		
+		Parameters
+		----------
+		c : array_like
+		    First column of the matrix.  Whatever the actual shape of `c`, it
+		    will be converted to a 1-D array.
+		r : array_like, optional
+		    First row of the matrix. If None, ``r = conjugate(c)`` is assumed;
+		    in this case, if c[0] is real, the result is a Hermitian matrix.
+		    r[0] is ignored; the first row of the returned matrix is
+		    ``[c[0], r[1:]]``.  Whatever the actual shape of `r`, it will be
+		    converted to a 1-D array.
+		
+		Returns
+		-------
+		A : (len(c), len(r)) ndarray
+		    The Toeplitz matrix. Dtype is the same as ``(c[0] + r[0]).dtype``.
+		
+		See also
+		--------
+		circulant : circulant matrix
+		hankel : Hankel matrix
+		
+		Notes
+		-----
+		The behavior when `c` or `r` is a scalar, or when `c` is complex and
+		`r` is None, was changed in version 0.8.0.  The behavior in previous
+		versions was undocumented and is no longer supported.
+		
+		Examples
+		--------
+		>>> from scipy.linalg import toeplitz
+		>>> toeplitz([1,2,3], [1,4,5,6])
+		array([[1, 4, 5, 6],
+		       [2, 1, 4, 5],
+		       [3, 2, 1, 4]])
+		>>> toeplitz([1.0, 2+3j, 4-1j])
+		array([[ 1.+0.j,  2.-3.j,  4.+1.j],
+		       [ 2.+3.j,  1.+0.j,  2.-3.j],
+		       [ 4.-1.j,  2.+3.j,  1.+0.j]])
+	**/
+	static public function toeplitz(c:Dynamic, ?r:Dynamic):Dynamic;
 }

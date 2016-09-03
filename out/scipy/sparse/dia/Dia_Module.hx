@@ -36,6 +36,10 @@ package scipy.sparse.dia;
 	**/
 	static public function get_index_dtype(?arrays:Dynamic, ?maxval:Dynamic, ?check_contents:Dynamic):Dynamic;
 	/**
+		Mimic numpy's casting for np.sum
+	**/
+	static public function get_sum_dtype(dtype:Dynamic):Dynamic;
+	/**
 		Function used to simplify argument processing.  If 'dtype' is not
 		specified (is None), returns a.dtype; otherwise returns a np.dtype
 		object created from the specified dtype argument.  If 'dtype' and 'a'
@@ -55,4 +59,5 @@ package scipy.sparse.dia;
 		Same as `upcast` but taking dtype.char as input (faster).
 	**/
 	static public function upcast_char(?args:python.VarArgs<Dynamic>):Dynamic;
+	static public function validateaxis(axis:Dynamic):Dynamic;
 }

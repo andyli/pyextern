@@ -355,7 +355,7 @@ package scipy.sparse.linalg;
 		ncv : int, optional
 		    The number of Lanczos vectors generated
 		    `ncv` must be greater than `k`; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str, ['LM' | 'SM' | 'LR' | 'SR' | 'LI' | 'SI'], optional
 		    Which `k` eigenvectors and eigenvalues to find:
 		
@@ -515,7 +515,7 @@ package scipy.sparse.linalg;
 		ncv : int, optional
 		    The number of Lanczos vectors generated ncv must be greater than k and
 		    smaller than n; it is recommended that ``ncv > 2*k``.
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		which : str ['LM' | 'SM' | 'LA' | 'SA' | 'BE']
 		    If A is a complex hermitian matrix, 'BE' is invalid.
 		    Which `k` eigenvectors and eigenvalues to find:
@@ -1692,7 +1692,7 @@ package scipy.sparse.linalg;
 		    The square matrix A will be converted into CSC or CSR form
 		b : ndarray or sparse matrix
 		    The matrix or vector representing the right hand side of the equation.
-		    If a vector, b.size must be (n,) or (n, 1)
+		    If a vector, b.shape must be (n,) or (n, 1).
 		permc_spec : str, optional
 		    How to permute the columns of the matrix for sparsity preservation.
 		    (default: 'COLAMD')
@@ -1735,7 +1735,7 @@ package scipy.sparse.linalg;
 		    The number of Lanczos vectors generated
 		    ncv must be greater than k+1 and smaller than n;
 		    it is recommended that ncv > 2*k
-		    Default: ``min(n, 2*k + 1)``
+		    Default: ``min(n, max(2*k + 1, 20))``
 		tol : float, optional
 		    Tolerance for singular values. Zero (default) means machine precision.
 		which : str, ['LM' | 'SM'], optional

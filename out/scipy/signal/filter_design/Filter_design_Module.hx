@@ -12,6 +12,60 @@ package scipy.signal.filter_design;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		Given a function `f`, its first derivative `fp`, and a set of initial
+		guesses `x0`, simultaneously find the roots of the polynomial using the
+		Aberth-Ehrlich method.
+		
+		``len(x0)`` should equal the number of roots of `f`.
+		
+		(This is not a complete implementation of Bini's algorithm.)
+	**/
+	static public function _aberth(f:Dynamic, fp:Dynamic, x0:Dynamic, ?tol:Dynamic, ?maxiter:Dynamic):Dynamic;
+	/**
+		Given an array of numerator coefficient arrays [[a_1, a_2,...,
+		a_n],..., [b_1, b_2,..., b_m]], this function pads shorter numerator
+		arrays with zero's so that all numerators have the same length. Such
+		alignment is necessary for functions like 'tf2ss', which needs the
+		alignment when dealing with SIMO transfer functions.
+	**/
+	static public function _align_nums(nums:Dynamic):Dynamic;
+	/**
+		Return the coefficients of Bessel polynomial of degree `n`
+		
+		If `reverse` is true, a reverse Bessel polynomial is output.
+		
+		Output is a list of coefficients:
+		[1]                   = 1
+		[1,  1]               = 1*s   +  1
+		[1,  3,  3]           = 1*s^2 +  3*s   +  3
+		[1,  6, 15, 15]       = 1*s^3 +  6*s^2 + 15*s   +  15
+		[1, 10, 45, 105, 105] = 1*s^4 + 10*s^3 + 45*s^2 + 105*s + 105
+		etc.
+		
+		Output is a Python list of arbitrary precision long ints, so n is only
+		limited by your hardware's memory.
+		
+		Sequence is http://oeis.org/A001498 , and output can be confirmed to
+		match http://oeis.org/A001498/b001498.txt :
+		
+		i = 0
+		for n in range(51):
+		    for x in bessel_poly(n, reverse=True):
+		        print i, x
+		        i += 1
+	**/
+	static public function _bessel_poly(n:Dynamic, ?reverse:Dynamic):Dynamic;
+	/**
+		Find zeros of ordinary Bessel polynomial of order `N`, by root-finding of
+		modified Bessel function of the second kind
+	**/
+	static public function _bessel_zeros(N:Dynamic):Dynamic;
+	/**
+		Return approximate zero locations of Bessel polynomials y_n(x) for order
+		`n` using polynomial fit (Campos-Calderon 2011)
+	**/
+	static public function _campos_zeros(n:Dynamic):Dynamic;
+	/**
 		Sort into pairs of complex conjugates.
 		
 		Complex conjugates in `z` are sorted by increasing real part.  In each
@@ -117,6 +171,16 @@ package scipy.signal.filter_design;
 	**/
 	static public function _nearest_real_complex_idx(fro:Dynamic, to:Dynamic, which:Dynamic):Dynamic;
 	/**
+		Numerically find frequency shift to apply to delay-normalized filter such
+		that -3 dB point is at 1 rad/sec.
+		
+		`a` is an array_like of polynomial coefficients
+		
+		First 10 values are listed in "Bessel Scale Factors" table,
+		"Bessel Filters Polynomials, Poles and Circuit Elements 2003, C. Bond."
+	**/
+	static public function _norm_factor(a:Dynamic):Dynamic;
+	/**
 		Return relative degree of transfer function from zeros and poles
 	**/
 	static public function _relative_degree(z:Dynamic, p:Dynamic):Dynamic;
@@ -130,9 +194,9 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		z : ndarray
+		z : array_like
 		    Zeros of the analog IIR filter transfer function.
-		p : ndarray
+		p : array_like
 		    Poles of the analog IIR filter transfer function.
 		k : float
 		    System gain of the analog IIR filter transfer function.
@@ -159,9 +223,9 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		z : ndarray
+		z : array_like
 		    Zeros of the analog IIR filter transfer function.
-		p : ndarray
+		p : array_like
 		    Poles of the analog IIR filter transfer function.
 		k : float
 		    System gain of the analog IIR filter transfer function.
@@ -200,9 +264,9 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		z : ndarray
+		z : array_like
 		    Zeros of the analog IIR filter transfer function.
-		p : ndarray
+		p : array_like
 		    Poles of the analog IIR filter transfer function.
 		k : float
 		    System gain of the analog IIR filter transfer function.
@@ -241,9 +305,9 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		z : ndarray
+		z : array_like
 		    Zeros of the analog IIR filter transfer function.
-		p : ndarray
+		p : array_like
 		    Poles of the analog IIR filter transfer function.
 		k : float
 		    System gain of the analog IIR filter transfer function.
@@ -279,9 +343,9 @@ package scipy.signal.filter_design;
 		
 		Parameters
 		----------
-		z : ndarray
+		z : array_like
 		    Zeros of the analog IIR filter transfer function.
-		p : ndarray
+		p : array_like
 		    Poles of the analog IIR filter transfer function.
 		k : float
 		    System gain of the analog IIR filter transfer function.
@@ -886,7 +950,7 @@ package scipy.signal.filter_design;
 	/**
 		Bessel/Thomson digital and analog filter design.
 		
-		Design an Nth order digital or analog Bessel filter and return the
+		Design an Nth-order digital or analog Bessel filter and return the
 		filter coefficients.
 		
 		Parameters
@@ -894,22 +958,44 @@ package scipy.signal.filter_design;
 		N : int
 		    The order of the filter.
 		Wn : array_like
-		    A scalar or length-2 sequence giving the critical frequencies.
-		    For a Bessel filter, this is defined as the point at which the
-		    asymptotes of the response are the same as a Butterworth filter of
-		    the same order.
+		    A scalar or length-2 sequence giving the critical frequencies (defined
+		    by the `norm` parameter).
+		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		    For digital filters, `Wn` is normalized from 0 to 1, where 1 is the
 		    Nyquist frequency, pi radians/sample.  (`Wn` is thus in
 		    half-cycles / sample.)
-		    For analog filters, `Wn` is an angular frequency (e.g. rad/s).
 		btype : {'lowpass', 'highpass', 'bandpass', 'bandstop'}, optional
 		    The type of filter.  Default is 'lowpass'.
 		analog : bool, optional
 		    When True, return an analog filter, otherwise a digital filter is
-		    returned.
+		    returned.  (See Notes.)
 		output : {'ba', 'zpk', 'sos'}, optional
 		    Type of output:  numerator/denominator ('ba'), pole-zero ('zpk'), or
 		    second-order sections ('sos'). Default is 'ba'.
+		norm : {'phase', 'delay', 'mag'}, optional
+		    Critical frequency normalization:
+		
+		    ``phase``
+		        The filter is normalized such that the phase response reaches its
+		        midpoint at angular (e.g. rad/s) frequency `Wn`.  This happens for
+		        both low-pass and high-pass filters, so this is the
+		        "phase-matched" case.
+		
+		        The magnitude response asymptotes are the same as a Butterworth
+		        filter of the same order with a cutoff of `Wn`.
+		
+		        This is the default, and matches MATLAB's implementation.
+		
+		    ``delay``
+		        The filter is normalized such that the group delay in the passband
+		        is 1/`Wn` (e.g. seconds).  This is the "natural" type obtained by
+		        solving Bessel polynomials.
+		
+		    ``mag``
+		        The filter is normalized such that the gain magnitude is -3 dB at
+		        angular frequency `Wn`.
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
@@ -927,77 +1013,165 @@ package scipy.signal.filter_design;
 		-----
 		Also known as a Thomson filter, the analog Bessel filter has maximally
 		flat group delay and maximally linear phase response, with very little
-		ringing in the step response.
+		ringing in the step response. [1]_
 		
-		As order increases, the Bessel filter approaches a Gaussian filter.
+		The Bessel is inherently an analog filter.  This function generates digital
+		Bessel filters using the bilinear transform, which does not preserve the
+		phase response of the analog filter.  As such, it is only approximately
+		correct at frequencies below about fs/4.  To get maximally-flat group
+		delay at higher frequencies, the analog Bessel filter must be transformed
+		using phase-preserving techniques.
 		
-		The digital Bessel filter is generated using the bilinear
-		transform, which does not preserve the phase response of the analog
-		filter. As such, it is only approximately correct at frequencies
-		below about fs/4.  To get maximally flat group delay at higher
-		frequencies, the analog Bessel filter must be transformed using
-		phase-preserving techniques.
-		
-		For a given `Wn`, the lowpass and highpass filter have the same phase vs
-		frequency curves; they are "phase-matched".
+		See `besselap` for implementation details and references.
 		
 		The ``'sos'`` output parameter was added in 0.16.0.
 		
 		Examples
 		--------
-		Plot the filter's frequency response, showing the flat group delay and
-		the relationship to the Butterworth's cutoff frequency:
+		Plot the phase-normalized frequency response, showing the relationship
+		to the Butterworth's cutoff frequency (green):
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
 		>>> b, a = signal.butter(4, 100, 'low', analog=True)
 		>>> w, h = signal.freqs(b, a)
-		>>> plt.plot(w, 20 * np.log10(np.abs(h)), color='silver', ls='dashed')
-		>>> b, a = signal.bessel(4, 100, 'low', analog=True)
+		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)), color='silver', ls='dashed')
+		>>> b, a = signal.bessel(4, 100, 'low', analog=True, norm='phase')
 		>>> w, h = signal.freqs(b, a)
 		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)))
-		>>> plt.title('Bessel filter frequency response (with Butterworth)')
+		>>> plt.title('Bessel filter magnitude response (with Butterworth)')
 		>>> plt.xlabel('Frequency [radians / second]')
 		>>> plt.ylabel('Amplitude [dB]')
 		>>> plt.margins(0, 0.1)
 		>>> plt.grid(which='both', axis='both')
-		>>> plt.axvline(100, color='green') # cutoff frequency
+		>>> plt.axvline(100, color='green')  # cutoff frequency
 		>>> plt.show()
 		
+		and the phase midpoint:
+		
+		>>> plt.figure()
+		>>> plt.semilogx(w, np.unwrap(np.angle(h)))
+		>>> plt.axvline(100, color='green')  # cutoff frequency
+		>>> plt.axhline(-np.pi, color='red')  # phase midpoint
+		>>> plt.title('Bessel filter phase response')
+		>>> plt.xlabel('Frequency [radians / second]')
+		>>> plt.ylabel('Phase [radians]')
+		>>> plt.margins(0, 0.1)
+		>>> plt.grid(which='both', axis='both')
+		>>> plt.show()
+		
+		Plot the magnitude-normalized frequency response, showing the -3 dB cutoff:
+		
+		>>> b, a = signal.bessel(3, 10, 'low', analog=True, norm='mag')
+		>>> w, h = signal.freqs(b, a)
+		>>> plt.semilogx(w, 20 * np.log10(np.abs(h)))
+		>>> plt.axhline(-3, color='red')  # -3 dB magnitude
+		>>> plt.axvline(10, color='green')  # cutoff frequency
+		>>> plt.title('Magnitude-normalized Bessel filter frequency response')
+		>>> plt.xlabel('Frequency [radians / second]')
+		>>> plt.ylabel('Amplitude [dB]')
+		>>> plt.margins(0, 0.1)
+		>>> plt.grid(which='both', axis='both')
+		>>> plt.show()
+		
+		Plot the delay-normalized filter, showing the maximally-flat group delay
+		at 0.1 seconds:
+		
+		>>> b, a = signal.bessel(5, 1/0.1, 'low', analog=True, norm='delay')
+		>>> w, h = signal.freqs(b, a)
 		>>> plt.figure()
 		>>> plt.semilogx(w[1:], -np.diff(np.unwrap(np.angle(h)))/np.diff(w))
+		>>> plt.axhline(0.1, color='red')  # 0.1 seconds group delay
 		>>> plt.title('Bessel filter group delay')
 		>>> plt.xlabel('Frequency [radians / second]')
 		>>> plt.ylabel('Group delay [seconds]')
 		>>> plt.margins(0, 0.1)
 		>>> plt.grid(which='both', axis='both')
 		>>> plt.show()
-	**/
-	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
-	/**
-		Return (z,p,k) for analog prototype of an Nth order Bessel filter.
 		
-		The filter is normalized such that the filter asymptotes are the same as
-		a Butterworth filter of the same order with an angular (e.g. rad/s)
-		cutoff frequency of 1.
+		References
+		----------
+		.. [1] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
+		       Characteristics", Proceedings of the Institution of Electrical
+		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
+	**/
+	static public function bessel(N:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic, ?norm:Dynamic):Dynamic;
+	static public var bessel_norms : Dynamic;
+	/**
+		Return (z,p,k) for analog prototype of an Nth-order Bessel filter.
 		
 		Parameters
 		----------
 		N : int
-		    The order of the Bessel filter to return zeros, poles and gain for.
-		    Values in the range 0-25 are supported.
+		    The order of the filter.
+		norm : {'phase', 'delay', 'mag'}, optional
+		    Frequency normalization:
+		
+		    ``phase``
+		        The filter is normalized such that the phase response reaches its
+		        midpoint at an angular (e.g. rad/s) cutoff frequency of 1.  This
+		        happens for both low-pass and high-pass filters, so this is the
+		        "phase-matched" case. [6]_
+		
+		        The magnitude response asymptotes are the same as a Butterworth
+		        filter of the same order with a cutoff of `Wn`.
+		
+		        This is the default, and matches MATLAB's implementation.
+		
+		    ``delay``
+		        The filter is normalized such that the group delay in the passband
+		        is 1 (e.g. 1 second).  This is the "natural" type obtained by
+		        solving Bessel polynomials
+		
+		    ``mag``
+		        The filter is normalized such that the gain magnitude is -3 dB at
+		        angular frequency 1.  This is called "frequency normalization" by
+		        Bond. [1]_
+		
+		    .. versionadded:: 0.18.0
 		
 		Returns
 		-------
 		z : ndarray
-		    Zeros. Is always an empty array.
+		    Zeros of the transfer function. Is always an empty array.
 		p : ndarray
-		    Poles.
+		    Poles of the transfer function.
 		k : scalar
-		    Gain. Always 1.
+		    Gain of the transfer function.  For phase-normalized, this is always 1.
+		
+		See Also
+		--------
+		bessel : Filter design function using this prototype
+		
+		Notes
+		-----
+		To find the pole locations, approximate starting points are generated [2]_
+		for the zeros of the ordinary Bessel polynomial [3]_, then the
+		Aberth-Ehrlich method [4]_ [5]_ is used on the Kv(x) Bessel function to
+		calculate more accurate zeros, and these locations are then inverted about
+		the unit circle.
+		
+		References
+		----------
+		.. [1] C.R. Bond, "Bessel Filter Constants",
+		       http://www.crbond.com/papers/bsf.pdf
+		.. [2] Campos and Calderon, "Approximate closed-form formulas for the
+		       zeros of the Bessel Polynomials", arXiv:1105.0957 [math-ph],
+		       http://arxiv.org/abs/1105.0957
+		.. [3] Thomson, W.E., "Delay Networks having Maximally Flat Frequency
+		       Characteristics", Proceedings of the Institution of Electrical
+		       Engineers, Part III, November 1949, Vol. 96, No. 44, pp. 487-490.
+		.. [4] Aberth, "Iteration Methods for Finding all Zeros of a Polynomial
+		       Simultaneously", Mathematics of Computation, Vol. 27, No. 122,
+		       April 1973
+		.. [5] Ehrlich, "A modified Newton method for polynomials", Communications
+		       of the ACM, Vol. 10, Issue 2, pp. 107-108, Feb. 1967,
+		       DOI:10.1145/363067.363115
+		.. [6] Miller and Bohn, "A Bessel Filter Crossover, and Its Relation to
+		       Others", RaneNote 147, 1998, http://www.rane.com/note147.html
 	**/
-	static public function besselap(N:Dynamic):Dynamic;
+	static public function besselap(N:Dynamic, ?norm:Dynamic):Dynamic;
 	/**
 		Return a digital filter from an analog one using a bilinear transform.
 		
@@ -1005,15 +1179,19 @@ package scipy.signal.filter_design;
 	**/
 	static public function bilinear(b:Dynamic, a:Dynamic, ?fs:Dynamic):Dynamic;
 	/**
-		Return (z,p,k) for analog prototype of Nth order Butterworth filter.
+		Return (z,p,k) for analog prototype of Nth-order Butterworth filter.
 		
 		The filter will have an angular (e.g. rad/s) cutoff frequency of 1.
+		
+		See Also
+		--------
+		butter : Filter design function using this prototype
 	**/
 	static public function buttap(N:Dynamic):Dynamic;
 	/**
 		Butterworth digital and analog filter design.
 		
-		Design an Nth order digital or analog Butterworth filter and return
+		Design an Nth-order digital or analog Butterworth filter and return
 		the filter coefficients.
 		
 		Parameters
@@ -1051,7 +1229,7 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		buttord
+		buttord, buttap
 		
 		Notes
 		-----
@@ -1180,12 +1358,16 @@ package scipy.signal.filter_design;
 	**/
 	static public function ceil(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
+		Return (z,p,k) for Nth-order Chebyshev type I analog lowpass filter.
 		
 		The returned filter prototype has `rp` decibels of ripple in the passband.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first drops below ``-rp``.
+		
+		See Also
+		--------
+		cheby1 : Filter design function using this prototype
 	**/
 	static public function cheb1ap(N:Dynamic, rp:Dynamic):Dynamic;
 	/**
@@ -1258,12 +1440,16 @@ package scipy.signal.filter_design;
 	**/
 	static public function cheb1ord(wp:Dynamic, ws:Dynamic, gpass:Dynamic, gstop:Dynamic, ?analog:Dynamic):Int;
 	/**
-		Return (z,p,k) for Nth order Chebyshev type I analog lowpass filter.
+		Return (z,p,k) for Nth-order Chebyshev type I analog lowpass filter.
 		
 		The returned filter prototype has `rs` decibels of ripple in the stopband.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first reaches ``-rs``.
+		
+		See Also
+		--------
+		cheby2 : Filter design function using this prototype
 	**/
 	static public function cheb2ap(N:Dynamic, rs:Dynamic):Dynamic;
 	/**
@@ -1340,7 +1526,7 @@ package scipy.signal.filter_design;
 	/**
 		Chebyshev type I digital and analog filter design.
 		
-		Design an Nth order digital or analog Chebyshev type I filter and
+		Design an Nth-order digital or analog Chebyshev type I filter and
 		return the filter coefficients.
 		
 		Parameters
@@ -1381,7 +1567,7 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		cheb1ord
+		cheb1ord, cheb1ap
 		
 		Notes
 		-----
@@ -1421,7 +1607,7 @@ package scipy.signal.filter_design;
 	/**
 		Chebyshev type II digital and analog filter design.
 		
-		Design an Nth order digital or analog Chebyshev type II filter and
+		Design an Nth-order digital or analog Chebyshev type II filter and
 		return the filter coefficients.
 		
 		Parameters
@@ -1462,7 +1648,7 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		cheb2ord
+		cheb2ord, cheb2ap
 		
 		Notes
 		-----
@@ -1671,7 +1857,7 @@ package scipy.signal.filter_design;
 	/**
 		Elliptic (Cauer) digital and analog filter design.
 		
-		Design an Nth order digital or analog elliptic filter and return
+		Design an Nth-order digital or analog elliptic filter and return
 		the filter coefficients.
 		
 		Parameters
@@ -1715,7 +1901,7 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		ellipord
+		ellipord, ellipap
 		
 		Notes
 		-----
@@ -1757,13 +1943,17 @@ package scipy.signal.filter_design;
 	**/
 	static public function ellip(N:Dynamic, rp:Dynamic, rs:Dynamic, Wn:Dynamic, ?btype:Dynamic, ?analog:Dynamic, ?output:Dynamic):Dynamic;
 	/**
-		Return (z,p,k) of Nth order elliptic analog lowpass filter.
+		Return (z,p,k) of Nth-order elliptic analog lowpass filter.
 		
 		The filter is a normalized prototype that has `rp` decibels of ripple
 		in the passband and a stopband `rs` decibels down.
 		
 		The filter's angular (e.g. rad/s) cutoff frequency is normalized to 1,
 		defined as the point at which the gain first drops below ``-rp``.
+		
+		See Also
+		--------
+		ellip : Filter design function using this prototype
 		
 		References
 		----------
@@ -1903,9 +2093,55 @@ package scipy.signal.filter_design;
 		>>> plt.show()
 	**/
 	static public function exp(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		The factorial of a number or array of numbers.
+		
+		The factorial of non-negative integer `n` is the product of all
+		positive integers less than or equal to `n`::
+		
+		    n! = n * (n - 1) * (n - 2) * ... * 1
+		
+		Parameters
+		----------
+		n : int or array_like of ints
+		    Input values.  If ``n < 0``, the return value is 0.
+		exact : bool, optional
+		    If True, calculate the answer exactly using long integer arithmetic.
+		    If False, result is approximated in floating point rapidly using the
+		    `gamma` function.
+		    Default is False.
+		
+		Returns
+		-------
+		nf : float or int or ndarray
+		    Factorial of `n`, as integer or float depending on `exact`.
+		
+		Notes
+		-----
+		For arrays with ``exact=True``, the factorial is computed only once, for
+		the largest input, with each other result computed in the process.
+		The output dtype is increased to ``int64`` or ``object`` if necessary.
+		
+		With ``exact=False`` the factorial is approximated using the gamma
+		function:
+		
+		.. math:: n! = \Gamma(n+1)
+		
+		Examples
+		--------
+		>>> from scipy.special import factorial
+		>>> arr = np.array([3, 4, 5])
+		>>> factorial(arr, exact=False)
+		array([   6.,   24.,  120.])
+		>>> factorial(arr, exact=True)
+		array([  6,  24, 120])
+		>>> factorial(5, exact=True)
+		120L
+	**/
+	static public function factorial(n:Dynamic, ?exact:Dynamic):Dynamic;
 	static public var filter_dict : Dynamic;
 	/**
-		Find an array of frequencies for computing the response of a filter.
+		Find array of frequencies for computing the response of an analog filter.
 		
 		Parameters
 		----------
@@ -1938,20 +2174,20 @@ package scipy.signal.filter_design;
 	/**
 		Compute frequency response of analog filter.
 		
-		Given the numerator `b` and denominator `a` of a filter, compute its
-		frequency response::
+		Given the M-order numerator `b` and N-order denominator `a` of an analog
+		filter, compute its frequency response::
 		
-		         b[0]*(jw)**(nb-1) + b[1]*(jw)**(nb-2) + ... + b[nb-1]
-		 H(w) = -------------------------------------------------------
-		         a[0]*(jw)**(na-1) + a[1]*(jw)**(na-2) + ... + a[na-1]
+		         b[0]*(jw)**M + b[1]*(jw)**(M-1) + ... + b[M]
+		 H(w) = ----------------------------------------------
+		         a[0]*(jw)**N + a[1]*(jw)**(N-1) + ... + a[N]
 		
 		Parameters
 		----------
-		b : ndarray
+		b : array_like
 		    Numerator of a linear filter.
-		a : ndarray
+		a : array_like
 		    Denominator of a linear filter.
-		worN : {None, int}, optional
+		worN : {None, int, array_like}, optional
 		    If None, then compute at 200 frequencies around the interesting parts
 		    of the response curve (determined by pole-zero locations).  If a single
 		    integer, then compute at that many frequencies.  Otherwise, compute the
@@ -1964,7 +2200,7 @@ package scipy.signal.filter_design;
 		Returns
 		-------
 		w : ndarray
-		    The angular frequencies at which h was computed.
+		    The angular frequencies at which `h` was computed.
 		h : ndarray
 		    The frequency response.
 		
@@ -1997,20 +2233,20 @@ package scipy.signal.filter_design;
 	/**
 		Compute the frequency response of a digital filter.
 		
-		Given the numerator `b` and denominator `a` of a digital filter,
-		compute its frequency response::
+		Given the M-order numerator `b` and N-order denominator `a` of a digital
+		filter, compute its frequency response::
 		
-		           jw               -jw            -jmw
-		    jw  B(e)    b[0] + b[1]e + .... + b[m]e
-		 H(e) = ---- = ------------------------------------
-		           jw               -jw            -jnw
-		        A(e)    a[0] + a[1]e + .... + a[n]e
+		             jw               -jw               -jwM
+		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
+		 H(e  ) = ---- = -----------------------------------
+		             jw               -jw               -jwN
+		          A(e  )  a[0] + a[1]e    + .... + a[N]e
 		
 		Parameters
 		----------
-		b : ndarray
+		b : array_like
 		    numerator of a linear filter
-		a : ndarray
+		a : array_like
 		    denominator of a linear filter
 		worN : {None, int, array_like}, optional
 		    If None (default), then compute at 512 frequencies equally spaced
@@ -2030,7 +2266,8 @@ package scipy.signal.filter_design;
 		Returns
 		-------
 		w : ndarray
-		    The normalized frequencies at which h was computed, in radians/sample.
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
 		h : ndarray
 		    The frequency response.
 		
@@ -2205,7 +2442,7 @@ package scipy.signal.filter_design;
 	/**
 		IIR digital and analog filter design given order and critical points.
 		
-		Design an Nth order digital or analog filter and return the filter
+		Design an Nth-order digital or analog filter and return the filter
 		coefficients.
 		
 		Parameters
@@ -2494,6 +2731,86 @@ package scipy.signal.filter_design;
 	**/
 	static public function normalize(b:Dynamic, a:Dynamic):Dynamic;
 	/**
+		Evaluate a polynomial at points x.
+		
+		If `c` is of length `n + 1`, this function returns the value
+		
+		.. math:: p(x) = c_0 + c_1 * x + ... + c_n * x^n
+		
+		The parameter `x` is converted to an array only if it is a tuple or a
+		list, otherwise it is treated as a scalar. In either case, either `x`
+		or its elements must support multiplication and addition both with
+		themselves and with the elements of `c`.
+		
+		If `c` is a 1-D array, then `p(x)` will have the same shape as `x`.  If
+		`c` is multidimensional, then the shape of the result depends on the
+		value of `tensor`. If `tensor` is true the shape will be c.shape[1:] +
+		x.shape. If `tensor` is false the shape will be c.shape[1:]. Note that
+		scalars have shape (,).
+		
+		Trailing zeros in the coefficients will be used in the evaluation, so
+		they should be avoided if efficiency is a concern.
+		
+		Parameters
+		----------
+		x : array_like, compatible object
+		    If `x` is a list or tuple, it is converted to an ndarray, otherwise
+		    it is left unchanged and treated as a scalar. In either case, `x`
+		    or its elements must support addition and multiplication with
+		    with themselves and with the elements of `c`.
+		c : array_like
+		    Array of coefficients ordered so that the coefficients for terms of
+		    degree n are contained in c[n]. If `c` is multidimensional the
+		    remaining indices enumerate multiple polynomials. In the two
+		    dimensional case the coefficients may be thought of as stored in
+		    the columns of `c`.
+		tensor : boolean, optional
+		    If True, the shape of the coefficient array is extended with ones
+		    on the right, one for each dimension of `x`. Scalars have dimension 0
+		    for this action. The result is that every column of coefficients in
+		    `c` is evaluated for every element of `x`. If False, `x` is broadcast
+		    over the columns of `c` for the evaluation.  This keyword is useful
+		    when `c` is multidimensional. The default value is True.
+		
+		    .. versionadded:: 1.7.0
+		
+		Returns
+		-------
+		values : ndarray, compatible object
+		    The shape of the returned array is described above.
+		
+		See Also
+		--------
+		polyval2d, polygrid2d, polyval3d, polygrid3d
+		
+		Notes
+		-----
+		The evaluation uses Horner's method.
+		
+		Examples
+		--------
+		>>> from numpy.polynomial.polynomial import polyval
+		>>> polyval(1, [1,2,3])
+		6.0
+		>>> a = np.arange(4).reshape(2,2)
+		>>> a
+		array([[0, 1],
+		       [2, 3]])
+		>>> polyval(a, [1,2,3])
+		array([[  1.,   6.],
+		       [ 17.,  34.]])
+		>>> coef = np.arange(4).reshape(2,2) # multidimensional coefficients
+		>>> coef
+		array([[0, 1],
+		       [2, 3]])
+		>>> polyval([1,2], coef, tensor=True)
+		array([[ 2.,  4.],
+		       [ 4.,  7.]])
+		>>> polyval([1,2], coef, tensor=False)
+		array([ 2.,  7.])
+	**/
+	static public function npp_polyval(x:Dynamic, c:Dynamic, ?tensor:Dynamic):Dynamic;
+	/**
 		Return a new array of given shape and type, filled with ones.
 		
 		Parameters
@@ -2566,7 +2883,7 @@ package scipy.signal.filter_design;
 		
 		See Also
 		--------
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		roots : Return the roots of a polynomial.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
@@ -2644,7 +2961,7 @@ package scipy.signal.filter_design;
 		   to zero) from highest degree to the constant term, or an
 		   instance of poly1d.
 		x : array_like or poly1d object
-		   A number, a 1D array of numbers, or an instance of poly1d, "at"
+		   A number, an array of numbers, or an instance of poly1d, at
 		   which to evaluate `p`.
 		
 		Returns
@@ -2693,29 +3010,31 @@ package scipy.signal.filter_design;
 		a : array_like
 		    Input data.
 		axis : None or int or tuple of ints, optional
-		    Axis or axes along which a product is performed.
-		    The default (`axis` = `None`) is perform a product over all
-		    the dimensions of the input array. `axis` may be negative, in
-		    which case it counts from the last to the first axis.
+		    Axis or axes along which a product is performed.  The default,
+		    axis=None, will calculate the product of all the elements in the
+		    input array. If axis is negative it counts from the last to the
+		    first axis.
 		
 		    .. versionadded:: 1.7.0
 		
-		    If this is a tuple of ints, a product is performed on multiple
-		    axes, instead of a single axis or all the axes as before.
-		dtype : data-type, optional
-		    The data-type of the returned array, as well as of the accumulator
-		    in which the elements are multiplied.  By default, if `a` is of
-		    integer type, `dtype` is the default platform integer. (Note: if
-		    the type of `a` is unsigned, then so is `dtype`.)  Otherwise,
-		    the dtype is the same as that of `a`.
+		    If axis is a tuple of ints, a product is performed on all of the
+		    axes specified in the tuple instead of a single axis or all the
+		    axes as before.
+		dtype : dtype, optional
+		    The type of the returned array, as well as of the accumulator in
+		    which the elements are multiplied.  The dtype of `a` is used by
+		    default unless `a` has an integer dtype of less precision than the
+		    default platform integer.  In that case, if `a` is signed then the
+		    platform integer is used while if `a` is unsigned then an unsigned
+		    integer of the same precision as the platform integer is used.
 		out : ndarray, optional
 		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output, but the type of the
-		    output values will be cast if necessary.
+		    the same shape as the expected output, but the type of the output
+		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left in the
+		    result as dimensions with size one. With this option, the result
+		    will broadcast correctly against the input array.
 		
 		Returns
 		-------
@@ -2873,7 +3192,7 @@ package scipy.signal.filter_design;
 		--------
 		poly : Find the coefficients of a polynomial with a given sequence
 		       of roots.
-		polyval : Evaluate a polynomial at a point.
+		polyval : Compute polynomial values.
 		polyfit : Least squares polynomial fit.
 		poly1d : A one-dimensional polynomial class.
 		
@@ -3338,8 +3657,7 @@ package scipy.signal.filter_design;
 		*Algorithms*
 		
 		The current algorithms are designed specifically for use with digital
-		filters. Although they can operate on analog filters, the results may
-		be sub-optimal.
+		filters. (The output coefficents are not correct for analog filters.)
 		
 		The steps in the ``pairing='nearest'`` and ``pairing='keep_odd'``
 		algorithms are mostly shared. The ``nearest`` algorithm attempts to
@@ -3415,7 +3733,7 @@ package scipy.signal.filter_design;
 		
 		>>> sos = signal.zpk2sos(z, p, k)
 		
-		The coefficents of the numerators of the sections:
+		The coefficients of the numerators of the sections:
 		
 		>>> sos[:, :3]
 		array([[ 0.0014154 ,  0.00248707,  0.0014154 ],

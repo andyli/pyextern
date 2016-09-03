@@ -270,9 +270,67 @@ package pandas.core.base;
 	**/
 	public function nunique(?dropna:Dynamic):Int;
 	/**
-		np.ndarray searchsorted compat 
+		Find indices where elements should be inserted to maintain order.
+		
+		Find the indices into a sorted IndexOpsMixin `self` such that, if the
+		corresponding elements in `v` were inserted before the indices, the
+		order of `self` would be preserved.
+		
+		Parameters
+		----------
+		key : array_like
+		    Values to insert into `self`.
+		side : {'left', 'right'}, optional
+		    If 'left', the index of the first suitable location found is given.
+		    If 'right', return the last such index.  If there is no suitable
+		    index, return either 0 or N (where N is the length of `self`).
+		sorter : 1-D array_like, optional
+		    Optional array of integer indices that sort `self` into ascending
+		    order. They are typically the result of ``np.argsort``.
+		
+		Returns
+		-------
+		indices : array of ints
+		    Array of insertion points with the same shape as `v`.
+		
+		See Also
+		--------
+		numpy.searchsorted
+		
+		Notes
+		-----
+		Binary search is used to find the required insertion points.
+		
+		Examples
+		--------
+		>>> x = pd.Series([1, 2, 3])
+		>>> x
+		0    1
+		1    2
+		2    3
+		dtype: int64
+		>>> x.searchsorted(4)
+		array([3])
+		>>> x.searchsorted([0, 4])
+		array([0, 3])
+		>>> x.searchsorted([1, 3], side='left')
+		array([0, 2])
+		>>> x.searchsorted([1, 3], side='right')
+		array([1, 3])
+		>>>
+		>>> x = pd.Categorical(['apple', 'bread', 'bread', 'cheese', 'milk' ])
+		[apple, bread, bread, cheese, milk]
+		Categories (4, object): [apple < bread < cheese < milk]
+		>>> x.searchsorted('bread')
+		array([1])     # Note: an array, not a scalar
+		>>> x.searchsorted(['bread'])
+		array([1])
+		>>> x.searchsorted(['bread', 'eggs'])
+		array([1, 4])
+		>>> x.searchsorted(['bread', 'eggs'], side='right')
+		array([3, 4])    # eggs before milk
 	**/
-	public function searchsorted(key:Dynamic, ?side:Dynamic):Dynamic;
+	public function searchsorted(key:Dynamic, ?side:Dynamic, ?sorter:Dynamic):Dynamic;
 	/**
 		return a tuple of the shape of the underlying data 
 	**/
@@ -288,7 +346,7 @@ package pandas.core.base;
 	/**
 		return the transpose, which is by definition self 
 	**/
-	public function transpose():Dynamic;
+	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return array of unique values in the object. Significantly faster than
 		numpy.unique. Includes NA values.

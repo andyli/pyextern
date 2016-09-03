@@ -229,6 +229,27 @@ package matplotlib.lines;
 	**/
 	public function _set_gc_clip(gc:Dynamic):Dynamic;
 	/**
+		Split drawstyle from linestyle string
+		
+		If `ls` is only a drawstyle default to returning a linestyle
+		of '-'.
+		
+		Parameters
+		----------
+		ls : str
+		    The linestyle to be processed
+		
+		Returns
+		-------
+		ret_ds : str or None
+		    If the linestyle string does not contain a drawstyle prefix
+		    return None, otherwise return it.
+		
+		ls : str
+		    The linestyle with the drawstyle (if any) stripped.
+	**/
+	public function _split_drawstyle_linestyle(ls:Dynamic):Dynamic;
+	/**
 		Puts a TransformedPath instance at self._transformed_path;
 		all invalidation of the transform is then handled by the
 		TransformedPath instance.
@@ -795,7 +816,7 @@ package matplotlib.lines;
 		===========================   =================
 		``'-'`` or ``'solid'``        solid line
 		``'--'`` or  ``'dashed'``     dashed line
-		``'-.'`` or  ``'dash_dot'``   dash-dotted line
+		``'-.'`` or  ``'dashdot'``    dash-dotted line
 		``':'`` or ``'dotted'``       dotted line
 		``'None'``                    draw nothing
 		``' '``                       draw nothing
@@ -825,7 +846,7 @@ package matplotlib.lines;
 		
 		Parameters
 		----------
-		ls : { '-',  '--', '-.', ':'} and more see description
+		ls : { ``'-'``,  ``'--'``, ``'-.'``, ``':'``} and more see description
 		    The line style.
 	**/
 	public function set_linestyle(ls:Dynamic):Dynamic;

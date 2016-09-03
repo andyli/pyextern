@@ -4,7 +4,7 @@ package pandas.core.indexing;
 	/**
 		Call self as a function.
 	**/
-	public function __call__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function __call__(?axis:Dynamic):Dynamic;
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -195,4 +195,5 @@ package pandas.core.indexing;
 	public function _slice(obj:Dynamic, ?axis:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _tuplify(loc:Dynamic):Dynamic;
 	static public var _valid_types : Dynamic;
+	static public var axis : Dynamic;
 }

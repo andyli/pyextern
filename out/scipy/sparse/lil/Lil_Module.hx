@@ -64,6 +64,11 @@ package scipy.sparse.lil;
 	**/
 	static public function getdtype(dtype:Dynamic, ?a:Dynamic, ?_default:Dynamic):Dynamic;
 	/**
+		Is x appropriate as an index into a sparse matrix? Returns True
+		if it can be cast safely to a machine int.
+	**/
+	static public function isintlike(x:Dynamic):Dynamic;
+	/**
 		Is x either a scalar, an array scalar, or a 0-dim array?
 	**/
 	static public function isscalarlike(x:Dynamic):Dynamic;

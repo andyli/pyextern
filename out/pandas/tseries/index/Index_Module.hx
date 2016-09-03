@@ -31,6 +31,7 @@ package pandas.tseries.index;
 	**/
 	static public function _new_DatetimeIndex(cls:Dynamic, d:Dynamic):Dynamic;
 	static public function _process_concat_data(to_concat:Dynamic, name:Dynamic):Dynamic;
+	static public var _shared_docs : Dynamic;
 	static public function _time_to_micros(time:Dynamic):Dynamic;
 	/**
 		Timestamp-like => dt64

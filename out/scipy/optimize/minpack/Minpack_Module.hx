@@ -46,7 +46,6 @@ package scipy.optimize.minpack;
 	static public function _check_unknown_options(unknown_options:Dynamic):Dynamic;
 	static public function _del2(p0:Dynamic, p1:Dynamic, d:Dynamic):Dynamic;
 	static public function _fixed_point_helper(func:Dynamic, x0:Dynamic, args:Dynamic, xtol:Dynamic, maxiter:Dynamic, use_accel:Dynamic):Dynamic;
-	static public function _general_function(params:Dynamic, xdata:Dynamic, ydata:Dynamic, _function:Dynamic):Dynamic;
 	static public function _initialize_feasible(lb:Dynamic, ub:Dynamic):Dynamic;
 	/**
 		np.where(cond, x, fillvalue) always evaluates x even where cond is False.
@@ -98,7 +97,8 @@ package scipy.optimize.minpack;
 		    variables.
 	**/
 	static public function _root_hybr(func:Dynamic, x0:Dynamic, ?args:Dynamic, ?jac:Dynamic, ?col_deriv:Dynamic, ?xtol:Dynamic, ?maxfev:Dynamic, ?band:Dynamic, ?eps:Dynamic, ?factor:Dynamic, ?diag:Dynamic, ?unknown_options:python.KwArgs<Dynamic>):Dynamic;
-	static public function _weighted_general_function(params:Dynamic, xdata:Dynamic, ydata:Dynamic, _function:Dynamic, weights:Dynamic):Dynamic;
+	static public function _wrap_func(func:Dynamic, xdata:Dynamic, ydata:Dynamic, weights:Dynamic):Dynamic;
+	static public function _wrap_jac(jac:Dynamic, xdata:Dynamic, weights:Dynamic):Dynamic;
 	/**
 		absolute(x[, out])
 		
@@ -464,6 +464,15 @@ package scipy.optimize.minpack;
 		    case.
 		
 		    .. versionadded:: 0.17
+		jac : callable, string or None, optional
+		    Function with signature ``jac(x, ...)`` which computes the Jacobian
+		    matrix of the model function with respect to parameters as a dense
+		    array_like structure. It will be scaled according to provided `sigma`.
+		    If None (default), the Jacobian will be estimated numerically.
+		    String keywords for 'trf' and 'dogbox' methods can be used to select
+		    a finite difference scheme, see `least_squares`.
+		
+		    .. versionadded:: 0.18
 		kwargs
 		    Keyword arguments passed to `leastsq` for ``method='lm'`` or
 		    `least_squares` otherwise.
@@ -488,11 +497,15 @@ package scipy.optimize.minpack;
 		
 		Raises
 		------
+		ValueError
+		    if either `ydata` or `xdata` contain NaNs, or if incompatible options
+		    are used.
+		
+		RuntimeError
+		    if the least-squares minimization fails.
+		
 		OptimizeWarning
 		    if covariance of the parameters can not be estimated.
-		
-		ValueError
-		    if either `ydata` or `xdata` contain NaNs.
 		
 		See Also
 		--------
@@ -527,7 +540,7 @@ package scipy.optimize.minpack;
 		
 		>>> popt, pcov = curve_fit(func, xdata, ydata, bounds=(0, [3., 2., 1.]))
 	**/
-	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
+	static public function curve_fit(f:Dynamic, xdata:Dynamic, ydata:Dynamic, ?p0:Dynamic, ?sigma:Dynamic, ?absolute_sigma:Dynamic, ?check_finite:Dynamic, ?bounds:Dynamic, ?method:Dynamic, ?jac:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Array<Dynamic>;
 	static public var division : Dynamic;
 	/**
 		dot(a, b, out=None)
@@ -858,7 +871,8 @@ package scipy.optimize.minpack;
 		the loss function rho(s) (a scalar function), `least_squares` finds a
 		local minimum of the cost function F(x)::
 		
-		    F(x) = 0.5 * sum(rho(f_i(x)**2), i = 1, ..., m), lb <= x <= ub
+		    minimize F(x) = 0.5 * sum(rho(f_i(x)**2), i = 0, ..., m - 1)
+		    subject to lb <= x <= ub
 		
 		The purpose of the loss function rho(s) is to reduce the influence of
 		outliers on the solution.
@@ -907,14 +921,13 @@ package scipy.optimize.minpack;
 		
 		    Default is 'trf'. See Notes for more information.
 		ftol : float, optional
-		    Tolerance for termination by the change of the cost function.
-		    Default is the square root of machine epsilon. The optimization process
-		    is stopped when ``dF < ftol * F``, and there was an adequate agreement
-		    between a local quadratic model and the true model in the last step.
+		    Tolerance for termination by the change of the cost function. Default
+		    is 1e-8. The optimization process is stopped when  ``dF < ftol * F``,
+		    and there was an adequate agreement between a local quadratic model and
+		    the true model in the last step.
 		xtol : float, optional
 		    Tolerance for termination by the change of the independent variables.
-		    Default is the square root of machine epsilon. The exact condition
-		    checked depends on the `method` used:
+		    Default is 1e-8. The exact condition depends on the `method` used:
 		
 		        * For 'trf' and 'dogbox' : ``norm(dx) < xtol * (xtol + norm(x))``
 		        * For 'lm' : ``Delta < xtol * norm(xs)``, where ``Delta`` is
@@ -922,9 +935,8 @@ package scipy.optimize.minpack;
 		          scaled according to `x_scale` parameter (see below).
 		
 		gtol : float, optional
-		    Tolerance for termination by the norm of the gradient. Default is
-		    the square root of machine epsilon. The exact condition depends
-		    on a `method` used:
+		    Tolerance for termination by the norm of the gradient. Default is 1e-8.
+		    The exact condition depends on a `method` used:
 		
 		        * For 'trf' : ``norm(g_scaled, ord=np.inf) < gtol``, where
 		          ``g_scaled`` is the value of the gradient scaled to account for
@@ -939,9 +951,9 @@ package scipy.optimize.minpack;
 		x_scale : array_like or 'jac', optional
 		    Characteristic scale of each variable. Setting `x_scale` is equivalent
 		    to reformulating the problem in scaled variables ``xs = x / x_scale``.
-		    An alternative view is that the size of a trust-region along j-th
+		    An alternative view is that the size of a trust region along j-th
 		    dimension is proportional to ``x_scale[j]``. Improved convergence may
-		    be achieved by setting `x_scale` such that a step of a given length
+		    be achieved by setting `x_scale` such that a step of a given size
 		    along any of the scaled variables has a similar effect on the cost
 		    function. If set to 'jac', the scale is iteratively updated using the
 		    inverse norms of the columns of the Jacobian matrix (as described in
@@ -954,7 +966,7 @@ package scipy.optimize.minpack;
 		        * 'soft_l1' : ``rho(z) = 2 * ((1 + z)**0.5 - 1)``. The smooth
 		          approximation of l1 (absolute value) loss. Usually a good
 		          choice for robust least squares.
-		        * 'huber' : ``rho(z) = z if z <= 1 else z**0.5 - 1``. Works
+		        * 'huber' : ``rho(z) = z if z <= 1 else 2*z**0.5 - 1``. Works
 		          similarly to 'soft_l1'.
 		        * 'cauchy' : ``rho(z) = ln(1 + z)``. Severely weakens outliers
 		          influence, but may cause difficulties in optimization process.
@@ -1001,7 +1013,7 @@ package scipy.optimize.minpack;
 		          least-squares problem and only requires matrix-vector product
 		          evaluations.
 		
-		    If None (default) the solver is chosen based on type of Jacobian
+		    If None (default) the solver is chosen based on the type of Jacobian
 		    returned on the first iteration.
 		tr_options : dict, optional
 		    Keyword options passed to trust-region solver.
@@ -1010,17 +1022,18 @@ package scipy.optimize.minpack;
 		        * ``tr_solver='lsmr'``: options for `scipy.sparse.linalg.lsmr`.
 		          Additionally  ``method='trf'`` supports  'regularize' option
 		          (bool, default is True) which adds a regularization term to the
-		          normal equations, which improves convergence if Jacobian is
+		          normal equation, which improves convergence if the Jacobian is
 		          rank-deficient [Byrd]_ (eq. 3.4).
 		
 		jac_sparsity : {None, array_like, sparse matrix}, optional
 		    Defines the sparsity structure of the Jacobian matrix for finite
-		    differences. If the Jacobian has only few non-zeros in *each* row,
-		    providing the sparsity structure will greatly speed up the computations
-		    [Curtis]_. Should have shape (m, n). A zero entry means that a
-		    corresponding element in the Jacobian is identically zero. If provided,
-		    forces the use of 'lsmr' trust-region solver. If None (default) then
-		    dense differencing will be used. Has no effect for 'lm' method.
+		    difference estimation, its shape must be (m, n). If the Jacobian has
+		    only few non-zero elements in *each* row, providing the sparsity
+		    structure will greatly speed up the computations [Curtis]_. A zero
+		    entry means that a corresponding element in the Jacobian is identically
+		    zero. If provided, forces the use of 'lsmr' trust-region solver.
+		    If None (default) then dense differencing will be used. Has no effect
+		    for 'lm' method.
 		verbose : {0, 1, 2}, optional
 		    Level of algorithm's verbosity:
 		
@@ -1192,9 +1205,9 @@ package scipy.optimize.minpack;
 		>>> res_1.x
 		array([ 1.,  1.])
 		>>> res_1.cost
-		2.4651903288156619e-30
+		9.8669242910846867e-30
 		>>> res_1.optimality
-		4.4408921315878507e-14
+		8.8928864934219529e-14
 		
 		We now constrain the variables, in such a way that the previous solution
 		becomes infeasible. Specifically, we require that ``x[1] >= 1.5``, and
@@ -1250,7 +1263,7 @@ package scipy.optimize.minpack;
 		>>> res_3 = least_squares(fun_broyden, x0_broyden,
 		...                       jac_sparsity=sparsity_broyden(n))
 		>>> res_3.cost
-		4.5687161966109073e-23
+		4.5687069299604613e-23
 		>>> res_3.optimality
 		1.1650454296851518e-11
 		
@@ -1516,6 +1529,13 @@ package scipy.optimize.minpack;
 		    Whether to check that the input matrix contains only finite numbers.
 		    Disabling may give a performance gain, but may result in problems
 		    (crashes, non-termination) if the inputs do contain infinities or NaNs.
+		lapack_driver : {'gesdd', 'gesvd'}, optional
+		    Whether to use the more efficient divide-and-conquer approach
+		    (``'gesdd'``) or general rectangular approach (``'gesvd'``)
+		    to compute the SVD. MATLAB and Octave use the ``'gesvd'`` approach.
+		    Default is ``'gesdd'``.
+		
+		    .. versionadded:: 0.18
 		
 		Returns
 		-------
@@ -1529,7 +1549,7 @@ package scipy.optimize.minpack;
 		    Unitary matrix having right singular vectors as rows.
 		    Of shape ``(N,N)`` or ``(K,N)`` depending on `full_matrices`.
 		
-		For ``compute_uv = False``, only `s` is returned.
+		For ``compute_uv=False``, only `s` is returned.
 		
 		Raises
 		------
@@ -1560,7 +1580,7 @@ package scipy.optimize.minpack;
 		>>> np.allclose(s, s2)
 		True
 	**/
-	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic):Dynamic;
+	static public function svd(a:Dynamic, ?full_matrices:Dynamic, ?compute_uv:Dynamic, ?overwrite_a:Dynamic, ?check_finite:Dynamic, ?lapack_driver:Dynamic):Dynamic;
 	/**
 		Take elements from an array along an axis.
 		
@@ -1644,7 +1664,7 @@ package scipy.optimize.minpack;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

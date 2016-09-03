@@ -209,12 +209,19 @@ package pandas.tslib;
 	**/
 	public var resolution : Dynamic;
 	/**
-		return a new Timedelta rounded to this resolution.
+		Round the Timedelta to the specified resolution
 		
+		Returns
+		-------
+		a new Timedelta rounded to the given resolution of `freq`
 		
 		Parameters
 		----------
 		freq : a freq string indicating the rounding resolution
+		
+		Raises
+		------
+		ValueError if the freq cannot be converted
 	**/
 	public function round(freq:Dynamic):Dynamic;
 	/**

@@ -347,7 +347,7 @@ package matplotlib.patches;
 	public function get_data_transform():Dynamic;
 	/**
 		dpi_cor is currently used for linewidth-related things and
-		shink factor. Mutation scale is not affected by this.
+		shrink factor. Mutation scale is not affected by this.
 	**/
 	public function get_dpi_cor():Dynamic;
 	/**
@@ -747,7 +747,7 @@ package matplotlib.patches;
 	public function set_contains(picker:Dynamic):Dynamic;
 	/**
 		dpi_cor is currently used for linewidth-related things and
-		shink factor. Mutation scale is not affected by this.
+		shrink factor. Mutation scale is not affected by this.
 	**/
 	public function set_dpi_cor(dpi_cor:Dynamic):Dynamic;
 	/**
@@ -835,7 +835,7 @@ package matplotlib.patches;
 		===========================   =================
 		``'-'`` or ``'solid'``        solid line
 		``'--'`` or  ``'dashed'``     dashed line
-		``'-.'`` or  ``'dash_dot'``   dash-dotted line
+		``'-.'`` or  ``'dashdot'``    dash-dotted line
 		``':'`` or ``'dotted'``       dotted line
 		===========================   =================
 		
@@ -931,8 +931,8 @@ package matplotlib.patches;
 	**/
 	public function set_picker(picker:Dynamic):Dynamic;
 	/**
-		set the begin end end positions of the connecting
-		path. Use current vlaue if None.
+		set the begin and end positions of the connecting
+		path. Use current value if None.
 	**/
 	public function set_positions(posA:Dynamic, posB:Dynamic):Dynamic;
 	/**

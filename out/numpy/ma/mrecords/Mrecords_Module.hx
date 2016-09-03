@@ -369,7 +369,7 @@ package numpy.ma.mrecords;
 		>>> x2=np.array(['a','dd','xyz','12'])
 		>>> x3=np.array([1.1,2,3,4])
 		>>> r = np.core.records.fromarrays([x1,x2,x3],names='a,b,c')
-		>>> print r[1]
+		>>> print(r[1])
 		(2, 'dd', 2.0)
 		>>> x1[1]=34
 		>>> r.a
@@ -393,7 +393,7 @@ package numpy.ma.mrecords;
 		
 		>>> r=np.core.records.fromrecords([(456,'dbe',1.2),(2,'de',1.3)],
 		... names='col1,col2,col3')
-		>>> print r[0]
+		>>> print(r[0])
 		(456, 'dbe', 1.2)
 		>>> r.col1
 		array([456,   2])
@@ -401,7 +401,7 @@ package numpy.ma.mrecords;
 		array(['dbe', 'de'],
 		      dtype='|S3')
 		>>> import pickle
-		>>> print pickle.loads(pickle.dumps(r))
+		>>> print(pickle.loads(pickle.dumps(r)))
 		[(456, 'dbe', 1.2) (2, 'de', 1.3)]
 	**/
 	static public function recfromrecords(recList:Dynamic, ?dtype:Dynamic, ?shape:Dynamic, ?formats:Dynamic, ?names:Dynamic, ?titles:Dynamic, ?aligned:Dynamic, ?byteorder:Dynamic):Dynamic;

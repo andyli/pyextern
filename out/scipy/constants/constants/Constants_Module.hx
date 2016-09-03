@@ -7,157 +7,217 @@ package scipy.constants.constants;
 	static public var Btu_IT : Dynamic;
 	static public var Btu_th : Dynamic;
 	/**
-		Convert Celsius to Fahrenheit
+		`C2F` is deprecated!
+		scipy.constants.C2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		C : array_like
-		    Celsius temperature(s) to be converted.
 		
-		Returns
-		-------
-		F : float or array of floats
-		    Equivalent Fahrenheit temperature(s).
+		    Convert Celsius to Fahrenheit
 		
-		Notes
-		-----
-		Computes ``F = 1.8 * C + 32``.
+		    Parameters
+		    ----------
+		    C : array_like
+		        Celsius temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import C2F
-		>>> C2F(np.array([-40, 40.0]))
-		array([ -40.,  104.])
+		    Returns
+		    -------
+		    F : float or array of floats
+		        Equivalent Fahrenheit temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``F = 1.8 * C + 32``.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import C2F
+		    >>> C2F(np.array([-40, 40.0]))
+		    array([ -40.,  104.])
+		
+		    
 	**/
-	static public function C2F(C:Dynamic):Dynamic;
+	static public function C2F(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert Celsius to Kelvin
+		`C2K` is deprecated!
+		scipy.constants.C2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		C : array_like
-		    Celsius temperature(s) to be converted.
 		
-		Returns
-		-------
-		K : float or array of floats
-		    Equivalent Kelvin temperature(s).
+		    Convert Celsius to Kelvin
 		
-		Notes
-		-----
-		Computes ``K = C + zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
-		(the absolute value of) temperature "absolute zero" as measured in Celsius.
+		    Parameters
+		    ----------
+		    C : array_like
+		        Celsius temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import C2K
-		>>> C2K(np.array([-40, 40.0]))
-		array([ 233.15,  313.15])
+		    Returns
+		    -------
+		    K : float or array of floats
+		        Equivalent Kelvin temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``K = C + zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
+		    (the absolute value of) temperature "absolute zero" as measured in Celsius.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import C2K
+		    >>> C2K(np.array([-40, 40.0]))
+		    array([ 233.15,  313.15])
+		
+		    
 	**/
-	static public function C2K(C:Dynamic):Dynamic;
+	static public function C2K(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert Fahrenheit to Celsius
+		`F2C` is deprecated!
+		scipy.constants.F2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		F : array_like
-		    Fahrenheit temperature(s) to be converted.
 		
-		Returns
-		-------
-		C : float or array of floats
-		    Equivalent Celsius temperature(s).
+		    Convert Fahrenheit to Celsius
 		
-		Notes
-		-----
-		Computes ``C = (F - 32) / 1.8``.
+		    Parameters
+		    ----------
+		    F : array_like
+		        Fahrenheit temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import F2C
-		>>> F2C(np.array([-40, 40.0]))
-		array([-40.        ,   4.44444444])
+		    Returns
+		    -------
+		    C : float or array of floats
+		        Equivalent Celsius temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``C = (F - 32) / 1.8``.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import F2C
+		    >>> F2C(np.array([-40, 40.0]))
+		    array([-40.        ,   4.44444444])
+		
+		    
 	**/
-	static public function F2C(F:Dynamic):Dynamic;
+	static public function F2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert Fahrenheit to Kelvin
+		`F2K` is deprecated!
+		scipy.constants.F2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		F : array_like
-		    Fahrenheit temperature(s) to be converted.
 		
-		Returns
-		-------
-		K : float or array of floats
-		    Equivalent Kelvin temperature(s).
+		    Convert Fahrenheit to Kelvin
 		
-		Notes
-		-----
-		Computes ``K = (F - 32)/1.8 + zero_Celsius`` where `zero_Celsius` =
-		273.15, i.e., (the absolute value of) temperature "absolute zero" as
-		measured in Celsius.
+		    Parameters
+		    ----------
+		    F : array_like
+		        Fahrenheit temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import F2K
-		>>> F2K(np.array([-40, 104]))
-		array([ 233.15,  313.15])
+		    Returns
+		    -------
+		    K : float or array of floats
+		        Equivalent Kelvin temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``K = (F - 32)/1.8 + zero_Celsius`` where `zero_Celsius` =
+		    273.15, i.e., (the absolute value of) temperature "absolute zero" as
+		    measured in Celsius.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import F2K
+		    >>> F2K(np.array([-40, 104]))
+		    array([ 233.15,  313.15])
+		
+		    
 	**/
-	static public function F2K(F:Dynamic):Dynamic;
+	static public function F2K(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var G : Dynamic;
 	static public var Julian_year : Dynamic;
 	/**
-		Convert Kelvin to Celsius
+		`K2C` is deprecated!
+		scipy.constants.K2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		K : array_like
-		    Kelvin temperature(s) to be converted.
 		
-		Returns
-		-------
-		C : float or array of floats
-		    Equivalent Celsius temperature(s).
+		    Convert Kelvin to Celsius
 		
-		Notes
-		-----
-		Computes ``C = K - zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
-		(the absolute value of) temperature "absolute zero" as measured in Celsius.
+		    Parameters
+		    ----------
+		    K : array_like
+		        Kelvin temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import K2C
-		>>> K2C(np.array([233.15, 313.15]))
-		array([-40.,  40.])
+		    Returns
+		    -------
+		    C : float or array of floats
+		        Equivalent Celsius temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``C = K - zero_Celsius`` where `zero_Celsius` = 273.15, i.e.,
+		    (the absolute value of) temperature "absolute zero" as measured in Celsius.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import K2C
+		    >>> K2C(np.array([233.15, 313.15]))
+		    array([-40.,  40.])
+		
+		    
 	**/
-	static public function K2C(K:Dynamic):Dynamic;
+	static public function K2C(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Convert Kelvin to Fahrenheit
+		`K2F` is deprecated!
+		scipy.constants.K2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_teperature instead. Note that the new function has a different signature.
 		
-		Parameters
-		----------
-		K : array_like
-		    Kelvin temperature(s) to be converted.
 		
-		Returns
-		-------
-		F : float or array of floats
-		    Equivalent Fahrenheit temperature(s).
+		    Convert Kelvin to Fahrenheit
 		
-		Notes
-		-----
-		Computes ``F = 1.8 * (K - zero_Celsius) + 32`` where `zero_Celsius` =
-		273.15, i.e., (the absolute value of) temperature "absolute zero" as
-		measured in Celsius.
+		    Parameters
+		    ----------
+		    K : array_like
+		        Kelvin temperature(s) to be converted.
 		
-		Examples
-		--------
-		>>> from scipy.constants import K2F
-		>>> K2F(np.array([233.15,  313.15]))
-		array([ -40.,  104.])
+		    Returns
+		    -------
+		    F : float or array of floats
+		        Equivalent Fahrenheit temperature(s).
+		
+		    See also
+		    --------
+		    convert_temperature
+		
+		    Notes
+		    -----
+		    Computes ``F = 1.8 * (K - zero_Celsius) + 32`` where `zero_Celsius` =
+		    273.15, i.e., (the absolute value of) temperature "absolute zero" as
+		    measured in Celsius.
+		
+		    Examples
+		    --------
+		    >>> from scipy.constants import K2F
+		    >>> K2F(np.array([233.15,  313.15]))
+		    array([ -40.,  104.])
+		
+		    
 	**/
-	static public function K2F(K:Dynamic):Dynamic;
+	static public function K2F(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var N_A : Dynamic;
 	static public var Planck : Dynamic;
 	static public var R : Dynamic;
@@ -220,6 +280,46 @@ package scipy.constants.constants;
 	static public var calorie_th : Dynamic;
 	static public var carat : Dynamic;
 	static public var centi : Dynamic;
+	/**
+		Convert from a temperature scale to another one among Celsius, Kelvin,
+		Fahrenheit and Rankine scales.
+		
+		Parameters
+		----------
+		val : array_like
+		    Value(s) of the temperature(s) to be converted expressed in the
+		    original scale.
+		
+		old_scale: str
+		    Specifies as a string the original scale from which the temperature
+		    value(s) will be converted. Supported scales are Celsius ('Celsius',
+		    'celsius', 'C' or 'c'), Kelvin ('Kelvin', 'kelvin', 'K', 'k'),
+		    Fahrenheit ('Fahrenheit', 'fahrenheit', 'F' or 'f') and Rankine
+		    ('Rankine', 'rankine', 'R', 'r').
+		
+		new_scale: str
+		    Specifies as a string the new scale to which the temperature
+		    value(s) will be converted. Supported scales are Celsius ('Celsius',
+		    'celsius', 'C' or 'c'), Kelvin ('Kelvin', 'kelvin', 'K', 'k'),
+		    Fahrenheit ('Fahrenheit', 'fahrenheit', 'F' or 'f') and Rankine
+		    ('Rankine', 'rankine', 'R', 'r').
+		
+		Returns
+		-------
+		res : float or array of floats
+		    Value(s) of the converted temperature(s) expressed in the new scale.
+		
+		Notes
+		-----
+		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		>>> from scipy.constants import convert_temperature
+		>>> convert_temperature(np.array([-40, 40.0]), 'Celsius', 'Kelvin')
+		array([ 233.15,  313.15])
+	**/
+	static public function convert_temperature(val:Dynamic, old_scale:Dynamic, new_scale:Dynamic):Dynamic;
 	static public var day : Dynamic;
 	static public var deci : Dynamic;
 	static public var degree : Dynamic;

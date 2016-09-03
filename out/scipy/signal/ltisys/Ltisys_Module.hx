@@ -44,7 +44,6 @@ package scipy.signal.ltisys;
 		Those can be raised when casting complex to real.
 	**/
 	static public function _cast_to_array_dtype(in1:Dynamic, in2:Dynamic):Dynamic;
-	static public function _choice_not_none(?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
 		Compute a reasonable set of time samples for the response time.
 		
@@ -54,7 +53,7 @@ package scipy.signal.ltisys;
 		
 		Parameters
 		----------
-		A : ndarray
+		A : array_like
 		    The system matrix, which is square.
 		n : int
 		    The number of time samples to generate.
@@ -66,7 +65,6 @@ package scipy.signal.ltisys;
 		    is to be computed.
 	**/
 	static public function _default_response_times(A:Dynamic, n:Dynamic):Dynamic;
-	static public function _none_to_empty_2d(arg:Dynamic):Dynamic;
 	/**
 		Check we have complex conjugates pairs and reorder P according to YT, ie
 		real_poles, complex_i, conjugate complex_i, ....
@@ -74,8 +72,6 @@ package scipy.signal.ltisys;
 		compare sets of poles.
 	**/
 	static public function _order_complex_poles(poles:Dynamic):Dynamic;
-	static public function _restore(M:Dynamic, shape:Dynamic):Dynamic;
-	static public function _shape_or_none(M:Dynamic):Dynamic;
 	/**
 		Check the poles come in complex conjugage pairs
 		Check shapes of A, B and poles are compatible.
@@ -109,96 +105,6 @@ package scipy.signal.ltisys;
 	**/
 	static public function abcd_normalize(?A:Dynamic, ?B:Dynamic, ?C:Dynamic, ?D:Dynamic):Array<Dynamic>;
 	static public var absolute_import : Dynamic;
-	/**
-		array(object, dtype=None, copy=True, order=None, subok=False, ndmin=0)
-		
-		Create an array.
-		
-		Parameters
-		----------
-		object : array_like
-		    An array, any object exposing the array interface, an
-		    object whose __array__ method returns an array, or any
-		    (nested) sequence.
-		dtype : data-type, optional
-		    The desired data-type for the array.  If not given, then
-		    the type will be determined as the minimum type required
-		    to hold the objects in the sequence.  This argument can only
-		    be used to 'upcast' the array.  For downcasting, use the
-		    .astype(t) method.
-		copy : bool, optional
-		    If true (default), then the object is copied.  Otherwise, a copy
-		    will only be made if __array__ returns a copy, if obj is a
-		    nested sequence, or if a copy is needed to satisfy any of the other
-		    requirements (`dtype`, `order`, etc.).
-		order : {'C', 'F', 'A'}, optional
-		    Specify the order of the array.  If order is 'C', then the array
-		    will be in C-contiguous order (last-index varies the fastest).
-		    If order is 'F', then the returned array will be in
-		    Fortran-contiguous order (first-index varies the fastest).
-		    If order is 'A' (default), then the returned array may be
-		    in any order (either C-, Fortran-contiguous, or even discontiguous),
-		    unless a copy is required, in which case it will be C-contiguous.
-		subok : bool, optional
-		    If True, then sub-classes will be passed-through, otherwise
-		    the returned array will be forced to be a base-class array (default).
-		ndmin : int, optional
-		    Specifies the minimum number of dimensions that the resulting
-		    array should have.  Ones will be pre-pended to the shape as
-		    needed to meet this requirement.
-		
-		Returns
-		-------
-		out : ndarray
-		    An array object satisfying the specified requirements.
-		
-		See Also
-		--------
-		empty, empty_like, zeros, zeros_like, ones, ones_like, fill
-		
-		Examples
-		--------
-		>>> np.array([1, 2, 3])
-		array([1, 2, 3])
-		
-		Upcasting:
-		
-		>>> np.array([1, 2, 3.0])
-		array([ 1.,  2.,  3.])
-		
-		More than one dimension:
-		
-		>>> np.array([[1, 2], [3, 4]])
-		array([[1, 2],
-		       [3, 4]])
-		
-		Minimum dimensions 2:
-		
-		>>> np.array([1, 2, 3], ndmin=2)
-		array([[1, 2, 3]])
-		
-		Type provided:
-		
-		>>> np.array([1, 2, 3], dtype=complex)
-		array([ 1.+0.j,  2.+0.j,  3.+0.j])
-		
-		Data-type consisting of more than one element:
-		
-		>>> x = np.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])
-		>>> x['a']
-		array([1, 3])
-		
-		Creating an array from sub-classes:
-		
-		>>> np.array(np.mat('1 2; 3 4'))
-		array([[1, 2],
-		       [3, 4]])
-		
-		>>> np.array(np.mat('1 2; 3 4'), subok=True)
-		matrix([[1, 2],
-		        [3, 4]])
-	**/
-	static public function array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Convert the input to an array.
 		
@@ -350,6 +256,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -374,6 +281,9 @@ package scipy.signal.ltisys;
 		
 		Notes
 		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 		
 		.. versionadded:: 0.11.0
 		
@@ -382,8 +292,8 @@ package scipy.signal.ltisys;
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> s1 = signal.lti([1], [1, 1])
-		>>> w, mag, phase = signal.bode(s1)
+		>>> sys = signal.TransferFunction([1], [1, 1])
+		>>> w, mag, phase = signal.bode(sys)
 		
 		>>> plt.figure()
 		>>> plt.semilogx(w, mag)    # Bode magnitude plot
@@ -392,7 +302,277 @@ package scipy.signal.ltisys;
 		>>> plt.show()
 	**/
 	static public function bode(system:Dynamic, ?w:Dynamic, ?n:Dynamic):Dynamic;
+	/**
+		Transform a continuous to a discrete state-space system.
+		
+		Parameters
+		----------
+		system : a tuple describing the system or an instance of `lti`
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1: (instance of `lti`)
+		        * 2: (num, den)
+		        * 3: (zeros, poles, gain)
+		        * 4: (A, B, C, D)
+		
+		dt : float
+		    The discretization time step.
+		method : {"gbt", "bilinear", "euler", "backward_diff", "zoh"}, optional
+		    Which method to use:
+		
+		        * gbt: generalized bilinear transformation
+		        * bilinear: Tustin's approximation ("gbt" with alpha=0.5)
+		        * euler: Euler (or forward differencing) method ("gbt" with alpha=0)
+		        * backward_diff: Backwards differencing ("gbt" with alpha=1.0)
+		        * zoh: zero-order hold (default)
+		
+		alpha : float within [0, 1], optional
+		    The generalized bilinear transformation weighting parameter, which
+		    should only be specified with method="gbt", and is ignored otherwise
+		
+		Returns
+		-------
+		sysd : tuple containing the discrete system
+		    Based on the input type, the output will be of the form
+		
+		    * (num, den, dt)   for transfer function input
+		    * (zeros, poles, gain, dt)   for zeros-poles-gain input
+		    * (A, B, C, D, dt) for state-space system input
+		
+		Notes
+		-----
+		By default, the routine uses a Zero-Order Hold (zoh) method to perform
+		the transformation.  Alternatively, a generalized bilinear transformation
+		may be used, which includes the common Tustin's bilinear approximation,
+		an Euler's method technique, or a backwards differencing technique.
+		
+		The Zero-Order Hold (zoh) method is based on [1]_, the generalized bilinear
+		approximation is based on [2]_ and [3]_.
+		
+		References
+		----------
+		.. [1] http://en.wikipedia.org/wiki/Discretization#Discretization_of_linear_state_space_models
+		
+		.. [2] http://techteach.no/publications/discretetime_signals_systems/discrete.pdf
+		
+		.. [3] G. Zhang, X. Chen, and T. Chen, Digital redesign via the generalized
+		    bilinear transformation, Int. J. Control, vol. 82, no. 4, pp. 741-754,
+		    2009.
+		    (http://www.ece.ualberta.ca/~gfzhang/research/ZCC07_preprint.pdf)
+	**/
+	static public function cont2discrete(system:Dynamic, dt:Dynamic, ?method:Dynamic, ?alpha:Dynamic):Dynamic;
+	/**
+		Calculate Bode magnitude and phase data of a discrete-time system.
+		
+		Parameters
+		----------
+		system : an instance of the LTI class or a tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1 (instance of `dlti`)
+		        * 2 (num, den, dt)
+		        * 3 (zeros, poles, gain, dt)
+		        * 4 (A, B, C, D, dt)
+		
+		w : array_like, optional
+		    Array of frequencies (in radians/sample). Magnitude and phase data is
+		    calculated for every value in this array. If not given a reasonable
+		    set will be calculated.
+		n : int, optional
+		    Number of frequency points to compute if `w` is not given. The `n`
+		    frequencies are logarithmically spaced in an interval chosen to
+		    include the influence of the poles and zeros of the system.
+		
+		Returns
+		-------
+		w : 1D ndarray
+		    Frequency array [rad/time_unit]
+		mag : 1D ndarray
+		    Magnitude array [dB]
+		phase : 1D ndarray
+		    Phase array [deg]
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``z^2 + 3z + 5`` would be represented as ``[1, 3, 5]``).
+		
+		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Transfer function: H(z) = 1 / (z^2 + 2z + 3)
+		
+		>>> sys = signal.TransferFunction([1], [1, 2, 3], dt=0.05)
+		
+		Equivalent: sys.bode()
+		
+		>>> w, mag, phase = signal.dbode(sys)
+		
+		>>> plt.figure()
+		>>> plt.semilogx(w, mag)    # Bode magnitude plot
+		>>> plt.figure()
+		>>> plt.semilogx(w, phase)  # Bode phase plot
+		>>> plt.show()
+	**/
+	static public function dbode(system:Dynamic, ?w:Dynamic, ?n:Dynamic):Dynamic;
+	/**
+		Calculate the frequency response of a discrete-time system.
+		
+		Parameters
+		----------
+		system : an instance of the `dlti` class or a tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1 (instance of `dlti`)
+		        * 2 (numerator, denominator, dt)
+		        * 3 (zeros, poles, gain, dt)
+		        * 4 (A, B, C, D, dt)
+		
+		w : array_like, optional
+		    Array of frequencies (in radians/sample). Magnitude and phase data is
+		    calculated for every value in this array. If not given a reasonable
+		    set will be calculated.
+		n : int, optional
+		    Number of frequency points to compute if `w` is not given. The `n`
+		    frequencies are logarithmically spaced in an interval chosen to
+		    include the influence of the poles and zeros of the system.
+		whole : bool, optional
+		    Normally, if 'w' is not given, frequencies are computed from 0 to the
+		    Nyquist frequency, pi radians/sample (upper-half of unit-circle). If
+		    `whole` is True, compute frequencies from 0 to 2*pi radians/sample.
+		
+		Returns
+		-------
+		w : 1D ndarray
+		    Frequency array [radians/sample]
+		H : 1D ndarray
+		    Array of complex magnitude values
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``z^2 + 3z + 5`` would be represented as ``[1, 3, 5]``).
+		
+		.. versionadded:: 0.18.0
+		
+		Examples
+		--------
+		Generating the Nyquist plot of a transfer function
+		
+		>>> from scipy import signal
+		>>> import matplotlib.pyplot as plt
+		
+		Transfer function: H(z) = 1 / (z^2 + 2z + 3)
+		
+		>>> sys = signal.TransferFunction([1], [1, 2, 3], dt=0.05)
+		
+		>>> w, H = signal.dfreqresp(sys)
+		
+		>>> plt.figure()
+		>>> plt.plot(H.real, H.imag, "b")
+		>>> plt.plot(H.real, -H.imag, "r")
+		>>> plt.show()
+	**/
+	static public function dfreqresp(system:Dynamic, ?w:Dynamic, ?n:Dynamic, ?whole:Dynamic):Dynamic;
+	/**
+		Impulse response of discrete-time system.
+		
+		Parameters
+		----------
+		system : tuple of array_like or instance of `dlti`
+		    A tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
+		
+		x0 : array_like, optional
+		    Initial state-vector.  Defaults to zero.
+		t : array_like, optional
+		    Time points.  Computed if not given.
+		n : int, optional
+		    The number of time points to compute (if `t` is not given).
+		
+		Returns
+		-------
+		tout : ndarray
+		    Time values for the output, as a 1-D array.
+		yout : ndarray
+		    Impulse response of system.  Each element of the tuple represents
+		    the output of the system based on an impulse in each input.
+		
+		See Also
+		--------
+		impulse, dstep, dlsim, cont2discrete
+	**/
+	static public function dimpulse(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Simulate output of a discrete-time linear system.
+		
+		Parameters
+		----------
+		system : tuple of array_like or instance of `dlti`
+		    A tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
+		
+		u : array_like
+		    An input array describing the input at each time `t` (interpolation is
+		    assumed between given times).  If there are multiple inputs, then each
+		    column of the rank-2 array represents an input.
+		t : array_like, optional
+		    The time steps at which the input is defined.  If `t` is given, it
+		    must be the same length as `u`, and the final value in `t` determines
+		    the number of steps returned in the output.
+		x0 : array_like, optional
+		    The initial conditions on the state vector (zero by default).
+		
+		Returns
+		-------
+		tout : ndarray
+		    Time values for the output, as a 1-D array.
+		yout : ndarray
+		    System response, as a 1-D array.
+		xout : ndarray, optional
+		    Time-evolution of the state-vector.  Only generated if the input is a
+		    `StateSpace` system.
+		
+		See Also
+		--------
+		lsim, dstep, dimpulse, cont2discrete
+		
+		Examples
+		--------
+		A simple integrator transfer function with a discrete time step of 1.0
+		could be implemented as:
+		
+		>>> from scipy import signal
+		>>> tf = ([1.0,], [1.0, -1.0], 1.0)
+		>>> t_in = [0.0, 1.0, 2.0, 3.0]
+		>>> u = np.asarray([0.0, 0.0, 1.0, 1.0])
+		>>> t_out, y = signal.dlsim(tf, u, t=t_in)
+		>>> y.T
+		array([[ 0.,  0.,  0.,  1.]])
+	**/
+	static public function dlsim(system:Dynamic, u:Dynamic, ?t:Dynamic, ?x0:Dynamic):Dynamic;
 	/**
 		dot(a, b, out=None)
 		
@@ -467,59 +647,57 @@ package scipy.signal.ltisys;
 	**/
 	static public function dot(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Return a 2-D array with ones on the diagonal and zeros elsewhere.
+		Step response of discrete-time system.
 		
 		Parameters
 		----------
-		N : int
-		  Number of rows in the output.
-		M : int, optional
-		  Number of columns in the output. If None, defaults to `N`.
-		k : int, optional
-		  Index of the diagonal: 0 (the default) refers to the main diagonal,
-		  a positive value refers to an upper diagonal, and a negative value
-		  to a lower diagonal.
-		dtype : data-type, optional
-		  Data-type of the returned array.
+		system : tuple of array_like
+		    A tuple describing the system.
+		    The following gives the number of elements in the tuple and
+		    the interpretation:
+		
+		        * 1: (instance of `dlti`)
+		        * 3: (num, den, dt)
+		        * 4: (zeros, poles, gain, dt)
+		        * 5: (A, B, C, D, dt)
+		
+		x0 : array_like, optional
+		    Initial state-vector.  Defaults to zero.
+		t : array_like, optional
+		    Time points.  Computed if not given.
+		n : int, optional
+		    The number of time points to compute (if `t` is not given).
 		
 		Returns
 		-------
-		I : ndarray of shape (N,M)
-		  An array where all elements are equal to zero, except for the `k`-th
-		  diagonal, whose values are equal to one.
+		tout : ndarray
+		    Output time points, as a 1-D array.
+		yout : ndarray
+		    Step response of system.  Each element of the tuple represents
+		    the output of the system based on a step response to each input.
 		
 		See Also
 		--------
-		identity : (almost) equivalent function
-		diag : diagonal 2-D array from a 1-D array specified by the user.
-		
-		Examples
-		--------
-		>>> np.eye(2, dtype=int)
-		array([[1, 0],
-		       [0, 1]])
-		>>> np.eye(3, k=1)
-		array([[ 0.,  1.,  0.],
-		       [ 0.,  0.,  1.],
-		       [ 0.,  0.,  0.]])
+		step, dimpulse, dlsim, cont2discrete
 	**/
-	static public function eye(N:Dynamic, ?M:Dynamic, ?k:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function dstep(system:Dynamic, ?x0:Dynamic, ?t:Dynamic, ?n:Dynamic):Dynamic;
 	/**
 		Calculate the frequency response of a continuous-time system.
 		
 		Parameters
 		----------
-		system : an instance of the LTI class or a tuple describing the system.
+		system : an instance of the `lti` class or a tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
 		
 		w : array_like, optional
 		    Array of frequencies (in rad/s). Magnitude and phase data is
-		    calculated for every value in this array. If not given a reasonable
+		    calculated for every value in this array. If not given, a reasonable
 		    set will be calculated.
 		n : int, optional
 		    Number of frequency points to compute if `w` is not given. The `n`
@@ -533,15 +711,22 @@ package scipy.signal.ltisys;
 		H : 1D ndarray
 		    Array of complex magnitude values
 		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		Examples
 		--------
-		# Generating the Nyquist plot of a transfer function
+		Generating the Nyquist plot of a transfer function
 		
 		>>> from scipy import signal
 		>>> import matplotlib.pyplot as plt
 		
-		>>> s1 = signal.lti([], [1, 1, 1], [5])
-		# transfer function: H(s) = 5 / (s-1)^3
+		Transfer function: H(s) = 5 / (s-1)^3
+		
+		>>> s1 = signal.ZerosPolesGain([], [1, 1, 1], [5])
 		
 		>>> w, H = signal.freqresp(s1)
 		
@@ -554,20 +739,20 @@ package scipy.signal.ltisys;
 	/**
 		Compute frequency response of analog filter.
 		
-		Given the numerator `b` and denominator `a` of a filter, compute its
-		frequency response::
+		Given the M-order numerator `b` and N-order denominator `a` of an analog
+		filter, compute its frequency response::
 		
-		         b[0]*(jw)**(nb-1) + b[1]*(jw)**(nb-2) + ... + b[nb-1]
-		 H(w) = -------------------------------------------------------
-		         a[0]*(jw)**(na-1) + a[1]*(jw)**(na-2) + ... + a[na-1]
+		         b[0]*(jw)**M + b[1]*(jw)**(M-1) + ... + b[M]
+		 H(w) = ----------------------------------------------
+		         a[0]*(jw)**N + a[1]*(jw)**(N-1) + ... + a[N]
 		
 		Parameters
 		----------
-		b : ndarray
+		b : array_like
 		    Numerator of a linear filter.
-		a : ndarray
+		a : array_like
 		    Denominator of a linear filter.
-		worN : {None, int}, optional
+		worN : {None, int, array_like}, optional
 		    If None, then compute at 200 frequencies around the interesting parts
 		    of the response curve (determined by pole-zero locations).  If a single
 		    integer, then compute at that many frequencies.  Otherwise, compute the
@@ -580,7 +765,7 @@ package scipy.signal.ltisys;
 		Returns
 		-------
 		w : ndarray
-		    The angular frequencies at which h was computed.
+		    The angular frequencies at which `h` was computed.
 		h : ndarray
 		    The frequency response.
 		
@@ -611,6 +796,77 @@ package scipy.signal.ltisys;
 	**/
 	static public function freqs(b:Dynamic, a:Dynamic, ?worN:Dynamic, ?plot:Dynamic):Dynamic;
 	/**
+		Compute the frequency response of a digital filter.
+		
+		Given the M-order numerator `b` and N-order denominator `a` of a digital
+		filter, compute its frequency response::
+		
+		             jw               -jw               -jwM
+		    jw    B(e  )  b[0] + b[1]e    + .... + b[M]e
+		 H(e  ) = ---- = -----------------------------------
+		             jw               -jw               -jwN
+		          A(e  )  a[0] + a[1]e    + .... + a[N]e
+		
+		Parameters
+		----------
+		b : array_like
+		    numerator of a linear filter
+		a : array_like
+		    denominator of a linear filter
+		worN : {None, int, array_like}, optional
+		    If None (default), then compute at 512 frequencies equally spaced
+		    around the unit circle.
+		    If a single integer, then compute at that many frequencies.
+		    If an array_like, compute the response at the frequencies given (in
+		    radians/sample).
+		whole : bool, optional
+		    Normally, frequencies are computed from 0 to the Nyquist frequency,
+		    pi radians/sample (upper-half of unit-circle).  If `whole` is True,
+		    compute frequencies from 0 to 2*pi radians/sample.
+		plot : callable
+		    A callable that takes two arguments. If given, the return parameters
+		    `w` and `h` are passed to plot. Useful for plotting the frequency
+		    response inside `freqz`.
+		
+		Returns
+		-------
+		w : ndarray
+		    The normalized frequencies at which `h` was computed, in
+		    radians/sample.
+		h : ndarray
+		    The frequency response.
+		
+		Notes
+		-----
+		Using Matplotlib's "plot" function as the callable for `plot` produces
+		unexpected results,  this plots the real part of the complex transfer
+		function, not the magnitude.  Try ``lambda w, h: plot(w, abs(h))``.
+		
+		Examples
+		--------
+		>>> from scipy import signal
+		>>> b = signal.firwin(80, 0.5, window=('kaiser', 8))
+		>>> w, h = signal.freqz(b)
+		
+		>>> import matplotlib.pyplot as plt
+		>>> fig = plt.figure()
+		>>> plt.title('Digital filter frequency response')
+		>>> ax1 = fig.add_subplot(111)
+		
+		>>> plt.plot(w, 20 * np.log10(abs(h)), 'b')
+		>>> plt.ylabel('Amplitude [dB]', color='b')
+		>>> plt.xlabel('Frequency [rad/sample]')
+		
+		>>> ax2 = ax1.twinx()
+		>>> angles = np.unwrap(np.angle(h))
+		>>> plt.plot(w, angles, 'g')
+		>>> plt.ylabel('Angle (radians)', color='g')
+		>>> plt.grid()
+		>>> plt.axis('tight')
+		>>> plt.show()
+	**/
+	static public function freqz(b:Dynamic, ?a:Dynamic, ?worN:Dynamic, ?whole:Dynamic, ?plot:Dynamic):Dynamic;
+	/**
 		Impulse response of continuous-time system.
 		
 		Parameters
@@ -620,6 +876,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -638,6 +895,12 @@ package scipy.signal.ltisys;
 		yout : ndarray
 		    A 1-D array containing the impulse response of the system (except for
 		    singularities at zero).
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function impulse(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -650,6 +913,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -684,6 +948,10 @@ package scipy.signal.ltisys;
 		-----
 		The solution is generated by calling `scipy.signal.lsim2`, which uses
 		the differential equation solver `scipy.integrate.odeint`.
+		
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 		
 		.. versionadded:: 0.8.0
 		
@@ -781,6 +1049,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		    * 1: (instance of `lti`)
 		    * 2: (num, den)
 		    * 3: (zeros, poles, gain)
 		    * 4: (A, B, C, D)
@@ -808,6 +1077,12 @@ package scipy.signal.ltisys;
 		xout : ndarray
 		    Time evolution of the state vector.
 		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		Examples
 		--------
 		Simulate a double integrator y'' = u, with a constant input u = 1
@@ -827,10 +1102,11 @@ package scipy.signal.ltisys;
 		
 		Parameters
 		----------
-		system : an instance of the LTI class or a tuple describing the system.
+		system : an instance of the `lti` class or a tuple describing the system.
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		    * 1: (instance of `lti`)
 		    * 2: (num, den)
 		    * 3: (zeros, poles, gain)
 		    * 4: (A, B, C, D)
@@ -867,6 +1143,10 @@ package scipy.signal.ltisys;
 		system's differential equations.  Additional keyword arguments
 		given to `lsim2` are passed on to `odeint`.  See the documentation
 		for `scipy.integrate.odeint` for the full list of arguments.
+		
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function lsim2(system:Dynamic, ?U:Dynamic, ?T:Dynamic, ?X0:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1140,107 +1420,7 @@ package scipy.signal.ltisys;
 		>>> plt.legend(bbox_to_anchor=(1.05, 1), loc=2, numpoints=1)
 	**/
 	static public function place_poles(A:Dynamic, B:Dynamic, poles:Dynamic, ?method:Dynamic, ?rtol:Dynamic, ?maxiter:Dynamic):Dynamic;
-	/**
-		Find the coefficients of a polynomial with the given sequence of roots.
-		
-		Returns the coefficients of the polynomial whose leading coefficient
-		is one for the given sequence of zeros (multiple roots must be included
-		in the sequence as many times as their multiplicity; see Examples).
-		A square matrix (or array, which will be treated as a matrix) can also
-		be given, in which case the coefficients of the characteristic polynomial
-		of the matrix are returned.
-		
-		Parameters
-		----------
-		seq_of_zeros : array_like, shape (N,) or (N, N)
-		    A sequence of polynomial roots, or a square array or matrix object.
-		
-		Returns
-		-------
-		c : ndarray
-		    1D array of polynomial coefficients from highest to lowest degree:
-		
-		    ``c[0] * x**(N) + c[1] * x**(N-1) + ... + c[N-1] * x + c[N]``
-		    where c[0] always equals 1.
-		
-		Raises
-		------
-		ValueError
-		    If input is the wrong shape (the input must be a 1-D or square
-		    2-D array).
-		
-		See Also
-		--------
-		polyval : Evaluate a polynomial at a point.
-		roots : Return the roots of a polynomial.
-		polyfit : Least squares polynomial fit.
-		poly1d : A one-dimensional polynomial class.
-		
-		Notes
-		-----
-		Specifying the roots of a polynomial still leaves one degree of
-		freedom, typically represented by an undetermined leading
-		coefficient. [1]_ In the case of this function, that coefficient -
-		the first one in the returned array - is always taken as one. (If
-		for some reason you have one other point, the only automatic way
-		presently to leverage that information is to use ``polyfit``.)
-		
-		The characteristic polynomial, :math:`p_a(t)`, of an `n`-by-`n`
-		matrix **A** is given by
-		
-		    :math:`p_a(t) = \mathrm{det}(t\, \mathbf{I} - \mathbf{A})`,
-		
-		where **I** is the `n`-by-`n` identity matrix. [2]_
-		
-		References
-		----------
-		.. [1] M. Sullivan and M. Sullivan, III, "Algebra and Trignometry,
-		   Enhanced With Graphing Utilities," Prentice-Hall, pg. 318, 1996.
-		
-		.. [2] G. Strang, "Linear Algebra and Its Applications, 2nd Edition,"
-		   Academic Press, pg. 182, 1980.
-		
-		Examples
-		--------
-		Given a sequence of a polynomial's zeros:
-		
-		>>> np.poly((0, 0, 0)) # Multiple root example
-		array([1, 0, 0, 0])
-		
-		The line above represents z**3 + 0*z**2 + 0*z + 0.
-		
-		>>> np.poly((-1./2, 0, 1./2))
-		array([ 1.  ,  0.  , -0.25,  0.  ])
-		
-		The line above represents z**3 - z/4
-		
-		>>> np.poly((np.random.random(1.)[0], 0, np.random.random(1.)[0]))
-		array([ 1.        , -0.77086955,  0.08618131,  0.        ]) #random
-		
-		Given a square array object:
-		
-		>>> P = np.array([[0, 1./3], [-1./2, 0]])
-		>>> np.poly(P)
-		array([ 1.        ,  0.        ,  0.16666667])
-		
-		Or a square matrix object:
-		
-		>>> np.poly(np.matrix(P))
-		array([ 1.        ,  0.        ,  0.16666667])
-		
-		Note how in all cases the leading coefficient is always 1.
-	**/
-	static public function poly(seq_of_zeros:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
-	/**
-		Return the product of array elements over a given axis.
-		
-		See Also
-		--------
-		prod : equivalent function; see for details.
-	**/
-	static public function product(a:Dynamic, ?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?keepdims:Dynamic):Dynamic;
-	static public var r_ : Dynamic;
 	/**
 		Return the real part of the elements of the array.
 		
@@ -1485,6 +1665,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -1506,6 +1687,12 @@ package scipy.signal.ltisys;
 		See also
 		--------
 		scipy.signal.step2
+		
+		Notes
+		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
 	**/
 	static public function step(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic):Dynamic;
 	/**
@@ -1522,6 +1709,7 @@ package scipy.signal.ltisys;
 		    The following gives the number of elements in the tuple and
 		    the interpretation:
 		
+		        * 1 (instance of `lti`)
 		        * 2 (num, den)
 		        * 3 (zeros, poles, gain)
 		        * 4 (A, B, C, D)
@@ -1551,6 +1739,10 @@ package scipy.signal.ltisys;
 		
 		Notes
 		-----
+		If (num, den) is passed in for ``system``, coefficients for both the
+		numerator and denominator should be specified in descending exponent
+		order (e.g. ``s^2 + 3s + 5`` would be represented as ``[1, 3, 5]``).
+		
 		.. versionadded:: 0.8.0
 	**/
 	static public function step2(system:Dynamic, ?X0:Dynamic, ?T:Dynamic, ?N:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -1560,8 +1752,9 @@ package scipy.signal.ltisys;
 		Parameters
 		----------
 		num, den : array_like
-		    Sequences representing the numerator and denominator polynomials.
-		    The denominator needs to be at least as long as the numerator.
+		    Sequences representing the coefficients of the numerator and
+		    denominator polynomials, in order of descending degree. The
+		    denominator needs to be at least as long as the numerator.
 		
 		Returns
 		-------
@@ -1600,7 +1793,7 @@ package scipy.signal.ltisys;
 		>>> C
 		array([[ 1.,  2.]])
 		>>> D
-		array([ 1.])
+		array([[ 1.]])
 	**/
 	static public function tf2ss(num:Dynamic, den:Dynamic):Dynamic;
 	/**
@@ -1683,7 +1876,7 @@ package scipy.signal.ltisys;
 		
 		See Also
 		--------
-		rollaxis
+		moveaxis
 		argsort
 		
 		Notes

@@ -419,6 +419,12 @@ package pandas.tseries.common;
 	**/
 	public var weekday : Dynamic;
 	/**
+		The name of day in a week (ex: Friday)
+		
+		.. versionadded:: 0.18.1
+	**/
+	public var weekday_name : Dynamic;
+	/**
 		The week ordinal of the year
 	**/
 	public var weekofyear : Dynamic;

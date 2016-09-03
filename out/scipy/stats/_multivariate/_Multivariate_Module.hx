@@ -244,7 +244,7 @@ package scipy.stats._multivariate;
 		>>> try:
 		...     np.asarray_chkfinite(a)
 		... except ValueError:
-		...     print 'ValueError'
+		...     print('ValueError')
 		...
 		ValueError
 	**/
@@ -252,7 +252,7 @@ package scipy.stats._multivariate;
 	/**
 		Turn seed into a np.random.RandomState instance
 		
-		If seed is None (or np.random), return the RandomState singleton used 
+		If seed is None (or np.random), return the RandomState singleton used
 		by np.random.
 		If seed is an int, return a new RandomState instance seeded with seed.
 		If seed is already a RandomState instance, return it.
@@ -337,21 +337,72 @@ package scipy.stats._multivariate;
 	static public var dirichlet_docdict_params : Dynamic;
 	static public var division : Dynamic;
 	/**
-		gammaln(x[, out])
+		x,y = drot(x,y,c,s,[n,offx,incx,offy,incy,overwrite_x,overwrite_y])
 		
-		gammaln(z)
+		Wrapper for ``drot``.
 		
-		Logarithm of absolute value of gamma function
+		Parameters
+		----------
+		x : input rank-1 array('d') with bounds (*)
+		y : input rank-1 array('d') with bounds (*)
+		c : input float
+		s : input float
 		
-		Defined as::
+		Other Parameters
+		----------------
+		n : input int, optional
+		    Default: (len(x)-1-offx)/abs(incx)+1
+		overwrite_x : input int, optional
+		    Default: 0
+		offx : input int, optional
+		    Default: 0
+		incx : input int, optional
+		    Default: 1
+		overwrite_y : input int, optional
+		    Default: 0
+		offy : input int, optional
+		    Default: 0
+		incy : input int, optional
+		    Default: 1
 		
-		    ln(abs(gamma(z)))
+		Returns
+		-------
+		x : rank-1 array('d') with bounds (*)
+		y : rank-1 array('d') with bounds (*)
+	**/
+	static public function drot(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Logarithm of the absolute value of the Gamma function for real inputs.
+		
+		Parameters
+		----------
+		x : array-like
+		    Values on the real line at which to compute ``gammaln``
+		
+		Returns
+		-------
+		gammaln : ndarray
+		    Values of ``gammaln`` at x.
 		
 		See Also
 		--------
-		gammasgn
+		gammasgn : sign of the gamma function
+		loggamma : principal branch of the logarithm of the gamma function
+		
+		Notes
+		-----
+		When used in conjunction with `gammasgn`, this function is useful
+		for working in logspace on the real axis without having to deal with
+		complex numbers, via the relation ``exp(gammaln(x)) = gammasgn(x)*gamma(x)``.
+		
+		Note that `gammaln` currently accepts complex-valued inputs, but it is not
+		the same function as for real-valued inputs, and the branch is not
+		well-defined --- using `gammaln` with complex is deprecated and will be
+		disallowed in future Scipy versions.
+		
+		For complex-valued log-gamma, use `loggamma` instead of `gammaln`.
 	**/
-	static public function gammaln(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function gammaln(x:Dynamic):Dynamic;
 	/**
 		Return available LAPACK function objects from names.
 		
@@ -571,7 +622,7 @@ package scipy.stats._multivariate;
 		The `matrix_normal` distribution is closely related to the
 		`multivariate_normal` distribution. Specifically, :math:`\mathrm{Vec}(X)`
 		(the vector formed by concatenating the columns  of :math:`X`) has a
-		multivariate normal distribution with mean :math:`\mathrm{Vec}(M)` 
+		multivariate normal distribution with mean :math:`\mathrm{Vec}(M)`
 		and covariance :math:`V \otimes U` (where :math:`\otimes` is the Kronecker
 		product). Sampling and pdf evaluation are
 		:math:`\mathcal{O}(m^3 + n^3 + m^2 n + m n^2)` for the matrix normal, but
@@ -602,7 +653,7 @@ package scipy.stats._multivariate;
 		       [ 4.1,  5.1]])
 		>>> matrix_normal.pdf(X, mean=M, rowcov=U, colcov=V)
 		0.023410202050005054
-		   
+		
 		>>> # Equivalent multivariate normal
 		>>> from scipy.stats import multivariate_normal
 		>>> vectorised_X = X.T.flatten()
@@ -681,19 +732,23 @@ package scipy.stats._multivariate;
 		
 		Notes
 		-----
-		The formal definition of the multivariate gamma of dimension d for a real a
-		is::
+		The formal definition of the multivariate gamma of dimension d for a real
+		`a` is
 		
-		    \Gamma_d(a) = \int_{A>0}{e^{-tr(A)\cdot{|A|}^{a - (m+1)/2}dA}}
+		.. math::
 		
-		with the condition ``a > (d-1)/2``, and ``A > 0`` being the set of all the
-		positive definite matrices of dimension s.  Note that a is a scalar: the
-		integrand only is multivariate, the argument is not (the function is
-		defined over a subset of the real set).
+		    \Gamma_d(a) = \int_{A>0} e^{-tr(A)} |A|^{a - (d+1)/2} dA
 		
-		This can be proven to be equal to the much friendlier equation::
+		with the condition :math:`a > (d-1)/2`, and :math:`A > 0` being the set of
+		all the positive definite matrices of dimension `d`.  Note that `a` is a
+		scalar: the integrand only is multivariate, the argument is not (the
+		function is defined over a subset of the real set).
 		
-		    \Gamma_d(a) = \pi^{d(d-1)/4}\prod_{i=1}^{d}{\Gamma(a - (i-1)/2)}.
+		This can be proven to be equal to the much friendlier equation
+		
+		.. math::
+		
+		    \Gamma_d(a) = \pi^{d(d-1)/4} \prod_{i=1}^{d} \Gamma(a - (i-1)/2).
 		
 		References
 		----------
@@ -796,18 +851,56 @@ package scipy.stats._multivariate;
 	static public var mvn_docdict_noparams : Dynamic;
 	static public var mvn_docdict_params : Dynamic;
 	static public var name : Dynamic;
+	static public var ortho_group : Dynamic;
 	static public var print_function : Dynamic;
 	/**
 		psi(x[, out])
 		
-		psi(z)
+		psi(z, out=None)
 		
-		Digamma function
+		The digamma function.
 		
-		The derivative of the logarithm of the gamma function evaluated at
-		`z` (also called the digamma function).
+		The logarithmic derivative of the gamma function evaluated at ``z``.
+		
+		Parameters
+		----------
+		z : array_like
+		    Real or complex argument.
+		out : ndarray, optional
+		    Array for the computed values of ``psi``.
+		
+		Returns
+		-------
+		digamma : ndarray
+		    Computed values of ``psi``.
+		
+		Notes
+		-----
+		For large values not close to the negative real axis ``psi`` is
+		computed using the asymptotic series (5.11.2) from [1]_. For small
+		arguments not close to the negative real axis the recurrence
+		relation (5.5.2) from [1]_ is used until the argument is large
+		enough to use the asymptotic series. For values close to the
+		negative real axis the reflection formula (5.5.4) from [1]_ is
+		used first.  Note that ``psi`` has a family of zeros on the
+		negative real axis which occur between the poles at nonpositive
+		integers. Around the zeros the reflection formula suffers from
+		cancellation and the implementation loses precision. The sole
+		positive zero and the first negative zero, however, are handled
+		separately by precomputing series expansions using [2]_, so the
+		function should maintain full accuracy around the origin.
+		
+		References
+		----------
+		.. [1] NIST Digital Library of Mathematical Functions
+		       http://dlmf.nist.gov/5
+		.. [2] Fredrik Johansson and others.
+		       "mpmath: a Python library for arbitrary-precision floating-point arithmetic"
+		       (Version 0.19) http://mpmath.org/
 	**/
 	static public function psi(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var random_correlation : Dynamic;
+	static public function special_ortho_group(?dim:Dynamic, ?seed:Dynamic):Dynamic;
 	/**
 		A Wishart random variable.
 		

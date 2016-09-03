@@ -27,6 +27,17 @@ package pandas.core.config_init;
 	/**
 		Parameters
 		----------
+		`obj` - the object to be checked
+		
+		Returns
+		-------
+		validator - returns True if object is callable
+		    raises ValueError otherwise.
+	**/
+	static public function is_callable(obj:Dynamic):Dynamic;
+	/**
+		Parameters
+		----------
 		`_type` - the type to be checked against
 		
 		Returns

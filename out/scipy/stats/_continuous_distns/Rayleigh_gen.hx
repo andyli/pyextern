@@ -125,6 +125,7 @@ package scipy.stats._continuous_distns;
 		 0's where they are not.
 	**/
 	public function _argcheck(?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _argcheck_rvs(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _cdf(r:Dynamic):Dynamic;
 	public function _cdf_single(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	/**
@@ -173,18 +174,20 @@ package scipy.stats._continuous_distns;
 	public function _fitstart(data:Dynamic, ?args:Dynamic):Dynamic;
 	public function _isf(q:Dynamic):Dynamic;
 	public function _logcdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	public function _logpdf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
-	public function _logsf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _logpdf(r:Dynamic):Dynamic;
+	public function _logsf(r:Dynamic):Dynamic;
 	public function _mom0_sc(m:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _mom1_sc(m:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _mom_integ0(x:Dynamic, m:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _mom_integ1(q:Dynamic, m:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _munp(n:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
 	public function _nnlf(x:Dynamic, ?args:python.VarArgs<Dynamic>):Dynamic;
+	public function _nnlf_and_penalty(x:Dynamic, args:Dynamic):Dynamic;
+	public function _open_support_mask(x:Dynamic):Dynamic;
 	public function _pdf(r:Dynamic):Dynamic;
 	/**
-		Return negative loglikelihood function,
-		i.e., - sum (log pdf(x, theta), axis=0)
+		Return penalized negative loglikelihood function,
+		i.e., - sum (log pdf(x, theta), axis=0) + penalty
 		   where theta are the parameters (including loc and scale)
 	**/
 	public function _penalized_nnlf(theta:Dynamic, x:Dynamic):Dynamic;
@@ -195,6 +198,8 @@ package scipy.stats._continuous_distns;
 	public function _rvs():Dynamic;
 	public function _sf(r:Dynamic):Dynamic;
 	public function _stats():Dynamic;
+	public function _support_mask(x:Dynamic):Dynamic;
+	public function _unpack_loc_scale(theta:Dynamic):Dynamic;
 	/**
 		Return the current version of _ctor_param, possibly updated by user.
 		
@@ -245,13 +250,6 @@ package scipy.stats._continuous_distns;
 		True
 	**/
 	public function entropy(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
-	/**
-		`est_loc_scale` is deprecated!
-		
-		This function is deprecated, use self.fit_loc_scale(data) instead.
-		        
-	**/
-	public function est_loc_scale(?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Calculate expected value of a function with respect to the
 		distribution.
@@ -364,9 +362,9 @@ package scipy.stats._continuous_distns;
 		
 		Now we can fit all four parameters (``a``, ``b``, ``loc`` and ``scale``):
 		
-		>>> a1, b1, loc1, scale1 = beta.fit(x)        
+		>>> a1, b1, loc1, scale1 = beta.fit(x)
 		
-		We can also use some prior knowledge about the dataset: let's keep 
+		We can also use some prior knowledge about the dataset: let's keep
 		``loc`` and ``scale`` fixed:
 		
 		>>> a1, b1, loc1, scale1 = beta.fit(x, floc=0, fscale=1)

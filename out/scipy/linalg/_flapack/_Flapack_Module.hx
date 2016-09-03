@@ -616,6 +616,57 @@ package scipy.linalg._flapack;
 	**/
 	static public function cgesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		u,s,vt,info = cgesvd(a,[compute_uv,full_matrices,lwork,overwrite_a])
+		
+		Wrapper for ``cgesvd``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('F') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		lwork : input int, optional
+		    Default: MAX(1,2*minmn+MAX(m,n))
+		
+		Returns
+		-------
+		u : rank-2 array('F') with bounds (u0,u1)
+		s : rank-1 array('f') with bounds (minmn)
+		vt : rank-2 array('F') with bounds (vt0,vt1)
+		info : int
+	**/
+	static public function cgesvd(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = cgesvd_lwork(m,n,[compute_uv,full_matrices])
+		
+		Wrapper for ``cgesvd_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function cgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = cgetrf(a,[overwrite_a])
 		
 		Wrapper for ``cgetrf``.
@@ -2302,6 +2353,57 @@ package scipy.linalg._flapack;
 	**/
 	static public function dgesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		u,s,vt,info = dgesvd(a,[compute_uv,full_matrices,lwork,overwrite_a])
+		
+		Wrapper for ``dgesvd``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('d') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		lwork : input int, optional
+		    Default: MAX(1,MAX(3*minmn+MAX(m,n),5*minmn))
+		
+		Returns
+		-------
+		u : rank-2 array('d') with bounds (u0,u1)
+		s : rank-1 array('d') with bounds (minmn)
+		vt : rank-2 array('d') with bounds (vt0,vt1)
+		info : int
+	**/
+	static public function dgesvd(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = dgesvd_lwork(m,n,[compute_uv,full_matrices])
+		
+		Wrapper for ``dgesvd_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function dgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lu,piv,info = dgetrf(a,[overwrite_a])
 		
 		Wrapper for ``dgetrf``.
@@ -3411,6 +3513,18 @@ package scipy.linalg._flapack;
 	**/
 	static public function dtrtrs(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		major,minor,patch = ilaver()
+		
+		Wrapper for ``ilaver``.
+		
+		Returns
+		-------
+		major : int
+		minor : int
+		patch : int
+	**/
+	static public function ilaver(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		lub,piv,x,info = sgbsv(kl,ku,ab,b,[overwrite_ab,overwrite_b])
 		
 		Wrapper for ``sgbsv``.
@@ -4019,6 +4133,57 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function sgesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		u,s,vt,info = sgesvd(a,[compute_uv,full_matrices,lwork,overwrite_a])
+		
+		Wrapper for ``sgesvd``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('f') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		lwork : input int, optional
+		    Default: MAX(1,MAX(3*minmn+MAX(m,n),5*minmn))
+		
+		Returns
+		-------
+		u : rank-2 array('f') with bounds (u0,u1)
+		s : rank-1 array('f') with bounds (minmn)
+		vt : rank-2 array('f') with bounds (vt0,vt1)
+		info : int
+	**/
+	static public function sgesvd(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = sgesvd_lwork(m,n,[compute_uv,full_matrices])
+		
+		Wrapper for ``sgesvd_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		work : float
+		info : int
+	**/
+	static public function sgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lu,piv,info = sgetrf(a,[overwrite_a])
 		
@@ -5735,6 +5900,57 @@ package scipy.linalg._flapack;
 		info : int
 	**/
 	static public function zgesv(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		u,s,vt,info = zgesvd(a,[compute_uv,full_matrices,lwork,overwrite_a])
+		
+		Wrapper for ``zgesvd``.
+		
+		Parameters
+		----------
+		a : input rank-2 array('D') with bounds (m,n)
+		
+		Other Parameters
+		----------------
+		overwrite_a : input int, optional
+		    Default: 0
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		lwork : input int, optional
+		    Default: MAX(1,2*minmn+MAX(m,n))
+		
+		Returns
+		-------
+		u : rank-2 array('D') with bounds (u0,u1)
+		s : rank-1 array('d') with bounds (minmn)
+		vt : rank-2 array('D') with bounds (vt0,vt1)
+		info : int
+	**/
+	static public function zgesvd(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		work,info = zgesvd_lwork(m,n,[compute_uv,full_matrices])
+		
+		Wrapper for ``zgesvd_lwork``.
+		
+		Parameters
+		----------
+		m : input int
+		n : input int
+		
+		Other Parameters
+		----------------
+		compute_uv : input int, optional
+		    Default: 1
+		full_matrices : input int, optional
+		    Default: 1
+		
+		Returns
+		-------
+		work : complex
+		info : int
+	**/
+	static public function zgesvd_lwork(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		lu,piv,info = zgetrf(a,[overwrite_a])
 		

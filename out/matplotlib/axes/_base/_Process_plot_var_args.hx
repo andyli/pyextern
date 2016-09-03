@@ -131,7 +131,6 @@ package matplotlib.axes._base;
 	**/
 	public function _setdefaults(defaults:Dynamic, ?kwargs:python.VarArgs<Dynamic>):Dynamic;
 	public function _xy_from_xy(x:Dynamic, y:Dynamic):Dynamic;
-	public function set_lineprops(line:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_patchprops(fill_poly:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function set_prop_cycle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

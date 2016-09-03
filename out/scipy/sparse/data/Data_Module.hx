@@ -20,41 +20,71 @@ package scipy.sparse.data;
 	static public function isscalarlike(x:Dynamic):Dynamic;
 	static public var name : Dynamic;
 	/**
-		expm1(x[, out])
+		arctan(x[, out])
 		
-		Calculate ``exp(x) - 1`` for all elements in the array.
+		Trigonometric inverse tangent, element-wise.
+		
+		The inverse of tan, so that if ``y = tan(x)`` then ``x = arctan(y)``.
 		
 		Parameters
 		----------
 		x : array_like
-		   Input values.
+		    Input values.  `arctan` is applied to each element of `x`.
 		
 		Returns
 		-------
 		out : ndarray
-		    Element-wise exponential minus one: ``out = exp(x) - 1``.
+		    Out has the same shape as `x`.  Its real part is in
+		    ``[-pi/2, pi/2]`` (``arctan(+/-inf)`` returns ``+/-pi/2``).
+		    It is a scalar if `x` is a scalar.
 		
 		See Also
 		--------
-		log1p : ``log(1 + x)``, the inverse of expm1.
-		
+		arctan2 : The "four quadrant" arctan of the angle formed by (`x`, `y`)
+		    and the positive `x`-axis.
+		angle : Argument of complex values.
 		
 		Notes
 		-----
-		This function provides greater precision than ``exp(x) - 1``
-		for small values of ``x``.
+		`arctan` is a multi-valued function: for each `x` there are infinitely
+		many numbers `z` such that tan(`z`) = `x`.  The convention is to return
+		the angle `z` whose real part lies in [-pi/2, pi/2].
+		
+		For real-valued input data types, `arctan` always returns real output.
+		For each value that cannot be expressed as a real number or infinity,
+		it yields ``nan`` and sets the `invalid` floating point error flag.
+		
+		For complex-valued input, `arctan` is a complex analytic function that
+		has [`1j, infj`] and [`-1j, -infj`] as branch cuts, and is continuous
+		from the left on the former and from the right on the latter.
+		
+		The inverse tangent is also known as `atan` or tan^{-1}.
+		
+		References
+		----------
+		Abramowitz, M. and Stegun, I. A., *Handbook of Mathematical Functions*,
+		10th printing, New York: Dover, 1964, pp. 79.
+		http://www.math.sfu.ca/~cbm/aands/
 		
 		Examples
 		--------
-		The true value of ``exp(1e-10) - 1`` is ``1.00000000005e-10`` to
-		about 32 significant digits. This example shows the superiority of
-		expm1 in this case.
+		We expect the arctan of 0 to be 0, and of 1 to be pi/4:
 		
-		>>> np.expm1(1e-10)
-		1.00000000005e-10
-		>>> np.exp(1e-10) - 1
-		1.000000082740371e-10
+		>>> np.arctan([0, 1])
+		array([ 0.        ,  0.78539816])
+		
+		>>> np.pi/4
+		0.78539816339744828
+		
+		Plot arctan:
+		
+		>>> import matplotlib.pyplot as plt
+		>>> x = np.linspace(-10, 10)
+		>>> plt.plot(x, np.arctan(x))
+		>>> plt.axis('tight')
+		>>> plt.show()
 	**/
 	static public function npfunc(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var print_function : Dynamic;
+	static public function validateaxis(axis:Dynamic):Dynamic;
 }

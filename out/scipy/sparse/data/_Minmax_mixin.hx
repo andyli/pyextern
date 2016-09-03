@@ -101,28 +101,64 @@ package scipy.sparse.data;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _min_or_max(axis:Dynamic, min_or_max:Dynamic):Dynamic;
+	public function _min_or_max(axis:Dynamic, out:Dynamic, min_or_max:Dynamic):Dynamic;
 	public function _min_or_max_axis(axis:Dynamic, min_or_max:Dynamic):Dynamic;
 	/**
-		Maximum of the elements of this matrix.
-		
+		Return the maximum of the matrix or maximum along an axis.
 		This takes all elements into account, not just the non-zero ones.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the sum is computed. The default is to
+		    compute the maximum over all the matrix elements, returning
+		    a scalar (i.e. `axis` = `None`).
+		
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except
+		    for the default value, as this argument is not used.
 		
 		Returns
 		-------
-		amax : self.dtype
-		    Maximum element.
+		amax : coo_matrix or scalar
+		    Maximum of `a`. If `axis` is None, the result is a scalar value.
+		    If `axis` is given, the result is a sparse.coo_matrix of dimension
+		    ``a.ndim - 1``.
+		
+		See Also
+		--------
+		min : The minimum value of a sparse matrix along a given axis.
+		np.matrix.max : NumPy's implementation of 'max' for matrices
 	**/
-	public function max(?axis:Dynamic):Dynamic;
+	public function max(?axis:Dynamic, ?out:Dynamic):Dynamic;
 	/**
-		Minimum of the elements of this matrix.
-		
+		Return the minimum of the matrix or maximum along an axis.
 		This takes all elements into account, not just the non-zero ones.
+		
+		Parameters
+		----------
+		axis : {-2, -1, 0, 1, None} optional
+		    Axis along which the sum is computed. The default is to
+		    compute the minimum over all the matrix elements, returning
+		    a scalar (i.e. `axis` = `None`).
+		
+		out : None, optional
+		    This argument is in the signature *solely* for NumPy
+		    compatibility reasons. Do not pass in anything except for
+		    the default value, as this argument is not used.
 		
 		Returns
 		-------
-		amin : self.dtype
-		    Minimum element.
+		amin : coo_matrix or scalar
+		    Minimum of `a`. If `axis` is None, the result is a scalar value.
+		    If `axis` is given, the result is a sparse.coo_matrix of dimension
+		    ``a.ndim - 1``.
+		
+		See Also
+		--------
+		max : The maximum value of a sparse matrix along a given axis.
+		np.matrix.min : NumPy's implementation of 'min' for matrices
 	**/
-	public function min(?axis:Dynamic):Dynamic;
+	public function min(?axis:Dynamic, ?out:Dynamic):Dynamic;
 }

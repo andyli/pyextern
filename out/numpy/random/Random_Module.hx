@@ -5,7 +5,8 @@ package numpy.random;
 		allocate_lock() -> lock object
 		(allocate() is an obsolete synonym)
 		
-		Create a new lock object.  See help(LockType) for information about locks.
+		Create a new lock object. See help(type(threading.Lock())) for
+		information about locks.
 	**/
 	static public function Lock(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -31,6 +32,7 @@ package numpy.random;
 	static public var __package__ : Dynamic;
 	static public var __path__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _numpy_tester():Dynamic;
 	static public var absolute_import : Dynamic;
 	/**
 		Run benchmarks for module using nose.
@@ -784,7 +786,7 @@ package numpy.random;
 		...    means.append(a.mean())
 		...    maxima.append(a.max())
 		>>> count, bins, ignored = plt.hist(maxima, 30, normed=True)
-		>>> beta = np.std(maxima)*np.pi/np.sqrt(6)
+		>>> beta = np.std(maxima) * np.sqrt(6) / np.pi
 		>>> mu = np.mean(maxima) - 0.57721*beta
 		>>> plt.plot(bins, (1/beta)*np.exp(-(bins - mu)/beta)
 		...          * np.exp(-np.exp(-(bins - mu)/beta)),
@@ -1258,10 +1260,24 @@ package numpy.random;
 		For the first run, we threw 3 times 1, 4 times 2, etc.  For the second,
 		we threw 2 times 1, 4 times 2, etc.
 		
-		A loaded dice is more likely to land on number 6:
+		A loaded die is more likely to land on number 6:
 		
-		>>> np.random.multinomial(100, [1/7.]*5)
-		array([13, 16, 13, 16, 42])
+		>>> np.random.multinomial(100, [1/7.]*5 + [2/7.])
+		array([11, 16, 14, 17, 16, 26])
+		
+		The probability inputs should be normalized. As an implementation
+		detail, the value of the last entry is ignored and assumed to take
+		up any leftover probability mass, but this should not be relied on.
+		A biased coin which has twice as much weight on one side as on the
+		other should be sampled like so:
+		
+		>>> np.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT
+		array([38, 62])
+		
+		not like:
+		
+		>>> np.random.multinomial(100, [1.0, 2.0])  # WRONG
+		array([100,   0])
 	**/
 	static public function multinomial(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1438,7 +1454,7 @@ package numpy.random;
 		    Degrees of freedom, should be > 0 as of Numpy 1.10,
 		    should be > 1 for earlier versions.
 		nonc : float
-		    Non-centrality, should be > 0.
+		    Non-centrality, should be non-negative.
 		size : int or tuple of ints, optional
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
@@ -1927,7 +1943,7 @@ package numpy.random;
 		
 		Random values in a given shape.
 		
-		Create an array of the given shape and propagate it with
+		Create an array of the given shape and populate it with
 		random samples from a uniform distribution
 		over ``[0, 1)``.
 		
@@ -1961,13 +1977,13 @@ package numpy.random;
 	**/
 	static public function rand(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		randint(low, high=None, size=None)
+		randint(low, high=None, size=None, dtype='l')
 		
 		Return random integers from `low` (inclusive) to `high` (exclusive).
 		
-		Return random integers from the "discrete uniform" distribution in the
-		"half-open" interval [`low`, `high`). If `high` is None (the default),
-		then results are from [0, `low`).
+		Return random integers from the "discrete uniform" distribution of
+		the specified dtype in the "half-open" interval [`low`, `high`). If
+		`high` is None (the default), then results are from [0, `low`).
 		
 		Parameters
 		----------
@@ -1982,6 +1998,13 @@ package numpy.random;
 		    Output shape.  If the given shape is, e.g., ``(m, n, k)``, then
 		    ``m * n * k`` samples are drawn.  Default is None, in which case a
 		    single value is returned.
+		dtype : dtype, optional
+		    Desired dtype of the result. All dtypes are determined by their
+		    name, i.e., 'int64', 'int', etc, so byteorder is not available
+		    and a specific precision may have different C types depending
+		    on the platform. The default value is 'np.int'.
+		
+		    .. versionadded:: 1.11.0
 		
 		Returns
 		-------
@@ -2105,11 +2128,17 @@ package numpy.random;
 	/**
 		random_integers(low, high=None, size=None)
 		
-		Return random integers between `low` and `high`, inclusive.
+		Random integers of type np.int between `low` and `high`, inclusive.
 		
-		Return random integers from the "discrete uniform" distribution in the
-		closed interval [`low`, `high`].  If `high` is None (the default),
-		then results are from [1, `low`].
+		Return random integers of type np.int from the "discrete uniform"
+		distribution in the closed interval [`low`, `high`].  If `high` is
+		None (the default), then results are from [1, `low`]. The np.int
+		type translates to the C long type used by Python 2 for "short"
+		integers and its precision is platform dependent.
+		
+		This function has been deprecated. Use randint instead.
+		
+		.. deprecated:: 1.11.0
 		
 		Parameters
 		----------
@@ -2815,7 +2844,7 @@ package numpy.random;
 		
 		.. math:: P(x;l, m, r) = \begin{cases}
 		          \frac{2(x-l)}{(r-l)(m-l)}& \text{for $l \leq x \leq m$},\\
-		          \frac{2(m-x)}{(r-l)(r-m)}& \text{for $m \leq x \leq r$},\\
+		          \frac{2(r-x)}{(r-l)(r-m)}& \text{for $m \leq x \leq r$},\\
 		          0& \text{otherwise}.
 		          \end{cases}
 		

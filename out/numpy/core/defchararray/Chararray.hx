@@ -567,7 +567,7 @@ package numpy.core.defchararray;
 		-------
 		arr_t : ndarray
 		    Unless `copy` is False and the other conditions for returning the input
-		    array are satisfied (see description for `copy` input paramter), `arr_t`
+		    array are satisfied (see description for `copy` input parameter), `arr_t`
 		    is a new array of the same shape as the input array, with dtype, order
 		    given by `dtype`, `order`.
 		
@@ -918,7 +918,7 @@ package numpy.core.defchararray;
 		
 		Return specified diagonals. In NumPy 1.9 the returned array is a
 		read-only view instead of a copy as in previous NumPy versions.  In
-		NumPy 1.10 the read-only restriction will be removed.
+		a future version the read-only restriction will be removed.
 		
 		Refer to :func:`numpy.diagonal` for full documentation.
 		
@@ -1174,10 +1174,14 @@ package numpy.core.defchararray;
 		
 		Parameters
 		----------
-		order : {'C', 'F', 'A'}, optional
-		    Whether to flatten in row-major (C-style) or
-		    column-major (Fortran-style) order or preserve the
-		    C/Fortran ordering from `a`.  The default is 'C'.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    'C' means to flatten in row-major (C-style) order.
+		    'F' means to flatten in column-major (Fortran-
+		    style) order. 'A' means to flatten in column-major
+		    order if `a` is Fortran *contiguous* in memory,
+		    row-major order otherwise. 'K' means to flatten
+		    `a` in the order the elements occur in memory.
+		    The default is 'C'.
 		
 		Returns
 		-------
@@ -2544,7 +2548,7 @@ package numpy.core.defchararray;
 		>>> y = x.view(dtype=np.int16, type=np.matrix)
 		>>> y
 		matrix([[513]], dtype=int16)
-		>>> print type(y)
+		>>> print(type(y))
 		<class 'numpy.matrixlib.defmatrix.matrix'>
 		
 		Creating a view on a structured array so it can be used in calculations
@@ -2560,7 +2564,7 @@ package numpy.core.defchararray;
 		Making changes to the view changes the underlying array
 		
 		>>> xv[0,1] = 20
-		>>> print x
+		>>> print(x)
 		[(1, 20) (3, 4)]
 		
 		Using a view to convert an array to a recarray:

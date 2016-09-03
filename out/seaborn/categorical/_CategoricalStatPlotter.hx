@@ -113,7 +113,7 @@ package seaborn.categorical;
 		Add descriptive labels to an Axes object.
 	**/
 	public function annotate_axes(ax:Dynamic):Dynamic;
-	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
+	public function draw_confints(ax:Dynamic, at_group:Dynamic, confint:Dynamic, colors:Dynamic, ?errwidth:Dynamic, ?capsize:Dynamic, ?kws:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Get a list of colors for the main component of the plots.
 	**/

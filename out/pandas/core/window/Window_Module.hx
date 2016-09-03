@@ -15,12 +15,10 @@ package pandas.core.window;
 	static public function _get_center_of_mass(com:Dynamic, span:Dynamic, halflife:Dynamic, alpha:Dynamic):Dynamic;
 	static public function _offset(window:Dynamic, center:Dynamic):Dynamic;
 	static public var _pairwise_template : Dynamic;
-	static public function _pop_args(win_type:Dynamic, arg_names:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function _prep_binary(arg1:Dynamic, arg2:Dynamic):Dynamic;
 	static public function _require_min_periods(p:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _use_window(minp:Dynamic, window:Dynamic):Dynamic;
-	static public function _validate_win_type(win_type:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function _zsqrt(x:Dynamic):Dynamic;
 	/**
 		Remove any common leading whitespace from every line in `text`.

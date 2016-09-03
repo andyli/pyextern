@@ -165,7 +165,7 @@ package numpy.lib.financial;
 		>>> for payment in per:
 		...     index = payment - 1
 		...     principal = principal + ppmt[index]
-		...     print fmt.format(payment, ppmt[index], ipmt[index], principal)
+		...     print(fmt.format(payment, ppmt[index], ipmt[index], principal))
 		 1  -200.58   -17.17  2299.42
 		 2  -201.96   -15.79  2097.46
 		 3  -203.35   -14.40  1894.11
@@ -295,7 +295,7 @@ package numpy.lib.financial;
 		If you only had $150/month to pay towards the loan, how long would it take
 		to pay-off a loan of $8,000 at 7% annual interest?
 		
-		>>> print round(np.nper(0.07/12, -150, 8000), 5)
+		>>> print(round(np.nper(0.07/12, -150, 8000), 5))
 		64.07335
 		
 		So, over 64 months would be required to pay off the loan.

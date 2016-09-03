@@ -313,8 +313,8 @@ package numpy.core.numerictypes;
 		Returns
 		-------
 		out : ndarray
-		    Array of uninitialized (arbitrary) data with the given
-		    shape, dtype, and order.
+		    Array of uninitialized (arbitrary) data of the given shape, dtype, and
+		    order.  Object arrays will be initialized to None.
 		
 		See Also
 		--------
@@ -736,7 +736,7 @@ package numpy.core.numerictypes;
 		Examples
 		--------
 		>>> for sctype in [np.int32, np.float, np.complex, np.string_, np.ndarray]:
-		...     print np.sctype2char(sctype)
+		...     print(np.sctype2char(sctype))
 		l
 		d
 		D
