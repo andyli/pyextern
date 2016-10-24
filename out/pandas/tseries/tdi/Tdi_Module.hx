@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.tdi;
 @:pythonImport("pandas.tseries.tdi") extern class Tdi_Module {
-	static public var _INT64_DTYPE : Dynamic;
 	static public var _TD_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -12,11 +11,32 @@ package pandas.tseries.tdi;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		convert strings to timedelta; coerce to Timedelta (if box), else
-		np.timedelta64
+		Performs the addition of an int64 array and an int64 integer (or array)
+		but checks that they do not result in overflow first.
+		
+		Parameters
+		----------
+		arr : array addend.
+		b : array or scalar addend.
+		
+		Returns
+		-------
+		sum : An array for elements x + b for each element x in arr if b is
+		      a scalar or an array for elements x + y for each element pair
+		      (x, y) in (arr, b).
+		
+		Raises
+		------
+		OverflowError if any x + y exceeds the maximum int64 value.
+	**/
+	static public function _checked_add_with_arr(arr:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Convert string 'r' to a timedelta object.
 	**/
 	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _generate_regular_range(start:Dynamic, end:Dynamic, periods:Dynamic, offset:Dynamic):Dynamic;
+	static public var _index_shared_docs : Dynamic;
 	/**
 		return a boolean whether I can attempt conversion to a TimedeltaIndex
 	**/
@@ -36,8 +56,27 @@ package pandas.tseries.tdi;
 		return my values or the object if we are say an ndarray 
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_timedelta64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -77,25 +116,61 @@ package pandas.tseries.tdi;
 		    Make the interval closed with respect to the given frequency to
 		    the 'left', 'right', or both sides (None)
 		
-		Notes
-		-----
-		2 of start, end, or periods must be specified
-		
 		Returns
 		-------
 		rng : TimedeltaIndex
+		
+		Notes
+		-----
+		2 of start, end, or periods must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**
-		Return DateOffset object from string representation or
-		Timedelta object
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
 		
 		Examples
 		--------
-		>>> to_offset('5Min')
-		Minute(5)
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
 	**/
-	static public function to_offset(freqstr:Dynamic):Dynamic;
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
 		Convert argument to timedelta
 		

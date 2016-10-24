@@ -50,7 +50,7 @@ package numpy.ma.core;
 	/**
 		Check whether there are masked values along the given axis
 	**/
-	static public function _check_mask_axis(mask:Dynamic, axis:Dynamic):Dynamic;
+	static public function _check_mask_axis(mask:Dynamic, axis:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
 		Internal function that builds a new MaskedArray from the
 		information stored in a pickle.
@@ -72,8 +72,37 @@ package numpy.ma.core;
 		Private function allowing for recursion
 	**/
 	static public function _recursive_printoption(result:Dynamic, mask:Dynamic, printopt:Dynamic):Dynamic;
-	static public function _recursive_set_default_fill_value(dtypedescr:Dynamic):Dynamic;
-	static public function _recursive_set_fill_value(fillvalue:Dynamic, dtypedescr:Dynamic):Dynamic;
+	/**
+		Create the default fill value for a structured dtype.
+		
+		Parameters
+		----------
+		dt: dtype
+		    The structured dtype for which to create the fill value.
+		
+		Returns
+		-------
+		val: tuple
+		    A tuple of values corresponding to the default structured fill value.
+	**/
+	static public function _recursive_set_default_fill_value(dt:Dynamic):Dynamic;
+	/**
+		Create a fill value for a structured dtype.
+		
+		Parameters
+		----------
+		fillvalue: scalar or array_like
+		    Scalar or array representing the fill value. If it is of shorter
+		    length than the number of fields in dt, it will be resized.
+		dt: dtype
+		    The structured dtype for which to create the fill value.
+		
+		Returns
+		-------
+		val: tuple
+		    A tuple of values corresponding to the structured fill value.
+	**/
+	static public function _recursive_set_fill_value(fillvalue:Dynamic, dt:Dynamic):Dynamic;
 	/**
 		absolute(x[, out])
 		
@@ -190,28 +219,20 @@ package numpy.ma.core;
 	**/
 	static public function add(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		all(self, axis=None, out=None)
+		all(self, axis=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
-		Check if all of the elements of `a` are true.
+		Returns True if all elements evaluate to True.
 		
-		Performs a :func:`logical_and` over the given axis and returns the result.
-		Masked values are considered as True during computation.
-		For convenience, the output array is masked where ALL the values along the
-		current axis are masked: if the output would have been a scalar and that
-		all the values are masked, then the output is `masked`.
+		The output array is masked where all the values along the given axis
+		are masked: if the output would have been a scalar and that all the
+		values are masked, then the output is `masked`.
 		
-		Parameters
-		----------
-		axis : {None, integer}
-		    Axis to perform the operation over.
-		    If None, perform over flattened array.
-		out : {None, array}, optional
-		    Array into which the result can be placed. Its type is preserved
-		    and it must be of the right shape to hold the output.
+		Refer to `numpy.all` for full documentation.
 		
 		See Also
 		--------
-		all : equivalent function
+		ndarray.all : corresponding function for ndarrays
+		numpy.all : equivalent function
 		
 		Examples
 		--------
@@ -357,10 +378,17 @@ package numpy.ma.core;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amax` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -434,10 +462,17 @@ package numpy.ma.core;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amin` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -588,25 +623,18 @@ package numpy.ma.core;
 	**/
 	static public function anomalies(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		any(self, axis=None, out=None)
+		any(self, axis=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
-		Check if any of the elements of `a` are true.
+		Returns True if any of the elements of `a` evaluate to True.
 		
-		Performs a logical_or over the given axis and returns the result.
 		Masked values are considered as False during computation.
 		
-		Parameters
-		----------
-		axis : {None, integer}
-		    Axis to perform the operation over.
-		    If None, perform over flattened array and return a scalar.
-		out : {None, array}, optional
-		    Array into which the result can be placed. Its type is preserved
-		    and it must be of the right shape to hold the output.
+		Refer to `numpy.any` for full documentation.
 		
 		See Also
 		--------
-		any : equivalent function
+		ndarray.any : corresponding function for ndarrays
+		numpy.any : equivalent function
 	**/
 	static public function any(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1121,6 +1149,8 @@ package numpy.ma.core;
 	**/
 	static public function arctanh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
+		argmax(self, axis=None, fill_value=None, out=None)
+		
 		Returns array of indices of the maximum values along the given axis.
 		Masked values are treated as if they had the value fill_value.
 		
@@ -1150,8 +1180,10 @@ package numpy.ma.core;
 		>>> a.argmax(1)
 		array([2, 2])
 	**/
-	static public function argmax(a:Dynamic, ?axis:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function argmax(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		argmin(self, axis=None, fill_value=None, out=None)
+		
 		Return array of indices to the minimum values along the given axis.
 		
 		Parameters
@@ -1185,7 +1217,7 @@ package numpy.ma.core;
 		>>> print(x.argmin(axis=0, fill_value=9))
 		[1 1]
 	**/
-	static public function argmin(a:Dynamic, ?axis:Dynamic, ?fill_value:Dynamic):Dynamic;
+	static public function argmin(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an ndarray of indices that sort the array along the
 		specified axis.  Masked values are filled beforehand to
@@ -1945,20 +1977,33 @@ package numpy.ma.core;
 	**/
 	static public function cosh(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
+		count(self, axis=None, keepdims=<class 'numpy._globals._NoValue'>)
+		
 		Count the non-masked elements of the array along the given axis.
 		
 		Parameters
 		----------
-		axis : int, optional
-		    Axis along which to count the non-masked elements. If `axis` is
-		    `None`, all non-masked elements are counted.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which the count is performed.
+		    The default (`axis` = `None`) performs the count over all
+		    the dimensions of the input array. `axis` may be negative, in
+		    which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.10.0
+		
+		    If this is a tuple of ints, the count is performed on multiple
+		    axes, instead of a single axis or all the axes as before.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the array.
 		
 		Returns
 		-------
-		result : int or ndarray
-		    If `axis` is `None`, an integer count is returned. When `axis` is
-		    not `None`, an array with shape determined by the lengths of the
-		    remaining axes, is returned.
+		result : ndarray or scalar
+		    An array with the same shape as the input array, with the specified
+		    axis removed. If the array is a 0-d array, or if `axis` is None, a
+		    scalar is returned.
 		
 		See Also
 		--------
@@ -1988,39 +2033,17 @@ package numpy.ma.core;
 		>>> a.count(axis=1)
 		array([3, 0])
 	**/
-	static public function count(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function count(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		cumprod(self, axis=None, dtype=None, out=None)
 		
-		Return the cumulative product of the elements along the given axis.
-		The cumulative product is taken over the flattened array by
-		default, otherwise over the specified axis.
+		Return the cumulative product of the array elements over the given axis.
 		
 		Masked values are set to 1 internally during the computation.
 		However, their position is saved, and the result will be masked at
 		the same locations.
 		
-		Parameters
-		----------
-		axis : {None, -1, int}, optional
-		    Axis along which the product is computed. The default
-		    (`axis` = None) is to compute over the flattened array.
-		dtype : {None, dtype}, optional
-		    Determines the type of the returned array and of the accumulator
-		    where the elements are multiplied. If ``dtype`` has the value ``None``
-		    and the type of ``a`` is an integer type of precision less than the
-		    default platform integer, then the default platform integer precision
-		    is used.  Otherwise, the dtype is the same as that of ``a``.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must
-		    have the same shape and buffer length as the expected output
-		    but the type will be cast if necessary.
-		
-		Returns
-		-------
-		cumprod : ndarray
-		    A new array holding the result is returned unless out is specified,
-		    in which case a reference to out is returned.
+		Refer to `numpy.cumprod` for full documentation.
 		
 		Notes
 		-----
@@ -2028,41 +2051,23 @@ package numpy.ma.core;
 		
 		Arithmetic is modular when using integer types, and no error is
 		raised on overflow.
+		
+		See Also
+		--------
+		ndarray.cumprod : corresponding function for ndarrays
+		numpy.cumprod : equivalent function
 	**/
-	static public function cumprod(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):numpy.Ndarray;
+	static public function cumprod(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		cumsum(self, axis=None, dtype=None, out=None)
 		
-		Return the cumulative sum of the elements along the given axis.
-		The cumulative sum is calculated over the flattened array by
-		default, otherwise over the specified axis.
+		Return the cumulative sum of the array elements over the given axis.
 		
 		Masked values are set to 0 internally during the computation.
 		However, their position is saved, and the result will be masked at
 		the same locations.
 		
-		Parameters
-		----------
-		axis : {None, -1, int}, optional
-		    Axis along which the sum is computed. The default (`axis` = None) is to
-		    compute over the flattened array. `axis` may be negative, in which case
-		    it counts from the   last to the first axis.
-		dtype : {None, dtype}, optional
-		    Type of the returned array and of the accumulator in which the
-		    elements are summed.  If `dtype` is not specified, it defaults
-		    to the dtype of `a`, unless `a` has an integer dtype with a
-		    precision less than that of the default platform integer.  In
-		    that case, the default platform integer is used.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must
-		    have the same shape and buffer length as the expected output
-		    but the type will be cast if necessary.
-		
-		Returns
-		-------
-		cumsum : ndarray.
-		    A new array holding the result is returned unless ``out`` is
-		    specified, in which case a reference to ``out`` is returned.
+		Refer to `numpy.cumsum` for full documentation.
 		
 		Notes
 		-----
@@ -2070,6 +2075,11 @@ package numpy.ma.core;
 		
 		Arithmetic is modular when using integer types, and no error is
 		raised on overflow.
+		
+		See Also
+		--------
+		ndarray.cumsum : corresponding function for ndarrays
+		numpy.cumsum : equivalent function
 		
 		Examples
 		--------
@@ -5046,7 +5056,7 @@ package numpy.ma.core;
 		maximum_fill_value
 		    Returns the maximum filling value for a given datatype.
 	**/
-	static public function max(obj:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):python.NativeIterable<Dynamic>;
+	static public function max(obj:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?keepdims:Dynamic):python.NativeIterable<Dynamic>;
 	static public var max_filler : Dynamic;
 	static public function maximum(a:Dynamic, ?b:Dynamic):Dynamic;
 	/**
@@ -5097,41 +5107,19 @@ package numpy.ma.core;
 	**/
 	static public function maximum_fill_value(obj:Dynamic):Dynamic;
 	/**
-		mean(self, axis=None, dtype=None, out=None)
+		mean(self, axis=None, dtype=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
-		Returns the average of the array elements.
+		Returns the average of the array elements along given axis.
 		
-		Masked entries are ignored.
-		The average is taken over the flattened array by default, otherwise over
-		the specified axis. Refer to `numpy.mean` for the full documentation.
+		Masked entries are ignored, and result elements which are not
+		finite will be masked.
 		
-		Parameters
-		----------
-		a : array_like
-		    Array containing numbers whose mean is desired. If `a` is not an
-		    array, a conversion is attempted.
-		axis : int, optional
-		    Axis along which the means are computed. The default is to compute
-		    the mean of the flattened array.
-		dtype : dtype, optional
-		    Type to use in computing the mean. For integer inputs, the default
-		    is float64; for floating point, inputs it is the same as the input
-		    dtype.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output but the type will be cast if
-		    necessary.
-		
-		Returns
-		-------
-		mean : ndarray, see dtype parameter above
-		    If `out=None`, returns a new array containing the mean values,
-		    otherwise a reference to the output array is returned.
+		Refer to `numpy.mean` for full documentation.
 		
 		See Also
 		--------
-		numpy.ma.mean : Equivalent function.
-		numpy.mean : Equivalent function on non-masked arrays.
+		ndarray.mean : corresponding function for ndarrays
+		numpy.mean : Equivalent function
 		numpy.ma.average: Weighted average.
 		
 		Examples
@@ -5171,7 +5159,7 @@ package numpy.ma.core;
 		minimum_fill_value
 		    Returns the minimum filling value for a given datatype.
 	**/
-	static public function min(obj:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic):python.NativeIterable<Dynamic>;
+	static public function min(obj:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?fill_value:Dynamic, ?keepdims:Dynamic):python.NativeIterable<Dynamic>;
 	static public var min_filler : Dynamic;
 	static public function minimum(a:Dynamic, ?b:Dynamic):Dynamic;
 	/**
@@ -5902,103 +5890,43 @@ package numpy.ma.core;
 	static public function power(a:Dynamic, b:Dynamic, ?third:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	/**
-		prod(self, axis=None, dtype=None, out=None)
+		prod(self, axis=None, dtype=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
 		Return the product of the array elements over the given axis.
+		
 		Masked elements are set to 1 internally for computation.
 		
-		Parameters
-		----------
-		axis : {None, int}, optional
-		    Axis over which the product is taken. If None is used, then the
-		    product is over all the array elements.
-		dtype : {None, dtype}, optional
-		    Determines the type of the returned array and of the accumulator
-		    where the elements are multiplied. If ``dtype`` has the value ``None``
-		    and the type of a is an integer type of precision less than the default
-		    platform integer, then the default platform integer precision is
-		    used.  Otherwise, the dtype is the same as that of a.
-		out : {None, array}, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output but the type will be cast if
-		    necessary.
-		
-		Returns
-		-------
-		product_along_axis : {array, scalar}, see dtype parameter above.
-		    Returns an array whose shape is the same as a with the specified
-		    axis removed. Returns a 0d array when a is 1d or axis=None.
-		    Returns a reference to the specified output array if specified.
-		
-		See Also
-		--------
-		prod : equivalent function
+		Refer to `numpy.prod` for full documentation.
 		
 		Notes
 		-----
 		Arithmetic is modular when using integer types, and no error is raised
 		on overflow.
 		
-		Examples
+		See Also
 		--------
-		>>> np.prod([1.,2.])
-		2.0
-		>>> np.prod([1.,2.], dtype=np.int32)
-		2
-		>>> np.prod([[1.,2.],[3.,4.]])
-		24.0
-		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
-		array([  2.,  12.])
+		ndarray.prod : corresponding function for ndarrays
+		numpy.prod : equivalent function
 	**/
 	static public function prod(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		prod(self, axis=None, dtype=None, out=None)
+		prod(self, axis=None, dtype=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
 		Return the product of the array elements over the given axis.
+		
 		Masked elements are set to 1 internally for computation.
 		
-		Parameters
-		----------
-		axis : {None, int}, optional
-		    Axis over which the product is taken. If None is used, then the
-		    product is over all the array elements.
-		dtype : {None, dtype}, optional
-		    Determines the type of the returned array and of the accumulator
-		    where the elements are multiplied. If ``dtype`` has the value ``None``
-		    and the type of a is an integer type of precision less than the default
-		    platform integer, then the default platform integer precision is
-		    used.  Otherwise, the dtype is the same as that of a.
-		out : {None, array}, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output but the type will be cast if
-		    necessary.
-		
-		Returns
-		-------
-		product_along_axis : {array, scalar}, see dtype parameter above.
-		    Returns an array whose shape is the same as a with the specified
-		    axis removed. Returns a 0d array when a is 1d or axis=None.
-		    Returns a reference to the specified output array if specified.
-		
-		See Also
-		--------
-		prod : equivalent function
+		Refer to `numpy.prod` for full documentation.
 		
 		Notes
 		-----
 		Arithmetic is modular when using integer types, and no error is raised
 		on overflow.
 		
-		Examples
+		See Also
 		--------
-		>>> np.prod([1.,2.])
-		2.0
-		>>> np.prod([1.,2.], dtype=np.int32)
-		2
-		>>> np.prod([[1.,2.],[3.,4.]])
-		24.0
-		>>> np.prod([[1.,2.],[3.,4.]], axis=1)
-		array([  2.,  12.])
+		ndarray.prod : corresponding function for ndarrays
+		numpy.prod : equivalent function
 	**/
 	static public function product(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -6750,100 +6678,18 @@ package numpy.ma.core;
 	**/
 	static public function squeeze(a:Dynamic, ?axis:Dynamic):numpy.Ndarray;
 	/**
-		std(self, axis=None, dtype=None, out=None, ddof=0)
+		std(self, axis=None, dtype=None, out=None, ddof=0, keepdims=<class 'numpy._globals._NoValue'>)
 		
-		Compute the standard deviation along the specified axis.
+		Returns the standard deviation of the array elements along given axis.
 		
-		Returns the standard deviation, a measure of the spread of a distribution,
-		of the array elements. The standard deviation is computed for the
-		flattened array by default, otherwise over the specified axis.
+		Masked entries are ignored.
 		
-		Parameters
-		----------
-		a : array_like
-		    Calculate the standard deviation of these values.
-		axis : None or int or tuple of ints, optional
-		    Axis or axes along which the standard deviation is computed. The
-		    default is to compute the standard deviation of the flattened array.
-		
-		    .. versionadded: 1.7.0
-		
-		    If this is a tuple of ints, a standard deviation is performed over
-		    multiple axes, instead of a single axis or all the axes as before.
-		dtype : dtype, optional
-		    Type to use in computing the standard deviation. For arrays of
-		    integer type the default is float64, for arrays of float types it is
-		    the same as the array type.
-		out : ndarray, optional
-		    Alternative output array in which to place the result. It must have
-		    the same shape as the expected output but the type (of the calculated
-		    values) will be cast if necessary.
-		ddof : int, optional
-		    Means Delta Degrees of Freedom.  The divisor used in calculations
-		    is ``N - ddof``, where ``N`` represents the number of elements.
-		    By default `ddof` is zero.
-		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left
-		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
-		
-		Returns
-		-------
-		standard_deviation : ndarray, see dtype parameter above.
-		    If `out` is None, return a new array containing the standard deviation,
-		    otherwise return a reference to the output array.
+		Refer to `numpy.std` for full documentation.
 		
 		See Also
 		--------
-		var, mean, nanmean, nanstd, nanvar
-		numpy.doc.ufuncs : Section "Output arguments"
-		
-		Notes
-		-----
-		The standard deviation is the square root of the average of the squared
-		deviations from the mean, i.e., ``std = sqrt(mean(abs(x - x.mean())**2))``.
-		
-		The average squared deviation is normally calculated as
-		``x.sum() / N``, where ``N = len(x)``.  If, however, `ddof` is specified,
-		the divisor ``N - ddof`` is used instead. In standard statistical
-		practice, ``ddof=1`` provides an unbiased estimator of the variance
-		of the infinite population. ``ddof=0`` provides a maximum likelihood
-		estimate of the variance for normally distributed variables. The
-		standard deviation computed in this function is the square root of
-		the estimated variance, so even with ``ddof=1``, it will not be an
-		unbiased estimate of the standard deviation per se.
-		
-		Note that, for complex numbers, `std` takes the absolute
-		value before squaring, so that the result is always real and nonnegative.
-		
-		For floating-point input, the *std* is computed using the same
-		precision the input has. Depending on the input data, this can cause
-		the results to be inaccurate, especially for float32 (see example below).
-		Specifying a higher-accuracy accumulator using the `dtype` keyword can
-		alleviate this issue.
-		
-		Examples
-		--------
-		>>> a = np.array([[1, 2], [3, 4]])
-		>>> np.std(a)
-		1.1180339887498949
-		>>> np.std(a, axis=0)
-		array([ 1.,  1.])
-		>>> np.std(a, axis=1)
-		array([ 0.5,  0.5])
-		
-		In single precision, std() can be inaccurate:
-		
-		>>> a = np.zeros((2, 512*512), dtype=np.float32)
-		>>> a[0, :] = 1.0
-		>>> a[1, :] = 0.1
-		>>> np.std(a)
-		0.45000005
-		
-		Computing the standard deviation in float64 is more accurate:
-		
-		>>> np.std(a, dtype=np.float64)
-		0.44999999925494177
+		ndarray.std : corresponding function for ndarrays
+		numpy.std : Equivalent function
 	**/
 	static public function std(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -6880,34 +6726,18 @@ package numpy.ma.core;
 	**/
 	static public function subtract(a:Dynamic, b:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):numpy.Ndarray;
 	/**
-		sum(self, axis=None, dtype=None, out=None)
+		sum(self, axis=None, dtype=None, out=None, keepdims=<class 'numpy._globals._NoValue'>)
 		
 		Return the sum of the array elements over the given axis.
+		
 		Masked elements are set to 0 internally.
 		
-		Parameters
-		----------
-		axis : {None, -1, int}, optional
-		    Axis along which the sum is computed. The default
-		    (`axis` = None) is to compute over the flattened array.
-		dtype : {None, dtype}, optional
-		    Determines the type of the returned array and of the accumulator
-		    where the elements are summed. If dtype has the value None and
-		    the type of a is an integer type of precision less than the default
-		    platform integer, then the default platform integer precision is
-		    used.  Otherwise, the dtype is the same as that of a.
-		out :  {None, ndarray}, optional
-		    Alternative output array in which to place the result. It must
-		    have the same shape and buffer length as the expected output
-		    but the type will be cast if necessary.
+		Refer to `numpy.sum` for full documentation.
 		
-		Returns
-		-------
-		sum_along_axis : MaskedArray or scalar
-		    An array with the same shape as self, with the specified
-		    axis removed.   If self is a 0-d array, or if `axis` is None, a scalar
-		    is returned.  If an output array is specified, a reference to
-		    `out` is returned.
+		See Also
+		--------
+		ndarray.sum : corresponding function for ndarrays
+		numpy.sum : equivalent function
 		
 		Examples
 		--------
@@ -7151,7 +6981,7 @@ package numpy.ma.core;
 	static public var ufunc_fills : Dynamic;
 	static public var v : Dynamic;
 	/**
-		var(self, axis=None, dtype=None, out=None, ddof=0)
+		var(self, axis=None, dtype=None, out=None, ddof=0, keepdims=<class 'numpy._globals._NoValue'>)
 		
 		Compute the variance along the specified axis.
 		
@@ -7188,6 +7018,12 @@ package numpy.ma.core;
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `var` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------

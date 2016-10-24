@@ -125,5 +125,6 @@ package pandas.io.sas.sas7bdat;
 	public function _read_next_page():Dynamic;
 	public function _read_page_header():Dynamic;
 	public function _read_subheader_signature(offset:Dynamic):Dynamic;
+	public function close():Dynamic;
 	public function read(?nrows:Dynamic):Dynamic;
 }

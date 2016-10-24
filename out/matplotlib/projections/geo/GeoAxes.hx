@@ -1299,7 +1299,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'yerr', 'ecolor', 'left', 'width', 'edgecolor', 'height', 'xerr', 'bottom', 'tick_label', 'linewidth', 'color'.
+		* All arguments with the following names: 'width', 'yerr', 'height', 'xerr', 'tick_label', 'ecolor', 'linewidth', 'left', 'color', 'bottom', 'edgecolor'.
 	**/
 	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1455,7 +1455,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -1817,7 +1817,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3078,7 +3078,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xerr', 'yerr', 'x', 'y'.
+		* All arguments with the following names: 'xerr', 'x', 'y', 'yerr'.
 	**/
 	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3153,7 +3153,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3184,7 +3184,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidths', 'lineoffsets', 'positions', 'linestyles', 'colors', 'linelengths'.
+		* All arguments with the following names: 'linewidths', 'colors', 'linelengths', 'linestyles', 'lineoffsets', 'positions'.
 	**/
 	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3325,7 +3325,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -3360,7 +3360,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'where', 'y2', 'y1'.
+		* All arguments with the following names: 'y2', 'x', 'y1', 'where'.
 	**/
 	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3420,7 +3420,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -4193,7 +4193,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -4423,7 +4423,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'weights'.
+		* All arguments with the following names: 'weights', 'x'.
 	**/
 	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4505,7 +4505,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'weights', 'y'.
+		* All arguments with the following names: 'weights', 'x', 'y'.
 	**/
 	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4553,7 +4553,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmax', 'xmin', 'y'.
+		* All arguments with the following names: 'xmin', 'y', 'xmax'.
 	**/
 	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5402,7 +5402,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -5623,7 +5623,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -5911,7 +5911,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'colors', 'x', 'explode', 'labels'.
+		* All arguments with the following names: 'labels', 'colors', 'x', 'explode'.
 	**/
 	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?data:Dynamic):Dynamic;
 	/**
@@ -6535,7 +6535,7 @@ package matplotlib.projections.geo;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
 		  linewidth or linewidths or lw: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
@@ -6744,7 +6744,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'facecolor', 'linewidths', 'edgecolors', 'facecolors', 's', 'y', 'c', 'x', 'color'.
+		* All arguments with the following names: 'linewidths', 'y', 'edgecolors', 's', 'facecolor', 'facecolors', 'x', 'color', 'c'.
 	**/
 	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7536,7 +7536,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7744,7 +7744,7 @@ package matplotlib.projections.geo;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -9128,7 +9128,7 @@ package matplotlib.projections.geo;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'x', 'ymax', 'colors'.
+		* All arguments with the following names: 'ymax', 'colors', 'x', 'ymin'.
 	**/
 	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

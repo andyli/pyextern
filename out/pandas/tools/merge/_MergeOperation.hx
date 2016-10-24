@@ -101,6 +101,10 @@ package pandas.tools.merge;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		return the join indexers 
+	**/
+	public function _get_join_indexers():Dynamic;
 	public function _get_join_info():Dynamic;
 	/**
 		Handles overlapping column names etc.
@@ -123,6 +127,7 @@ package pandas.tools.merge;
 	public function _indicator_post_merge(result:Dynamic):Dynamic;
 	public function _indicator_pre_merge(left:Dynamic, right:Dynamic):Dynamic;
 	public function _maybe_add_join_keys(result:Dynamic, left_indexer:Dynamic, right_indexer:Dynamic):Dynamic;
+	static public var _merge_type : Dynamic;
 	public function _validate_specification():Dynamic;
 	public function get_result():Dynamic;
 }

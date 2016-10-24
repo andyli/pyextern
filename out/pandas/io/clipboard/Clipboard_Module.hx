@@ -25,6 +25,7 @@ package pandas.io.clipboard;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -236,6 +237,11 @@ package pandas.io.clipboard;
 		    Note that the IPython notebook, IPython qtconsole, or IDLE do not run in a
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
+		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:

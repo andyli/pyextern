@@ -40,6 +40,7 @@ package pandas.tseries.tools;
 		errors : 'raise','ignore','coerce'
 	**/
 	static public function _attempt_YYYYMMDD(arg:Dynamic, errors:Dynamic):Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Does format match the iso8601 set that can be handled by the C parser?
 		Generally of form YYYY-MM-DDTHH:MM:SS - date separator can be different
@@ -74,11 +75,6 @@ package pandas.tseries.tools;
 	static public function _infer_tzinfo(start:Dynamic, end:Dynamic):Dynamic;
 	static public function _lexer_split_from_str(dt_str:Dynamic):Dynamic;
 	static public var _time_formats : Dynamic;
-	/**
-		Same as to_datetime, but accept freq for
-		DatetimeIndex internal construction
-	**/
-	static public function _to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?unit:Dynamic, ?freq:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
 	static public var _unit_map : Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
@@ -124,6 +120,11 @@ package pandas.tseries.tools;
 		Returns date in YYYYMMDD format.
 	**/
 	static public function format(dt:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
 		Normalize datetime.datetime value to midnight. Returns datetime.date as a
 		datetime.datetime at midnight
@@ -133,6 +134,26 @@ package pandas.tseries.tools;
 		normalized : datetime.datetime or Timestamp
 	**/
 	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
+		on object arrays.
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for *not*-null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is *not* null or if an array
+		    is given which of the element is *not* null.
+		
+		See also
+		--------
+		pandas.isnull : boolean inverse of pandas.notnull
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 	/**
 		function for converting excel date to normal date format
 	**/
@@ -206,7 +227,8 @@ package pandas.tseries.tools;
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
 		
-		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the

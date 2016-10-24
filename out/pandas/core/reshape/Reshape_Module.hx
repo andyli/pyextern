@@ -16,6 +16,24 @@ package pandas.core.reshape;
 	**/
 	static public function _compress_group_index(group_index:Dynamic, ?sort:Dynamic):Dynamic;
 	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Factorize an input `values` into `categories` and `codes`. Preserves
+		categorical dtype in `categories`.
+		
+		*This is an internal function*
+		
+		Parameters
+		----------
+		values : list-like
+		
+		Returns
+		-------
+		codes : ndarray
+		categories : Index
+		    If `values` has a categorical dtype, then `categories` is
+		    a CategoricalIndex keeping the categories and order of `values`.
+	**/
+	static public function _factorize_from_iterable(values:Dynamic):Dynamic;
 	static public function _get_dummies_1d(data:Dynamic, prefix:Dynamic, ?prefix_sep:Dynamic, ?dummy_na:Dynamic, ?sparse:Dynamic, ?drop_first:Dynamic):Dynamic;
 	static public function _get_na_value(dtype:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
@@ -66,7 +84,7 @@ package pandas.core.reshape;
 		
 		    .. versionadded:: 0.16.1
 		drop_first : bool, default False
-		    Whether to get k-1 dummies out of n categorical levels by removing the
+		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
 		
 		    .. versionadded:: 0.18.0
@@ -157,6 +175,7 @@ package pandas.core.reshape;
 		labels are equal at all location.
 	**/
 	static public function get_group_index(labels:Dynamic, shape:Dynamic, sort:Dynamic, xnull:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
 		Reshape long-format data to wide. Generalized inverse of DataFrame.pivot
 		

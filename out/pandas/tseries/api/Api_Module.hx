@@ -39,6 +39,9 @@ package pandas.tseries.api;
 		-----
 		2 of start, end, or periods must be specified
 		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
 		Returns
 		-------
 		rng : DatetimeIndex
@@ -72,6 +75,9 @@ package pandas.tseries.api;
 		Notes
 		-----
 		2 of start, end, or periods must be specified
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
@@ -138,13 +144,16 @@ package pandas.tseries.api;
 		    Make the interval closed with respect to the given frequency to
 		    the 'left', 'right', or both sides (None)
 		
-		Notes
-		-----
-		2 of start, end, or periods must be specified
-		
 		Returns
 		-------
 		rng : TimedeltaIndex
+		
+		Notes
+		-----
+		2 of start, end, or periods must be specified.
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function timedelta_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?name:Dynamic, ?closed:Dynamic):pandas.TimedeltaIndex;
 	/**

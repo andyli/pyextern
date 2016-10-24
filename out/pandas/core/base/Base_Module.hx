@@ -51,6 +51,40 @@ package pandas.core.base;
 		yes!
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.

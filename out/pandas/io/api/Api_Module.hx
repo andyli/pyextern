@@ -42,14 +42,14 @@ package pandas.io.api;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default ','
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from '\s+' will be
-		    interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		    this. Separators longer than 1 character and different from ``'\s+'`` will
+		    be interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
 		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
-		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    used as the sep. Equivalent to setting ``sep='\s+'``. If this option
 		    is set to True, nothing should be passed in for the ``delimiter``
 		    parameter.
 		
@@ -67,7 +67,8 @@ package pandas.io.api;
 		    rather than the first line of the file.
 		names : array-like, default None
 		    List of column names to use. If file contains no header row, then you
-		    should explicitly pass header=None
+		    should explicitly pass header=None. Duplicates in this list are not
+		    allowed unless mangle_dupe_cols=True, which is the default.
 		index_col : int or sequence or False, default None
 		    Column to use as the row labels of the DataFrame. If a sequence is given, a
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
@@ -80,12 +81,22 @@ package pandas.io.api;
 		    inferred from the document header row(s). For example, a valid `usecols`
 		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
 		    results in much faster parsing time and lower memory usage.
+		as_recarray : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version. Please call
+		    `pd.read_csv(...).to_records()` instead.
+		
+		    Return a NumPy recarray instead of a DataFrame after parsing the data.
+		    If set to True, this option takes precedence over the `squeeze` parameter.
+		    In addition, as row indices are not available in such a format, the
+		    `index_col` parameter will be ignored.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
 		    Prefix to add to column numbers when no header, e.g. 'X' for X0, X1, ...
 		mangle_dupe_cols : boolean, default True
-		    Duplicate columns will be specified as 'X.0'...'X.N', rather than 'X'...'X'
+		    Duplicate columns will be specified as 'X.0'...'X.N', rather than
+		    'X'...'X'. Passing in False will cause data to be overwritten if there
+		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
 		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
@@ -107,12 +118,15 @@ package pandas.io.api;
 		    at the start of the file
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
+		skip_footer : int, default 0
+		    DEPRECATED: use the `skipfooter` parameter instead, as they are identical
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
-		na_values : str or list-like or dict, default None
+		na_values : scalar, str, list-like, or dict, default None
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
-		    NaN: `''`, `'#N/A'`, `'#N/A N/A'`, `'#NA'`, `'-1.#IND'`, `'-1.#QNAN'`, `'-NaN'`, `'-nan'`, `'1.#IND'`, `'1.#QNAN'`, `'N/A'`, `'NA'`, `'NULL'`, `'NaN'`, `'nan'`.
+		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -175,15 +189,23 @@ package pandas.io.api;
 		    Thousands separator
 		decimal : str, default '.'
 		    Character to recognize as decimal point (e.g. use ',' for European data).
+		float_precision : string, default None
+		    Specifies which converter the C engine should use for floating-point
+		    values. The options are `None` for the ordinary converter,
+		    `high` for the high-precision converter, and `round_trip` for the
+		    round-trip converter.
 		lineterminator : str (length 1), default None
 		    Character to break file into lines. Only valid with C parser.
 		quotechar : str (length 1), optional
 		    The character used to denote the start and end of a quoted item. Quoted
 		    items can include the delimiter and it will be ignored.
-		quoting : int or csv.QUOTE_* instance, default None
+		quoting : int or csv.QUOTE_* instance, default 0
 		    Control field quoting behavior per ``csv.QUOTE_*`` constants. Use one of
 		    QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3).
-		    Default (None) results in QUOTE_MINIMAL behavior.
+		doublequote : boolean, default ``True``
+		   When quotechar is specified and quoting is not ``QUOTE_NONE``, indicate
+		   whether or not to interpret two consecutive quotechar elements INSIDE a
+		   field as a single ``quotechar`` element.
 		escapechar : str (length 1), default None
 		    One-character string used to escape delimiter when quoting is QUOTE_NONE.
 		comment : str, default None
@@ -212,12 +234,39 @@ package pandas.io.api;
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
 		    "bad line" will be output. (Only valid with C parser).
+		low_memory : boolean, default True
+		    Internally process the file in chunks, resulting in lower memory use
+		    while parsing, but possibly mixed type inference.  To ensure no mixed
+		    types either set False, or specify the type with the `dtype` parameter.
+		    Note that the entire file is read into a single DataFrame regardless,
+		    use the `chunksize` or `iterator` parameter to return the data in chunks.
+		    (Only valid with C parser)
+		buffer_lines : int, default None
+		    DEPRECATED: this argument will be removed in a future version because its
+		    value is not respected by the parser
+		compact_ints : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If compact_ints is True, then for any column that is of integer dtype,
+		    the parser will attempt to cast it as the smallest integer dtype possible,
+		    either signed or unsigned depending on the specification from the
+		    `use_unsigned` parameter.
+		use_unsigned : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If integer columns are being compacted (i.e. `compact_ints=True`), specify
+		    whether the column should be compacted to the smallest signed or unsigned
+		    integer dtype.
+		memory_map : boolean, default False
+		    If a filepath is provided for `filepath_or_buffer`, map the file object
+		    directly onto memory and access the data directly from there. Using this
+		    option can improve performance because there is no longer any I/O overhead.
 		
 		Returns
 		-------
 		result : DataFrame or TextParser
 	**/
-	static public function read_csv(filepath_or_buffer:Dynamic, ?sep:Dynamic, ?delimiter:Dynamic, ?header:Dynamic, ?names:Dynamic, ?index_col:Dynamic, ?usecols:Dynamic, ?squeeze:Dynamic, ?prefix:Dynamic, ?mangle_dupe_cols:Dynamic, ?dtype:Dynamic, ?engine:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?skipinitialspace:Dynamic, ?skiprows:Dynamic, ?skipfooter:Dynamic, ?nrows:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?na_filter:Dynamic, ?verbose:Dynamic, ?skip_blank_lines:Dynamic, ?parse_dates:Dynamic, ?infer_datetime_format:Dynamic, ?keep_date_col:Dynamic, ?date_parser:Dynamic, ?dayfirst:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?compression:Dynamic, ?thousands:Dynamic, ?decimal:Dynamic, ?lineterminator:Dynamic, ?quotechar:Dynamic, ?quoting:Dynamic, ?escapechar:Dynamic, ?comment:Dynamic, ?encoding:Dynamic, ?dialect:Dynamic, ?tupleize_cols:Dynamic, ?error_bad_lines:Dynamic, ?warn_bad_lines:Dynamic, ?skip_footer:Dynamic, ?doublequote:Dynamic, ?delim_whitespace:Dynamic, ?as_recarray:Dynamic, ?compact_ints:Dynamic, ?use_unsigned:Dynamic, ?low_memory:Dynamic, ?buffer_lines:Dynamic, ?memory_map:Dynamic, ?float_precision:Dynamic):Dynamic;
+	static public function read_csv(filepath_or_buffer:Dynamic, ?sep:Dynamic, ?delimiter:Dynamic, ?header:Dynamic, ?names:Dynamic, ?index_col:Dynamic, ?usecols:Dynamic, ?squeeze:Dynamic, ?prefix:Dynamic, ?mangle_dupe_cols:Dynamic, ?dtype:Dynamic, ?engine:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?skipinitialspace:Dynamic, ?skiprows:Dynamic, ?nrows:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?na_filter:Dynamic, ?verbose:Dynamic, ?skip_blank_lines:Dynamic, ?parse_dates:Dynamic, ?infer_datetime_format:Dynamic, ?keep_date_col:Dynamic, ?date_parser:Dynamic, ?dayfirst:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?compression:Dynamic, ?thousands:Dynamic, ?decimal:Dynamic, ?lineterminator:Dynamic, ?quotechar:Dynamic, ?quoting:Dynamic, ?escapechar:Dynamic, ?comment:Dynamic, ?encoding:Dynamic, ?dialect:Dynamic, ?tupleize_cols:Dynamic, ?error_bad_lines:Dynamic, ?warn_bad_lines:Dynamic, ?skipfooter:Dynamic, ?skip_footer:Dynamic, ?doublequote:Dynamic, ?delim_whitespace:Dynamic, ?as_recarray:Dynamic, ?compact_ints:Dynamic, ?use_unsigned:Dynamic, ?low_memory:Dynamic, ?buffer_lines:Dynamic, ?memory_map:Dynamic, ?float_precision:Dynamic):Dynamic;
 	/**
 		Read an Excel table into a pandas DataFrame
 		
@@ -269,6 +318,16 @@ package pandas.io.api;
 		    either be integers or column labels, values are functions that take one
 		    input argument, the Excel cell content, and return the transformed
 		    content.
+		true_values : list, default None
+		    Values to consider as True
+		
+		    .. versionadded:: 0.19.0
+		
+		false_values : list, default None
+		    Values to consider as False
+		
+		    .. versionadded:: 0.19.0
+		
 		parse_cols : int or list, default None
 		    * If None then parse all columns,
 		    * If int then indicates last column to be parsed
@@ -277,8 +336,11 @@ package pandas.io.api;
 		      column ranges (e.g. "A:E" or "A,C,E:F")
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
-		na_values : list-like, default None
-		    List of additional strings to recognize as NA/NaN
+		na_values : scalar, str, list-like, or dict, default None
+		    Additional strings to recognize as NA/NaN. If dict passed, specific
+		    per-column NA values. By default the following values are interpreted
+		    as NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'.
 		thousands : str, default None
 		    Thousands separator for parsing string columns to numeric.  Note that
 		    this parameter is only necessary for columns stored as TEXT in Excel,
@@ -286,7 +348,7 @@ package pandas.io.api;
 		    format.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
-		    values are overridden, otherwise they're appended to
+		    values are overridden, otherwise they're appended to.
 		verbose : boolean, default False
 		    Indicate number of NA values placed in non-numeric columns
 		engine: string, default None
@@ -307,7 +369,7 @@ package pandas.io.api;
 		    DataFrame from the passed in Excel file.  See notes in sheetname
 		    argument for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Read a table of fixed-width formatted lines into DataFrame
 		
@@ -337,7 +399,7 @@ package pandas.io.api;
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
 		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
-		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    used as the sep. Equivalent to setting ``sep='\s+'``. If this option
 		    is set to True, nothing should be passed in for the ``delimiter``
 		    parameter.
 		
@@ -355,7 +417,8 @@ package pandas.io.api;
 		    rather than the first line of the file.
 		names : array-like, default None
 		    List of column names to use. If file contains no header row, then you
-		    should explicitly pass header=None
+		    should explicitly pass header=None. Duplicates in this list are not
+		    allowed unless mangle_dupe_cols=True, which is the default.
 		index_col : int or sequence or False, default None
 		    Column to use as the row labels of the DataFrame. If a sequence is given, a
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
@@ -368,12 +431,22 @@ package pandas.io.api;
 		    inferred from the document header row(s). For example, a valid `usecols`
 		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
 		    results in much faster parsing time and lower memory usage.
+		as_recarray : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version. Please call
+		    `pd.read_csv(...).to_records()` instead.
+		
+		    Return a NumPy recarray instead of a DataFrame after parsing the data.
+		    If set to True, this option takes precedence over the `squeeze` parameter.
+		    In addition, as row indices are not available in such a format, the
+		    `index_col` parameter will be ignored.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
 		    Prefix to add to column numbers when no header, e.g. 'X' for X0, X1, ...
 		mangle_dupe_cols : boolean, default True
-		    Duplicate columns will be specified as 'X.0'...'X.N', rather than 'X'...'X'
+		    Duplicate columns will be specified as 'X.0'...'X.N', rather than
+		    'X'...'X'. Passing in False will cause data to be overwritten if there
+		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
 		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
@@ -393,12 +466,15 @@ package pandas.io.api;
 		    at the start of the file
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
+		skip_footer : int, default 0
+		    DEPRECATED: use the `skipfooter` parameter instead, as they are identical
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
-		na_values : str or list-like or dict, default None
+		na_values : scalar, str, list-like, or dict, default None
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
-		    NaN: `''`, `'#N/A'`, `'#N/A N/A'`, `'#NA'`, `'-1.#IND'`, `'-1.#QNAN'`, `'-NaN'`, `'-nan'`, `'1.#IND'`, `'1.#QNAN'`, `'N/A'`, `'NA'`, `'NULL'`, `'NaN'`, `'nan'`.
+		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -461,15 +537,23 @@ package pandas.io.api;
 		    Thousands separator
 		decimal : str, default '.'
 		    Character to recognize as decimal point (e.g. use ',' for European data).
+		float_precision : string, default None
+		    Specifies which converter the C engine should use for floating-point
+		    values. The options are `None` for the ordinary converter,
+		    `high` for the high-precision converter, and `round_trip` for the
+		    round-trip converter.
 		lineterminator : str (length 1), default None
 		    Character to break file into lines. Only valid with C parser.
 		quotechar : str (length 1), optional
 		    The character used to denote the start and end of a quoted item. Quoted
 		    items can include the delimiter and it will be ignored.
-		quoting : int or csv.QUOTE_* instance, default None
+		quoting : int or csv.QUOTE_* instance, default 0
 		    Control field quoting behavior per ``csv.QUOTE_*`` constants. Use one of
 		    QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3).
-		    Default (None) results in QUOTE_MINIMAL behavior.
+		doublequote : boolean, default ``True``
+		   When quotechar is specified and quoting is not ``QUOTE_NONE``, indicate
+		   whether or not to interpret two consecutive quotechar elements INSIDE a
+		   field as a single ``quotechar`` element.
 		escapechar : str (length 1), default None
 		    One-character string used to escape delimiter when quoting is QUOTE_NONE.
 		comment : str, default None
@@ -498,6 +582,33 @@ package pandas.io.api;
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
 		    "bad line" will be output. (Only valid with C parser).
+		low_memory : boolean, default True
+		    Internally process the file in chunks, resulting in lower memory use
+		    while parsing, but possibly mixed type inference.  To ensure no mixed
+		    types either set False, or specify the type with the `dtype` parameter.
+		    Note that the entire file is read into a single DataFrame regardless,
+		    use the `chunksize` or `iterator` parameter to return the data in chunks.
+		    (Only valid with C parser)
+		buffer_lines : int, default None
+		    DEPRECATED: this argument will be removed in a future version because its
+		    value is not respected by the parser
+		compact_ints : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If compact_ints is True, then for any column that is of integer dtype,
+		    the parser will attempt to cast it as the smallest integer dtype possible,
+		    either signed or unsigned depending on the specification from the
+		    `use_unsigned` parameter.
+		use_unsigned : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If integer columns are being compacted (i.e. `compact_ints=True`), specify
+		    whether the column should be compacted to the smallest signed or unsigned
+		    integer dtype.
+		memory_map : boolean, default False
+		    If a filepath is provided for `filepath_or_buffer`, map the file object
+		    directly onto memory and access the data directly from there. Using this
+		    option can improve performance because there is no longer any I/O overhead.
 		
 		Returns
 		-------
@@ -521,10 +632,20 @@ package pandas.io.api;
 		https://developers.google.com/api-client-library/python/apis/bigquery/v2
 		
 		Authentication to the Google BigQuery service is via OAuth 2.0.
-		By default user account credentials are used. You will be asked to
-		grant permissions for product name 'pandas GBQ'. It is also posible
-		to authenticate via service account credentials by using
-		private_key parameter.
+		
+		- If "private_key" is not provided:
+		
+		  By default "application default credentials" are used.
+		
+		  .. versionadded:: 0.19.0
+		
+		  If default application credentials are not found or are restrictive,
+		  user account credentials are used. In this case, you will be asked to
+		  grant permissions for product name 'pandas GBQ'.
+		
+		- If "private_key" is provided:
+		
+		  Service account credentials will be used to authenticate.
 		
 		Parameters
 		----------
@@ -547,12 +668,23 @@ package pandas.io.api;
 		    or string contents. This is useful for remote server
 		    authentication (eg. jupyter iPython notebook on remote host)
 		
+		    .. versionadded:: 0.18.1
+		
+		dialect : {'legacy', 'standard'}, default 'legacy'
+		    'legacy' : Use BigQuery's legacy SQL dialect.
+		    'standard' : Use BigQuery's standard SQL (beta), which is
+		    compliant with the SQL 2011 standard. For more information
+		    see `BigQuery SQL Reference
+		    <https://cloud.google.com/bigquery/sql-reference/>`__
+		
+		    .. versionadded:: 0.19.0
+		
 		Returns
 		-------
 		df: DataFrame
 		    DataFrame representing results of query
 	**/
-	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Dynamic;
+	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic):Dynamic;
 	/**
 		read from the store, close it if we opened it
 		
@@ -561,9 +693,13 @@ package pandas.io.api;
 		
 		Parameters
 		----------
-		path_or_buf : path (string), or buffer to read from
-		key : group identifier in the store. Can be omitted a HDF file contains
-		    a single pandas object.
+		path_or_buf : path (string), buffer, or path object (pathlib.Path or
+		    py._path.local.LocalPath) to read from
+		
+		    .. versionadded:: 0.19.0 support for pathlib, py.path.
+		
+		key : group identifier in the store. Can be omitted if the HDF file
+		    contains a single pandas object.
 		where : list of Term (or convertable) objects, optional
 		start : optional, integer (defaults to None), row number to start
 		    selection
@@ -655,6 +791,31 @@ package pandas.io.api;
 		    underlying parser library (e.g., the parser library will try to use
 		    the encoding provided by the document).
 		
+		decimal : str, default '.'
+		    Character to recognize as decimal point (e.g. use ',' for European
+		    data).
+		
+		    .. versionadded:: 0.19.0
+		
+		converters : dict, default None
+		    Dict of functions for converting values in certain columns. Keys can
+		    either be integers or column labels, values are functions that take one
+		    input argument, the cell (not column) content, and return the
+		    transformed content.
+		
+		    .. versionadded:: 0.19.0
+		
+		na_values : iterable, default None
+		    Custom NA values
+		
+		    .. versionadded:: 0.19.0
+		
+		keep_default_na : bool, default True
+		    If na_values are specified and keep_default_na is False the default NaN
+		    values are overridden, otherwise they're appended to
+		
+		    .. versionadded:: 0.19.0
+		
 		Returns
 		-------
 		dfs : list of DataFrames
@@ -689,7 +850,7 @@ package pandas.io.api;
 		--------
 		pandas.read_csv
 	**/
-	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?converters:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic):Dynamic;
 	/**
 		Convert a JSON string to pandas object
 		
@@ -762,12 +923,21 @@ package pandas.io.api;
 		    is to try and detect the correct precision, but if this is not desired
 		    then pass one of 's', 'ms', 'us' or 'ns' to force parsing only seconds,
 		    milliseconds, microseconds or nanoseconds respectively.
+		lines : boolean, default False
+		    Read the file as a json object per line.
+		
+		    .. versionadded:: 0.19.0
+		
+		encoding : str, default is 'utf-8'
+		    The encoding to use to decode py3 bytes.
+		
+		    .. versionadded:: 0.19.0
 		
 		Returns
 		-------
 		result : Series or DataFrame
 	**/
-	static public function read_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?typ:Dynamic, ?dtype:Dynamic, ?convert_axes:Dynamic, ?convert_dates:Dynamic, ?keep_default_dates:Dynamic, ?numpy:Dynamic, ?precise_float:Dynamic, ?date_unit:Dynamic):Dynamic;
+	static public function read_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?typ:Dynamic, ?dtype:Dynamic, ?convert_axes:Dynamic, ?convert_dates:Dynamic, ?keep_default_dates:Dynamic, ?numpy:Dynamic, ?precise_float:Dynamic, ?date_unit:Dynamic, ?encoding:Dynamic, ?lines:Dynamic):Dynamic;
 	/**
 		Load msgpack pandas object from the specified
 		file path
@@ -1032,12 +1202,14 @@ package pandas.io.api;
 		Examples
 		--------
 		Read a Stata dta file:
-		>> df = pandas.read_stata('filename.dta')
+		
+		>>> df = pandas.read_stata('filename.dta')
 		
 		Read a Stata dta file in 10,000 line chunks:
-		>> itr = pandas.read_stata('filename.dta', chunksize=10000)
-		>> for chunk in itr:
-		>>     do_something(chunk)
+		
+		>>> itr = pandas.read_stata('filename.dta', chunksize=10000)
+		>>> for chunk in itr:
+		>>>     do_something(chunk)
 	**/
 	static public function read_stata(filepath_or_buffer:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?encoding:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?chunksize:Dynamic, ?iterator:Dynamic):Dynamic;
 	/**
@@ -1057,14 +1229,14 @@ package pandas.io.api;
 		    be file ://localhost/path/to/table.csv
 		sep : str, default \t (tab-stop)
 		    Delimiter to use. If sep is None, will try to automatically determine
-		    this. Separators longer than 1 character and different from '\s+' will be
-		    interpreted as regular expressions, will force use of the python parsing
-		    engine and will ignore quotes in the data. Regex example: '\r\t'
+		    this. Separators longer than 1 character and different from ``'\s+'`` will
+		    be interpreted as regular expressions, will force use of the python parsing
+		    engine and will ignore quotes in the data. Regex example: ``'\r\t'``
 		delimiter : str, default ``None``
 		    Alternative argument name for sep.
 		delim_whitespace : boolean, default False
 		    Specifies whether or not whitespace (e.g. ``' '`` or ``'    '``) will be
-		    used as the sep. Equivalent to setting ``sep='\+s'``. If this option
+		    used as the sep. Equivalent to setting ``sep='\s+'``. If this option
 		    is set to True, nothing should be passed in for the ``delimiter``
 		    parameter.
 		
@@ -1082,7 +1254,8 @@ package pandas.io.api;
 		    rather than the first line of the file.
 		names : array-like, default None
 		    List of column names to use. If file contains no header row, then you
-		    should explicitly pass header=None
+		    should explicitly pass header=None. Duplicates in this list are not
+		    allowed unless mangle_dupe_cols=True, which is the default.
 		index_col : int or sequence or False, default None
 		    Column to use as the row labels of the DataFrame. If a sequence is given, a
 		    MultiIndex is used. If you have a malformed file with delimiters at the end
@@ -1095,12 +1268,22 @@ package pandas.io.api;
 		    inferred from the document header row(s). For example, a valid `usecols`
 		    parameter would be [0, 1, 2] or ['foo', 'bar', 'baz']. Using this parameter
 		    results in much faster parsing time and lower memory usage.
+		as_recarray : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version. Please call
+		    `pd.read_csv(...).to_records()` instead.
+		
+		    Return a NumPy recarray instead of a DataFrame after parsing the data.
+		    If set to True, this option takes precedence over the `squeeze` parameter.
+		    In addition, as row indices are not available in such a format, the
+		    `index_col` parameter will be ignored.
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
 		prefix : str, default None
 		    Prefix to add to column numbers when no header, e.g. 'X' for X0, X1, ...
 		mangle_dupe_cols : boolean, default True
-		    Duplicate columns will be specified as 'X.0'...'X.N', rather than 'X'...'X'
+		    Duplicate columns will be specified as 'X.0'...'X.N', rather than
+		    'X'...'X'. Passing in False will cause data to be overwritten if there
+		    are duplicate names in the columns.
 		dtype : Type name or dict of column -> type, default None
 		    Data type for data or columns. E.g. {'a': np.float64, 'b': np.int32}
 		    (Unsupported with engine='python'). Use `str` or `object` to preserve and
@@ -1122,12 +1305,15 @@ package pandas.io.api;
 		    at the start of the file
 		skipfooter : int, default 0
 		    Number of lines at bottom of file to skip (Unsupported with engine='c')
+		skip_footer : int, default 0
+		    DEPRECATED: use the `skipfooter` parameter instead, as they are identical
 		nrows : int, default None
 		    Number of rows of file to read. Useful for reading pieces of large files
-		na_values : str or list-like or dict, default None
+		na_values : scalar, str, list-like, or dict, default None
 		    Additional strings to recognize as NA/NaN. If dict passed, specific
 		    per-column NA values.  By default the following values are interpreted as
-		    NaN: `''`, `'#N/A'`, `'#N/A N/A'`, `'#NA'`, `'-1.#IND'`, `'-1.#QNAN'`, `'-NaN'`, `'-nan'`, `'1.#IND'`, `'1.#QNAN'`, `'N/A'`, `'NA'`, `'NULL'`, `'NaN'`, `'nan'`.
+		    NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'`.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
 		    values are overridden, otherwise they're appended to.
@@ -1190,15 +1376,23 @@ package pandas.io.api;
 		    Thousands separator
 		decimal : str, default '.'
 		    Character to recognize as decimal point (e.g. use ',' for European data).
+		float_precision : string, default None
+		    Specifies which converter the C engine should use for floating-point
+		    values. The options are `None` for the ordinary converter,
+		    `high` for the high-precision converter, and `round_trip` for the
+		    round-trip converter.
 		lineterminator : str (length 1), default None
 		    Character to break file into lines. Only valid with C parser.
 		quotechar : str (length 1), optional
 		    The character used to denote the start and end of a quoted item. Quoted
 		    items can include the delimiter and it will be ignored.
-		quoting : int or csv.QUOTE_* instance, default None
+		quoting : int or csv.QUOTE_* instance, default 0
 		    Control field quoting behavior per ``csv.QUOTE_*`` constants. Use one of
 		    QUOTE_MINIMAL (0), QUOTE_ALL (1), QUOTE_NONNUMERIC (2) or QUOTE_NONE (3).
-		    Default (None) results in QUOTE_MINIMAL behavior.
+		doublequote : boolean, default ``True``
+		   When quotechar is specified and quoting is not ``QUOTE_NONE``, indicate
+		   whether or not to interpret two consecutive quotechar elements INSIDE a
+		   field as a single ``quotechar`` element.
 		escapechar : str (length 1), default None
 		    One-character string used to escape delimiter when quoting is QUOTE_NONE.
 		comment : str, default None
@@ -1227,12 +1421,39 @@ package pandas.io.api;
 		warn_bad_lines : boolean, default True
 		    If error_bad_lines is False, and warn_bad_lines is True, a warning for each
 		    "bad line" will be output. (Only valid with C parser).
+		low_memory : boolean, default True
+		    Internally process the file in chunks, resulting in lower memory use
+		    while parsing, but possibly mixed type inference.  To ensure no mixed
+		    types either set False, or specify the type with the `dtype` parameter.
+		    Note that the entire file is read into a single DataFrame regardless,
+		    use the `chunksize` or `iterator` parameter to return the data in chunks.
+		    (Only valid with C parser)
+		buffer_lines : int, default None
+		    DEPRECATED: this argument will be removed in a future version because its
+		    value is not respected by the parser
+		compact_ints : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If compact_ints is True, then for any column that is of integer dtype,
+		    the parser will attempt to cast it as the smallest integer dtype possible,
+		    either signed or unsigned depending on the specification from the
+		    `use_unsigned` parameter.
+		use_unsigned : boolean, default False
+		    DEPRECATED: this argument will be removed in a future version
+		
+		    If integer columns are being compacted (i.e. `compact_ints=True`), specify
+		    whether the column should be compacted to the smallest signed or unsigned
+		    integer dtype.
+		memory_map : boolean, default False
+		    If a filepath is provided for `filepath_or_buffer`, map the file object
+		    directly onto memory and access the data directly from there. Using this
+		    option can improve performance because there is no longer any I/O overhead.
 		
 		Returns
 		-------
 		result : DataFrame or TextParser
 	**/
-	static public function read_table(filepath_or_buffer:Dynamic, ?sep:Dynamic, ?delimiter:Dynamic, ?header:Dynamic, ?names:Dynamic, ?index_col:Dynamic, ?usecols:Dynamic, ?squeeze:Dynamic, ?prefix:Dynamic, ?mangle_dupe_cols:Dynamic, ?dtype:Dynamic, ?engine:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?skipinitialspace:Dynamic, ?skiprows:Dynamic, ?skipfooter:Dynamic, ?nrows:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?na_filter:Dynamic, ?verbose:Dynamic, ?skip_blank_lines:Dynamic, ?parse_dates:Dynamic, ?infer_datetime_format:Dynamic, ?keep_date_col:Dynamic, ?date_parser:Dynamic, ?dayfirst:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?compression:Dynamic, ?thousands:Dynamic, ?decimal:Dynamic, ?lineterminator:Dynamic, ?quotechar:Dynamic, ?quoting:Dynamic, ?escapechar:Dynamic, ?comment:Dynamic, ?encoding:Dynamic, ?dialect:Dynamic, ?tupleize_cols:Dynamic, ?error_bad_lines:Dynamic, ?warn_bad_lines:Dynamic, ?skip_footer:Dynamic, ?doublequote:Dynamic, ?delim_whitespace:Dynamic, ?as_recarray:Dynamic, ?compact_ints:Dynamic, ?use_unsigned:Dynamic, ?low_memory:Dynamic, ?buffer_lines:Dynamic, ?memory_map:Dynamic, ?float_precision:Dynamic):Dynamic;
+	static public function read_table(filepath_or_buffer:Dynamic, ?sep:Dynamic, ?delimiter:Dynamic, ?header:Dynamic, ?names:Dynamic, ?index_col:Dynamic, ?usecols:Dynamic, ?squeeze:Dynamic, ?prefix:Dynamic, ?mangle_dupe_cols:Dynamic, ?dtype:Dynamic, ?engine:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?skipinitialspace:Dynamic, ?skiprows:Dynamic, ?nrows:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic, ?na_filter:Dynamic, ?verbose:Dynamic, ?skip_blank_lines:Dynamic, ?parse_dates:Dynamic, ?infer_datetime_format:Dynamic, ?keep_date_col:Dynamic, ?date_parser:Dynamic, ?dayfirst:Dynamic, ?iterator:Dynamic, ?chunksize:Dynamic, ?compression:Dynamic, ?thousands:Dynamic, ?decimal:Dynamic, ?lineterminator:Dynamic, ?quotechar:Dynamic, ?quoting:Dynamic, ?escapechar:Dynamic, ?comment:Dynamic, ?encoding:Dynamic, ?dialect:Dynamic, ?tupleize_cols:Dynamic, ?error_bad_lines:Dynamic, ?warn_bad_lines:Dynamic, ?skipfooter:Dynamic, ?skip_footer:Dynamic, ?doublequote:Dynamic, ?delim_whitespace:Dynamic, ?as_recarray:Dynamic, ?compact_ints:Dynamic, ?use_unsigned:Dynamic, ?low_memory:Dynamic, ?buffer_lines:Dynamic, ?memory_map:Dynamic, ?float_precision:Dynamic):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		

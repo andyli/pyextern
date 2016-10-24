@@ -113,10 +113,17 @@ package scipy.linalg.matfuncs;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amax` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------

@@ -9,7 +9,7 @@ package pandas.tseries.frequencies;
 	static public var S_RESO : Dynamic;
 	static public var T_RESO : Dynamic;
 	static public var US_RESO : Dynamic;
-	static public var _LEGACY_FREQ_WARNING : Dynamic;
+	static public var _INVALID_FREQ_ERROR : Dynamic;
 	static public var _ONE_DAY : Dynamic;
 	static public var _ONE_HOUR : Dynamic;
 	static public var _ONE_MICRO : Dynamic;
@@ -50,15 +50,12 @@ package pandas.tseries.frequencies;
 		'JAN'
 	**/
 	static public function _get_rule_month(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var _i : Dynamic;
 	static public function _is_annual(rule:Dynamic):Dynamic;
 	static public function _is_monthly(rule:Dynamic):Dynamic;
 	static public function _is_multiple(us:Dynamic, mult:Dynamic):Dynamic;
 	static public function _is_quarterly(rule:Dynamic):Dynamic;
 	static public function _is_weekly(rule:Dynamic):Dynamic;
-	static public var _iweek : Dynamic;
 	static public var _k : Dynamic;
-	static public var _legacy_reverse_map : Dynamic;
 	static public var _lite_rule_alias : Dynamic;
 	static public var _m : Dynamic;
 	static public function _maybe_add_count(base:Dynamic, count:Dynamic):Dynamic;
@@ -78,25 +75,56 @@ package pandas.tseries.frequencies;
 	static public function _maybe_coerce_freq(code:Dynamic):Dynamic;
 	static public var _month_aliases : Dynamic;
 	static public var _month_numbers : Dynamic;
-	static public var _name : Dynamic;
 	static public var _name_to_offset_map : Dynamic;
 	static public var _offset_map : Dynamic;
 	static public var _offset_to_period_map : Dynamic;
-	static public var _period_alias_dict : Dynamic;
-	/**
-		Build freq alias dictionary to support freqs from original c_dates.c file
-		of the scikits.timeseries library.
-	**/
-	static public function _period_alias_dictionary():Dynamic;
 	static public var _period_code_map : Dynamic;
 	static public function _period_str_to_code(freqstr:Dynamic):Dynamic;
 	static public function _quarter_months_conform(source:Dynamic, target:Dynamic):Dynamic;
 	static public var _reverse_period_code_map : Dynamic;
-	static public var _rule_aliases : Dynamic;
 	static public var _v : Dynamic;
-	static public var _weekday : Dynamic;
 	static public var _weekday_rule_aliases : Dynamic;
 	static public function cday(other:Dynamic):Dynamic;
+	/**
+		Decorator to deprecate a keyword argument of a function
+		
+		Parameters
+		----------
+		old_arg_name : str
+		    Name of argument in function to deprecate
+		new_arg_name : str
+		    Name of prefered argument in function
+		mapping : dict or callable
+		    If mapping is present, use it to translate old arguments to
+		    new arguments. A callable must do its own value checking;
+		    values not found in a dict will be forwarded unchanged.
+		
+		Examples
+		--------
+		The following deprecates 'cols', using 'columns' instead
+		
+		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
+		... def f(columns=''):
+		...     print(columns)
+		...
+		>>> f(columns='should work ok')
+		should work ok
+		>>> f(cols='should raise warning')
+		FutureWarning: cols is deprecated, use columns instead
+		  warnings.warn(msg, FutureWarning)
+		should raise warning
+		>>> f(cols='should error', columns="can't pass do both")
+		TypeError: Can only specify 'cols' or 'columns', not both
+		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
+		... def f(new=False):
+		...     print('yes!' if new else 'no!')
+		...
+		>>> f(old='yes')
+		FutureWarning: old='yes' is deprecated, use new=True instead
+		  warnings.warn(msg, FutureWarning)
+		yes!
+	**/
+	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	/**
 		Return DateOffset object associated with rule name
 		
@@ -157,10 +185,6 @@ package pandas.tseries.frequencies;
 		4000
 	**/
 	static public function get_freq_group(freq:Dynamic):Dynamic;
-	/**
-		Return the pre pandas 0.8.0 name for the date offset
-	**/
-	static public function get_legacy_offset_name(offset:Dynamic):Dynamic;
 	/**
 		Return DateOffset object associated with rule name
 		
@@ -224,6 +248,12 @@ package pandas.tseries.frequencies;
 		    ValueError if there are less than three values.
 	**/
 	static public function infer_freq(index:Dynamic, ?warn:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		return if we are period arraylike / PeriodIndex 
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
 	/**
 		Returns True if downsampling is possible between source and target
 		frequencies
@@ -256,19 +286,53 @@ package pandas.tseries.frequencies;
 		is_superperiod : boolean
 	**/
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public var need_suffix : Dynamic;
 	static public var opattern : Dynamic;
 	static public var prefix_mapping : Dynamic;
 	/**
-		Return DateOffset object from string representation or
-		Timedelta object
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
 		
 		Examples
 		--------
-		>>> to_offset('5Min')
-		Minute(5)
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
 	**/
-	static public function to_offset(freqstr:Dynamic):Dynamic;
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
 		Compute unique values (not necessarily sorted) efficiently from input array
 		of values

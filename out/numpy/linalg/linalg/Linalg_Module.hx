@@ -193,10 +193,17 @@ package numpy.linalg.linalg;
 		    type is preserved (e.g., if ``dtype(out)`` is float, the result
 		    will consist of 0.0's and 1.0's).  See `doc.ufuncs` (Section
 		    "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `all` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -254,10 +261,17 @@ package numpy.linalg.linalg;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amax` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -331,10 +345,17 @@ package numpy.linalg.linalg;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amin` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -2665,9 +2686,15 @@ package numpy.linalg.linalg;
 		    the same shape as the expected output, but the type of the output
 		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the input array.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `sum` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------

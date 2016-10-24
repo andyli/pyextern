@@ -187,6 +187,14 @@ package pandas.core.window;
 		delete unwanted __dir__ for this object 
 	**/
 	public function _dir_deletions():Dynamic;
+	/**
+		Return index as ndarrays
+		
+		Returns
+		-------
+		tuple of (index, index_as_ndarray)
+	**/
+	public function _get_index(?index:Dynamic):Dynamic;
 	public function _get_window(?other:Dynamic):Dynamic;
 	/**
 		sub-classes to define
@@ -213,6 +221,7 @@ package pandas.core.window;
 	**/
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	static public var _obj_with_exclusions : Dynamic;
+	public var _on : Dynamic;
 	public function _prep_values(?values:Dynamic, ?kill_inf:Dynamic, ?how:Dynamic):Dynamic;
 	/**
 		Reset cached properties. If ``key`` is passed, only clears that key.
@@ -396,6 +405,8 @@ package pandas.core.window;
 	**/
 	public function cov(?other:Dynamic, ?pairwise:Dynamic, ?ddof:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var exclusions : Dynamic;
+	public var is_datetimelike : Dynamic;
+	public var is_freq_type : Dynamic;
 	/**
 		Unbiased expanding kurtosis
 		
@@ -426,7 +437,7 @@ package pandas.core.window;
 		pandas.Series.expanding
 		pandas.DataFrame.expanding
 	**/
-	public function max(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function max(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		expanding mean
 		
@@ -444,7 +455,7 @@ package pandas.core.window;
 		pandas.Series.expanding
 		pandas.DataFrame.expanding
 	**/
-	public function mean(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		expanding median
 		
@@ -480,7 +491,7 @@ package pandas.core.window;
 		pandas.Series.expanding
 		pandas.DataFrame.expanding
 	**/
-	public function min(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function min(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var name : Dynamic;
 	static public var ndim : Dynamic;
 	/**
@@ -532,7 +543,7 @@ package pandas.core.window;
 		pandas.Series.expanding
 		pandas.DataFrame.expanding
 	**/
-	public function std(?ddof:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		expanding sum
 		
@@ -550,7 +561,7 @@ package pandas.core.window;
 		pandas.Series.expanding
 		pandas.DataFrame.expanding
 	**/
-	public function sum(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function sum(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function validate():Dynamic;
 	/**
 		expanding variance
@@ -571,5 +582,5 @@ package pandas.core.window;
 		pandas.DataFrame.expanding
 	**/
 	@:native("var")
-	public function _var(?ddof:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

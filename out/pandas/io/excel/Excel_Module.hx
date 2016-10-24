@@ -22,8 +22,8 @@ package pandas.io.excel;
 		has_index_names: boolean, default False
 		    True if the cols defined in index_col have an index name and are
 		    not in the header
-		na_values : iterable, default None
-		    Custom NA values
+		na_values : scalar, str, list-like, or dict, default None
+		    Additional strings to recognize as NA/NaN.
 		keep_default_na : bool, default True
 		thousands : str, default None
 		    Thousands separator
@@ -34,7 +34,7 @@ package pandas.io.excel;
 		date_parser : function, default None
 		skiprows : list of integers
 		    Row numbers to skip
-		skip_footer : int
+		skipfooter : int
 		    Number of line at bottom of file to skip
 		converters : dict, default None
 		    Dict of functions for converting values in certain columns. Keys can
@@ -56,6 +56,7 @@ package pandas.io.excel;
 		    round-trip converter.
 	**/
 	static public function TextParser(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public var _NA_VALUES : Dynamic;
 	static public var __all__ : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
@@ -66,7 +67,24 @@ package pandas.io.excel;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _conv_value(val:Dynamic):Dynamic;
-	static public function _fill_mi_header(row:Dynamic):Dynamic;
+	/**
+		Forward fills blank entries in row, but only inside the same parent index
+		
+		Used for creating headers in Multiindex.
+		Parameters
+		----------
+		row : list
+		    List of items in a single row.
+		constrol_row : list of boolean
+		    Helps to determine if particular column is in same parent index as the
+		    previous value. Used to stop propagation of empty cells between
+		    different indexes.
+		
+		Returns
+		----------
+		Returns changed row and control_row
+	**/
+	static public function _fill_mi_header(row:Dynamic, control_row:Dynamic):Dynamic;
 	/**
 		Check to see if a URL has a valid protocol.
 		
@@ -84,6 +102,7 @@ package pandas.io.excel;
 		(header, new_data) for header rows in MultiIndex parsing
 	**/
 	static public function _pop_header_name(row:Dynamic, index_col:Dynamic):Dynamic;
+	static public var _read_excel_doc : Dynamic;
 	static public function _trim_excel_header(row:Dynamic):Dynamic;
 	static public function _urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
@@ -93,6 +112,16 @@ package pandas.io.excel;
 		Class decorator for creating a class with a metaclass.
 	**/
 	static public function add_metaclass(metaclass:Dynamic):Dynamic;
+	/**
+		Fill a single paragraph of text, returning a new string.
+		
+		Reformat the single paragraph in 'text' to fit in lines of no more
+		than 'width' columns, and return a new string containing the entire
+		wrapped paragraph.  As with wrap(), tabs are expanded and other
+		whitespace characters converted to space.  See TextWrapper class for
+		available keyword args to customize wrapping behaviour.
+	**/
+	static public function fill(text:Dynamic, ?width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		If the filepath_or_buffer is a url, translate and return the buffer
 		passthru otherwise.
@@ -109,6 +138,10 @@ package pandas.io.excel;
 	**/
 	static public function get_filepath_or_buffer(filepath_or_buffer:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
 	static public function get_writer(engine_name:Dynamic):Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		This function is the sanctioned way of converting objects
@@ -187,6 +220,16 @@ package pandas.io.excel;
 		    either be integers or column labels, values are functions that take one
 		    input argument, the Excel cell content, and return the transformed
 		    content.
+		true_values : list, default None
+		    Values to consider as True
+		
+		    .. versionadded:: 0.19.0
+		
+		false_values : list, default None
+		    Values to consider as False
+		
+		    .. versionadded:: 0.19.0
+		
 		parse_cols : int or list, default None
 		    * If None then parse all columns,
 		    * If int then indicates last column to be parsed
@@ -195,8 +238,11 @@ package pandas.io.excel;
 		      column ranges (e.g. "A:E" or "A,C,E:F")
 		squeeze : boolean, default False
 		    If the parsed data only contains one column then return a Series
-		na_values : list-like, default None
-		    List of additional strings to recognize as NA/NaN
+		na_values : scalar, str, list-like, or dict, default None
+		    Additional strings to recognize as NA/NaN. If dict passed, specific
+		    per-column NA values. By default the following values are interpreted
+		    as NaN: '', '#N/A', '#N/A N/A', '#NA', '-1.#IND', '-1.#QNAN', '-NaN', '-nan',
+		'1.#IND', '1.#QNAN', 'N/A', 'NA', 'NULL', 'NaN', 'nan'.
 		thousands : str, default None
 		    Thousands separator for parsing string columns to numeric.  Note that
 		    this parameter is only necessary for columns stored as TEXT in Excel,
@@ -204,7 +250,7 @@ package pandas.io.excel;
 		    format.
 		keep_default_na : bool, default True
 		    If na_values are specified and keep_default_na is False the default NaN
-		    values are overridden, otherwise they're appended to
+		    values are overridden, otherwise they're appended to.
 		verbose : boolean, default False
 		    Indicate number of NA values placed in non-numeric columns
 		engine: string, default None
@@ -225,7 +271,7 @@ package pandas.io.excel;
 		    DataFrame from the passed in Excel file.  See notes in sheetname
 		    argument for more information on when a Dict of Dataframes is returned.
 	**/
-	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function read_excel(io:Dynamic, ?sheetname:Dynamic, ?header:Dynamic, ?skiprows:Dynamic, ?skip_footer:Dynamic, ?index_col:Dynamic, ?names:Dynamic, ?parse_cols:Dynamic, ?parse_dates:Dynamic, ?date_parser:Dynamic, ?na_values:Dynamic, ?thousands:Dynamic, ?convert_float:Dynamic, ?has_index_names:Dynamic, ?converters:Dynamic, ?true_values:Dynamic, ?false_values:Dynamic, ?engine:Dynamic, ?squeeze:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		reduce(function, sequence[, initial]) -> value
 		

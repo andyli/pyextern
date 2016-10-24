@@ -16,5 +16,20 @@ package pandas.indexes.range;
 		Return the size of object in bytes.
 	**/
 	static public function getsizeof(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_int64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

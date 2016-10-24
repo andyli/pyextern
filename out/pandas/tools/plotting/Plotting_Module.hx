@@ -28,6 +28,7 @@ package pandas.tools.plotting;
 	static public function _mpl_ge_1_3_1():Dynamic;
 	static public function _mpl_ge_1_4_0():Dynamic;
 	static public function _mpl_ge_1_5_0():Dynamic;
+	static public function _mpl_ge_2_0_0():Dynamic;
 	static public function _mpl_le_1_2_1():Dynamic;
 	static public function _plot(data:Dynamic, ?x:Dynamic, ?y:Dynamic, ?subplots:Dynamic, ?ax:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public var _plot_klass : Dynamic;
@@ -113,6 +114,7 @@ package pandas.tools.plotting;
 		plt.subplots(2, 2, subplot_kw=dict(polar=True))
 	**/
 	static public function _subplots(?naxes:Dynamic, ?sharex:Dynamic, ?sharey:Dynamic, ?squeeze:Dynamic, ?subplot_kw:Dynamic, ?ax:Dynamic, ?layout:Dynamic, ?layout_type:Dynamic, ?fig_kw:python.KwArgs<Dynamic>):Dynamic;
+	static public function _try_sort(iterable:Dynamic):Dynamic;
 	/**
 		Generates a matplotlib plot of Andrews curves, for visualising clusters of
 		multivariate data.
@@ -196,14 +198,17 @@ package pandas.tools.plotting;
 		grid : Setting this to True will show the grid
 		layout : tuple (optional)
 		    (rows, columns) for the layout of the plot
-		return_type : {'axes', 'dict', 'both'}, default 'dict'
-		    The kind of object to return. 'dict' returns a dictionary
-		    whose values are the matplotlib Lines of the boxplot;
+		return_type : {None, 'axes', 'dict', 'both'}, default None
+		    The kind of object to return. The default is ``axes``
 		    'axes' returns the matplotlib axes the boxplot is drawn on;
+		    'dict' returns a dictionary  whose values are the matplotlib
+		    Lines of the boxplot;
 		    'both' returns a namedtuple with the axes and dict.
 		
-		    When grouping with ``by``, a dict mapping columns to ``return_type``
-		    is returned.
+		    When grouping with ``by``, a Series mapping columns to ``return_type``
+		    is returned, unless ``return_type`` is None, in which case a NumPy
+		    array of axes is returned with the same shape as ``layout``.
+		    See the prose documentation for more.
 		
 		kwds : other plotting keyword arguments to be passed to matplotlib boxplot
 		       function
@@ -441,6 +446,47 @@ package pandas.tools.plotting;
 	**/
 	static public function hist_series(self:Dynamic, ?by:Dynamic, ?ax:Dynamic, ?grid:Dynamic, ?xlabelsize:Dynamic, ?xrot:Dynamic, ?ylabelsize:Dynamic, ?yrot:Dynamic, ?figsize:Dynamic, ?bins:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Return True if hash(arg) will succeed, False otherwise.
+		
+		Some types will pass a test against collections.Hashable but fail when they
+		are actually hashed with hash().
+		
+		Distinguish between these and other types by trying the call to hash() and
+		seeing if they raise TypeError.
+		
+		Examples
+		--------
+		>>> a = ([],)
+		>>> isinstance(a, collections.Hashable)
+		True
+		>>> is_hashable(a)
+		False
+	**/
+	static public function is_hashable(arg:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_iterator(obj:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_number(obj:Dynamic):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
+	/**
 		Lag plot for time series.
 		
 		Parameters:
@@ -481,6 +527,26 @@ package pandas.tools.plotting;
 		Point(x=100, y=22)
 	**/
 	static public function namedtuple(typename:Dynamic, field_names:Dynamic, ?verbose:Dynamic, ?rename:Dynamic):Dynamic;
+	/**
+		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
+		on object arrays.
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for *not*-null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is *not* null or if an array
+		    is given which of the element is *not* null.
+		
+		See also
+		--------
+		pandas.isnull : boolean inverse of pandas.notnull
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 	/**
 		Parallel coordinates plotting.
 		

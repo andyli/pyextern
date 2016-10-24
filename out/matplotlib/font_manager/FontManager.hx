@@ -84,6 +84,7 @@ package matplotlib.font_manager;
 		size of object in memory, in bytes
 	**/
 	public function __sizeof__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var __slotnames__ : Dynamic;
 	/**
 		Return str(self).
 	**/

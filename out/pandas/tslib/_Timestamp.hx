@@ -139,6 +139,7 @@ package pandas.tslib;
 		Return self.tzinfo.dst(self).
 	**/
 	public function dst(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var freq : Dynamic;
 	/**
 		int -> date corresponding to a proleptic Gregorian ordinal.
 	**/
@@ -178,7 +179,6 @@ package pandas.tslib;
 		If no tz is specified, uses local timezone.
 	**/
 	static public function now(?tz:Dynamic):Dynamic;
-	public var offset : Dynamic;
 	/**
 		Return datetime with new specified fields.
 	**/
@@ -209,11 +209,22 @@ package pandas.tslib;
 		Return time object with same time and tzinfo.
 	**/
 	public function timetz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		DEPRECATED: use :meth:`to_pydatetime` instead.
+		
+		Convert a Timestamp object to a native Python datetime object.
+	**/
 	public function to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns a numpy.datetime64 object with 'ns' precision 
 	**/
 	public function to_datetime64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert a Timestamp object to a native Python datetime object.
+		
+		If warn=True, issue a warning if nanoseconds is nonzero.
+	**/
+	public function to_pydatetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Current date or datetime:  same as self.__class__.fromtimestamp(time.time()).
 	**/

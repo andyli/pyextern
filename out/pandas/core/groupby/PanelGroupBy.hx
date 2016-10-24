@@ -245,19 +245,29 @@ package pandas.core.groupby;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	/**
+		Clear group based selection. Used for methods needing to return info on
+		each group regardless of whether a group selection was previously set.
+	**/
+	public function _reset_group_selection():Dynamic;
 	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		we may need create a selection if we have non-level groupers 
+		Create group based selection. Used when selection is not passed
+		directly but instead via a grouper.
 	**/
-	public function _set_selection_from_grouper():Dynamic;
+	public function _set_group_selection():Dynamic;
+	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
 	public function _shallow_copy(?obj:Dynamic, ?obj_type:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Fast transform path for aggregations
+	**/
+	public function _transform_fast(result:Dynamic, obj:Dynamic):Dynamic;
 	public function _transform_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _transform_item_by_item(obj:Dynamic, wrapper:Dynamic):Dynamic;
 	/**
@@ -470,7 +480,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function cumprod(?axis:Dynamic):Dynamic;
+	public function cumprod(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cumulative sum for each group
 		
@@ -480,7 +490,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function cumsum(?axis:Dynamic):Dynamic;
+	public function cumsum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return an expanding grouper, providing expanding
 		functionaility per group
@@ -636,7 +646,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function mean():Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute median of groups, excluding missing values
 		
@@ -682,31 +692,55 @@ package pandas.core.groupby;
 		
 		Examples
 		--------
-		>>> df = DataFrame([[1, np.nan], [1, 4], [5, 6]], columns=['A', 'B'])
+		
+		>>> df = pd.DataFrame({'A': [1, 1, 2, 1, 2],
+		...                    'B': [np.nan, 2, 3, 4, 5]}, columns=['A', 'B'])
 		>>> g = df.groupby('A')
 		>>> g.nth(0)
-		   A   B
-		0  1 NaN
-		2  5   6
+		     B
+		A
+		1  NaN
+		2  3.0
 		>>> g.nth(1)
-		   A  B
-		1  1  4
+		     B
+		A
+		1  2.0
+		2  5.0
 		>>> g.nth(-1)
-		   A  B
-		1  1  4
-		2  5  6
-		>>> g.nth(0, dropna='any')
-		   B
-		   A
-		1  4
-		5  6
+		     B
+		A
+		1  4.0
+		2  5.0
+		>>> g.nth([0, 1])
+		     B
+		A
+		1  NaN
+		1  2.0
+		2  3.0
+		2  5.0
 		
-		# NaNs denote group exhausted when using dropna
-		>>> g.nth(1, dropna='any')
+		Specifying ``dropna`` allows count ignoring NaN
+		
+		>>> g.nth(0, dropna='any')
+		     B
+		A
+		1  2.0
+		2  3.0
+		
+		NaNs denote group exhausted when using dropna
+		
+		>>> g.nth(3, dropna='any')
 		    B
-		    A
+		A
 		1 NaN
-		5 NaN
+		2 NaN
+		
+		Specifying ``as_index=False`` in ``groupby`` keeps the original index.
+		
+		>>> df.groupby('A', as_index=False).nth(1)
+		   A    B
+		1  1  2.0
+		4  2  5.0
 		
 		
 		See also
@@ -851,7 +885,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function std(?ddof:Dynamic):Dynamic;
+	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sum of group values
 		
@@ -929,5 +963,5 @@ package pandas.core.groupby;
 		pandas.Panel.groupby
 	**/
 	@:native("var")
-	public function _var(?ddof:Dynamic):Dynamic;
+	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

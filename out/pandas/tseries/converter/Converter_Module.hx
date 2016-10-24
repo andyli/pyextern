@@ -1,6 +1,12 @@
 /* This file is generated, do not edit! */
 package pandas.tseries.converter;
 @:pythonImport("pandas.tseries.converter") extern class Converter_Module {
+	static public var HOURS_PER_DAY : Dynamic;
+	static public var MIN_PER_HOUR : Dynamic;
+	static public var MUSEC_PER_DAY : Dynamic;
+	static public var SEC_PER_DAY : Dynamic;
+	static public var SEC_PER_HOUR : Dynamic;
+	static public var SEC_PER_MIN : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -23,6 +29,7 @@ package pandas.tseries.converter;
 	**/
 	static public function _get_default_annual_spacing(nyears:Dynamic):Dynamic;
 	static public function _monthly_finder(vmin:Dynamic, vmax:Dynamic, freq:Dynamic):Dynamic;
+	static public function _mpl_le_2_0_0():Dynamic;
 	static public function _quarterly_finder(vmin:Dynamic, vmax:Dynamic, freq:Dynamic):Dynamic;
 	static public function _to_ordinalf(tm:Dynamic):Dynamic;
 	/**
@@ -54,6 +61,9 @@ package pandas.tseries.converter;
 		-----
 		2 of start, end, or periods must be specified
 		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
 		Returns
 		-------
 		rng : DatetimeIndex
@@ -69,6 +79,15 @@ package pandas.tseries.converter;
 		label won't be shown, so we must adjust for that.
 	**/
 	static public function has_level_label(label_flags:Dynamic, vmin:Dynamic):Dynamic;
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		return if we are period arraylike / PeriodIndex 
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Modify the endpoints of a range as needed to avoid singularities.

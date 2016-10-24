@@ -86,11 +86,12 @@ package pandas.io.stata;
 	**/
 	static public function _dtype_to_stata_type(dtype:Dynamic, column:Dynamic):Dynamic;
 	static public var _encoding_params : Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _iterator_params : Dynamic;
 	static public function _maybe_convert_to_int_keys(convert_dates:Dynamic, varlist:Dynamic):Dynamic;
 	static public function _open_file_binary_write(fname:Dynamic, encoding:Dynamic):Dynamic;
 	/**
-		Takes a char string and pads it wih null bytes until it's length chars
+		Takes a char string and pads it with null bytes until it's length chars
 	**/
 	static public function _pad_bytes(name:Dynamic, length:Dynamic):Dynamic;
 	static public var _read_method_doc : Dynamic;
@@ -171,6 +172,8 @@ package pandas.io.stata;
 	**/
 	static public function infer_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var invalid_name_doc : Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -240,12 +243,14 @@ package pandas.io.stata;
 		Examples
 		--------
 		Read a Stata dta file:
-		>> df = pandas.read_stata('filename.dta')
+		
+		>>> df = pandas.read_stata('filename.dta')
 		
 		Read a Stata dta file in 10,000 line chunks:
-		>> itr = pandas.read_stata('filename.dta', chunksize=10000)
-		>> for chunk in itr:
-		>>     do_something(chunk)
+		
+		>>> itr = pandas.read_stata('filename.dta', chunksize=10000)
+		>>> for chunk in itr:
+		>>>     do_something(chunk)
 	**/
 	static public function read_stata(filepath_or_buffer:Dynamic, ?convert_dates:Dynamic, ?convert_categoricals:Dynamic, ?encoding:Dynamic, ?index:Dynamic, ?convert_missing:Dynamic, ?preserve_dtypes:Dynamic, ?columns:Dynamic, ?order_categoricals:Dynamic, ?chunksize:Dynamic, ?iterator:Dynamic):Dynamic;
 	static public var stata_epoch : Dynamic;
@@ -300,7 +305,8 @@ package pandas.io.stata;
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
 		
-		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the

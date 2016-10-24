@@ -26,7 +26,7 @@ package pandas.sparse.series;
 	static public function _make_index(length:Dynamic, indices:Dynamic, kind:Dynamic):Dynamic;
 	static public function _maybe_match_name(a:Dynamic, b:Dynamic):Dynamic;
 	static public var _shared_doc_kwargs : Dynamic;
-	static public function _sparse_array_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
+	static public function _sparse_array_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic, ?series:Dynamic):Dynamic;
 	static public function _sparse_series_op(left:Dynamic, right:Dynamic, op:Dynamic, name:Dynamic):Dynamic;
 	/**
 		Convert a SparseSeries to a scipy.sparse.coo_matrix using index
@@ -38,6 +38,19 @@ package pandas.sparse.series;
 		return my values or the object if we are say an ndarray 
 	**/
 	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -71,5 +84,24 @@ package pandas.sparse.series;
 		(sparse_values, index) : (ndarray, SparseIndex)
 	**/
 	static public function make_sparse(arr:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic):Dynamic;
-	static public var nan : Dynamic;
+	/**
+		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
+		on object arrays.
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for *not*-null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is *not* null or if an array
+		    is given which of the element is *not* null.
+		
+		See also
+		--------
+		pandas.isnull : boolean inverse of pandas.notnull
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 }

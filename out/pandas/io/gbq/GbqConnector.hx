@@ -41,11 +41,11 @@ package pandas.io.gbq;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Dynamic;
+	public function ___init__(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Void;
+	public function new(project_id:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -104,6 +104,28 @@ package pandas.io.gbq;
 	public function _print(msg:Dynamic, ?end:Dynamic):Dynamic;
 	public function _start_timer():Dynamic;
 	public function delete_and_recreate_table(dataset_id:Dynamic, table_id:Dynamic, table_schema:Dynamic):Dynamic;
+	/**
+		This method tries to retrieve the "default application credentials".
+		This could be useful for running code on Google Cloud Platform.
+		
+		.. versionadded:: 0.19.0
+		
+		Parameters
+		----------
+		None
+		
+		Returns
+		-------
+		- GoogleCredentials,
+		    If the default application credentials can be retrieved
+		    from the environment. The retrieved credentials should also
+		    have access to the project (self.project_id) on BigQuery.
+		- OR None,
+		    If default application credentials can not be retrieved
+		    from the environment. Or, the retrieved credentials do not
+		    have access to the project (self.project_id) on BigQuery.
+	**/
+	public function get_application_default_credentials():Dynamic;
 	public function get_credentials():Dynamic;
 	public function get_elapsed_seconds():Dynamic;
 	public function get_service():Dynamic;

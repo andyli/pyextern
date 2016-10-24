@@ -182,10 +182,17 @@ package numpy.core.numeric;
 		    type is preserved (e.g., if ``dtype(out)`` is float, the result
 		    will consist of 0.0's and 1.0's).  See `doc.ufuncs` (Section
 		    "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `all` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -337,10 +344,17 @@ package numpy.core.numeric;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amax` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -414,10 +428,17 @@ package numpy.core.numeric;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amin` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -497,10 +518,17 @@ package numpy.core.numeric;
 		    (e.g., if it is of type float, then it will remain so, returning
 		    1.0 for True and 0.0 for False, regardless of the type of `a`).
 		    See `doc.ufuncs` (Section "Output arguments") for details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `any` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -6894,10 +6922,17 @@ package numpy.core.numeric;
 		    is ``None``; if provided, it must have the same shape as the
 		    expected output, but the type will be cast if necessary.
 		    See `doc.ufuncs` for details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `mean` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -7767,6 +7802,12 @@ package numpy.core.numeric;
 		    If this is set to True, the axes which are reduced are left in the
 		    result as dimensions with size one. With this option, the result
 		    will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -9864,6 +9905,12 @@ package numpy.core.numeric;
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
 		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `std` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
+		
 		Returns
 		-------
 		standard_deviation : ndarray, see dtype parameter above.
@@ -9985,9 +10032,15 @@ package numpy.core.numeric;
 		    the same shape as the expected output, but the type of the output
 		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the input array.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `sum` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -10595,6 +10648,12 @@ package numpy.core.numeric;
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `var` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------

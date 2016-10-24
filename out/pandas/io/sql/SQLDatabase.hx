@@ -299,9 +299,10 @@ package pandas.io.sql;
 		chunksize : int, default None
 		    If not None, then rows will be written in batches of this size at a
 		    time.  If None, all rows will be written at once.
-		dtype : dict of column name to SQL type, default None
+		dtype : single type or dict of column name to SQL type, default None
 		    Optional specifying the datatype for columns. The SQL type should
-		    be a SQLAlchemy type.
+		    be a SQLAlchemy type. If all columns are of the same type, one
+		    single value can be used.
 	**/
 	public function to_sql(frame:Dynamic, name:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?schema:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
 }

@@ -1,6 +1,7 @@
 /* This file is generated, do not edit! */
 package pandas.core.missing;
 @:pythonImport("pandas.core.missing") extern class Missing_Module {
+	static public var _DATELIKE_DTYPES : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -46,6 +47,7 @@ package pandas.core.missing;
 	static public function _akima_interpolate(xi:Dynamic, yi:Dynamic, x:Dynamic, ?der:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _backfill_1d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
 	static public function _backfill_2d_datetime(arr:Dynamic, mask:Dynamic, ?limit:Dynamic):Dynamic;
+	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _fill_methods : Dynamic;
 	/**
 		Convenience function for interpolate.BPoly.from_derivatives
@@ -119,6 +121,47 @@ package pandas.core.missing;
 		needed fills inplace, returns the result
 	**/
 	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		numpy doesn't like to compare numeric arrays vs scalar string-likes
+		
+		return a boolean result if this is the case for a,b or b,a
+	**/
+	static public function is_numeric_v_string_like(a:Dynamic, b:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	/**
 		Return a masking array of same size/shape as arr
 		with entries equaling any member of values_to_mask set to True

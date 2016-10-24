@@ -62,6 +62,7 @@ package pandas.core.config_init;
 	static public var pc_expand_repr_doc : Dynamic;
 	static public var pc_height_deprecation_warning : Dynamic;
 	static public var pc_height_doc : Dynamic;
+	static public var pc_html_border_doc : Dynamic;
 	static public var pc_large_repr_doc : Dynamic;
 	static public var pc_latex_escape : Dynamic;
 	static public var pc_latex_longtable : Dynamic;

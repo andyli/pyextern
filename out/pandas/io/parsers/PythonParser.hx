@@ -111,7 +111,16 @@ package pandas.io.parsers;
 	**/
 	public function _buffered_line():Dynamic;
 	public function _check_comments(lines:Dynamic):Dynamic;
+	public function _check_decimal(lines:Dynamic):Dynamic;
 	public function _check_empty(lines:Dynamic):Dynamic;
+	/**
+		Checks whether the file begins with the BOM character.
+		If it does, remove it. In addition, if there is quoting
+		in the field subsequent to the BOM, remove it as well
+		because it technically takes place at the beginning of
+		the name, not the middle of it.
+	**/
+	public function _check_for_bom(first_row:Dynamic):Dynamic;
 	public function _check_thousands(lines:Dynamic):Dynamic;
 	public function _clear_buffer():Dynamic;
 	public function _convert_data(data:Dynamic):Dynamic;
@@ -151,11 +160,14 @@ package pandas.io.parsers;
 	public function _infer_columns():Dynamic;
 	public function _make_index(data:Dynamic, alldata:Dynamic, columns:Dynamic, ?indexnamerow:Dynamic):Dynamic;
 	public function _make_reader(f:Dynamic):Dynamic;
+	public function _maybe_dedup_names(names:Dynamic):Dynamic;
 	public function _maybe_make_multi_index_columns(columns:Dynamic, ?col_names:Dynamic):Dynamic;
 	public function _next_line():Dynamic;
 	public function _rows_to_cols(content:Dynamic):Dynamic;
+	public function _search_replace_num_columns(lines:Dynamic, search:Dynamic, replace:Dynamic):Dynamic;
 	public function _set_no_thousands_columns():Dynamic;
 	public function _should_parse_dates(i:Dynamic):Dynamic;
+	public function _to_recarray(data:Dynamic, columns:Dynamic):Dynamic;
 	public function close():Dynamic;
 	public function get_chunk(?size:Dynamic):Dynamic;
 	public function read(?rows:Dynamic):Dynamic;

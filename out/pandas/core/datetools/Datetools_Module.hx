@@ -136,10 +136,6 @@ package pandas.core.datetools;
 	**/
 	static public function get_freq_group(freq:Dynamic):Dynamic;
 	/**
-		Return the pre pandas 0.8.0 name for the date offset
-	**/
-	static public function get_legacy_offset_name(offset:Dynamic):Dynamic;
-	/**
 		Return DateOffset object associated with rule name
 		
 		Examples
@@ -205,6 +201,16 @@ package pandas.core.datetools;
 	static public function isBMonthEnd(dt:Dynamic):Dynamic;
 	static public function isBusinessDay(dt:Dynamic):Dynamic;
 	static public function isMonthEnd(dt:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		return if we are period arraylike / PeriodIndex 
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
 	/**
 		Returns True if downsampling is possible between source and target
 		frequencies
@@ -237,6 +243,7 @@ package pandas.core.datetools;
 		is_superperiod : boolean
 	**/
 	static public function is_superperiod(source:Dynamic, target:Dynamic):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function monthEnd(other:Dynamic):Dynamic;
 	static public var need_suffix : Dynamic;
 	/**
@@ -248,6 +255,26 @@ package pandas.core.datetools;
 		normalized : datetime.datetime or Timestamp
 	**/
 	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
+		on object arrays.
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for *not*-null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is *not* null or if an array
+		    is given which of the element is *not* null.
+		
+		See also
+		--------
+		pandas.isnull : boolean inverse of pandas.notnull
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 	/**
 		function for converting excel date to normal date format
 	**/
@@ -330,7 +357,8 @@ package pandas.core.datetools;
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
 		
-		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
@@ -395,15 +423,48 @@ package pandas.core.datetools;
 	**/
 	static public function to_datetime(arg:Dynamic, ?errors:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic, ?utc:Dynamic, ?box:Dynamic, ?format:Dynamic, ?exact:Dynamic, ?coerce:Dynamic, ?unit:Dynamic, ?infer_datetime_format:Dynamic):Dynamic;
 	/**
-		Return DateOffset object from string representation or
-		Timedelta object
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
 		
 		Examples
 		--------
-		>>> to_offset('5Min')
-		Minute(5)
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
 	**/
-	static public function to_offset(freqstr:Dynamic):Dynamic;
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
 		Parse time strings to time objects using fixed strptime formats ("%H:%M",
 		"%H%M", "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",

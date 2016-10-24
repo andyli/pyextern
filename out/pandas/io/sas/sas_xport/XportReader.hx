@@ -115,6 +115,7 @@ package pandas.io.sas.sas_xport;
 		Side effect: returns file position to record_start.
 	**/
 	public function _record_count():Dynamic;
+	public function close():Dynamic;
 	/**
 		Reads lines from Xport file and returns as dataframe
 		

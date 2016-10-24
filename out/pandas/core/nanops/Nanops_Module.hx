@@ -11,6 +11,26 @@ package pandas.core.nanops;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _bn_ok_dtype(dt:Dynamic, name:Dynamic):Dynamic;
+	/**
+		Performs the addition of an int64 array and an int64 integer (or array)
+		but checks that they do not result in overflow first.
+		
+		Parameters
+		----------
+		arr : array addend.
+		b : array or scalar addend.
+		
+		Returns
+		-------
+		sum : An array for elements x + b for each element x in arr if b is
+		      a scalar or an array for elements x + y for each element pair
+		      (x, y) in (arr, b).
+		
+		Raises
+		------
+		OverflowError if any x + y exceeds the maximum int64 value.
+	**/
+	static public function _checked_add_with_arr(arr:Dynamic, b:Dynamic):Dynamic;
 	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_numeric(x:Dynamic):Dynamic;
@@ -76,7 +96,21 @@ package pandas.core.nanops;
 	static public function is_int_or_datetime_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)

@@ -2286,10 +2286,17 @@ package scipy.signal.signaltools;
 		    is ``None``; if provided, it must have the same shape as the
 		    expected output, but the type will be cast if necessary.
 		    See `doc.ufuncs` for details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `mean` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -2897,6 +2904,12 @@ package scipy.signal.signaltools;
 		    If this is set to True, the axes which are reduced are left in the
 		    result as dimensions with size one. With this option, the result
 		    will broadcast correctly against the input array.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -3809,9 +3822,15 @@ package scipy.signal.signaltools;
 		    the same shape as the expected output, but the type of the output
 		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the input array.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `sum` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------

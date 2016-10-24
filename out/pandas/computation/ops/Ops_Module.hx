@@ -28,10 +28,15 @@ package pandas.computation.ops;
 		----------
 		terms : Op
 		    The expression that should cast.
+		acceptable_dtypes : list of acceptable numpy.dtype
+		    Will not cast if term's dtype in this list.
+		
+		    .. versionadded:: 0.19.0
+		
 		dtype : str or numpy.dtype
 		    The dtype to cast to.
 	**/
-	static public function _cast_inplace(terms:Dynamic, dtype:Dynamic):Dynamic;
+	static public function _cast_inplace(terms:Dynamic, acceptable_dtypes:Dynamic, dtype:Dynamic):Dynamic;
 	static public var _cmp_ops_dict : Dynamic;
 	static public var _cmp_ops_funcs : Dynamic;
 	static public var _cmp_ops_syms : Dynamic;
@@ -64,6 +69,20 @@ package pandas.computation.ops;
 	static public var _unary_ops_funcs : Dynamic;
 	static public var _unary_ops_syms : Dynamic;
 	static public var d : Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_term(obj:Dynamic):Dynamic;
 	static public function isnumeric(dtype:Dynamic):Dynamic;
 	/**

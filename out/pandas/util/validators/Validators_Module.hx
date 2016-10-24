@@ -28,6 +28,7 @@ package pandas.util.validators;
 		in 'compat_args' and raises a TypeError if there is one.
 	**/
 	static public function _check_for_invalid_keys(fname:Dynamic, kwargs:Dynamic, compat_args:Dynamic):Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Checks whether the length of the `*args` argument passed into a function
 		has at most `len(compat_args)` arguments and whether or not all of these

@@ -10,6 +10,13 @@ package pandas.indexes.base;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		coerce the indexer input array to the smallest dtype possible 
+	**/
+	static public function _coerce_indexer_dtype(indexer:Dynamic, categories:Dynamic):Dynamic;
+	static public function _comp_method_OBJECT_ARRAY(op:Dynamic, x:Dynamic, y:Dynamic):Dynamic;
+	static public function _ensure_categorical(arr:Dynamic):Dynamic;
 	static public function _ensure_frozen(array_like:Dynamic, categories:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		If seq is an iterator, put its values into a list.
@@ -18,10 +25,10 @@ package pandas.indexes.base;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _get_na_value(dtype:Dynamic):Dynamic;
 	static public var _index_doc_kwargs : Dynamic;
 	static public var _index_shared_docs : Dynamic;
-	static public function _maybe_box(idx:Dynamic):Dynamic;
 	/**
 		This is called upon unpickling, rather than the default which doesn't
 		have arguments and breaks __new__
@@ -127,6 +134,7 @@ package pandas.indexes.base;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -339,6 +347,11 @@ package pandas.indexes.base;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -382,11 +395,12 @@ package pandas.indexes.base;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_bool_indexer(key:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_any_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		return if we are a datetime with tz array 
+		return a boolean if the dtypes are equal 
 	**/
-	static public function is_datetimetz(array:Dynamic):Dynamic;
+	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -394,6 +408,20 @@ package pandas.indexes.base;
 	static public function is_iterator(obj:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		

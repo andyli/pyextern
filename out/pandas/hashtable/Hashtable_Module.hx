@@ -9,7 +9,9 @@ package pandas.hashtable;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
+	static public function duplicated_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function duplicated_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function duplicated_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mode_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function mode_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var nan : Dynamic;
@@ -19,6 +21,7 @@ package pandas.hashtable;
 		    np.unique(labels, return_index=True)[1]
 	**/
 	static public function unique_label_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function value_count_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function value_count_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function value_count_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function value_count_scalar64(values:Dynamic, dropna:Dynamic):Dynamic;
 }

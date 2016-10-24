@@ -19,6 +19,44 @@ package pandas.core.categorical;
 	static public function _convert_to_list_like(list_like:Dynamic):Dynamic;
 	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Factorize an input `values` into `categories` and `codes`. Preserves
+		categorical dtype in `categories`.
+		
+		*This is an internal function*
+		
+		Parameters
+		----------
+		values : list-like
+		
+		Returns
+		-------
+		codes : ndarray
+		categories : Index
+		    If `values` has a categorical dtype, then `categories` is
+		    a CategoricalIndex keeping the categories and order of `values`.
+	**/
+	static public function _factorize_from_iterable(values:Dynamic):Dynamic;
+	/**
+		A higher-level wrapper over `_factorize_from_iterable`.
+		
+		*This is an internal function*
+		
+		Parameters
+		----------
+		iterables : list-like of list-likes
+		
+		Returns
+		-------
+		codes_tuple : tuple of ndarrays
+		categories_tuple : tuple of Indexes
+		
+		Notes
+		-----
+		See `_factorize_from_iterable` for more info.
+	**/
+	static public function _factorize_from_iterables(iterables:Dynamic):Dynamic;
 	/**
 		utility routine to turn values into codes given the specified categories
 	**/
@@ -122,6 +160,7 @@ package pandas.core.categorical;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -334,6 +373,11 @@ package pandas.core.categorical;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -387,7 +431,12 @@ package pandas.core.categorical;
 	**/
 	static public function interpolate_2d(values:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?limit:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		return if we are a categorical possibility 
+	**/
+	static public function is_categorical(array:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
 		return a boolean if the dtypes are equal 
 	**/
@@ -398,6 +447,19 @@ package pandas.core.categorical;
 		we have a null slice 
 	**/
 	static public function is_null_slice(obj:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_sequence(x:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
@@ -418,6 +480,7 @@ package pandas.core.categorical;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
+	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		coerce to a categorical if a series is given 
 	**/
@@ -457,7 +520,7 @@ package pandas.core.categorical;
 		out : ndarray or None, default None
 		    Optional output array, must be appropriate type to hold input and
 		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
+		    _maybe_promote to determine this type for any fill_value
 		fill_value : any, default np.nan
 		    Fill value to replace -1 values with
 		mask_info : tuple of (ndarray, boolean)

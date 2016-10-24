@@ -11,6 +11,19 @@ package pandas.sparse.list;
 	static public var __spec__ : Dynamic;
 	static public function _concat_sparse_indexes(indexes:Dynamic):Dynamic;
 	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		This function is the sanctioned way of converting objects
 		to a unicode representation.
 		

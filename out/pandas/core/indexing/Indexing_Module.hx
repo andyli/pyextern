@@ -12,6 +12,7 @@ package pandas.core.indexing;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public function _asarray_tuplesafe(values:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _eps : Dynamic;
 	/**
 		infer the fill value for the nan/NaT from the provided
@@ -52,6 +53,7 @@ package pandas.core.indexing;
 	static public function convert_to_index_sliceable(obj:Dynamic, key:Dynamic):Dynamic;
 	static public function get_indexers_list():Dynamic;
 	static public function is_bool_indexer(key:Dynamic):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		we have a full length slice 
@@ -68,6 +70,24 @@ package pandas.core.indexing;
 		we have a null slice 
 	**/
 	static public function is_null_slice(obj:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_sequence(x:Dynamic):Dynamic;
+	/**
+		return if we are a sparse array 
+	**/
+	static public function is_sparse(array:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		

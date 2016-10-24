@@ -2,7 +2,6 @@
 package pandas.tseries.period;
 @:pythonImport("pandas.tseries.period") extern class Period_Module {
 	static public var _DIFFERENT_FREQ_INDEX : Dynamic;
-	static public var _INT64_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -11,9 +10,11 @@ package pandas.tseries.period;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _field_accessor(name:Dynamic, alias:Dynamic, ?docstring:Dynamic):Dynamic;
 	static public function _get_ordinal_range(start:Dynamic, end:Dynamic, periods:Dynamic, freq:Dynamic, ?mult:Dynamic):Dynamic;
-	static public function _get_ordinals(data:Dynamic, freq:Dynamic):Dynamic;
 	/**
 		Return freq str or tuple to freq code and stride (mult)
 		
@@ -37,8 +38,8 @@ package pandas.tseries.period;
 		(6000, 3)
 	**/
 	static public function _gfc(freqstr:Dynamic):Dynamic;
+	static public var _index_shared_docs : Dynamic;
 	static public function _make_field_arrays(?fields:python.VarArgs<Dynamic>):Dynamic;
-	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	/**
 		Wrap comparison operations to convert datetime-like to datetime64
 	**/
@@ -47,34 +48,47 @@ package pandas.tseries.period;
 	static public function _range_from_fields(?year:Dynamic, ?month:Dynamic, ?quarter:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?freq:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _validate_end_alias(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		return my values or the object if we are say an ndarray 
-	**/
-	static public function _values_from_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dt64arr_to_periodarr(data:Dynamic, freq:Dynamic, tz:Dynamic):Dynamic;
 	static public function get_period_field_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		we are coercing to an ndarray here
+	**/
+	static public function infer_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Converts input into a pandas only dtype object or a numpy dtype object.
 		
 		Parameters
 		----------
-		arr : ndarray or object value
-		    Object to check for null-ness
+		dtype : object to be converted
 		
 		Returns
 		-------
-		isnulled : array-like of bool or bool
-		    Array or bool indicating whether an object is null or if an array is
-		    given which of the element is null.
-		
-		See also
-		--------
-		pandas.notnull: boolean inverse of pandas.isnull
+		np.dtype or a pandas dtype
 	**/
-	static public function isnull(obj:Dynamic):Dynamic;
+	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
 		goodies like quarter recognition.

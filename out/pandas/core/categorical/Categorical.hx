@@ -53,11 +53,11 @@ package pandas.core.categorical;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?levels:Dynamic):Dynamic;
+	public function ___init__(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic, ?levels:Dynamic):Void;
+	public function new(values:Dynamic, ?categories:Dynamic, ?ordered:Dynamic, ?name:Dynamic, ?fastpath:Dynamic):Void;
 	/**
 		Returns an Iterator over the values of this Categorical.
 	**/
@@ -170,10 +170,6 @@ package pandas.core.categorical;
 	**/
 	public function _get_labels():Dynamic;
 	/**
-		Gets the levels (deprecated, use "categories") 
-	**/
-	public function _get_levels():Dynamic;
-	/**
 		Gets the ordered attribute 
 	**/
 	public function _get_ordered():Dynamic;
@@ -201,6 +197,35 @@ package pandas.core.categorical;
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
 	/**
+		Compute the inverse of a categorical, returning
+		a dict of categories -> indexers.
+		
+		*This is an internal function*
+		
+		Returns
+		-------
+		dict of categories -> indexers
+		
+		Example
+		-------
+		In [1]: c = pd.Categorical(list('aabca'))
+		
+		In [2]: c
+		Out[2]:
+		[a, a, b, c, a]
+		Categories (3, object): [a, b, c]
+		
+		In [3]: c.categories
+		Out[3]: Index([u'a', u'b', u'c'], dtype='object')
+		
+		In [4]: c.codes
+		Out[4]: array([0, 0, 1, 2, 0], dtype=int8)
+		
+		In [5]: c._reverse_indexer()
+		Out[5]: {'a': array([0, 1, 4]), 'b': array([2]), 'c': array([3])}
+	**/
+	public function _reverse_indexer():Dynamic;
+	/**
 		Sets new categories
 		
 		Parameters
@@ -213,14 +238,6 @@ package pandas.core.categorical;
 		Not settable by the user directly
 	**/
 	public function _set_codes(codes:Dynamic):Dynamic;
-	/**
-		set new levels (deprecated, use "categories") 
-	**/
-	public function _set_levels(levels:Dynamic):Dynamic;
-	/**
-		Sets the ordered attribute to the boolean value 
-	**/
-	public function _set_ordered(value:Dynamic):Dynamic;
 	/**
 		Return a slice of myself.
 		
@@ -242,6 +259,21 @@ package pandas.core.categorical;
 		   Don't perform validation of the categories for uniqueness or nulls
 	**/
 	static public function _validate_categories(categories:Dynamic, ?fastpath:Dynamic):Dynamic;
+	/**
+		Validates that we have a valid ordered parameter. If
+		it is not a boolean, a TypeError will be raised.
+		
+		Parameters
+		----------
+		ordered : object
+		    The parameter to be verified.
+		
+		Raises
+		------
+		TypeError
+		    If 'ordered' is not a boolean.
+	**/
+	static public function _validate_ordered(ordered:Dynamic):Dynamic;
 	/**
 		Add new categories.
 		
@@ -316,9 +348,19 @@ package pandas.core.categorical;
 	**/
 	public function as_unordered(?inplace:Dynamic):Dynamic;
 	/**
-		coerce this type to another dtype 
+		Coerce this type to another dtype
+		
+		Parameters
+		----------
+		dtype : numpy dtype or pandas type
+		copy : bool, default True
+		    By default, astype always returns a newly allocated object.
+		    If copy is set to False and dtype is categorical, the original
+		    object is returned.
+		
+		    .. versionadded:: 0.19.0
 	**/
-	public function astype(dtype:Dynamic):Dynamic;
+	public function astype(dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		compat, we are always our own object 
 	**/
@@ -428,6 +470,8 @@ package pandas.core.categorical;
 	**/
 	public function fillna(?value:Dynamic, ?method:Dynamic, ?limit:Dynamic):Dynamic;
 	/**
+		DEPRECATED: Use ``Categorical`` instead.
+		
 		Make a Categorical type from a single array-like object.
 		
 		For internal compatibility with numpy arrays.
@@ -509,10 +553,6 @@ package pandas.core.categorical;
 		Deprecated, use .codes!
 	**/
 	public var labels : Dynamic;
-	/**
-		Gets the levels (deprecated, use "categories") 
-	**/
-	public var levels : Dynamic;
 	/**
 		Apply mapper function to its categories (not codes).
 		
@@ -771,9 +811,18 @@ package pandas.core.categorical;
 	**/
 	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		An ndarray-compatible method that returns
-		`self` because categorical instances cannot
-		actually be reshaped.
+		DEPRECATED: calling this method will raise an error in a
+		future release.
+		
+		An ndarray-compatible method that returns `self` because
+		`Categorical` instances cannot actually be reshaped.
+		
+		Parameters
+		----------
+		new_shape : int or tuple of ints
+		    A 1-D array of integers that correspond to the new
+		    shape of the `Categorical`. For more information on
+		    the parameter, please refer to `np.reshape`.
 	**/
 	public function reshape(new_shape:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

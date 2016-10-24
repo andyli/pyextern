@@ -2,6 +2,7 @@
 package pandas.io.pickle;
 @:pythonImport("pandas.io.pickle") extern class Pickle_Module {
 	static public var PY3 : Dynamic;
+	static public var _NS_DTYPE : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -12,6 +13,7 @@ package pandas.io.pickle;
 	static public var __spec__ : Dynamic;
 	static public function _pickle_array(arr:Dynamic):Dynamic;
 	static public function _unpickle_array(bytes:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Read an array from an NPY file.
 		

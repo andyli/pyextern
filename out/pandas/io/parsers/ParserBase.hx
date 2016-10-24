@@ -115,6 +115,7 @@ package pandas.io.parsers;
 	public var _has_complex_date_col : Dynamic;
 	static public var _implicit_index : Dynamic;
 	public function _make_index(data:Dynamic, alldata:Dynamic, columns:Dynamic, ?indexnamerow:Dynamic):Dynamic;
+	public function _maybe_dedup_names(names:Dynamic):Dynamic;
 	public function _maybe_make_multi_index_columns(columns:Dynamic, ?col_names:Dynamic):Dynamic;
 	public function _should_parse_dates(i:Dynamic):Dynamic;
 	public function close():Dynamic;

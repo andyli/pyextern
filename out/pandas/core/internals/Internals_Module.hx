@@ -12,6 +12,11 @@ package pandas.core.internals;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
+		return a view if copy is False, but
+		need to be very careful as the result shape could change! 
+	**/
+	static public function _astype_nansafe(arr:Dynamic, dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
 		pivot to the labels shape 
 	**/
 	static public function _block2d_to_blocknd(values:Dynamic, placement:Dynamic, shape:Dynamic, labels:Dynamic, ref_items:Dynamic):Dynamic;
@@ -25,6 +30,8 @@ package pandas.core.internals;
 	**/
 	static public function _consolidate(blocks:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return a new extended blocks, givin the result 
 	**/
@@ -39,6 +46,10 @@ package pandas.core.internals;
 	**/
 	static public function _fast_count_smallints(arr:Dynamic):Dynamic;
 	/**
+		Find a common data type among the given dtypes.
+	**/
+	static public function _find_common_type(types:Dynamic):Dynamic;
+	/**
 		Parameters
 		----------
 		blknos : array of int64
@@ -51,6 +62,7 @@ package pandas.core.internals;
 		    yield (BlockPlacement, blkno)
 	**/
 	static public function _get_blkno_placements(blknos:Dynamic, blk_count:Dynamic, ?group:Dynamic):Dynamic;
+	static public function _get_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		interpret the dtype from a scalar 
 	**/
@@ -78,13 +90,32 @@ package pandas.core.internals;
 	**/
 	static public function _maybe_convert_string_to_object(values:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
+	/**
+		array must be SparseSeries or SparseArray 
+	**/
 	static public function _maybe_to_sparse(array:Dynamic):Dynamic;
+	/**
+		provide explict type promotion and coercion
+		
+		Parameters
+		----------
+		values : the ndarray that we want to maybe upcast
+		fill_value : what we want to fill with
+		dtype : if None, then use the dtype of the values, else coerce to this type
+		copy : if True always make a copy even if no upcast is required
+	**/
+	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _merge_blocks(blocks:Dynamic, ?dtype:Dynamic, ?_can_consolidate:Dynamic):Dynamic;
 	/**
 		return an array of blocks that potentially have different dtypes 
 	**/
 	static public function _multi_blockify(tuples:Dynamic, ?dtype:Dynamic):Dynamic;
+	static public var _np_version_under1p9 : Dynamic;
 	static public function _possibly_compare(a:Dynamic, b:Dynamic, op:Dynamic):Dynamic;
+	/**
+		if we have an object dtype, try to coerce dates and/or numbers 
+	**/
+	static public function _possibly_convert_objects(values:Dynamic, ?convert_dates:Dynamic, ?convert_numeric:Dynamic, ?convert_timedeltas:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		try to cast to the specified dtype (e.g. convert back to bool/int
 		or could be an astype of float64->float32
@@ -208,10 +239,29 @@ package pandas.core.internals;
 	**/
 	static public function _quantile(a:Dynamic, q:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?interpolation:Dynamic, ?keepdims:Dynamic):Dynamic;
 	/**
+		If possible, reshape `arr` to have shape `new_shape`,
+		with a couple of exceptions (see gh-13012):
+		
+		1) If `arr` is a Categorical or Index, `arr` will be
+		   returned as is.
+		2) If `arr` is a Series, the `_values` attribute will
+		   be reshaped and returned.
+		
+		Parameters
+		----------
+		arr : array-like, object to be reshaped
+		new_shape : int or tuple of ints, the new shape
+	**/
+	static public function _safe_reshape(arr:Dynamic, new_shape:Dynamic):Dynamic;
+	/**
 		return a single array of a block that has a single dtype; if dtype is
 		not None, coerce to this dtype
 	**/
 	static public function _simple_blockify(tuples:Dynamic, dtype:Dynamic):Dynamic;
+	/**
+		if we have an object dtype, try to coerce dates and/or numbers 
+	**/
+	static public function _soft_convert_objects(values:Dynamic, ?datetime:Dynamic, ?numeric:Dynamic, ?timedelta:Dynamic, ?coerce:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		return an array of blocks that potentially have different dtypes (and
 		are sparse)
@@ -311,7 +361,9 @@ package pandas.core.internals;
 		return if we are a categorical possibility 
 	**/
 	static public function is_categorical(array:Dynamic):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetimelike_v_numeric(a:Dynamic, b:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
@@ -326,6 +378,8 @@ package pandas.core.internals;
 		these are internal klasses that we represent (and don't use a np.array)
 	**/
 	static public function is_extension_type(value:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
 		test whether the object is a null datelike, e.g. Nat
@@ -342,6 +396,22 @@ package pandas.core.internals;
 		return a boolean result if this is the case for a,b or b,a
 	**/
 	static public function is_numeric_v_string_like(a:Dynamic, b:Dynamic):Dynamic;
+	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_re(obj:Dynamic):Dynamic;
+	static public function is_re_compilable(obj:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		return if we are a sparse array 
 	**/

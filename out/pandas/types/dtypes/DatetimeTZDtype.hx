@@ -45,20 +45,14 @@ package pandas.types.dtypes;
 	**/
 	public function __hash__():Dynamic;
 	/**
-		Parameters
-		----------
-		unit : string unit that this represents, currently must be 'ns'
-		tz : string tz that this represents
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(unit:Dynamic, ?tz:Dynamic):Dynamic;
+	public function ___init__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Parameters
-		----------
-		unit : string unit that this represents, currently must be 'ns'
-		tz : string tz that this represents
+		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(unit:Dynamic, ?tz:Dynamic):Void;
+	public function new(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Void;
 	/**
 		Return self<=value.
 	**/
@@ -73,9 +67,14 @@ package pandas.types.dtypes;
 	**/
 	public function __ne__(other:Dynamic):Dynamic;
 	/**
-		Create and return a new object.  See help(type) for accurate signature.
+		Create a new unit if needed, otherwise return from the cache
+		
+		Parameters
+		----------
+		unit : string unit that this represents, currently must be 'ns'
+		tz : string tz that this represents
 	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?unit:Dynamic, ?tz:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -120,6 +119,7 @@ package pandas.types.dtypes;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _cache : Dynamic;
 	static public var _match : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;

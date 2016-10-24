@@ -54,6 +54,7 @@ package pandas.formats.printing;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -266,6 +267,11 @@ package pandas.formats.printing;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -306,6 +312,7 @@ package pandas.formats.printing;
 		    [default: False] [currently: False]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_sequence(x:Dynamic):Dynamic;
 	/**
 		Perform ljust, center, rjust against string or list-like
 	**/

@@ -21,6 +21,32 @@ package numpy.ma.extras;
 		Returns a series of slices.
 	**/
 	static public function _ezclump(mask:Dynamic):Dynamic;
+	static public function _median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):Dynamic;
+	/**
+		Internal Function.
+		Call `func` with `a` as first argument swapping the axes to use extended
+		axis on functions that don't support it natively.
+		
+		Returns result and a.shape with axis dims set to 1.
+		
+		Parameters
+		----------
+		a : array_like
+		    Input array or object that can be converted to an array.
+		func : callable
+		    Reduction function Kapable of receiving an axis argument.
+		    It is is called with `a` as first argument followed by `kwargs`.
+		 kwargs : keyword arguments
+		    additional keyword arguments to pass to `func`.
+		
+		Returns
+		-------
+		result : tuple
+		    Result of func(a, **kwargs) and a.shape with axis dims set to 1
+		    which can be used to reshape the result to the same shape a ufunc with
+		    keepdims=True would produce.
+	**/
+	static public function _ureduce(a:Dynamic, func:Dynamic, ?kwargs:python.KwArgs<Dynamic>):python.Tuple<Dynamic>;
 	static public var absolute_import : Dynamic;
 	/**
 		add(x1, x2[, out])
@@ -418,8 +444,8 @@ package numpy.ma.extras;
 		    Data to be averaged.
 		    Masked entries are not taken into account in the computation.
 		axis : int, optional
-		    Axis along which the average is computed. The default is to compute
-		    the average of the flattened array.
+		    Axis along which to average `a`. If `None`, averaging is done over
+		    the flattened array.
 		weights : array_like, optional
 		    The importance that each element has in the computation of the average.
 		    The weights array can either be 1-D (in which case its length must be
@@ -744,20 +770,33 @@ package numpy.ma.extras;
 	**/
 	static public function corrcoef(x:Dynamic, ?y:Dynamic, ?rowvar:Dynamic, ?bias:Dynamic, ?allow_masked:Dynamic, ?ddof:Dynamic):Dynamic;
 	/**
+		count(self, axis=None, keepdims=<class 'numpy._globals._NoValue'>)
+		
 		Count the non-masked elements of the array along the given axis.
 		
 		Parameters
 		----------
-		axis : int, optional
-		    Axis along which to count the non-masked elements. If `axis` is
-		    `None`, all non-masked elements are counted.
+		axis : None or int or tuple of ints, optional
+		    Axis or axes along which the count is performed.
+		    The default (`axis` = `None`) performs the count over all
+		    the dimensions of the input array. `axis` may be negative, in
+		    which case it counts from the last to the first axis.
+		
+		    .. versionadded:: 1.10.0
+		
+		    If this is a tuple of ints, the count is performed on multiple
+		    axes, instead of a single axis or all the axes as before.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the array.
 		
 		Returns
 		-------
-		result : int or ndarray
-		    If `axis` is `None`, an integer count is returned. When `axis` is
-		    not `None`, an array with shape determined by the lengths of the
-		    remaining axes, is returned.
+		result : ndarray or scalar
+		    An array with the same shape as the input array, with the specified
+		    axis removed. If the array is a 0-d array, or if `axis` is None, a
+		    scalar is returned.
 		
 		See Also
 		--------
@@ -787,7 +826,7 @@ package numpy.ma.extras;
 		>>> a.count(axis=1)
 		array([3, 0])
 	**/
-	static public function count(a:Dynamic, ?axis:Dynamic):Dynamic;
+	static public function count(a:Dynamic, ?args:python.VarArgs<Dynamic>, ?params:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Count the number of masked elements along the given axis.
 		
@@ -1828,6 +1867,12 @@ package numpy.ma.extras;
 		    but it will probably be fully or partially sorted. Default is
 		    False. Note that, if `overwrite_input` is True, and the input
 		    is not already an `ndarray`, an error will be raised.
+		keepdims : bool, optional
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the input array.
+		
+		    .. versionadded:: 1.10.0
 		
 		Returns
 		-------
@@ -1862,7 +1907,7 @@ package numpy.ma.extras;
 		             mask = False,
 		       fill_value = 1e+20)
 	**/
-	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic):numpy.Ndarray;
+	static public function median(a:Dynamic, ?axis:Dynamic, ?out:Dynamic, ?overwrite_input:Dynamic, ?keepdims:Dynamic):numpy.Ndarray;
 	static public var mr_ : Dynamic;
 	static public var nomask : Dynamic;
 	/**

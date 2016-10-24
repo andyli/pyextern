@@ -40,6 +40,7 @@ package pandas.tslib;
 	static public function _get_utcoffset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _getlang(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _implemented_methods : Dynamic;
+	static public function _isleapyear_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Take a datetime/Timestamp in UTC and localizes to timezone tz.
 	**/
@@ -53,6 +54,7 @@ package pandas.tslib;
 	static public var _nan_methods : Dynamic;
 	static public var _nat_methods : Dynamic;
 	static public var _nat_strings : Dynamic;
+	static public var _no_input : Dynamic;
 	/**
 		Python interface for cache function to facilitate testing.
 	**/
@@ -73,7 +75,6 @@ package pandas.tslib;
 	static public function _thread_allocate_lock(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _unbox_utcoffsets(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _zero_time : Dynamic;
-	static public function apply_offset(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Parameters
 		----------
@@ -85,9 +86,8 @@ package pandas.tslib;
 	static public function array_strptime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function array_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		convert an ndarray to an array of ints that are timedeltas
-		force conversion if coerce = True,
-		else will raise if cannot convert 
+		Convert an ndarray to an array of timedeltas. If errors == 'coerce',
+		coerce non-convertible objects to NaT. Otherwise, raise.
 	**/
 	static public function array_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -122,7 +122,22 @@ package pandas.tslib;
 		ts must be a string 
 	**/
 	static public function convert_str_to_tsobject(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function convert_to_timedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert an incoming object to a timedelta64 if possible
+		
+		Handle these types of objects:
+		    - timedelta/Timedelta
+		    - timedelta64
+		    - an offset
+		    - np.int64 (with unit providing a possible modifier)
+		    - None/NaT
+		
+		Return an ns based int64
+		
+		# kludgy here until we have a timedelta scalar
+		# handle the numpy < 1.7 case
+	**/
+	static public function convert_to_timedelta64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function date_normalize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dates_normalized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function datetime_to_datetime64(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -177,12 +192,10 @@ package pandas.tslib;
 	static public function ints_to_pydatetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ints_to_pytimedelta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_platform_windows():Dynamic;
-	static public function is_timestamp_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function isleapyear(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		(Maybe) Construct a timezone object from a string. If tz is a string, use it to construct a timezone object.
-		Otherwise, just return tz.
+		(Maybe) Construct a timezone object from a string. If tz is a string, use
+		it to construct a timezone object. Otherwise, just return tz.
 	**/
 	static public function maybe_get_tz(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function monthrange(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -306,10 +319,6 @@ package pandas.tslib;
 		datetime
 	**/
 	static public function parse_datetime_string_with_reso(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Shortcut to parse str array for quicker DatetimeIndex construction
-	**/
-	static public function parse_str_array_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var prop : Dynamic;
 	/**
 		Convert to int64 representation compatible with numpy datetime64; converts

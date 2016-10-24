@@ -16,6 +16,11 @@ package pandas.core.frame;
 		Needs to handle a lot of exceptional cases.
 	**/
 	static public function _arrays_to_mgr(arrays:Dynamic, arr_names:Dynamic, index:Dynamic, columns:Dynamic, ?dtype:Dynamic):Dynamic;
+	/**
+		given a dtypes and a result set, coerce the result elements to the
+		dtypes
+	**/
+	static public function _coerce_to_dtypes(result:Dynamic, dtypes:Dynamic):Dynamic;
 	static public function _convert_object_array(content:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	/**
@@ -30,7 +35,11 @@ package pandas.core.frame;
 		dict
 	**/
 	static public function _dict_compat(d:Dynamic):Dynamic;
+	static public function _ensure_float(arr:Dynamic):Dynamic;
+	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Evaluate a Python expression as a string using various backends.
 		
@@ -116,13 +125,31 @@ package pandas.core.frame;
 		pandas.DataFrame.eval
 	**/
 	static public function _eval(expr:Dynamic, ?parser:Dynamic, ?engine:Dynamic, ?truediv:Dynamic, ?local_dict:Dynamic, ?global_dict:Dynamic, ?resolvers:Dynamic, ?level:Dynamic, ?target:Dynamic, ?inplace:Dynamic):Dynamic;
+	/**
+		Find a common data type among the given dtypes.
+	**/
+	static public function _find_common_type(types:Dynamic):Dynamic;
 	static public function _from_nested_dict(data:Dynamic):Dynamic;
+	/**
+		Get a numpy dtype.type-style object. This handles the datetime64[ns]
+		and datetime64[ns, TZ] compat
+		
+		Notes
+		-----
+		If nothing can be found, returns ``object``.
+	**/
+	static public function _get_dtype_from_object(dtype:Dynamic):Dynamic;
 	static public function _get_names_from_index(data:Dynamic):Dynamic;
 	static public function _homogenize(data:Dynamic, index:Dynamic, ?dtype:Dynamic):Dynamic;
 	/**
 		interpret the dtype from a scalar 
 	**/
 	static public function _infer_dtype_from_scalar(val:Dynamic):Dynamic;
+	/**
+		Change string like dtypes to object for
+		``DataFrame.select_dtypes()``.
+	**/
+	static public function _invalidate_string_dtypes(dtype_set:Dynamic):Dynamic;
 	static public function _list_of_dict_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _list_of_series_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
 	static public function _list_to_arrays(data:Dynamic, columns:Dynamic, ?coerce_float:Dynamic, ?dtype:Dynamic):Dynamic;
@@ -142,8 +169,41 @@ package pandas.core.frame;
 		copy : if True always make a copy even if no upcast is required
 	**/
 	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		A safe version of putmask that potentially upcasts the result
+		
+		Parameters
+		----------
+		result : ndarray
+		    The destination array. This will be mutated in-place if no upcasting is
+		    necessary.
+		mask : boolean ndarray
+		other : ndarray or scalar
+		    The source array or value
+		
+		Returns
+		-------
+		result : ndarray
+		changed : boolean
+		    Set to true if the result array was upcasted
+	**/
+	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public var _merge_doc : Dynamic;
 	static public var _numeric_only_doc : Dynamic;
+	/**
+		try to cast the array/value to a datetimelike dtype, converting float
+		nan to iNaT
+	**/
+	static public function _possibly_cast_to_datetime(value:Dynamic, dtype:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
+		try to do platform conversion, allow ndarray or list here 
+	**/
+	static public function _possibly_convert_platform(values:Dynamic):Dynamic;
+	/**
+		try to cast to the specified dtype (e.g. convert back to bool/int
+		or could be an astype of float64->float32
+	**/
+	static public function _possibly_downcast_to_dtype(result:Dynamic, dtype:Dynamic):Dynamic;
 	/**
 		we might have a array (or single object) that is datetime like,
 		and no dtype is passed don't change the value unless we find a
@@ -194,14 +254,17 @@ package pandas.core.frame;
 		grid : Setting this to True will show the grid
 		layout : tuple (optional)
 		    (rows, columns) for the layout of the plot
-		return_type : {'axes', 'dict', 'both'}, default 'dict'
-		    The kind of object to return. 'dict' returns a dictionary
-		    whose values are the matplotlib Lines of the boxplot;
+		return_type : {None, 'axes', 'dict', 'both'}, default None
+		    The kind of object to return. The default is ``axes``
 		    'axes' returns the matplotlib axes the boxplot is drawn on;
+		    'dict' returns a dictionary  whose values are the matplotlib
+		    Lines of the boxplot;
 		    'both' returns a namedtuple with the axes and dict.
 		
-		    When grouping with ``by``, a dict mapping columns to ``return_type``
-		    is returned.
+		    When grouping with ``by``, a Series mapping columns to ``return_type``
+		    is returned, unless ``return_type`` is None, in which case a NumPy
+		    array of axes is returned with the same shape as ``layout``.
+		    See the prose documentation for more.
 		
 		kwds : other plotting keyword arguments to be passed to matplotlib boxplot
 		       function
@@ -227,7 +290,6 @@ package pandas.core.frame;
 	static public function convert_to_index_sliceable(obj:Dynamic, key:Dynamic):Dynamic;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public function create_block_manager_from_blocks(blocks:Dynamic, axes:Dynamic):Dynamic;
-	static public function deprecate(name:Dynamic, alternative:Dynamic, ?alt_name:Dynamic):Dynamic;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -286,6 +348,7 @@ package pandas.core.frame;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -498,6 +561,11 @@ package pandas.core.frame;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -538,18 +606,43 @@ package pandas.core.frame;
 		    [default: False] [currently: False]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
 	**/
 	static public function is_datetimetz(array:Dynamic):Dynamic;
 	/**
+		return a boolean if the dtypes are equal 
+	**/
+	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
+	/**
 		if we are a klass that is preserved by the internals
 		these are internal klasses that we represent (and don't use a np.array)
 	**/
 	static public function is_extension_type(value:Dynamic):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_iterator(obj:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_named_tuple(arg:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_sequence(x:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
@@ -574,6 +667,7 @@ package pandas.core.frame;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function maybe_droplevels(index:Dynamic, key:Dynamic):Dynamic;
+	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
 		on object arrays.

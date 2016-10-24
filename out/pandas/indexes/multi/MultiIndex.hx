@@ -9,7 +9,7 @@ package pandas.indexes.multi;
 	public function _MultiIndex__set_labels(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function _MultiIndex__set_levels(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __abs__(?other:Dynamic):Dynamic;
-	public function __add__(other:Dynamic):Dynamic;
+	public function __add__(?other:Dynamic):Dynamic;
 	public function __and__(other:Dynamic):Dynamic;
 	/**
 		the array interface, return my values 
@@ -119,7 +119,7 @@ package pandas.indexes.multi;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
 	public function __pow__(?other:Dynamic):Dynamic;
-	public function __radd__(other:Dynamic):Dynamic;
+	public function __radd__(?other:Dynamic):Dynamic;
 	/**
 		Necessary for making this object picklable
 	**/
@@ -159,7 +159,7 @@ package pandas.indexes.multi;
 		Yields Bytestring in Py2, Unicode String in py3.
 	**/
 	public function __str__():Dynamic;
-	public function __sub__(other:Dynamic):Dynamic;
+	public function __sub__(?other:Dynamic):Dynamic;
 	/**
 		Abstract classes can override this to customize issubclass().
 		
@@ -196,24 +196,28 @@ package pandas.indexes.multi;
 	static public function _add_logical_methods_disabled():Dynamic;
 	static public function _add_numeric_methods():Dynamic;
 	/**
+		add in the numeric add/sub methods to disable 
+	**/
+	static public function _add_numeric_methods_add_sub_disabled():Dynamic;
+	/**
 		add in numeric methods 
 	**/
 	static public function _add_numeric_methods_binary():Dynamic;
 	/**
-		add in numeric methods to disable 
+		add in numeric methods to disable other than add/sub 
 	**/
 	static public function _add_numeric_methods_disabled():Dynamic;
 	/**
 		add in numeric unary methods 
 	**/
 	static public function _add_numeric_methods_unary():Dynamic;
-	/**
-		add in the numeric set-like methods to disable 
-	**/
-	static public function _add_numericlike_set_methods_disabled():Dynamic;
 	static public var _allow_datetime_index_ops : Dynamic;
 	static public var _allow_index_ops : Dynamic;
 	static public var _allow_period_index_ops : Dynamic;
+	/**
+		Concatenate to_concat which has the same class
+	**/
+	public function _append_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
 	static public function _arrmap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check value is valid for scalar op 
@@ -296,20 +300,29 @@ package pandas.indexes.multi;
 	public function _convert_slice_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
 	static public var _data : Dynamic;
+	/**
+		.. versionadded:: 0.19.0
+		
+		Make a copy of self if data coincides (in memory) with orig.
+		Subclasses should override this if self._base is not an ndarray.
+		
+		Parameters
+		----------
+		orig : ndarray
+		    other ndarray to compare self._data against
+		copy : boolean, default False
+		    when False, do not run any check, just return self
+		
+		Returns
+		-------
+		A copy of self if needed, otherwise self : Index
+	**/
+	public function _deepcopy_if_needed(orig:Dynamic, ?copy:Dynamic):Dynamic;
 	public function _dir_additions():Dynamic;
 	public function _dir_deletions():Dynamic;
 	public function _drop_from_level(labels:Dynamic, level:Dynamic):Dynamic;
 	static public var _engine : Dynamic;
 	static public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		prepare the append
-		
-		Returns
-		-------
-		list of to_concat, name of result Index
-	**/
-	public function _ensure_compat_append(other:Dynamic):Dynamic;
-	static public function _ensure_compat_concat(indexes:Dynamic):Dynamic;
 	public function _evaluate_with_datetime_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
 	public function _evaluate_with_timedelta_like(other:Dynamic, op:Dynamic, opstr:Dynamic):Dynamic;
 	public function _evalute_compare(op:Dynamic):Dynamic;
@@ -361,7 +374,19 @@ package pandas.indexes.multi;
 		tuples).
 	**/
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
-	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Returns an index containing unique values.
+		
+		Parameters
+		----------
+		dropna : bool
+		    If True, NaN values are dropped.
+		
+		Returns
+		-------
+		uniques : index
+	**/
+	public function _get_unique_index(?dropna:Dynamic):Dynamic;
 	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	static public var _infer_as_myclass : Dynamic;
@@ -430,6 +455,13 @@ package pandas.indexes.multi;
 	static public var _na_value : Dynamic;
 	static public var _names : Dynamic;
 	static public var _nan_idxs : Dynamic;
+	/**
+		return the number of bytes in the underlying data
+		deeply introspect the level data if deep=True
+		
+		*this is in internal routine*
+	**/
+	public function _nbytes(?deep:Dynamic):Dynamic;
 	static public function _outer_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _partial_tup_index(tup:Dynamic, ?side:Dynamic):Dynamic;
 	public function _possibly_promote(other:Dynamic):Dynamic;
@@ -555,6 +587,11 @@ package pandas.indexes.multi;
 	**/
 	public function _validate_indexer(form:Dynamic, key:Dynamic, kind:Dynamic):Dynamic;
 	/**
+		Handles the quirks of having a singular 'name' parameter for general
+		Index and plural 'names' parameter for MultiIndex.
+	**/
+	public function _validate_names(?name:Dynamic, ?names:Dynamic, ?deep:Dynamic):Dynamic;
+	/**
 		the internal implementation 
 	**/
 	public var _values : Dynamic;
@@ -623,7 +660,23 @@ package pandas.indexes.multi;
 		mask : array of booleans where data is not NA
 	**/
 	public function asof_locs(where:Dynamic, mask:Dynamic):Dynamic;
-	public function astype(dtype:Dynamic):Dynamic;
+	/**
+		Create an Index with values cast to dtypes. The class of a new Index
+		is determined by dtype. When conversion is impossible, a ValueError
+		exception is raised.
+		
+		Parameters
+		----------
+		dtype : numpy dtype or pandas type
+		copy : bool, default True
+		    By default, astype always returns a newly allocated object.
+		    If copy is set to False and internal requirements on dtype are
+		    satisfied, the original data is used to create a new Index
+		    or the original Index is returned.
+		
+		    .. versionadded:: 0.19.0
+	**/
+	public function astype(dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
 		return the base object if the memory of the underlying data is
 		shared
@@ -650,7 +703,7 @@ package pandas.indexes.multi;
 		``deep``, but if ``deep`` is passed it will attempt to deepcopy.
 		This could be potentially expensive on large MultiIndex objects.
 	**/
-	public function copy(?names:Dynamic, ?dtype:Dynamic, ?levels:Dynamic, ?labels:Dynamic, ?deep:Dynamic, ?_set_identity:Dynamic):pandas.MultiIndex;
+	public function copy(?names:Dynamic, ?dtype:Dynamic, ?levels:Dynamic, ?labels:Dynamic, ?deep:Dynamic, ?_set_identity:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.MultiIndex;
 	/**
 		return the data pointer of the underlying data 
 	**/
@@ -663,7 +716,6 @@ package pandas.indexes.multi;
 		new_index : MultiIndex
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sorted set difference of two MultiIndex objects
 		
@@ -721,10 +773,24 @@ package pandas.indexes.multi;
 		index : Index or MultiIndex
 	**/
 	public function droplevel(?level:Dynamic):Dynamic;
+	/**
+		Return Index without NA/NaN values
+		
+		Parameters
+		----------
+		how :  {'any', 'all'}, default 'any'
+		    If the Index is a MultiIndex, drop the value when any or all levels
+		    are NaN.
+		
+		Returns
+		-------
+		valid : Index
+	**/
+	public function dropna(?how:Dynamic):pandas.Index;
 	static public var dtype : Dynamic;
 	static public var dtype_str : Dynamic;
 	/**
-		Return boolean np.array denoting duplicate values
+		Return boolean np.ndarray denoting duplicate values
 		
 		Parameters
 		----------
@@ -738,7 +804,7 @@ package pandas.indexes.multi;
 		
 		Returns
 		-------
-		duplicated : np.array
+		duplicated : np.ndarray
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	/**
@@ -1032,7 +1098,7 @@ package pandas.indexes.multi;
 		
 		Parameters
 		----------
-		to_groupby : array
+		values : array
 		    Values used to determine the groups.
 		
 		Returns
@@ -1040,7 +1106,7 @@ package pandas.indexes.multi;
 		groups : dict
 		    {group name -> group labels}
 	**/
-	public function groupby(to_groupby:Dynamic):python.Dict<Dynamic, Dynamic>;
+	public function groupby(values:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
@@ -1340,6 +1406,13 @@ package pandas.indexes.multi;
 		numpy.ndarray.repeat
 	**/
 	public function repeat(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		NOT IMPLEMENTED: do not call this method, as reshaping is not
+		supported for Index objects and will raise an error.
+		
+		Reshape an Index.
+	**/
+	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Find indices where elements should be inserted to maintain order.
 		
@@ -1652,7 +1725,8 @@ package pandas.indexes.multi;
 	public function swaplevel(?i:Dynamic, ?j:Dynamic):pandas.MultiIndex;
 	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute the sorted symmetric difference of two Index objects.
+		Compute the symmetric difference of two Index objects.
+		It's sorted if sorting is possible.
 		
 		Parameters
 		----------
@@ -1667,10 +1741,8 @@ package pandas.indexes.multi;
 		-----
 		``symmetric_difference`` contains elements that appear in either
 		``idx1`` or ``idx2`` but not both. Equivalent to the Index created by
-		``(idx1 - idx2) + (idx2 - idx1)`` with duplicates dropped.
-		
-		The sorting of a result containing ``NaN`` values is not guaranteed
-		across Python versions. See GitHub issue #6444.
+		``idx1.difference(idx2) | idx2.difference(idx1)`` with duplicates
+		dropped.
 		
 		Examples
 		--------
@@ -1707,6 +1779,8 @@ package pandas.indexes.multi;
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		DEPRECATED: use :meth:`pandas.to_datetime` instead.
+		
 		For an Index containing strings or datetime.datetime objects, attempt
 		conversion to DatetimeIndex
 	**/
@@ -1793,14 +1867,15 @@ package pandas.indexes.multi;
 	**/
 	public function union(other:Dynamic):Dynamic;
 	/**
-		Return array of unique values in the object. Significantly faster than
-		numpy.unique. Includes NA values.
+		Return Index of unique values in the object.
+		Significantly faster than numpy.unique. Includes NA values.
+		The order of the original is preserved.
 		
 		Returns
 		-------
-		uniques : ndarray
+		uniques : Index
 	**/
-	public function unique():numpy.Ndarray;
+	public function unique():pandas.Index;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -1836,4 +1911,17 @@ package pandas.indexes.multi;
 		this is defined as a copy with the same identity 
 	**/
 	public function view(?cls:Dynamic):Dynamic;
+	/**
+		.. versionadded:: 0.19.0
+		
+		Return an Index of same shape as self and whose corresponding
+		entries are from self where cond is True and otherwise are from
+		other.
+		
+		Parameters
+		----------
+		cond : boolean same length as self
+		other : scalar, or array-like
+	**/
+	public function where(cond:Dynamic, ?other:Dynamic):Dynamic;
 }

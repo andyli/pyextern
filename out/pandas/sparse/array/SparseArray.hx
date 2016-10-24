@@ -26,10 +26,7 @@ package pandas.sparse.array;
 	**/
 	public function __abs__():Dynamic;
 	public function __add__(other:Dynamic):Dynamic;
-	/**
-		Return self&value.
-	**/
-	public function __and__(value:Dynamic):Dynamic;
+	public function __and__(other:Dynamic):Dynamic;
 	/**
 		a.__array__(|dtype) -> reference if type unchanged, copy otherwise.
 		
@@ -57,9 +54,22 @@ package pandas.sparse.array;
 	**/
 	public var __array_struct__ : Dynamic;
 	/**
-		a.__array_wrap__(obj) -> Object of same type as ndarray object a.
+		NumPy calls this method when ufunc is applied
+		
+		Parameters
+		----------
+		
+		out_arr : ndarray
+		    ufunc result (note that ufunc is only applied to sp_values)
+		context : tuple of 3 elements (ufunc, signature, domain)
+		    for example, following is a context when np.sin is applied to
+		    SparseArray,
+		
+		    (<ufunc 'sin'>, (SparseArray,), 0))
+		
+		See http://docs.scipy.org/doc/numpy/user/basics.subclassing.html
 	**/
-	public function __array_wrap__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function __array_wrap__(out_arr:Dynamic, ?context:Dynamic):Dynamic;
 	/**
 		self != 0
 	**/
@@ -223,20 +233,14 @@ package pandas.sparse.array;
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
 	static public function __new__(cls:Dynamic, data:Dynamic, ?sparse_index:Dynamic, ?index:Dynamic, ?kind:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
-	/**
-		Return self|value.
-	**/
-	public function __or__(value:Dynamic):Dynamic;
+	public function __or__(other:Dynamic):Dynamic;
 	/**
 		+self
 	**/
 	public function __pos__():Dynamic;
 	public function __pow__(other:Dynamic):Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
-	/**
-		Return value&self.
-	**/
-	public function __rand__(value:Dynamic):Dynamic;
+	public function __rand__(other:Dynamic):Dynamic;
 	public function __rdiv__(other:Dynamic):Dynamic;
 	/**
 		Return divmod(value, self).
@@ -267,10 +271,7 @@ package pandas.sparse.array;
 	public function __rmatmul__(value:Dynamic):Dynamic;
 	public function __rmod__(other:Dynamic):Dynamic;
 	public function __rmul__(other:Dynamic):Dynamic;
-	/**
-		Return value|self.
-	**/
-	public function __ror__(value:Dynamic):Dynamic;
+	public function __ror__(other:Dynamic):Dynamic;
 	public function __rpow__(other:Dynamic):Dynamic;
 	/**
 		Return value>>self.
@@ -282,10 +283,7 @@ package pandas.sparse.array;
 	public function __rshift__(value:Dynamic):Dynamic;
 	public function __rsub__(other:Dynamic):Dynamic;
 	public function __rtruediv__(other:Dynamic):Dynamic;
-	/**
-		Return value^self.
-	**/
-	public function __rxor__(value:Dynamic):Dynamic;
+	public function __rxor__(other:Dynamic):Dynamic;
 	/**
 		Implement setattr(self, name, value).
 	**/
@@ -333,10 +331,7 @@ package pandas.sparse.array;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	/**
-		Return self^value.
-	**/
-	public function __xor__(value:Dynamic):Dynamic;
+	public function __xor__(other:Dynamic):Dynamic;
 	/**
 		class constructor (for this class it's just `__class__`
 	**/
@@ -434,9 +429,71 @@ package pandas.sparse.array;
 	**/
 	public function argsort(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		        
+		a.astype(dtype, order='K', casting='unsafe', subok=True, copy=True)
+		
+		Copy of the array, cast to a specified type.
+		
+		Parameters
+		----------
+		dtype : str or dtype
+		    Typecode or data-type to which the array is cast.
+		order : {'C', 'F', 'A', 'K'}, optional
+		    Controls the memory layout order of the result.
+		    'C' means C order, 'F' means Fortran order, 'A'
+		    means 'F' order if all the arrays are Fortran contiguous,
+		    'C' order otherwise, and 'K' means as close to the
+		    order the array elements appear in memory as possible.
+		    Default is 'K'.
+		casting : {'no', 'equiv', 'safe', 'same_kind', 'unsafe'}, optional
+		    Controls what kind of data casting may occur. Defaults to 'unsafe'
+		    for backwards compatibility.
+		
+		      * 'no' means the data types should not be cast at all.
+		      * 'equiv' means only byte-order changes are allowed.
+		      * 'safe' means only casts which can preserve values are allowed.
+		      * 'same_kind' means only safe casts or casts within a kind,
+		        like float64 to float32, are allowed.
+		      * 'unsafe' means any data conversions may be done.
+		subok : bool, optional
+		    If True, then sub-classes will be passed-through (default), otherwise
+		    the returned array will be forced to be a base-class array.
+		copy : bool, optional
+		    By default, astype always returns a newly allocated array. If this
+		    is set to false, and the `dtype`, `order`, and `subok`
+		    requirements are satisfied, the input array is returned instead
+		    of a copy.
+		
+		Returns
+		-------
+		arr_t : ndarray
+		    Unless `copy` is False and the other conditions for returning the input
+		    array are satisfied (see description for `copy` input parameter), `arr_t`
+		    is a new array of the same shape as the input array, with dtype, order
+		    given by `dtype`, `order`.
+		
+		Notes
+		-----
+		Starting in NumPy 1.9, astype method now returns an error if the string
+		dtype to cast to is not long enough in 'safe' casting mode to hold the max
+		value of integer/float array that is being casted. Previously the casting
+		was allowed even if the result was truncated.
+		
+		Raises
+		------
+		ComplexWarning
+		    When casting from complex to float or int. To avoid this,
+		    one should use ``a.real.astype(t)``.
+		
+		Examples
+		--------
+		>>> x = np.array([1, 2, 2.5])
+		>>> x
+		array([ 1. ,  2. ,  2.5])
+		
+		>>> x.astype(int)
+		array([1, 2, 2])
 	**/
-	public function astype(?dtype:Dynamic):Dynamic;
+	public function astype(?dtype:Dynamic, ?copy:Dynamic):numpy.Ndarray;
 	/**
 		Base object if memory is from some other object.
 		
@@ -804,7 +861,7 @@ package pandas.sparse.array;
 		array([ 1.,  1.])
 	**/
 	public function fill(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public var fill_value : Dynamic;
+	public var fill_value : Dynamic;
 	/**
 		Fill NA/NaN values with the specified value
 		

@@ -156,7 +156,8 @@ package pandas.core.internals;
 		data : {array-like (1-D), Series, SparseSeries, dict}
 		kind : {'block', 'integer'}
 		fill_value : float
-		    Defaults to NaN (code for missing)
+		    Code for missing value. Defaults depends on dtype.
+		    0 for int dtype, False for bool dtype, and NaN for other dtypes
 		sparse_index : {BlockIndex, IntIndex}, optional
 		    Only if you have one. Mainly used internally
 		
@@ -324,6 +325,10 @@ package pandas.core.internals;
 		return a new block 
 	**/
 	public function make_block_same_class(values:Dynamic, placement:Dynamic, ?sparse_index:Dynamic, ?kind:Dynamic, ?dtype:Dynamic, ?fill_value:Dynamic, ?copy:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a ScalarBlock
+	**/
+	public function make_block_scalar(values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function merge(other:Dynamic):Dynamic;
 	public var mgr_locs : Dynamic;
 	public var ndim : Dynamic;
@@ -350,9 +355,15 @@ package pandas.core.internals;
 		
 		Parameters
 		----------
-		qs : a scalar or list of the quantiles to be computed
+		qs: a scalar or list of the quantiles to be computed
+		interpolation: type of interpolation, default 'linear'
+		axis: axis to compute, default 0
+		
+		Returns
+		-------
+		tuple of (axis, block)
 	**/
-	public function quantile(qs:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function quantile(qs:Dynamic, ?interpolation:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Reindex using pre-computed indexer information
 	**/

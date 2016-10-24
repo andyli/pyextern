@@ -11,7 +11,20 @@ package pandas.sparse.frame;
 	static public var __spec__ : Dynamic;
 	static public function _default_index(n:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		provide explict type promotion and coercion
+		
+		Parameters
+		----------
+		values : the ndarray that we want to maybe upcast
+		fill_value : what we want to fill with
+		dtype : if None, then use the dtype of the values, else coerce to this type
+		copy : if True always make a copy even if no upcast is required
+	**/
+	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
 	static public function _prep_ndarray(values:Dynamic, ?copy:Dynamic):Dynamic;
+	static public var _shared_doc_kwargs : Dynamic;
 	static public function _try_sort(iterable:Dynamic):Dynamic;
 	static public function create_block_manager_from_arrays(arrays:Dynamic, names:Dynamic, axes:Dynamic):Dynamic;
 	static public var division : Dynamic;
@@ -55,6 +68,26 @@ package pandas.sparse.frame;
 	static public function isnull(obj:Dynamic):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var nan : Dynamic;
+	/**
+		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
+		on object arrays.
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for *not*-null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is *not* null or if an array
+		    is given which of the element is *not* null.
+		
+		See also
+		--------
+		pandas.isnull : boolean inverse of pandas.notnull
+	**/
+	static public function notnull(obj:Dynamic):Dynamic;
 	/**
 		Only makes sense when fill_value is NaN
 	**/

@@ -187,6 +187,12 @@ package pandas.core.internals;
 		    Attempt to infer fall dst-transition hours based on order
 		name : object
 		    Name to be stored in the index
+		
+		Notes
+		-----
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function _holder(?data:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?verify_integrity:Dynamic, ?normalize:Dynamic, ?closed:Dynamic, ?ambiguous:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -355,6 +361,10 @@ package pandas.core.internals;
 		Wrap given values in a block of same type as self. 
 	**/
 	public function make_block_same_class(values:Dynamic, ?placement:Dynamic, ?fastpath:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		Create a ScalarBlock
+	**/
+	public function make_block_scalar(values:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function merge(other:Dynamic):Dynamic;
 	public var mgr_locs : Dynamic;
 	public var ndim : Dynamic;
@@ -381,9 +391,15 @@ package pandas.core.internals;
 		
 		Parameters
 		----------
-		qs : a scalar or list of the quantiles to be computed
+		qs: a scalar or list of the quantiles to be computed
+		interpolation: type of interpolation, default 'linear'
+		axis: axis to compute, default 0
+		
+		Returns
+		-------
+		tuple of (axis, block)
 	**/
-	public function quantile(qs:Dynamic, ?mgr:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function quantile(qs:Dynamic, ?interpolation:Dynamic, ?axis:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Reindex using pre-computed indexer information
 	**/
@@ -394,7 +410,7 @@ package pandas.core.internals;
 		It is used in ObjectBlocks.  It is here for API
 		compatibility.
 	**/
-	public function replace(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function replace(to_replace:Dynamic, value:Dynamic, ?inplace:Dynamic, ?filter:Dynamic, ?regex:Dynamic, ?convert:Dynamic, ?mgr:Dynamic):Dynamic;
 	/**
 		Parameters
 		----------

@@ -10,6 +10,7 @@ package pandas._period;
 		Implement delattr(self, name).
 	**/
 	public function __delattr__(name:Dynamic):Dynamic;
+	static public var __dict__ : Dynamic;
 	/**
 		__dir__() -> list
 		default dir() implementation
@@ -57,14 +58,12 @@ package pandas._period;
 		Return self<value.
 	**/
 	public function __lt__(value:Dynamic):Dynamic;
+	static public var __module__ : Dynamic;
 	/**
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
-	/**
-		Create and return a new object.  See help(type) for accurate signature.
-	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?value:Dynamic, ?freq:Dynamic, ?ordinal:Dynamic, ?year:Dynamic, ?month:Dynamic, ?quarter:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic):Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	/**
 		Return value+self.
@@ -120,10 +119,14 @@ package pandas._period;
 		py2/py3.
 	**/
 	public function __unicode__(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		list of weak references to the object (if defined)
+	**/
+	public var __weakref__ : Dynamic;
 	public function _add_delta(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _comparables : Dynamic;
 	/**
-		fast creation from an ordinal and freq that are already validated! 
+		Fast creation from an ordinal and freq that are already validated!
 	**/
 	static public function _from_ordinal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _maybe_convert_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -152,6 +155,7 @@ package pandas._period;
 	public var freq : Dynamic;
 	public var freqstr : Dynamic;
 	public var hour : Dynamic;
+	public var is_leap_year : Dynamic;
 	public var minute : Dynamic;
 	public var month : Dynamic;
 	static public function now(args:haxe.extern.Rest<Dynamic>):Dynamic;

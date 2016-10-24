@@ -22,7 +22,13 @@ package pandas.core.groupby;
 	static public var _cython_transforms : Dynamic;
 	static public var _dataframe_apply_whitelist : Dynamic;
 	static public var _doc_template : Dynamic;
+	static public function _ensure_categorical(arr:Dynamic):Dynamic;
+	static public function _ensure_float(arr:Dynamic):Dynamic;
+	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _first_compat(x:Dynamic, ?axis:Dynamic):Dynamic;
 	static public function _get_axes(group:Dynamic):Dynamic;
 	/**
@@ -58,7 +64,6 @@ package pandas.core.groupby;
 	static public function _get_grouper(obj:Dynamic, ?key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?sort:Dynamic, ?mutated:Dynamic):Dynamic;
 	static public function _get_indices_dict(label_list:Dynamic, keys:Dynamic):Dynamic;
 	static public function _groupby_function(name:Dynamic, alias:Dynamic, npfunc:Dynamic, ?numeric_only:Dynamic, ?_convert:Dynamic):Dynamic;
-	static public function _groupby_indices(values:Dynamic):Dynamic;
 	static public function _indexer_from_factorized(labels:Dynamic, shape:Dynamic, ?compress:Dynamic):Dynamic;
 	static public function _int64_overflow_possible(shape:Dynamic):Dynamic;
 	static public function _is_indexed_like(obj:Dynamic, axes:Dynamic):Dynamic;
@@ -324,9 +329,25 @@ package pandas.core.groupby;
 	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_complex_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime_or_timedelta_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)

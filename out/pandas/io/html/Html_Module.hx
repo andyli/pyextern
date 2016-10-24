@@ -21,8 +21,8 @@ package pandas.io.html;
 		has_index_names: boolean, default False
 		    True if the cols defined in index_col have an index name and are
 		    not in the header
-		na_values : iterable, default None
-		    Custom NA values
+		na_values : scalar, str, list-like, or dict, default None
+		    Additional strings to recognize as NA/NaN.
 		keep_default_na : bool, default True
 		thousands : str, default None
 		    Thousands separator
@@ -33,7 +33,7 @@ package pandas.io.html;
 		date_parser : function, default None
 		skiprows : list of integers
 		    Row numbers to skip
-		skip_footer : int
+		skipfooter : int
 		    Number of line at bottom of file to skip
 		converters : dict, default None
 		    Dict of functions for converting values in certain columns. Keys can
@@ -83,7 +83,7 @@ package pandas.io.html;
 		    An XPath expression that checks for the given HTML attributes.
 	**/
 	static public function _build_xpath_expr(attrs:Dynamic):Dynamic;
-	static public function _data_to_frame(data:Dynamic, header:Dynamic, index_col:Dynamic, skiprows:Dynamic, parse_dates:Dynamic, tupleize_cols:Dynamic, thousands:Dynamic):Dynamic;
+	static public function _data_to_frame(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _expand_elements(body:Dynamic):Dynamic;
 	/**
 		Get an iterator given an integer, slice or container.
@@ -118,7 +118,7 @@ package pandas.io.html;
 		    If `url` has a valid protocol return True otherwise False.
 	**/
 	static public function _is_url(url:Dynamic):Bool;
-	static public function _parse(flavor:Dynamic, io:Dynamic, match:Dynamic, header:Dynamic, index_col:Dynamic, skiprows:Dynamic, parse_dates:Dynamic, tupleize_cols:Dynamic, thousands:Dynamic, attrs:Dynamic, encoding:Dynamic):Dynamic;
+	static public function _parse(flavor:Dynamic, io:Dynamic, match:Dynamic, attrs:Dynamic, encoding:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Choose the parser based on the input flavor.
 		
@@ -176,6 +176,7 @@ package pandas.io.html;
 	static public function _validate_flavor(flavor:Dynamic):Dynamic;
 	static public function _validate_header_arg(header:Dynamic):Dynamic;
 	static public var char_types : Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function iteritems(obj:Dynamic, ?kw:python.KwArgs<Dynamic>):Dynamic;
 	static public function lmap(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -294,6 +295,31 @@ package pandas.io.html;
 		    underlying parser library (e.g., the parser library will try to use
 		    the encoding provided by the document).
 		
+		decimal : str, default '.'
+		    Character to recognize as decimal point (e.g. use ',' for European
+		    data).
+		
+		    .. versionadded:: 0.19.0
+		
+		converters : dict, default None
+		    Dict of functions for converting values in certain columns. Keys can
+		    either be integers or column labels, values are functions that take one
+		    input argument, the cell (not column) content, and return the
+		    transformed content.
+		
+		    .. versionadded:: 0.19.0
+		
+		na_values : iterable, default None
+		    Custom NA values
+		
+		    .. versionadded:: 0.19.0
+		
+		keep_default_na : bool, default True
+		    If na_values are specified and keep_default_na is False the default NaN
+		    values are overridden, otherwise they're appended to
+		
+		    .. versionadded:: 0.19.0
+		
 		Returns
 		-------
 		dfs : list of DataFrames
@@ -328,7 +354,7 @@ package pandas.io.html;
 		--------
 		pandas.read_csv
 	**/
-	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic):Dynamic;
+	static public function read_html(io:Dynamic, ?match:Dynamic, ?flavor:Dynamic, ?header:Dynamic, ?index_col:Dynamic, ?skiprows:Dynamic, ?attrs:Dynamic, ?parse_dates:Dynamic, ?tupleize_cols:Dynamic, ?thousands:Dynamic, ?encoding:Dynamic, ?decimal:Dynamic, ?converters:Dynamic, ?na_values:Dynamic, ?keep_default_na:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
 	static public function u(s:Dynamic):Dynamic;
 	static public function urlopen(url:Dynamic, ?data:Dynamic, ?timeout:Dynamic, ?cafile:Dynamic, ?capath:Dynamic, ?cadefault:Dynamic, ?context:Dynamic):Dynamic;

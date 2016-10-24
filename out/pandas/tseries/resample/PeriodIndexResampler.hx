@@ -172,6 +172,10 @@ package pandas.tseries.resample;
 		Parameters
 		----------
 		obj : the object to be resampled
+		
+		Returns
+		-------
+		obj : converted object
 	**/
 	public function _convert_obj(obj:Dynamic):Dynamic;
 	/**
@@ -189,8 +193,9 @@ package pandas.tseries.resample;
 	public function _cython_agg_general(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
 	static public var _cython_table : Dynamic;
 	public function _cython_transform(how:Dynamic, ?numeric_only:Dynamic):Dynamic;
-	public function _deprecated():Dynamic;
+	public function _deprecated(op:Dynamic):Dynamic;
 	static public var _deprecated_invalids : Dynamic;
+	static public var _deprecated_valid_patterns : Dynamic;
 	static public var _deprecated_valids : Dynamic;
 	/**
 		add addtional __dir__ for this object 
@@ -209,6 +214,10 @@ package pandas.tseries.resample;
 		**kwargs : kw args passed to how function
 	**/
 	public function _downsample(how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		is the resampling from a DataFrame column or MultiIndex level 
+	**/
+	public var _from_selection : Dynamic;
 	/**
 		create the BinGrouper, assume that self.set_grouper(obj)
 		has already been called
@@ -267,7 +276,7 @@ package pandas.tseries.resample;
 	public function _is_cython_func(arg:Dynamic):Dynamic;
 	public function _iterate_slices():Dynamic;
 	public function _make_deprecated_binop():Dynamic;
-	public function _make_deprecated_unary():Dynamic;
+	public function _make_deprecated_unary(name:Dynamic):Dynamic;
 	public function _make_wrapper(name:Dynamic):Dynamic;
 	static public var _obj_with_exclusions : Dynamic;
 	public function _python_agg_general(func:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -277,6 +286,11 @@ package pandas.tseries.resample;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	/**
+		Clear group based selection. Used for methods needing to return info on
+		each group regardless of whether a group selection was previously set.
+	**/
+	public function _reset_group_selection():Dynamic;
 	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
@@ -286,11 +300,12 @@ package pandas.tseries.resample;
 		cache these as we are an immutable object
 	**/
 	public function _set_binner():Dynamic;
-	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		we may need create a selection if we have non-level groupers 
+		Create group based selection. Used when selection is not passed
+		directly but instead via a grouper.
 	**/
-	public function _set_selection_from_grouper():Dynamic;
+	public function _set_group_selection():Dynamic;
+	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
@@ -582,7 +597,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function first(?_method:Dynamic):Dynamic;
+	public function first(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Constructs NDFrame from group with provided name
 		
@@ -699,7 +714,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function last(?_method:Dynamic):Dynamic;
+	public function last(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute max of group values
 		
@@ -709,7 +724,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function max(?_method:Dynamic):Dynamic;
+	public function max(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute mean of groups, excluding missing values
 		
@@ -722,7 +737,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function mean(?_method:Dynamic):Dynamic;
+	public function mean(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute median of groups, excluding missing values
 		
@@ -735,7 +750,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function median(?_method:Dynamic):Dynamic;
+	public function median(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute min of group values
 		
@@ -745,7 +760,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function min(?_method:Dynamic):Dynamic;
+	public function min(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var name : Dynamic;
 	static public var ndim : Dynamic;
 	public var ngroups : Dynamic;
@@ -765,7 +780,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function ohlc(?_method:Dynamic):Dynamic;
+	public function ohlc(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Forward fill the values
 		
@@ -793,7 +808,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function prod(?_method:Dynamic):Dynamic;
+	public function prod(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute standard error of the mean of groups, excluding missing values
 		
@@ -811,7 +826,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function sem(?_method:Dynamic):Dynamic;
+	public function sem(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute group sizes
 		
@@ -830,7 +845,7 @@ package pandas.tseries.resample;
 		ddof : integer, default 1
 		degrees of freedom
 	**/
-	public function std(?ddof:Dynamic):Dynamic;
+	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sum of group values
 		
@@ -840,7 +855,7 @@ package pandas.tseries.resample;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function sum(?_method:Dynamic):Dynamic;
+	public function sum(?_method:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Call function producing a like-indexed Series on each group and return
 		a Series with the transformed values
@@ -868,5 +883,5 @@ package pandas.tseries.resample;
 		degrees of freedom
 	**/
 	@:native("var")
-	public function _var(?ddof:Dynamic):Dynamic;
+	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

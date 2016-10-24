@@ -126,10 +126,19 @@ package pandas.formats.format;
 		
 		Parameters
 		----------
+		classes : str or list-like
+		    classes to include in the `class` attribute of the opening
+		    ``<table>`` tag, in addition to the default "dataframe".
 		notebook : {True, False}, optional, default False
 		    Whether the generated HTML is for IPython Notebook.
+		border : int
+		    A ``border=border`` attribute is included in the opening
+		    ``<table>`` tag. Default ``pd.options.html.border``.
+		
+		    .. versionadded:: 0.19.0
+		 
 	**/
-	public function to_html(?classes:Dynamic, ?notebook:Dynamic):Dynamic;
+	public function to_html(?classes:Dynamic, ?notebook:Dynamic, ?border:Dynamic):Dynamic;
 	/**
 		Render a DataFrame to a LaTeX tabular/longtable environment output.
 	**/

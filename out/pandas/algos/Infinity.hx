@@ -2,7 +2,6 @@
 package pandas.algos;
 @:pythonImport("pandas.algos", "Infinity") extern class Infinity {
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __cmp__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
 	**/

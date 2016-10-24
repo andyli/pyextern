@@ -242,15 +242,21 @@ package pandas.core.groupby;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	/**
+		Clear group based selection. Used for methods needing to return info on
+		each group regardless of whether a group selection was previously set.
+	**/
+	public function _reset_group_selection():Dynamic;
 	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		we may need create a selection if we have non-level groupers 
+		Create group based selection. Used when selection is not passed
+		directly but instead via a grouper.
 	**/
-	public function _set_selection_from_grouper():Dynamic;
+	public function _set_group_selection():Dynamic;
+	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/
@@ -389,8 +395,8 @@ package pandas.core.groupby;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -414,8 +420,8 @@ package pandas.core.groupby;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -596,7 +602,7 @@ package pandas.core.groupby;
 	**/
 	public function cumcount(?ascending:Dynamic):Dynamic;
 	/**
-		    Return cumulative cummax over requested axis.
+		    Return cumulative max over requested axis.
 		
 		Parameters
 		----------
@@ -613,7 +619,7 @@ package pandas.core.groupby;
 	**/
 	public var cummax : Dynamic;
 	/**
-		    Return cumulative cummin over requested axis.
+		    Return cumulative minimum over requested axis.
 		
 		Parameters
 		----------
@@ -638,7 +644,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function cumprod(?axis:Dynamic):Dynamic;
+	public function cumprod(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cumulative sum for each group
 		
@@ -648,7 +654,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function cumsum(?axis:Dynamic):Dynamic;
+	public function cumsum(?axis:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		    
 		Generate various summary statistics, excluding NaN values.
@@ -986,8 +992,8 @@ package pandas.core.groupby;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1018,7 +1024,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function mean():Dynamic;
+	public function mean(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute median of groups, excluding missing values
 		
@@ -1139,31 +1145,55 @@ package pandas.core.groupby;
 		
 		Examples
 		--------
-		>>> df = DataFrame([[1, np.nan], [1, 4], [5, 6]], columns=['A', 'B'])
+		
+		>>> df = pd.DataFrame({'A': [1, 1, 2, 1, 2],
+		...                    'B': [np.nan, 2, 3, 4, 5]}, columns=['A', 'B'])
 		>>> g = df.groupby('A')
 		>>> g.nth(0)
-		   A   B
-		0  1 NaN
-		2  5   6
+		     B
+		A
+		1  NaN
+		2  3.0
 		>>> g.nth(1)
-		   A  B
-		1  1  4
+		     B
+		A
+		1  2.0
+		2  5.0
 		>>> g.nth(-1)
-		   A  B
-		1  1  4
-		2  5  6
-		>>> g.nth(0, dropna='any')
-		   B
-		   A
-		1  4
-		5  6
+		     B
+		A
+		1  4.0
+		2  5.0
+		>>> g.nth([0, 1])
+		     B
+		A
+		1  NaN
+		1  2.0
+		2  3.0
+		2  5.0
 		
-		# NaNs denote group exhausted when using dropna
-		>>> g.nth(1, dropna='any')
+		Specifying ``dropna`` allows count ignoring NaN
+		
+		>>> g.nth(0, dropna='any')
+		     B
+		A
+		1  2.0
+		2  3.0
+		
+		NaNs denote group exhausted when using dropna
+		
+		>>> g.nth(3, dropna='any')
 		    B
-		    A
+		A
 		1 NaN
-		5 NaN
+		2 NaN
+		
+		Specifying ``as_index=False`` in ``groupby`` keeps the original index.
+		
+		>>> df.groupby('A', as_index=False).nth(1)
+		   A    B
+		1  1  2.0
+		4  2  5.0
 		
 		
 		See also
@@ -1409,8 +1439,8 @@ package pandas.core.groupby;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1436,7 +1466,7 @@ package pandas.core.groupby;
 		pandas.DataFrame.groupby
 		pandas.Panel.groupby
 	**/
-	public function std(?ddof:Dynamic):Dynamic;
+	public function std(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Compute sum of group values
 		
@@ -1518,7 +1548,7 @@ package pandas.core.groupby;
 		periods : int
 		    Number of periods to move, can be positive or negative
 		freq : DateOffset, timedelta, or time rule string, default None
-		    Increment to use from datetools module or time rule (e.g. 'EOM')
+		    Increment to use from the tseries module or time rule (e.g. 'EOM')
 		axis : int or basestring
 		    Corresponds to the axis that contains the Index
 		
@@ -1534,14 +1564,18 @@ package pandas.core.groupby;
 	**/
 	public var tshift : pandas.core.frame.NDFrame;
 	/**
-		Return array of unique values in the object. Significantly faster than
-		numpy.unique. Includes NA values.
+		    
+		Return np.ndarray of unique values in the object.
+		Significantly faster than numpy.unique. Includes NA values.
+		The order of the original is preserved.
 		
 		Returns
 		-------
-		uniques : ndarray
+		uniques : np.ndarray
+		
+		    
 	**/
-	public var unique : numpy.Ndarray;
+	public var unique : Dynamic;
 	public function value_counts(?normalize:Dynamic, ?sort:Dynamic, ?ascending:Dynamic, ?bins:Dynamic, ?dropna:Dynamic):Dynamic;
 	/**
 		Compute variance of groups, excluding missing values
@@ -1561,5 +1595,5 @@ package pandas.core.groupby;
 		pandas.Panel.groupby
 	**/
 	@:native("var")
-	public function _var(?ddof:Dynamic):Dynamic;
+	public function _var(?ddof:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

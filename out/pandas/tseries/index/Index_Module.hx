@@ -19,9 +19,11 @@ package pandas.tseries.index;
 	**/
 	static public function _dt_index_cmp(opname:Dynamic, ?nat_result:Dynamic):Dynamic;
 	static public function _ensure_datetime64(other:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _field_accessor(name:Dynamic, field:Dynamic, ?docstring:Dynamic):Dynamic;
 	static public function _generate_regular_range(start:Dynamic, end:Dynamic, periods:Dynamic, offset:Dynamic):Dynamic;
 	static public function _in_range(start:Dynamic, end:Dynamic, rng_start:Dynamic, rng_end:Dynamic):Dynamic;
+	static public var _index_shared_docs : Dynamic;
 	static public function _maybe_box(indexer:Dynamic, values:Dynamic, obj:Dynamic, key:Dynamic):Dynamic;
 	static public var _midnight : Dynamic;
 	static public function _naive_in_cache_range(start:Dynamic, end:Dynamic):Dynamic;
@@ -30,7 +32,6 @@ package pandas.tseries.index;
 		have arguments and breaks __new__ 
 	**/
 	static public function _new_DatetimeIndex(cls:Dynamic, d:Dynamic):Dynamic;
-	static public function _process_concat_data(to_concat:Dynamic, name:Dynamic):Dynamic;
 	static public var _shared_docs : Dynamic;
 	static public function _time_to_micros(time:Dynamic):Dynamic;
 	/**
@@ -71,6 +72,9 @@ package pandas.tseries.index;
 		Notes
 		-----
 		2 of start, end, or periods must be specified
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
@@ -116,6 +120,9 @@ package pandas.tseries.index;
 		-----
 		2 of start, end, or periods must be specified
 		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
 		Returns
 		-------
 		rng : DatetimeIndex
@@ -149,6 +156,9 @@ package pandas.tseries.index;
 		Notes
 		-----
 		2 of start, end, or periods must be specified
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
@@ -226,7 +236,9 @@ package pandas.tseries.index;
 		alias to closest period strings BQ->Q etc
 	**/
 	static public function get_period_alias(offset_str:Dynamic):Dynamic;
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_ns_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
 	**/
@@ -237,7 +249,43 @@ package pandas.tseries.index;
 	static public function is_dtype_equal(source:Dynamic, target:Dynamic):Dynamic;
 	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_string_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	/**
 		Normalize datetime.datetime value to midnight. Returns datetime.date as a
 		datetime.datetime at midnight
@@ -247,6 +295,18 @@ package pandas.tseries.index;
 		normalized : datetime.datetime or Timestamp
 	**/
 	static public function normalize_date(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Converts input into a pandas only dtype object or a numpy dtype object.
+		
+		Parameters
+		----------
+		dtype : object to be converted
+		
+		Returns
+		-------
+		np.dtype or a pandas dtype
+	**/
+	static public function pandas_dtype(dtype:Dynamic):Dynamic;
 	/**
 		Try hard to parse datetime string, leveraging dateutil plus some extra
 		goodies like quarter recognition.
@@ -267,15 +327,48 @@ package pandas.tseries.index;
 	**/
 	static public function parse_time_string(arg:Dynamic, ?freq:Dynamic, ?dayfirst:Dynamic, ?yearfirst:Dynamic):Dynamic;
 	/**
-		Return DateOffset object from string representation or
-		Timedelta object
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
 		
 		Examples
 		--------
-		>>> to_offset('5Min')
-		Minute(5)
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
 	**/
-	static public function to_offset(freqstr:Dynamic):Dynamic;
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 	/**
 		Parse time strings to time objects using fixed strptime formats ("%H:%M",
 		"%H%M", "%I:%M%p", "%I%M%p", "%H:%M:%S", "%H%M%S", "%I:%M:%S%p",
@@ -351,5 +444,4 @@ package pandas.tseries.index;
 		               dtype='timedelta64[ns]', freq=None)
 	**/
 	static public function to_timedelta(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?coerce:Dynamic):Dynamic;
-	static public function u(s:Dynamic):Dynamic;
 }

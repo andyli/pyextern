@@ -10,8 +10,7 @@ package pandas.computation.pytables;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		convert strings to timedelta; coerce to Timedelta (if box), else
-		np.timedelta64
+		Convert string 'r' to a timedelta object.
 	**/
 	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
 	/**
@@ -19,6 +18,7 @@ package pandas.computation.pytables;
 	**/
 	static public function _ensure_decoded(s:Dynamic):Dynamic;
 	static public var _op_classes : Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_term(obj:Dynamic):Dynamic;
 	/**
 		loose checking if s is a pytables-acceptable expression 

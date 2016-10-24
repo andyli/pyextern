@@ -9,7 +9,38 @@ package pandas.indexes.category;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _index_shared_docs : Dynamic;
+	/**
+		True if two arrays, left and right, have equal non-NaN elements, and NaNs
+		in corresponding locations.  False otherwise. It is assumed that left and
+		right are NumPy arrays of the same dtype. The behavior of this function
+		(particularly with respect to NaNs) is not defined if the dtypes are
+		different.
+		
+		Parameters
+		----------
+		left, right : ndarrays
+		strict_nan : bool, default False
+		    If True, consider NaN and None to be different.
+		
+		Returns
+		-------
+		b : bool
+		    Returns True if the arrays are equivalent.
+		
+		Examples
+		--------
+		>>> array_equivalent(
+		...     np.array([1, 2, np.nan]),
+		...     np.array([1, 2, np.nan]))
+		True
+		>>> array_equivalent(
+		...     np.array([1, np.nan, 2]),
+		...     np.array([1, 2, np.nan]))
+		False
+	**/
+	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
 	/**
 		Decorator to deprecate a keyword argument of a function
 		
@@ -66,6 +97,7 @@ package pandas.indexes.category;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -278,6 +310,11 @@ package pandas.indexes.category;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -318,4 +355,19 @@ package pandas.indexes.category;
 		    [default: False] [currently: False]
 	**/
 	static public function get_option(?args:python.VarArgs<Dynamic>, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

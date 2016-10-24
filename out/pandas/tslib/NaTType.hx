@@ -145,9 +145,11 @@ package pandas.tslib;
 	public var days_in_month : Dynamic;
 	public var daysinmonth : Dynamic;
 	public function dst(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public var freq : Dynamic;
 	public function fromordinal(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function fromtimestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var hour : Dynamic;
+	public var is_leap_year : Dynamic;
 	public function isocalendar(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function isoformat(?sep:Dynamic):Dynamic;
 	public function isoweekday(?kwargs:python.KwArgs<Dynamic>):Dynamic;
@@ -159,7 +161,6 @@ package pandas.tslib;
 	public var month : Dynamic;
 	public var nanosecond : Dynamic;
 	public function now(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public var offset : Dynamic;
 	public var quarter : Dynamic;
 	public function replace(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
@@ -170,11 +171,17 @@ package pandas.tslib;
 	public function timestamp(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function timetuple(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function timetz(?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function to_datetime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		DEPRECATED: use :meth:`to_pydatetime` instead.
+		
+		Convert a Timestamp object to a native Python datetime object.
+	**/
+	public function to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns a numpy.datetime64 object with 'ns' precision 
 	**/
 	public function to_datetime64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public function to_pydatetime(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function today(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function toordinal(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function total_seconds(?kwargs:python.KwArgs<Dynamic>):Dynamic;

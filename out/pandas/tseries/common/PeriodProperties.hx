@@ -222,6 +222,10 @@ package pandas.tseries.common;
 	**/
 	public var hour : Dynamic;
 	/**
+		Logical indicating if the date belongs to a leap year 
+	**/
+	public var is_leap_year : Dynamic;
+	/**
 		The minute of the period
 	**/
 	public var minute : Dynamic;

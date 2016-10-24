@@ -45,9 +45,12 @@ package pandas.io.gbq;
 		join_axes : list of Index objects
 		    Specific indexes to use for the other n - 1 axes instead of performing
 		    inner/outer set logic
-		verify_integrity : boolean, default False
-		    Check whether the new concatenated axis contains duplicates. This can
-		    be very expensive relative to the actual data concatenation
+		ignore_index : boolean, default False
+		    If True, do not use the index values along the concatenation axis. The
+		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
+		    concatenating objects where the concatenation axis does not have
+		    meaningful indexing information. Note the index values on the other
+		    axes are still respected in the join.
 		keys : sequence, default None
 		    If multiple levels passed, should contain tuples. Construct
 		    hierarchical index using the passed keys as the outermost level
@@ -56,12 +59,9 @@ package pandas.io.gbq;
 		    MultiIndex. Otherwise they will be inferred from the keys
 		names : list, default None
 		    Names for the levels in the resulting hierarchical index
-		ignore_index : boolean, default False
-		    If True, do not use the index values along the concatenation axis. The
-		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
-		    concatenating objects where the concatenation axis does not have
-		    meaningful indexing information. Note the index values on the other
-		    axes are still respected in the join.
+		verify_integrity : boolean, default False
+		    Check whether the new concatenated axis contains duplicates. This can
+		    be very expensive relative to the actual data concatenation
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
@@ -90,10 +90,20 @@ package pandas.io.gbq;
 		https://developers.google.com/api-client-library/python/apis/bigquery/v2
 		
 		Authentication to the Google BigQuery service is via OAuth 2.0.
-		By default user account credentials are used. You will be asked to
-		grant permissions for product name 'pandas GBQ'. It is also posible
-		to authenticate via service account credentials by using
-		private_key parameter.
+		
+		- If "private_key" is not provided:
+		
+		  By default "application default credentials" are used.
+		
+		  .. versionadded:: 0.19.0
+		
+		  If default application credentials are not found or are restrictive,
+		  user account credentials are used. In this case, you will be asked to
+		  grant permissions for product name 'pandas GBQ'.
+		
+		- If "private_key" is provided:
+		
+		  Service account credentials will be used to authenticate.
 		
 		Parameters
 		----------
@@ -116,12 +126,23 @@ package pandas.io.gbq;
 		    or string contents. This is useful for remote server
 		    authentication (eg. jupyter iPython notebook on remote host)
 		
+		    .. versionadded:: 0.18.1
+		
+		dialect : {'legacy', 'standard'}, default 'legacy'
+		    'legacy' : Use BigQuery's legacy SQL dialect.
+		    'standard' : Use BigQuery's standard SQL (beta), which is
+		    compliant with the SQL 2011 standard. For more information
+		    see `BigQuery SQL Reference
+		    <https://cloud.google.com/bigquery/sql-reference/>`__
+		
+		    .. versionadded:: 0.19.0
+		
 		Returns
 		-------
 		df: DataFrame
 		    DataFrame representing results of query
 	**/
-	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic):Dynamic;
+	static public function read_gbq(query:Dynamic, ?project_id:Dynamic, ?index_col:Dynamic, ?col_order:Dynamic, ?reauth:Dynamic, ?verbose:Dynamic, ?private_key:Dynamic, ?dialect:Dynamic):Dynamic;
 	/**
 		sleep(seconds)
 		
@@ -142,10 +163,20 @@ package pandas.io.gbq;
 		https://developers.google.com/api-client-library/python/apis/bigquery/v2
 		
 		Authentication to the Google BigQuery service is via OAuth 2.0.
-		By default user account credentials are used. You will be asked to
-		grant permissions for product name 'pandas GBQ'. It is also posible
-		to authenticate via service account credentials by using
-		private_key parameter.
+		
+		- If "private_key" is not provided:
+		
+		  By default "application default credentials" are used.
+		
+		  .. versionadded:: 0.19.0
+		
+		  If default application credentials are not found or are restrictive,
+		  user account credentials are used. In this case, you will be asked to
+		  grant permissions for product name 'pandas GBQ'.
+		
+		- If "private_key" is provided:
+		
+		  Service account credentials will be used to authenticate.
 		
 		Parameters
 		----------

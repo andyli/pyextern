@@ -3036,6 +3036,12 @@ package scipy.signal.filter_design;
 		    result as dimensions with size one. With this option, the result
 		    will broadcast correctly against the input array.
 		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
+		
 		Returns
 		-------
 		product_along_axis : ndarray, see `dtype` parameter above.

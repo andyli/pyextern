@@ -207,8 +207,8 @@ package scipy.spatial;
 		
 		This function was not designed to handle datasets with different numbers of
 		datapoints (rows).  If two data sets have different dimensionality
-		(different number of columns), simply add columns of zeros the smaller of
-		the two.
+		(different number of columns), simply add columns of zeros to the smaller
+		of the two.
 		
 		Parameters
 		----------

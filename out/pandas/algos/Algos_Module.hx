@@ -1,7 +1,6 @@
 /* This file is generated, do not edit! */
 package pandas.algos;
 @:pythonImport("pandas.algos") extern class Algos_Module {
-	static public var NIL : Dynamic;
 	static public var __doc__ : Dynamic;
 	static public var __file__ : Dynamic;
 	static public var __loader__ : Dynamic;
@@ -9,10 +8,7 @@ package pandas.algos;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	static public var __test__ : Dynamic;
-	static public function _check_minp(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _get_result_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _return_false(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function _return_true(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public var _int64_max : Dynamic;
 	static public function arrmap_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function arrmap_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function arrmap_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -51,46 +47,9 @@ package pandas.algos;
 	static public function ensure_int8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Compute exponentially-weighted moving average using center-of-mass.
-		
-		Parameters
-		----------
-		input : ndarray (float64 type)
-		com : float64
-		adjust: int
-		ignore_na: int
-		minp: int
-		
-		Returns
-		-------
-		y : ndarray
-	**/
-	static public function ewma(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Compute exponentially-weighted moving variance using center-of-mass.
-		
-		Parameters
-		----------
-		input_x : ndarray (float64 type)
-		input_y : ndarray (float64 type)
-		com : float64
-		adjust: int
-		ignore_na: int
-		minp: int
-		bias: int
-		
-		Returns
-		-------
-		y : ndarray
-	**/
-	static public function ewmcov(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ffill_by_group(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function ffill_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var float16 : Dynamic;
 	static public var float32 : Dynamic;
 	static public var float64 : Dynamic;
-	static public function full_outer_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Only aggregates on axis=0
 	**/
@@ -107,13 +66,6 @@ package pandas.algos;
 		Only transforms on axis=0
 	**/
 	static public function group_cumsum(out:Dynamic, values:Dynamic, labels:Dynamic, accum:Dynamic):Dynamic;
-	/**
-		Compute label vector from input values and associated useful data
-		
-		Returns
-		-------
-	**/
-	static public function group_labels(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Only aggregates on axis=0
 	**/
@@ -203,35 +155,21 @@ package pandas.algos;
 	static public function group_shift_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_var_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function group_var_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_indices(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function groupby_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		compute a 1-d indexer that is an ordering of the passed index,
+		ordered by the groups. This is a reverse of the label
+		factorization process.
+		
+		Parameters
+		----------
+		index: int64 ndarray
+		    mappings from group -> position
+		ngroups: int64
+		    number of groups
+		
+		return a tuple of (1-d indexer ordered by groups, group counts)
+	**/
 	static public function groupsort_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function inner_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function inner_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function inner_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function inner_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function inner_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function inner_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var int16 : Dynamic;
 	static public var int32 : Dynamic;
 	static public var int64 : Dynamic;
@@ -240,106 +178,40 @@ package pandas.algos;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns
 		-------
-		is_monotonic_inc, is_monotonic_dec
+		is_monotonic_inc, is_monotonic_dec, is_unique
 	**/
 	static public function is_monotonic_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		isnan(x[, out])
-		
-		Test element-wise for NaN and return result as a boolean array.
-		
-		Parameters
-		----------
-		x : array_like
-		    Input array.
-		
-		Returns
-		-------
-		y : ndarray or bool
-		    For scalar input, the result is a new boolean with value True if
-		    the input is NaN; otherwise the value is False.
-		
-		    For array input, the result is a boolean array of the same
-		    dimensions as the input and the values are True if the
-		    corresponding element of the input is NaN; otherwise the values are
-		    False.
-		
-		See Also
-		--------
-		isinf, isneginf, isposinf, isfinite
-		
-		Notes
-		-----
-		Numpy uses the IEEE Standard for Binary Floating-Point for Arithmetic
-		(IEEE 754). This means that Not a Number is not equivalent to infinity.
-		
-		Examples
-		--------
-		>>> np.isnan(np.nan)
-		True
-		>>> np.isnan(np.inf)
-		False
-		>>> np.isnan([np.log(-1.),1.,np.log(0)])
-		array([ True, False, False], dtype=bool)
-	**/
-	static public function isnan(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function kth_smallest(a:Dynamic, k:Dynamic):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function left_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function left_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function left_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function left_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
-	**/
-	static public function left_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_join_indexer_unique_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function left_outer_join(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Produce a dict mapping the values of the input array to their respective
 		locations.
@@ -408,11 +280,6 @@ package pandas.algos;
 	static public function min_subseq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function nancorr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function nancorr_spearman(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function outer_join_indexer_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_2d_inplace_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_2d_inplace_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_2d_inplace_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -431,10 +298,12 @@ package pandas.algos;
 	static public function pad_int32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function pad_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		random() -> x in the interval [0, 1).
-	**/
-	static public function random(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_float32_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_float64_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_int16_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_int32_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_int64_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function put2d_int8_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Fast NaN-friendly version of scipy.stats.rankdata
 	**/
@@ -459,46 +328,6 @@ package pandas.algos;
 		Fast NaN-friendly version of scipy.stats.rankdata
 	**/
 	static public function rank_2d_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function roll_generic(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function roll_kurt(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Moving max of 1d array of any numeric type along axis=0 ignoring NaNs.
-		
-		Parameters
-		----------
-		a: numpy array
-		window: int, size of rolling window
-		minp: if number of observations in window
-		      is below this, output a NaN
-	**/
-	static public function roll_max(a:Dynamic, window:Dynamic, minp:Dynamic):Dynamic;
-	static public function roll_mean(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function roll_median_c(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Moving max of 1d array of any numeric type along axis=0 ignoring NaNs.
-		
-		Parameters
-		----------
-		a: numpy array
-		window: int, size of rolling window
-		minp: if number of observations in window
-		      is below this, output a NaN
-	**/
-	static public function roll_min(a:Dynamic, window:Dynamic, minp:Dynamic):Dynamic;
-	/**
-		O(N log(window)) implementation using skip list
-	**/
-	static public function roll_quantile(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function roll_skew(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function roll_sum(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Numerically stable implementation using Welford's method.
-	**/
-	static public function roll_var(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	/**
-		Assume len(weights) << len(input)
-	**/
-	static public function roll_window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function take_1d_bool_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function take_1d_bool_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function take_1d_float32_float32(args:haxe.extern.Rest<Dynamic>):Dynamic;

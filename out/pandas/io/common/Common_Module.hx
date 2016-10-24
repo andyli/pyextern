@@ -4,6 +4,7 @@ package pandas.io.common;
 	static public function UnicodeReader(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function UnicodeWriter(f:Dynamic, ?dialect:Dynamic, ?encoding:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	static public function ZipFile(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public var _NA_VALUES : Dynamic;
 	static public var _PATHLIB_INSTALLED : Dynamic;
 	static public var _PY_PATH_INSTALLED : Dynamic;
 	static public var _VALID_URLS : Dynamic;
@@ -33,7 +34,7 @@ package pandas.io.common;
 		Gets file handle for given path and mode.
 		    
 	**/
-	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic):Dynamic;
 	/**
 		Check for an s3, s3n, or s3a url
 	**/

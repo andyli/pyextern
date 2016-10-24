@@ -32,11 +32,25 @@ package pandas.lib;
 	static public function convert_timestamps(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function count_level_2d(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function dicts_to_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	static public function duplicated(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function downcast_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_multiget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_unique(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_unique_multiple(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function fast_unique_multiple_list(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Generate a list of unique values from a generator of lists.
+		
+		Parameters
+		----------
+		gen : generator object
+		    A generator of lists from which the unique list is created
+		sort : boolean
+		    Whether or not to sort the resulting unique list
+		
+		Returns
+		-------
+		unique_list : list of unique values
+	**/
 	static public function fast_unique_multiple_list_gen(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		For zipping multiple ndarrays into an ndarray of tuples
@@ -114,6 +128,9 @@ package pandas.lib;
 	static public function is_integer_float_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_lexsorted(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var is_numpy_prior_1_6_2 : Dynamic;
+	/**
+		Return a boolean if this is a Period object 
+	**/
 	static public function is_period(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_period_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_possible_datetimelike_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -228,8 +245,8 @@ package pandas.lib;
 	**/
 	static public function item_from_zerodim(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		Convert list to object ndarray. Seriously can't believe I had to write this
-		function
+		Convert list to object ndarray. Seriously can't believe
+		I had to write this function.
 	**/
 	static public function list_to_object_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function lookup_values(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -330,11 +347,29 @@ package pandas.lib;
 	**/
 	static public function slice_len(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		replace the values in the array with replacement if they are nan_rep; return the same array 
+		Replace the values in the array with 'replacement' if
+		they are 'nan_rep'. Return the same array.
 	**/
 	static public function string_array_replace_from_nan_rep(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function time64_to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		Convert a list of lists into an object array.
+		
+		Parameters
+		----------
+		rows : 2-d array (N, K)
+		    A list of lists to be converted into an array
+		min_width : int
+		    The minimum width of the object array. If a list
+		    in `rows` contains fewer than `width` elements,
+		    the remaining elements in the corresponding row
+		    will all be `NaN`.
+		
+		Returns
+		-------
+		obj_array : numpy array of the object dtype
+	**/
 	static public function to_object_array(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function to_object_array_tuples(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function to_timestamp(args:haxe.extern.Rest<Dynamic>):Dynamic;

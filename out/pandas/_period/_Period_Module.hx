@@ -20,6 +20,7 @@ package pandas._period;
 		periods corresponding to desired frequency, per period convention.
 	**/
 	static public function dt64arr_to_periodarr(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function extract_freq(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function extract_ordinals(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_period_field(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function get_period_field_arr(args:haxe.extern.Rest<Dynamic>):Dynamic;

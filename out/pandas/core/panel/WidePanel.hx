@@ -310,7 +310,7 @@ package pandas.core.panel;
 	**/
 	public function _construct_return_type(result:Dynamic, ?axes:Dynamic):Dynamic;
 	/**
-		Used when a manipulation result has the same dimesions as the
+		Used when a manipulation result has the same dimensions as the
 		original.
 	**/
 	public var _constructor : Dynamic;
@@ -634,6 +634,11 @@ package pandas.core.panel;
 		internal implementation
 	**/
 	public var _values : Dynamic;
+	/**
+		Equivalent to public method `where`, except that `other` is not
+		applied as a function even if callable. Used in __setitem__.
+	**/
+	public function _where(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	public function _wrap_result(result:Dynamic, axis:Dynamic):Dynamic;
 	/**
 		Return slice of panel along selected axis
@@ -643,8 +648,6 @@ package pandas.core.panel;
 		key : object
 		    Label
 		axis : {'items', 'major', 'minor}, default 1/'major'
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		
 		Returns
 		-------
@@ -658,7 +661,7 @@ package pandas.core.panel;
 		levels and  is a superset of xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function _xs(key:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
+	public function _xs(key:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Return an object with absolute value taken--only applicable to objects
 		that are all numeric.
@@ -759,8 +762,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -780,8 +783,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -872,7 +875,8 @@ package pandas.core.panel;
 		
 		e.g. If the dtypes are float16 and float32, dtype will be upcast to
 		float32.  If dtypes are int32 and uint8, dtype will be upcase to
-		int32.
+		int32. By numpy.find_common_type convention, mixing int64 and uint64
+		will result in a flot64 dtype.
 		
 		This method is provided for backwards compatibility. Generally,
 		it is recommended to use '.values'.
@@ -883,16 +887,20 @@ package pandas.core.panel;
 	**/
 	public function as_matrix():numpy.Ndarray;
 	/**
-		Convert all TimeSeries inside to specified frequency using DateOffset
-		objects. Optionally provide fill method to pad/backfill missing values.
+		Convert TimeSeries to specified frequency.
+		
+		Optionally provide filling method to pad/backfill missing values.
 		
 		Parameters
 		----------
 		freq : DateOffset object, or string
-		method : {'backfill', 'bfill', 'pad', 'ffill', None}
-		    Method to use for filling holes in reindexed Series
-		    pad / ffill: propagate last valid observation forward to next valid
-		    backfill / bfill: use NEXT valid observation to fill method
+		method : {'backfill'/'bfill', 'pad'/'ffill'}, default None
+		    Method to use for filling holes in reindexed Series (note this
+		    does not fill NaNs that already were present):
+		
+		    * 'pad' / 'ffill': propagate last valid observation forward to next
+		      valid
+		    * 'backfill' / 'bfill': use NEXT valid observation to fill
 		how : {'start', 'end'}, default end
 		    For PeriodIndex only, see PeriodIndex.asfreq
 		normalize : bool, default False
@@ -901,15 +909,55 @@ package pandas.core.panel;
 		Returns
 		-------
 		converted : type of caller
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	public function asfreq(freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic):Dynamic;
+	/**
+		The last row without any NaN is taken (or the last row without
+		NaN considering only the subset of columns in the case of a DataFrame)
+		
+		.. versionadded:: 0.19.0 For DataFrame
+		
+		If there is no good value, NaN is returned.
+		
+		Parameters
+		----------
+		where : date or array of dates
+		subset : string or list of strings, default None
+		   if not None use these columns for NaN propagation
+		
+		Notes
+		-----
+		Dates are assumed to be sorted
+		Raises if this is not the case
+		
+		Returns
+		-------
+		where is scalar
+		
+		  - value or NaN if input is Series
+		  - Series if input is DataFrame
+		
+		where is Index: same shape object as input
+		
+		See Also
+		--------
+		merge_asof
+	**/
+	public function asof(where:Dynamic, ?subset:Dynamic):Dynamic;
 	/**
 		Cast object to input numpy.dtype
 		Return a copy when copy = True (be really careful with this!)
 		
 		Parameters
 		----------
-		dtype : numpy.dtype or Python type
+		dtype : data type, or dict of column name -> data type
+		    Use a numpy.dtype or Python type to cast entire pandas object to
+		    the same type. Alternatively, use {col: dtype, ...}, where col is a
+		    column label and dtype is a numpy.dtype or Python type to cast one
+		    or more of the DataFrame's columns to column-specific types.
 		raise_on_error : raise on invalid input
 		kwargs : keyword arguments to pass on to the constructor
 		
@@ -1067,8 +1115,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1172,7 +1220,7 @@ package pandas.core.panel;
 	**/
 	public function count(?axis:Dynamic):pandas.DataFrame;
 	/**
-		Return cumulative cummax over requested axis.
+		Return cumulative max over requested axis.
 		
 		Parameters
 		----------
@@ -1185,9 +1233,9 @@ package pandas.core.panel;
 		-------
 		cummax : DataFrame
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function cummax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative cummin over requested axis.
+		Return cumulative minimum over requested axis.
 		
 		Parameters
 		----------
@@ -1200,9 +1248,9 @@ package pandas.core.panel;
 		-------
 		cummin : DataFrame
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function cummin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative cumprod over requested axis.
+		Return cumulative product over requested axis.
 		
 		Parameters
 		----------
@@ -1215,9 +1263,9 @@ package pandas.core.panel;
 		-------
 		cumprod : DataFrame
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function cumprod(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
-		Return cumulative cumsum over requested axis.
+		Return cumulative sum over requested axis.
 		
 		Parameters
 		----------
@@ -1230,7 +1278,7 @@ package pandas.core.panel;
 		-------
 		cumsum : DataFrame
 	**/
-	public function cumsum(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
+	public function cumsum(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):pandas.DataFrame;
 	/**
 		Generate various summary statistics, excluding NaN values.
 		
@@ -1459,7 +1507,11 @@ package pandas.core.panel;
 	**/
 	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Panel;
 	/**
-		Restrict the info axis to set of items or wildcard
+		Subset rows or columns of dataframe according to labels in
+		the specified index.
+		
+		Note that this routine does not filter a dataframe on its
+		contents. The filter is applied to the labels of the index.
 		
 		Parameters
 		----------
@@ -1469,15 +1521,49 @@ package pandas.core.panel;
 		    Keep info axis where "arg in col == True"
 		regex : string (regular expression)
 		    Keep info axis with re.search(regex, col) == True
-		axis : int or None
-		    The axis to filter on. By default this is the info axis. The "info
-		    axis" is the axis that is used when indexing with ``[]``. For
-		    example, ``df = DataFrame({'a': [1, 2, 3, 4]]}); df['a']``. So,
-		    the ``DataFrame`` columns are the info axis.
+		axis : int or string axis name
+		    The axis to filter on.  By default this is the info axis,
+		    'index' for Series, 'columns' for DataFrame
+		
+		Returns
+		-------
+		same type as input object
+		
+		Examples
+		--------
+		>>> df
+		one  two  three
+		mouse     1    2      3
+		rabbit    4    5      6
+		
+		>>> # select columns by name
+		>>> df.filter(items=['one', 'three'])
+		one  three
+		mouse     1      3
+		rabbit    4      6
+		
+		>>> # select columns by regular expression
+		>>> df.filter(regex='e$', axis=1)
+		one  three
+		mouse     1      3
+		rabbit    4      6
+		
+		>>> # select rows containing 'bbi'
+		>>> df.filter(like='bbi', axis=0)
+		one  two  three
+		rabbit    4    5      6
+		
+		See Also
+		--------
+		pandas.DataFrame.select
 		
 		Notes
 		-----
-		Arguments are mutually exclusive, but this is not checked for
+		The ``items``, ``like``, and ``regex`` parameters are
+		enforced to be mutually exclusive.
+		
+		``axis`` defaults to the info axis that is used when indexing
+		with ``[]``.
 	**/
 	public function filter(?items:Dynamic, ?like:Dynamic, ?regex:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -1830,8 +1916,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1853,8 +1939,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1922,8 +2008,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1938,8 +2024,6 @@ package pandas.core.panel;
 		----------
 		key : object
 		    Major axis label
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		
 		Returns
 		-------
@@ -1954,7 +2038,7 @@ package pandas.core.panel;
 		levels and is a superset of major_xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function major_xs(key:Dynamic, ?copy:Dynamic):pandas.DataFrame;
+	public function major_xs(key:Dynamic):pandas.DataFrame;
 	/**
 		Return an object of same shape as self and whose corresponding
 		entries are from self where cond is False and otherwise are from
@@ -1995,6 +2079,58 @@ package pandas.core.panel;
 		Returns
 		-------
 		wh : same type as caller
+		
+		Notes
+		-----
+		The mask method is an application of the if-then idiom. For each
+		element in the calling DataFrame, if ``cond`` is ``False`` the
+		element is used; otherwise the corresponding element from the DataFrame
+		``other`` is used.
+		
+		The signature for :func:`DataFrame.where` differs from
+		:func:`numpy.where`. Roughly ``df1.where(m, df2)`` is equivalent to
+		``np.where(m, df1, df2)``.
+		
+		For further details and examples see the ``mask`` documentation in
+		:ref:`indexing <indexing.where_mask>`.
+		
+		Examples
+		--------
+		>>> s = pd.Series(range(5))
+		>>> s.where(s > 0)
+		0    NaN
+		1    1.0
+		2    2.0
+		3    3.0
+		4    4.0
+		
+		>>> df = pd.DataFrame(np.arange(10).reshape(-1, 2), columns=['A', 'B'])
+		>>> m = df % 3 == 0
+		>>> df.where(m, -df)
+		   A  B
+		0  0 -1
+		1 -2  3
+		2 -4 -5
+		3  6 -7
+		4 -8  9
+		>>> df.where(m, -df) == np.where(m, df, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		>>> df.where(m, -df) == df.mask(~m, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		
+		See Also
+		--------
+		:func:`DataFrame.where`
 	**/
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
@@ -2012,8 +2148,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2033,8 +2169,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2054,8 +2190,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2077,8 +2213,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2093,8 +2229,6 @@ package pandas.core.panel;
 		----------
 		key : object
 		    Minor axis label
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		
 		Returns
 		-------
@@ -2109,7 +2243,7 @@ package pandas.core.panel;
 		levels and is a superset of minor_xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function minor_xs(key:Dynamic, ?copy:Dynamic):pandas.DataFrame;
+	public function minor_xs(key:Dynamic):pandas.DataFrame;
 	/**
 		Modulo of series and other, element-wise (binary operator `mod`).
 		Equivalent to ``panel % other``.
@@ -2297,8 +2431,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2318,8 +2452,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2632,8 +2766,8 @@ package pandas.core.panel;
 	/**
 		Alter axes input function or functions. Function / dict values must be
 		unique (1-to-1). Labels not contained in a dict / Series will be left
-		as-is. Alternatively, change ``Series.name`` with a scalar
-		value (Series only).
+		as-is. Extra labels listed don't throw an error. Alternatively, change
+		``Series.name`` with a scalar value (Series only).
 		
 		Parameters
 		----------
@@ -2685,6 +2819,11 @@ package pandas.core.panel;
 		TypeError: 'int' object is not callable
 		>>> df.rename(index=str, columns={"A": "a", "B": "c"})
 		   a  c
+		0  1  4
+		1  2  5
+		2  3  6
+		>>> df.rename(index=str, columns={"A": "a", "C": "c"})
+		   a  B
 		0  1  4
 		1  2  5
 		2  3  6
@@ -2837,8 +2976,10 @@ package pandas.core.panel;
 	**/
 	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
-		Convenience method for frequency conversion and resampling of regular
-		time-series data.
+		Convenience method for frequency conversion and resampling of time
+		series.  Object must have a datetime-like index (DatetimeIndex,
+		PeriodIndex, or TimedeltaIndex), or pass datetime-like values
+		to the on or level keyword.
 		
 		Parameters
 		----------
@@ -2856,7 +2997,20 @@ package pandas.core.panel;
 		    For frequencies that evenly subdivide 1 day, the "origin" of the
 		    aggregated intervals. For example, for '5min' frequency, base could
 		    range from 0 through 4. Defaults to 0
+		on : string, optional
+		    For a DataFrame, column to use instead of index for resampling.
+		    Column must be datetime-like.
 		
+		    .. versionadded:: 0.19.0
+		
+		level : string or int, optional
+		    For a MultiIndex, level (name or number) to use for
+		    resampling.  Level must be datetime-like.
+		
+		    .. versionadded:: 0.19.0
+		
+		To learn more about the offset strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Examples
 		--------
@@ -2955,7 +3109,7 @@ package pandas.core.panel;
 		2000-01-01 00:06:00    26
 		Freq: 3T, dtype: int64
 	**/
-	public function resample(rule:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?convention:Dynamic, ?kind:Dynamic, ?loffset:Dynamic, ?limit:Dynamic, ?base:Dynamic):Dynamic;
+	public function resample(rule:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?convention:Dynamic, ?kind:Dynamic, ?loffset:Dynamic, ?limit:Dynamic, ?base:Dynamic, ?on:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		Integer division of series and other, element-wise (binary operator `rfloordiv`).
 		Equivalent to ``other // panel``.
@@ -3203,8 +3357,8 @@ package pandas.core.panel;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3273,8 +3427,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3311,16 +3465,16 @@ package pandas.core.panel;
 		    if not None, sort on values in specified index level(s)
 		ascending : boolean, default True
 		    Sort ascending vs. descending
-		inplace : bool
+		inplace : bool, default False
 		    if True, perform operation in-place
-		kind : {`quicksort`, `mergesort`, `heapsort`}
+		kind : {'quicksort', 'mergesort', 'heapsort'}, default 'quicksort'
 		     Choice of sorting algorithm. See also ndarray.np.sort for more
 		     information.  `mergesort` is the only stable algorithm. For
 		     DataFrames, this option is only applied when sorting on a single
 		     column or label.
-		na_position : {'first', 'last'}
+		na_position : {'first', 'last'}, default 'last'
 		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
-		sort_remaining : bool
+		sort_remaining : bool, default True
 		    if true and sorting by level and index is multilevel, sort by other
 		    levels too (in order) after sorting by specified level
 		
@@ -3351,8 +3505,8 @@ package pandas.core.panel;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3410,8 +3564,8 @@ package pandas.core.panel;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a DataFrame
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3545,17 +3699,15 @@ package pandas.core.panel;
 	**/
 	public function to_frame(?filter_observations:Dynamic):pandas.DataFrame;
 	/**
-		Activate the HDFStore.
+		Write the contained data to an HDF5 file using HDFStore.
 		
 		Parameters
 		----------
 		path_or_buf : the path (string) or HDFStore object
 		key : string
 		    indentifier for the group in the store
-		mode : optional, {'a', 'w', 'r', 'r+'}, default 'a'
+		mode : optional, {'a', 'w', 'r+'}, default 'a'
 		
-		  ``'r'``
-		      Read-only; no data can be modified.
 		  ``'w'``
 		      Write; a new file is created (an existing file with the same
 		      name would be deleted).
@@ -3564,15 +3716,22 @@ package pandas.core.panel;
 		      and if the file does not exist it is created.
 		  ``'r+'``
 		      It is similar to ``'a'``, but the file must already exist.
-		format   : 'fixed(f)|table(t)', default is 'fixed'
+		format : 'fixed(f)|table(t)', default is 'fixed'
 		    fixed(f) : Fixed format
 		               Fast writing/reading. Not-appendable, nor searchable
 		    table(t) : Table format
 		               Write as a PyTables Table structure which may perform
 		               worse but allow more flexible operations like searching
 		               / selecting subsets of the data
-		append   : boolean, default False
+		append : boolean, default False
 		    For Table formats, append the input data to the existing
+		data_columns :  list of columns, or True, default None
+		    List of columns to create as indexed data columns for on-disk
+		    queries, or True to use all columns. By default only the axes
+		    of the object are indexed. See `here
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#query-via-data-columns>`__.
+		
+		    Applicable only to format='table'.
 		complevel : int, 1-9, default 0
 		    If a complib is specified compression will be applied
 		    where possible
@@ -3632,12 +3791,19 @@ package pandas.core.panel;
 		    Handler to call if object cannot otherwise be converted to a
 		    suitable format for JSON. Should receive a single argument which is
 		    the object to convert and return a serialisable object.
+		lines : boolean, defalut False
+		    If 'orient' is 'records' write out line delimited json format. Will
+		    throw ValueError if incorrect 'orient' since others are not list
+		    like.
+		
+		    .. versionadded:: 0.19.0
+		
 		
 		Returns
 		-------
 		same type as input object with filtered info axis
 	**/
-	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
+	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic):Dynamic;
 	public function to_long(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
@@ -3665,18 +3831,12 @@ package pandas.core.panel;
 	**/
 	public function to_pickle(path:Dynamic):Dynamic;
 	/**
+		NOT IMPLEMENTED: do not call this method, as sparsifying is not
+		supported for Panel objects and will raise an error.
+		
 		Convert to SparsePanel
-		
-		Parameters
-		----------
-		fill_value : float, default NaN
-		kind : {'block', 'integer'}
-		
-		Returns
-		-------
-		y : SparseDataFrame
 	**/
-	public function to_sparse(?fill_value:Dynamic, ?kind:Dynamic):pandas.SparseDataFrame;
+	public function to_sparse(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Write records stored in a DataFrame to a SQL database.
 		
@@ -3686,12 +3846,11 @@ package pandas.core.panel;
 		    Name of SQL table
 		con : SQLAlchemy engine or DBAPI2 connection (legacy mode)
 		    Using SQLAlchemy makes it possible to use any DB supported by that
-		    library.
-		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy engine.
-		    'mysql' is deprecated and will be removed in future versions, but
-		    it will be further supported through SQLAlchemy engines.
+		    library. If a DBAPI2 object, only sqlite3 is supported.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version,
+		    as 'sqlite' is the only supported option if SQLAlchemy is not
+		    installed.
 		schema : string, default None
 		    Specify the schema (if database flavor supports this). If None, use
 		    default schema.
@@ -3840,14 +3999,15 @@ package pandas.core.panel;
 	public function truediv(other:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Truncates a sorted NDFrame before and/or after some particular
-		dates.
+		index value. If the axis contains only datetime values, before/after
+		parameters are converted to datetime values.
 		
 		Parameters
 		----------
 		before : date
-		    Truncate before date
+		    Truncate before index value
 		after : date
-		    Truncate after date
+		    Truncate after index value
 		axis : the truncation axis, defaults to the stat axis
 		copy : boolean, default is True,
 		    return a copy of the truncated section
@@ -3865,7 +4025,7 @@ package pandas.core.panel;
 		periods : int
 		    Number of periods to move, can be positive or negative
 		freq : DateOffset, timedelta, or time rule string, default None
-		    Increment to use from datetools module or time rule (e.g. 'EOM')
+		    Increment to use from the tseries module or time rule (e.g. 'EOM')
 		axis : int or basestring
 		    Corresponds to the axis that contains the Index
 		
@@ -3965,8 +4125,9 @@ package pandas.core.panel;
 		with care if you are not dealing with the blocks.
 		
 		e.g. If the dtypes are float16 and float32, dtype will be upcast to
-		float32.  If dtypes are int32 and uint8, dtype will be upcase to
-		int32.
+		float32.  If dtypes are int32 and uint8, dtype will be upcast to
+		int32. By numpy.find_common_type convention, mixing int64 and uint64
+		will result in a flot64 dtype.
 	**/
 	public var values : Dynamic;
 	/**
@@ -3986,8 +4147,8 @@ package pandas.core.panel;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -4035,6 +4196,58 @@ package pandas.core.panel;
 		Returns
 		-------
 		wh : same type as caller
+		
+		Notes
+		-----
+		The where method is an application of the if-then idiom. For each
+		element in the calling DataFrame, if ``cond`` is ``True`` the
+		element is used; otherwise the corresponding element from the DataFrame
+		``other`` is used.
+		
+		The signature for :func:`DataFrame.where` differs from
+		:func:`numpy.where`. Roughly ``df1.where(m, df2)`` is equivalent to
+		``np.where(m, df1, df2)``.
+		
+		For further details and examples see the ``where`` documentation in
+		:ref:`indexing <indexing.where_mask>`.
+		
+		Examples
+		--------
+		>>> s = pd.Series(range(5))
+		>>> s.where(s > 0)
+		0    NaN
+		1    1.0
+		2    2.0
+		3    3.0
+		4    4.0
+		
+		>>> df = pd.DataFrame(np.arange(10).reshape(-1, 2), columns=['A', 'B'])
+		>>> m = df % 3 == 0
+		>>> df.where(m, -df)
+		   A  B
+		0  0 -1
+		1 -2  3
+		2 -4 -5
+		3  6 -7
+		4 -8  9
+		>>> df.where(m, -df) == np.where(m, df, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		>>> df.where(m, -df) == df.mask(~m, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		
+		See Also
+		--------
+		:func:`DataFrame.mask`
 	**/
 	public function where(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
@@ -4045,8 +4258,6 @@ package pandas.core.panel;
 		key : object
 		    Label
 		axis : {'items', 'major', 'minor}, default 1/'major'
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		
 		Returns
 		-------
@@ -4060,5 +4271,5 @@ package pandas.core.panel;
 		levels and  is a superset of xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function xs(key:Dynamic, ?axis:Dynamic, ?copy:Dynamic):Dynamic;
+	public function xs(key:Dynamic, ?axis:Dynamic):Dynamic;
 }

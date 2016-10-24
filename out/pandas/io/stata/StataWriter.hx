@@ -41,11 +41,11 @@ package pandas.io.stata;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic):Dynamic;
+	public function ___init__(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic, ?variable_labels:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic):Void;
+	public function new(fname:Dynamic, data:Dynamic, ?convert_dates:Dynamic, ?write_index:Dynamic, ?encoding:Dynamic, ?byteorder:Dynamic, ?time_stamp:Dynamic, ?data_label:Dynamic, ?variable_labels:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -136,6 +136,6 @@ package pandas.io.stata;
 	public function _write_descriptors(?typlist:Dynamic, ?varlist:Dynamic, ?srtlist:Dynamic, ?fmtlist:Dynamic, ?lbllist:Dynamic):Dynamic;
 	public function _write_header(?data_label:Dynamic, ?time_stamp:Dynamic):Dynamic;
 	public function _write_value_labels():Dynamic;
-	public function _write_variable_labels(?labels:Dynamic):Dynamic;
+	public function _write_variable_labels():Dynamic;
 	public function write_file():Dynamic;
 }

@@ -235,6 +235,11 @@ package pandas.io.pytables;
 		having 4 named dimensions. It is intended as a test bed for more
 		N-Dimensional named containers.
 		
+		DEPRECATED. Panel4D is deprecated and will be removed in a future version.
+		The recommended way to represent these types of n-dimensional data are with
+		the `xarray package <http://xarray.pydata.org/en/stable/>`__.
+		Pandas provides a `.to_xarray()` method to automate this conversion.
+		
 		Parameters
 		----------
 		data : ndarray (labels x items x major x minor), or dict of Panels

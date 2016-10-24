@@ -122,6 +122,8 @@ package pandas.core.groupby;
 		Parameters
 		----------
 		obj : the subject object
+		sort : bool, default False
+		    whether the resulting grouper should be sorted
 	**/
 	public function _set_grouper(obj:Dynamic, ?sort:Dynamic):Dynamic;
 	public var ax : Dynamic;

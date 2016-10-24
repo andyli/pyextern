@@ -156,8 +156,11 @@ package pandas.io.pytables;
 		               / selecting subsets of the data
 		append       : boolean, default True, append the input data to the
 		    existing
-		data_columns : list of columns to create as data columns, or True to
-		    use all columns
+		data_columns :  list of columns, or True, default None
+		    List of columns to create as indexed data columns for on-disk
+		    queries, or True to use all columns. By default only the axes
+		    of the object are indexed. See `here
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#query-via-data-columns>`__.
 		min_itemsize : dict of columns that specify minimum string sizes
 		nan_rep      : string to use as string nan represenation
 		chunksize    : size to chunk the writing
@@ -165,6 +168,7 @@ package pandas.io.pytables;
 		encoding     : default None, provide an encoding for strings
 		dropna       : boolean, default False, do not write an ALL nan row to
 		    the store settable by the option 'io.hdf.dropna_table'
+		
 		Notes
 		-----
 		Does *not* check if data being appended overlaps with existing
@@ -309,6 +313,9 @@ package pandas.io.pytables;
 		append   : boolean, default False
 		    This will force Table format, append the input data to the
 		    existing.
+		data_columns : list of columns to create as data columns, or True to
+		    use all columns. See
+		    `here <http://pandas.pydata.org/pandas-docs/stable/io.html#query-via-data-columns>`__ # noqa
 		encoding : default None, provide an encoding for strings
 		dropna   : boolean, default False, do not write an ALL nan row to
 		    the store settable by the option 'io.hdf.dropna_table'

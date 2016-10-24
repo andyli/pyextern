@@ -20,6 +20,25 @@ package numpy.compat.py3k;
 	static public function getexception():Dynamic;
 	static public var integer_types : Dynamic;
 	static public function isfileobj(f:Dynamic):Dynamic;
+	/**
+		Load a module.
+		
+		.. versionadded:: 1.11.2
+		
+		Parameters
+		----------
+		name : str
+		    Full module name.
+		fn : str
+		    Path to module file.
+		info : tuple, optional
+		    Only here for backward compatibility with Python 2.*.
+		
+		Returns
+		-------
+		mod : module
+	**/
+	static public function npy_load_module(name:Dynamic, fn:Dynamic, ?info:Dynamic):Dynamic;
 	static public function open_latin1(filename:Dynamic, ?mode:Dynamic):Dynamic;
 	static public var print_function : Dynamic;
 	static public function sixu(s:Dynamic):Dynamic;

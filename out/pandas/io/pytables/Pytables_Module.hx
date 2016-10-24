@@ -47,6 +47,9 @@ package pandas.io.pytables;
 	static public function _ensure_decoded(s:Dynamic):Dynamic;
 	static public function _ensure_encoding(encoding:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		ensure that the where is a Term or a list of Term
 		this makes sure that we are capturing the scope of variables
@@ -59,6 +62,25 @@ package pandas.io.pytables;
 		expanded label indexer
 	**/
 	static public function _factor_indexer(shape:Dynamic, labels:Dynamic):Dynamic;
+	/**
+		A higher-level wrapper over `_factorize_from_iterable`.
+		
+		*This is an internal function*
+		
+		Parameters
+		----------
+		iterables : list-like of list-likes
+		
+		Returns
+		-------
+		codes_tuple : tuple of ndarrays
+		categories_tuple : tuple of Indexes
+		
+		Notes
+		-----
+		See `_factorize_from_iterable` for more info.
+	**/
+	static public function _factorize_from_iterables(iterables:Dynamic):Dynamic;
 	static public function _get_converter(kind:Dynamic, encoding:Dynamic):Dynamic;
 	/**
 		get/create the info for this name 
@@ -68,6 +90,10 @@ package pandas.io.pytables;
 		for a tz-aware type, return an encoded zone 
 	**/
 	static public function _get_tz(tz:Dynamic):Dynamic;
+	/**
+		Check if a given group is a metadata group for a given parent_group.
+	**/
+	static public function _is_metadata_of(group:Dynamic, parent_group:Dynamic):Dynamic;
 	static public function _maybe_convert(values:Dynamic, val_kind:Dynamic, encoding:Dynamic):Dynamic;
 	static public function _need_convert(kind:Dynamic):Dynamic;
 	static public function _reindex_axis(obj:Dynamic, axis:Dynamic, labels:Dynamic, ?other:Dynamic):Dynamic;
@@ -84,6 +110,19 @@ package pandas.io.pytables;
 		coerce : if we do not have a passed timezone, coerce to M8[ns] ndarray
 	**/
 	static public function _set_tz(values:Dynamic, tz:Dynamic, ?preserve_UTC:Dynamic, ?coerce:Dynamic):Dynamic;
+	/**
+		Return the argument coerced to a string if it was a pathlib.Path
+		   or a py.path.local
+		
+		Parameters
+		----------
+		filepath_or_buffer : object to be converted
+		
+		Returns
+		-------
+		str_filepath_or_buffer : a the string version of the input path
+	**/
+	static public function _stringify_path(filepath_or_buffer:Dynamic):Dynamic;
 	static public var _table_file_open_policy_is_strict : Dynamic;
 	static public var _table_mod : Dynamic;
 	static public function _tables():Dynamic;
@@ -120,6 +159,36 @@ package pandas.io.pytables;
 		    function used to justify str. Needed for unicode handling.
 	**/
 	static public function adjoin(space:Dynamic, ?lists:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		True if two arrays, left and right, have equal non-NaN elements, and NaNs
+		in corresponding locations.  False otherwise. It is assumed that left and
+		right are NumPy arrays of the same dtype. The behavior of this function
+		(particularly with respect to NaNs) is not defined if the dtypes are
+		different.
+		
+		Parameters
+		----------
+		left, right : ndarrays
+		strict_nan : bool, default False
+		    If True, consider NaN and None to be different.
+		
+		Returns
+		-------
+		b : bool
+		    Returns True if the arrays are equivalent.
+		
+		Examples
+		--------
+		>>> array_equivalent(
+		...     np.array([1, 2, np.nan]),
+		...     np.array([1, 2, np.nan]))
+		True
+		>>> array_equivalent(
+		...     np.array([1, np.nan, 2]),
+		...     np.array([1, 2, np.nan]))
+		False
+	**/
+	static public function array_equivalent(left:Dynamic, right:Dynamic, ?strict_nan:Dynamic):Bool;
 	static public var attribute_conflict_doc : Dynamic;
 	/**
 		Concatenate pandas objects along a particular axis with optional set logic
@@ -141,9 +210,12 @@ package pandas.io.pytables;
 		join_axes : list of Index objects
 		    Specific indexes to use for the other n - 1 axes instead of performing
 		    inner/outer set logic
-		verify_integrity : boolean, default False
-		    Check whether the new concatenated axis contains duplicates. This can
-		    be very expensive relative to the actual data concatenation
+		ignore_index : boolean, default False
+		    If True, do not use the index values along the concatenation axis. The
+		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
+		    concatenating objects where the concatenation axis does not have
+		    meaningful indexing information. Note the index values on the other
+		    axes are still respected in the join.
 		keys : sequence, default None
 		    If multiple levels passed, should contain tuples. Construct
 		    hierarchical index using the passed keys as the outermost level
@@ -152,12 +224,9 @@ package pandas.io.pytables;
 		    MultiIndex. Otherwise they will be inferred from the keys
 		names : list, default None
 		    Names for the levels in the resulting hierarchical index
-		ignore_index : boolean, default False
-		    If True, do not use the index values along the concatenation axis. The
-		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
-		    concatenating objects where the concatenation axis does not have
-		    meaningful indexing information. Note the index values on the other
-		    axes are still respected in the join.
+		verify_integrity : boolean, default False
+		    Check whether the new concatenated axis contains duplicates. This can
+		    be very expensive relative to the actual data concatenation
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
@@ -190,6 +259,7 @@ package pandas.io.pytables;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -402,6 +472,11 @@ package pandas.io.pytables;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -448,6 +523,30 @@ package pandas.io.pytables;
 	**/
 	static public function get_store(path:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var incompatibility_doc : Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function make_block(values:Dynamic, placement:Dynamic, ?klass:Dynamic, ?ndim:Dynamic, ?dtype:Dynamic, ?fastpath:Dynamic):Dynamic;
 	/**
@@ -509,9 +608,13 @@ package pandas.io.pytables;
 		
 		Parameters
 		----------
-		path_or_buf : path (string), or buffer to read from
-		key : group identifier in the store. Can be omitted a HDF file contains
-		    a single pandas object.
+		path_or_buf : path (string), buffer, or path object (pathlib.Path or
+		    py._path.local.LocalPath) to read from
+		
+		    .. versionadded:: 0.19.0 support for pathlib, py.path.
+		
+		key : group identifier in the store. Can be omitted if the HDF file
+		    contains a single pandas object.
 		where : list of Term (or convertable) objects, optional
 		start : optional, integer (defaults to None), row number to start
 		    selection

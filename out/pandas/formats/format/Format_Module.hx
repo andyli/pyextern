@@ -45,7 +45,22 @@ package pandas.formats.format;
 		Gets file handle for given path and mode.
 		    
 	**/
-	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic):Dynamic;
+	static public function _get_handle(path:Dynamic, mode:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?memory_map:Dynamic):Dynamic;
+	/**
+		For each index in each level the function returns lengths of indexes.
+		
+		Parameters
+		----------
+		levels : list of lists
+		    List of values on for level.
+		sentinel : string, optional
+		    Value which states that no new index starts on there.
+		
+		Returns
+		----------
+		Returns list of maps. For each level returns map of indexes (key is index
+		in row and value is length of index).
+	**/
 	static public function _get_level_lengths(levels:Dynamic, ?sentinel:Dynamic):Dynamic;
 	static public function _has_names(index:Dynamic):Dynamic;
 	static public var _initial_defencoding : Dynamic;
@@ -94,6 +109,38 @@ package pandas.formats.format;
 	**/
 	static public function format_array_from_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
+		Outputs rounded and formatted percentiles.
+		
+		Parameters
+		----------
+		percentiles : list-like, containing floats from interval [0,1]
+		
+		Returns
+		-------
+		formatted : list of strings
+		
+		Notes
+		-----
+		Rounding precision is chosen so that: (1) if any two elements of
+		``percentiles`` differ, they remain different after rounding
+		(2) no entry is *rounded* to 0% or 100%.
+		Any non-integer is always rounded to at least 1 decimal place.
+		
+		Examples
+		--------
+		Keeps all entries different after rounding:
+		
+		>>> format_percentiles([0.01999, 0.02001, 0.5, 0.666666, 0.9999])
+		['1.999%', '2.001%', '50%', '66.667%', '99.99%']
+		
+		No element is rounded to 0% or 100% (unless already equal to it).
+		Duplicates are allowed:
+		
+		>>> format_percentiles([0, 0.5, 0.02001, 0.5, 0.666666, 0.9999])
+		['0%', '50%', '2.0%', '50%', '66.67%', '99.99%']
+	**/
+	static public function format_percentiles(percentiles:Dynamic):Dynamic;
+	/**
 		Return console size as tuple = (width, height).
 		
 		Returns (None,None) in non-interactive session.
@@ -115,6 +162,7 @@ package pandas.formats.format;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -327,6 +375,11 @@ package pandas.formats.format;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -376,6 +429,22 @@ package pandas.formats.format;
 	static public function get_terminal_size():Dynamic;
 	static public var header_style : Dynamic;
 	static public var iNaT : Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		return if we are a datetime with tz array 
+	**/
+	static public function is_datetimetz(array:Dynamic):Dynamic;
+	static public function is_float(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		return if we are period arraylike / PeriodIndex 
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -484,6 +553,7 @@ package pandas.formats.format;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -697,6 +767,11 @@ package pandas.formats.format;
 		    Note that the IPython notebook, IPython qtconsole, or IDLE do not run in a
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
+		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:

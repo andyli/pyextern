@@ -198,13 +198,12 @@ package pandas.core.internals;
 		    integrity check
 		consolidate: boolean, default True. Join together blocks having same
 		    dtype
-		raw: boolean, default False. Return the raw returned results
 		
 		Returns
 		-------
 		Block Manager (new object)
 	**/
-	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?raw:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function apply(f:Dynamic, ?axes:Dynamic, ?filter:Dynamic, ?do_integrity_check:Dynamic, ?consolidate:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function as_matrix(?items:Dynamic):Dynamic;
 	public function astype(dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public var axes : Dynamic;
@@ -321,6 +320,25 @@ package pandas.core.internals;
 	public var ndim : Dynamic;
 	public function putmask(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function quantile(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		iterate over the blocks, collect and create a new block manager.
+		This routine is intended for reduction type operations and
+		will do inference on the generated blocks.
+		
+		Parameters
+		----------
+		f: the callable or function name to operate on at the block level
+		axis: reduction axis, default 0
+		consolidate: boolean, default True. Join together blocks having same
+		    dtype
+		transposed: boolean, default False
+		    we are holding transposed data
+		
+		Returns
+		-------
+		Block Manager (new object)
+	**/
+	public function reduction(f:Dynamic, ?axis:Dynamic, ?consolidate:Dynamic, ?transposed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Conform block manager to new index.
 	**/

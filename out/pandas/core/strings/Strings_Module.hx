@@ -44,50 +44,25 @@ package pandas.core.strings;
 		Copy a docstring from another source function (if present)
 	**/
 	static public function copy(source:Dynamic):Dynamic;
-	/**
-		Decorator to deprecate a keyword argument of a function
-		
-		Parameters
-		----------
-		old_arg_name : str
-		    Name of argument in function to deprecate
-		new_arg_name : str
-		    Name of prefered argument in function
-		mapping : dict or callable
-		    If mapping is present, use it to translate old arguments to
-		    new arguments. A callable must do its own value checking;
-		    values not found in a dict will be forwarded unchanged.
-		
-		Examples
-		--------
-		The following deprecates 'cols', using 'columns' instead
-		
-		>>> @deprecate_kwarg(old_arg_name='cols', new_arg_name='columns')
-		... def f(columns=''):
-		...     print(columns)
-		...
-		>>> f(columns='should work ok')
-		should work ok
-		>>> f(cols='should raise warning')
-		FutureWarning: cols is deprecated, use columns instead
-		  warnings.warn(msg, FutureWarning)
-		should raise warning
-		>>> f(cols='should error', columns="can't pass do both")
-		TypeError: Can only specify 'cols' or 'columns', not both
-		>>> @deprecate_kwarg('old', 'new', {'yes': True, 'no': False})
-		... def f(new=False):
-		...     print('yes!' if new else 'no!')
-		...
-		>>> f(old='yes')
-		FutureWarning: old='yes' is deprecated, use new=True instead
-		  warnings.warn(msg, FutureWarning)
-		yes!
-	**/
-	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
 	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
 	static public function is_object_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_string_like(obj:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -283,7 +258,7 @@ package pandas.core.strings;
 		each group. Any capture group names in regular expression pat will
 		be used for column names; otherwise capture group numbers will be
 		used. The dtype of each result column is always object, even when
-		no match is found. If expand=True and pat has only one capture group,
+		no match is found. If expand=False and pat has only one capture group,
 		then return a Series (if subject is a Series) or Index (if subject
 		is an Index).
 		
@@ -800,7 +775,7 @@ package pandas.core.strings;
 		out : ndarray or None, default None
 		    Optional output array, must be appropriate type to hold input and
 		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
+		    _maybe_promote to determine this type for any fill_value
 		fill_value : any, default np.nan
 		    Fill value to replace -1 values with
 		mask_info : tuple of (ndarray, boolean)

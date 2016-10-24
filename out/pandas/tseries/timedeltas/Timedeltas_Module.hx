@@ -10,10 +10,13 @@ package pandas.tseries.timedeltas;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
 	/**
-		convert strings to timedelta; coerce to Timedelta (if box), else
-		np.timedelta64
+		Convert string 'r' to a timedelta object.
 	**/
 	static public function _coerce_scalar_to_timedelta_type(r:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic):Dynamic;
+	/**
+		Convert a list of objects to a timedelta index object.
+	**/
+	static public function _convert_listlike(arg:Dynamic, ?unit:Dynamic, ?box:Dynamic, ?errors:Dynamic, ?name:Dynamic):Dynamic;
 	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _unit_map : Dynamic;
 	/**

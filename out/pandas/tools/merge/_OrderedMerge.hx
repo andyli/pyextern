@@ -41,11 +41,11 @@ package pandas.tools.merge;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(left:Dynamic, right:Dynamic, ?on:Dynamic, ?by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?fill_method:Dynamic):Dynamic;
+	public function ___init__(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?fill_method:Dynamic, ?how:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(left:Dynamic, right:Dynamic, ?on:Dynamic, ?by:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?left_index:Dynamic, ?right_index:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?fill_method:Dynamic):Void;
+	public function new(left:Dynamic, right:Dynamic, ?on:Dynamic, ?left_on:Dynamic, ?right_on:Dynamic, ?axis:Dynamic, ?suffixes:Dynamic, ?copy:Dynamic, ?fill_method:Dynamic, ?how:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -101,6 +101,10 @@ package pandas.tools.merge;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	/**
+		return the join indexers 
+	**/
+	public function _get_join_indexers():Dynamic;
 	public function _get_join_info():Dynamic;
 	/**
 		Handles overlapping column names etc.
@@ -123,6 +127,7 @@ package pandas.tools.merge;
 	public function _indicator_post_merge(result:Dynamic):Dynamic;
 	public function _indicator_pre_merge(left:Dynamic, right:Dynamic):Dynamic;
 	public function _maybe_add_join_keys(result:Dynamic, left_indexer:Dynamic, right_indexer:Dynamic):Dynamic;
+	static public var _merge_type : Dynamic;
 	public function _validate_specification():Dynamic;
 	public function get_result():Dynamic;
 }

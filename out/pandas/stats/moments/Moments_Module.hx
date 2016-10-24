@@ -488,6 +488,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function expanding_apply(arg:Dynamic, func:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	/**
@@ -538,6 +541,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function expanding_count(arg:Dynamic, ?freq:Dynamic):Dynamic;
 	/**
@@ -686,6 +692,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function expanding_quantile(arg:Dynamic, quantile:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic):Dynamic;
 	/**
@@ -767,6 +776,19 @@ package pandas.stats.moments;
 	**/
 	static public function expanding_var(arg:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
 		Generic moving function application.
 		
 		Parameters
@@ -802,6 +824,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function rolling_apply(arg:Dynamic, window:Dynamic, func:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?args:Dynamic, ?kwargs:Dynamic):Dynamic;
 	/**
@@ -875,6 +900,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function rolling_count(arg:Dynamic, window:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1127,6 +1155,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function rolling_quantile(arg:Dynamic, window:Dynamic, quantile:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic):Dynamic;
 	/**
@@ -1326,6 +1357,9 @@ package pandas.stats.moments;
 		The `freq` keyword is used to conform time series data to a specified
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	static public function rolling_window(arg:Dynamic, ?window:Dynamic, ?win_type:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?mean:Dynamic, ?axis:Dynamic, ?how:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 }

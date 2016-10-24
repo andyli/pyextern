@@ -20,11 +20,25 @@ package pandas.tools.pivot;
 		Numpy version of itertools.product or pandas.compat.product.
 		Sometimes faster (for large inputs)...
 		
+		Parameters
+		----------
+		X : list-like of list-likes
+		
+		Returns
+		-------
+		product : list of ndarrays
+		
 		Examples
 		--------
 		>>> cartesian_product([list('ABC'), [1, 2]])
 		[array(['A', 'A', 'B', 'B', 'C', 'C'], dtype='|S1'),
 		array([1, 2, 1, 2, 1, 2])]
+		
+		See also
+		--------
+		itertools.product : Cartesian product of input iterables.  Equivalent to
+		    nested for-loops.
+		pandas.compat.product : An alias for itertools.product.
 	**/
 	static public function cartesian_product(X:Dynamic):Dynamic;
 	/**
@@ -47,9 +61,12 @@ package pandas.tools.pivot;
 		join_axes : list of Index objects
 		    Specific indexes to use for the other n - 1 axes instead of performing
 		    inner/outer set logic
-		verify_integrity : boolean, default False
-		    Check whether the new concatenated axis contains duplicates. This can
-		    be very expensive relative to the actual data concatenation
+		ignore_index : boolean, default False
+		    If True, do not use the index values along the concatenation axis. The
+		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
+		    concatenating objects where the concatenation axis does not have
+		    meaningful indexing information. Note the index values on the other
+		    axes are still respected in the join.
 		keys : sequence, default None
 		    If multiple levels passed, should contain tuples. Construct
 		    hierarchical index using the passed keys as the outermost level
@@ -58,12 +75,9 @@ package pandas.tools.pivot;
 		    MultiIndex. Otherwise they will be inferred from the keys
 		names : list, default None
 		    Names for the levels in the resulting hierarchical index
-		ignore_index : boolean, default False
-		    If True, do not use the index values along the concatenation axis. The
-		    resulting axis will be labeled 0, ..., n - 1. This is useful if you are
-		    concatenating objects where the concatenation axis does not have
-		    meaningful indexing information. Note the index values on the other
-		    axes are still respected in the join.
+		verify_integrity : boolean, default False
+		    Check whether the new concatenated axis contains duplicates. This can
+		    be very expensive relative to the actual data concatenation
 		copy : boolean, default True
 		    If False, do not copy data unnecessarily
 		
@@ -114,7 +128,11 @@ package pandas.tools.pivot;
 		Notes
 		-----
 		Any Series passed will have their name attributes used unless row or column
-		names for the cross-tabulation are specified
+		names for the cross-tabulation are specified.
+		
+		Any input passed containing Categorical data will have **all** of its
+		categories included in the cross-tabulation, even if the actual data does
+		not contain any instances of a particular category.
 		
 		In the event that there aren't overlapping indexes an empty DataFrame will
 		be returned.
@@ -138,11 +156,35 @@ package pandas.tools.pivot;
 		bar  1     2      1     0
 		foo  2     2      1     2
 		
+		>>> foo = pd.Categorical(['a', 'b'], categories=['a', 'b', 'c'])
+		>>> bar = pd.Categorical(['d', 'e'], categories=['d', 'e', 'f'])
+		>>> crosstab(foo, bar)  # 'c' and 'f' are not represented in the data,
+		                        # but they still will be counted in the output
+		col_0  d  e  f
+		row_0
+		a      1  0  0
+		b      0  1  0
+		c      0  0  0
+		
 		Returns
 		-------
 		crosstab : DataFrame
 	**/
 	static public function crosstab(index:Dynamic, columns:Dynamic, ?values:Dynamic, ?rownames:Dynamic, ?colnames:Dynamic, ?aggfunc:Dynamic, ?margins:Dynamic, ?dropna:Dynamic, ?normalize:Dynamic):pandas.DataFrame;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Create a spreadsheet-style pivot table as a DataFrame. The levels in the

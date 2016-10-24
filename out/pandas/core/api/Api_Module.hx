@@ -10,6 +10,7 @@ package pandas.core.api;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public var _removals : Dynamic;
 	/**
 		Return a fixed frequency datetime index, with business day as the default
 		frequency
@@ -38,6 +39,9 @@ package pandas.core.api;
 		Notes
 		-----
 		2 of start, end, or periods must be specified
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Returns
 		-------
@@ -73,11 +77,15 @@ package pandas.core.api;
 		-----
 		2 of start, end, or periods must be specified
 		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
 		Returns
 		-------
 		rng : DatetimeIndex
 	**/
 	static public function date_range(?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?normalize:Dynamic, ?name:Dynamic, ?closed:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.DatetimeIndex;
+	static public var datetools : Dynamic;
 	/**
 		describe_option(pat, _print_desc=False)
 		
@@ -96,6 +104,7 @@ package pandas.core.api;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -306,6 +315,11 @@ package pandas.core.api;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -397,7 +411,7 @@ package pandas.core.api;
 		
 		    .. versionadded:: 0.16.1
 		drop_first : bool, default False
-		    Whether to get k-1 dummies out of n categorical levels by removing the
+		    Whether to get k-1 dummies out of k categorical levels by removing the
 		    first level.
 		
 		    .. versionadded:: 0.18.0
@@ -477,6 +491,7 @@ package pandas.core.api;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -688,6 +703,11 @@ package pandas.core.api;
 		    Note that the IPython notebook, IPython qtconsole, or IDLE do not run in a
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
+		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
 		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
@@ -928,6 +948,7 @@ package pandas.core.api;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -1136,6 +1157,11 @@ package pandas.core.api;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -1200,6 +1226,7 @@ package pandas.core.api;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -1414,6 +1441,11 @@ package pandas.core.api;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -1504,7 +1536,8 @@ package pandas.core.api;
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
 		
-		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the

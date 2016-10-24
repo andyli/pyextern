@@ -1,12 +1,9 @@
 /* This file is generated, do not edit! */
 package pandas.io.sql;
 @:pythonImport("pandas.io.sql") extern class Sql_Module {
-	static public var _MYSQL_WARNING : Dynamic;
 	static public var _SAFE_NAMES_WARNING : Dynamic;
 	static public var _SQLALCHEMY_INSTALLED : Dynamic;
-	static public var _SQL_GET_IDENTIFIER : Dynamic;
 	static public var _SQL_TYPES : Dynamic;
-	static public var _SQL_WILDCARD : Dynamic;
 	static public var __builtins__ : Dynamic;
 	static public var __cached__ : Dynamic;
 	static public var __doc__ : Dynamic;
@@ -25,7 +22,6 @@ package pandas.io.sql;
 	**/
 	static public function _engine_builder(con:Dynamic):Dynamic;
 	static public function _get_unicode_name(name:Dynamic):Dynamic;
-	static public function _get_valid_mysql_name(name:Dynamic):Dynamic;
 	static public function _get_valid_sqlite_name(name:Dynamic):Dynamic;
 	static public function _handle_date_column(col:Dynamic, ?format:Dynamic):Dynamic;
 	static public function _is_sqlalchemy_connectable(con:Dynamic):Dynamic;
@@ -34,7 +30,12 @@ package pandas.io.sql;
 		Supports both string formatted and integer timestamp columns
 	**/
 	static public function _parse_date_columns(data_frame:Dynamic, parse_dates:Dynamic):Dynamic;
-	static public function _safe_fetch(cur:Dynamic):Dynamic;
+	/**
+		Checks whether a database 'flavor' was specified.
+		If not None, produces FutureWarning if 'sqlite' and
+		raises a ValueError if anything else.
+	**/
+	static public function _validate_flavor_parameter(flavor:Dynamic):Dynamic;
 	/**
 		Wrap result set of query in a DataFrame 
 	**/
@@ -96,16 +97,14 @@ package pandas.io.sql;
 		frame : DataFrame
 		name : string
 		    name of SQL table
-		flavor : {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy connectable.
-		    'mysql' is deprecated and will be removed in future versions, but it
-		    will be further supported through SQLAlchemy engines.
 		keys : string or sequence, default: None
 		    columns to use a primary key
 		con: an open SQL database connection object or a SQLAlchemy connectable
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library, default: None
 		    If a DBAPI2 object, only sqlite3 is supported.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version
 		dtype : dict of column name to SQL type, default None
 		    Optional specifying the datatype for columns. The SQL type should
 		    be a SQLAlchemy type, or a string for sqlite3 fallback connection.
@@ -122,10 +121,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor: {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy connectable.
-		    'mysql' is deprecated and will be removed in future versions, but it
-		    will be further supported through SQLAlchemy connectables.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor supports
 		    this). If None, use default schema (default).
@@ -135,6 +132,9 @@ package pandas.io.sql;
 		boolean
 	**/
 	static public function has_table(table_name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_dict_like(arg:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		
@@ -154,7 +154,6 @@ package pandas.io.sql;
 		pandas.notnull: boolean inverse of pandas.isnull
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
-	static public function lzip(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Convenience function to return the correct PandasSQL subclass based on the
 		provided parameters
@@ -339,10 +338,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor: {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy connectable.
-		    'mysql' is deprecated and will be removed in future versions, but it
-		    will be further supported through SQLAlchemy connectables.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor supports
 		    this). If None, use default schema (default).
@@ -402,7 +399,8 @@ package pandas.io.sql;
 		    - If True, require an exact format match.
 		    - If False, allow the format to match anywhere in the target string.
 		
-		unit : unit of the arg (D,s,ms,us,ns) denote the unit in epoch
+		unit : string, default 'ns'
+		    unit of the arg (D,s,ms,us,ns) denote the unit in epoch
 		    (e.g. a unix timestamp), which is an integer/float number.
 		infer_datetime_format : boolean, default False
 		    If True and no `format` is given, attempt to infer the format of the
@@ -479,10 +477,8 @@ package pandas.io.sql;
 		    Using SQLAlchemy makes it possible to use any DB supported by that
 		    library.
 		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy connectable.
-		    'mysql' is deprecated and will be removed in future versions, but it
-		    will be further supported through SQLAlchemy connectables.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version
 		schema : string, default None
 		    Name of SQL schema in database to write to (if database flavor
 		    supports this). If None, use default schema (default).
@@ -499,57 +495,10 @@ package pandas.io.sql;
 		chunksize : int, default None
 		    If not None, then rows will be written in batches of this size at a
 		    time.  If None, all rows will be written at once.
-		dtype : dict of column name to SQL type, default None
+		dtype : single SQLtype or dict of column name to SQL type, default None
 		    Optional specifying the datatype for columns. The SQL type should
 		    be a SQLAlchemy type, or a string for sqlite3 fallback connection.
+		    If all columns are of the same type, one single value can be used.
 	**/
 	static public function to_sql(frame:Dynamic, name:Dynamic, con:Dynamic, ?flavor:Dynamic, ?schema:Dynamic, ?if_exists:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?chunksize:Dynamic, ?dtype:Dynamic):Dynamic;
-	/**
-		DEPRECATED. Returns list of tuples corresponding to each row in given sql
-		query.
-		
-		If only one column selected, then plain list is returned.
-		
-		To obtain the same result in the future, you can use the following:
-		
-		>>> execute(sql, con, params).fetchall()
-		
-		Parameters
-		----------
-		sql: string
-		    SQL query to be executed
-		con: DBAPI2 connection, default: None
-		cur: deprecated, cursor is obtained from connection, default: None
-		retry: boolean value to specify whether to retry after failure
-		    default: True
-		
-		Returns
-		-------
-		Results Iterable
-	**/
-	static public function tquery(sql:Dynamic, ?con:Dynamic, ?cur:Dynamic, ?retry:Dynamic):Dynamic;
-	/**
-		DEPRECATED. Does the same thing as tquery, but instead of returning
-		results, it returns the number of rows affected.  Good for update queries.
-		
-		To obtain the same result in the future, you can use the following:
-		
-		>>> execute(sql, con).rowcount
-		
-		Parameters
-		----------
-		sql: string
-		    SQL query to be executed
-		con: DBAPI2 connection, default: None
-		cur: deprecated, cursor is obtained from connection, default: None
-		retry: boolean value to specify whether to retry after failure
-		    default: True
-		params: list or tuple, optional, default: None
-		    List of parameters to pass to execute method.
-		
-		Returns
-		-------
-		Number of affected rows
-	**/
-	static public function uquery(sql:Dynamic, ?con:Dynamic, ?cur:Dynamic, ?retry:Dynamic, ?params:Dynamic):Dynamic;
 }

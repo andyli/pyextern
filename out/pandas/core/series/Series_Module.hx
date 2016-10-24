@@ -34,6 +34,7 @@ package pandas.core.series;
 	**/
 	static public function _dict_compat(d:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		interpret the dtype from a scalar 
 	**/
@@ -51,7 +52,6 @@ package pandas.core.series;
 		copy : if True always make a copy even if no upcast is required
 	**/
 	static public function _maybe_upcast(values:Dynamic, ?fill_value:Dynamic, ?dtype:Dynamic, ?copy:Dynamic):Dynamic;
-	static public var _np_version_under1p9 : Dynamic;
 	/**
 		try to cast the array/value to a datetimelike dtype, converting float
 		nan to iNaT
@@ -136,6 +136,7 @@ package pandas.core.series;
 		  show_dimensions]
 		- display.unicode.[ambiguous_as_wide, east_asian_width]
 		- display.[width]
+		- html.[border]
 		- io.excel.xls.[writer]
 		- io.excel.xlsm.[writer]
 		- io.excel.xlsx.[writer]
@@ -348,6 +349,11 @@ package pandas.core.series;
 		    terminal and hence it is not possible to correctly detect the width.
 		    [default: 80] [currently: 80]
 		
+		html.border : int
+		    A ``border=value`` attribute is inserted in the ``<table>`` tag
+		    for the DataFrame HTML repr.
+		    [default: 1] [currently: 1]
+		
 		io.excel.xls.writer : string
 		    The default Excel writer engine for 'xls' files. Available options:
 		    'xlwt' (the default).
@@ -397,17 +403,55 @@ package pandas.core.series;
 	static public function get_terminal_size():Dynamic;
 	static public function is_bool_indexer(key:Dynamic):Dynamic;
 	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetimelike(arr:Dynamic):Dynamic;
 	/**
 		return if we are a datetime with tz array 
 	**/
 	static public function is_datetimetz(array:Dynamic):Dynamic;
+	static public function is_dict_like(arg:Dynamic):Dynamic;
 	/**
 		if we are a klass that is preserved by the internals
 		these are internal klasses that we represent (and don't use a np.array)
 	**/
 	static public function is_extension_type(value:Dynamic):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if hash(arg) will succeed, False otherwise.
+		
+		Some types will pass a test against collections.Hashable but fail when they
+		are actually hashed with hash().
+		
+		Distinguish between these and other types by trying the call to hash() and
+		seeing if they raise TypeError.
+		
+		Examples
+		--------
+		>>> a = ([],)
+		>>> isinstance(a, collections.Hashable)
+		True
+		>>> is_hashable(a)
+		False
+	**/
+	static public function is_hashable(arg:Dynamic):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_iterator(obj:Dynamic):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
 		

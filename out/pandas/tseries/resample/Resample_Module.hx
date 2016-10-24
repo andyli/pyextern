@@ -53,6 +53,9 @@ package pandas.tseries.resample;
 		-----
 		2 of start, end, or periods must be specified
 		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
 		Returns
 		-------
 		rng : DatetimeIndex
@@ -210,13 +213,46 @@ package pandas.tseries.resample;
 	**/
 	static public function resample(obj:Dynamic, ?kind:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return DateOffset object from string representation or
-		Timedelta object
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
 		
 		Examples
 		--------
-		>>> to_offset('5Min')
-		Minute(5)
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
 	**/
-	static public function to_offset(freqstr:Dynamic):Dynamic;
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 }

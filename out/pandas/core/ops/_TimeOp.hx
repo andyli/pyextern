@@ -114,13 +114,14 @@ package pandas.core.ops;
 	static public var dtype : Dynamic;
 	static public var fill_value : Dynamic;
 	/**
-		if ``left`` and ``right`` are appropriate for datetime arithmetic with
+		Get op dispatcher, returns _Op or _TimeOp.
+		
+		If ``left`` and ``right`` are appropriate for datetime arithmetic with
 		operation ``name``, processes them and returns a ``_TimeOp`` object
 		that stores all the required values.  Otherwise, it will generate
-		either a ``NotImplementedError`` or ``None``, indicating that the
-		operation is unsupported for datetimes (e.g., an unsupported r_op) or
-		that the data is not the right type for time ops.
+		either a ``_Op``, indicating that the operation is performed via
+		normal numpy path.
 	**/
-	static public function maybe_convert_for_time_op(left:Dynamic, right:Dynamic, name:Dynamic, na_op:Dynamic):Dynamic;
+	static public function get_op(left:Dynamic, right:Dynamic, name:Dynamic, na_op:Dynamic):Dynamic;
 	static public function wrap_results(x:Dynamic):Dynamic;
 }

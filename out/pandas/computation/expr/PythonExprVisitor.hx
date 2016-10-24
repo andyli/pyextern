@@ -101,6 +101,7 @@ package pandas.computation.expr;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	public function _possibly_downcast_constants(left:Dynamic, right:Dynamic):Dynamic;
 	public function _possibly_eval(binop:Dynamic, eval_in_python:Dynamic):Dynamic;
 	public function _possibly_evaluate_binop(op:Dynamic, op_class:Dynamic, lhs:Dynamic, rhs:Dynamic, ?eval_in_python:Dynamic, ?maybe_eval_in_python:Dynamic):Dynamic;
 	public function _possibly_transform_eq_ne(node:Dynamic, ?left:Dynamic, ?right:Dynamic):Dynamic;

@@ -9,6 +9,7 @@ package pandas.compat.numpy._function;
 	static public var LOGICAL_FUNC_DEFAULTS : Dynamic;
 	static public var MINMAX_DEFAULTS : Dynamic;
 	static public var REPEAT_DEFAULTS : Dynamic;
+	static public var RESAMPLER_NUMPY_OPS : Dynamic;
 	static public var RESHAPE_DEFAULTS : Dynamic;
 	static public var ROUND_DEFAULTS : Dynamic;
 	static public var SORT_DEFAULTS : Dynamic;
@@ -25,6 +26,7 @@ package pandas.compat.numpy._function;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function process_skipna(skipna:Dynamic, args:Dynamic):Dynamic;
 	static public function validate_argmax(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
@@ -136,7 +138,21 @@ package pandas.compat.numpy._function;
 	static public function validate_clip_with_axis(axis:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function validate_compress(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_cum_func(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	/**
+		If this function is called via the 'numpy' library, the third
+		parameter in its signature is 'dtype', which takes either a
+		'numpy' dtype or 'None', so check if the 'skipna' parameter is
+		a boolean or not
+	**/
+	static public function validate_cum_func_with_skipna(skipna:Dynamic, args:Dynamic, kwargs:Dynamic, name:Dynamic):Dynamic;
 	static public function validate_cumsum(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	static public function validate_expanding_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
+	/**
+		'args' and 'kwargs' should be empty because all of
+		their necessary parameters are explicitly listed in
+		the function signature
+	**/
+	static public function validate_groupby_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	/**
 		Checks whether parameters passed to the **kwargs argument in a
 		function `fname` are valid parameters as specified in `*compat_args`
@@ -166,7 +182,14 @@ package pandas.compat.numpy._function;
 	static public function validate_mean(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_min(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_repeat(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	/**
+		'args' and 'kwargs' should be empty because all of
+		their necessary parameters are explicitly listed in
+		the function signature
+	**/
+	static public function validate_resampler_func(method:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function validate_reshape(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
+	static public function validate_rolling_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function validate_round(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_sort(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_squeeze(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
@@ -183,4 +206,5 @@ package pandas.compat.numpy._function;
 	static public function validate_take_with_convert(convert:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 	static public function validate_transpose(args:Dynamic, kwargs:Dynamic, ?fname:Dynamic, ?max_fname_arg_count:Dynamic, ?method:Dynamic):Dynamic;
 	static public function validate_transpose_for_generic(inst:Dynamic, kwargs:Dynamic):Dynamic;
+	static public function validate_window_func(name:Dynamic, args:Dynamic, kwargs:Dynamic):Dynamic;
 }

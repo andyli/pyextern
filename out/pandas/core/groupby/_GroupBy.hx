@@ -236,15 +236,21 @@ package pandas.core.groupby;
 		Reset cached properties. If ``key`` is passed, only clears that key.
 	**/
 	public function _reset_cache(?key:Dynamic):Dynamic;
+	/**
+		Clear group based selection. Used for methods needing to return info on
+		each group regardless of whether a group selection was previously set.
+	**/
+	public function _reset_group_selection():Dynamic;
 	static public var _see_also_template : Dynamic;
 	static public var _selected_obj : Dynamic;
 	static public var _selection : Dynamic;
 	public var _selection_list : Dynamic;
-	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
-		we may need create a selection if we have non-level groupers 
+		Create group based selection. Used when selection is not passed
+		directly but instead via a grouper.
 	**/
-	public function _set_selection_from_grouper():Dynamic;
+	public function _set_group_selection():Dynamic;
+	public function _set_result_index_ordered(result:Dynamic):Dynamic;
 	/**
 		return a new object with the replacement attributes 
 	**/

@@ -30,6 +30,10 @@ package pandas.tseries.base;
 		Return getattr(self, name).
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
+	/**
+		This getitem defers to the underlying array, which by-definition can
+		only handle list-likes, slices, and integer scalars
+	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	/**
 		Return self>value.
@@ -114,6 +118,10 @@ package pandas.tseries.base;
 	public function _add_delta_td(other:Dynamic):Dynamic;
 	public function _add_delta_tdi(other:Dynamic):Dynamic;
 	/**
+		Concatenate to_concat which has the same class
+	**/
+	public function _append_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
+	/**
 		box function to get object from internal representation
 	**/
 	public var _box_func : Dynamic;
@@ -121,6 +129,7 @@ package pandas.tseries.base;
 		apply box func to passed values
 	**/
 	public function _box_values(values:Dynamic):Dynamic;
+	static public var _can_hold_na : Dynamic;
 	/**
 		we don't allow integer or float indexing on datetime-like when using
 		loc
@@ -132,6 +141,21 @@ package pandas.tseries.base;
 	**/
 	public function _convert_scalar_indexer(key:Dynamic, ?kind:Dynamic):Dynamic;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
+	/**
+		ensure that we are re-localized
+		
+		This is for compat as we can then call this on all datetimelike
+		indexes generally (ignored for Period/Timedelta)
+		
+		Parameters
+		----------
+		result : DatetimeIndex / i8 ndarray
+		
+		Returns
+		-------
+		localized DTI
+	**/
+	public function _ensure_localized(result:Dynamic):Dynamic;
 	/**
 		We have been called because a comparison between
 		8 aware arrays. numpy >= 1.11 will
@@ -165,6 +189,7 @@ package pandas.tseries.base;
 		This is an internal routine
 	**/
 	public function _maybe_mask_results(result:Dynamic, ?fill_value:Dynamic, ?convert:Dynamic):Dynamic;
+	static public var _na_value : Dynamic;
 	/**
 		Return Index or ndarray filled with NaT which has the same
 		length as the caller.
@@ -178,6 +203,7 @@ package pandas.tseries.base;
 	public function _nat_new(?box:Dynamic):Dynamic;
 	static public var _resolution : Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
+	public function _sub_period(other:Dynamic):Dynamic;
 	/**
 		Returns the indices of the maximum values along an axis.
 		See `numpy.ndarray.argmax` for more information on the
@@ -205,12 +231,14 @@ package pandas.tseries.base;
 	**/
 	public var asobject : Dynamic;
 	/**
+		Determines if two Index objects contain the same elements.
+	**/
+	public function equals(other:Dynamic):Dynamic;
+	/**
 		Return the frequency object as a string if its set, otherwise None
 	**/
 	public var freqstr : Dynamic;
 	public function get_duplicates():Dynamic;
-	public function groupby(f:Dynamic):Dynamic;
-	static public var hasnans : Dynamic;
 	static public var inferred_freq : Dynamic;
 	/**
 		Compute boolean array of whether each index value is found in the
@@ -297,11 +325,16 @@ package pandas.tseries.base;
 	**/
 	public function tolist():Dynamic;
 	/**
-		Index.unique with handling for DatetimeIndex/PeriodIndex metadata
+		.. versionadded:: 0.19.0
 		
-		Returns
-		-------
-		result : DatetimeIndex or PeriodIndex
+		Return an Index of same shape as self and whose corresponding
+		entries are from self where cond is True and otherwise are from
+		other.
+		
+		Parameters
+		----------
+		cond : boolean same length as self
+		other : scalar, or array-like
 	**/
-	public function unique():Dynamic;
+	public function where(cond:Dynamic, ?other:Dynamic):Dynamic;
 }

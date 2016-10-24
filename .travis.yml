@@ -5,7 +5,7 @@ haxe:
   - development
 
 env:
-  - REQUIREMENTS=requirements.txt         OUTDIR=coredep GENLIBS=docutils,pkgutil,inspect,importlib coredep
+  - REQUIREMENTS=requirements.txt         OUTDIR=coredep GENLIBS=docutils,pkgutil,inspect,importlib
   - REQUIREMENTS=requirements-externs.txt OUTDIR=out     GENLIBS=docutils,pkgutil,inspect,importlib,textwrap,numpy,scipy,pandas,matplotlib,seaborn
 
 sudo: required

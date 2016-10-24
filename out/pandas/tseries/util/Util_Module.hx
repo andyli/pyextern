@@ -9,6 +9,7 @@ package pandas.tseries.util;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns true if year is a leap year.
 		
@@ -20,6 +21,8 @@ package pandas.tseries.util;
 	static public function isleapyear(year:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
+		Deprecated. Use ``pivot_table`` instead.
+		
 		Group a series by years, taking leap years into account.
 		
 		The output has as many rows as distinct years in the original series,

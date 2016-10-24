@@ -12,6 +12,11 @@ package pandas.core.panelnd;
 	/**
 		manufacture a n-d class:
 		
+		DEPRECATED. Panelnd is deprecated and will be removed in a future version.
+		The recommended way to represent these types of n-dimensional data are with
+		the `xarray package <http://xarray.pydata.org/en/stable/>`__.
+		Pandas provides a `.to_xarray()` method to automate this conversion.
+		
 		Parameters
 		----------
 		klass_name : the klass name

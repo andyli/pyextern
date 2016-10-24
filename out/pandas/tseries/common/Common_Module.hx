@@ -60,7 +60,7 @@ package pandas.tseries.common;
 		out : ndarray or None, default None
 		    Optional output array, must be appropriate type to hold input and
 		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
+		    _maybe_promote to determine this type for any fill_value
 		fill_value : any, default np.nan
 		    Fill value to replace -1 values with
 		mask_info : tuple of (ndarray, boolean)

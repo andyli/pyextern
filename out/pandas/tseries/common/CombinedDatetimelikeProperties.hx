@@ -182,7 +182,8 @@ package pandas.tseries.common;
 	**/
 	public var components : Dynamic;
 	/**
-		Returns numpy array of datetime.date. The date part of the Timestamps.
+		Returns numpy array of python datetime.date objects (namely, the date
+		part of Timestamps without timezone information).
 	**/
 	public var date : Dynamic;
 	/**
@@ -237,6 +238,10 @@ package pandas.tseries.common;
 		The hours of the datetime
 	**/
 	public var hour : Dynamic;
+	/**
+		Logical indicating if the date belongs to a leap year
+	**/
+	public var is_leap_year : Dynamic;
 	/**
 		Logical indicating if last day of month (defined by frequency)
 	**/
@@ -397,6 +402,15 @@ package pandas.tseries.common;
 		    - 'NaT' will return NaT where there are ambiguous times
 		    - 'raise' will raise an AmbiguousTimeError if there are ambiguous
 		      times
+		errors : 'raise', 'coerce', default 'raise'
+		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
+		       valid in the specified timezone (e.g. due to a transition from
+		       or to DST time)
+		    - 'coerce' will return NaT if the timestamp can not be converted
+		      into the specified timezone
+		
+		    .. versionadded:: 0.19.0
+		
 		infer_dst : boolean, default False (DEPRECATED)
 		    Attempt to infer fall dst-transition hours based on order
 		

@@ -69,7 +69,7 @@ package pandas.types.dtypes;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic):Dynamic;
 	/**
 		helper for pickle
 	**/
@@ -114,6 +114,7 @@ package pandas.types.dtypes;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
+	static public var _cache : Dynamic;
 	static public var _metadata : Dynamic;
 	static public var base : Dynamic;
 	/**

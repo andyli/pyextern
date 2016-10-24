@@ -32,8 +32,10 @@ package pandas.sparse.series;
 	static public var __array_priority__ : Dynamic;
 	/**
 		Gets called prior to a ufunc (and after)
+		
+		See SparseArray.__array_wrap__ for detail.
 	**/
-	public function __array_wrap__(result:Dynamic):Dynamic;
+	public function __array_wrap__(result:Dynamic, ?context:Dynamic):Dynamic;
 	public function __bool__():Dynamic;
 	/**
 		Return a string representation for a particular object.
@@ -62,8 +64,9 @@ package pandas.sparse.series;
 	**/
 	public function __dir__():Dynamic;
 	public function __div__(other:Dynamic):Dynamic;
+	public function __divmod__(right:Dynamic, ?name:Dynamic, ?na_op:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
-	public function __eq__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __eq__(other:Dynamic):Dynamic;
 	/**
 		Propagate metadata from other to self.
 		
@@ -81,7 +84,7 @@ package pandas.sparse.series;
 		default object formatter
 	**/
 	public function __format__(args:haxe.extern.Rest<Dynamic>):Dynamic;
-	public function __ge__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __ge__(other:Dynamic):Dynamic;
 	/**
 		After regular attribute access, try looking up the name
 		This allows simpler access to columns for interactive use.
@@ -93,7 +96,7 @@ package pandas.sparse.series;
 	public function __getattribute__(name:Dynamic):Dynamic;
 	public function __getitem__(key:Dynamic):Dynamic;
 	public function __getstate__():Dynamic;
-	public function __gt__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __gt__(other:Dynamic):Dynamic;
 	/**
 		Return hash(self).
 	**/
@@ -118,17 +121,17 @@ package pandas.sparse.series;
 	**/
 	public function __iter__():Dynamic;
 	public function __itruediv__(other:Dynamic):Dynamic;
-	public function __le__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __le__(other:Dynamic):Dynamic;
 	/**
 		return the length of the Series
 	**/
 	public function __len__():Dynamic;
 	public function __long__():Dynamic;
-	public function __lt__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __lt__(other:Dynamic):Dynamic;
 	public function __mod__(other:Dynamic):Dynamic;
 	static public var __module__ : Dynamic;
 	public function __mul__(other:Dynamic):Dynamic;
-	public function __ne__(other:Dynamic, ?axis:Dynamic):Dynamic;
+	public function __ne__(other:Dynamic):Dynamic;
 	public function __neg__():Dynamic;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
@@ -318,7 +321,7 @@ package pandas.sparse.series;
 	**/
 	public function _construct_axes_from_arguments(args:Dynamic, kwargs:Dynamic, ?require_all:Dynamic):Dynamic;
 	/**
-		Used when a manipulation result has the same dimesions as the
+		Used when a manipulation result has the same dimensions as the
 		original.
 	**/
 	public var _constructor : Dynamic;
@@ -607,6 +610,11 @@ package pandas.sparse.series;
 	**/
 	public var _values : Dynamic;
 	/**
+		Equivalent to public method `where`, except that `other` is not
+		applied as a function even if callable. Used in __setitem__.
+	**/
+	public function _where(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
+	/**
 		Returns a cross-section (row(s) or column(s)) from the
 		Series/DataFrame. Defaults to cross-section on the rows (axis=0).
 		
@@ -619,8 +627,6 @@ package pandas.sparse.series;
 		level : object, defaults to first n levels (n=1 or len(key))
 		    In case of a key partially contained in a MultiIndex, indicate
 		    which levels are used. Levels can be referred by label or position.
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		drop_level : boolean, default True
 		    If False, returns object with same levels as self.
 		
@@ -675,7 +681,7 @@ package pandas.sparse.series;
 		levels.  It is a superset of xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function _xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?drop_level:Dynamic):Dynamic;
+	public function _xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?drop_level:Dynamic):Dynamic;
 	/**
 		Return an object with absolute value taken. Only applicable to objects
 		that are all numeric
@@ -782,8 +788,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -803,8 +809,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		bool_only : boolean, default None
-		    Include only boolean data. If None, will attempt to use everything,
-		    then use only boolean data
+		    Include only boolean columns. If None, will attempt to use everything,
+		    then use only boolean data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -817,6 +823,11 @@ package pandas.sparse.series;
 		Parameters
 		----------
 		to_append : Series or list/tuple of Series
+		ignore_index : boolean, default False
+		    If True, do not use the index labels.
+		
+		    .. versionadded: 0.19.0
+		
 		verify_integrity : boolean, default False
 		    If True, raise Exception on creating index with duplicates
 		
@@ -847,12 +858,23 @@ package pandas.sparse.series;
 		5    6
 		dtype: int64
 		
+		With `ignore_index` set to True:
+		
+		>>> s1.append(s2, ignore_index=True)
+		0    1
+		1    2
+		2    3
+		3    4
+		4    5
+		5    6
+		dtype: int64
+		
 		With `verify_integrity` set to True:
 		
 		>>> s1.append(s2, verify_integrity=True)
 		ValueError: Indexes have overlapping values: [0, 1, 2]
 	**/
-	public function append(to_append:Dynamic, ?verify_integrity:Dynamic):pandas.Series;
+	public function append(to_append:Dynamic, ?ignore_index:Dynamic, ?verify_integrity:Dynamic):pandas.Series;
 	/**
 		Invoke function on values of Series. Can be ufunc (a NumPy function
 		that applies to the entire Series) or a Python function that only works
@@ -1055,7 +1077,8 @@ package pandas.sparse.series;
 		
 		e.g. If the dtypes are float16 and float32, dtype will be upcast to
 		float32.  If dtypes are int32 and uint8, dtype will be upcase to
-		int32.
+		int32. By numpy.find_common_type convention, mixing int64 and uint64
+		will result in a flot64 dtype.
 		
 		This method is provided for backwards compatibility. Generally,
 		it is recommended to use '.values'.
@@ -1070,16 +1093,20 @@ package pandas.sparse.series;
 	**/
 	public function as_sparse_array(?kind:Dynamic, ?fill_value:Dynamic, ?copy:Dynamic):Dynamic;
 	/**
-		Convert all TimeSeries inside to specified frequency using DateOffset
-		objects. Optionally provide fill method to pad/backfill missing values.
+		Convert TimeSeries to specified frequency.
+		
+		Optionally provide filling method to pad/backfill missing values.
 		
 		Parameters
 		----------
 		freq : DateOffset object, or string
-		method : {'backfill', 'bfill', 'pad', 'ffill', None}
-		    Method to use for filling holes in reindexed Series
-		    pad / ffill: propagate last valid observation forward to next valid
-		    backfill / bfill: use NEXT valid observation to fill method
+		method : {'backfill'/'bfill', 'pad'/'ffill'}, default None
+		    Method to use for filling holes in reindexed Series (note this
+		    does not fill NaNs that already were present):
+		
+		    * 'pad' / 'ffill': propagate last valid observation forward to next
+		      valid
+		    * 'backfill' / 'bfill': use NEXT valid observation to fill
 		how : {'start', 'end'}, default end
 		    For PeriodIndex only, see PeriodIndex.asfreq
 		normalize : bool, default False
@@ -1088,6 +1115,9 @@ package pandas.sparse.series;
 		Returns
 		-------
 		converted : type of caller
+		
+		To learn more about the frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 	**/
 	public function asfreq(freq:Dynamic, ?method:Dynamic, ?how:Dynamic, ?normalize:Dynamic):Dynamic;
 	/**
@@ -1097,31 +1127,49 @@ package pandas.sparse.series;
 	**/
 	public var asobject : Dynamic;
 	/**
-		Return last good (non-NaN) value in Series if value is NaN for
-		requested date.
+		The last row without any NaN is taken (or the last row without
+		NaN considering only the subset of columns in the case of a DataFrame)
+		
+		.. versionadded:: 0.19.0 For DataFrame
 		
 		If there is no good value, NaN is returned.
 		
 		Parameters
 		----------
 		where : date or array of dates
+		subset : string or list of strings, default None
+		   if not None use these columns for NaN propagation
 		
 		Notes
 		-----
 		Dates are assumed to be sorted
+		Raises if this is not the case
 		
 		Returns
 		-------
-		value or NaN
+		where is scalar
+		
+		  - value or NaN if input is Series
+		  - Series if input is DataFrame
+		
+		where is Index: same shape object as input
+		
+		See Also
+		--------
+		merge_asof
 	**/
-	public function asof(where:Dynamic):Dynamic;
+	public function asof(where:Dynamic, ?subset:Dynamic):Dynamic;
 	/**
 		Cast object to input numpy.dtype
 		Return a copy when copy = True (be really careful with this!)
 		
 		Parameters
 		----------
-		dtype : numpy.dtype or Python type
+		dtype : data type, or dict of column name -> data type
+		    Use a numpy.dtype or Python type to cast entire pandas object to
+		    the same type. Alternatively, use {col: dtype, ...}, where col is a
+		    column label and dtype is a numpy.dtype or Python type to cast one
+		    or more of the DataFrame's columns to column-specific types.
 		raise_on_error : raise on invalid input
 		kwargs : keyword arguments to pass on to the constructor
 		
@@ -1364,8 +1412,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -1483,7 +1531,7 @@ package pandas.sparse.series;
 	**/
 	public function cov(other:Dynamic, ?min_periods:Dynamic):Float;
 	/**
-		Return cumulative cummax over requested axis.
+		Return cumulative max over requested axis.
 		
 		Parameters
 		----------
@@ -1496,9 +1544,9 @@ package pandas.sparse.series;
 		-------
 		cummax : scalar
 	**/
-	public function cummax(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummax(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return cumulative cummin over requested axis.
+		Return cumulative minimum over requested axis.
 		
 		Parameters
 		----------
@@ -1511,9 +1559,9 @@ package pandas.sparse.series;
 		-------
 		cummin : scalar
 	**/
-	public function cummin(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cummin(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return cumulative cumprod over requested axis.
+		Return cumulative product over requested axis.
 		
 		Parameters
 		----------
@@ -1526,7 +1574,7 @@ package pandas.sparse.series;
 		-------
 		cumprod : scalar
 	**/
-	public function cumprod(?axis:Dynamic, ?dtype:Dynamic, ?out:Dynamic, ?skipna:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function cumprod(?axis:Dynamic, ?skipna:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Cumulative sum of values. Preserves locations of NaN values
 		
@@ -1791,7 +1839,31 @@ package pandas.sparse.series;
 		pandas.DataFrame.dropna
 	**/
 	public var empty : Dynamic;
-	public function eq(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Equal to of series and other, element-wise (binary operator `eq`).
+		
+		Equivalent to ``series == other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function eq(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Determines if two NDFrame objects contain the same elements. NaNs in
 		the same location are considered equal.
@@ -1834,6 +1906,25 @@ package pandas.sparse.series;
 		Returns
 		-------
 		a Window sub-classed for the particular operation
+		
+		Examples
+		--------
+		
+		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		>>> df.ewm(com=0.5).mean()
+		          B
+		0  0.000000
+		1  0.750000
+		2  1.615385
+		3  1.615385
+		4  3.670213
 		
 		Notes
 		-----
@@ -1882,11 +1973,30 @@ package pandas.sparse.series;
 		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
-		axis : int, default 0
+		axis : int or string, default 0
 		
 		Returns
 		-------
 		a Window sub-classed for the particular operation
+		
+		Examples
+		--------
+		
+		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		>>> df.expanding(2).sum()
+		     B
+		0  NaN
+		1  1.0
+		2  3.0
+		3  3.0
+		4  7.0
 		
 		Notes
 		-----
@@ -1961,7 +2071,11 @@ package pandas.sparse.series;
 	**/
 	public function fillna(?value:Dynamic, ?method:Dynamic, ?axis:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?downcast:Dynamic, ?kwargs:python.KwArgs<Dynamic>):pandas.Series;
 	/**
-		Restrict the info axis to set of items or wildcard
+		Subset rows or columns of dataframe according to labels in
+		the specified index.
+		
+		Note that this routine does not filter a dataframe on its
+		contents. The filter is applied to the labels of the index.
 		
 		Parameters
 		----------
@@ -1971,15 +2085,49 @@ package pandas.sparse.series;
 		    Keep info axis where "arg in col == True"
 		regex : string (regular expression)
 		    Keep info axis with re.search(regex, col) == True
-		axis : int or None
-		    The axis to filter on. By default this is the info axis. The "info
-		    axis" is the axis that is used when indexing with ``[]``. For
-		    example, ``df = DataFrame({'a': [1, 2, 3, 4]]}); df['a']``. So,
-		    the ``DataFrame`` columns are the info axis.
+		axis : int or string axis name
+		    The axis to filter on.  By default this is the info axis,
+		    'index' for Series, 'columns' for DataFrame
+		
+		Returns
+		-------
+		same type as input object
+		
+		Examples
+		--------
+		>>> df
+		one  two  three
+		mouse     1    2      3
+		rabbit    4    5      6
+		
+		>>> # select columns by name
+		>>> df.filter(items=['one', 'three'])
+		one  three
+		mouse     1      3
+		rabbit    4      6
+		
+		>>> # select columns by regular expression
+		>>> df.filter(regex='e$', axis=1)
+		one  three
+		mouse     1      3
+		rabbit    4      6
+		
+		>>> # select rows containing 'bbi'
+		>>> df.filter(like='bbi', axis=0)
+		one  two  three
+		rabbit    4    5      6
+		
+		See Also
+		--------
+		pandas.DataFrame.select
 		
 		Notes
 		-----
-		Arguments are mutually exclusive, but this is not checked for
+		The ``items``, ``like``, and ``regex`` parameters are
+		enforced to be mutually exclusive.
+		
+		``axis`` defaults to the info axis that is used when indexing
+		with ``[]``.
 	**/
 	public function filter(?items:Dynamic, ?like:Dynamic, ?regex:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
@@ -2135,7 +2283,31 @@ package pandas.sparse.series;
 		return if the data is sparse|dense 
 	**/
 	public var ftypes : Dynamic;
-	public function ge(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Greater than or equal to of series and other, element-wise (binary operator `ge`).
+		
+		Equivalent to ``series >= other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function ge(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Returns value occupying requested label, default to specified
 		missing value if not present. Analogous to dict.get
@@ -2222,7 +2394,31 @@ package pandas.sparse.series;
 		GroupBy object
 	**/
 	public function groupby(?by:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?as_index:Dynamic, ?sort:Dynamic, ?group_keys:Dynamic, ?squeeze:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
-	public function gt(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Greater than of series and other, element-wise (binary operator `gt`).
+		
+		Equivalent to ``series > other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function gt(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	static public var hasnans : Dynamic;
 	/**
 		Returns first n rows
@@ -2428,6 +2624,39 @@ package pandas.sparse.series;
 	**/
 	public function irow(i:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var is_copy : Dynamic;
+	/**
+		Return boolean if values in the object are
+		monotonic_increasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic : boolean
+	**/
+	public var is_monotonic : Dynamic;
+	/**
+		Return boolean if values in the object are
+		monotonic_decreasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic_decreasing : boolean
+	**/
+	public var is_monotonic_decreasing : Dynamic;
+	/**
+		Return boolean if values in the object are
+		monotonic_increasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic : boolean
+	**/
+	public var is_monotonic_increasing : Dynamic;
 	public var is_time_series : Dynamic;
 	/**
 		Return boolean if values in the object are unique
@@ -2486,6 +2715,15 @@ package pandas.sparse.series;
 		dtype: bool
 	**/
 	public function isin(values:Dynamic):Dynamic;
+	/**
+		Return a boolean same-sized object indicating if the values are
+		not null.
+		
+		See Also
+		--------
+		isnull : boolean inverse of notnull
+	**/
+	public function isnotnull():Dynamic;
 	/**
 		Return a boolean same-sized object indicating if the values are null.
 		
@@ -2555,8 +2793,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2578,8 +2816,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2607,7 +2845,31 @@ package pandas.sparse.series;
 		Return label for last non-NA/null value
 	**/
 	public function last_valid_index():Dynamic;
-	public function le(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Less than or equal to of series and other, element-wise (binary operator `le`).
+		
+		Equivalent to ``series <= other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function le(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Purely label-location based indexer for selection by label.
 		
@@ -2631,7 +2893,31 @@ package pandas.sparse.series;
 		See more at :ref:`Selection by Label <indexing.label>`
 	**/
 	public var loc : Dynamic;
-	public function lt(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Less than of series and other, element-wise (binary operator `lt`).
+		
+		Equivalent to ``series < other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function lt(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return the mean absolute deviation of the values for the requested axis
 		
@@ -2645,8 +2931,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2661,10 +2947,19 @@ package pandas.sparse.series;
 		----------
 		arg : function, dict, or Series
 		na_action : {None, 'ignore'}
-		    If 'ignore', propagate NA values
+		    If 'ignore', propagate NA values, without passing them to the
+		    mapping function
+		
+		Returns
+		-------
+		y : Series
+		    same index as caller
 		
 		Examples
 		--------
+		
+		Map inputs to outputs
+		
 		>>> x
 		one   1
 		two   2
@@ -2680,10 +2975,26 @@ package pandas.sparse.series;
 		two   bar
 		three baz
 		
-		Returns
-		-------
-		y : Series
-		    same index as caller
+		Use na_action to control whether NA values are affected by the mapping
+		function.
+		
+		>>> s = pd.Series([1, 2, 3, np.nan])
+		
+		>>> s2 = s.map(lambda x: 'this is a string {}'.format(x),
+		               na_action=None)
+		0    this is a string 1.0
+		1    this is a string 2.0
+		2    this is a string 3.0
+		3    this is a string nan
+		dtype: object
+		
+		>>> s3 = s.map(lambda x: 'this is a string {}'.format(x),
+		               na_action='ignore')
+		0    this is a string 1.0
+		1    this is a string 2.0
+		2    this is a string 3.0
+		3                     NaN
+		dtype: object
 	**/
 	public function map(arg:Dynamic, ?na_action:Dynamic):pandas.Series;
 	/**
@@ -2726,6 +3037,58 @@ package pandas.sparse.series;
 		Returns
 		-------
 		wh : same type as caller
+		
+		Notes
+		-----
+		The mask method is an application of the if-then idiom. For each
+		element in the calling DataFrame, if ``cond`` is ``False`` the
+		element is used; otherwise the corresponding element from the DataFrame
+		``other`` is used.
+		
+		The signature for :func:`DataFrame.where` differs from
+		:func:`numpy.where`. Roughly ``df1.where(m, df2)`` is equivalent to
+		``np.where(m, df1, df2)``.
+		
+		For further details and examples see the ``mask`` documentation in
+		:ref:`indexing <indexing.where_mask>`.
+		
+		Examples
+		--------
+		>>> s = pd.Series(range(5))
+		>>> s.where(s > 0)
+		0    NaN
+		1    1.0
+		2    2.0
+		3    3.0
+		4    4.0
+		
+		>>> df = pd.DataFrame(np.arange(10).reshape(-1, 2), columns=['A', 'B'])
+		>>> m = df % 3 == 0
+		>>> df.where(m, -df)
+		   A  B
+		0  0 -1
+		1 -2  3
+		2 -4 -5
+		3  6 -7
+		4 -8  9
+		>>> df.where(m, -df) == np.where(m, df, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		>>> df.where(m, -df) == df.mask(~m, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		
+		See Also
+		--------
+		:func:`DataFrame.where`
 	**/
 	public function mask(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
@@ -2743,8 +3106,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2764,8 +3127,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2785,8 +3148,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2833,8 +3196,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -2943,7 +3306,31 @@ package pandas.sparse.series;
 		by definition 1
 	**/
 	public var ndim : Dynamic;
-	public function ne(other:Dynamic, ?axis:Dynamic):Dynamic;
+	/**
+		Not equal to of series and other, element-wise (binary operator `ne`).
+		
+		Equivalent to ``series != other``, but with support to substitute a fill_value for
+		missing data in one of the inputs.
+		
+		Parameters
+		----------
+		other: Series or scalar value
+		fill_value : None or float value, default None (NaN)
+		    Fill missing (NaN) values with this value. If both Series are
+		    missing, the result will be missing
+		level : int or name
+		    Broadcast across a level, matching Index values on the
+		    passed MultiIndex level
+		
+		Returns
+		-------
+		result : Series
+		
+		See also
+		--------
+		Series.None
+	**/
+	public function ne(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Return the largest `n` elements.
 		
@@ -3227,8 +3614,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3248,8 +3635,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3271,8 +3658,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -3459,8 +3846,8 @@ package pandas.sparse.series;
 	/**
 		Alter axes input function or functions. Function / dict values must be
 		unique (1-to-1). Labels not contained in a dict / Series will be left
-		as-is. Alternatively, change ``Series.name`` with a scalar
-		value (Series only).
+		as-is. Extra labels listed don't throw an error. Alternatively, change
+		``Series.name`` with a scalar value (Series only).
 		
 		Parameters
 		----------
@@ -3512,6 +3899,11 @@ package pandas.sparse.series;
 		TypeError: 'int' object is not callable
 		>>> df.rename(index=str, columns={"A": "a", "B": "c"})
 		   a  c
+		0  1  4
+		1  2  5
+		2  3  6
+		>>> df.rename(index=str, columns={"A": "a", "C": "c"})
+		   a  B
 		0  1  4
 		1  2  5
 		2  3  6
@@ -3688,8 +4080,10 @@ package pandas.sparse.series;
 	**/
 	public function replace(?to_replace:Dynamic, ?value:Dynamic, ?inplace:Dynamic, ?limit:Dynamic, ?regex:Dynamic, ?method:Dynamic, ?axis:Dynamic):pandas.core.frame.NDFrame;
 	/**
-		Convenience method for frequency conversion and resampling of regular
-		time-series data.
+		Convenience method for frequency conversion and resampling of time
+		series.  Object must have a datetime-like index (DatetimeIndex,
+		PeriodIndex, or TimedeltaIndex), or pass datetime-like values
+		to the on or level keyword.
 		
 		Parameters
 		----------
@@ -3707,7 +4101,20 @@ package pandas.sparse.series;
 		    For frequencies that evenly subdivide 1 day, the "origin" of the
 		    aggregated intervals. For example, for '5min' frequency, base could
 		    range from 0 through 4. Defaults to 0
+		on : string, optional
+		    For a DataFrame, column to use instead of index for resampling.
+		    Column must be datetime-like.
 		
+		    .. versionadded:: 0.19.0
+		
+		level : string or int, optional
+		    For a MultiIndex, level (name or number) to use for
+		    resampling.  Level must be datetime-like.
+		
+		    .. versionadded:: 0.19.0
+		
+		To learn more about the offset strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
 		
 		Examples
 		--------
@@ -3806,7 +4213,7 @@ package pandas.sparse.series;
 		2000-01-01 00:06:00    26
 		Freq: 3T, dtype: int64
 	**/
-	public function resample(rule:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?convention:Dynamic, ?kind:Dynamic, ?loffset:Dynamic, ?limit:Dynamic, ?base:Dynamic):Dynamic;
+	public function resample(rule:Dynamic, ?how:Dynamic, ?axis:Dynamic, ?fill_method:Dynamic, ?closed:Dynamic, ?label:Dynamic, ?convention:Dynamic, ?kind:Dynamic, ?loffset:Dynamic, ?limit:Dynamic, ?base:Dynamic, ?on:Dynamic, ?level:Dynamic):Dynamic;
 	/**
 		Analogous to the :meth:`pandas.DataFrame.reset_index` function, see
 		docstring there.
@@ -3829,9 +4236,12 @@ package pandas.sparse.series;
 	**/
 	public function reset_index(?level:Dynamic, ?drop:Dynamic, ?name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Return the values attribute of `self` with shape `args`.
-		However, if the specified shape matches exactly the current
-		shape, `self` is returned for compatibility reasons.
+		DEPRECATED: calling this method will raise an error in a
+		future release. Please call ``.values.reshape(...)`` instead.
+		
+		return an ndarray with the values shape
+		if the specified shape matches exactly the current shape, then
+		return self (for compat)
 		
 		See also
 		--------
@@ -3914,30 +4324,116 @@ package pandas.sparse.series;
 	**/
 	public function rmul(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
-		Provides rolling transformations.
+		Provides rolling window calculcations.
 		
 		.. versionadded:: 0.18.0
 		
 		Parameters
 		----------
-		window : int
-		   Size of the moving window. This is the number of observations used for
-		   calculating the statistic.
+		window : int, or offset
+		    Size of the moving window. This is the number of observations used for
+		    calculating the statistic. Each window will be a fixed size.
+		
+		    If its an offset then this will be the time period of each window. Each
+		    window will be a variable sized based on the observations included in
+		    the time-period. This is only valid for datetimelike indexes. This is
+		    new in 0.19.0
 		min_periods : int, default None
 		    Minimum number of observations in window required to have a value
-		    (otherwise result is NA).
+		    (otherwise result is NA). For a window that is specified by an offset,
+		    this will default to 1.
 		freq : string or DateOffset object, optional (default None) (DEPRECATED)
 		    Frequency to conform the data to before computing the statistic.
 		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
 		win_type : string, default None
-		    prove a window type, see the notes below
-		axis : int, default 0
+		    Provide a window type. See the notes below.
+		on : string, optional
+		    For a DataFrame, column on which to calculate
+		    the rolling window, rather than the index
+		
+		    .. versionadded:: 0.19.0
+		
+		axis : int or string, default 0
 		
 		Returns
 		-------
-		a Window sub-classed for the particular operation
+		a Window or Rolling sub-classed for the particular operation
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		>>> df
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		Rolling sum with a window length of 2, using the 'triang'
+		window type.
+		
+		>>> df.rolling(2, win_type='triang').sum()
+		     B
+		0  NaN
+		1  1.0
+		2  2.5
+		3  NaN
+		4  NaN
+		
+		Rolling sum with a window length of 2, min_periods defaults
+		to the window length.
+		
+		>>> df.rolling(2).sum()
+		     B
+		0  NaN
+		1  1.0
+		2  3.0
+		3  NaN
+		4  NaN
+		
+		Same as above, but explicity set the min_periods
+		
+		>>> df.rolling(2, min_periods=1).sum()
+		     B
+		0  0.0
+		1  1.0
+		2  3.0
+		3  2.0
+		4  4.0
+		
+		A ragged (meaning not-a-regular frequency), time-indexed DataFrame
+		
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]},
+		....:                 index = [pd.Timestamp('20130101 09:00:00'),
+		....:                          pd.Timestamp('20130101 09:00:02'),
+		....:                          pd.Timestamp('20130101 09:00:03'),
+		....:                          pd.Timestamp('20130101 09:00:05'),
+		....:                          pd.Timestamp('20130101 09:00:06')])
+		
+		>>> df
+		                       B
+		2013-01-01 09:00:00  0.0
+		2013-01-01 09:00:02  1.0
+		2013-01-01 09:00:03  2.0
+		2013-01-01 09:00:05  NaN
+		2013-01-01 09:00:06  4.0
+		
+		
+		Contrasting to an integer rolling window, this will roll a variable
+		length window corresponding to the time period.
+		The default for min_periods is 1.
+		
+		>>> df.rolling('2s').sum()
+		                       B
+		2013-01-01 09:00:00  0.0
+		2013-01-01 09:00:02  1.0
+		2013-01-01 09:00:03  3.0
+		2013-01-01 09:00:05  NaN
+		2013-01-01 09:00:06  4.0
 		
 		Notes
 		-----
@@ -3948,7 +4444,10 @@ package pandas.sparse.series;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 		
-		The recognized window types are:
+		To learn more about the offsets & frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		The recognized win_types are:
 		
 		* ``boxcar``
 		* ``triang``
@@ -3965,7 +4464,7 @@ package pandas.sparse.series;
 		* ``general_gaussian`` (needs power, width)
 		* ``slepian`` (needs width).
 	**/
-	public function rolling(window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?axis:Dynamic):Dynamic;
+	public function rolling(window:Dynamic, ?min_periods:Dynamic, ?freq:Dynamic, ?center:Dynamic, ?win_type:Dynamic, ?on:Dynamic, ?axis:Dynamic):Dynamic;
 	/**
 		Round each value in a Series to the given number of decimals.
 		
@@ -4235,8 +4734,8 @@ package pandas.sparse.series;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -4282,7 +4781,7 @@ package pandas.sparse.series;
 		periods : int
 		    Number of periods to move, can be positive or negative
 		freq : DateOffset, timedelta, or time rule string, optional
-		    Increment to use from datetools module or time rule (e.g. 'EOM').
+		    Increment to use from the tseries module or time rule (e.g. 'EOM').
 		    See Notes.
 		axis : {0, 'index'}
 		
@@ -4315,8 +4814,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -4379,16 +4878,16 @@ package pandas.sparse.series;
 		    if not None, sort on values in specified index level(s)
 		ascending : boolean, default True
 		    Sort ascending vs. descending
-		inplace : bool
+		inplace : bool, default False
 		    if True, perform operation in-place
-		kind : {`quicksort`, `mergesort`, `heapsort`}
+		kind : {'quicksort', 'mergesort', 'heapsort'}, default 'quicksort'
 		     Choice of sorting algorithm. See also ndarray.np.sort for more
 		     information.  `mergesort` is the only stable algorithm. For
 		     DataFrames, this option is only applied when sorting on a single
 		     column or label.
-		na_position : {'first', 'last'}
+		na_position : {'first', 'last'}, default 'last'
 		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
-		sort_remaining : bool
+		sort_remaining : bool, default True
 		    if true and sorting by level and index is multilevel, sort by other
 		    levels too (in order) after sorting by specified level
 		
@@ -4404,20 +4903,20 @@ package pandas.sparse.series;
 		
 		Parameters
 		----------
-		by : string name or list of names which refer to the axis items
-		axis : index to direct sorting
-		ascending : bool or list of bool
+		axis : {0, 'index'}, default 0
+		    Axis to direct sorting
+		ascending : bool or list of bool, default True
 		     Sort ascending vs. descending. Specify list for multiple sort
 		     orders.  If this is a list of bools, must match the length of
 		     the by.
-		inplace : bool
+		inplace : bool, default False
 		     if True, perform operation in-place
-		kind : {`quicksort`, `mergesort`, `heapsort`}
+		kind : {'quicksort', 'mergesort', 'heapsort'}, default 'quicksort'
 		     Choice of sorting algorithm. See also ndarray.np.sort for more
 		     information.  `mergesort` is the only stable algorithm. For
 		     DataFrames, this option is only applied when sorting on a single
 		     column or label.
-		na_position : {'first', 'last'}
+		na_position : {'first', 'last'}, default 'last'
 		     `first` puts NaNs at the beginning, `last` puts NaNs at the end
 		
 		Returns
@@ -4479,8 +4978,8 @@ package pandas.sparse.series;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -4565,8 +5064,8 @@ package pandas.sparse.series;
 		    If the axis is a MultiIndex (hierarchical), count along a
 		    particular level, collapsing into a scalar
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -4689,8 +5188,9 @@ package pandas.sparse.series;
 		
 		Parameters
 		----------
-		path : string file path or file handle / StringIO. If None is provided
-		    the result is returned as a string.
+		path : string or file handle, default None
+		    File path or object, if None is provided the result is returned as
+		    a string.
 		na_rep : string, default ''
 		    Missing data representation
 		float_format : string, default None
@@ -4715,7 +5215,7 @@ package pandas.sparse.series;
 		    Character recognized as decimal separator. E.g. use ',' for
 		    European data
 	**/
-	public function to_csv(path:Dynamic, ?index:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?header:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?date_format:Dynamic, ?decimal:Dynamic):Dynamic;
+	public function to_csv(?path:Dynamic, ?index:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?header:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?encoding:Dynamic, ?date_format:Dynamic, ?decimal:Dynamic):Dynamic;
 	/**
 		Convert SparseSeries to (dense) Series
 	**/
@@ -4743,17 +5243,15 @@ package pandas.sparse.series;
 	**/
 	public function to_frame(?name:Dynamic):Dynamic;
 	/**
-		Activate the HDFStore.
+		Write the contained data to an HDF5 file using HDFStore.
 		
 		Parameters
 		----------
 		path_or_buf : the path (string) or HDFStore object
 		key : string
 		    indentifier for the group in the store
-		mode : optional, {'a', 'w', 'r', 'r+'}, default 'a'
+		mode : optional, {'a', 'w', 'r+'}, default 'a'
 		
-		  ``'r'``
-		      Read-only; no data can be modified.
 		  ``'w'``
 		      Write; a new file is created (an existing file with the same
 		      name would be deleted).
@@ -4762,15 +5260,22 @@ package pandas.sparse.series;
 		      and if the file does not exist it is created.
 		  ``'r+'``
 		      It is similar to ``'a'``, but the file must already exist.
-		format   : 'fixed(f)|table(t)', default is 'fixed'
+		format : 'fixed(f)|table(t)', default is 'fixed'
 		    fixed(f) : Fixed format
 		               Fast writing/reading. Not-appendable, nor searchable
 		    table(t) : Table format
 		               Write as a PyTables Table structure which may perform
 		               worse but allow more flexible operations like searching
 		               / selecting subsets of the data
-		append   : boolean, default False
+		append : boolean, default False
 		    For Table formats, append the input data to the existing
+		data_columns :  list of columns, or True, default None
+		    List of columns to create as indexed data columns for on-disk
+		    queries, or True to use all columns. By default only the axes
+		    of the object are indexed. See `here
+		    <http://pandas.pydata.org/pandas-docs/stable/io.html#query-via-data-columns>`__.
+		
+		    Applicable only to format='table'.
 		complevel : int, 1-9, default 0
 		    If a complib is specified compression will be applied
 		    where possible
@@ -4830,12 +5335,19 @@ package pandas.sparse.series;
 		    Handler to call if object cannot otherwise be converted to a
 		    suitable format for JSON. Should receive a single argument which is
 		    the object to convert and return a serialisable object.
+		lines : boolean, defalut False
+		    If 'orient' is 'records' write out line delimited json format. Will
+		    throw ValueError if incorrect 'orient' since others are not list
+		    like.
+		
+		    .. versionadded:: 0.19.0
+		
 		
 		Returns
 		-------
 		same type as input object with filtered info axis
 	**/
-	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic):Dynamic;
+	public function to_json(?path_or_buf:Dynamic, ?orient:Dynamic, ?date_format:Dynamic, ?double_precision:Dynamic, ?force_ascii:Dynamic, ?date_unit:Dynamic, ?default_handler:Dynamic, ?lines:Dynamic):Dynamic;
 	/**
 		msgpack (serialize) object to input file path
 		
@@ -4896,12 +5408,11 @@ package pandas.sparse.series;
 		    Name of SQL table
 		con : SQLAlchemy engine or DBAPI2 connection (legacy mode)
 		    Using SQLAlchemy makes it possible to use any DB supported by that
-		    library.
-		    If a DBAPI2 object, only sqlite3 is supported.
-		flavor : {'sqlite', 'mysql'}, default 'sqlite'
-		    The flavor of SQL to use. Ignored when using SQLAlchemy engine.
-		    'mysql' is deprecated and will be removed in future versions, but
-		    it will be further supported through SQLAlchemy engines.
+		    library. If a DBAPI2 object, only sqlite3 is supported.
+		flavor : 'sqlite', default None
+		    DEPRECATED: this parameter will be removed in a future version,
+		    as 'sqlite' is the only supported option if SQLAlchemy is not
+		    installed.
 		schema : string, default None
 		    Specify the schema (if database flavor supports this). If None, use
 		    default schema.
@@ -5090,14 +5601,15 @@ package pandas.sparse.series;
 	public function truediv(other:Dynamic, ?level:Dynamic, ?fill_value:Dynamic, ?axis:Dynamic):pandas.Series;
 	/**
 		Truncates a sorted NDFrame before and/or after some particular
-		dates.
+		index value. If the axis contains only datetime values, before/after
+		parameters are converted to datetime values.
 		
 		Parameters
 		----------
 		before : date
-		    Truncate before date
+		    Truncate before index value
 		after : date
-		    Truncate after date
+		    Truncate after index value
 		axis : the truncation axis, defaults to the stat axis
 		copy : boolean, default is True,
 		    return a copy of the truncated section
@@ -5115,7 +5627,7 @@ package pandas.sparse.series;
 		periods : int
 		    Number of periods to move, can be positive or negative
 		freq : DateOffset, timedelta, or time rule string, default None
-		    Increment to use from datetools module or time rule (e.g. 'EOM')
+		    Increment to use from the tseries module or time rule (e.g. 'EOM')
 		axis : int or basestring
 		    Corresponds to the axis that contains the Index
 		
@@ -5186,14 +5698,15 @@ package pandas.sparse.series;
 	**/
 	public function tz_localize(tz:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?ambiguous:Dynamic):Dynamic;
 	/**
-		Return array of unique values in the object. Significantly faster than
-		numpy.unique. Includes NA values.
+		Return np.ndarray of unique values in the object.
+		Significantly faster than numpy.unique. Includes NA values.
+		The order of the original is preserved.
 		
 		Returns
 		-------
-		uniques : ndarray
+		uniques : np.ndarray
 	**/
-	public function unique():numpy.Ndarray;
+	public function unique():Dynamic;
 	/**
 		Unstack, a.k.a. pivot, Series with MultiIndex to produce DataFrame.
 		The level involved will automatically get sorted.
@@ -5288,8 +5801,8 @@ package pandas.sparse.series;
 		ddof : int, default 1
 		    degrees of freedom
 		numeric_only : boolean, default None
-		    Include only float, int, boolean data. If None, will attempt to use
-		    everything, then use only numeric data
+		    Include only float, int, boolean columns. If None, will attempt to use
+		    everything, then use only numeric data. Not implemented for Series.
 		
 		Returns
 		-------
@@ -5338,6 +5851,58 @@ package pandas.sparse.series;
 		Returns
 		-------
 		wh : same type as caller
+		
+		Notes
+		-----
+		The where method is an application of the if-then idiom. For each
+		element in the calling DataFrame, if ``cond`` is ``True`` the
+		element is used; otherwise the corresponding element from the DataFrame
+		``other`` is used.
+		
+		The signature for :func:`DataFrame.where` differs from
+		:func:`numpy.where`. Roughly ``df1.where(m, df2)`` is equivalent to
+		``np.where(m, df1, df2)``.
+		
+		For further details and examples see the ``where`` documentation in
+		:ref:`indexing <indexing.where_mask>`.
+		
+		Examples
+		--------
+		>>> s = pd.Series(range(5))
+		>>> s.where(s > 0)
+		0    NaN
+		1    1.0
+		2    2.0
+		3    3.0
+		4    4.0
+		
+		>>> df = pd.DataFrame(np.arange(10).reshape(-1, 2), columns=['A', 'B'])
+		>>> m = df % 3 == 0
+		>>> df.where(m, -df)
+		   A  B
+		0  0 -1
+		1 -2  3
+		2 -4 -5
+		3  6 -7
+		4 -8  9
+		>>> df.where(m, -df) == np.where(m, df, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		>>> df.where(m, -df) == df.mask(~m, -df)
+		      A     B
+		0  True  True
+		1  True  True
+		2  True  True
+		3  True  True
+		4  True  True
+		
+		See Also
+		--------
+		:func:`DataFrame.mask`
 	**/
 	public function where(cond:Dynamic, ?other:Dynamic, ?inplace:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?try_cast:Dynamic, ?raise_on_error:Dynamic):Dynamic;
 	/**
@@ -5353,8 +5918,6 @@ package pandas.sparse.series;
 		level : object, defaults to first n levels (n=1 or len(key))
 		    In case of a key partially contained in a MultiIndex, indicate
 		    which levels are used. Levels can be referred by label or position.
-		copy : boolean [deprecated]
-		    Whether to make a copy of the data
 		drop_level : boolean, default True
 		    If False, returns object with same levels as self.
 		
@@ -5409,5 +5972,5 @@ package pandas.sparse.series;
 		levels.  It is a superset of xs functionality, see
 		:ref:`MultiIndex Slicers <advanced.mi_slicers>`
 	**/
-	public function xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?copy:Dynamic, ?drop_level:Dynamic):Dynamic;
+	public function xs(key:Dynamic, ?axis:Dynamic, ?level:Dynamic, ?drop_level:Dynamic):Dynamic;
 }

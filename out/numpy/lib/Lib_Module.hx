@@ -4943,9 +4943,14 @@ package numpy.lib;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `max` method
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -5029,9 +5034,14 @@ package numpy.lib;
 		    expected output, but the type will be cast if necessary.  See
 		    `doc.ufuncs` for details.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `mean` or `sum` methods
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		Returns
 		-------
@@ -5096,9 +5106,15 @@ package numpy.lib;
 		   False. If `overwrite_input` is ``True`` and `a` is not already an
 		   `ndarray`, an error will be raised.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in
-		    the result as dimensions with size one. With this option, the
-		    result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this is anything but the default value it will be passed
+		    through (in the special case of an empty array) to the
+		    `mean` function of the underlying array.  If the array is
+		    a sub-class and `mean` does not have the kwarg `keepdims` this
+		    will raise a RuntimeError.
 		
 		Returns
 		-------
@@ -5166,9 +5182,14 @@ package numpy.lib;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `min` method
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -5269,9 +5290,15 @@ package numpy.lib;
 		        * nearest: ``i`` or ``j``, whichever is nearest.
 		        * midpoint: ``(i + j) / 2``.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in
-		    the result as dimensions with size one. With this option, the
-		    result will broadcast correctly against the original array `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this is anything but the default value it will be passed
+		    through (in the special case of an empty array) to the
+		    `mean` function of the underlying array.  If the array is
+		    a sub-class and `mean` does not have the kwarg `keepdims` this
+		    will raise a RuntimeError.
 		
 		Returns
 		-------
@@ -5279,7 +5306,7 @@ package numpy.lib;
 		    If `q` is a single percentile and `axis=None`, then the result
 		    is a scalar. If multiple percentiles are given, first axis of
 		    the result corresponds to the percentiles. The other axes are
-		    the axes that remain after the reduction of `a`. If the input 
+		    the axes that remain after the reduction of `a`. If the input
 		    contains integers or floats smaller than ``float64``, the output
 		    data-type is ``float64``. Otherwise, the output data-type is the
 		    same as that of the input. If `out` is specified, that array is
@@ -5427,10 +5454,16 @@ package numpy.lib;
 		    Means Delta Degrees of Freedom.  The divisor used in calculations
 		    is ``N - ddof``, where ``N`` represents the number of non-NaN
 		    elements.  By default `ddof` is zero.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this value is anything but the default it is passed through
+		    as-is to the relevant functions of the sub-classes.  If these
+		    functions do not have a `keepdims` kwarg, a RuntimeError will
+		    be raised.
 		
 		Returns
 		-------
@@ -5514,9 +5547,15 @@ package numpy.lib;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If True, the axes which are reduced are left in the result as
-		    dimensions with size one. With this option, the result will
-		    broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `mean` or `sum` methods
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -5596,7 +5635,8 @@ package numpy.lib;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the original `a`.
+		
 		
 		Returns
 		-------
@@ -5634,6 +5674,9 @@ package numpy.lib;
 		the results to be inaccurate, especially for `float32` (see example
 		below).  Specifying a higher-accuracy accumulator using the ``dtype``
 		keyword can alleviate this issue.
+		
+		For this function to work on sub-classes of ndarray, they must define
+		`sum` with the kwarg `keepdims`
 		
 		Examples
 		--------

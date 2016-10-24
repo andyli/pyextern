@@ -41,11 +41,11 @@ package pandas.formats.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic):Dynamic;
+	public function ___init__(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic, ?border:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic):Void;
+	public function new(formatter:Dynamic, ?classes:Dynamic, ?max_rows:Dynamic, ?max_cols:Dynamic, ?notebook:Dynamic, ?border:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/

@@ -12,6 +12,10 @@ package pandas.core.algorithms;
 	static public function _convert_wrapper(f:Dynamic, conv_dtype:Dynamic):Dynamic;
 	static public var _diff_special : Dynamic;
 	static public var _dtype_map : Dynamic;
+	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_object(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function _ensure_platform_int(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _finalize_nsmallest(arr:Dynamic, kth_val:Dynamic, n:Dynamic, keep:Dynamic, narr:Dynamic):Dynamic;
 	static public function _get_data_algo(values:Dynamic, func_map:Dynamic):Dynamic;
 	static public function _get_take_nd_function(ndim:Dynamic, arr_dtype:Dynamic, out_dtype:Dynamic, ?axis:Dynamic, ?mask_info:Dynamic):Dynamic;
@@ -26,6 +30,7 @@ package pandas.core.algorithms;
 	**/
 	static public function _interpolate(a:Dynamic, b:Dynamic, fraction:Dynamic):Dynamic;
 	static public function _match_generic(values:Dynamic, index:Dynamic, table_type:Dynamic, type_caster:Dynamic):Dynamic;
+	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
 	static public var _np_version_under1p8 : Dynamic;
 	static public var _rank1d_functions : Dynamic;
 	static public var _rank2d_functions : Dynamic;
@@ -45,6 +50,25 @@ package pandas.core.algorithms;
 	**/
 	static public function diff(arr:Dynamic, n:Dynamic, ?axis:Dynamic):Dynamic;
 	static public var division : Dynamic;
+	/**
+		Return boolean ndarray denoting duplicate values
+		
+		.. versionadded:: 0.19.0
+		
+		Parameters
+		----------
+		keep : {'first', 'last', False}, default 'first'
+		    - ``first`` : Mark duplicates as ``True`` except for the first
+		      occurrence.
+		    - ``last`` : Mark duplicates as ``True`` except for the last
+		      occurrence.
+		    - False : Mark all duplicates as ``True``.
+		
+		Returns
+		-------
+		duplicated : ndarray
+	**/
+	static public function duplicated(values:Dynamic, ?keep:Dynamic):numpy.Ndarray;
 	/**
 		Encode input values as an enumerated type or categorical variable
 		
@@ -71,6 +95,44 @@ package pandas.core.algorithms;
 	static public function factorize(values:Dynamic, ?sort:Dynamic, ?order:Dynamic, ?na_sentinel:Dynamic, ?size_hint:Dynamic):Dynamic;
 	static public var iNaT : Dynamic;
 	/**
+		return if we are a categorical possibility 
+	**/
+	static public function is_categorical(array:Dynamic):Dynamic;
+	static public function is_categorical_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		return if we are a datetime with tz array 
+	**/
+	static public function is_datetimetz(array:Dynamic):Dynamic;
+	/**
+		if we are a klass that is preserved by the internals
+		these are internal klasses that we represent (and don't use a np.array)
+	**/
+	static public function is_extension_type(value:Dynamic):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_int64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	/**
+		return if we are period arraylike / PeriodIndex 
+	**/
+	static public function is_period_arraylike(arr:Dynamic):Dynamic;
+	static public function is_period_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	/**
 		Compute the isin boolean array
 		
 		Parameters
@@ -83,6 +145,25 @@ package pandas.core.algorithms;
 		boolean array same length as comps
 	**/
 	static public function isin(comps:Dynamic, values:Dynamic):Dynamic;
+	/**
+		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
+		
+		Parameters
+		----------
+		arr : ndarray or object value
+		    Object to check for null-ness
+		
+		Returns
+		-------
+		isnulled : array-like of bool or bool
+		    Array or bool indicating whether an object is null or if an array is
+		    given which of the element is null.
+		
+		See also
+		--------
+		pandas.notnull: boolean inverse of pandas.isnull
+	**/
+	static public function isnull(obj:Dynamic):Dynamic;
 	/**
 		Compute locations of to_match into values
 		
@@ -107,6 +188,7 @@ package pandas.core.algorithms;
 		Returns the mode or mode(s) of the passed Series or ndarray (sorted)
 	**/
 	static public function mode(values:Dynamic):Dynamic;
+	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Find the indices of the n largest values of a numpy array.
 		
@@ -162,6 +244,44 @@ package pandas.core.algorithms;
 	**/
 	static public function rank(values:Dynamic, ?axis:Dynamic, ?method:Dynamic, ?na_option:Dynamic, ?ascending:Dynamic, ?pct:Dynamic):Dynamic;
 	/**
+		Sort ``values`` and reorder corresponding ``labels``.
+		``values`` should be unique if ``labels`` is not None.
+		Safe for use with mixed types (int, str), orders ints before strs.
+		
+		.. versionadded:: 0.19.0
+		
+		Parameters
+		----------
+		values : list-like
+		    Sequence; must be unique if ``labels`` is not None.
+		labels : list_like
+		    Indices to ``values``. All out of bound indices are treated as
+		    "not found" and will be masked with ``na_sentinel``.
+		na_sentinel : int, default -1
+		    Value in ``labels`` to mark "not found".
+		    Ignored when ``labels`` is None.
+		assume_unique : bool, default False
+		    When True, ``values`` are assumed to be unique, which can speed up
+		    the calculation. Ignored when ``labels`` is None.
+		
+		Returns
+		-------
+		ordered : ndarray
+		    Sorted ``values``
+		new_labels : ndarray
+		    Reordered ``labels``; returned when ``labels`` is not None.
+		
+		Raises
+		------
+		TypeError
+		    * If ``values`` is not list-like or if ``labels`` is neither None
+		    nor list-like
+		    * If ``values`` cannot be sorted
+		ValueError
+		    * If ``labels`` is not None and ``values`` contain duplicates.
+	**/
+	static public function safe_sort(values:Dynamic, ?labels:Dynamic, ?na_sentinel:Dynamic, ?assume_unique:Dynamic):numpy.Ndarray;
+	/**
 		Implement n largest/smallest.
 		
 		Parameters
@@ -192,7 +312,7 @@ package pandas.core.algorithms;
 		out : ndarray or None, default None
 		    Optional output array, must be appropriate type to hold input and
 		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
+		    _maybe_promote to determine this type for any fill_value
 		fill_value : any, default np.nan
 		    Fill value to replace -1 values with
 		mask_info : tuple of (ndarray, boolean)
@@ -224,7 +344,7 @@ package pandas.core.algorithms;
 		out : ndarray or None, default None
 		    Optional output array, must be appropriate type to hold input and
 		    fill_value together, if indexer has any -1 value entries; call
-		    common._maybe_promote to determine this type for any fill_value
+		    _maybe_promote to determine this type for any fill_value
 		fill_value : any, default np.nan
 		    Fill value to replace -1 values with
 		mask_info : tuple of (ndarray, boolean)

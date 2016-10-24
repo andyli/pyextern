@@ -61,6 +61,7 @@ package pandas.tseries.period;
 		Only provide 'public' methods
 	**/
 	public function __dir__():Dynamic;
+	public function __divmod__(other:Dynamic):Dynamic;
 	static public var __doc__ : Dynamic;
 	public function __eq__(other:Dynamic):Dynamic;
 	public function __floordiv__(?other:Dynamic):Dynamic;
@@ -74,13 +75,8 @@ package pandas.tseries.period;
 	**/
 	public function __getattribute__(name:Dynamic):Dynamic;
 	/**
-		Override numpy.ndarray's __getitem__ method to work as desired.
-		
-		This function adds lists and Series as valid boolean indexers
-		(ndarrays only supports ndarray with dtype=bool).
-		
-		If resulting ndim != 1, plain ndarray is returned instead of
-		corresponding `Index` subclass.
+		This getitem defers to the underlying array, which by-definition can
+		only handle list-likes, slices, and integer scalars
 	**/
 	public function __getitem__(key:Dynamic):Dynamic;
 	public function __gt__(other:Dynamic):Dynamic;
@@ -112,7 +108,7 @@ package pandas.tseries.period;
 	/**
 		Create and return a new object.  See help(type) for accurate signature.
 	**/
-	static public function __new__(cls:Dynamic, ?data:Dynamic, ?ordinal:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function __new__(cls:Dynamic, ?data:Dynamic, ?ordinal:Dynamic, ?freq:Dynamic, ?start:Dynamic, ?end:Dynamic, ?periods:Dynamic, ?copy:Dynamic, ?name:Dynamic, ?tz:Dynamic, ?dtype:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	public function __nonzero__():Dynamic;
 	public function __or__(other:Dynamic):Dynamic;
 	public function __pos__(?other:Dynamic):Dynamic;
@@ -204,32 +200,39 @@ package pandas.tseries.period;
 	static public function _add_logical_methods_disabled():Dynamic;
 	static public function _add_numeric_methods():Dynamic;
 	/**
+		add in the numeric add/sub methods to disable 
+	**/
+	static public function _add_numeric_methods_add_sub_disabled():Dynamic;
+	/**
 		add in numeric methods 
 	**/
 	static public function _add_numeric_methods_binary():Dynamic;
 	/**
-		add in numeric methods to disable 
+		add in numeric methods to disable other than add/sub 
 	**/
 	static public function _add_numeric_methods_disabled():Dynamic;
 	/**
 		add in numeric unary methods 
 	**/
 	static public function _add_numeric_methods_unary():Dynamic;
-	/**
-		add in the numeric set-like methods to disable 
-	**/
-	static public function _add_numericlike_set_methods_disabled():Dynamic;
 	static public var _allow_datetime_index_ops : Dynamic;
 	static public var _allow_index_ops : Dynamic;
 	static public var _allow_period_index_ops : Dynamic;
+	/**
+		Concatenate to_concat which has the same class
+	**/
+	public function _append_same_dtype(to_concat:Dynamic, name:Dynamic):Dynamic;
 	public function _apply_meta(rawarr:Dynamic):Dynamic;
-	public function _array_values():Dynamic;
 	static public function _arrmap(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Check value is valid for scalar op 
 	**/
 	public function _assert_can_do_op(value:Dynamic):Dynamic;
 	public function _assert_can_do_setop(other:Dynamic):Dynamic;
+	/**
+		Ensure incoming data can be represented as ints.
+	**/
+	static public function _assert_safe_casting(data:Dynamic, subarr:Dynamic):Dynamic;
 	/**
 		Internal method to handle NA filling of take 
 	**/
@@ -308,19 +311,47 @@ package pandas.tseries.period;
 	public function _convert_tolerance(tolerance:Dynamic):Dynamic;
 	static public var _data : Dynamic;
 	static public var _datetimelike_ops : Dynamic;
+	/**
+		.. versionadded:: 0.19.0
+		
+		Make a copy of self if data coincides (in memory) with orig.
+		Subclasses should override this if self._base is not an ndarray.
+		
+		Parameters
+		----------
+		orig : ndarray
+		    other ndarray to compare self._data against
+		copy : boolean, default False
+		    when False, do not run any check, just return self
+		
+		Returns
+		-------
+		A copy of self if needed, otherwise self : Index
+	**/
+	public function _deepcopy_if_needed(orig:Dynamic, ?copy:Dynamic):Dynamic;
+	/**
+		64-bit integer. Character code 'l'. Python int compatible.
+	**/
+	static public function _default_dtype(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function _dir_additions():Dynamic;
 	public function _dir_deletions():Dynamic;
 	static public var _engine : Dynamic;
 	static public function _engine_type(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		prepare the append
+		ensure that we are re-localized
+		
+		This is for compat as we can then call this on all datetimelike
+		indexes generally (ignored for Period/Timedelta)
+		
+		Parameters
+		----------
+		result : DatetimeIndex / i8 ndarray
 		
 		Returns
 		-------
-		list of to_concat, name of result Index
+		localized DTI
 	**/
-	public function _ensure_compat_append(other:Dynamic):Dynamic;
-	public function _ensure_compat_concat():Dynamic;
+	public function _ensure_localized(result:Dynamic):Dynamic;
 	/**
 		We have been called because a comparison between
 		8 aware arrays. numpy >= 1.11 will
@@ -376,9 +407,11 @@ package pandas.tseries.period;
 		tuples).
 	**/
 	public function _get_nearest_indexer(target:Dynamic, limit:Dynamic, tolerance:Dynamic):Dynamic;
-	public function _get_object_array():Dynamic;
 	public function _get_string_slice(key:Dynamic):Dynamic;
-	static public function _groupby(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		wrap Index._get_unique_index to handle NaT
+	**/
+	public function _get_unique_index(?dropna:Dynamic):Dynamic;
 	public var _has_complex_internals : Dynamic;
 	static public var _id : Dynamic;
 	static public var _infer_as_myclass : Dynamic;
@@ -386,6 +419,7 @@ package pandas.tseries.period;
 		Two-pass algorithm for monotonic indexes. Handles many-to-one merges
 	**/
 	static public function _inner_indexer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	public var _int64index : Dynamic;
 	/**
 		consistent invalid indexer message 
 	**/
@@ -460,12 +494,7 @@ package pandas.tseries.period;
 	**/
 	public function _maybe_update_attributes(attrs:Dynamic):Dynamic;
 	public function _mpl_repr():Dynamic;
-	/**
-		float(x) -> floating point number
-		
-		Convert a string or number to a floating point number, if possible.
-	**/
-	public var _na_value : Dynamic;
+	static public var _na_value : Dynamic;
 	static public var _nan_idxs : Dynamic;
 	/**
 		Return Index or ndarray filled with NaT which has the same
@@ -541,6 +570,7 @@ package pandas.tseries.period;
 	static public function _simple_new(values:Dynamic, ?name:Dynamic, ?freq:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public function _string_data_error(data:Dynamic):Dynamic;
 	public function _sub_datelike(other:Dynamic):Dynamic;
+	public function _sub_period(other:Dynamic):Dynamic;
 	/**
 		return an array repr of this object, potentially casting to object
 	**/
@@ -579,6 +609,11 @@ package pandas.tseries.period;
 		must be an integer
 	**/
 	public function _validate_indexer(form:Dynamic, key:Dynamic, kind:Dynamic):Dynamic;
+	/**
+		Handles the quirks of having a singular 'name' parameter for general
+		Index and plural 'names' parameter for MultiIndex.
+	**/
+	public function _validate_names(?name:Dynamic, ?names:Dynamic, ?deep:Dynamic):Dynamic;
 	/**
 		the internal implementation 
 	**/
@@ -692,7 +727,23 @@ package pandas.tseries.period;
 		mask : array of booleans where data is not NA
 	**/
 	public function asof_locs(where:Dynamic, mask:Dynamic):Dynamic;
-	public function astype(dtype:Dynamic):Dynamic;
+	/**
+		Create an Index with values cast to dtypes. The class of a new Index
+		is determined by dtype. When conversion is impossible, a ValueError
+		exception is raised.
+		
+		Parameters
+		----------
+		dtype : numpy dtype or pandas type
+		copy : bool, default True
+		    By default, astype always returns a newly allocated object.
+		    If copy is set to False and internal requirements on dtype are
+		    satisfied, the original data is used to create a new Index
+		    or the original Index is returned.
+		
+		    .. versionadded:: 0.19.0
+	**/
+	public function astype(dtype:Dynamic, ?copy:Dynamic, ?how:Dynamic):Dynamic;
 	/**
 		return the base object if the memory of the underlying data is
 		shared
@@ -754,12 +805,12 @@ package pandas.tseries.period;
 		new_index : Index
 	**/
 	public function delete(loc:Dynamic):Dynamic;
-	public function diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		Return a new Index with elements from the index that are not in
 		`other`.
 		
-		This is the sorted set difference of two Index objects.
+		This is the set difference of two Index objects.
+		It's sorted if sorting is possible.
 		
 		Parameters
 		----------
@@ -810,10 +861,24 @@ package pandas.tseries.period;
 		deduplicated : Index
 	**/
 	public function drop_duplicates(?keep:Dynamic):pandas.Index;
+	/**
+		Return Index without NA/NaN values
+		
+		Parameters
+		----------
+		how :  {'any', 'all'}, default 'any'
+		    If the Index is a MultiIndex, drop the value when any or all levels
+		    are NaN.
+		
+		Returns
+		-------
+		valid : Index
+	**/
+	public function dropna(?how:Dynamic):pandas.Index;
 	static public var dtype : Dynamic;
 	static public var dtype_str : Dynamic;
 	/**
-		Return boolean np.array denoting duplicate values
+		Return boolean np.ndarray denoting duplicate values
 		
 		Parameters
 		----------
@@ -827,7 +892,7 @@ package pandas.tseries.period;
 		
 		Returns
 		-------
-		duplicated : np.array
+		duplicated : np.ndarray
 	**/
 	public function duplicated(?keep:Dynamic):Dynamic;
 	public var end_time : Dynamic;
@@ -974,7 +1039,20 @@ package pandas.tseries.period;
 		return the underlying data as an ndarray 
 	**/
 	public function get_values():Dynamic;
-	public function groupby(f:Dynamic):Dynamic;
+	/**
+		Group the index labels by a given array of values.
+		
+		Parameters
+		----------
+		values : array
+		    Values used to determine the groups.
+		
+		Returns
+		-------
+		groups : dict
+		    {group name -> group labels}
+	**/
+	public function groupby(values:Dynamic):python.Dict<Dynamic, Dynamic>;
 	public var has_duplicates : Dynamic;
 	static public var hasnans : Dynamic;
 	public function holds_integer():Dynamic;
@@ -1054,6 +1132,10 @@ package pandas.tseries.period;
 	**/
 	public var is_full : Dynamic;
 	public function is_integer():Dynamic;
+	/**
+		Logical indicating if the date belongs to a leap year 
+	**/
+	public var is_leap_year : Dynamic;
 	public function is_lexsorted_for_tuple(tup:Dynamic):Dynamic;
 	public function is_mixed():Dynamic;
 	/**
@@ -1235,13 +1317,16 @@ package pandas.tseries.period;
 	**/
 	public function rename(name:Dynamic, ?inplace:Dynamic):Dynamic;
 	/**
-		Return a new Index of the values repeated `n` times.
-		
-		See also
-		--------
-		numpy.ndarray.repeat
+		Analogous to ndarray.repeat
 	**/
-	public function repeat(n:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function repeat(repeats:Dynamic, ?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	/**
+		NOT IMPLEMENTED: do not call this method, as reshaping is not
+		supported for Index objects and will raise an error.
+		
+		Reshape an Index.
+	**/
+	public function reshape(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	static public var resolution : Dynamic;
 	/**
 		Find indices where elements should be inserted to maintain order.
@@ -1472,7 +1557,8 @@ package pandas.tseries.period;
 	public function summary(?name:Dynamic):Dynamic;
 	public function sym_diff(?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Compute the sorted symmetric difference of two Index objects.
+		Compute the symmetric difference of two Index objects.
+		It's sorted if sorting is possible.
 		
 		Parameters
 		----------
@@ -1487,10 +1573,8 @@ package pandas.tseries.period;
 		-----
 		``symmetric_difference`` contains elements that appear in either
 		``idx1`` or ``idx2`` but not both. Equivalent to the Index created by
-		``(idx1 - idx2) + (idx2 - idx1)`` with duplicates dropped.
-		
-		The sorting of a result containing ``NaN`` values is not guaranteed
-		across Python versions. See GitHub issue #6444.
+		``idx1.difference(idx2) | idx2.difference(idx1)`` with duplicates
+		dropped.
 		
 		Examples
 		--------
@@ -1527,8 +1611,9 @@ package pandas.tseries.period;
 	**/
 	public function take(indices:Dynamic, ?axis:Dynamic, ?allow_fill:Dynamic, ?fill_value:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		For an Index containing strings or datetime.datetime objects, attempt
-		conversion to DatetimeIndex
+		DEPRECATED: use :meth:`to_timestamp` instead.
+		
+		Cast to DatetimeIndex.
 	**/
 	public function to_datetime(?dayfirst:Dynamic):Dynamic;
 	/**
@@ -1630,13 +1715,15 @@ package pandas.tseries.period;
 	**/
 	public function union(other:Dynamic):pandas.Index;
 	/**
-		Index.unique with handling for DatetimeIndex/PeriodIndex metadata
+		Return Index of unique values in the object.
+		Significantly faster than numpy.unique. Includes NA values.
+		The order of the original is preserved.
 		
 		Returns
 		-------
-		result : DatetimeIndex or PeriodIndex
+		uniques : Index
 	**/
-	public function unique():Dynamic;
+	public function unique():pandas.Index;
 	/**
 		Returns object containing counts of unique values.
 		
@@ -1681,6 +1768,19 @@ package pandas.tseries.period;
 		The week ordinal of the year
 	**/
 	public var weekofyear : Dynamic;
+	/**
+		.. versionadded:: 0.19.0
+		
+		Return an Index of same shape as self and whose corresponding
+		entries are from self where cond is True and otherwise are from
+		other.
+		
+		Parameters
+		----------
+		cond : boolean same length as self
+		other : scalar, or array-like
+	**/
+	public function where(cond:Dynamic, ?other:Dynamic):Dynamic;
 	/**
 		The year of the period
 	**/

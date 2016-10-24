@@ -195,16 +195,16 @@ package pandas.io.pytables;
 	static public var pandas_kind : Dynamic;
 	public var pandas_type : Dynamic;
 	public var pathname : Dynamic;
-	public function read(?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read(?start:Dynamic, ?stop:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		read an array for the specified node (off of group 
 	**/
-	public function read_array(key:Dynamic):Dynamic;
-	public function read_block_index(key:Dynamic):Dynamic;
-	public function read_index(key:Dynamic):Dynamic;
-	public function read_index_node(node:Dynamic):Dynamic;
-	public function read_multi_index(key:Dynamic):Dynamic;
-	public function read_sparse_intindex(key:Dynamic):Dynamic;
+	public function read_array(key:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
+	public function read_block_index(key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_index(key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_index_node(node:Dynamic, ?start:Dynamic, ?stop:Dynamic):Dynamic;
+	public function read_multi_index(key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function read_sparse_intindex(key:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
 		set our object attributes 
 	**/
@@ -227,6 +227,10 @@ package pandas.io.pytables;
 		validate against an existing storable 
 	**/
 	public function validate(other:Dynamic):Dynamic;
+	/**
+		remove table keywords from kwargs and return
+		raise if any keywords are passed which are not-None
+	**/
 	public function validate_read(kwargs:Dynamic):Dynamic;
 	/**
 		are we trying to operate on an old version? 

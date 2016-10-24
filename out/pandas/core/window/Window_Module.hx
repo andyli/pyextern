@@ -11,6 +11,7 @@ package pandas.core.window;
 	static public var __spec__ : Dynamic;
 	static public var _bias_template : Dynamic;
 	static public var _doc_template : Dynamic;
+	static public function _ensure_float64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _flex_binary_moment(arg1:Dynamic, arg2:Dynamic, f:Dynamic, ?pairwise:Dynamic):Dynamic;
 	static public function _get_center_of_mass(com:Dynamic, span:Dynamic, halflife:Dynamic, alpha:Dynamic):Dynamic;
 	static public function _offset(window:Dynamic, center:Dynamic):Dynamic;
@@ -73,6 +74,25 @@ package pandas.core.window;
 		-------
 		a Window sub-classed for the particular operation
 		
+		Examples
+		--------
+		
+		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		>>> df.ewm(com=0.5).mean()
+		          B
+		0  0.000000
+		1  0.750000
+		2  1.615385
+		3  1.615385
+		4  3.670213
+		
 		Notes
 		-----
 		Exactly one of center of mass, span, half-life, and alpha must be provided.
@@ -120,11 +140,30 @@ package pandas.core.window;
 		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
-		axis : int, default 0
+		axis : int or string, default 0
 		
 		Returns
 		-------
 		a Window sub-classed for the particular operation
+		
+		Examples
+		--------
+		
+		>>> df = DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		>>> df.expanding(2).sum()
+		     B
+		0  NaN
+		1  1.0
+		2  3.0
+		3  3.0
+		4  7.0
 		
 		Notes
 		-----
@@ -136,6 +175,12 @@ package pandas.core.window;
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 	**/
 	static public function expanding(obj:Dynamic, ?kwds:python.KwArgs<Dynamic>):Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_float_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_integer_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Return True if given value is scalar.
 		
@@ -149,31 +194,118 @@ package pandas.core.window;
 		- Period
 	**/
 	static public function isscalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
-		Provides rolling transformations.
+		Provides rolling window calculcations.
 		
 		.. versionadded:: 0.18.0
 		
 		Parameters
 		----------
-		window : int
-		   Size of the moving window. This is the number of observations used for
-		   calculating the statistic.
+		window : int, or offset
+		    Size of the moving window. This is the number of observations used for
+		    calculating the statistic. Each window will be a fixed size.
+		
+		    If its an offset then this will be the time period of each window. Each
+		    window will be a variable sized based on the observations included in
+		    the time-period. This is only valid for datetimelike indexes. This is
+		    new in 0.19.0
 		min_periods : int, default None
 		    Minimum number of observations in window required to have a value
-		    (otherwise result is NA).
+		    (otherwise result is NA). For a window that is specified by an offset,
+		    this will default to 1.
 		freq : string or DateOffset object, optional (default None) (DEPRECATED)
 		    Frequency to conform the data to before computing the statistic.
 		    Specified as a frequency string or DateOffset object.
 		center : boolean, default False
 		    Set the labels at the center of the window.
 		win_type : string, default None
-		    prove a window type, see the notes below
-		axis : int, default 0
+		    Provide a window type. See the notes below.
+		on : string, optional
+		    For a DataFrame, column on which to calculate
+		    the rolling window, rather than the index
+		
+		    .. versionadded:: 0.19.0
+		
+		axis : int or string, default 0
 		
 		Returns
 		-------
-		a Window sub-classed for the particular operation
+		a Window or Rolling sub-classed for the particular operation
+		
+		Examples
+		--------
+		
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]})
+		>>> df
+		     B
+		0  0.0
+		1  1.0
+		2  2.0
+		3  NaN
+		4  4.0
+		
+		Rolling sum with a window length of 2, using the 'triang'
+		window type.
+		
+		>>> df.rolling(2, win_type='triang').sum()
+		     B
+		0  NaN
+		1  1.0
+		2  2.5
+		3  NaN
+		4  NaN
+		
+		Rolling sum with a window length of 2, min_periods defaults
+		to the window length.
+		
+		>>> df.rolling(2).sum()
+		     B
+		0  NaN
+		1  1.0
+		2  3.0
+		3  NaN
+		4  NaN
+		
+		Same as above, but explicity set the min_periods
+		
+		>>> df.rolling(2, min_periods=1).sum()
+		     B
+		0  0.0
+		1  1.0
+		2  3.0
+		3  2.0
+		4  4.0
+		
+		A ragged (meaning not-a-regular frequency), time-indexed DataFrame
+		
+		>>> df = pd.DataFrame({'B': [0, 1, 2, np.nan, 4]},
+		....:                 index = [pd.Timestamp('20130101 09:00:00'),
+		....:                          pd.Timestamp('20130101 09:00:02'),
+		....:                          pd.Timestamp('20130101 09:00:03'),
+		....:                          pd.Timestamp('20130101 09:00:05'),
+		....:                          pd.Timestamp('20130101 09:00:06')])
+		
+		>>> df
+		                       B
+		2013-01-01 09:00:00  0.0
+		2013-01-01 09:00:02  1.0
+		2013-01-01 09:00:03  2.0
+		2013-01-01 09:00:05  NaN
+		2013-01-01 09:00:06  4.0
+		
+		
+		Contrasting to an integer rolling window, this will roll a variable
+		length window corresponding to the time period.
+		The default for min_periods is 1.
+		
+		>>> df.rolling('2s').sum()
+		                       B
+		2013-01-01 09:00:00  0.0
+		2013-01-01 09:00:02  1.0
+		2013-01-01 09:00:03  3.0
+		2013-01-01 09:00:05  NaN
+		2013-01-01 09:00:06  4.0
 		
 		Notes
 		-----
@@ -184,7 +316,10 @@ package pandas.core.window;
 		frequency by resampling the data. This is done with the default parameters
 		of :meth:`~pandas.Series.resample` (i.e. using the `mean`).
 		
-		The recognized window types are:
+		To learn more about the offsets & frequency strings, please see `this link
+		<http://pandas.pydata.org/pandas-docs/stable/timeseries.html#offset-aliases>`__.
+		
+		The recognized win_types are:
 		
 		* ``boxcar``
 		* ``triang``

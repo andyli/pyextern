@@ -12,16 +12,40 @@ package pandas.core.generic;
 	static public var _bool_doc : Dynamic;
 	static public var _cnum_doc : Dynamic;
 	/**
+		coerce a string / np.dtype to a dtype 
+	**/
+	static public function _coerce_to_dtype(dtype:Dynamic):Dynamic;
+	/**
 		Return a tuple of the doc parms.
 	**/
 	static public function _doc_parms(cls:Dynamic):Dynamic;
 	static public function _ensure_index(index_like:Dynamic, ?copy:Dynamic):Dynamic;
+	static public function _ensure_int64(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function _make_cum_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, accum_func:Dynamic, mask_a:Dynamic, mask_b:Dynamic):Dynamic;
 	static public function _make_logical_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _make_stat_function(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _make_stat_function_ddof(cls:Dynamic, name:Dynamic, name1:Dynamic, name2:Dynamic, axis_descr:Dynamic, desc:Dynamic, f:Dynamic):Dynamic;
 	static public function _maybe_box_datetimelike(value:Dynamic):Dynamic;
 	static public function _maybe_promote(dtype:Dynamic, ?fill_value:Dynamic):Dynamic;
+	/**
+		A safe version of putmask that potentially upcasts the result
+		
+		Parameters
+		----------
+		result : ndarray
+		    The destination array. This will be mutated in-place if no upcasting is
+		    necessary.
+		mask : boolean ndarray
+		other : ndarray or scalar
+		    The source array or value
+		
+		Returns
+		-------
+		result : ndarray
+		changed : boolean
+		    Set to true if the result array was upcasted
+	**/
+	static public function _maybe_upcast_putmask(result:Dynamic, mask:Dynamic, other:Dynamic):Dynamic;
 	static public var _name : Dynamic;
 	static public var _num_ddof_doc : Dynamic;
 	static public var _num_doc : Dynamic;
@@ -72,8 +96,61 @@ package pandas.core.generic;
 		yes!
 	**/
 	static public function deprecate_kwarg(old_arg_name:Dynamic, new_arg_name:Dynamic, ?mapping:Dynamic, ?stacklevel:Dynamic):Dynamic;
-	static public function is_dictlike(x:Dynamic):Dynamic;
+	/**
+		Outputs rounded and formatted percentiles.
+		
+		Parameters
+		----------
+		percentiles : list-like, containing floats from interval [0,1]
+		
+		Returns
+		-------
+		formatted : list of strings
+		
+		Notes
+		-----
+		Rounding precision is chosen so that: (1) if any two elements of
+		``percentiles`` differ, they remain different after rounding
+		(2) no entry is *rounded* to 0% or 100%.
+		Any non-integer is always rounded to at least 1 decimal place.
+		
+		Examples
+		--------
+		Keeps all entries different after rounding:
+		
+		>>> format_percentiles([0.01999, 0.02001, 0.5, 0.666666, 0.9999])
+		['1.999%', '2.001%', '50%', '66.667%', '99.99%']
+		
+		No element is rounded to 0% or 100% (unless already equal to it).
+		Duplicates are allowed:
+		
+		>>> format_percentiles([0, 0.5, 0.02001, 0.5, 0.666666, 0.9999])
+		['0%', '50%', '2.0%', '50%', '66.67%', '99.99%']
+	**/
+	static public function format_percentiles(percentiles:Dynamic):Dynamic;
+	static public function is_bool(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_bool_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_datetime64tz_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_dict_like(arg:Dynamic):Dynamic;
+	static public function is_integer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public function is_list_like(arg:Dynamic):Dynamic;
+	static public function is_numeric_dtype(arr_or_dtype:Dynamic):Dynamic;
+	static public function is_re_compilable(obj:Dynamic):Dynamic;
+	/**
+		Return True if given value is scalar.
+		
+		This includes:
+		- numpy array scalar (e.g. np.int64)
+		- Python builtin numerics
+		- Python builtin byte arrays and strings
+		- None
+		- instances of datetime.datetime
+		- instances of datetime.timedelta
+		- Period
+	**/
+	static public function is_scalar(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	static public function is_timedelta64_dtype(arr_or_dtype:Dynamic):Dynamic;
 	static public function isidentifier(s:Dynamic):Dynamic;
 	/**
 		Detect missing values (NaN in numeric arrays, None/NaN in object arrays)
@@ -95,6 +172,7 @@ package pandas.core.generic;
 	**/
 	static public function isnull(obj:Dynamic):Dynamic;
 	static public function lrange(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	static public function needs_i8_conversion(arr_or_dtype:Dynamic):Dynamic;
 	/**
 		Replacement for numpy.isfinite / -numpy.isnan which is suitable for use
 		on object arrays.
@@ -146,4 +224,47 @@ package pandas.core.generic;
 	**/
 	static public function set_function_name(f:Dynamic, name:Dynamic, cls:Dynamic):Dynamic;
 	static public var string_types : Dynamic;
+	/**
+		Return DateOffset object from string or tuple representation
+		or datetime.timedelta object
+		
+		Parameters
+		----------
+		freq : str, tuple, datetime.timedelta, DateOffset or None
+		
+		Returns
+		-------
+		delta : DateOffset
+		    None if freq is None
+		
+		Raises
+		------
+		ValueError
+		    If freq is an invalid frequency
+		
+		See Also
+		--------
+		pandas.DateOffset
+		
+		Examples
+		--------
+		>>> to_offset('5min')
+		<5 * Minutes>
+		
+		>>> to_offset('1D1H')
+		<25 * Hours>
+		
+		>>> to_offset(('W', 2))
+		<2 * Weeks: weekday=6>
+		
+		>>> to_offset((2, 'B'))
+		<2 * BusinessDays>
+		
+		>>> to_offset(datetime.timedelta(days=1))
+		<Day>
+		
+		>>> to_offset(Hour())
+		<Hour>
+	**/
+	static public function to_offset(freq:Dynamic):pandas.DateOffset;
 }

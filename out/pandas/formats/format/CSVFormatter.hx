@@ -41,11 +41,11 @@ package pandas.formats.format;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Dynamic;
+	public function ___init__(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?engine:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Void;
+	public function new(obj:Dynamic, ?path_or_buf:Dynamic, ?sep:Dynamic, ?na_rep:Dynamic, ?float_format:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?mode:Dynamic, ?nanRep:Dynamic, ?encoding:Dynamic, ?compression:Dynamic, ?quoting:Dynamic, ?line_terminator:Dynamic, ?chunksize:Dynamic, ?tupleize_cols:Dynamic, ?quotechar:Dynamic, ?date_format:Dynamic, ?doublequote:Dynamic, ?escapechar:Dynamic, ?decimal:Dynamic):Void;
 	/**
 		Return self<=value.
 	**/
@@ -101,7 +101,6 @@ package pandas.formats.format;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	public function _helper_csv(writer:Dynamic, ?na_rep:Dynamic, ?cols:Dynamic, ?header:Dynamic, ?index:Dynamic, ?index_label:Dynamic, ?float_format:Dynamic, ?date_format:Dynamic):Dynamic;
 	public function _save():Dynamic;
 	public function _save_chunk(start_i:Dynamic, end_i:Dynamic):Dynamic;
 	public function _save_header():Dynamic;

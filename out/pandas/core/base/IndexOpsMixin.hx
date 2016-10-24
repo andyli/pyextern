@@ -198,6 +198,39 @@ package pandas.core.base;
 	public var flags : Dynamic;
 	static public var hasnans : Dynamic;
 	/**
+		Return boolean if values in the object are
+		monotonic_increasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic : boolean
+	**/
+	public var is_monotonic : Dynamic;
+	/**
+		Return boolean if values in the object are
+		monotonic_decreasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic_decreasing : boolean
+	**/
+	public var is_monotonic_decreasing : Dynamic;
+	/**
+		Return boolean if values in the object are
+		monotonic_increasing
+		
+		.. versionadded:: 0.19.0
+		
+		Returns
+		-------
+		is_monotonic : boolean
+	**/
+	public var is_monotonic_increasing : Dynamic;
+	/**
 		Return boolean if values in the object are unique
 		
 		Returns
@@ -348,14 +381,15 @@ package pandas.core.base;
 	**/
 	public function transpose(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		Return array of unique values in the object. Significantly faster than
-		numpy.unique. Includes NA values.
+		Return IndexOpsMixin of unique values in the object.
+		Significantly faster than numpy.unique. Includes NA values.
+		The order of the original is preserved.
 		
 		Returns
 		-------
-		uniques : ndarray
+		uniques : IndexOpsMixin
 	**/
-	public function unique():numpy.Ndarray;
+	public function unique():Dynamic;
 	/**
 		Returns object containing counts of unique values.
 		

@@ -63,7 +63,7 @@ package pandas.tslib;
 		Return self!=value.
 	**/
 	public function __ne__(value:Dynamic):Dynamic;
-	static public function __new__(cls:Dynamic, ts_input:Dynamic, ?offset:Dynamic, ?tz:Dynamic, ?unit:Dynamic):Dynamic;
+	static public function __new__(cls:Dynamic, ?ts_input:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?unit:Dynamic, ?year:Dynamic, ?month:Dynamic, ?day:Dynamic, ?hour:Dynamic, ?minute:Dynamic, ?second:Dynamic, ?microsecond:Dynamic, ?tzinfo:Dynamic, ?offset:Dynamic):Dynamic;
 	static public var __pyx_vtable__ : Dynamic;
 	public function __radd__(other:Dynamic):Dynamic;
 	public function __reduce__():Dynamic;
@@ -182,14 +182,26 @@ package pandas.tslib;
 	public var freqstr : Dynamic;
 	/**
 		passed an ordinal, translate and convert to a ts
-		note: by definition there cannot be any tz info on the ordinal itself 
+		note: by definition there cannot be any tz info on the ordinal itself
+		
+		Parameters
+		----------
+		ordinal : int
+		    date corresponding to a proleptic Gregorian ordinal
+		freq : str, DateOffset
+		    Offset which Timestamp will have
+		tz : string, pytz.timezone, dateutil.tz.tzfile or None
+		    Time zone for time which Timestamp will have.
+		offset : str, DateOffset
+		    Deprecated, use freq
 	**/
-	static public function fromordinal(ordinal:Dynamic, ?offset:Dynamic, ?tz:Dynamic):Dynamic;
+	static public function fromordinal(ordinal:Dynamic, ?freq:Dynamic, ?tz:Dynamic, ?offset:Dynamic):Dynamic;
 	/**
 		timestamp[, tz] -> tz's local time from POSIX timestamp.
 	**/
 	static public function fromtimestamp(ts:Dynamic):Dynamic;
 	public var hour : Dynamic;
+	public var is_leap_year : Dynamic;
 	public var is_month_end : Dynamic;
 	public var is_month_start : Dynamic;
 	public var is_quarter_end : Dynamic;
@@ -272,6 +284,11 @@ package pandas.tslib;
 		Return time object with same time and tzinfo.
 	**/
 	public function timetz(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		DEPRECATED: use :meth:`to_pydatetime` instead.
+		
+		Convert a Timestamp object to a native Python datetime object.
+	**/
 	public function to_datetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Returns a numpy.datetime64 object with 'ns' precision 
@@ -287,9 +304,11 @@ package pandas.tslib;
 	**/
 	public function to_period(?freq:Dynamic):Dynamic;
 	/**
-		If warn=True, issue warning if nanoseconds is nonzero
+		Convert a Timestamp object to a native Python datetime object.
+		
+		If warn=True, issue a warning if nanoseconds is nonzero.
 	**/
-	public function to_pydatetime(?warn:Dynamic):Dynamic;
+	public function to_pydatetime(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Return the current time in the local timezone.  This differs
 		from datetime.today() in that it can be localized to a
@@ -342,6 +361,14 @@ package pandas.tslib;
 		    that this flag is only applicable for ambiguous fall dst dates)
 		    - 'NaT' will return NaT for an ambiguous time
 		    - 'raise' will raise an AmbiguousTimeError for an ambiguous time
+		errors : 'raise', 'coerce', default 'raise'
+		    - 'raise' will raise a NonExistentTimeError if a timestamp is not
+		       valid in the specified timezone (e.g. due to a transition from
+		       or to DST time)
+		    - 'coerce' will return NaT if the timestamp can not be converted
+		      into the specified timezone
+		
+		      .. versionadded:: 0.19.0
 		
 		Returns
 		-------
@@ -352,7 +379,7 @@ package pandas.tslib;
 		TypeError
 		    If the Timestamp is tz-aware and tz is not None.
 	**/
-	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic):pandas.Timestamp;
+	public function tz_localize(tz:Dynamic, ?ambiguous:Dynamic, ?errors:Dynamic):pandas.Timestamp;
 	public var tzinfo : Dynamic;
 	/**
 		Return self.tzinfo.tzname(self).

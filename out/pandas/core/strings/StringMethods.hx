@@ -290,7 +290,7 @@ package pandas.core.strings;
 		each group. Any capture group names in regular expression pat will
 		be used for column names; otherwise capture group numbers will be
 		used. The dtype of each result column is always object, even when
-		no match is found. If expand=True and pat has only one capture group,
+		no match is found. If expand=False and pat has only one capture group,
 		then return a Series (if subject is a Series) or Index (if subject
 		is an Index).
 		
@@ -1141,7 +1141,6 @@ package pandas.core.strings;
 	**/
 	public function wrap(width:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		"
 		Filling left side of strings in the Series/Index with 0.
 		Equivalent to :meth:`str.zfill`.
 		
