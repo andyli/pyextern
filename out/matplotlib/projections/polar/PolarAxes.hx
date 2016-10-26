@@ -1323,7 +1323,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'width', 'yerr', 'height', 'xerr', 'tick_label', 'ecolor', 'linewidth', 'left', 'color', 'bottom', 'edgecolor'.
+		* All arguments with the following names: 'linewidth', 'edgecolor', 'tick_label', 'left', 'ecolor', 'color', 'bottom', 'height', 'xerr', 'yerr', 'width'.
 	**/
 	public function bar(left:Dynamic, height:Dynamic, ?width:Dynamic, ?bottom:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -1480,7 +1480,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -1842,7 +1842,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -3104,7 +3104,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xerr', 'x', 'y', 'yerr'.
+		* All arguments with the following names: 'x', 'y', 'xerr', 'yerr'.
 	**/
 	public function errorbar(x:Dynamic, y:Dynamic, ?yerr:Dynamic, ?xerr:Dynamic, ?fmt:Dynamic, ?ecolor:Dynamic, ?elinewidth:Dynamic, ?capsize:Dynamic, ?barsabove:Dynamic, ?lolims:Dynamic, ?uplims:Dynamic, ?xlolims:Dynamic, ?xuplims:Dynamic, ?errorevery:Dynamic, ?capthick:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3180,7 +3180,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -3210,7 +3210,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidths', 'colors', 'linelengths', 'linestyles', 'lineoffsets', 'positions'.
+		* All arguments with the following names: 'positions', 'linewidths', 'lineoffsets', 'colors', 'linelengths', 'linestyles'.
 	**/
 	public function eventplot(positions:Dynamic, ?orientation:Dynamic, ?lineoffsets:Dynamic, ?linelengths:Dynamic, ?linewidths:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3352,7 +3352,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -3386,7 +3386,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'y2', 'x', 'y1', 'where'.
+		* All arguments with the following names: 'x', 'y2', 'y1', 'where'.
 	**/
 	public function fill_between(x:Dynamic, y1:Dynamic, ?y2:Dynamic, ?where:Dynamic, ?interpolate:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -3447,7 +3447,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -3481,7 +3481,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x2', 'x1', 'where', 'y'.
+		* All arguments with the following names: 'y', 'x2', 'where', 'x1'.
 	**/
 	public function fill_betweenx(y:Dynamic, x1:Dynamic, ?x2:Dynamic, ?where:Dynamic, ?step:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4245,7 +4245,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -4474,7 +4474,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x'.
+		* All arguments with the following names: 'x', 'weights'.
 	**/
 	public function hist(x:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cumulative:Dynamic, ?bottom:Dynamic, ?histtype:Dynamic, ?align:Dynamic, ?orientation:Dynamic, ?rwidth:Dynamic, ?log:Dynamic, ?color:Dynamic, ?label:Dynamic, ?stacked:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4556,7 +4556,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'weights', 'x', 'y'.
+		* All arguments with the following names: 'x', 'y', 'weights'.
 	**/
 	public function hist2d(x:Dynamic, y:Dynamic, ?bins:Dynamic, ?range:Dynamic, ?normed:Dynamic, ?weights:Dynamic, ?cmin:Dynamic, ?cmax:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -4604,7 +4604,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmin', 'y', 'xmax'.
+		* All arguments with the following names: 'y', 'xmin', 'xmax'.
 	**/
 	public function hlines(y:Dynamic, xmin:Dynamic, xmax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -5454,7 +5454,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -5675,7 +5675,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -5962,7 +5962,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'labels', 'colors', 'x', 'explode'.
+		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
 	**/
 	public function pie(x:Dynamic, ?explode:Dynamic, ?labels:Dynamic, ?colors:Dynamic, ?autopct:Dynamic, ?pctdistance:Dynamic, ?shadow:Dynamic, ?labeldistance:Dynamic, ?startangle:Dynamic, ?radius:Dynamic, ?counterclock:Dynamic, ?wedgeprops:Dynamic, ?textprops:Dynamic, ?center:Dynamic, ?frame:Dynamic, ?data:Dynamic):Dynamic;
 	/**
@@ -6587,7 +6587,7 @@ package matplotlib.projections.polar;
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
 		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -6795,7 +6795,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidths', 'y', 'edgecolors', 's', 'facecolor', 'facecolors', 'x', 'color', 'c'.
+		* All arguments with the following names: 'x', 'c', 'facecolor', 's', 'linewidths', 'y', 'color', 'facecolors', 'edgecolors'.
 	**/
 	public function scatter(x:Dynamic, y:Dynamic, ?s:Dynamic, ?c:Dynamic, ?marker:Dynamic, ?cmap:Dynamic, ?norm:Dynamic, ?vmin:Dynamic, ?vmax:Dynamic, ?alpha:Dynamic, ?linewidths:Dynamic, ?verts:Dynamic, ?edgecolors:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
@@ -7347,7 +7347,7 @@ package matplotlib.projections.polar;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7371,7 +7371,7 @@ package matplotlib.projections.polar;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -7481,7 +7481,7 @@ package matplotlib.projections.polar;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7505,7 +7505,7 @@ package matplotlib.projections.polar;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -7739,7 +7739,7 @@ package matplotlib.projections.polar;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7763,7 +7763,7 @@ package matplotlib.projections.polar;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -7947,7 +7947,7 @@ package matplotlib.projections.polar;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontfamily or fontname or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -7971,7 +7971,7 @@ package matplotlib.projections.polar;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -9331,7 +9331,7 @@ package matplotlib.projections.polar;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymax', 'colors', 'x', 'ymin'.
+		* All arguments with the following names: 'x', 'ymax', 'colors', 'ymin'.
 	**/
 	public function vlines(x:Dynamic, ymin:Dynamic, ymax:Dynamic, ?colors:Dynamic, ?linestyles:Dynamic, ?label:Dynamic, ?data:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**

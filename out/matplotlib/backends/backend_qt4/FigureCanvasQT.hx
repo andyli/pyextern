@@ -79,7 +79,7 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function __ge__(value:Dynamic):Dynamic;
 	/**
-		QObject.__getattr__(str) -> object
+		__getattr__(self, str) -> object
 	**/
 	static public function __getattr__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -167,51 +167,51 @@ package matplotlib.backends.backend_qt4;
 	public function _get_output_canvas(format:Dynamic):Dynamic;
 	public function _idle_draw_cntx():Dynamic;
 	/**
-		QWidget.acceptDrops() -> bool
+		acceptDrops(self) -> bool
 	**/
 	static public function acceptDrops(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.accessibleDescription() -> str
+		accessibleDescription(self) -> object
 	**/
 	static public function accessibleDescription(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.accessibleName() -> str
+		accessibleName(self) -> object
 	**/
 	static public function accessibleName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.actionEvent(QActionEvent)
+		actionEvent(self, QActionEvent)
 	**/
 	static public function actionEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.actions() -> list-of-QAction
+		actions(self) -> object
 	**/
 	static public function actions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.activateWindow()
+		activateWindow(self)
 	**/
 	static public function activateWindow(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.addAction(QAction)
+		addAction(self, QAction)
 	**/
 	static public function addAction(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.addActions(list-of-QAction)
+		addActions(self, object)
 	**/
 	static public function addActions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.adjustSize()
+		adjustSize(self)
 	**/
 	static public function adjustSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.autoFillBackground() -> bool
+		autoFillBackground(self) -> bool
 	**/
 	static public function autoFillBackground(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.backgroundRole() -> QPalette.ColorRole
+		backgroundRole(self) -> QPalette.ColorRole
 	**/
 	static public function backgroundRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.baseSize() -> QSize
+		baseSize(self) -> QSize
 	**/
 	static public function baseSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -219,7 +219,7 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function blit(?bbox:Dynamic):Dynamic;
 	/**
-		QObject.blockSignals(bool) -> bool
+		blockSignals(self, bool) -> bool
 	**/
 	static public function blockSignals(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -251,44 +251,44 @@ package matplotlib.backends.backend_qt4;
 	public function button_release_event(x:Dynamic, y:Dynamic, button:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	static public var buttond : Dynamic;
 	/**
-		QWidget.changeEvent(QEvent)
+		changeEvent(self, QEvent)
 	**/
 	static public function changeEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.childAt(QPoint) -> QWidget
-		QWidget.childAt(int, int) -> QWidget
+		childAt(self, QPoint) -> QWidget
+		childAt(self, int, int) -> QWidget
 	**/
 	static public function childAt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.childEvent(QChildEvent)
+		childEvent(self, QChildEvent)
 	**/
 	static public function childEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.children() -> list-of-QObject
+		children(self) -> object
 	**/
 	static public function children(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.childrenRect() -> QRect
+		childrenRect(self) -> QRect
 	**/
 	static public function childrenRect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.childrenRegion() -> QRegion
+		childrenRegion(self) -> QRegion
 	**/
 	static public function childrenRegion(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.clearFocus()
+		clearFocus(self)
 	**/
 	static public function clearFocus(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.clearMask()
+		clearMask(self)
 	**/
 	static public function clearMask(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.close() -> bool
+		close(self) -> bool
 	**/
 	static public function close(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.closeEvent(QCloseEvent)
+		closeEvent(self, QCloseEvent)
 	**/
 	static public function closeEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -297,91 +297,91 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function close_event(?guiEvent:Dynamic):Dynamic;
 	/**
-		QPaintDevice.colorCount() -> int
+		colorCount(self) -> int
 	**/
 	static public function colorCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.connect(QObject, SIGNAL(), QObject, SLOT(), Qt.ConnectionType=Qt.AutoConnection) -> bool
-		QObject.connect(QObject, SIGNAL(), callable, Qt.ConnectionType=Qt.AutoConnection) -> bool
-		QObject.connect(QObject, SIGNAL(), SLOT(), Qt.ConnectionType=Qt.AutoConnection) -> bool
+		connect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
+		connect(QObject, QT_SIGNAL, Callable[..., None], Qt.ConnectionType = Qt.AutoConnection) -> object
+		connect(self, QObject, QT_SIGNAL, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
 	**/
 	static public function connect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.connectNotify(SIGNAL())
+		connectNotify(self, QT_SIGNAL)
 	**/
 	static public function connectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.contentsMargins() -> QMargins
+		contentsMargins(self) -> QMargins
 	**/
 	static public function contentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.contentsRect() -> QRect
+		contentsRect(self) -> QRect
 	**/
 	static public function contentsRect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.contextMenuEvent(QContextMenuEvent)
+		contextMenuEvent(self, QContextMenuEvent)
 	**/
 	static public function contextMenuEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.contextMenuPolicy() -> Qt.ContextMenuPolicy
+		contextMenuPolicy(self) -> Qt.ContextMenuPolicy
 	**/
 	static public function contextMenuPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.create(int window=0, bool initializeWindow=True, bool destroyOldWindow=True)
+		create(self, window: int = 0, initializeWindow: bool = True, destroyOldWindow: bool = True)
 	**/
 	static public function create(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.cursor() -> QCursor
+		cursor(self) -> QCursor
 	**/
 	static public function cursor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.customContextMenuRequested[QPoint] [signal]
+		customContextMenuRequested(self, QPoint) [signal]
 	**/
 	public function customContextMenuRequested(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.customEvent(QEvent)
+		customEvent(self, QEvent)
 	**/
 	static public function customEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.deleteLater()
+		deleteLater(self)
 	**/
 	static public function deleteLater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.depth() -> int
+		depth(self) -> int
 	**/
 	static public function depth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.destroy(bool destroyWindow=True, bool destroySubWindows=True)
+		destroy(self, destroyWindow: bool = True, destroySubWindows: bool = True)
 	**/
 	static public function destroy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.destroyed[QObject] [signal]
-		QObject.destroyed [signal]
+		destroyed(self, QObject = None) [signal]
+		destroyed(self) [signal]
 	**/
 	public function destroyed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.devType() -> int
+		devType(self) -> int
 	**/
 	static public function devType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.disconnect(QObject, SIGNAL(), QObject, SLOT()) -> bool
-		QObject.disconnect(QObject, SIGNAL(), callable) -> bool
+		disconnect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL) -> object
+		disconnect(QObject, QT_SIGNAL, Callable[..., None]) -> object
 	**/
 	static public function disconnect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.disconnectNotify(SIGNAL())
+		disconnectNotify(self, QT_SIGNAL)
 	**/
 	static public function disconnectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.dragEnterEvent(QDragEnterEvent)
+		dragEnterEvent(self, QDragEnterEvent)
 	**/
 	static public function dragEnterEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.dragLeaveEvent(QDragLeaveEvent)
+		dragLeaveEvent(self, QDragLeaveEvent)
 	**/
 	static public function dragLeaveEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.dragMoveEvent(QDragMoveEvent)
+		dragMoveEvent(self, QDragMoveEvent)
 	**/
 	static public function dragMoveEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -403,39 +403,39 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function draw_idle(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		QWidget.dropEvent(QDropEvent)
+		dropEvent(self, QDropEvent)
 	**/
 	static public function dropEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dumpObjectInfo()
+		dumpObjectInfo(self)
 	**/
 	static public function dumpObjectInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dumpObjectTree()
+		dumpObjectTree(self)
 	**/
 	static public function dumpObjectTree(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dynamicPropertyNames() -> list-of-QByteArray
+		dynamicPropertyNames(self) -> object
 	**/
 	static public function dynamicPropertyNames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.effectiveWinId() -> int
+		effectiveWinId(self) -> int
 	**/
 	static public function effectiveWinId(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.emit(SIGNAL(), ...)
+		emit(self, QT_SIGNAL, *)
 	**/
 	static public function emit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.enabledChange(bool)
+		enabledChange(self, bool)
 	**/
 	static public function enabledChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.ensurePolished()
+		ensurePolished(self)
 	**/
 	static public function ensurePolished(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.enterEvent(QEvent)
+		enterEvent(self, QEvent)
 	**/
 	public function enterEvent(event:Dynamic):Dynamic;
 	/**
@@ -450,29 +450,29 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function enter_notify_event(?guiEvent:Dynamic, ?xy:Dynamic):Dynamic;
 	/**
-		QWidget.event(QEvent) -> bool
+		event(self, QEvent) -> bool
 	**/
 	static public function event(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.eventFilter(QObject, QEvent) -> bool
+		eventFilter(self, QObject, QEvent) -> bool
 	**/
 	static public function eventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var events : Dynamic;
 	static public var filetypes : Dynamic;
 	/**
-		QWidget.find(int) -> QWidget
+		find(int) -> QWidget
 	**/
 	static public function find(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.findChild(type, str name='') -> QObject
-		QObject.findChild(tuple, str name='') -> QObject
+		findChild(self, type, name: object = '') -> object
+		findChild(self, Tuple, name: object = '') -> object
 	**/
 	static public function findChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.findChildren(type, str name='') -> list-of-QObject
-		QObject.findChildren(tuple, str name='') -> list-of-QObject
-		QObject.findChildren(type, QRegExp) -> list-of-QObject
-		QObject.findChildren(tuple, QRegExp) -> list-of-QObject
+		findChildren(self, type, name: object = '') -> List
+		findChildren(self, Tuple, name: object = '') -> List
+		findChildren(self, type, QRegExp) -> List
+		findChildren(self, Tuple, QRegExp) -> List
 	**/
 	static public function findChildren(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var fixed_dpi : Dynamic;
@@ -482,71 +482,71 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function flush_events():Dynamic;
 	/**
-		QWidget.focusInEvent(QFocusEvent)
+		focusInEvent(self, QFocusEvent)
 	**/
 	static public function focusInEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusNextChild() -> bool
+		focusNextChild(self) -> bool
 	**/
 	static public function focusNextChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusNextPrevChild(bool) -> bool
+		focusNextPrevChild(self, bool) -> bool
 	**/
 	static public function focusNextPrevChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusOutEvent(QFocusEvent)
+		focusOutEvent(self, QFocusEvent)
 	**/
 	static public function focusOutEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusPolicy() -> Qt.FocusPolicy
+		focusPolicy(self) -> Qt.FocusPolicy
 	**/
 	static public function focusPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusPreviousChild() -> bool
+		focusPreviousChild(self) -> bool
 	**/
 	static public function focusPreviousChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusProxy() -> QWidget
+		focusProxy(self) -> QWidget
 	**/
 	static public function focusProxy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.focusWidget() -> QWidget
+		focusWidget(self) -> QWidget
 	**/
 	static public function focusWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.font() -> QFont
+		font(self) -> QFont
 	**/
 	static public function font(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.fontChange(QFont)
+		fontChange(self, QFont)
 	**/
 	static public function fontChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.fontInfo() -> QFontInfo
+		fontInfo(self) -> QFontInfo
 	**/
 	static public function fontInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.fontMetrics() -> QFontMetrics
+		fontMetrics(self) -> QFontMetrics
 	**/
 	static public function fontMetrics(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.foregroundRole() -> QPalette.ColorRole
+		foregroundRole(self) -> QPalette.ColorRole
 	**/
 	static public function foregroundRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.frameGeometry() -> QRect
+		frameGeometry(self) -> QRect
 	**/
 	static public function frameGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.frameSize() -> QSize
+		frameSize(self) -> QSize
 	**/
 	static public function frameSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.geometry() -> QRect
+		geometry(self) -> QRect
 	**/
 	static public function geometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.getContentsMargins() -> (int, int, int, int)
+		getContentsMargins(self) -> Tuple[int, int, int, int]
 	**/
 	static public function getContentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -582,20 +582,20 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function get_window_title():Dynamic;
 	/**
-		QWidget.grabGesture(Qt.GestureType, Qt.GestureFlags flags=Qt.GestureFlags(0))
+		grabGesture(self, Qt.GestureType, flags: Qt.GestureFlags = Qt.GestureFlags(0))
 	**/
 	static public function grabGesture(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.grabKeyboard()
+		grabKeyboard(self)
 	**/
 	static public function grabKeyboard(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.grabMouse()
-		QWidget.grabMouse(QCursor)
+		grabMouse(self)
+		grabMouse(self, QCursor)
 	**/
 	static public function grabMouse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.grabShortcut(QKeySequence, Qt.ShortcutContext context=Qt.WindowShortcut) -> int
+		grabShortcut(self, QKeySequence, context: Qt.ShortcutContext = Qt.WindowShortcut) -> int
 	**/
 	static public function grabShortcut(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -606,43 +606,43 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function grab_mouse(ax:Dynamic):Dynamic;
 	/**
-		QWidget.graphicsEffect() -> QGraphicsEffect
+		graphicsEffect(self) -> QGraphicsEffect
 	**/
 	static public function graphicsEffect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.graphicsProxyWidget() -> QGraphicsProxyWidget
+		graphicsProxyWidget(self) -> QGraphicsProxyWidget
 	**/
 	static public function graphicsProxyWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.handle() -> sip.voidptr
+		handle(self) -> int
 	**/
 	static public function handle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.hasFocus() -> bool
+		hasFocus(self) -> bool
 	**/
 	static public function hasFocus(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.hasMouseTracking() -> bool
+		hasMouseTracking(self) -> bool
 	**/
 	static public function hasMouseTracking(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.height() -> int
+		height(self) -> int
 	**/
 	static public function height(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.heightForWidth(int) -> int
+		heightForWidth(self, int) -> int
 	**/
 	static public function heightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.heightMM() -> int
+		heightMM(self) -> int
 	**/
 	static public function heightMM(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.hide()
+		hide(self)
 	**/
 	static public function hide(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.hideEvent(QHideEvent)
+		hideEvent(self, QHideEvent)
 	**/
 	static public function hideEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -650,107 +650,107 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function idle_event(?guiEvent:Dynamic):Dynamic;
 	/**
-		QObject.inherits(str) -> bool
+		inherits(self, str) -> bool
 	**/
 	static public function inherits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.inputContext() -> QInputContext
+		inputContext(self) -> QInputContext
 	**/
 	static public function inputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.inputMethodEvent(QInputMethodEvent)
+		inputMethodEvent(self, QInputMethodEvent)
 	**/
 	static public function inputMethodEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.inputMethodHints() -> Qt.InputMethodHints
+		inputMethodHints(self) -> Qt.InputMethodHints
 	**/
 	static public function inputMethodHints(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.inputMethodQuery(Qt.InputMethodQuery) -> object
+		inputMethodQuery(self, Qt.InputMethodQuery) -> object
 	**/
 	static public function inputMethodQuery(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.insertAction(QAction, QAction)
+		insertAction(self, QAction, QAction)
 	**/
 	static public function insertAction(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.insertActions(QAction, list-of-QAction)
+		insertActions(self, QAction, object)
 	**/
 	static public function insertActions(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.installEventFilter(QObject)
+		installEventFilter(self, QObject)
 	**/
 	static public function installEventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isActiveWindow() -> bool
+		isActiveWindow(self) -> bool
 	**/
 	static public function isActiveWindow(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isAncestorOf(QWidget) -> bool
+		isAncestorOf(self, QWidget) -> bool
 	**/
 	static public function isAncestorOf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isEnabled() -> bool
+		isEnabled(self) -> bool
 	**/
 	static public function isEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isEnabledTo(QWidget) -> bool
+		isEnabledTo(self, QWidget) -> bool
 	**/
 	static public function isEnabledTo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isEnabledToTLW() -> bool
+		isEnabledToTLW(self) -> bool
 	**/
 	static public function isEnabledToTLW(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isFullScreen() -> bool
+		isFullScreen(self) -> bool
 	**/
 	static public function isFullScreen(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isHidden() -> bool
+		isHidden(self) -> bool
 	**/
 	static public function isHidden(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isLeftToRight() -> bool
+		isLeftToRight(self) -> bool
 	**/
 	static public function isLeftToRight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isMaximized() -> bool
+		isMaximized(self) -> bool
 	**/
 	static public function isMaximized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isMinimized() -> bool
+		isMinimized(self) -> bool
 	**/
 	static public function isMinimized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isModal() -> bool
+		isModal(self) -> bool
 	**/
 	static public function isModal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isRightToLeft() -> bool
+		isRightToLeft(self) -> bool
 	**/
 	static public function isRightToLeft(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isTopLevel() -> bool
+		isTopLevel(self) -> bool
 	**/
 	static public function isTopLevel(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isVisible() -> bool
+		isVisible(self) -> bool
 	**/
 	static public function isVisible(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isVisibleTo(QWidget) -> bool
+		isVisibleTo(self, QWidget) -> bool
 	**/
 	static public function isVisibleTo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.isWidgetType() -> bool
+		isWidgetType(self) -> bool
 	**/
 	static public function isWidgetType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isWindow() -> bool
+		isWindow(self) -> bool
 	**/
 	static public function isWindow(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.isWindowModified() -> bool
+		isWindowModified(self) -> bool
 	**/
 	static public function isWindowModified(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -759,11 +759,11 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function is_saving():Dynamic;
 	/**
-		QWidget.keyPressEvent(QKeyEvent)
+		keyPressEvent(self, QKeyEvent)
 	**/
 	public function keyPressEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.keyReleaseEvent(QKeyEvent)
+		keyReleaseEvent(self, QKeyEvent)
 	**/
 	public function keyReleaseEvent(event:Dynamic):Dynamic;
 	/**
@@ -777,27 +777,27 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function key_release_event(key:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
-		QWidget.keyboardGrabber() -> QWidget
+		keyboardGrabber() -> QWidget
 	**/
 	static public function keyboardGrabber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.killTimer(int)
+		killTimer(self, int)
 	**/
 	static public function killTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.languageChange()
+		languageChange(self)
 	**/
 	static public function languageChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.layout() -> QLayout
+		layout(self) -> QLayout
 	**/
 	static public function layout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.layoutDirection() -> Qt.LayoutDirection
+		layoutDirection(self) -> Qt.LayoutDirection
 	**/
 	static public function layoutDirection(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.leaveEvent(QEvent)
+		leaveEvent(self, QEvent)
 	**/
 	public function leaveEvent(event:Dynamic):Dynamic;
 	/**
@@ -809,83 +809,83 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function leave_notify_event(?guiEvent:Dynamic):Dynamic;
 	/**
-		QWidget.locale() -> QLocale
+		locale(self) -> QLocale
 	**/
 	static public function locale(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.logicalDpiX() -> int
+		logicalDpiX(self) -> int
 	**/
 	static public function logicalDpiX(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.logicalDpiY() -> int
+		logicalDpiY(self) -> int
 	**/
 	static public function logicalDpiY(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.lower()
+		lower(self)
 	**/
 	static public function lower(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapFrom(QWidget, QPoint) -> QPoint
+		mapFrom(self, QWidget, QPoint) -> QPoint
 	**/
 	static public function mapFrom(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapFromGlobal(QPoint) -> QPoint
+		mapFromGlobal(self, QPoint) -> QPoint
 	**/
 	static public function mapFromGlobal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapFromParent(QPoint) -> QPoint
+		mapFromParent(self, QPoint) -> QPoint
 	**/
 	static public function mapFromParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapTo(QWidget, QPoint) -> QPoint
+		mapTo(self, QWidget, QPoint) -> QPoint
 	**/
 	static public function mapTo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapToGlobal(QPoint) -> QPoint
+		mapToGlobal(self, QPoint) -> QPoint
 	**/
 	static public function mapToGlobal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mapToParent(QPoint) -> QPoint
+		mapToParent(self, QPoint) -> QPoint
 	**/
 	static public function mapToParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mask() -> QRegion
+		mask(self) -> QRegion
 	**/
 	static public function mask(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.maximumHeight() -> int
+		maximumHeight(self) -> int
 	**/
 	static public function maximumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.maximumSize() -> QSize
+		maximumSize(self) -> QSize
 	**/
 	static public function maximumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.maximumWidth() -> int
+		maximumWidth(self) -> int
 	**/
 	static public function maximumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.metaObject() -> QMetaObject
+		metaObject(self) -> QMetaObject
 	**/
 	static public function metaObject(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.metric(QPaintDevice.PaintDeviceMetric) -> int
+		metric(self, QPaintDevice.PaintDeviceMetric) -> int
 	**/
 	static public function metric(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.minimumHeight() -> int
+		minimumHeight(self) -> int
 	**/
 	static public function minimumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.minimumSize() -> QSize
+		minimumSize(self) -> QSize
 	**/
 	static public function minimumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.minimumSizeHint() -> QSize
+		minimumSizeHint(self) -> QSize
 	**/
 	static public function minimumSizeHint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.minimumWidth() -> int
+		minimumWidth(self) -> int
 	**/
 	static public function minimumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function minumumSizeHint():Dynamic;
@@ -908,36 +908,36 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function motion_notify_event(x:Dynamic, y:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
-		QWidget.mouseDoubleClickEvent(QMouseEvent)
+		mouseDoubleClickEvent(self, QMouseEvent)
 	**/
 	public function mouseDoubleClickEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.mouseGrabber() -> QWidget
+		mouseGrabber() -> QWidget
 	**/
 	static public function mouseGrabber(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.mouseMoveEvent(QMouseEvent)
+		mouseMoveEvent(self, QMouseEvent)
 	**/
 	public function mouseMoveEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.mousePressEvent(QMouseEvent)
+		mousePressEvent(self, QMouseEvent)
 	**/
 	public function mousePressEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.mouseReleaseEvent(QMouseEvent)
+		mouseReleaseEvent(self, QMouseEvent)
 	**/
 	public function mouseReleaseEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.move(QPoint)
-		QWidget.move(int, int)
+		move(self, QPoint)
+		move(self, int, int)
 	**/
 	static public function move(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.moveEvent(QMoveEvent)
+		moveEvent(self, QMoveEvent)
 	**/
 	static public function moveEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.moveToThread(QThread)
+		moveToThread(self, QThread)
 	**/
 	static public function moveToThread(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -994,7 +994,7 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function mpl_disconnect(cid:Dynamic):Dynamic;
 	/**
-		QWidget.nativeParentWidget() -> QWidget
+		nativeParentWidget(self) -> QWidget
 	**/
 	static public function nativeParentWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1014,19 +1014,19 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function new_timer(?args:python.VarArgs<Dynamic>, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		QWidget.nextInFocusChain() -> QWidget
+		nextInFocusChain(self) -> QWidget
 	**/
 	static public function nextInFocusChain(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.normalGeometry() -> QRect
+		normalGeometry(self) -> QRect
 	**/
 	static public function normalGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.numColors() -> int
+		numColors(self) -> int
 	**/
 	static public function numColors(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.objectName() -> str
+		objectName(self) -> object
 	**/
 	static public function objectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1046,47 +1046,47 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function onRemove(ev:Dynamic):Dynamic;
 	/**
-		QWidget.overrideWindowFlags(Qt.WindowFlags)
+		overrideWindowFlags(self, Qt.WindowFlags)
 	**/
 	static public function overrideWindowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.overrideWindowState(Qt.WindowStates)
+		overrideWindowState(self, Qt.WindowStates)
 	**/
 	static public function overrideWindowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.paintEngine() -> QPaintEngine
+		paintEngine(self) -> QPaintEngine
 	**/
 	static public function paintEngine(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.paintEvent(QPaintEvent)
+		paintEvent(self, QPaintEvent)
 	**/
 	static public function paintEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.paintingActive() -> bool
+		paintingActive(self) -> bool
 	**/
 	static public function paintingActive(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.palette() -> QPalette
+		palette(self) -> QPalette
 	**/
 	static public function palette(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.paletteChange(QPalette)
+		paletteChange(self, QPalette)
 	**/
 	static public function paletteChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.parent() -> QObject
+		parent(self) -> QObject
 	**/
 	static public function parent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.parentWidget() -> QWidget
+		parentWidget(self) -> QWidget
 	**/
 	static public function parentWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.physicalDpiX() -> int
+		physicalDpiX(self) -> int
 	**/
 	static public function physicalDpiX(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.physicalDpiY() -> int
+		physicalDpiY(self) -> int
 	**/
 	static public function physicalDpiY(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function pick(mouseevent:Dynamic):Dynamic;
@@ -1096,11 +1096,11 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function pick_event(mouseevent:Dynamic, artist:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		QWidget.pos() -> QPoint
+		pos(self) -> QPoint
 	**/
 	static public function pos(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.previousInFocusChain() -> QWidget
+		previousInFocusChain(self) -> QWidget
 	**/
 	static public function previousInFocusChain(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1147,7 +1147,7 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function print_figure(filename:Dynamic, ?dpi:Dynamic, ?facecolor:Dynamic, ?edgecolor:Dynamic, ?orientation:Dynamic, ?format:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
 	/**
-		QObject.property(str) -> object
+		property(self, str) -> object
 	**/
 	static public function property(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1161,27 +1161,27 @@ package matplotlib.backends.backend_qt4;
 	**/
 	static public function pyqtConfigure(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.raise_()
+		raise_(self)
 	**/
 	static public function raise_(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.receivers(SIGNAL()) -> int
+		receivers(self, QT_SIGNAL) -> int
 	**/
 	static public function receivers(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.rect() -> QRect
+		rect(self) -> QRect
 	**/
 	static public function rect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.releaseKeyboard()
+		releaseKeyboard(self)
 	**/
 	static public function releaseKeyboard(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.releaseMouse()
+		releaseMouse(self)
 	**/
 	static public function releaseMouse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.releaseShortcut(int)
+		releaseShortcut(self, int)
 	**/
 	static public function releaseShortcut(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1192,36 +1192,36 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function release_mouse(ax:Dynamic):Dynamic;
 	/**
-		QWidget.removeAction(QAction)
+		removeAction(self, QAction)
 	**/
 	static public function removeAction(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.removeEventFilter(QObject)
+		removeEventFilter(self, QObject)
 	**/
 	static public function removeEventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.render(QPaintDevice, QPoint targetOffset=QPoint(), QRegion sourceRegion=QRegion(), QWidget.RenderFlags flags=QWidget.DrawWindowBackground|QWidget.DrawChildren)
-		QWidget.render(QPainter, QPoint targetOffset=QPoint(), QRegion sourceRegion=QRegion(), QWidget.RenderFlags flags=QWidget.DrawWindowBackground|QWidget.DrawChildren)
+		render(self, QPaintDevice, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: QWidget.RenderFlags = QWidget.DrawWindowBackground|QWidget.DrawChildren)
+		render(self, QPainter, targetOffset: QPoint = QPoint(), sourceRegion: QRegion = QRegion(), flags: QWidget.RenderFlags = QWidget.DrawWindowBackground|QWidget.DrawChildren)
 	**/
 	static public function render(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.repaint()
-		QWidget.repaint(int, int, int, int)
-		QWidget.repaint(QRect)
-		QWidget.repaint(QRegion)
+		repaint(self)
+		repaint(self, int, int, int, int)
+		repaint(self, QRect)
+		repaint(self, QRegion)
 	**/
 	static public function repaint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.resetInputContext()
+		resetInputContext(self)
 	**/
 	static public function resetInputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.resize(QSize)
-		QWidget.resize(int, int)
+		resize(self, QSize)
+		resize(self, int, int)
 	**/
 	static public function resize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.resizeEvent(QResizeEvent)
+		resizeEvent(self, QResizeEvent)
 	**/
 	public function resizeEvent(event:Dynamic):Dynamic;
 	/**
@@ -1230,16 +1230,16 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function resize_event():Dynamic;
 	/**
-		QWidget.restoreGeometry(QByteArray) -> bool
+		restoreGeometry(self, QByteArray) -> bool
 	**/
 	static public function restoreGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.saveGeometry() -> QByteArray
+		saveGeometry(self) -> QByteArray
 	**/
 	static public function saveGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.scroll(int, int)
-		QWidget.scroll(int, int, QRect)
+		scroll(self, int, int)
+		scroll(self, int, int, QRect)
 	**/
 	static public function scroll(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1252,274 +1252,274 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function scroll_event(x:Dynamic, y:Dynamic, step:Dynamic, ?guiEvent:Dynamic):Dynamic;
 	/**
-		QObject.sender() -> QObject
+		sender(self) -> QObject
 	**/
 	static public function sender(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.senderSignalIndex() -> int
+		senderSignalIndex(self) -> int
 	**/
 	static public function senderSignalIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setAcceptDrops(bool)
+		setAcceptDrops(self, bool)
 	**/
 	static public function setAcceptDrops(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setAccessibleDescription(str)
+		setAccessibleDescription(self, object)
 	**/
 	static public function setAccessibleDescription(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setAccessibleName(str)
+		setAccessibleName(self, object)
 	**/
 	static public function setAccessibleName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setAttribute(Qt.WidgetAttribute, bool on=True)
+		setAttribute(self, Qt.WidgetAttribute, on: bool = True)
 	**/
 	static public function setAttribute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setAutoFillBackground(bool)
+		setAutoFillBackground(self, bool)
 	**/
 	static public function setAutoFillBackground(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setBackgroundRole(QPalette.ColorRole)
+		setBackgroundRole(self, QPalette.ColorRole)
 	**/
 	static public function setBackgroundRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setBaseSize(int, int)
-		QWidget.setBaseSize(QSize)
+		setBaseSize(self, int, int)
+		setBaseSize(self, QSize)
 	**/
 	static public function setBaseSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setContentsMargins(int, int, int, int)
-		QWidget.setContentsMargins(QMargins)
+		setContentsMargins(self, int, int, int, int)
+		setContentsMargins(self, QMargins)
 	**/
 	static public function setContentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setContextMenuPolicy(Qt.ContextMenuPolicy)
+		setContextMenuPolicy(self, Qt.ContextMenuPolicy)
 	**/
 	static public function setContextMenuPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setCursor(QCursor)
+		setCursor(self, QCursor)
 	**/
 	static public function setCursor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setDisabled(bool)
+		setDisabled(self, bool)
 	**/
 	static public function setDisabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setEnabled(bool)
+		setEnabled(self, bool)
 	**/
 	static public function setEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFixedHeight(int)
+		setFixedHeight(self, int)
 	**/
 	static public function setFixedHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFixedSize(QSize)
-		QWidget.setFixedSize(int, int)
+		setFixedSize(self, QSize)
+		setFixedSize(self, int, int)
 	**/
 	static public function setFixedSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFixedWidth(int)
+		setFixedWidth(self, int)
 	**/
 	static public function setFixedWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFocus()
-		QWidget.setFocus(Qt.FocusReason)
+		setFocus(self)
+		setFocus(self, Qt.FocusReason)
 	**/
 	static public function setFocus(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFocusPolicy(Qt.FocusPolicy)
+		setFocusPolicy(self, Qt.FocusPolicy)
 	**/
 	static public function setFocusPolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFocusProxy(QWidget)
+		setFocusProxy(self, QWidget)
 	**/
 	static public function setFocusProxy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setFont(QFont)
+		setFont(self, QFont)
 	**/
 	static public function setFont(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setForegroundRole(QPalette.ColorRole)
+		setForegroundRole(self, QPalette.ColorRole)
 	**/
 	static public function setForegroundRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setGeometry(QRect)
-		QWidget.setGeometry(int, int, int, int)
+		setGeometry(self, QRect)
+		setGeometry(self, int, int, int, int)
 	**/
 	static public function setGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setGraphicsEffect(QGraphicsEffect)
+		setGraphicsEffect(self, QGraphicsEffect)
 	**/
 	static public function setGraphicsEffect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setHidden(bool)
+		setHidden(self, bool)
 	**/
 	static public function setHidden(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setInputContext(QInputContext)
+		setInputContext(self, QInputContext)
 	**/
 	static public function setInputContext(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setInputMethodHints(Qt.InputMethodHints)
+		setInputMethodHints(self, Qt.InputMethodHints)
 	**/
 	static public function setInputMethodHints(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setLayout(QLayout)
+		setLayout(self, QLayout)
 	**/
 	static public function setLayout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setLayoutDirection(Qt.LayoutDirection)
+		setLayoutDirection(self, Qt.LayoutDirection)
 	**/
 	static public function setLayoutDirection(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setLocale(QLocale)
+		setLocale(self, QLocale)
 	**/
 	static public function setLocale(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMask(QBitmap)
-		QWidget.setMask(QRegion)
+		setMask(self, QBitmap)
+		setMask(self, QRegion)
 	**/
 	static public function setMask(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMaximumHeight(int)
+		setMaximumHeight(self, int)
 	**/
 	static public function setMaximumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMaximumSize(int, int)
-		QWidget.setMaximumSize(QSize)
+		setMaximumSize(self, int, int)
+		setMaximumSize(self, QSize)
 	**/
 	static public function setMaximumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMaximumWidth(int)
+		setMaximumWidth(self, int)
 	**/
 	static public function setMaximumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMinimumHeight(int)
+		setMinimumHeight(self, int)
 	**/
 	static public function setMinimumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMinimumSize(int, int)
-		QWidget.setMinimumSize(QSize)
+		setMinimumSize(self, int, int)
+		setMinimumSize(self, QSize)
 	**/
 	static public function setMinimumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMinimumWidth(int)
+		setMinimumWidth(self, int)
 	**/
 	static public function setMinimumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setMouseTracking(bool)
+		setMouseTracking(self, bool)
 	**/
 	static public function setMouseTracking(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.setObjectName(str)
+		setObjectName(self, object)
 	**/
 	static public function setObjectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setPalette(QPalette)
+		setPalette(self, QPalette)
 	**/
 	static public function setPalette(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setParent(QWidget)
-		QWidget.setParent(QWidget, Qt.WindowFlags)
+		setParent(self, QWidget)
+		setParent(self, QWidget, Qt.WindowFlags)
 	**/
 	static public function setParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.setProperty(str, object) -> bool
+		setProperty(self, str, object) -> bool
 	**/
 	static public function setProperty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setShortcutAutoRepeat(int, bool enabled=True)
+		setShortcutAutoRepeat(self, int, enabled: bool = True)
 	**/
 	static public function setShortcutAutoRepeat(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setShortcutEnabled(int, bool enabled=True)
+		setShortcutEnabled(self, int, enabled: bool = True)
 	**/
 	static public function setShortcutEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setShown(bool)
+		setShown(self, bool)
 	**/
 	static public function setShown(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setSizeIncrement(int, int)
-		QWidget.setSizeIncrement(QSize)
+		setSizeIncrement(self, int, int)
+		setSizeIncrement(self, QSize)
 	**/
 	static public function setSizeIncrement(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setSizePolicy(QSizePolicy)
-		QWidget.setSizePolicy(QSizePolicy.Policy, QSizePolicy.Policy)
+		setSizePolicy(self, QSizePolicy)
+		setSizePolicy(self, QSizePolicy.Policy, QSizePolicy.Policy)
 	**/
 	static public function setSizePolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setStatusTip(str)
+		setStatusTip(self, object)
 	**/
 	static public function setStatusTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setStyle(QStyle)
+		setStyle(self, QStyle)
 	**/
 	static public function setStyle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setStyleSheet(str)
+		setStyleSheet(self, object)
 	**/
 	static public function setStyleSheet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setTabOrder(QWidget, QWidget)
+		setTabOrder(QWidget, QWidget)
 	**/
 	static public function setTabOrder(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setToolTip(str)
+		setToolTip(self, object)
 	**/
 	static public function setToolTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setUpdatesEnabled(bool)
+		setUpdatesEnabled(self, bool)
 	**/
 	static public function setUpdatesEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setVisible(bool)
+		setVisible(self, bool)
 	**/
 	static public function setVisible(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWhatsThis(str)
+		setWhatsThis(self, object)
 	**/
 	static public function setWhatsThis(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowFilePath(str)
+		setWindowFilePath(self, object)
 	**/
 	static public function setWindowFilePath(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowFlags(Qt.WindowFlags)
+		setWindowFlags(self, Qt.WindowFlags)
 	**/
 	static public function setWindowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowIcon(QIcon)
+		setWindowIcon(self, QIcon)
 	**/
 	static public function setWindowIcon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowIconText(str)
+		setWindowIconText(self, object)
 	**/
 	static public function setWindowIconText(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowModality(Qt.WindowModality)
+		setWindowModality(self, Qt.WindowModality)
 	**/
 	static public function setWindowModality(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowModified(bool)
+		setWindowModified(self, bool)
 	**/
 	static public function setWindowModified(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowOpacity(float)
+		setWindowOpacity(self, float)
 	**/
 	static public function setWindowOpacity(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowRole(str)
+		setWindowRole(self, object)
 	**/
 	static public function setWindowRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowState(Qt.WindowStates)
+		setWindowState(self, Qt.WindowStates)
 	**/
 	static public function setWindowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.setWindowTitle(str)
+		setWindowTitle(self, object)
 	**/
 	static public function setWindowTitle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1528,55 +1528,55 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function set_window_title(title:Dynamic):Dynamic;
 	/**
-		QWidget.show()
+		show(self)
 	**/
 	static public function show(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.showEvent(QShowEvent)
+		showEvent(self, QShowEvent)
 	**/
 	static public function showEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.showFullScreen()
+		showFullScreen(self)
 	**/
 	static public function showFullScreen(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.showMaximized()
+		showMaximized(self)
 	**/
 	static public function showMaximized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.showMinimized()
+		showMinimized(self)
 	**/
 	static public function showMinimized(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.showNormal()
+		showNormal(self)
 	**/
 	static public function showNormal(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.signalsBlocked() -> bool
+		signalsBlocked(self) -> bool
 	**/
 	static public function signalsBlocked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.size() -> QSize
+		size(self) -> QSize
 	**/
 	static public function size(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.sizeHint() -> QSize
+		sizeHint(self) -> QSize
 	**/
 	public function sizeHint():Dynamic;
 	/**
-		QWidget.sizeIncrement() -> QSize
+		sizeIncrement(self) -> QSize
 	**/
 	static public function sizeIncrement(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.sizePolicy() -> QSizePolicy
+		sizePolicy(self) -> QSizePolicy
 	**/
 	static public function sizePolicy(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.stackUnder(QWidget)
+		stackUnder(self, QWidget)
 	**/
 	static public function stackUnder(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.startTimer(int) -> int
+		startTimer(self, int) -> int
 	**/
 	static public function startTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1623,7 +1623,7 @@ package matplotlib.backends.backend_qt4;
 	public function start_event_loop_default(?timeout:Dynamic):Dynamic;
 	static public var staticMetaObject : Dynamic;
 	/**
-		QWidget.statusTip() -> str
+		statusTip(self) -> object
 	**/
 	static public function statusTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -1647,11 +1647,11 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function stop_event_loop_default():Dynamic;
 	/**
-		QWidget.style() -> QStyle
+		style(self) -> QStyle
 	**/
 	static public function style(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.styleSheet() -> str
+		styleSheet(self) -> object
 	**/
 	static public function styleSheet(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var supports_blit : Dynamic;
@@ -1665,154 +1665,162 @@ package matplotlib.backends.backend_qt4;
 	**/
 	public function switch_backends(FigureCanvasClass:Dynamic):Dynamic;
 	/**
-		QWidget.tabletEvent(QTabletEvent)
+		tabletEvent(self, QTabletEvent)
 	**/
 	static public function tabletEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.testAttribute(Qt.WidgetAttribute) -> bool
+		testAttribute(self, Qt.WidgetAttribute) -> bool
 	**/
 	static public function testAttribute(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.thread() -> QThread
+		thread(self) -> QThread
 	**/
 	static public function thread(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.timerEvent(QTimerEvent)
+		timerEvent(self, QTimerEvent)
 	**/
 	static public function timerEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.toolTip() -> str
+		toolTip(self) -> object
 	**/
 	static public function toolTip(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.topLevelWidget() -> QWidget
+		topLevelWidget(self) -> QWidget
 	**/
 	static public function topLevelWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.tr(str, str disambiguation=None, int n=-1) -> str
+		tr(self, object, disambiguation: str = None, n: int = -1) -> object
 	**/
 	static public function tr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.trUtf8(str, str disambiguation=None, int n=-1) -> str
+		trUtf8(self, object, disambiguation: str = None, n: int = -1) -> object
 	**/
 	static public function trUtf8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.underMouse() -> bool
+		underMouse(self) -> bool
 	**/
 	static public function underMouse(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.ungrabGesture(Qt.GestureType)
+		ungrabGesture(self, Qt.GestureType)
 	**/
 	static public function ungrabGesture(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.unsetCursor()
+		unsetCursor(self)
 	**/
 	static public function unsetCursor(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.unsetLayoutDirection()
+		unsetLayoutDirection(self)
 	**/
 	static public function unsetLayoutDirection(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.unsetLocale()
+		unsetLocale(self)
 	**/
 	static public function unsetLocale(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.update()
-		QWidget.update(QRect)
-		QWidget.update(QRegion)
-		QWidget.update(int, int, int, int)
+		update(self)
+		update(self, QRect)
+		update(self, QRegion)
+		update(self, int, int, int, int)
 	**/
 	static public function update(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.updateGeometry()
+		updateGeometry(self)
 	**/
 	static public function updateGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.updateMicroFocus()
+		updateMicroFocus(self)
 	**/
 	static public function updateMicroFocus(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.updatesEnabled() -> bool
+		updatesEnabled(self) -> bool
 	**/
 	static public function updatesEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.visibleRegion() -> QRegion
+		visibleRegion(self) -> QRegion
 	**/
 	static public function visibleRegion(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.whatsThis() -> str
+		whatsThis(self) -> object
 	**/
 	static public function whatsThis(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.wheelEvent(QWheelEvent)
+		wheelEvent(self, QWheelEvent)
 	**/
 	public function wheelEvent(event:Dynamic):Dynamic;
 	/**
-		QWidget.width() -> int
+		width(self) -> int
 	**/
 	static public function width(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QPaintDevice.widthMM() -> int
+		widthMM(self) -> int
 	**/
 	static public function widthMM(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.winId() -> int
+		winId(self) -> int
 	**/
 	static public function winId(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.window() -> QWidget
+		window(self) -> QWidget
 	**/
 	static public function window(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowActivationChange(bool)
+		windowActivationChange(self, bool)
 	**/
 	static public function windowActivationChange(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowFilePath() -> str
+		windowFilePath(self) -> object
 	**/
 	static public function windowFilePath(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowFlags() -> Qt.WindowFlags
+		windowFlags(self) -> Qt.WindowFlags
 	**/
 	static public function windowFlags(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowIcon() -> QIcon
+		windowIcon(self) -> QIcon
 	**/
 	static public function windowIcon(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowIconText() -> str
+		windowIconText(self) -> object
 	**/
 	static public function windowIconText(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowModality() -> Qt.WindowModality
+		windowModality(self) -> Qt.WindowModality
 	**/
 	static public function windowModality(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowOpacity() -> float
+		windowOpacity(self) -> float
 	**/
 	static public function windowOpacity(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowRole() -> str
+		windowRole(self) -> object
 	**/
 	static public function windowRole(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowState() -> Qt.WindowStates
+		windowState(self) -> Qt.WindowStates
 	**/
 	static public function windowState(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowTitle() -> str
+		windowTitle(self) -> object
 	**/
 	static public function windowTitle(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.windowType() -> Qt.WindowType
+		windowType(self) -> Qt.WindowType
 	**/
 	static public function windowType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.x() -> int
+		x(self) -> int
 	**/
 	static public function x(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QWidget.y() -> int
+		x11Info(self) -> QX11Info
+	**/
+	static public function x11Info(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		x11PictureHandle(self) -> int
+	**/
+	static public function x11PictureHandle(args:haxe.extern.Rest<Dynamic>):Dynamic;
+	/**
+		y(self) -> int
 	**/
 	static public function y(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

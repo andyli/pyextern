@@ -311,10 +311,17 @@ package matplotlib.pylab;
 		    type is preserved (e.g., if ``dtype(out)`` is float, the result
 		    will consist of 0.0's and 1.0's).  See `doc.ufuncs` (Section
 		    "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `all` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -473,10 +480,17 @@ package matplotlib.pylab;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amax` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -550,10 +564,17 @@ package matplotlib.pylab;
 		    Alternative output array in which to place the result.  Must
 		    be of the same shape and buffer length as the expected output.
 		    See `doc.ufuncs` (Section "Output arguments") for more details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `amin` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -953,10 +974,17 @@ package matplotlib.pylab;
 		    (e.g., if it is of type float, then it will remain so, returning
 		    1.0 for True and 0.0 for False, regardless of the type of `a`).
 		    See `doc.ufuncs` (Section "Output arguments") for details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `any` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -3529,7 +3557,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'yerr', 'ecolor', 'left', 'width', 'edgecolor', 'height', 'xerr', 'bottom', 'tick_label', 'linewidth', 'color'.
+		* All arguments with the following names: 'linewidth', 'edgecolor', 'tick_label', 'left', 'ecolor', 'color', 'bottom', 'height', 'xerr', 'yerr', 'width'.
 		
 		
 		
@@ -3690,8 +3718,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -4980,8 +5008,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -9446,6 +9474,9 @@ package matplotlib.pylab;
 		state machine.
 	**/
 	static public function draw_all(?force:Dynamic):Dynamic;
+	/**
+		Is called after every pylab drawing command
+	**/
 	static public function draw_if_interactive():Dynamic;
 	/**
 		Split array into multiple sub-arrays along the 3rd axis (depth).
@@ -10422,7 +10453,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xerr', 'yerr', 'x', 'y'.
+		* All arguments with the following names: 'x', 'y', 'xerr', 'yerr'.
 		
 		
 		
@@ -10503,8 +10534,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -10534,7 +10565,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'linewidths', 'lineoffsets', 'positions', 'linestyles', 'colors', 'linelengths'.
+		* All arguments with the following names: 'positions', 'linewidths', 'lineoffsets', 'colors', 'linelengths', 'linestyles'.
 		
 		
 		
@@ -11458,7 +11489,7 @@ package matplotlib.pylab;
 		  clip_path: [ (:class:`~matplotlib.path.Path`, :class:`~matplotlib.transforms.Transform`) | :class:`~matplotlib.patches.Patch` | None ] 
 		  color: any matplotlib color 
 		  contains: a callable function 
-		  family or fontname or name or fontfamily: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
+		  family or fontname or fontfamily or name: [FONTNAME | 'serif' | 'sans-serif' | 'cursive' | 'fantasy' | 'monospace' ] 
 		  figure: a :class:`matplotlib.figure.Figure` instance 
 		  fontproperties or font_properties: a :class:`matplotlib.font_manager.FontProperties` instance 
 		  gid: an id string 
@@ -11482,7 +11513,7 @@ package matplotlib.pylab;
 		  url: a url string 
 		  usetex: unknown
 		  variant or fontvariant: [ 'normal' | 'small-caps' ] 
-		  verticalalignment or va or ma: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
+		  verticalalignment or ma or va: [ 'center' | 'top' | 'bottom' | 'baseline' ] 
 		  visible: [True | False] 
 		  weight or fontweight: [a numeric value in range 0-1000 | 'ultralight' | 'light' | 'normal' | 'regular' | 'book' | 'medium' | 'roman' | 'semibold' | 'demibold' | 'demi' | 'bold' | 'heavy' | 'extra bold' | 'black' ] 
 		  wrap: unknown
@@ -11681,8 +11712,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -11716,7 +11747,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'where', 'y2', 'y1'.
+		* All arguments with the following names: 'x', 'y2', 'y1', 'where'.
 		
 		
 		
@@ -11781,8 +11812,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -11816,7 +11847,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x2', 'x1', 'where', 'y'.
+		* All arguments with the following names: 'y', 'x2', 'where', 'x1'.
 		
 		
 		
@@ -14331,8 +14362,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -14721,7 +14752,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'x', 'weights', 'y'.
+		* All arguments with the following names: 'x', 'y', 'weights'.
 		
 		
 		
@@ -15156,7 +15187,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'xmax', 'xmin', 'y'.
+		* All arguments with the following names: 'y', 'xmin', 'xmax'.
 		
 		
 		
@@ -16326,7 +16357,8 @@ package matplotlib.pylab;
 		Install a repl display hook so that any stale figure are automatically
 		redrawn when control is returned to the repl.
 		
-		This works with both IPython terminals and vanilla python shells.
+		This works with IPython terminals and kernels,
+		as well as vanilla python shells.
 	**/
 	static public function install_repl_displayhook():Dynamic;
 	static public function int_asbuffer(args:haxe.extern.Rest<Dynamic>):Dynamic;
@@ -20453,10 +20485,17 @@ package matplotlib.pylab;
 		    is ``None``; if provided, it must have the same shape as the
 		    expected output, but the type will be cast if necessary.
 		    See `doc.ufuncs` for details.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `mean` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -21473,9 +21512,14 @@ package matplotlib.pylab;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `max` method
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -21559,9 +21603,14 @@ package matplotlib.pylab;
 		    expected output, but the type will be cast if necessary.  See
 		    `doc.ufuncs` for details.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `mean` or `sum` methods
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		Returns
 		-------
@@ -21626,9 +21675,15 @@ package matplotlib.pylab;
 		   False. If `overwrite_input` is ``True`` and `a` is not already an
 		   `ndarray`, an error will be raised.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in
-		    the result as dimensions with size one. With this option, the
-		    result will broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this is anything but the default value it will be passed
+		    through (in the special case of an empty array) to the
+		    `mean` function of the underlying array.  If the array is
+		    a sub-class and `mean` does not have the kwarg `keepdims` this
+		    will raise a RuntimeError.
 		
 		Returns
 		-------
@@ -21696,9 +21751,14 @@ package matplotlib.pylab;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the original `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `min` method
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -21799,9 +21859,15 @@ package matplotlib.pylab;
 		        * nearest: ``i`` or ``j``, whichever is nearest.
 		        * midpoint: ``(i + j) / 2``.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in
-		    the result as dimensions with size one. With this option, the
-		    result will broadcast correctly against the original array `a`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this is anything but the default value it will be passed
+		    through (in the special case of an empty array) to the
+		    `mean` function of the underlying array.  If the array is
+		    a sub-class and `mean` does not have the kwarg `keepdims` this
+		    will raise a RuntimeError.
 		
 		Returns
 		-------
@@ -21809,7 +21875,7 @@ package matplotlib.pylab;
 		    If `q` is a single percentile and `axis=None`, then the result
 		    is a scalar. If multiple percentiles are given, first axis of
 		    the result corresponds to the percentiles. The other axes are
-		    the axes that remain after the reduction of `a`. If the input 
+		    the axes that remain after the reduction of `a`. If the input
 		    contains integers or floats smaller than ``float64``, the output
 		    data-type is ``float64``. Otherwise, the output data-type is the
 		    same as that of the input. If `out` is specified, that array is
@@ -21957,10 +22023,16 @@ package matplotlib.pylab;
 		    Means Delta Degrees of Freedom.  The divisor used in calculations
 		    is ``N - ddof``, where ``N`` represents the number of non-NaN
 		    elements.  By default `ddof` is zero.
+		
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the original `a`.
+		
+		    If this value is anything but the default it is passed through
+		    as-is to the relevant functions of the sub-classes.  If these
+		    functions do not have a `keepdims` kwarg, a RuntimeError will
+		    be raised.
 		
 		Returns
 		-------
@@ -22044,9 +22116,15 @@ package matplotlib.pylab;
 		
 		    .. versionadded:: 1.8.0
 		keepdims : bool, optional
-		    If True, the axes which are reduced are left in the result as
-		    dimensions with size one. With this option, the result will
-		    broadcast correctly against the original `arr`.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `a`.
+		
+		
+		    If the value is anything but the default, then
+		    `keepdims` will be passed through to the `mean` or `sum` methods
+		    of sub-classes of `ndarray`.  If the sub-classes methods
+		    does not implement `keepdims` any exceptions will be raised.
 		
 		    .. versionadded:: 1.8.0
 		
@@ -22126,7 +22204,8 @@ package matplotlib.pylab;
 		keepdims : bool, optional
 		    If this is set to True, the axes which are reduced are left
 		    in the result as dimensions with size one. With this option,
-		    the result will broadcast correctly against the original `arr`.
+		    the result will broadcast correctly against the original `a`.
+		
 		
 		Returns
 		-------
@@ -22164,6 +22243,9 @@ package matplotlib.pylab;
 		the results to be inaccurate, especially for `float32` (see example
 		below).  Specifying a higher-accuracy accumulator using the ``dtype``
 		keyword can alleviate this issue.
+		
+		For this function to work on sub-classes of ndarray, they must define
+		`sum` with the kwarg `keepdims`
 		
 		Examples
 		--------
@@ -23756,8 +23838,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -23892,8 +23974,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -24319,7 +24401,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'colors', 'x', 'explode', 'labels'.
+		* All arguments with the following names: 'x', 'labels', 'explode', 'colors'.
 		
 		
 		
@@ -25966,6 +26048,12 @@ package matplotlib.pylab;
 		    result as dimensions with size one. With this option, the result
 		    will broadcast correctly against the input array.
 		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `prod` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
+		
 		Returns
 		-------
 		product_along_axis : ndarray, see `dtype` parameter above.
@@ -26749,8 +26837,8 @@ package matplotlib.pylab;
 		  gid: an id string 
 		  hatch: [ '/' | '\\' | '|' | '-' | '+' | 'x' | 'o' | 'O' | '.' | '*' ] 
 		  label: string or anything printable with '%s' conversion. 
-		  linestyle or linestyles or dashes: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
-		  linewidth or linewidths or lw: float or sequence of floats 
+		  linestyle or dashes or linestyles: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+		  linewidth or lw or linewidths: float or sequence of floats 
 		  norm: unknown
 		  offset_position: unknown
 		  offsets: float or sequence of floats 
@@ -29338,7 +29426,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'facecolor', 'linewidths', 'edgecolors', 'facecolors', 's', 'y', 'c', 'x', 'color'.
+		* All arguments with the following names: 'x', 'c', 'facecolor', 's', 'linewidths', 'y', 'color', 'facecolors', 'edgecolors'.
 		
 		
 		
@@ -31840,6 +31928,12 @@ package matplotlib.pylab;
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
 		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `std` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
+		
 		Returns
 		-------
 		standard_deviation : ndarray, see dtype parameter above.
@@ -32368,9 +32462,15 @@ package matplotlib.pylab;
 		    the same shape as the expected output, but the type of the output
 		    values will be cast if necessary.
 		keepdims : bool, optional
-		    If this is set to True, the axes which are reduced are left in the
-		    result as dimensions with size one. With this option, the result
-		    will broadcast correctly against the input array.
+		    If this is set to True, the axes which are reduced are left
+		    in the result as dimensions with size one. With this option,
+		    the result will broadcast correctly against the original `arr`.
+		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `sum` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
 		
 		Returns
 		-------
@@ -34975,6 +35075,12 @@ package matplotlib.pylab;
 		    in the result as dimensions with size one. With this option,
 		    the result will broadcast correctly against the original `arr`.
 		
+		    If the default value is passed, then `keepdims` will not be
+		    passed through to the `var` method of sub-classes of
+		    `ndarray`, however any non-default value will be.  If the
+		    sub-classes `sum` method does not implement `keepdims` any
+		    exceptions will be raised.
+		
 		Returns
 		-------
 		variance : ndarray, see dtype parameter above
@@ -35250,7 +35356,7 @@ package matplotlib.pylab;
 		**data** keyword argument. If such a **data** argument is given, the
 		following arguments are replaced by **data[<arg>]**:
 		
-		* All arguments with the following names: 'ymin', 'x', 'ymax', 'colors'.
+		* All arguments with the following names: 'x', 'ymax', 'colors', 'ymin'.
 		
 		
 		

@@ -1,0 +1,111 @@
+/* This file is generated, do not edit! */
+package tensorflow.contrib.linear_optimizer.ops.gen_sdca_ops;
+@:pythonImport("tensorflow.contrib.linear_optimizer.ops.gen_sdca_ops") extern class Gen_sdca_ops_Module {
+	static public function _InitOpDefLibrary():Dynamic;
+	static public var __builtins__ : Dynamic;
+	static public var __cached__ : Dynamic;
+	static public var __doc__ : Dynamic;
+	static public var __file__ : Dynamic;
+	static public var __loader__ : Dynamic;
+	static public var __name__ : Dynamic;
+	static public var __package__ : Dynamic;
+	static public var __spec__ : Dynamic;
+	static public var _distributed_sdca_large_batch_solver_outputs : Dynamic;
+	static public var _op_def_lib : Dynamic;
+	static public var _sdca_fprint_outputs : Dynamic;
+	static public var _sdca_shrink_l1_outputs : Dynamic;
+	/**
+		Distributed version of Stochastic Dual Coordinate Ascent (SDCA) optimizer for
+		
+		linear models with L1 + L2 regularization. As global optimization objective is
+		strongly-convex, the optimizer optimizes the dual objective at each step. The
+		optimizer applies each update one example at a time. Examples are sampled
+		uniformly, and the optimizer is learning rate free and enjoys linear convergence
+		rate.
+		
+		Proximal Stochastic Dual Coordinate Ascent, Shalev-Shwartz, Shai; Zhang, Tong.
+		2012 arXiv1211.2717S: http://arxiv.org/pdf/1211.2717v1.pdf
+		
+		  Loss objective = \sum f_{i}(wx_{i}) + (l2 / 2) * |w|^2 + l1 * |w|
+		
+		Adding vs. Averaging in Distributed Primal-Dual Optimization.
+		Chenxin Ma, Virginia Smith, Martin Jaggi, Michael I. Jordan, Peter Richtarik,
+		Martin Takac http://arxiv.org/abs/1502.03508
+		
+		Args:
+		  sparse_example_indices: A list of `Tensor` objects of type `int64`.
+		    a list of vectors which contain example indices.
+		  sparse_feature_indices: A list with the same number of `Tensor` objects as `sparse_example_indices` of `Tensor` objects of type `int64`.
+		    a list of vectors which contain feature indices.
+		  sparse_feature_values: A list of `Tensor` objects of type `float32`.
+		    a list of vectors which contains feature value
+		    associated with each feature group.
+		  dense_features: A list of `Tensor` objects of type `float32`.
+		    a list of matrices which contains the dense feature values.
+		  example_weights: A `Tensor` of type `float32`.
+		    a vector which contains the weight associated with each
+		    example.
+		  example_labels: A `Tensor` of type `float32`.
+		    a vector which contains the label/target associated with each
+		    example.
+		  sparse_weights: A list with the same number of `Tensor` objects as `sparse_example_indices` of `Tensor` objects of type `float32`.
+		    a list of vectors where each value is the weight associated with
+		    a sparse feature group.
+		  dense_weights: A list with the same number of `Tensor` objects as `dense_features` of `Tensor` objects of type `float32`.
+		    a list of vectors where the values are the weights associated
+		    with a dense feature group.
+		  example_state_data: A `Tensor` of type `float32`.
+		    a list of vectors containing the example state data.
+		  loss_type: A `string` from: `"logistic_loss", "squared_loss", "hinge_loss"`.
+		    Type of the primal loss. Currently SdcaSolver supports logistic,
+		    squared and hinge losses.
+		  l1: A `float`. Symmetric l1 regularization strength.
+		  l2: A `float`. Symmetric l2 regularization strength.
+		  num_partitions: An `int` that is `>= 1`.
+		    Number of partitions of the loss function.
+		  num_inner_iterations: An `int` that is `>= 1`.
+		    Number of iterations per mini-batch.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A tuple of `Tensor` objects (out_example_state_data, out_delta_sparse_weights, out_delta_dense_weights).
+		  out_example_state_data: A `Tensor` of type `float32`. a list of vectors containing the updated example state
+		    data.
+		  out_delta_sparse_weights: A list with the same number of `Tensor` objects as `sparse_example_indices` of `Tensor` objects of type `float32`. a list of vectors where each value is the delta
+		    weights associated with a sparse feature group.
+		  out_delta_dense_weights: A list with the same number of `Tensor` objects as `dense_features` of `Tensor` objects of type `float32`. a list of vectors where the values are the delta
+		    weights associated with a dense feature group.
+	**/
+	static public function distributed_sdca_large_batch_solver(sparse_example_indices:Dynamic, sparse_feature_indices:Dynamic, sparse_feature_values:Dynamic, dense_features:Dynamic, example_weights:Dynamic, example_labels:Dynamic, sparse_weights:Dynamic, dense_weights:Dynamic, example_state_data:Dynamic, loss_type:Dynamic, l1:Dynamic, l2:Dynamic, num_partitions:Dynamic, num_inner_iterations:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Computes fingerprints of the input strings.
+		
+		Args:
+		  input: A `Tensor` of type `string`.
+		    vector of strings to compute fingerprints on.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  A `Tensor` of type `string`. vector containing the computed fingerprints.
+	**/
+	static public function sdca_fprint(input:Dynamic, ?name:Dynamic):Dynamic;
+	/**
+		Applies L1 regularization shrink step on the parameters.
+		
+		Args:
+		  sparse_weights: A list of `Tensor` objects of type mutable `float32`.
+		    a list of vectors where each value is the weight associated with
+		    a sparse feature group.
+		  dense_weights: A list of `Tensor` objects of type mutable `float32`.
+		    a list of vectors where the value is the weight associated with
+		    a dense feature group.
+		  l1: A `float`. Symmetric l1 regularization strength.
+		  l2: A `float`.
+		    Symmetric l2 regularization strength. Should be a positive float.
+		  name: A name for the operation (optional).
+		
+		Returns:
+		  The created Operation.
+	**/
+	static public function sdca_shrink_l1(sparse_weights:Dynamic, dense_weights:Dynamic, l1:Dynamic, l2:Dynamic, ?name:Dynamic):Dynamic;
+}

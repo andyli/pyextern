@@ -87,6 +87,7 @@ class Main {
 		if (Std.is(module,String)) {
 			moduleName = module;
 			module = try {
+				Sys.println("trying to import module: " + moduleName);
 				Importlib.import_module(moduleName);
 			} catch (e:Dynamic) {
 				trace('cannot import $moduleName');
@@ -245,7 +246,7 @@ class Main {
 				var main = new Main();
 				var moduleNames = moduleNames.split(",").map(StringTools.trim);
 				main.filterModules = function(modname:String):Bool {
-					return moduleNames.exists(function(moduleName){
+					return modname != null && moduleNames.exists(function(moduleName){
 						return
 							modname == moduleName ||
 							modname.startsWith(moduleName + ".") &&
@@ -253,6 +254,7 @@ class Main {
 							![
 								"numpy.distutils",
 								"numpy.f2py.__main__",
+								"tensorflow.tools.pip_package",
 							].exists(function(skip) return modname == skip || modname.startsWith(skip + "."));
 					});
 				}

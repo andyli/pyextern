@@ -1,3 +1,3 @@
 /* This file is generated, do not edit! */
 package matplotlib.pylab;
-typedef ModuleDeprecationWarning = numpy.ModuleDeprecationWarning;
+typedef ModuleDeprecationWarning = numpy._globals.ModuleDeprecationWarning;

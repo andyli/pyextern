@@ -19,7 +19,7 @@ package matplotlib.backends.qt_compat;
 	static public var __spec__ : Dynamic;
 	static public var __version__ : Dynamic;
 	/**
-		QFileDialog.getSaveFileNameAndFilter(QWidget parent=None, str caption='', str directory='', str filter='', str initialFilter='', QFileDialog.Options options=0) -> (str, str)
+		getSaveFileNameAndFilter(parent: QWidget = None, caption: object = '', directory: object = '', filter: object = '', initialFilter: object = '', options: QFileDialog.Options = 0) -> Tuple
 	**/
 	static public function _getSaveFileName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var _sip_imported : Dynamic;

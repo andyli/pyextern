@@ -102,7 +102,6 @@ package matplotlib.backends.backend_qt5;
 	**/
 	public var __weakref__ : Dynamic;
 	public function _get_toolbar(canvas:Dynamic, parent:Dynamic):Dynamic;
-	public function _show_message(s:Dynamic):Dynamic;
 	public function _widgetclosed():Dynamic;
 	public function destroy(?args:python.VarArgs<Dynamic>):Dynamic;
 	public function full_screen_toggle():Dynamic;

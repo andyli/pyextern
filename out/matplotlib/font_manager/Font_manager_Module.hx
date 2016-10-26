@@ -18,7 +18,6 @@ package matplotlib.font_manager;
 	static public var __name__ : Dynamic;
 	static public var __package__ : Dynamic;
 	static public var __spec__ : Dynamic;
-	static public var __warningregistry__ : Dynamic;
 	static public var _fmcache : Dynamic;
 	static public var _is_opentype_cff_font_cache : Dynamic;
 	static public var _lookup_cache : Dynamic;

@@ -49,7 +49,7 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	public function __ge__(value:Dynamic):Dynamic;
 	/**
-		QObject.__getattr__(str) -> object
+		__getattr__(self, str) -> object
 	**/
 	static public function __getattr__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -133,276 +133,276 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	public var __weakref__ : Dynamic;
 	/**
-		QLayout.activate() -> bool
+		activate(self) -> bool
 	**/
 	static public function activate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.addChildLayout(QLayout)
+		addChildLayout(self, QLayout)
 	**/
 	static public function addChildLayout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.addChildWidget(QWidget)
+		addChildWidget(self, QWidget)
 	**/
 	static public function addChildWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.addItem(QLayoutItem, int, int, int rowSpan=1, int columnSpan=1, Qt.Alignment alignment=0)
-		QGridLayout.addItem(QLayoutItem)
+		addItem(self, QLayoutItem, int, int, rowSpan: int = 1, columnSpan: int = 1, alignment: Qt.Alignment = 0)
+		addItem(self, QLayoutItem)
 	**/
 	static public function addItem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.addLayout(QLayout, int, int, Qt.Alignment alignment=0)
-		QGridLayout.addLayout(QLayout, int, int, int, int, Qt.Alignment alignment=0)
+		addLayout(self, QLayout, int, int, alignment: Qt.Alignment = 0)
+		addLayout(self, QLayout, int, int, int, int, alignment: Qt.Alignment = 0)
 	**/
 	static public function addLayout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.addWidget(QWidget)
-		QGridLayout.addWidget(QWidget, int, int, Qt.Alignment alignment=0)
-		QGridLayout.addWidget(QWidget, int, int, int, int, Qt.Alignment alignment=0)
+		addWidget(self, QWidget)
+		addWidget(self, QWidget, int, int, alignment: Qt.Alignment = 0)
+		addWidget(self, QWidget, int, int, int, int, alignment: Qt.Alignment = 0)
 	**/
 	static public function addWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayoutItem.alignment() -> Qt.Alignment
+		alignment(self) -> Qt.Alignment
 	**/
 	static public function alignment(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.alignmentRect(QRect) -> QRect
+		alignmentRect(self, QRect) -> QRect
 	**/
 	static public function alignmentRect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.blockSignals(bool) -> bool
+		blockSignals(self, bool) -> bool
 	**/
 	static public function blockSignals(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.cellRect(int, int) -> QRect
+		cellRect(self, int, int) -> QRect
 	**/
 	static public function cellRect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.childEvent(QChildEvent)
+		childEvent(self, QChildEvent)
 	**/
 	static public function childEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.children() -> list-of-QObject
+		children(self) -> object
 	**/
 	static public function children(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.closestAcceptableSize(QWidget, QSize) -> QSize
+		closestAcceptableSize(QWidget, QSize) -> QSize
 	**/
 	static public function closestAcceptableSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.columnCount() -> int
+		columnCount(self) -> int
 	**/
 	static public function columnCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.columnMinimumWidth(int) -> int
+		columnMinimumWidth(self, int) -> int
 	**/
 	static public function columnMinimumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.columnStretch(int) -> int
+		columnStretch(self, int) -> int
 	**/
 	static public function columnStretch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.connect(QObject, SIGNAL(), QObject, SLOT(), Qt.ConnectionType=Qt.AutoConnection) -> bool
-		QObject.connect(QObject, SIGNAL(), callable, Qt.ConnectionType=Qt.AutoConnection) -> bool
-		QObject.connect(QObject, SIGNAL(), SLOT(), Qt.ConnectionType=Qt.AutoConnection) -> bool
+		connect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
+		connect(QObject, QT_SIGNAL, Callable[..., None], Qt.ConnectionType = Qt.AutoConnection) -> object
+		connect(self, QObject, QT_SIGNAL, QT_SLOT_QT_SIGNAL, Qt.ConnectionType = Qt.AutoConnection) -> object
 	**/
 	static public function connect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.connectNotify(SIGNAL())
+		connectNotify(self, QT_SIGNAL)
 	**/
 	static public function connectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.contentsMargins() -> QMargins
+		contentsMargins(self) -> QMargins
 	**/
 	static public function contentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.contentsRect() -> QRect
+		contentsRect(self) -> QRect
 	**/
 	static public function contentsRect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayoutItem.controlTypes() -> QSizePolicy.ControlTypes
+		controlTypes(self) -> QSizePolicy.ControlTypes
 	**/
 	static public function controlTypes(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.count() -> int
+		count(self) -> int
 	**/
 	static public function count(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.customEvent(QEvent)
+		customEvent(self, QEvent)
 	**/
 	static public function customEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.deleteLater()
+		deleteLater(self)
 	**/
 	static public function deleteLater(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.destroyed[QObject] [signal]
-		QObject.destroyed [signal]
+		destroyed(self, QObject = None) [signal]
+		destroyed(self) [signal]
 	**/
 	public function destroyed(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.disconnect(QObject, SIGNAL(), QObject, SLOT()) -> bool
-		QObject.disconnect(QObject, SIGNAL(), callable) -> bool
+		disconnect(QObject, QT_SIGNAL, QObject, QT_SLOT_QT_SIGNAL) -> object
+		disconnect(QObject, QT_SIGNAL, Callable[..., None]) -> object
 	**/
 	static public function disconnect(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.disconnectNotify(SIGNAL())
+		disconnectNotify(self, QT_SIGNAL)
 	**/
 	static public function disconnectNotify(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dumpObjectInfo()
+		dumpObjectInfo(self)
 	**/
 	static public function dumpObjectInfo(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dumpObjectTree()
+		dumpObjectTree(self)
 	**/
 	static public function dumpObjectTree(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.dynamicPropertyNames() -> list-of-QByteArray
+		dynamicPropertyNames(self) -> object
 	**/
 	static public function dynamicPropertyNames(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.emit(SIGNAL(), ...)
+		emit(self, QT_SIGNAL, *)
 	**/
 	static public function emit(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.event(QEvent) -> bool
+		event(self, QEvent) -> bool
 	**/
 	static public function event(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.eventFilter(QObject, QEvent) -> bool
+		eventFilter(self, QObject, QEvent) -> bool
 	**/
 	static public function eventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.expandingDirections() -> Qt.Orientations
+		expandingDirections(self) -> Qt.Orientations
 	**/
 	static public function expandingDirections(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.findChild(type, str name='') -> QObject
-		QObject.findChild(tuple, str name='') -> QObject
+		findChild(self, type, name: object = '') -> object
+		findChild(self, Tuple, name: object = '') -> object
 	**/
 	static public function findChild(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.findChildren(type, str name='') -> list-of-QObject
-		QObject.findChildren(tuple, str name='') -> list-of-QObject
-		QObject.findChildren(type, QRegExp) -> list-of-QObject
-		QObject.findChildren(tuple, QRegExp) -> list-of-QObject
+		findChildren(self, type, name: object = '') -> List
+		findChildren(self, Tuple, name: object = '') -> List
+		findChildren(self, type, QRegExp) -> List
+		findChildren(self, Tuple, QRegExp) -> List
 	**/
 	static public function findChildren(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.geometry() -> QRect
+		geometry(self) -> QRect
 	**/
 	static public function geometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.getContentsMargins() -> (int, int, int, int)
+		getContentsMargins(self) -> Tuple[int, int, int, int]
 	**/
 	static public function getContentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.getItemPosition(int) -> (int, int, int, int)
+		getItemPosition(self, int) -> Tuple[int, int, int, int]
 	**/
 	static public function getItemPosition(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	public function get_font():Dynamic;
 	/**
-		QGridLayout.hasHeightForWidth() -> bool
+		hasHeightForWidth(self) -> bool
 	**/
 	static public function hasHeightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.heightForWidth(int) -> int
+		heightForWidth(self, int) -> int
 	**/
 	static public function heightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.horizontalSpacing() -> int
+		horizontalSpacing(self) -> int
 	**/
 	static public function horizontalSpacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.indexOf(QWidget) -> int
+		indexOf(self, QWidget) -> int
 	**/
 	static public function indexOf(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.inherits(str) -> bool
+		inherits(self, str) -> bool
 	**/
 	static public function inherits(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.installEventFilter(QObject)
+		installEventFilter(self, QObject)
 	**/
 	static public function installEventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.invalidate()
+		invalidate(self)
 	**/
 	static public function invalidate(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.isEmpty() -> bool
+		isEmpty(self) -> bool
 	**/
 	static public function isEmpty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.isEnabled() -> bool
+		isEnabled(self) -> bool
 	**/
 	static public function isEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.isWidgetType() -> bool
+		isWidgetType(self) -> bool
 	**/
 	static public function isWidgetType(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.itemAt(int) -> QLayoutItem
+		itemAt(self, int) -> QLayoutItem
 	**/
 	static public function itemAt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.itemAtPosition(int, int) -> QLayoutItem
+		itemAtPosition(self, int, int) -> QLayoutItem
 	**/
 	static public function itemAtPosition(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.killTimer(int)
+		killTimer(self, int)
 	**/
 	static public function killTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.layout() -> QLayout
+		layout(self) -> QLayout
 	**/
 	static public function layout(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.margin() -> int
+		margin(self) -> int
 	**/
 	static public function margin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.maximumSize() -> QSize
+		maximumSize(self) -> QSize
 	**/
 	static public function maximumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.menuBar() -> QWidget
+		menuBar(self) -> QWidget
 	**/
 	static public function menuBar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.metaObject() -> QMetaObject
+		metaObject(self) -> QMetaObject
 	**/
 	static public function metaObject(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.minimumHeightForWidth(int) -> int
+		minimumHeightForWidth(self, int) -> int
 	**/
 	static public function minimumHeightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.minimumSize() -> QSize
+		minimumSize(self) -> QSize
 	**/
 	static public function minimumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.moveToThread(QThread)
+		moveToThread(self, QThread)
 	**/
 	static public function moveToThread(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.objectName() -> str
+		objectName(self) -> object
 	**/
 	static public function objectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.originCorner() -> Qt.Corner
+		originCorner(self) -> Qt.Corner
 	**/
 	static public function originCorner(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.parent() -> QObject
+		parent(self) -> QObject
 	**/
 	static public function parent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.parentWidget() -> QWidget
+		parentWidget(self) -> QWidget
 	**/
 	static public function parentWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.property(str) -> object
+		property(self, str) -> object
 	**/
 	static public function property(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
@@ -416,195 +416,195 @@ package matplotlib.backends.qt_editor.formlayout;
 	**/
 	static public function pyqtConfigure(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.receivers(SIGNAL()) -> int
+		receivers(self, QT_SIGNAL) -> int
 	**/
 	static public function receivers(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.removeEventFilter(QObject)
+		removeEventFilter(self, QObject)
 	**/
 	static public function removeEventFilter(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.removeItem(QLayoutItem)
+		removeItem(self, QLayoutItem)
 	**/
 	static public function removeItem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.removeWidget(QWidget)
+		removeWidget(self, QWidget)
 	**/
 	static public function removeWidget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.rowCount() -> int
+		rowCount(self) -> int
 	**/
 	static public function rowCount(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.rowMinimumHeight(int) -> int
+		rowMinimumHeight(self, int) -> int
 	**/
 	static public function rowMinimumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.rowStretch(int) -> int
+		rowStretch(self, int) -> int
 	**/
 	static public function rowStretch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.sender() -> QObject
+		sender(self) -> QObject
 	**/
 	static public function sender(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.senderSignalIndex() -> int
+		senderSignalIndex(self) -> int
 	**/
 	static public function senderSignalIndex(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setAlignment(QWidget, Qt.Alignment) -> bool
-		QLayout.setAlignment(QLayout, Qt.Alignment) -> bool
-		QLayout.setAlignment(Qt.Alignment)
+		setAlignment(self, QWidget, Qt.Alignment) -> bool
+		setAlignment(self, QLayout, Qt.Alignment) -> bool
+		setAlignment(self, Qt.Alignment)
 	**/
 	static public function setAlignment(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setColumnMinimumWidth(int, int)
+		setColumnMinimumWidth(self, int, int)
 	**/
 	static public function setColumnMinimumWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setColumnStretch(int, int)
+		setColumnStretch(self, int, int)
 	**/
 	static public function setColumnStretch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setContentsMargins(int, int, int, int)
-		QLayout.setContentsMargins(QMargins)
+		setContentsMargins(self, int, int, int, int)
+		setContentsMargins(self, QMargins)
 	**/
 	static public function setContentsMargins(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setDefaultPositioning(int, Qt.Orientation)
+		setDefaultPositioning(self, int, Qt.Orientation)
 	**/
 	static public function setDefaultPositioning(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setEnabled(bool)
+		setEnabled(self, bool)
 	**/
 	static public function setEnabled(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setGeometry(QRect)
+		setGeometry(self, QRect)
 	**/
 	static public function setGeometry(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setHorizontalSpacing(int)
+		setHorizontalSpacing(self, int)
 	**/
 	static public function setHorizontalSpacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setMargin(int)
+		setMargin(self, int)
 	**/
 	static public function setMargin(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setMenuBar(QWidget)
+		setMenuBar(self, QWidget)
 	**/
 	static public function setMenuBar(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.setObjectName(str)
+		setObjectName(self, object)
 	**/
 	static public function setObjectName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setOriginCorner(Qt.Corner)
+		setOriginCorner(self, Qt.Corner)
 	**/
 	static public function setOriginCorner(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.setParent(QObject)
+		setParent(self, QObject)
 	**/
 	static public function setParent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.setProperty(str, object) -> bool
+		setProperty(self, str, object) -> bool
 	**/
 	static public function setProperty(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setRowMinimumHeight(int, int)
+		setRowMinimumHeight(self, int, int)
 	**/
 	static public function setRowMinimumHeight(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setRowStretch(int, int)
+		setRowStretch(self, int, int)
 	**/
 	static public function setRowStretch(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.setSizeConstraint(QLayout.SizeConstraint)
+		setSizeConstraint(self, QLayout.SizeConstraint)
 	**/
 	static public function setSizeConstraint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setSpacing(int)
+		setSpacing(self, int)
 	**/
 	static public function setSpacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.setVerticalSpacing(int)
+		setVerticalSpacing(self, int)
 	**/
 	static public function setVerticalSpacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.signalsBlocked() -> bool
+		signalsBlocked(self) -> bool
 	**/
 	static public function signalsBlocked(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.sizeConstraint() -> QLayout.SizeConstraint
+		sizeConstraint(self) -> QLayout.SizeConstraint
 	**/
 	static public function sizeConstraint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.sizeHint() -> QSize
+		sizeHint(self) -> QSize
 	**/
 	static public function sizeHint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayoutItem.spacerItem() -> QSpacerItem
+		spacerItem(self) -> QSpacerItem
 	**/
 	static public function spacerItem(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.spacing() -> int
+		spacing(self) -> int
 	**/
 	static public function spacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.startTimer(int) -> int
+		startTimer(self, int) -> int
 	**/
 	static public function startTimer(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var staticMetaObject : Dynamic;
 	/**
-		QGridLayout.takeAt(int) -> QLayoutItem
+		takeAt(self, int) -> QLayoutItem
 	**/
 	static public function takeAt(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.thread() -> QThread
+		thread(self) -> QThread
 	**/
 	static public function thread(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.timerEvent(QTimerEvent)
+		timerEvent(self, QTimerEvent)
 	**/
 	static public function timerEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.totalHeightForWidth(int) -> int
+		totalHeightForWidth(self, int) -> int
 	**/
 	static public function totalHeightForWidth(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.totalMaximumSize() -> QSize
+		totalMaximumSize(self) -> QSize
 	**/
 	static public function totalMaximumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.totalMinimumSize() -> QSize
+		totalMinimumSize(self) -> QSize
 	**/
 	static public function totalMinimumSize(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.totalSizeHint() -> QSize
+		totalSizeHint(self) -> QSize
 	**/
 	static public function totalSizeHint(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.tr(str, str disambiguation=None, int n=-1) -> str
+		tr(self, object, disambiguation: str = None, n: int = -1) -> object
 	**/
 	static public function tr(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QObject.trUtf8(str, str disambiguation=None, int n=-1) -> str
+		trUtf8(self, object, disambiguation: str = None, n: int = -1) -> object
 	**/
 	static public function trUtf8(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.update()
+		update(self)
 	**/
 	static public function update(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QGridLayout.verticalSpacing() -> int
+		verticalSpacing(self) -> int
 	**/
 	static public function verticalSpacing(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayoutItem.widget() -> QWidget
+		widget(self) -> QWidget
 	**/
 	static public function widget(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
-		QLayout.widgetEvent(QEvent)
+		widgetEvent(self, QEvent)
 	**/
 	static public function widgetEvent(args:haxe.extern.Rest<Dynamic>):Dynamic;
 }

@@ -22,7 +22,7 @@ package matplotlib.backends.backend_qt4;
 	**/
 	static public function _create_qApp():Dynamic;
 	/**
-		QFileDialog.getSaveFileNameAndFilter(QWidget parent=None, str caption='', str directory='', str filter='', str initialFilter='', QFileDialog.Options options=0) -> (str, str)
+		getSaveFileNameAndFilter(parent: QWidget = None, caption: object = '', directory: object = '', filter: object = '', initialFilter: object = '', options: QFileDialog.Options = 0) -> Tuple
 	**/
 	static public function _getSaveFileName(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	static public var absolute_import : Dynamic;
