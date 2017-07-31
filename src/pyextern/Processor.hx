@@ -301,6 +301,9 @@ class Processor {
 						var td = main.getTd(moduleName, memName);
 						if (main.filterModules(memObj.__module__)) { //TODO
 							var real_td = main.getTd(memObj.__module__, memObj.__name__);
+							if (td.pack.join(".") == real_td.pack.join(".") && td.name == real_td.name) {
+								throw "typedef of itself?";
+							}
 							td.meta = [];
 							td.isExtern = false;
 							td.kind = TDAlias(TPath({

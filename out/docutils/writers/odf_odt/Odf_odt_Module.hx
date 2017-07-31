@@ -44,6 +44,5 @@ package docutils.writers.odf_odt;
 	static public function add_ns(tag:Dynamic, ?nsdict:Dynamic):Dynamic;
 	static public function escape_cdata(text:Dynamic):Dynamic;
 	static public function fix_ns(tag:Dynamic, attrib:Dynamic, nsdict:Dynamic):Dynamic;
-	static public var pygments : Dynamic;
 	static public function split_words(line:Dynamic):Dynamic;
 }

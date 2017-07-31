@@ -1,6 +1,6 @@
 /* This file is generated, do not edit! */
-package tensorflow.contrib.keras.python.keras.optimizers;
-@:pythonImport("tensorflow.contrib.keras.python.keras.optimizers", "Adadelta") extern class Adadelta {
+package docutils.writers.odf_odt.pygmentsformatter;
+@:pythonImport("docutils.writers.odf_odt.pygmentsformatter", "OdtPygmentsFormatter") extern class OdtPygmentsFormatter {
 	static public function __class__(args:haxe.extern.Rest<Dynamic>):Dynamic;
 	/**
 		Implement delattr(self, name).
@@ -41,11 +41,11 @@ package tensorflow.contrib.keras.python.keras.optimizers;
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
 	@:native("__init__")
-	public function ___init__(?lr:Dynamic, ?rho:Dynamic, ?epsilon:Dynamic, ?decay:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Dynamic;
+	public function ___init__(rststyle_function:Dynamic, escape_function:Dynamic):Dynamic;
 	/**
 		Initialize self.  See help(type(self)) for accurate signature.
 	**/
-	public function new(?lr:Dynamic, ?rho:Dynamic, ?epsilon:Dynamic, ?decay:Dynamic, ?kwargs:python.KwArgs<Dynamic>):Void;
+	public function new(rststyle_function:Dynamic, escape_function:Dynamic):Void;
 	/**
 		This method is called when a class is subclassed.
 		
@@ -108,32 +108,22 @@ package tensorflow.contrib.keras.python.keras.optimizers;
 		list of weak references to the object (if defined)
 	**/
 	public var __weakref__ : Dynamic;
-	static public function from_config(config:Dynamic):Dynamic;
-	public function get_config():Dynamic;
-	public function get_gradients(loss:Dynamic, params:Dynamic):Dynamic;
-	public function get_updates(params:Dynamic, constraints:Dynamic, loss:Dynamic):Dynamic;
+	static public var aliases : Dynamic;
+	static public var filenames : Dynamic;
 	/**
-		Returns the current value of the weights of the optimizer.
-		
-		Returns:
-		    A list of numpy arrays.
+		Format ``tokensource``, an iterable of ``(tokentype, tokenstring)``
+		tuples and write it into ``outfile``.
 	**/
-	public function get_weights():Dynamic;
+	public function format(tokensource:Dynamic, outfile:Dynamic):Dynamic;
 	/**
-		Sets the weights of the optimizer, from Numpy arrays.
+		Return the style definitions for the current style as a string.
 		
-		Should only be called after computing the gradients
-		(otherwise the optimizer has no weights).
-		
-		Arguments:
-		    weights: a list of Numpy arrays. The number
-		        of arrays and their shape must match
-		        number of the dimensions of the weights
-		        of the optimizer (i.e. it should match the
-		        output of `get_weights`).
-		
-		Raises:
-		    ValueError: in case of incompatible weight shapes.
+		``arg`` is an additional argument whose meaning depends on the
+		formatter used. Note that ``arg`` can also be a list or tuple
+		for some formatters like the html formatter.
 	**/
-	public function set_weights(weights:Dynamic):Dynamic;
+	public function get_style_defs(?arg:Dynamic):Dynamic;
+	static public var name : Dynamic;
+	public function rststyle(name:Dynamic, ?parameters:Dynamic):Dynamic;
+	static public var unicodeoutput : Dynamic;
 }
